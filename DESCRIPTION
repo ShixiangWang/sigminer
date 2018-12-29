@@ -1,0 +1,16 @@
+Package: sigminer
+Title: Capture Genomic Variation Signatures using 'NMF'
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Shixiang",
+           family = "Wang",
+           role = c("aut", "cre"),
+           email = "w_shixiang@163.com")
+Description: Contains functions for capturing copy number signatures and 
+  mutation signatures using 'NMF' package, signature analysis and visualization.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Suggests: 
+    cowsay
+RoxygenNote: 6.1.1
