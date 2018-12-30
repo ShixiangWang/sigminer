@@ -326,7 +326,7 @@ cnv_plotSignatures = function(Res = NULL,
 
 #' Plot copy number feature distribution
 #'
-#' @param features a \code{list} generate from \code{cnv_derivefeatures} function.
+#' @param features a \code{list} generate from \code{get_features} function.
 #' @param ylab lab of y axis.
 #' @param ... other options pass to \code{\link[cowplot]{plot_grid}} function of \code{cowplot} package.
 #'
@@ -518,7 +518,7 @@ cnv_plotMixComponents = function(features, components, ...) {
 #' @param mode either "ld" for distribution by CN length or "cd" for distribution by chromosome.
 #' @param fill when \code{mode} is "cd", if \code{fill} is \code{TRUE}, plot percentage instead of count.
 #' @param scale_chr logical. If `TRUE`, normalize count to per Megabase unit.
-#' @inheritParams cnv_derivefeatures
+#' @inheritParams get_features
 #' @author Shixiang Wang <w_shixiang@163.com>
 #'
 #' @return a ggplot object

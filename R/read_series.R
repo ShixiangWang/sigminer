@@ -6,8 +6,7 @@
 # Read MAF data -----------------------------------------------------------
 
 #' @inherit maftools::read.maf
-#' @importFrom  maftools read.maf
-#' @family read genomic variation data
+#' @family read genomic variation data function series
 #' @examples
 #' \dontrun{
 #' laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
@@ -54,7 +53,7 @@ read_maf = function(
 #' (set this parameter to `NULL` is recommended in this case).
 #' @param use_all default is `FALSE`. If `True`, use all columns from raw input.
 #' @param min_segnum minimal number of copy number segments within a sample.
-#' @param genome_build genome build version, should be one of 'hg19' or 'hg38'.
+#' @param genome_build genome build version, should be 'hg19' or 'hg38'.
 #' @param clinical_data a `data.frame` representing clinical data
 #' associated with each sample in copy number profile.
 #' @param verbose print extra messages.
@@ -62,7 +61,7 @@ read_maf = function(
 #' @author Shixiang Wang <w_shixiang@163.com>
 #' @return a [CopyNumber] object
 #' @export
-#' @family read genomic variation data
+#' @family read genomic variation data function series
 read_copynumber = function(input,
                            pattern = NULL,
                            ignore_case = FALSE,
@@ -213,3 +212,32 @@ read_copynumber = function(input,
 }
 
 
+
+# Read genomic variation --------------------------------------------------
+
+#' Read genomic variation profile
+#'
+#' @description Read [CopyNumber] and [MAF] object as a new S4 object [GenomicVariation]
+#' for uniform variation analysis. **The function is initialized to construct structure of sigminer, please dont use it for now**.
+#' @param copynumber a [CopyNumber] object
+#' @param maf a [MAF] object
+#' @param clinical_data clinical.data data associated with each sample in copy number profile
+#' and MAF.
+#' @author Shixiang Wang <w_shixiang@163.com>
+#' @return a [GenomicVariation] object
+#' @export
+#' @family read genomic variation data function series
+read_variation = function(copynumber, maf, clinical_data = NULL) {
+
+  if (is.null(clinical_data)) {
+    clinical_data = data.table::data.table()
+  } else if (!inherits(clinical_data, "data.table")) {
+    clinical_data = data.table::as.data.table(clinical_data)
+  }
+
+  GenomicVariation(
+    CopyNumber = copynumber,
+    MAF = maf,
+    clinical.data = clinical_data
+  )
+}

@@ -9,7 +9,11 @@ get_LengthFraction(CN_data, genome_build = c("hg19", "hg38"),
   samp_col = "sample")
 }
 \arguments{
-\item{genome_build}{genome build version, should be one of 'hg19' or 'hg38'.}
+\item{CN_data}{a \code{list} contains multiple \code{data.frame}s (recommended),
+each \code{data.frame} stores copy-number profile for one sample with 'chromosome', 'start', 'end' and
+'segVal' these four necessary columns. Of note, 'segVal' column shoule be absolute copy number values.}
+
+\item{genome_build}{genome build version, should be 'hg19' or 'hg38'.}
 
 \item{seg_cols}{four characters used to specify chromosome, start position,
 end position and copy number value in \code{input}, respectively.
@@ -26,12 +30,10 @@ a data frame
 Calculate length fraction profile of copy number
 }
 \seealso{
-Other CNV analysis functions: \code{\link{cnv_plotDistributionProfile}},
-  \code{\link{cnv_plotFeatureDistribution}},
-  \code{\link{cnv_plotMixComponents}},
-  \code{\link{cnv_plotSignatures}}
+Other internal calculation function series: \code{\link{get_ArmLocation}},
+  \code{\link{get_components}}, \code{\link{get_features}}
 }
 \author{
 Shixiang Wang \href{mailto:w_shixiang@163.com}{w_shixiang@163.com}
 }
-\concept{CNV analysis functions}
+\concept{internal calculation function series}

@@ -23,4 +23,11 @@ RoxygenNote: 6.1.1
 Roxygen: list(markdown = TRUE)
 Imports: 
     data.table,
-    maftools
+    maftools,
+    foreach,
+    doParallel,
+    flexmix,
+    NMF,
+    cowplot,
+    RColorBrewer,
+    methods

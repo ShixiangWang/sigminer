@@ -7,7 +7,7 @@
 cnv_plotMixComponents(features, components, ...)
 }
 \arguments{
-\item{features}{a \code{list} generate from \code{cnv_derivefeatures} function.}
+\item{features}{a \code{list} generate from \code{get_features} function.}
 
 \item{components}{a \code{list} contain \code{flexmix} object of copy-number features, obtain this
 from \code{cnv_fitMixModels} function or use pre-compiled components data which come from CNV signature paper
@@ -22,9 +22,11 @@ a ggplot object
 Plot mixture fit model components
 }
 \seealso{
-Other CNV analysis functions: \code{\link{cnv_plotDistributionProfile}},
+Other CNV analysis functions: \code{\link{cnv_autoCaptureSignatures}},
+  \code{\link{cnv_chooseSigNumber}},
+  \code{\link{cnv_extractSignatures}},
+  \code{\link{cnv_plotDistributionProfile}},
   \code{\link{cnv_plotFeatureDistribution}},
-  \code{\link{cnv_plotSignatures}},
-  \code{\link{get_LengthFraction}}
+  \code{\link{cnv_plotSignatures}}
 }
 \concept{CNV analysis functions}

@@ -18,6 +18,8 @@ cnv_plotDistributionProfile(data, rm_normal = TRUE, mode = c("ld",
 \item{fill}{when \code{mode} is "cd", if \code{fill} is \code{TRUE}, plot percentage instead of count.}
 
 \item{scale_chr}{logical. If \code{TRUE}, normalize count to per Megabase unit.}
+
+\item{genome_build}{genome build version, should be 'hg19' or 'hg38'.}
 }
 \value{
 a ggplot object
@@ -31,10 +33,12 @@ cnv_plotLengthSummary(data, mode = "cd")
 }
 }
 \seealso{
-Other CNV analysis functions: \code{\link{cnv_plotFeatureDistribution}},
+Other CNV analysis functions: \code{\link{cnv_autoCaptureSignatures}},
+  \code{\link{cnv_chooseSigNumber}},
+  \code{\link{cnv_extractSignatures}},
+  \code{\link{cnv_plotFeatureDistribution}},
   \code{\link{cnv_plotMixComponents}},
-  \code{\link{cnv_plotSignatures}},
-  \code{\link{get_LengthFraction}}
+  \code{\link{cnv_plotSignatures}}
 }
 \author{
 Shixiang Wang \href{mailto:w_shixiang@163.com}{w_shixiang@163.com}

@@ -11,6 +11,8 @@
 #' @slot summary table with basic MAF summary stats
 #' @slot maf.silent subset of main MAF containing only silent variants
 #' @slot clinical.data clinical data associated with each sample/Tumor_Sample_Barcode in MAF.
+#' @import methods
+#' @import data.table
 #' @export MAF
 #' @exportClass MAF
 
@@ -33,7 +35,8 @@ setMethod(
   f = 'show',
   signature = 'MAF',
   definition = function(object) {
-    cat(paste('An object of class ', class(object), "\n"))
+    cat(paste('An object of class', class(object), "\n"))
+    cat("======================\n")
     print(object@summary)
   }
 )
@@ -64,14 +67,15 @@ setMethod(
   f = 'show',
   signature = 'CopyNumber',
   definition = function(object) {
-    cat(paste('An object of class ', class(object), "\n"))
+    cat(paste('An object of class', class(object), "\n"))
+    cat("=============================\n")
     print(object@data)
   }
 )
 
 
 #' Class GenomicVariation
-#' @description S4 class for storing summaarized genomic variation profile.
+#' @description S4 class for storing summarized genomic variation profile.
 #' @slot CopyNumber a `CopyNumber` object.
 #' @slot MAF a `MAF` object.
 #' @slot clinical.data data associated with each sample in copy number profile
@@ -89,7 +93,8 @@ setMethod(
   f = 'show',
   signature = 'GenomicVariation',
   definition = function(object) {
-    cat(paste('An object of class ', class(object), "\n"))
-    print(str(object, max.level = 2))
+    cat(paste('An object of class', class(object), "\n"))
+    cat("===================================\n")
+    str(object, max.level = 2)
   }
 )

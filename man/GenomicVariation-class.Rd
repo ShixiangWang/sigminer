@@ -6,7 +6,7 @@
 \alias{GenomicVariation}
 \title{Class GenomicVariation}
 \description{
-S4 class for storing summaarized genomic variation profile.
+S4 class for storing summarized genomic variation profile.
 }
 \section{Slots}{
 

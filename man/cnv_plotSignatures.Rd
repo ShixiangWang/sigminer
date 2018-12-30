@@ -41,9 +41,11 @@ Nothing
 Plot CNV signature from multiple result objects from \code{VSHunter} package.
 }
 \seealso{
-Other CNV analysis functions: \code{\link{cnv_plotDistributionProfile}},
+Other CNV analysis functions: \code{\link{cnv_autoCaptureSignatures}},
+  \code{\link{cnv_chooseSigNumber}},
+  \code{\link{cnv_extractSignatures}},
+  \code{\link{cnv_plotDistributionProfile}},
   \code{\link{cnv_plotFeatureDistribution}},
-  \code{\link{cnv_plotMixComponents}},
-  \code{\link{get_LengthFraction}}
+  \code{\link{cnv_plotMixComponents}}
 }
 \concept{CNV analysis functions}

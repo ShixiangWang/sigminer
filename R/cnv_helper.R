@@ -103,17 +103,14 @@ calculateSumOfPosteriors <-
            cores = 1)
   {
     if (cores > 1) {
-      # require(foreach)
-      # require(doMC)
-      requireNamespace("foreach", quietly = T)
-      #requireNamespace("doMC", quietly = T)
+
+      requireNamespace("foreach", quietly = TRUE)
       requireNamespace("doParallel", quietly = T)
 
       len = dim(CN_feature)[1]
       iters = floor(len / rowIter)
       lastiter = iters[length(iters)]
 
-      #registerDoMC(cores)
       registerDoParallel(cores = cores)
       curr_posterior = foreach(i = 0:iters, .combine = rbind) %dopar% {
         start = i * rowIter + 1
@@ -159,16 +156,9 @@ getSegsize <- function(abs_profiles)
   samps <- getSampNames(abs_profiles)
   for (i in samps)
   {
-    if (class(abs_profiles) == "QDNAseqCopyNumbers")
-    {
-      segTab <-
-        getSegTable(abs_profiles[, which(colnames(abs_profiles) == i)])
-    }
-    else
-    {
-      segTab <- abs_profiles[[i]]
-      colnames(segTab)[4] <- "segVal"
-    }
+    segTab <- abs_profiles[[i]]
+    colnames(segTab)[4] <- "segVal"
+
     segTab$segVal[as.numeric(segTab$segVal) < 0] <- 0
     seglen <-
       (as.numeric(segTab$end) - as.numeric(segTab$start))
@@ -186,15 +176,8 @@ getBPnum <- function(abs_profiles, chrlen)
   samps <- getSampNames(abs_profiles)
   for (i in samps)
   {
-    if (class(abs_profiles) == "QDNAseqCopyNumbers")
-    {
-      segTab <-
-        getSegTable(abs_profiles[, which(colnames(abs_profiles) == i)])
-    } else
-    {
-      segTab <- abs_profiles[[i]]
-      colnames(segTab)[4] <- "segVal"
-    }
+    segTab <- abs_profiles[[i]]
+    colnames(segTab)[4] <- "segVal"
 
     # unify chromosome column
     segTab$chromosome = as.character(segTab$chromosome)
@@ -239,15 +222,8 @@ getOscilation <- function(abs_profiles)
   samps <- getSampNames(abs_profiles)
   for (i in samps)
   {
-    if (class(abs_profiles) == "QDNAseqCopyNumbers")
-    {
-      segTab <-
-        getSegTable(abs_profiles[, which(colnames(abs_profiles) == i)])
-    } else
-    {
-      segTab <- abs_profiles[[i]]
-      colnames(segTab)[4] <- "segVal"
-    }
+    segTab <- abs_profiles[[i]]
+    colnames(segTab)[4] <- "segVal"
 
     # unify chromosome column
     segTab$chromosome = as.character(segTab$chromosome)
@@ -306,15 +282,9 @@ getCentromereDistCounts <-
     samps <- getSampNames(abs_profiles)
     for (i in samps)
     {
-      if (class(abs_profiles) == "QDNAseqCopyNumbers")
-      {
-        segTab <-
-          getSegTable(abs_profiles[, which(colnames(abs_profiles) == i)])
-      } else
-      {
-        segTab <- abs_profiles[[i]]
-        colnames(segTab)[4] <- "segVal"
-      }
+      segTab <- abs_profiles[[i]]
+      colnames(segTab)[4] <- "segVal"
+
       # unify chromosome column
       segTab$chromosome = as.character(segTab$chromosome)
       segTab$chromosome = sub(
@@ -378,7 +348,7 @@ getCentromereDistCounts <-
     }
     rownames(out) <- NULL
     out = data.frame(out, stringsAsFactors = F)
-    out = na.omit(out)
+    out = stats::na.omit(out)
     out
   }
 
@@ -389,16 +359,9 @@ getChangepointCN <- function(abs_profiles)
   samps <- getSampNames(abs_profiles)
   for (i in samps)
   {
-    if (class(abs_profiles) == "QDNAseqCopyNumbers")
-    {
-      segTab <-
-        getSegTable(abs_profiles[, which(colnames(abs_profiles) == i)])
-    }
-    else
-    {
-      segTab <- abs_profiles[[i]]
-      colnames(segTab)[4] <- "segVal"
-    }
+    segTab <- abs_profiles[[i]]
+    colnames(segTab)[4] <- "segVal"
+
     segTab$segVal[as.numeric(segTab$segVal) < 0] <- 0
     chrs <- unique(segTab$chromosome)
     allcp <- c()
@@ -425,16 +388,8 @@ getCN <- function(abs_profiles)
   samps <- getSampNames(abs_profiles)
   for (i in samps)
   {
-    if (class(abs_profiles) == "QDNAseqCopyNumbers")
-    {
-      segTab <-
-        getSegTable(abs_profiles[, which(colnames(abs_profiles) == i)])
-    }
-    else
-    {
-      segTab <- abs_profiles[[i]]
-      colnames(segTab)[4] <- "segVal"
-    }
+    segTab <- abs_profiles[[i]]
+    colnames(segTab)[4] <- "segVal"
     segTab$segVal[as.numeric(segTab$segVal) < 0] <- 0
     cn <- as.numeric(segTab$segVal)
     out <-
@@ -444,72 +399,15 @@ getCN <- function(abs_profiles)
   data.frame(out, stringsAsFactors = F)
 }
 
-getSampNames <- function(abs_profiles)
-{
-  if (class(abs_profiles) == "QDNAseqCopyNumbers")
-  {
-    samps <- colnames(abs_profiles)
-  }
-  else
-  {
-    samps <- names(abs_profiles)
-  }
-  samps
-}
-
-getSegTable <- function(x)
-{
-  if (!requireNamespace("Biobase", quietly = TRUE)){
-    stop("Package \"Biobase\" needed for this function to work. Please install it.",
-         call. = FALSE)
-  }
-  dat <- x
-  sn <- Biobase::assayDataElement(dat, "segmented")
-  fd <- Biobase::fData(dat)
-  fd$use -> use
-  fdfiltfull <- fd[use,]
-  sn <- sn[use,]
-  segTable <- c()
-  for (c in unique(fdfiltfull$chromosome))
-  {
-    snfilt <- sn[fdfiltfull$chromosome == c]
-    fdfilt <- fdfiltfull[fdfiltfull$chromosome == c,]
-    sn.rle <- rle(snfilt)
-    starts <-
-      cumsum(c(1, sn.rle$lengths[-length(sn.rle$lengths)]))
-    ends <- cumsum(sn.rle$lengths)
-    lapply(1:length(sn.rle$lengths), function(s) {
-      from <- fdfilt$start[starts[s]]
-      to <- fdfilt$end[ends[s]]
-      segValue <- sn.rle$value[s]
-      c(fdfilt$chromosome[starts[s]], from, to, segValue)
-    }) -> segtmp
-    segTableRaw <-
-      data.frame(matrix(unlist(segtmp), ncol = 4, byrow = T), stringsAsFactors =
-                   F)
-    segTable <- rbind(segTable, segTableRaw)
-  }
-  colnames(segTable) <- c("chromosome", "start", "end", "segVal")
-  segTable
-}
-
-
 getPloidy <- function(abs_profiles)
 {
   out <- c()
   samps <- getSampNames(abs_profiles)
   for (i in samps)
   {
-    if (class(abs_profiles) == "QDNAseqCopyNumbers")
-    {
-      segTab <-
-        getSegTable(abs_profiles[, which(colnames(abs_profiles) == i)])
-    }
-    else
-    {
-      segTab <- abs_profiles[[i]]
-      colnames(segTab)[4] <- "segVal"
-    }
+    segTab <- abs_profiles[[i]]
+    colnames(segTab)[4] <- "segVal"
+
     segLen <-
       (as.numeric(segTab$end) - as.numeric(segTab$start))
     ploidy <-

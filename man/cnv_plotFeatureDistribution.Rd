@@ -7,7 +7,7 @@
 cnv_plotFeatureDistribution(features, ylab = "", ...)
 }
 \arguments{
-\item{features}{a \code{list} generate from \code{cnv_derivefeatures} function.}
+\item{features}{a \code{list} generate from \code{get_features} function.}
 
 \item{ylab}{lab of y axis.}
 
@@ -20,9 +20,11 @@ a ggplot object
 Plot copy number feature distribution
 }
 \seealso{
-Other CNV analysis functions: \code{\link{cnv_plotDistributionProfile}},
+Other CNV analysis functions: \code{\link{cnv_autoCaptureSignatures}},
+  \code{\link{cnv_chooseSigNumber}},
+  \code{\link{cnv_extractSignatures}},
+  \code{\link{cnv_plotDistributionProfile}},
   \code{\link{cnv_plotMixComponents}},
-  \code{\link{cnv_plotSignatures}},
-  \code{\link{get_LengthFraction}}
+  \code{\link{cnv_plotSignatures}}
 }
 \concept{CNV analysis functions}
