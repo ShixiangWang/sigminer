@@ -8,9 +8,19 @@ Authors@R:
            email = "w_shixiang@163.com")
 Description: Contains functions for capturing copy number signatures and 
   mutation signatures using 'NMF' package, signature analysis and visualization.
+URL: https://github.com/ShixiangWang/sigminer
+BugReports: https://github.com/ShixiangWang/sigminer/issues
+Depends: R (>= 3.5)
+biocViews:
+Suggests: 
+    cowsay,
+    knitr,
+    rmarkdown
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-Suggests: 
-    cowsay
 RoxygenNote: 6.1.1
+Roxygen: list(markdown = TRUE)
+Imports: 
+    data.table,
+    maftools
