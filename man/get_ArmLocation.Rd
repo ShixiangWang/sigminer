@@ -14,6 +14,7 @@ Get chromosome arm location
 }
 \seealso{
 Other internal calculation function series: \code{\link{get_LengthFraction}},
-  \code{\link{get_components}}, \code{\link{get_features}}
+  \code{\link{get_components}}, \code{\link{get_features}},
+  \code{\link{get_matrix}}
 }
 \concept{internal calculation function series}

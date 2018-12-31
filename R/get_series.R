@@ -75,37 +75,35 @@ get_features = function(CN_data,
   # only keep 1:22 and x, y
   chrlen = chrlen[chrlen$chrom %in% centromeres$chrom,]
   if (cores > 1) {
-    #require(foreach)
+
     requireNamespace("foreach", quietly = TRUE)
-    #doMC::registerDoMC(cores)
     doParallel::registerDoParallel(cores = cores)
 
     temp_list = foreach::foreach(i = 1:6) %dopar% {
       if (i == 1) {
-        list(segsize = getSegsize(CN_data))
-      } else if (i == 2) {
         list(bp10MB = getBPnum(CN_data, chrlen))
+      } else if (i == 2) {
+        list(copynumber = getCN(CN_data))
       } else if (i == 3) {
-        list(osCN = getOscilation(CN_data))
+        list(changepoint = getChangepointCN(CN_data))
       } else if (i == 4) {
         list(bpchrarm = getCentromereDistCounts(CN_data, centromeres, chrlen))
       } else if (i == 5) {
-        list(changepoint = getChangepointCN(CN_data))
+        list(osCN = getOscilation(CN_data))
       } else {
-        list(copynumber = getCN(CN_data))
+        list(segsize = getSegsize(CN_data))
       }
 
     }
     unlist(temp_list, recursive = FALSE)
   } else {
-    segsize <- getSegsize(CN_data)
     bp10MB <- getBPnum(CN_data, chrlen)
-    osCN <- getOscilation(CN_data)
+    copynumber <- getCN(CN_data)
+    changepoint <- getChangepointCN(CN_data)
     bpchrarm <-
       getCentromereDistCounts(CN_data, centromeres, chrlen)
-    changepoint <- getChangepointCN(CN_data)
-    copynumber <- getCN(CN_data)
-
+    osCN <- getOscilation(CN_data)
+    segsize <- getSegsize(CN_data)
     list(
       segsize = segsize,
       bp10MB = bp10MB,
@@ -382,7 +380,7 @@ get_components = function(CN_features,
 #' @return a numeric sample-by-component `matrix`
 #' @importFrom utils data download.file str
 #' @export
-#' @family internal calculation function seriess
+#' @family internal calculation function series
 get_matrix = function(CN_features,
                       all_components = NULL,
                       cores = 1,
@@ -437,10 +435,18 @@ get_matrix = function(CN_features,
   full_mat
 }
 
+
+
+# Get copy number length profile ------------------------------------------
+
+# This function further need to swith to data.table operations
+
 #' Calculate length fraction profile of copy number
 #'
 #' @inheritParams get_features
 #' @inheritParams read_copynumber
+#' @param check_chrom if `TRUE`, check chromosome name, name like '23' or 'chr23'
+#' will be discarded.
 #' @author Shixiang Wang <w_shixiang@163.com>
 #' @return a data frame
 #' @export
@@ -448,8 +454,8 @@ get_matrix = function(CN_features,
 get_LengthFraction = function(CN_data,
                               genome_build = c("hg19", "hg38"),
                               seg_cols = c("Chromosome", "Start.bp", "End.bp", "modal_cn"),
-                              samp_col = "sample") {
-  stopifnot(is.list(CN_data) | is.data.frame(CN_data))
+                              samp_col = "sample", check_chrom = FALSE) {
+  stopifnot(is.list(CN_data) | is.data.frame(CN_data), is.logical(check_chrom))
   genome_build = match.arg(genome_build)
 
   if (inherits(CN_data, "list")) {
@@ -458,7 +464,7 @@ get_LengthFraction = function(CN_data,
                               times = sapply(CN_data, function(x)
                                 nrow(x)))
   } else {
-    segTab = CN_data[, c(seg_cols, samp_col)]
+    segTab = CN_data[, c(seg_cols, samp_col), with = FALSE]
     if (ncol(segTab) == 5) {
       colnames(segTab) = c("chromosome", "start", "end", "segVal", "sample")
     } else if (ncol(segTab) == 4) {
@@ -481,15 +487,13 @@ get_LengthFraction = function(CN_data,
   if (any(!grepl("chr", segTab$chromosome))) {
     segTab$chromosome[!grepl("chr", segTab$chromosome)] = paste0("chr", segTab$chromosome[!grepl("chr", segTab$chromosome)])
   }
-  if (any(grepl("chr23", segTab$chromosome))) {
-    warning("'23' is not a supported chromosome, related rows will be discarded.")
-    segTab = segTab[!grepl("chr23", segTab$chromosome),]
-  }
 
-  valid_chr = c(paste0("chr", 1:22), "chrX", "chrY")
-  if (!all(segTab$chromosome %in% valid_chr)) {
-    message("Filter some invalid segments... (not as 1:22 and X, Y)")
-    segTab = base::subset(segTab, chromosome %in% valid_chr)
+  if (check_chrom) {
+    valid_chr = c(paste0("chr", 1:22), "chrX", "chrY")
+    if (!all(segTab$chromosome %in% valid_chr)) {
+      message("Filter some invalid segments... (not as 1:22 and X, Y)")
+      segTab = base::subset(segTab, chromosome %in% valid_chr)
+    }
   }
 
   arm_data = get_ArmLocation(genome_build)
@@ -549,6 +553,8 @@ get_LengthFraction = function(CN_data,
   res
 }
 
+
+# Get arm location --------------------------------------------------------
 
 #' Get chromosome arm location
 #' @inheritParams read_copynumber
@@ -633,13 +639,16 @@ get_ArmLocation = function(genome_build = c("hg19", "hg38")) {
 # Global variables --------------------------------------------------------
 
 
-# utils::globalVariables(
-#   c(
-#     "centromeres.hg19",
-#     "centromeres.hg38",
-#     "chromsize.hg19",
-#     "chromsize.hg38",
-#     "feat",
-#     "i"
-#   )
-# )
+utils::globalVariables(
+  c(
+    "centromeres.hg19",
+    "centromeres.hg38",
+    "chromsize.hg19",
+    "chromsize.hg38",
+    ".",
+    "i",
+    "N",
+    "chrom",
+    "chromosome"
+  )
+)

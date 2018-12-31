@@ -28,7 +28,12 @@ a numeric sample-by-component \code{matrix}
 Generate a sample-by-component matrix representing the sum of
 posterior probabilities of each copy-number event being assigned to each component.
 }
+\seealso{
+Other internal calculation function series: \code{\link{get_ArmLocation}},
+  \code{\link{get_LengthFraction}},
+  \code{\link{get_components}}, \code{\link{get_features}}
+}
 \author{
 Geoffrey Macintyre, Shixiang Wang
 }
-\concept{internal calculation function seriess}
+\concept{internal calculation function series}

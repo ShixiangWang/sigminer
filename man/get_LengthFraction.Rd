@@ -6,7 +6,7 @@
 \usage{
 get_LengthFraction(CN_data, genome_build = c("hg19", "hg38"),
   seg_cols = c("Chromosome", "Start.bp", "End.bp", "modal_cn"),
-  samp_col = "sample")
+  samp_col = "sample", check_chrom = FALSE)
 }
 \arguments{
 \item{CN_data}{a \code{list} contains multiple \code{data.frame}s (recommended),
@@ -22,6 +22,9 @@ Default use names from ABSOLUTE calling result.}
 \item{samp_col}{a character used to specify the sample column name. If \code{input}
 is a directory and cannot find \code{samp_col}, sample names will use file names
 (set this parameter to \code{NULL} is recommended in this case).}
+
+\item{check_chrom}{if \code{TRUE}, check chromosome name, name like '23' or 'chr23'
+will be discarded.}
 }
 \value{
 a data frame
@@ -31,7 +34,8 @@ Calculate length fraction profile of copy number
 }
 \seealso{
 Other internal calculation function series: \code{\link{get_ArmLocation}},
-  \code{\link{get_components}}, \code{\link{get_features}}
+  \code{\link{get_components}}, \code{\link{get_features}},
+  \code{\link{get_matrix}}
 }
 \author{
 Shixiang Wang \href{mailto:w_shixiang@163.com}{w_shixiang@163.com}

@@ -42,7 +42,7 @@ of Gaussian or mixtures of Poison distributions using \strong{flexmix} package.
 \seealso{
 Other internal calculation function series: \code{\link{get_ArmLocation}},
   \code{\link{get_LengthFraction}},
-  \code{\link{get_features}}
+  \code{\link{get_features}}, \code{\link{get_matrix}}
 }
 \author{
 Geoffrey Macintyre, Shixiang Wang

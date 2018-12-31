@@ -105,13 +105,13 @@ calculateSumOfPosteriors <-
     if (cores > 1) {
 
       requireNamespace("foreach", quietly = TRUE)
-      requireNamespace("doParallel", quietly = T)
+      requireNamespace("doParallel", quietly = TRUE)
 
       len = dim(CN_feature)[1]
       iters = floor(len / rowIter)
       lastiter = iters[length(iters)]
 
-      registerDoParallel(cores = cores)
+      doParallel::registerDoParallel(cores = cores)
       curr_posterior = foreach(i = 0:iters, .combine = rbind) %dopar% {
         start = i * rowIter + 1
         if (i != lastiter) {
@@ -153,11 +153,11 @@ calculateSumOfPosteriors <-
 getSegsize <- function(abs_profiles)
 {
   out <- c()
-  samps <- getSampNames(abs_profiles)
+  samps <- names(abs_profiles)
   for (i in samps)
   {
     segTab <- abs_profiles[[i]]
-    colnames(segTab)[4] <- "segVal"
+    #colnames(segTab)[4] <- "segVal"
 
     segTab$segVal[as.numeric(segTab$segVal) < 0] <- 0
     seglen <-
@@ -173,11 +173,11 @@ getSegsize <- function(abs_profiles)
 getBPnum <- function(abs_profiles, chrlen)
 {
   out <- c()
-  samps <- getSampNames(abs_profiles)
+  samps <- names(abs_profiles)
   for (i in samps)
   {
     segTab <- abs_profiles[[i]]
-    colnames(segTab)[4] <- "segVal"
+    #colnames(segTab)[4] <- "segVal"
 
     # unify chromosome column
     segTab$chromosome = as.character(segTab$chromosome)
@@ -219,11 +219,11 @@ getBPnum <- function(abs_profiles, chrlen)
 getOscilation <- function(abs_profiles)
 {
   out <- c()
-  samps <- getSampNames(abs_profiles)
+  samps <- names(abs_profiles)
   for (i in samps)
   {
     segTab <- abs_profiles[[i]]
-    colnames(segTab)[4] <- "segVal"
+    #colnames(segTab)[4] <- "segVal"
 
     # unify chromosome column
     segTab$chromosome = as.character(segTab$chromosome)
@@ -279,11 +279,11 @@ getCentromereDistCounts <-
   function(abs_profiles, centromeres, chrlen)
   {
     out <- c()
-    samps <- getSampNames(abs_profiles)
+    samps <- names(abs_profiles)
     for (i in samps)
     {
       segTab <- abs_profiles[[i]]
-      colnames(segTab)[4] <- "segVal"
+      #colnames(segTab)[4] <- "segVal"
 
       # unify chromosome column
       segTab$chromosome = as.character(segTab$chromosome)
@@ -356,11 +356,11 @@ getCentromereDistCounts <-
 getChangepointCN <- function(abs_profiles)
 {
   out <- c()
-  samps <- getSampNames(abs_profiles)
+  samps <- names(abs_profiles)
   for (i in samps)
   {
     segTab <- abs_profiles[[i]]
-    colnames(segTab)[4] <- "segVal"
+    #colnames(segTab)[4] <- "segVal"
 
     segTab$segVal[as.numeric(segTab$segVal) < 0] <- 0
     chrs <- unique(segTab$chromosome)
@@ -385,11 +385,11 @@ getChangepointCN <- function(abs_profiles)
 getCN <- function(abs_profiles)
 {
   out <- c()
-  samps <- getSampNames(abs_profiles)
+  samps <- names(abs_profiles)
   for (i in samps)
   {
     segTab <- abs_profiles[[i]]
-    colnames(segTab)[4] <- "segVal"
+    #colnames(segTab)[4] <- "segVal"
     segTab$segVal[as.numeric(segTab$segVal) < 0] <- 0
     cn <- as.numeric(segTab$segVal)
     out <-
@@ -402,11 +402,11 @@ getCN <- function(abs_profiles)
 getPloidy <- function(abs_profiles)
 {
   out <- c()
-  samps <- getSampNames(abs_profiles)
+  samps <- names(abs_profiles)
   for (i in samps)
   {
     segTab <- abs_profiles[[i]]
-    colnames(segTab)[4] <- "segVal"
+    # colnames(segTab)[4] <- "segVal"
 
     segLen <-
       (as.numeric(segTab$end) - as.numeric(segTab$start))

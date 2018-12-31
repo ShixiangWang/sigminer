@@ -187,13 +187,57 @@ read_copynumber = function(input,
   #--- match genome build
   genome_build = match.arg(genome_build)
 
+  # unify chromosome column
+  if (verbose) message("Check chromosome names...")
+  data_df[, chromosome := sub(
+                            pattern = "chr",
+                            replacement = "chr",
+                            x = as.character(chromosome),
+                            ignore.case = TRUE
+                            )]
+  if (any(!grepl("chr", data_df$chromosome))) {
+    data_df$chromosome[!grepl("chr", data_df$chromosome)] = paste0("chr", data_df$chromosome[!grepl("chr", data_df$chromosome)])
+  }
+
+  if (nrow(dropoff_df) >= 1) {
+    dropoff_df[, chromosome := sub(
+                                pattern = "chr",
+                                replacement = "chr",
+                                x = as.character(chromosome),
+                                ignore.case = TRUE
+                                )]
+    if (any(!grepl("chr", dropoff_df$chromosome))) {
+      dropoff_df$chromosome[!grepl("chr", dropoff_df$chromosome)] = paste0("chr", dropoff_df$chromosome[!grepl("chr", dropoff_df$chromosome)])
+    }
+  }
+
+  valid_chr = c(paste0("chr", 1:22), "chrX", "chrY")
+  if (!all(data_df$chromosome %in% valid_chr)) {
+    if (verbose) message("Filter some invalid segments... (not as 1:22 and X, Y)")
+    data_drop = data_df[!chromosome %in% valid_chr]
+    if (nrow(dropoff_df) >= 1) {
+      dropoff_df = base::rbind(dropoff_df, data_drop)
+    } else {
+      dropoff_df = data_drop
+    }
+
+    data_df = data_df[chromosome %in% valid_chr]
+  }
+
+  if (verbose) {
+    message("Segments info:")
+    message("    Keep - ", nrow(data_df))
+    message("  Filter - ", nrow(dropoff_df))
+  }
+
   annot = get_LengthFraction(data_df,
                              genome_build = genome_build,
                              seg_cols = new_cols[1:4],
                              samp_col = new_cols[5])
 
+  if (verbose) message("Done!")
   if (is.null(clinical_data)) {
-    CopyNumber(
+    res = CopyNumber(
       data =  data_df,
       genome_build = genome_build,
       annotation = annot,
@@ -201,7 +245,7 @@ read_copynumber = function(input,
       clinical.data = data.table::data.table()
     )
   } else {
-    CopyNumber(
+    res = CopyNumber(
       data =  data_df,
       genome_build = genome_build,
       annotation = annot,
@@ -209,9 +253,35 @@ read_copynumber = function(input,
       clinical.data = data.table::as.data.table(clinical_data)
     )
   }
+
+  res = validate_segTab(res, verbose = verbose)
+  res
 }
 
+# Parameter - object: a CopyNumber object
+validate_segTab = function(object, verbose = FALSE){
+  if (!is.integer(object@data[["start"]])) {
+    object@data[["start"]] == as.integer(object@data[["start"]])
+  }
 
+  if (!is.integer(object@data[["end"]])) {
+    object@data[["end"]] == as.integer(object@data[["end"]])
+  }
+
+  if (!is.integer(object@data[["segVal"]])) {
+    if (is.character(object@data[["segVal"]])) {
+      if (verbose) message("'segVal' is characater type, try transforming to integer.")
+      object@data[["segVal"]] == as.integer(object@data[["segVal"]])
+    }
+
+    if (is.double(object@data[["segVal"]])) {
+      if (verbose) message("'segVal' is not integer type, round it to integer.")
+      object@data[["segVal"]] == as.integer(round(object@data[["segVal"]]))
+    }
+  }
+
+  object
+}
 
 # Read genomic variation --------------------------------------------------
 
