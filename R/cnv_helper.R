@@ -104,8 +104,11 @@ calculateSumOfPosteriors <-
   {
     if (cores > 1) {
 
-      requireNamespace("foreach", quietly = TRUE)
-      requireNamespace("doParallel", quietly = TRUE)
+      # requireNamespace("foreach", quietly = TRUE)
+      # requireNamespace("doParallel", quietly = TRUE)
+
+      loadNamespace("foreach")
+      loadNamespace("doParallel")
 
       len = dim(CN_feature)[1]
       iters = floor(len / rowIter)
@@ -157,11 +160,8 @@ getSegsize <- function(abs_profiles)
   for (i in samps)
   {
     segTab <- abs_profiles[[i]]
-    #colnames(segTab)[4] <- "segVal"
-
-    segTab$segVal[as.numeric(segTab$segVal) < 0] <- 0
-    seglen <-
-      (as.numeric(segTab$end) - as.numeric(segTab$start))
+    segTab$segVal[segTab$segVal < 0] <- 0
+    seglen <- segTab$end - segTab$start
     seglen <- seglen[seglen > 0]
     out <-
       rbind(out, cbind(ID = rep(i, length(seglen)), value = seglen))
@@ -177,34 +177,17 @@ getBPnum <- function(abs_profiles, chrlen)
   for (i in samps)
   {
     segTab <- abs_profiles[[i]]
-    #colnames(segTab)[4] <- "segVal"
-
-    # unify chromosome column
-    segTab$chromosome = as.character(segTab$chromosome)
-    segTab$chromosome = sub(
-      pattern = "chr",
-      replacement = "chr",
-      x = segTab$chromosome,
-      ignore.case = TRUE
-    )
-    if (any(!grepl("chr", segTab$chromosome))) {
-      segTab$chromosome[!grepl("chr", segTab$chromosome)] = paste0("chr", segTab$chromosome[!grepl("chr", segTab$chromosome)])
-    }
-    if (any(grepl("chr23", segTab$chromosome))) {
-      warning("'23' is not a supported chromosome, related rows will be discarded.")
-      segTab = segTab[!grepl("chr23", segTab$chromosome),]
-    }
 
     chrs <- unique(segTab$chromosome)
 
     allBPnum <- c()
     for (c in chrs)
     {
-      currseg <- segTab[segTab$chromosome == c,]
+      currseg <- segTab[chromosome == c,]
       intervals <-
         seq(1, chrlen[chrlen[, 1] == c, 2] + 10000000, 10000000)
       res <-
-        hist(as.numeric(currseg$end[-nrow(currseg)]),
+        hist(currseg$end[-nrow(currseg)],
              breaks = intervals,
              plot = FALSE)$counts
       allBPnum <- c(allBPnum, res)
@@ -223,30 +206,13 @@ getOscilation <- function(abs_profiles)
   for (i in samps)
   {
     segTab <- abs_profiles[[i]]
-    #colnames(segTab)[4] <- "segVal"
-
-    # unify chromosome column
-    segTab$chromosome = as.character(segTab$chromosome)
-    segTab$chromosome = sub(
-      pattern = "chr",
-      replacement = "chr",
-      x = segTab$chromosome,
-      ignore.case = TRUE
-    )
-    if (any(!grepl("chr", segTab$chromosome))) {
-      segTab$chromosome[!grepl("chr", segTab$chromosome)] = paste0("chr", segTab$chromosome[!grepl("chr", segTab$chromosome)])
-    }
-    if (any(grepl("chr23", segTab$chromosome))) {
-      warning("'23' is not a supported chromosome, related rows will be discarded.")
-      segTab = segTab[!grepl("chr23", segTab$chromosome),]
-    }
 
     chrs <- unique(segTab$chromosome)
+
     oscCounts <- c()
     for (c in chrs)
     {
-      currseg <- segTab[segTab$chromosome == c, "segVal"]
-      currseg <- round(as.numeric(currseg))
+      currseg <- segTab[chromosome == c][["segVal"]]
       if (length(currseg) > 3)
       {
         prevval <- currseg[1]
@@ -283,34 +249,17 @@ getCentromereDistCounts <-
     for (i in samps)
     {
       segTab <- abs_profiles[[i]]
-      #colnames(segTab)[4] <- "segVal"
 
-      # unify chromosome column
-      segTab$chromosome = as.character(segTab$chromosome)
-      segTab$chromosome = sub(
-        pattern = "chr",
-        replacement = "chr",
-        x = segTab$chromosome,
-        ignore.case = TRUE
-      )
-      if (any(!grepl("chr", segTab$chromosome))) {
-        segTab$chromosome[!grepl("chr", segTab$chromosome)] = paste0("chr", segTab$chromosome[!grepl("chr", segTab$chromosome)])
-      }
-      if (any(grepl("chr23", segTab$chromosome))) {
-        warning("'23' is not a supported chromosome, related rows will be discarded.")
-        segTab = segTab[!grepl("chr23", segTab$chromosome),]
-      }
       chrs <- unique(segTab$chromosome)
+
       all_dists <- c()
       for (c in chrs)
       {
         if (nrow(segTab) > 1)
         {
-          starts <- as.numeric(segTab[segTab$chromosome == c, 2])[-1]
-          segstart <-
-            as.numeric(segTab[segTab$chromosome == c, 2])[1]
-          ends <-
-            as.numeric(segTab[segTab$chromosome == c, 3])
+          starts <- segTab[chromosome == c][["start"]][-1]
+          segstart <- segTab[chromosome == c][["start"]][1]
+          ends <- segTab[chromosome == c][["end"]]
           segend <- ends[length(ends)]
           ends <- ends[-length(ends)]
           # centstart <-
@@ -319,10 +268,8 @@ getCentromereDistCounts <-
           #     as.numeric(centromeres[substr(centromeres[, 2], 4, 5) == c, 4])
           # chrend <- chrlen[substr(chrlen[, 1], 4, 5) == c, 2]
 
-          centstart <-
-            as.numeric(centromeres[centromeres$chrom == c, 2])
-          centend <-
-            as.numeric(centromeres[centromeres$chrom == c, 3])
+          centstart <- centromeres[centromeres$chrom == c, 2]
+          centend <- centromeres[centromeres$chrom == c, 3]
           chrend <- chrlen[chrlen$chrom == c, 2]
 
           ndist <-
@@ -360,14 +307,13 @@ getChangepointCN <- function(abs_profiles)
   for (i in samps)
   {
     segTab <- abs_profiles[[i]]
-    #colnames(segTab)[4] <- "segVal"
 
-    segTab$segVal[as.numeric(segTab$segVal) < 0] <- 0
+    segTab$segVal[segTab$segVal < 0] <- 0
     chrs <- unique(segTab$chromosome)
     allcp <- c()
     for (c in chrs)
     {
-      currseg <- as.numeric(segTab[segTab$chromosome == c, "segVal"])
+      currseg <- segTab[chromosome == c][["segVal"]]
       allcp <-
         c(allcp, abs(currseg[-1] - currseg[-length(currseg)]))
     }
@@ -389,9 +335,8 @@ getCN <- function(abs_profiles)
   for (i in samps)
   {
     segTab <- abs_profiles[[i]]
-    #colnames(segTab)[4] <- "segVal"
-    segTab$segVal[as.numeric(segTab$segVal) < 0] <- 0
-    cn <- as.numeric(segTab$segVal)
+    segTab$segVal[segTab$segVal < 0] <- 0
+    cn <- segTab$segVal
     out <-
       rbind(out, cbind(ID = rep(i, length(cn)), value = cn))
   }
@@ -406,12 +351,10 @@ getPloidy <- function(abs_profiles)
   for (i in samps)
   {
     segTab <- abs_profiles[[i]]
-    # colnames(segTab)[4] <- "segVal"
 
-    segLen <-
-      (as.numeric(segTab$end) - as.numeric(segTab$start))
+    segLen <- segTab$end - segTab$start
     ploidy <-
-      sum((segLen / sum(segLen)) * as.numeric(segTab$segVal))
+      sum((segLen / sum(segLen)) * segTab$segVal)
     out <- c(out, ploidy)
   }
   data.frame(out, stringsAsFactors = F)

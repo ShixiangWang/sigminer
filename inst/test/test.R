@@ -22,7 +22,21 @@ load(example_data)
 
 tcga_segTabs2 = lapply(tcga_segTabs, data.table::as.data.table)
 
+#---- get series
 features = get_features(tcga_segTabs)
 components = get_components(features)
 inp_matrix = get_matrix(features, components)
 
+#----
+cn_list = get_cnlist(cp)
+
+cn_features = get_features(cn_list, cores = 1)
+cn_components = get_components(cn_features, nrep = 20)
+cn_matrix = get_matrix(cn_features, cn_components, cores = 1)
+
+cn_features = get_features(cn_list, cores = 2)
+cn_matrix2 = get_matrix(cn_features, cn_components, cores = 2)
+
+#--- prepare series
+cn_matrix3 = prepare_copynumber(cp)
+cn_matrix4 = prepare_copynumber(cp, reference_components = NULL)

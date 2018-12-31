@@ -29,7 +29,8 @@ copy-number.
 \seealso{
 Other internal calculation function series: \code{\link{get_ArmLocation}},
   \code{\link{get_LengthFraction}},
-  \code{\link{get_components}}, \code{\link{get_matrix}}
+  \code{\link{get_cnlist}}, \code{\link{get_components}},
+  \code{\link{get_context}}, \code{\link{get_matrix}}
 }
 \author{
 Geoffrey Macintyre, Shixiang Wang

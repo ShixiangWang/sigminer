@@ -27,6 +27,28 @@
 # SOFTWARE.
 
 
+# Get copy number list ----------------------------------------------------
+
+#' Extract copy number profile as list from CopyNumber object
+#' @author Shixiang Wang
+#' @param CopyNumber a [CopyNumber] object.
+#' @return a `list`
+#' @export
+#' @family internal calculation function series
+
+get_cnlist = function(CopyNumber) {
+  if (!inherits(CopyNumber, "CopyNumber")) {
+    stop('Input must be a CopyNumber object!')
+  }
+  segTab = CopyNumber@data
+  samps = unique(segTab[["sample"]])
+  res = list()
+  for (i in samps) {
+    res[[i]] = segTab[sample == i, ]
+  }
+
+  res
+}
 
 # Get feature distributions -----------------------------------------------
 
@@ -54,19 +76,19 @@ get_features = function(CN_data,
   # get chromosome lengths and centromere locations
   if (genome_build == "hg19") {
     data("chromsize.hg19",
-         package = "VSHunter",
+         package = "sigminer",
          envir = environment())
     data("centromeres.hg19",
-         package = "VSHunter",
+         package = "sigminer",
          envir = environment())
     chrlen = chromsize.hg19
     centromeres = centromeres.hg19
   } else {
     data("chromsize.hg38",
-         package = "VSHunter",
+         package = "sigminer",
          envir = environment())
     data("centromeres.hg38",
-         package = "VSHunter",
+         package = "sigminer",
          envir = environment())
     chrlen = chromsize.hg38
     centromeres = centromeres.hg38
@@ -76,7 +98,7 @@ get_features = function(CN_data,
   chrlen = chrlen[chrlen$chrom %in% centromeres$chrom,]
   if (cores > 1) {
 
-    requireNamespace("foreach", quietly = TRUE)
+    loadNamespace("foreach")
     doParallel::registerDoParallel(cores = cores)
 
     temp_list = foreach::foreach(i = 1:6) %dopar% {
@@ -136,7 +158,6 @@ get_features = function(CN_data,
 #' @param nrep number of run times for each value of component,
 #' keep only the solution with maximum likelihood.
 #' @param niter maximal number of iteration to achive converge.
-#' @inheritParams get_features
 #' @author Geoffrey Macintyre, Shixiang Wang
 #' @return a `list` contain `flexmix` object of copy-number features.
 #' @export
@@ -148,122 +169,8 @@ get_components = function(CN_features,
                             min_prior = 0.001,
                             model_selection = "BIC",
                             nrep = 1,
-                            niter = 1000,
-                            cores = 1) {
+                            niter = 1000) {
 
-  featsToFit = seq(1, 6)
-
-  if (cores > 1) {
-    #require(foreach)
-    requireNamespace("foreach", quietly = TRUE)
-    #doMC::registerDoMC(cores)
-    doParallel::registerDoParallel(cores = cores)
-
-    temp_list = foreach(i = 1:6) %dopar% {
-      if (i == 1 & i %in% featsToFit) {
-        message("Fit feature: Segment size")
-        dat <- as.numeric(CN_features[["segsize"]][, 2])
-        list(
-          segsize = fitComponent(
-            dat,
-            seed = seed,
-            model_selection = model_selection,
-            min_prior = min_prior,
-            niter = niter,
-            nrep = nrep,
-            min_comp = min_comp,
-            max_comp = max_comp
-          )
-        )
-
-      } else if (i == 2 & i %in% featsToFit) {
-        message("Fit feature: Breakpoint count per 10 Mb")
-        dat <- as.numeric(CN_features[["bp10MB"]][, 2])
-        list(
-          bp10MB = fitComponent(
-            dat,
-            dist = "pois",
-            seed = seed,
-            model_selection = model_selection,
-            min_prior = min_prior,
-            niter = niter,
-            nrep = nrep,
-            min_comp = min_comp,
-            max_comp = max_comp
-          )
-        )
-
-      } else if (i == 3 & i %in% featsToFit) {
-        message("Fit feature: Length of oscillating copy-number chain")
-        dat <- as.numeric(CN_features[["osCN"]][, 2])
-        list(
-          osCN = fitComponent(
-            dat,
-            dist = "pois",
-            seed = seed,
-            model_selection = model_selection,
-            min_prior = min_prior,
-            niter = niter,
-            nrep = nrep,
-            min_comp = min_comp,
-            max_comp = max_comp
-          )
-        )
-
-      } else if (i == 4 & i %in% featsToFit) {
-        message("Fit feature: Breakpoint count per arm")
-        dat <- as.numeric(CN_features[["bpchrarm"]][, 2])
-        list(
-          bpchrarm = fitComponent(
-            dat,
-            dist = "pois",
-            seed = seed,
-            model_selection = model_selection,
-            min_prior = min_prior,
-            niter = niter,
-            nrep = nrep,
-            min_comp = min_comp,
-            max_comp = max_comp
-          )
-        )
-
-      } else if (i == 5 & i %in% featsToFit) {
-        message("Fit feature: Copy number change")
-        dat <- as.numeric(CN_features[["changepoint"]][, 2])
-        list(
-          changepoint = fitComponent(
-            dat,
-            seed = seed,
-            model_selection = model_selection,
-            min_prior = min_prior,
-            niter = niter,
-            nrep = nrep,
-            min_comp = min_comp,
-            max_comp = max_comp
-          )
-        )
-
-      } else if (i == 6 & i %in% featsToFit) {
-        message("Fit feature: Absolute copy number")
-        dat <- as.numeric(CN_features[["copynumber"]][, 2])
-        list(
-          copynumber = fitComponent(
-            dat,
-            seed = seed,
-            model_selection = model_selection,
-            nrep = nrep,
-            min_comp = min_comp,
-            max_comp = max_comp,
-            min_prior = 0.005,
-            niter = 2000
-          )
-        )
-
-      }
-
-    }
-    unlist(temp_list, recursive = FALSE)
-  } else {
     dat <- as.numeric(CN_features[["segsize"]][, 2])
     message("Fit feature: Segment size")
     segsize_mm <-
@@ -359,7 +266,6 @@ get_components = function(CN_features,
       changepoint = changepoint_mm,
       copynumber = copynumber_mm
     )
-  }
 }
 
 
@@ -403,32 +309,31 @@ get_matrix = function(CN_features,
   }
 
   full_mat <- cbind(
-    calculateSumOfPosteriors(CN_features[["segsize"]],
-                             all_components[["segsize"]],
-                             "segsize",
-                             cores = cores),
     calculateSumOfPosteriors(CN_features[["bp10MB"]],
                              all_components[["bp10MB"]],
                              "bp10MB",
-                             cores = cores),
-    calculateSumOfPosteriors(CN_features[["osCN"]],
-                             all_components[["osCN"]],
-                             "osCN",
-                             cores = cores),
-    calculateSumOfPosteriors(CN_features[["changepoint"]],
-                             all_components[["changepoint"]],
-                             "changepoint",
                              cores = cores),
     calculateSumOfPosteriors(CN_features[["copynumber"]],
                              all_components[["copynumber"]],
                              "copynumber",
                              cores = cores),
+    calculateSumOfPosteriors(CN_features[["changepoint"]],
+                             all_components[["changepoint"]],
+                             "changepoint",
+                             cores = cores),
     calculateSumOfPosteriors(CN_features[["bpchrarm"]],
                              all_components[["bpchrarm"]],
                              "bpchrarm",
+                             cores = cores),
+    calculateSumOfPosteriors(CN_features[["osCN"]],
+                             all_components[["osCN"]],
+                             "osCN",
+                             cores = cores),
+    calculateSumOfPosteriors(CN_features[["segsize"]],
+                             all_components[["segsize"]],
+                             "segsize",
                              cores = cores)
   )
-
 
   rownames(full_mat) <- unique(CN_features[["segsize"]][, 1])
   full_mat[is.na(full_mat)] <- 0
@@ -565,19 +470,19 @@ get_ArmLocation = function(genome_build = c("hg19", "hg38")) {
   # get chromosome lengths and centromere locations
   if (genome_build == "hg19") {
     data("chromsize.hg19",
-         package = "VSHunter",
+         package = "sigminer",
          envir = environment())
     data("centromeres.hg19",
-         package = "VSHunter",
+         package = "sigminer",
          envir = environment())
     chrlen = chromsize.hg19
     centromeres = centromeres.hg19
   } else {
     data("chromsize.hg38",
-         package = "VSHunter",
+         package = "sigminer",
          envir = environment())
     data("centromeres.hg38",
-         package = "VSHunter",
+         package = "sigminer",
          envir = environment())
     chrlen = chromsize.hg38
     centromeres = centromeres.hg38
@@ -634,6 +539,23 @@ get_ArmLocation = function(genome_build = c("hg19", "hg38")) {
 }
 
 
+#' @inherit maftools::trinucleotideMatrix
+#' @importFrom  maftools trinucleotideMatrix
+#' @family internal calculation function series
+#' @examples
+#' \dontrun{
+#' laml.tnm <- get_context(maf = laml, ref_genome = 'BSgenome.Hsapiens.UCSC.hg19',
+#'     prefix = 'chr', add = TRUE, useSyn = TRUE)
+#' }
+get_context = function(
+  maf, ref_genome = NULL, prefix = NULL,
+  add = TRUE, ignoreChr = NULL, useSyn = TRUE, fn = NULL
+){
+  maftools::trinucleotideMatrix(
+    maf, ref_genome = ref_genome, prefix = prefix,
+    add = add, ignoreChr = ignoreChr, useSyn = useSyn, fn = fn
+  )
+}
 
 
 # Global variables --------------------------------------------------------
