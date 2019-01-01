@@ -64,6 +64,11 @@ nmf_matrix.maf = sig_prepare(laml, ref_genome = 'BSgenome.Hsapiens.UCSC.hg19',
 sig_estimate(laml.tnm$nmf_matrix)
 sig_estimate(inp_matrix, verbose = TRUE)
 
+#- Extract signature based on specified rank
+library(NMF)
+res = sig_extract(inp_matrix, 4, mode = "copynumber")
+res2 = sig_extract(inp_matrix, 4, mode = "mutation")
+
 #------------- Test Maftools ----------------
 require(maftools)
 

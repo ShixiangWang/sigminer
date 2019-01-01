@@ -10,7 +10,8 @@ sig_estimate(nmf_matrix, range = 2:5, nrun = 10, what = "all",
   verbose = FALSE)
 }
 \arguments{
-\item{nmf_matrix}{a \code{matrix} used for NMF decomposition, generate from \link{sig_prepare} function.}
+\item{nmf_matrix}{a \code{matrix} used for NMF decomposition (with rownames and colnames),
+generate from \link{sig_prepare} function.}
 
 \item{range}{a \code{numeric} vector containing the ranks of factorization to try. Note that duplicates are removed and values are sorted in increasing order. The results are notably returned in this order.}
 
@@ -49,7 +50,8 @@ of the residual sum of squares (RSS) between the input matrix and its estimate s
 More custom features please directly use \link[NMF:nmfEstimateRank]{NMF::nmfEstimateRank}.
 }
 \seealso{
-Other signature analysis series function: \code{\link{sig_prepare}}
+Other signature analysis series function: \code{\link{sig_extract}},
+  \code{\link{sig_prepare}}
 }
 \author{
 Shixiang Wang

@@ -254,8 +254,8 @@ get_components = function(CN_features,
         nrep = nrep,
         min_comp = min_comp,
         max_comp = max_comp,
-        min_prior = 0.005,
-        niter = 2000
+        min_prior = min_prior,
+        niter = niter
       )
 
     list(

@@ -63,7 +63,8 @@ sig_prepare.MAF = function(object, ref_genome = NULL, prefix = NULL,
 #' starts decreasing (Used by this function). Another approach is to choose the rank for which the plot
 #' of the residual sum of squares (RSS) between the input matrix and its estimate shows an inflection point.
 #' More custom features please directly use [NMF::nmfEstimateRank].
-#' @param nmf_matrix a `matrix` used for NMF decomposition, generate from [sig_prepare] function.
+#' @param nmf_matrix a `matrix` used for NMF decomposition (with rownames and colnames),
+#'  generate from [sig_prepare] function.
 #' @param range a `numeric` vector containing the ranks of factorization to try. Note that duplicates are removed and values are sorted in increasing order. The results are notably returned in this order.
 #' @param nrun a `numeric` giving the number of run to perform for each value in `range`, `nrun` set to 30~50 is enough to achieve robust result.
 #' @param what a character vector whose elements partially match one of the following item, which correspond to the measures computed by summary on each – multi-run – NMF result: ‘all’, ‘cophenetic’, ‘rss’, ‘residuals’, ‘dispersion’, ‘evar’, ‘silhouette’ (and more specific \*.coef, \*.basis, \*.consensus), ‘sparseness’ (and more specific \*.coef, \*.basis). It specifies which measure must be plotted (what='all' plots all the measures).
@@ -77,7 +78,6 @@ sig_prepare.MAF = function(object, ref_genome = NULL, prefix = NULL,
 #' @param pConstant A small positive value to add to the matrix. Use it ONLY if the functions throws an \code{non-conformable arrays} error.
 #' @param verbose if `TRUE`, print extra message.
 #' @author Shixiang Wang
-#' @import NMF
 #' @importFrom grDevices pdf dev.off
 #' @return a `list` contains information of NMF run and rank survey.
 #' @export
@@ -255,7 +255,200 @@ sig_estimate <-
 
 
 # Extract signatures ------------------------------------------------------
-sig_extract = function(){
+
+#' Extract variation signatures
+#'
+#' Do NMF de-composition and then extract signatures.
+#' @inheritParams sig_estimate
+#' @param n_sig number of signature. Please run [sig_prepare] to select a suitable value.
+#' @param mode variation type to decompose, currently support "copynumber" or "mutation".
+#' @author Shixiang Wang
+#' @return a `list` contains NMF object, signature matrix and contribution matrix.
+#' @export
+#' @family signature analysis series function
+sig_extract = function(nmf_matrix,
+                       n_sig,
+                       mode = c("copynumber", "mutation"),
+                       nrun = 10,
+                       cores = 1,
+                       method = "brunet",
+                       pConstant = NULL,
+                       seed = 123456){
+
+  mode = match.arg(mode)
+
+  #transpose matrix
+  mat = t(nmf_matrix)
+
+  #To avoid error due to non-conformable arrays
+  if(!is.null(pConstant)){
+    if(pConstant < 0 | pConstant == 0){
+      stop("pConstant must be > 0")
+    }
+    mat = mat+pConstant
+  }
+
+  nmf.res = NMF::nmf(
+    mat,
+    n_sig,
+    seed = seed,
+    nrun = nrun,
+    method = method,
+    .opt = paste0("p", cores)
+  )
+
+
+  #Signatures
+  w = NMF::basis(nmf.res)
+  w = apply(w, 2, function(x) x/sum(x)) #Scale the signatures (basis)
+  colnames(w) = paste('Signature', 1:ncol(w),sep='_')
+
+  #Contribution
+  h = NMF::coef(nmf.res)
+  colnames(h) = colnames(mat) #correct colnames (seems to be mssing with low mutation load)
+  #For single signature, contribution will be 100% per sample
+  if(n_sig == 1){
+    h = h/h
+    rownames(h) = paste('Signature', '1', sep = '_')
+  }else{
+    h = apply(h, 2, function(x) x/sum(x)) #Scale contributions (coefs)
+    rownames(h) = paste('Signature', 1:nrow(h),sep='_')
+  }
+
+  if (mode == "mutation") {
+    #- Copy from maftools, should update them all if something changed in maftools source
+    #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< BEGIN
+    sigs = data.table::fread(
+      input = system.file('extdata', 'signatures.txt', package = 'maftools'),
+      stringsAsFactors = FALSE,
+      data.table = FALSE
+    )
+    colnames(sigs) = gsub(pattern = ' ',
+                          replacement = '_',
+                          x = colnames(sigs))
+    rownames(sigs) = sigs$Somatic_Mutation_Type
+    sigs = sigs[, -c(1:3)]
+    #sigs = sigs[,1:22] #use only first 21 validated sigantures
+    sigs = sigs[rownames(w), ]
+
+    aetiology = structure(
+      list(
+        aetiology = c(
+          "spontaneous deamination of 5-methylcytosine",
+          "APOBEC Cytidine Deaminase (C>T)",
+          "defects in DNA-DSB repair by HR",
+          "exposure to tobacco (smoking) mutagens",
+          "Unknown",
+          "defective DNA mismatch repair",
+          "UV exposure",
+          "Unknown",
+          "defects in polymerase-eta",
+          "defects in polymerase POLE",
+          "exposure to alkylating agents",
+          "Unknown",
+          "APOBEC Cytidine Deaminase (C>G)",
+          "Unknown",
+          "defective DNA mismatch repair",
+          "Unknown",
+          "Unknown",
+          "Unknown",
+          "Unknown",
+          "defective DNA mismatch repair",
+          "unknown",
+          "exposure to aristolochic acid",
+          "Unknown",
+          "exposures to aflatoxin",
+          "Unknown",
+          "defective DNA mismatch repair",
+          "Unknown",
+          "Unknown",
+          "exposure to tobacco (chewing) mutagens",
+          "Unknown"
+        )
+      ),
+      .Names = "aetiology",
+      row.names = c(
+        "Signature_1",
+        "Signature_2",
+        "Signature_3",
+        "Signature_4",
+        "Signature_5",
+        "Signature_6",
+        "Signature_7",
+        "Signature_8",
+        "Signature_9",
+        "Signature_10",
+        "Signature_11",
+        "Signature_12",
+        "Signature_13",
+        "Signature_14",
+        "Signature_15",
+        "Signature_16",
+        "Signature_17",
+        "Signature_18",
+        "Signature_19",
+        "Signature_20",
+        "Signature_21",
+        "Signature_22",
+        "Signature_23",
+        "Signature_24",
+        "Signature_25",
+        "Signature_26",
+        "Signature_27",
+        "Signature_28",
+        "Signature_29",
+        "Signature_30"
+      ),
+      class = "data.frame"
+    )
+
+    message(
+      'Comparing against experimentally validated 30 signatures.. (See http://cancer.sanger.ac.uk/cosmic/signatures for details.)'
+    )
+    #corMat = c()
+    coSineMat = c()
+    for (i in 1:ncol(w)) {
+      sig = w[, i]
+      coSineMat = rbind(coSineMat, apply(sigs, 2, function(x) {
+        round(crossprod(sig, x) / sqrt(crossprod(x) * crossprod(sig)), digits = 3) #Estimate cosine similarity against all 30 signatures
+      }))
+      #corMat = rbind(corMat, apply(sigs, 2, function(x) cor.test(x, sig)$estimate[[1]])) #Calulate correlation coeff.
+    }
+    #rownames(corMat) = colnames(w)
+    rownames(coSineMat) = colnames(w)
+
+    for (i in 1:nrow(coSineMat)) {
+      ae = aetiology[names(which(coSineMat[i, ] == max(coSineMat[i, ]))), ]
+      ae = paste0("Aetiology: ",
+                  ae,
+                  " [cosine-similarity: ",
+                  max(coSineMat[i, ]),
+                  "]")
+      message(
+        'Found ',
+        rownames(coSineMat)[i],
+        ' most similar to validated ',
+        names(which(coSineMat[i, ] == max(coSineMat[i, ]))),
+        '. ',
+        ae,
+        sep = ' '
+      )
+    }
+
+    return(list(
+      signatures = w,
+      contributions = h,
+      coSineSimMat = coSineMat,
+      nmfObj = nmf.res
+    ))
+    #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< END
+  } else {
+    return(list(
+      signatures = w,
+      contributions = h,
+      nmfObj = nmf.res
+    ))
+  }
 
 }
 
