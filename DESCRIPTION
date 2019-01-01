@@ -22,12 +22,13 @@ LazyData: true
 RoxygenNote: 6.1.1
 Roxygen: list(markdown = TRUE)
 Imports: 
+    cowplot,
     data.table,
-    maftools,
-    foreach,
     doParallel,
     flexmix,
+    foreach,
+    maftools,
+    methods,
     NMF,
-    cowplot,
-    RColorBrewer,
-    methods
+    RColorBrewer
+    

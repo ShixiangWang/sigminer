@@ -540,7 +540,6 @@ get_ArmLocation = function(genome_build = c("hg19", "hg38")) {
 
 
 #' @inherit maftools::trinucleotideMatrix
-#' @importFrom  maftools trinucleotideMatrix
 #' @family internal calculation function series
 #' @examples
 #' \dontrun{
@@ -571,6 +570,7 @@ utils::globalVariables(
     "i",
     "N",
     "chrom",
-    "chromosome"
+    "chromosome",
+    "%dopar%"
   )
 )

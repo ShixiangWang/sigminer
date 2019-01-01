@@ -18,7 +18,7 @@
 #' @family signature analysis prepare function series
 prepare_copynumber = function(CopyNumber,
                               reference_components = FALSE,
-                              cores=1, seed=123456,
+                              cores = 1, seed = 123456,
                               min_comp = 2, max_comp = 10,
                               min_prior = 0.001,
                               model_selection = "BIC",
@@ -56,9 +56,9 @@ prepare_maf = function(
   maf, ref_genome = NULL, prefix = NULL,
   add = TRUE, ignoreChr = NULL, useSyn = TRUE, fn = NULL
 ) {
-  get_context(
+  suppressMessages(get_context(
     maf, ref_genome = ref_genome, prefix = prefix,
     add = add, ignoreChr = ignoreChr, useSyn = useSyn, fn = fn
-  )
+  ))
 }
 

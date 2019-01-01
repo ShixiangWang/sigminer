@@ -115,7 +115,7 @@ calculateSumOfPosteriors <-
       lastiter = iters[length(iters)]
 
       doParallel::registerDoParallel(cores = cores)
-      curr_posterior = foreach(i = 0:iters, .combine = rbind) %dopar% {
+      curr_posterior = foreach::foreach(i = 0:iters, .combine = rbind) %dopar% {
         start = i * rowIter + 1
         if (i != lastiter) {
           end = (i + 1) * rowIter
