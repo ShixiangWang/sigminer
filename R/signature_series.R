@@ -80,6 +80,7 @@ sig_prepare.MAF = function(object, ref_genome = NULL, prefix = NULL,
 #' @author Shixiang Wang
 #' @importFrom grDevices pdf dev.off
 #' @return a `list` contains information of NMF run and rank survey.
+#' @import NMF
 #' @export
 #' @family signature analysis series function
 sig_estimate <-
@@ -264,6 +265,7 @@ sig_estimate <-
 #' @param mode variation type to decompose, currently support "copynumber" or "mutation".
 #' @author Shixiang Wang
 #' @return a `list` contains NMF object, signature matrix and contribution matrix.
+#' @import NMF
 #' @export
 #' @family signature analysis series function
 sig_extract = function(nmf_matrix,
@@ -453,12 +455,66 @@ sig_extract = function(nmf_matrix,
 }
 
 
-# Assign sample to groups/clusters ----------------------------------------
+# Assign sample/features to groups/clusters ----------------------------------------
 
-#' Return cluster membership of each sample or each feature
-sig_assign = function(){
+#' Return sample clustering from NMF run results
+#'
+#' One of key results from NMF decomposition is to cluster samples into different
+#' groups. This function takes NMF result (a `NMF` object) as input
+#' and return the membership in each cluster.
+#'
+#' X = W x H
+#'
+#' W is the feature matrix, H is the sample matrix
+#' After NMF run, use this function to select import features and assign groups for the two matrix.
+#'
+#' More detail please see [NMF::predict()].
+#' @param nmfObj a `NMF` result object which is an element return from [sig_extract]
+#' or run results of **NMF** package.
+#' @param type cluster type, could be 'consensus' or 'sample'.
+#' @param matchConseOrder if `TRUE`, the result will match order as shown in consensus map.
+#' @return a `data.frame`
+#' @import NMF cluster
+#' @export
+#' @family signature analysis series function
+sig_assign_samples = function(nmfObj, type="consensus", matchConseOrder=F){
 
+  data <- NULL
+
+  #loadNamespace("cluster")
+  #loadNamespace("NMF")
+
+  if(type=="consensus"){
+    predict.consensus <- predict(nmfObj, what="consensus")
+    silhouette.consensus <- silhouette(nmfObj, what="consensus")
+    # It turns out the factor levels is the NMF_assigned_groups from consensus matrix
+    # that matches the original sampleNames(nmfObj) order
+    # The attributes(a.predict.consensus)$iOrd is the idx order for it to match the
+    # order of the samples in consensusmap(nmfObj). It is just for displaying
+    # Therefore, the merged data frame sampleNames(nmfObj) + a.predict.consensus is the final
+    # consensus results.
+    data <- data.frame(Sample_ID=sampleNames(nmfObj),
+                       nmf_subtypes = predict.consensus,
+                       sil_width = signif(silhouette.consensus[, "sil_width"], 3))
+    # If we want to display as we see in consensusmap, we just need to reoder everything.
+    # Now re-order data to match consensusmap sample order
+    if(matchConseOrder){
+      sample.order <- attributes(predict.consensus)$iOrd
+      data <- data[sample.order, ]
+    }
+  }else if(type=="samples"){
+    predict.samples <- predict(nmfObj, what="samples", prob=T)
+    silhouette.samples <- silhouette(nmfObj, what="samples")
+    data <- data.frame(Sample_ID=names(predict.samples$predict),
+                       nmf_subtypes = predict.samples$predict,
+                       sil_width = signif(silhouette.samples[, "sil_width"], 3),
+                       prob = signif(predict.samples$prob, 3))
+  }else{
+    stop(paste("Wrong type:", type, "Possible options are: 'consensus', 'samples' "))
+  }
+  return(data)
 }
+
 
 #' #' #------------------------------------
 #' #' @title Choose optimal number of signatures

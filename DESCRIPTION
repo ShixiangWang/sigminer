@@ -23,6 +23,7 @@ RoxygenNote: 6.1.1
 Roxygen: list(markdown = TRUE)
 Imports: 
     cowplot,
+    cluster,
     data.table,
     doParallel,
     flexmix,

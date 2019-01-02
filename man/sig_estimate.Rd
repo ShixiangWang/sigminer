@@ -50,8 +50,8 @@ of the residual sum of squares (RSS) between the input matrix and its estimate s
 More custom features please directly use \link[NMF:nmfEstimateRank]{NMF::nmfEstimateRank}.
 }
 \seealso{
-Other signature analysis series function: \code{\link{sig_extract}},
-  \code{\link{sig_prepare}}
+Other signature analysis series function: \code{\link{sig_assign_samples}},
+  \code{\link{sig_extract}}, \code{\link{sig_prepare}}
 }
 \author{
 Shixiang Wang

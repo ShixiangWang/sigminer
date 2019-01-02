@@ -34,8 +34,8 @@ a \code{list} contains NMF object, signature matrix and contribution matrix.
 Do NMF de-composition and then extract signatures.
 }
 \seealso{
-Other signature analysis series function: \code{\link{sig_estimate}},
-  \code{\link{sig_prepare}}
+Other signature analysis series function: \code{\link{sig_assign_samples}},
+  \code{\link{sig_estimate}}, \code{\link{sig_prepare}}
 }
 \author{
 Shixiang Wang
