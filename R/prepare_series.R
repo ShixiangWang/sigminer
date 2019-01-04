@@ -13,6 +13,7 @@
 #' [CNV signature paper](https://www.nature.com/articles/s41588-018-0179-8).
 #' If can also be a `list` contain flexmix object of copy-number features,
 #' obtain this from [get_components] function.
+#' @author Shixiang Wang
 #' @return a `list` contains `matrix` for NMF input, copy number features and components.
 #' @export
 #' @family signature analysis prepare function series

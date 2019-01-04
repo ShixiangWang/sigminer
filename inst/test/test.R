@@ -69,6 +69,14 @@ library(NMF)
 res = sig_extract(inp_matrix, 4, mode = "copynumber")
 res2 = sig_extract(inp_matrix, 4, mode = "mutation")
 
+#-------------- Plot series -----------------
+draw_cn_distribution(cp)
+draw_cn_distribution(cp, mode = "cd")
+draw_cn_distribution(cp, mode = "cd", fill = TRUE)
+
+draw_cn_features(features)
+draw_cn_components(features, components)
+
 #------------- Test Maftools ----------------
 require(maftools)
 
@@ -82,36 +90,3 @@ library('NMF')
 laml.sign = extractSignatures(mat = laml.tnm, nTry = 6, plotBestFitRes = FALSE)
 
 
-#########################################
-getBPnum2 <- function(abs_profiles, chrlen)
-{
-  out <- c()
-  samps <- names(abs_profiles)
-  for (i in samps)
-  {
-    message("Processing samps ", i)
-    segTab <- abs_profiles[[i]]
-
-    chrs <- unique(segTab$chromosome)
-
-    allBPnum <- c()
-    for (c in chrs)
-    {
-      currseg <- segTab[chromosome == c,]
-      message("Processing chrs ", c)
-      intervals <-
-        seq(1, chrlen[chrlen[, 1] == c, 2] + 10000000, 10000000)
-      res <-
-        hist(currseg$end[-nrow(currseg)],
-             breaks = intervals,
-             plot = FALSE)$counts
-      allBPnum <- c(allBPnum, res)
-    }
-    out <-
-      rbind(out, cbind(ID = rep(i, length(allBPnum)), value = allBPnum))
-  }
-  rownames(out) <- NULL
-  data.frame(out, stringsAsFactors = F)
-}
-
-getBPnum2(tcga_segTabs2, chrlen = sigminer::chromsize.hg19)

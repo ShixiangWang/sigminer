@@ -50,4 +50,7 @@ Prepare nmf input matrix for copy number signature analysis
 \seealso{
 Other signature analysis prepare function series: \code{\link{prepare_maf}}
 }
+\author{
+Shixiang Wang
+}
 \concept{signature analysis prepare function series}

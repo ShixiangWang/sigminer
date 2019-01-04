@@ -10,7 +10,7 @@ draw_cn_distribution(data, rm_normal = TRUE, mode = c("ld", "cd"),
 \arguments{
 \item{data}{result from \link{get_LengthFraction} function result or a \link{CopyNumber} object.}
 
-\item{rm_normal}{logical. Whether removel normal copy (i.e. "segVal" equals 2), default is \code{TRUE}.}
+\item{rm_normal}{logical. Whether remove normal copy (i.e. "segVal" equals 2), default is \code{TRUE}.}
 
 \item{mode}{either "ld" for distribution by CN length or "cd" for distribution by chromosome.}
 
@@ -27,6 +27,10 @@ a ggplot object
 Visually summarize copy number distribution either by copy number segment length
 or chromosome. When input is a \link{CopyNumber} object, \code{genome_build} option will
 read from \code{genome_build} slot of object instead of using argument set in function.
+}
+\seealso{
+Other copy number plot: \code{\link{draw_cn_components}},
+  \code{\link{draw_cn_features}}
 }
 \author{
 Shixiang Wang \href{mailto:w_shixiang@163.com}{w_shixiang@163.com}
