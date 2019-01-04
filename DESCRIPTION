@@ -15,7 +15,9 @@ biocViews:
 Suggests: 
     cowsay,
     knitr,
-    rmarkdown
+    rmarkdown,
+    covr,
+    testthat
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -33,4 +35,3 @@ Imports:
     methods,
     NMF,
     RColorBrewer
-    
