@@ -6,9 +6,9 @@
 \usage{
 read_copynumber(input, pattern = NULL, ignore_case = FALSE,
   seg_cols = c("Chromosome", "Start.bp", "End.bp", "modal_cn"),
-  samp_col = "sample", use_all = FALSE, min_segnum = 22,
+  samp_col = "sample", use_all = FALSE, min_segnum = 0,
   genome_build = c("hg19", "hg38"), clinical_data = NULL,
-  verbose = FALSE, ...)
+  complement = TRUE, verbose = FALSE, ...)
 }
 \arguments{
 \item{input}{a \code{data.frame} or a file or a directory contains copy number profile.}
@@ -34,6 +34,9 @@ is a directory and cannot find \code{samp_col}, sample names will use file names
 
 \item{clinical_data}{a \code{data.frame} representing clinical data
 associated with each sample in copy number profile.}
+
+\item{complement}{if \code{TRUE}, complement chromosome does not show in input data
+with normal copy 2 and force \code{use_all} to \code{FALSE} (no matter what user input).}
 
 \item{verbose}{print extra messages.}
 

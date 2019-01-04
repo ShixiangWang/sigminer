@@ -56,6 +56,8 @@ read_maf = function(
 #' @param genome_build genome build version, should be 'hg19' or 'hg38'.
 #' @param clinical_data a `data.frame` representing clinical data
 #' associated with each sample in copy number profile.
+#' @param complement if `TRUE`, complement chromosome does not show in input data
+#' with normal copy 2 and force `use_all` to `FALSE` (no matter what user input).
 #' @param verbose print extra messages.
 #' @param ... other parameters pass to [data.table::fread()]
 #' @author Shixiang Wang <w_shixiang@163.com>
@@ -68,9 +70,10 @@ read_copynumber = function(input,
                            seg_cols = c("Chromosome", "Start.bp", "End.bp", "modal_cn"),
                            samp_col = "sample",
                            use_all = FALSE,
-                           min_segnum = 22,
+                           min_segnum = 0,
                            genome_build = c("hg19", "hg38"),
                            clinical_data = NULL,
+                           complement = TRUE,
                            verbose = FALSE,
                            ...) {
   stopifnot(
@@ -79,6 +82,27 @@ read_copynumber = function(input,
     min_segnum >= 0,
     is.logical(verbose)
   )
+
+  #--- match genome build
+  genome_build = match.arg(genome_build)
+
+  # get chromosome lengths and centromere locations
+  if (genome_build == "hg19") {
+    data("chromsize.hg19",
+         package = "sigminer",
+         envir = environment())
+    chrlen = chromsize.hg19
+  } else {
+    data("chromsize.hg38",
+         package = "sigminer",
+         envir = environment())
+    chrlen = chromsize.hg38
+  }
+
+  data.table::setDT(chrlen)
+  #chrlen = chrlen[chrom %in% c(paste0("chr", c(1:22, "X", "Y")))]
+  valid_chr = c(paste0("chr", 1:22), "chrX", "chrY")
+  chrlen = chrlen[valid_chr, on = "chrom"]
 
   if (dir.exists(input)) {
     if (verbose) message("Treat input as a directory...")
@@ -123,6 +147,52 @@ read_copynumber = function(input,
       data.table::setcolorder(temp, neworder = c(seg_cols, samp_col))
       new_cols = c("chromosome", "start", "end", "segVal", "sample")
       colnames(temp)[1:5] = new_cols
+
+      # unify chromosome column
+      if (verbose) message("Check chromosome names...")
+      temp[, chromosome := sub(
+        pattern = "chr",
+        replacement = "chr",
+        x = as.character(chromosome),
+        ignore.case = TRUE
+      )]
+      if (any(!grepl("chr", temp$chromosome))) {
+        temp$chromosome[!grepl("chr", temp$chromosome)] =
+          paste0("chr", temp$chromosome[!grepl("chr", temp$chromosome)])
+      }
+      temp[, chromosome := sub(
+        pattern = "x",
+        replacement = "X",
+        x = chromosome
+      )]
+      temp[, chromosome := sub(
+        pattern = "y",
+        replacement = "Y",
+        x = chromosome
+      )]
+
+      # detect and transform chromosome 23 to "X"
+      temp[["chromosome"]] = sub("23", "X", temp[["chromosome"]])
+
+      if (complement) {
+        # complement value 2 (normal copy) to chromosome not called
+        if (verbose) message("Fill value 2 (normal copy) to uncalled chromosomes.")
+        miss_index = ! valid_chr %in% unique(temp[["chromosome"]])
+        miss_index[length(miss_index)] = FALSE # disable Y
+        if (any(miss_index)) {
+          comp_df = temp[rep(1, sum(miss_index))]
+          comp_df[, c("chromosome", "start", "end", "segVal") := .(
+            chrlen[["chrom"]][miss_index],
+            1,
+            chrlen[["size"]][miss_index],
+            2
+          )]
+          temp = rbind(temp, comp_df)
+        }
+        if (verbose) message("'complement' option is TRUE, thus use_all automatically set to FALSE.")
+        use_all = FALSE
+      }
+
       if (!use_all) temp = temp[, new_cols, with = FALSE]
       if (nrow(temp) < min_segnum) {
         dropoff_list[[tempName]] =  temp
@@ -172,6 +242,58 @@ read_copynumber = function(input,
     data.table::setcolorder(temp, neworder = c(seg_cols, samp_col))
     new_cols = c("chromosome", "start", "end", "segVal", "sample")
     colnames(temp)[1:5] = new_cols
+
+    # unify chromosome column
+    if (verbose) message("Check chromosome names...")
+    temp[, chromosome := sub(
+      pattern = "chr",
+      replacement = "chr",
+      x = as.character(chromosome),
+      ignore.case = TRUE
+    )]
+    if (any(!grepl("chr", temp$chromosome))) {
+      temp$chromosome[!grepl("chr", temp$chromosome)] =
+        paste0("chr", temp$chromosome[!grepl("chr", temp$chromosome)])
+    }
+    temp[, chromosome := sub(
+      pattern = "x",
+      replacement = "X",
+      x = chromosome
+    )]
+    temp[, chromosome := sub(
+      pattern = "y",
+      replacement = "Y",
+      x = chromosome
+    )]
+
+    # detect and transform chromosome 23 to "X"
+    temp[["chromosome"]] = sub("23", "X", temp[["chromosome"]])
+
+    if (complement) {
+      # complement value 2 (normal copy) to chromosome not called
+      if (verbose) message("Fill value 2 (normal copy) to uncalled chromosomes.")
+
+      comp = data.table::data.table()
+      for (i in unique(temp[["sample"]])) {
+        tmp_sample = temp[i, on = "sample"]
+        miss_index = ! valid_chr %in% unique(tmp_sample[["chromosome"]])
+        miss_index[length(miss_index)] = FALSE # disable Y
+        if (any(miss_index)) {
+          comp_df = tmp_sample[rep(1, sum(miss_index))]
+          comp_df[, c("chromosome", "start", "end", "segVal") := .(
+            chrlen[["chrom"]][miss_index],
+            1,
+            chrlen[["size"]][miss_index],
+            2
+          )]
+          comp = rbind(comp, comp_df)
+        }
+      }
+      temp = rbind(temp, comp)
+      if (verbose) message("complement is TRUE, thus use_all automatically set to FALSE.")
+      use_all = FALSE
+    }
+
     if (!use_all) temp = temp[, new_cols, with = FALSE]
 
     dropoff_samples = temp[, .N, by = .(sample)][N < min_segnum][["sample"]]
@@ -184,34 +306,6 @@ read_copynumber = function(input,
       stop("Invalid input.")
     }
 
-  #--- match genome build
-  genome_build = match.arg(genome_build)
-
-  # unify chromosome column
-  if (verbose) message("Check chromosome names...")
-  data_df[, chromosome := sub(
-                            pattern = "chr",
-                            replacement = "chr",
-                            x = as.character(chromosome),
-                            ignore.case = TRUE
-                            )]
-  if (any(!grepl("chr", data_df$chromosome))) {
-    data_df$chromosome[!grepl("chr", data_df$chromosome)] = paste0("chr", data_df$chromosome[!grepl("chr", data_df$chromosome)])
-  }
-
-  if (nrow(dropoff_df) >= 1) {
-    dropoff_df[, chromosome := sub(
-                                pattern = "chr",
-                                replacement = "chr",
-                                x = as.character(chromosome),
-                                ignore.case = TRUE
-                                )]
-    if (any(!grepl("chr", dropoff_df$chromosome))) {
-      dropoff_df$chromosome[!grepl("chr", dropoff_df$chromosome)] = paste0("chr", dropoff_df$chromosome[!grepl("chr", dropoff_df$chromosome)])
-    }
-  }
-
-  valid_chr = c(paste0("chr", 1:22), "chrX", "chrY")
   if (!all(data_df$chromosome %in% valid_chr)) {
     if (verbose) message("Filter some invalid segments... (not as 1:22 and X, Y)")
     data_drop = data_df[!chromosome %in% valid_chr]
@@ -230,6 +324,7 @@ read_copynumber = function(input,
     message("  Filter - ", nrow(dropoff_df))
   }
 
+  if (verbose) message("Anotating...")
   annot = get_LengthFraction(data_df,
                              genome_build = genome_build,
                              seg_cols = new_cols[1:4],
@@ -261,22 +356,22 @@ read_copynumber = function(input,
 # Parameter - object: a CopyNumber object
 validate_segTab = function(object, verbose = FALSE){
   if (!is.integer(object@data[["start"]])) {
-    object@data[["start"]] == as.integer(object@data[["start"]])
+    object@data[["start"]] = as.integer(object@data[["start"]])
   }
 
   if (!is.integer(object@data[["end"]])) {
-    object@data[["end"]] == as.integer(object@data[["end"]])
+    object@data[["end"]] = as.integer(object@data[["end"]])
   }
 
   if (!is.integer(object@data[["segVal"]])) {
     if (is.character(object@data[["segVal"]])) {
       if (verbose) message("'segVal' is characater type, try transforming to integer.")
-      object@data[["segVal"]] == as.integer(object@data[["segVal"]])
+      object@data[["segVal"]] = as.integer(object@data[["segVal"]])
     }
 
     if (is.double(object@data[["segVal"]])) {
       if (verbose) message("'segVal' is not integer type, round it to integer.")
-      object@data[["segVal"]] == as.integer(round(object@data[["segVal"]]))
+      object@data[["segVal"]] = as.integer(round(object@data[["segVal"]]))
     }
   }
 
