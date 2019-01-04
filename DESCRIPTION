@@ -10,7 +10,7 @@ Description: Contains functions for capturing copy number signatures and
   mutation signatures using 'NMF' package, signature analysis and visualization.
 URL: https://github.com/ShixiangWang/sigminer
 BugReports: https://github.com/ShixiangWang/sigminer/issues
-Depends: R (>= 3.5)
+Depends: R (>= 3.5), cowplot
 biocViews:
 Suggests: 
     cowsay,
@@ -22,7 +22,6 @@ LazyData: true
 RoxygenNote: 6.1.1
 Roxygen: list(markdown = TRUE)
 Imports: 
-    cowplot,
     cluster,
     data.table,
     doParallel,

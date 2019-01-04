@@ -345,43 +345,58 @@ get_matrix = function(CN_features,
 
 # Get copy number length profile ------------------------------------------
 
-# This function further need to swith to data.table operations
-
 #' Calculate length fraction profile of copy number
 #'
 #' @inheritParams get_features
 #' @inheritParams read_copynumber
-#' @param check_chrom if `TRUE`, check chromosome name, name like '23' or 'chr23'
-#' will be discarded.
+#' @param CN_data a `data.frame` with 'chromosome', 'start', 'end' and 'segVal'
+#' (optinal) and 'sample' these five columns or a `list` contains multiple data.frames,
+#' each `data.frame` stores copy-number profile for one sample with
+#' 'chromosome', 'start', 'end' and 'segVal' (optional) these four columns.
+#' If 'sample' column is not specified, will try using name of each `data.frame`.
 #' @author Shixiang Wang <w_shixiang@163.com>
-#' @return a data frame
+#' @return a data table
 #' @export
 #' @family internal calculation function series
 get_LengthFraction = function(CN_data,
                               genome_build = c("hg19", "hg38"),
                               seg_cols = c("Chromosome", "Start.bp", "End.bp", "modal_cn"),
-                              samp_col = "sample", check_chrom = FALSE) {
-  stopifnot(is.list(CN_data) | is.data.frame(CN_data), is.logical(check_chrom))
+                              samp_col = "sample") {
+
+  stopifnot(is.list(CN_data) | is.data.frame(CN_data))
   genome_build = match.arg(genome_build)
 
   if (inherits(CN_data, "list")) {
     segTab = base::Reduce(rbind, CN_data)
-    segTab$sample = base::rep(x = names(CN_data),
-                              times = sapply(CN_data, function(x)
-                                nrow(x)))
-  } else {
-    segTab = CN_data[, c(seg_cols, samp_col), with = FALSE]
-    if (ncol(segTab) == 5) {
-      colnames(segTab) = c("chromosome", "start", "end", "segVal", "sample")
-    } else if (ncol(segTab) == 4) {
-      colnames(segTab) = c("chromosome", "start", "end", "sample")
-    } else {
-      stop(
-        "If input is a data.frame, must have 4 necessary columns (chr, start, end, sample) and 1 optional column (segVal)."
-      )
+    if (! samp_col %in% colnames(segTab)) {
+      segTab$sample = base::rep(x = names(CN_data),
+                                times = sapply(CN_data, function(x)
+                                  nrow(x)))
+      samp_col = "sample"
     }
+  } else {
+    segTab = CN_data
   }
 
+  if (inherits(segTab, "data.table")) {
+    segTab = segTab[, c(seg_cols, samp_col), with = FALSE]
+  } else {
+    segTab = segTab[, c(seg_cols, samp_col)]
+  }
+
+  if (ncol(segTab) == 5) {
+    colnames(segTab) = c("chromosome", "start", "end", "segVal", "sample")
+  } else if (ncol(segTab) == 4) {
+    colnames(segTab) = c("chromosome", "start", "end", "sample")
+  } else {
+    stop(
+      "If input is a data.frame, must have 4 necessary columns (chr, start, end, sample) and 1 optional column (segVal)."
+    )
+  }
+
+  data.table::setDT(segTab)
+  segTab$start = as.integer(segTab$start)
+  segTab$end = as.integer(segTab$end)
   # unify chromosome column
   segTab$chromosome = as.character(segTab$chromosome)
   segTab$chromosome = sub(
@@ -394,12 +409,10 @@ get_LengthFraction = function(CN_data,
     segTab$chromosome[!grepl("chr", segTab$chromosome)] = paste0("chr", segTab$chromosome[!grepl("chr", segTab$chromosome)])
   }
 
-  if (check_chrom) {
-    valid_chr = c(paste0("chr", 1:22), "chrX", "chrY")
-    if (!all(segTab$chromosome %in% valid_chr)) {
-      message("Filter some invalid segments... (not as 1:22 and X, Y)")
-      segTab = base::subset(segTab, chromosome %in% valid_chr)
-    }
+  valid_chr = c(paste0("chr", 1:22), "chrX", "chrY")
+  if (!all(segTab$chromosome %in% valid_chr)) {
+    message("Filter some invalid segments... (not as 1:22 and X, Y)")
+    segTab = base::subset(segTab, chromosome %in% valid_chr)
   }
 
   arm_data = get_ArmLocation(genome_build)
@@ -456,7 +469,7 @@ get_LengthFraction = function(CN_data,
   }
   res = base::cbind(segTab, assign_df)
   res$fraction = as.numeric(res$fraction)
-  res
+  data.table::as.data.table(res)
 }
 
 

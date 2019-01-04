@@ -307,7 +307,7 @@ sig_extract = function(nmf_matrix,
 
   #Contribution
   h = NMF::coef(nmf.res)
-  colnames(h) = colnames(mat) #correct colnames (seems to be mssing with low mutation load)
+  colnames(h) = colnames(mat) #correct colnames
   #For single signature, contribution will be 100% per sample
   if(n_sig == 1){
     h = h/h

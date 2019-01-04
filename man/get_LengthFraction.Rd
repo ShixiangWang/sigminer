@@ -6,12 +6,14 @@
 \usage{
 get_LengthFraction(CN_data, genome_build = c("hg19", "hg38"),
   seg_cols = c("Chromosome", "Start.bp", "End.bp", "modal_cn"),
-  samp_col = "sample", check_chrom = FALSE)
+  samp_col = "sample")
 }
 \arguments{
-\item{CN_data}{a \code{list} contains multiple \code{data.frame}s (recommended),
-each \code{data.frame} stores copy-number profile for one sample with 'chromosome', 'start', 'end' and
-'segVal' these four necessary columns. Of note, 'segVal' column shoule be absolute copy number values.}
+\item{CN_data}{a \code{data.frame} with 'chromosome', 'start', 'end' and 'segVal'
+(optinal) and 'sample' these five columns or a \code{list} contains multiple data.frames,
+each \code{data.frame} stores copy-number profile for one sample with
+'chromosome', 'start', 'end' and 'segVal' (optional) these four columns.
+If 'sample' column is not specified, will try using name of each \code{data.frame}.}
 
 \item{genome_build}{genome build version, should be 'hg19' or 'hg38'.}
 
@@ -22,12 +24,9 @@ Default use names from ABSOLUTE calling result.}
 \item{samp_col}{a character used to specify the sample column name. If \code{input}
 is a directory and cannot find \code{samp_col}, sample names will use file names
 (set this parameter to \code{NULL} is recommended in this case).}
-
-\item{check_chrom}{if \code{TRUE}, check chromosome name, name like '23' or 'chr23'
-will be discarded.}
 }
 \value{
-a data frame
+a data table
 }
 \description{
 Calculate length fraction profile of copy number
