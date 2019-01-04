@@ -104,11 +104,8 @@ calculateSumOfPosteriors <-
   {
     if (cores > 1) {
 
-      # requireNamespace("foreach", quietly = TRUE)
-      # requireNamespace("doParallel", quietly = TRUE)
-
-      loadNamespace("foreach")
-      loadNamespace("doParallel")
+      attachNamespace("foreach")
+      attachNamespace("doParallel")
 
       len = dim(CN_feature)[1]
       iters = floor(len / rowIter)

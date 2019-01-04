@@ -13,7 +13,7 @@
 #' [CNV signature paper](https://www.nature.com/articles/s41588-018-0179-8).
 #' If can also be a `list` contain flexmix object of copy-number features,
 #' obtain this from [get_components] function.
-#' @return a `matrix` for NMF input
+#' @return a `list` contains `matrix` for NMF input, copy number features and components.
 #' @export
 #' @family signature analysis prepare function series
 prepare_copynumber = function(CopyNumber,
@@ -40,7 +40,7 @@ prepare_copynumber = function(CopyNumber,
   }
 
   cn_matrix = get_matrix(cn_features, cn_components, cores = cores, rowIter = rowIter)
-  cn_matrix
+  list(features = cn_features, components = cn_components, nmf_matrix = cn_matrix)
 }
 
 

@@ -42,7 +42,7 @@ keep only the solution with maximum likelihood.}
 \item{rowIter}{step size of iteration for rows of ech CNV feature.}
 }
 \value{
-a \code{matrix} for NMF input
+a \code{list} contains \code{matrix} for NMF input, copy number features and components.
 }
 \description{
 Prepare nmf input matrix for copy number signature analysis

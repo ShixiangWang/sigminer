@@ -98,7 +98,8 @@ get_features = function(CN_data,
   chrlen = chrlen[chrlen$chrom %in% centromeres$chrom,]
   if (cores > 1) {
 
-    loadNamespace("foreach")
+    attachNamespace("foreach")
+    attachNamespace("doParallel")
     doParallel::registerDoParallel(cores = cores)
 
     temp_list = foreach::foreach(i = 1:6) %dopar% {
