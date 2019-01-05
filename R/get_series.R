@@ -66,6 +66,7 @@ get_cnlist = function(CopyNumber) {
 #' @inheritParams read_copynumber
 #' @author Geoffrey Macintyre, Shixiang Wang
 #' @return a `list` contains six copy number feature distributions.
+#' @import foreach
 #' @export
 #' @family internal calculation function series
 
@@ -98,8 +99,8 @@ get_features = function(CN_data,
   chrlen = chrlen[chrlen$chrom %in% centromeres$chrom,]
   if (cores > 1) {
 
-    attachNamespace("foreach")
-    attachNamespace("doParallel")
+    #attachNamespace("foreach")
+    #attachNamespace("doParallel")
     doParallel::registerDoParallel(cores = cores)
 
     temp_list = foreach::foreach(i = 1:6) %dopar% {
@@ -582,7 +583,6 @@ utils::globalVariables(
     "i",
     "N",
     "chrom",
-    "chromosome",
-    "%dopar%"
+    "chromosome"
   )
 )

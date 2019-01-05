@@ -104,7 +104,7 @@ read_copynumber = function(input,
   valid_chr = c(paste0("chr", 1:22), "chrX", "chrY")
   chrlen = chrlen[valid_chr, on = "chrom"]
 
-  if (dir.exists(input)) {
+  if (tryCatch(dir.exists(input), error = function(e) FALSE)) {
     if (verbose) message("Treat input as a directory...")
     if (length(input) != 1) {
       stop("Only can take one directory as input!")
