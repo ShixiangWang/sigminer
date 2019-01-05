@@ -162,6 +162,7 @@ get_features = function(CN_data,
 #' @param niter maximal number of iteration to achive converge.
 #' @author Geoffrey Macintyre, Shixiang Wang
 #' @return a `list` contain `flexmix` object of copy-number features.
+#' @importClassesFrom flexmix FLXcontrol
 #' @export
 #' @family internal calculation function series
 get_components = function(CN_features,
