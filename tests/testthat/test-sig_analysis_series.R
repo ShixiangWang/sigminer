@@ -21,17 +21,17 @@ test_that("signature analysis series and mid result visualization functions work
   expect_true(inherits(cn_prepare, "list"))
   expect_true(length(cn_prepare) == 3)
 
-  p2 = draw_cn_features(cn_features)
+  p2 = draw_cn_features(cn_prepare$features)
   expect_true(inherits(p2, "ggplot"))
 
-  p3 = draw_cn_components(cn_features, cn_components)
+  p3 = draw_cn_components(cn_prepare$features, cn_prepare$components)
   expect_true(inherits(p3, "ggplot"))
 
   # estimate rank
   library(NMF)
   cn_estimate = sig_estimate(cn_prepare$nmf_matrix, cores = 2, nrun = 5, verbose = TRUE)
-  expect_identical(inherits(cn_estimate, "list"), TRUE)
-  expect_identical(length(cn_estimate) == 5, TRUE)
+  expect_true(inherits(cn_estimate, "list"))
+  expect_true(length(cn_estimate) == 5)
 
   # do NMF decomposition
   res = sig_extract(cn_prepare$nmf_matrix, 3, mode = "copynumber", nrun = 5, cores = 2)

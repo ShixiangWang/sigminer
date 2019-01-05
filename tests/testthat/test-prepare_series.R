@@ -10,8 +10,8 @@ test_that("prepare_* series functions work", {
   expect_s4_class(cp, "CopyNumber")
 
   cn_prepare = prepare_copynumber(cp)
-  expect_identical(inherits(cn_prepare, "list"), TRUE)
-  expect_identical(length(cn_prepare) == 3, TRUE)
+  expect_true(inherits(cn_prepare, "list"))
+  expect_true(length(cn_prepare) == 3)
 
   # laml = read_maf(maf = laml.maf)
   # expect_s4_class(laml, "MAF")
