@@ -6,7 +6,7 @@ load(system.file("extdata", "example_cn_list.RData",
 segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
 
 
-test_that("signature analysis series functions work", {
+test_that("signature analysis series and mid result visualization functions work", {
   skip_on_cran()
 
   # focus on copy number signatures for now
@@ -14,10 +14,18 @@ test_that("signature analysis series functions work", {
                        seg_cols = c("chromosome", "start", "end", "segVal"),
                        genome_build = "hg19")
   expect_s4_class(cn, "CopyNumber")
+  p1 = draw_cn_distribution(cn)
+  expect_true(inherits(p1, "ggplot"))
 
   cn_prepare =  sig_prepare(cn, cores = 2)
-  expect_identical(inherits(cn_prepare, "list"), TRUE)
-  expect_identical(length(cn_prepare) == 3, TRUE)
+  expect_true(inherits(cn_prepare, "list"))
+  expect_true(length(cn_prepare) == 3)
+
+  p2 = draw_cn_features(cn_features)
+  expect_true(inherits(p2, "ggplot"))
+
+  p3 = draw_cn_components(cn_features, cn_components)
+  expect_true(inherits(p3, "ggplot"))
 
   # estimate rank
   library(NMF)

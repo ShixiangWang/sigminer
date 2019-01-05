@@ -31,8 +31,9 @@ draw_cn_distribution = function(data,
 
   genome_build = match.arg(genome_build)
 
-  requireNamespace("ggplot2")
-  requireNamespace("cowplot")
+  ggplot2::theme_set(cowplot::theme_cowplot())
+  #requireNamespace("ggplot2")
+  #requireNamespace("cowplot")
 
   if (inherits(data, "CopyNumber")) {
     genome_build = data@genome_build
@@ -163,7 +164,7 @@ draw_cn_features = function(features, ylab = "", ...) {
     return(x)
   })
 
-  requireNamespace("cowplot")
+  #requireNamespace("cowplot")
   #cowplot::theme_cowplot()
   #ggplot2::theme_set(cowplot::theme_cowplot(font_size = 12))
   p_1 = ggplot(data = features$segsize, aes(x = log10(value))) +

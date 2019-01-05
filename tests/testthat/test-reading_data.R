@@ -5,6 +5,7 @@ laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools", mus
 
 test_that("read copy number or maf work", {
   skip_on_cran()
+  expect_message(hello())
 
   cp = read_copynumber(extdata_dir, pattern = "txt", genome_build = "hg19")
   expect_s4_class(cp, "CopyNumber")
