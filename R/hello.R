@@ -1,7 +1,7 @@
 #' Say hello to users
 #' @export
 #' @examples
-#'  hello()
+#' hello()
 hello <- function() {
   if (!requireNamespace("cowsay",  quietly = TRUE)) {
     stop("Package 'cowsay' is not installed.")

@@ -10,5 +10,5 @@ hello()
 Say hello to users
 }
 \examples{
- hello()
+hello()
 }
