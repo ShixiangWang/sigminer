@@ -176,6 +176,7 @@ draw_cn_features = function(features, ylab = "", ...) {
   p_2 = ggplot(data = features$copynumber, aes(x = value)) +
     geom_line(stat = "density") + labs(x = "Copy number", y = ylab) +
     theme(plot.margin = unit(c(0.05, 0.05, 0.05, 0.05), "cm")) + cowplot::theme_cowplot(font_size = 12)
+
   p_3 = ggplot(data = features$changepoint, aes(x = value)) +
     geom_line(stat = "density") + labs(x = "Copy number changepoint", y = ylab) +
     theme(plot.margin = unit(c(0.05, 0.05, 0.05, 0.05), "cm")) + cowplot::theme_cowplot(font_size = 12)
@@ -325,6 +326,189 @@ draw_cn_components = function(features, components, ...) {
 
 
 
+# Plot signature profile --------------------------------------------------
+
+#' Plot signature profile
+#'
+#' Currently support copy number signatures and mutation signatures.
+#'
+#' @inheritParams sig_extract
+#' @inheritParams sig_assign_samples
+#' @param y_scale one of 'relative' or 'absolute', if choose 'relative',
+#' signature columns will be scaled to sum as 1.
+#' @param font_scale a number used to set font scale.
+#' @author Shixiang Wang
+#' @return a `ggplot` object
+#' @import ggplot2
+#' @export
+#' @family signature plot
+draw_sig_profile = function(nmfObj, mode = c("copynumber", "mutation"),
+                            y_scale = c("relative", "absolute"), font_scale = 1) {
+
+    mode = match.arg(mode)
+    y_scale = match.arg(y_scale)
+
+    #Signatures
+    w = NMF::basis(nmfObj)
+    if (y_scale == "relative") {
+      w = apply(w, 2, function(x) x/sum(x)) #Scale the signatures (basis)
+    }
+    colnames(w) = paste('Signature', 1:ncol(w),sep='_')
+
+    #>>>>>>>>>>>>>>>>> Setting theme
+    scale <- font_scale
+
+    .theme_ss <- theme_bw(base_size=12) +
+      theme(axis.text.x = element_text(angle = 90, vjust = 0.5,
+                                       hjust = 1, size=10*scale, family = "mono"),
+            axis.text.y = element_text(hjust = 0.5,size=12*scale, family = "mono"),
+            axis.text = element_text(size = 14*scale, family = "mono"))
+    #<<<<<<<<<<<<<<<<< Setting theme
+
+    #>>>>>>>>>>>>>>>>> identify mode and do data transformation
+    mat = as.data.frame(w)
+    mat$context = rownames(mat)
+
+    if (mode == "copynumber") {
+      mat$base = sub("\\d+$", "",  mat$context)
+
+      mat = tidyr::gather(mat, class, signature, dplyr::contains("Signature"))
+      mat = dplyr::mutate(mat,
+                          context = factor(context),
+                          base = factor(base, levels = c("bp10MB", "copynumber",
+                                                         "changepoint", "bpchrarm",
+                                                         "osCN", "segsize")),
+                          class = factor(class)
+      )
+    } else {
+      mat$base = sub("[ACGT]\\[(.*)\\][ACGT]", "\\1", mat$context)
+      mat$context = sub("(\\[.*\\])", "\\.", mat$context)
+
+      mat = tidyr::gather(mat, class, signature, dplyr::contains("Signature"))
+      mat = dplyr::mutate(mat,
+                          context = factor(context),
+                          base = factor(base, levels = c("C>A", "C>G",
+                                                         "C>T", "T>A",
+                                                         "T>C", "T>G")),
+                          class = factor(class)
+      )
+    }
+
+    #>>>>>>>>>>>>>>>>>>>>>>> Plot
+    p = ggplot(mat) +
+      geom_bar(aes_string(x="context",y="signature",fill="base"),
+               stat="identity", position="identity", colour="gray50") +
+      scale_fill_manual(values=c("cyan","red","yellow","purple",
+                                 "green","blue","black","gray"))
+
+    if (mode == "copynumber") {
+      p = p + facet_grid(class ~ ., scales = "free")
+    } else {
+      p = p + facet_grid(class ~ base, scales = "free")
+    }
+
+    p = p +
+      guides(fill=FALSE) + .theme_ss +
+      theme(axis.title.x = element_text(face="bold",colour="black",size=14*scale)) +
+      theme(axis.title.y = element_text(face="bold",colour="black",size=14*scale))
+
+    if (mode == "copynumber") {
+      p = p + xlab("Components") + ylab("Contributions")
+    } else {
+      p = p + xlab("Motifs") + ylab("Contributions")
+    }
+
+    return(p)
+}
+
+
+# Plot signature activity -------------------------------------------------
+
+#' Plot signature activity
+#'
+#' Currently support copy number signatures and mutation signatures.
+#' @inheritParams draw_sig_profile
+#' @param hide_samps if `TRUE`, not show sample names.
+#' @author Shixiang Wang
+#' @return a `ggplot` object
+#' @import ggplot2
+#' @importFrom grDevices rainbow
+#' @export
+#' @family signature plot
+draw_sig_activity = function(nmfObj, mode = c("copynumber", "mutation"),
+                             font_scale = 1, hide_samps = TRUE) {
+  mode = match.arg(mode)
+
+  scale = font_scale
+  .theme_ss <- theme_bw(base_size=12) +
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5,
+                                     hjust = 1, size=10*scale, family = "mono"),
+          axis.text.y = element_text(hjust = 0.5,size=12*scale, family = "mono"),
+          axis.text = element_text(size = 8*scale, family = "mono"))
+  #Activity
+  h = NMF::coef(nmfObj)
+  #rownames(h) = paste('Signature', 1:nrow(h),sep='_')
+  rownames(h) = as.character(1:nrow(h))
+  # colnames(h) = colnames(mat) #correct colnames
+  #For single signature, contribution will be 100% per sample
+  if(nrow(h) == 1){
+    h.norm = h/h
+    #rownames(h.norm) = paste('Signature', '1', sep = '_')
+    rownames(h.norm) = "1"
+  }else{
+    h.norm = apply(h, 2, function(x) x/sum(x)) #Scale contributions (coefs)
+    #rownames(h.norm) = paste('Signature', 1:nrow(h.norm),sep='_')
+    rownames(h.norm) = as.character(1:nrow(h.norm))
+  }
+
+  h = as.data.frame(h)
+  h.norm = as.data.frame(h.norm)
+
+  ordering = order(colSums(h),decreasing=TRUE)
+  h = h[, ordering]
+  h.norm = h.norm[, ordering]
+
+  sample.ordering = colnames(h)
+
+  h$Signature = rownames(h)
+  h.norm$Signature = rownames(h.norm)
+  x1 = tidyr::gather(h, Sample, Activity, -Signature)
+  x2 = tidyr::gather(h.norm, Sample, Activity, -Signature)
+  if (mode == "copynumber") {
+    x1$class0 = "Weights"
+  } else {
+    x1$class0 = "Counts"
+  }
+  x2$class0 = "Fractions"
+  df = rbind(x1, x2)
+
+  if (mode == "copynumber") {
+    df$class0 <- factor(df$class0,c("Weights","Fractions"))
+  } else {
+    df$class0 <- factor(df$class0,c("Counts","Fractions"))
+  }
+
+  df$Sample <- factor(df$Sample,sample.ordering)
+
+  p = ggplot(df,aes(x=Sample,y=Activity,fill=Signature))
+  p = p + geom_bar(stat="identity",position='stack',color='black',alpha=0.9)
+  p = p + scale_fill_manual(values=c("red","cyan","yellow","blue","magenta","gray50","orange","darkgreen","brown","black",rainbow(10)[4:10]))
+  p = p + facet_grid(class0 ~ ., scales = "free_y")
+  p = p + xlab("Samples") + ylab("Signature Activities")
+  p = p + .theme_ss
+  p = p + theme(axis.title.x = element_text(face="bold",colour="black",size=14*scale))
+  p = p + theme(axis.title.y = element_text(face="bold",colour="black",size=14*scale))
+  #p = p + theme(legend.title=element_blank())
+  p = p + theme(legend.position="top")
+
+  if (hide_samps) {
+    p = p + theme(axis.text.x = element_blank(),
+              axis.ticks.x = element_blank())
+  }
+
+  p
+
+}
 
 
 # Global variables --------------------------------------------------------
@@ -336,5 +520,10 @@ utils::globalVariables(
     "location",
     "x",
     "count",
-    "value")
+    "value",
+    "Activity",
+    "Sample",
+    "Signature",
+    "base",
+    "context")
 )

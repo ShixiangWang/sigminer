@@ -6,7 +6,7 @@ load(system.file("extdata", "example_cn_list.RData",
 segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
 
 
-test_that("signature analysis series and mid result visualization functions work", {
+test_that("signature analysis series and result visualization functions work", {
   skip_on_cran()
 
   # focus on copy number signatures for now
@@ -37,6 +37,11 @@ test_that("signature analysis series and mid result visualization functions work
   res = sig_extract(cn_prepare$nmf_matrix, 3, mode = "copynumber", nrun = 5, cores = 2)
   expect_s4_class(res$nmfObj, "NMFfitX1")
 
+  p1 = draw_sig_profile(res$nmfObj)
+  expect_true(inherits(p1, "ggplot"))
+
+  p2 = draw_sig_activity(res$nmfObj)
+  expect_true(inherits(p2, "ggplot"))
 })
 
 # clean

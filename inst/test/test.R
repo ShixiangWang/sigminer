@@ -77,16 +77,25 @@ draw_cn_distribution(cp, mode = "cd", fill = TRUE)
 draw_cn_features(features)
 draw_cn_components(features, components)
 
+# library(maftools)
+# library(TCGAbiolinks, quietly = TRUE)
+# maf <- GDCquery_Maf("PRAD", pipelines = "mutect2", directory = "~/biodata/")
+
+
 #------------- Test Maftools ----------------
 require(maftools)
 
 laml.maf = system.file('extdata', 'tcga_laml.maf.gz', package = 'maftools') #path to TCGA LAML MAF file
 laml.clin = system.file('extdata', 'tcga_laml_annot.tsv', package = 'maftools') # clinical information containing survival information and histology. This is optional
 
+# laml = data.table::fread(laml.maf)
+# laml$Chromosome[laml$Chromosome == 23] = "X"
+
 laml = read.maf(maf = laml.maf, clinicalData = laml.clin)
 library(BSgenome.Hsapiens.UCSC.hg19, quietly = TRUE)
 laml.tnm = trinucleotideMatrix(maf = laml, prefix = 'chr', add = TRUE, ref_genome = "BSgenome.Hsapiens.UCSC.hg19")
 library('NMF')
 laml.sign = extractSignatures(mat = laml.tnm, nTry = 6, plotBestFitRes = FALSE)
+laml.sign = sig_extract(laml.tnm$nmf_matrix, n_sig = 2, mode = "mutation", pConstant = 1)
 
 

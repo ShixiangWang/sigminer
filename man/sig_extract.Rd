@@ -28,7 +28,7 @@ Available methods for nmf decompositions are 'brunet', 'lee', 'ls-nmf', 'nsNMF',
 \item{seed}{specification of the starting point or seeding method, which will compute a starting point, usually using data from the target matrix in order to provide a good guess.}
 }
 \value{
-a \code{list} contains NMF object, signature matrix and contribution matrix.
+a \code{list} contains NMF object, signature matrix and activity matrix.
 }
 \description{
 Do NMF de-composition and then extract signatures.

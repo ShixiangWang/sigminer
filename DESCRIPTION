@@ -28,10 +28,12 @@ Imports:
     cowplot,
     data.table,
     doParallel,
+    dplyr,
     flexmix,
     foreach,
     ggplot2,
     maftools,
     methods,
     NMF,
-    RColorBrewer
+    RColorBrewer,
+    tidyr
