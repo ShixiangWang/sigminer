@@ -514,3 +514,33 @@ sig_assign_samples = function(nmfObj, type="consensus", matchConseOrder=F){
   }
   return(data)
 }
+
+
+# Get signature activity --------------------------------------------------
+
+#' Get signature activity
+#'
+#' @inheritParams draw_sig_profile
+#' @return a `list`
+#' @export
+#' @family signature analysis series function
+sig_get_activity = function(nmfObj) {
+  #Activity
+  h = NMF::coef(nmfObj)
+  rownames(h) = paste('Signature', 1:nrow(h),sep='_')
+  # colnames(h) = colnames(mat) #correct colnames
+  #For single signature, contribution will be 100% per sample
+  if(nrow(h) == 1){
+    h.norm = h/h
+    rownames(h.norm) = paste('Signature', '1', sep = '_')
+  }else{
+    h.norm = apply(h, 2, function(x) x/sum(x)) #Scale contributions (coefs)
+    rownames(h.norm) = paste('Signature', 1:nrow(h.norm),sep='_')
+  }
+
+  h = as.data.frame(h)
+  h.norm = as.data.frame(h.norm)
+
+  list(relative = h.norm,
+       absolute = h)
+}

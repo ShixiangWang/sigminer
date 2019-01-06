@@ -81,7 +81,8 @@ if user use \link[NMF:nmf]{NMF::nmf} by hand.
 
 \seealso{
 Other signature analysis series function: \code{\link{sig_assign_samples}},
-  \code{\link{sig_estimate}}, \code{\link{sig_extract}}
+  \code{\link{sig_estimate}}, \code{\link{sig_extract}},
+  \code{\link{sig_get_activity}}
 }
 \author{
 Shixiang Wang

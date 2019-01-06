@@ -553,6 +553,8 @@ get_ArmLocation = function(genome_build = c("hg19", "hg38")) {
 }
 
 
+# Get trinucleotide matrix ------------------------------------------------
+
 #' @inherit maftools::trinucleotideMatrix
 #' @family internal calculation function series
 #' @examples
@@ -569,6 +571,7 @@ get_context = function(
     add = add, ignoreChr = ignoreChr, useSyn = useSyn, fn = fn
   )
 }
+
 
 
 # Global variables --------------------------------------------------------

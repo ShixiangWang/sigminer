@@ -445,24 +445,15 @@ draw_sig_activity = function(nmfObj, mode = c("copynumber", "mutation"),
                                      hjust = 1, size=10*scale, family = "mono"),
           axis.text.y = element_text(hjust = 0.5,size=12*scale, family = "mono"),
           axis.text = element_text(size = 8*scale, family = "mono"))
-  #Activity
-  h = NMF::coef(nmfObj)
-  #rownames(h) = paste('Signature', 1:nrow(h),sep='_')
-  rownames(h) = as.character(1:nrow(h))
-  # colnames(h) = colnames(mat) #correct colnames
-  #For single signature, contribution will be 100% per sample
-  if(nrow(h) == 1){
-    h.norm = h/h
-    #rownames(h.norm) = paste('Signature', '1', sep = '_')
-    rownames(h.norm) = "1"
-  }else{
-    h.norm = apply(h, 2, function(x) x/sum(x)) #Scale contributions (coefs)
-    #rownames(h.norm) = paste('Signature', 1:nrow(h.norm),sep='_')
-    rownames(h.norm) = as.character(1:nrow(h.norm))
-  }
 
-  h = as.data.frame(h)
-  h.norm = as.data.frame(h.norm)
+  activity = sig_get_activity(nmfObj)
+
+  h = activity[["absolute"]]
+  h.norm = activity[["relative"]]
+
+  # chop Signature off
+  rownames(h) = sub(".*_(\\d+)$", "\\1", rownames(h))
+  rownames(h.norm) = sub(".*_(\\d+)$", "\\1", rownames(h.norm))
 
   ordering = order(colSums(h),decreasing=TRUE)
   h = h[, ordering]
