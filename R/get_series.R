@@ -619,9 +619,7 @@ get_cnsummary_sample = function(segTab, genome_build = c("hg19", "hg38"),
         n_of_cnv = sum(segVal != 2),
         n_of_amp = sum(segVal > 2),
         n_of_del = sum(segVal < 2),
-        cna_burden = sum(end[(segVal != 2) &
-                               (chromosome %in% autosome)] - start[(segVal != 2) &
-                                                                     (chromosome %in% autosome)]) / total_size
+        cna_burden = sum(end[(segVal != 2) & (chromosome %in% autosome)] - start[(segVal != 2) & (chromosome %in% autosome)] + 1) / total_size
       ) %>%
       data.table::as.data.table()
   } else {
@@ -631,7 +629,7 @@ get_cnsummary_sample = function(segTab, genome_build = c("hg19", "hg38"),
         n_of_cnv = sum(segVal != 2),
         n_of_amp = sum(segVal > 2),
         n_of_del = sum(segVal < 2),
-        cna_burden = sum(end[(segVal != 2) & (chromosome %in% autosome)] - start[(segVal != 2) & (chromosome %in% autosome)]) / sum(end[chromosome %in% autosome] - start[chromosome %in% autosome])
+        cna_burden = sum(end[(segVal != 2) & (chromosome %in% autosome)] - start[(segVal != 2) & (chromosome %in% autosome)] + 1) / sum(end[chromosome %in% autosome] - start[chromosome %in% autosome] + 1)
       ) %>%
       data.table::as.data.table()
   }
