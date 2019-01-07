@@ -54,6 +54,10 @@ read_maf = function(
 #' @param use_all default is `FALSE`. If `True`, use all columns from raw input.
 #' @param min_segnum minimal number of copy number segments within a sample.
 #' @param genome_build genome build version, should be 'hg19' or 'hg38'.
+#' @param genome_measure default is 'called', can be 'wg' or 'called'.
+#' Set 'called' will use autosomo called segments size to compute total size for CNA burden calculation,
+#' this option is useful for WES and target sequencing.
+#' Set 'wg' will autosome size from genome build, this option is useful for WGS, SNP etc..
 #' @param clinical_data a `data.frame` representing clinical data
 #' associated with each sample in copy number profile.
 #' @param complement if `TRUE`, complement chromosome does not show in input data
@@ -72,6 +76,7 @@ read_copynumber = function(input,
                            use_all = FALSE,
                            min_segnum = 0,
                            genome_build = c("hg19", "hg38"),
+                           genome_measure = c("called", "wg"),
                            clinical_data = NULL,
                            complement = TRUE,
                            verbose = FALSE,
@@ -85,8 +90,9 @@ read_copynumber = function(input,
 
   #--- match genome build
   genome_build = match.arg(genome_build)
+  genome_measure = match.arg(genome_measure)
 
-  # get chromosome lengths and centromere locations
+  # get chromosome lengths
   if (genome_build == "hg19") {
     data("chromsize.hg19",
          package = "sigminer",
@@ -329,11 +335,16 @@ read_copynumber = function(input,
                              genome_build = genome_build,
                              seg_cols = new_cols[1:4],
                              samp_col = new_cols[5])
+  if (verbose) message("Summary per sample...")
+  sum_sample = get_cnsummary_sample(data_df,
+                                    genome_build = genome_build,
+                                    genome_measure = genome_measure )
 
   if (verbose) message("Done!")
   if (is.null(clinical_data)) {
     res = CopyNumber(
       data =  data_df,
+      summary.per.sample = sum_sample,
       genome_build = genome_build,
       annotation = annot,
       dropoff.segs = dropoff_df,
@@ -342,6 +353,7 @@ read_copynumber = function(input,
   } else {
     res = CopyNumber(
       data =  data_df,
+      summary.per.sample = sum_sample,
       genome_build = genome_build,
       annotation = annot,
       dropoff.segs = dropoff_df,

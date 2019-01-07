@@ -10,9 +10,13 @@ segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
 cn = read_copynumber(segTabs,
                      seg_cols = c("chromosome", "start", "end", "segVal"),
                      genome_build = "hg19")
+read_copynumber(segTabs,
+                     seg_cols = c("chromosome", "start", "end", "segVal"),
+                     genome_build = "hg19", genome_measure = "wg", verbose = T)
 
 
 cn_prepare =  sig_prepare(cn, cores = 2)
 
+library(NMF)
 res = sig_extract(cn_prepare$nmf_matrix, 3, mode = "copynumber", nrun = 5, cores = 2)
 

@@ -352,10 +352,12 @@ get_matrix = function(CN_features,
 #' @inheritParams get_features
 #' @inheritParams read_copynumber
 #' @param CN_data a `data.frame` with 'chromosome', 'start', 'end' and 'segVal'
-#' (optinal) and 'sample' these five columns or a `list` contains multiple data.frames,
+#' (optinal) and 'sample' these five columns (specify column names using `seg_cols` and `samp_cols` options)
+#' or a `list` contains multiple data.frames,
 #' each `data.frame` stores copy-number profile for one sample with
 #' 'chromosome', 'start', 'end' and 'segVal' (optional) these four columns.
 #' If 'sample' column is not specified, will try using name of each `data.frame`.
+#' @param samp_col a character used to specify the sample column name.
 #' @author Shixiang Wang <w_shixiang@163.com>
 #' @return a data table
 #' @export
@@ -550,6 +552,90 @@ get_ArmLocation = function(genome_build = c("hg19", "hg38")) {
   }
 
   res
+}
+
+
+
+# Get summary of copy number variation per sample ------------------------------------
+
+#' Get summary of copy number variation per sample
+#'
+#' Include number of CNV segments, CNA burden, number of CNV amplification segments,
+#' number of CNV deletion segments etc..
+#'
+#' CNA burden, a simple metric of CNA level defined as the percent of the
+#' autosomal tumor genome bearing CNAs, could be used as an informative measure of CNA.
+#'
+#' @inheritParams read_copynumber
+#' @param segTab a `data.frame` with 'chromosome', 'start', 'end' and 'segVal'
+#' and 'sample' these five ordered columns.
+#' @param min_seg_len minimal length of CNV segment for CNA burden calculation,
+#' default is 1000.
+#' @references Hieronymus, Haley, et al. "Copy number alteration burden predicts prostate cancer relapse." Proceedings of the National Academy of Sciences 111.30 (2014): 11139-11144.
+#' @author Shixiang Wang <w_shixiang@163.com>
+#' @return a data table
+#' @export
+#' @family internal calculation function series
+get_cnsummary_sample = function(segTab, genome_build = c("hg19", "hg38"),
+                                genome_measure = c("called", "wg"),
+                                min_seg_len = 1000L) {
+  genome_build = match.arg(genome_build)
+  genome_measure = match.arg(genome_measure)
+
+  segTab = segTab[, 1:5]
+  if (ncol(segTab) == 5) {
+    colnames(segTab) = c("chromosome", "start", "end", "segVal", "sample")
+  } else {
+    stop(
+      "Input must have 5 ordered columns (chr, start, end, segVal, sample)."
+    )
+  }
+
+  data.table::setDT(segTab)
+  segTab$start = as.integer(segTab$start)
+  segTab$end = as.integer(segTab$end)
+
+  autosome = paste0("chr", 1:22)
+
+  if (genome_measure == "wg") {
+    if (genome_build == "hg19") {
+      data("chromsize.hg19",
+           package = "sigminer",
+           envir = environment())
+      chrlen = chromsize.hg19
+    } else {
+      data("chromsize.hg38",
+           package = "sigminer",
+           envir = environment())
+      chrlen = chromsize.hg38
+    }
+
+    chrlen = chrlen[chrlen[["chrom"]] %in% paste0("chr", 1:22), ]
+    total_size = sum(chrlen[["size"]])
+
+    seg_summary = segTab %>%
+      dplyr::group_by(sample) %>%
+      dplyr::summarise(
+        n_of_cnv = sum(segVal != 2),
+        n_of_amp = sum(segVal > 2),
+        n_of_del = sum(segVal < 2),
+        cna_burden = sum(end[(segVal != 2) &
+                               (chromosome %in% autosome)] - start[(segVal != 2) &
+                                                                     (chromosome %in% autosome)]) / total_size
+      ) %>%
+      data.table::as.data.table()
+  } else {
+    seg_summary = segTab %>%
+      dplyr::group_by(sample) %>%
+      dplyr::summarise(
+        n_of_cnv = sum(segVal != 2),
+        n_of_amp = sum(segVal > 2),
+        n_of_del = sum(segVal < 2),
+        cna_burden = sum(end[(segVal != 2) & (chromosome %in% autosome)] - start[(segVal != 2) & (chromosome %in% autosome)]) / sum(end[chromosome %in% autosome] - start[chromosome %in% autosome])
+      ) %>%
+      data.table::as.data.table()
+  }
+  seg_summary
 }
 
 

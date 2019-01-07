@@ -24,7 +24,8 @@ Imports:
     methods,
     NMF,
     RColorBrewer,
-    tidyr
+    tidyr,
+    magrittr
 biocViews:
 Suggests: 
     cowsay,
@@ -37,4 +38,3 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
 Roxygen: list(markdown = TRUE)
-

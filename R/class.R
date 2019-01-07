@@ -45,6 +45,7 @@ setMethod(
 #' Class CopyNumber
 #' @description S4 class for storing summarized absolute copy number profile.
 #' @slot data data.table of absolute copy number calling.
+#' @slot summary.per.sample data.table of copy number variation summary per sample.
 #' @slot genome_build genome build version, should be one of 'hg19' or 'hg38'.
 #' @slot annotation data.table of annotation for copy number segments.
 #' @slot dropoff.segs data.table of copy number segments dropped from raw input.
@@ -55,6 +56,7 @@ CopyNumber = setClass(
   Class = "CopyNumber",
   slots = c(
     data = "data.table",
+    summary.per.sample = 'data.table',
     genome_build = "character",
     annotation = "data.table",
     dropoff.segs = "data.table",
@@ -69,7 +71,7 @@ setMethod(
   definition = function(object) {
     cat(paste('An object of class', class(object), "\n"))
     cat("=============================\n")
-    print(object@data)
+    print(object@summary.per.sample)
   }
 )
 

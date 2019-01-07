@@ -7,8 +7,8 @@
 read_copynumber(input, pattern = NULL, ignore_case = FALSE,
   seg_cols = c("Chromosome", "Start.bp", "End.bp", "modal_cn"),
   samp_col = "sample", use_all = FALSE, min_segnum = 0,
-  genome_build = c("hg19", "hg38"), clinical_data = NULL,
-  complement = TRUE, verbose = FALSE, ...)
+  genome_build = c("hg19", "hg38"), genome_measure = c("called", "wg"),
+  clinical_data = NULL, complement = TRUE, verbose = FALSE, ...)
 }
 \arguments{
 \item{input}{a \code{data.frame} or a file or a directory contains copy number profile.}
@@ -31,6 +31,11 @@ is a directory and cannot find \code{samp_col}, sample names will use file names
 \item{min_segnum}{minimal number of copy number segments within a sample.}
 
 \item{genome_build}{genome build version, should be 'hg19' or 'hg38'.}
+
+\item{genome_measure}{default is 'called', can be 'wg' or 'called'.
+Set 'called' will use autosomo called segments size to compute total size for CNA burden calculation,
+this option is useful for WES and target sequencing.
+Set 'wg' will autosome size from genome build, this option is useful for WGS, SNP etc..}
 
 \item{clinical_data}{a \code{data.frame} representing clinical data
 associated with each sample in copy number profile.}

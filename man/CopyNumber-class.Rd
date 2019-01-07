@@ -13,6 +13,8 @@ S4 class for storing summarized absolute copy number profile.
 \describe{
 \item{\code{data}}{data.table of absolute copy number calling.}
 
+\item{\code{summary.per.sample}}{data.table of copy number variation summary per sample.}
+
 \item{\code{genome_build}}{genome build version, should be one of 'hg19' or 'hg38'.}
 
 \item{\code{annotation}}{data.table of annotation for copy number segments.}

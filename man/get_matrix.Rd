@@ -31,8 +31,10 @@ posterior probabilities of each copy-number event being assigned to each compone
 \seealso{
 Other internal calculation function series: \code{\link{get_ArmLocation}},
   \code{\link{get_LengthFraction}},
-  \code{\link{get_cnlist}}, \code{\link{get_components}},
-  \code{\link{get_context}}, \code{\link{get_features}}
+  \code{\link{get_cnlist}},
+  \code{\link{get_cnsummary_sample}},
+  \code{\link{get_components}}, \code{\link{get_context}},
+  \code{\link{get_features}}
 }
 \author{
 Geoffrey Macintyre, Shixiang Wang
