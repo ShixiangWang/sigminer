@@ -5,7 +5,8 @@ Authors@R:
     person(given = "Shixiang",
            family = "Wang",
            role = c("aut", "cre"),
-           email = "w_shixiang@163.com")
+           email = "w_shixiang@163.com",
+           comment = c(ORCID = "0000-0001-9855-7357"))
 Description: Contains functions for capturing copy number signatures and 
   mutation signatures using 'NMF' package, signature analysis and visualization.
 URL: https://github.com/ShixiangWang/sigminer
