@@ -33,6 +33,8 @@ More detail please see \code{\link[NMF:predict]{NMF::predict()}}.
 \seealso{
 Other signature analysis series function: \code{\link{sig_estimate}},
   \code{\link{sig_extract}},
-  \code{\link{sig_get_activity}}, \code{\link{sig_prepare}}
+  \code{\link{sig_get_activity}},
+  \code{\link{sig_get_correlation}},
+  \code{\link{sig_prepare}}
 }
 \concept{signature analysis series function}

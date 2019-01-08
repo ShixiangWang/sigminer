@@ -502,6 +502,29 @@ draw_sig_activity = function(nmfObj, mode = c("copynumber", "mutation"),
 }
 
 
+# Plot correlation between signature activity -----------------------------
+
+#' Plot correlation between signature activities
+#'
+#' @inheritParams corrplot::corrplot
+#' @param mat_list a `list` contain correlation and p value matrix etc., obtain
+#' it from [sig_get_correlation] function.
+#' @param ... other arguments pass to [corrplot::corrplot()] function.
+#' @author Shixiang Wang
+#' @return NULL
+#' @importFrom grDevices colorRampPalette
+#' @export
+#' @family signature plot
+draw_sig_corrplot = function(mat_list, order = "original", type = "lower",
+                             sig.level = .05, ...) {
+  col3 <- colorRampPalette(c("blue", "white", "red"))
+  corrplot::corrplot(mat_list[["correlation"]], order = order, col = col3(20),
+                     type = type, tl.col = "black", tl.srt = 45,
+                     p.mat = mat_list[["p"]], sig.level = sig.level,
+                     ...)
+}
+
+
 # Global variables --------------------------------------------------------
 
 utils::globalVariables(

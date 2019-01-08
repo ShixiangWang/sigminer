@@ -19,6 +19,7 @@ Get signature activity
 \seealso{
 Other signature analysis series function: \code{\link{sig_assign_samples}},
   \code{\link{sig_estimate}}, \code{\link{sig_extract}},
+  \code{\link{sig_get_correlation}},
   \code{\link{sig_prepare}}
 }
 \concept{signature analysis series function}

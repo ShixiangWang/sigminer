@@ -25,7 +25,8 @@ a \code{ggplot} object
 Currently support copy number signatures and mutation signatures.
 }
 \seealso{
-Other signature plot: \code{\link{draw_sig_activity}}
+Other signature plot: \code{\link{draw_sig_activity}},
+  \code{\link{draw_sig_corrplot}}
 }
 \author{
 Shixiang Wang

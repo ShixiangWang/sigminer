@@ -36,7 +36,9 @@ Do NMF de-composition and then extract signatures.
 \seealso{
 Other signature analysis series function: \code{\link{sig_assign_samples}},
   \code{\link{sig_estimate}},
-  \code{\link{sig_get_activity}}, \code{\link{sig_prepare}}
+  \code{\link{sig_get_activity}},
+  \code{\link{sig_get_correlation}},
+  \code{\link{sig_prepare}}
 }
 \author{
 Shixiang Wang

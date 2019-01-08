@@ -512,6 +512,8 @@ sig_assign_samples = function(nmfObj, type="consensus", matchConseOrder=F){
   }else{
     stop(paste("Wrong type:", type, "Possible options are: 'consensus', 'samples' "))
   }
+
+  data = data.table::as.data.table(data)
   return(data)
 }
 
@@ -525,6 +527,10 @@ sig_assign_samples = function(nmfObj, type="consensus", matchConseOrder=F){
 #' @export
 #' @family signature analysis series function
 sig_get_activity = function(nmfObj) {
+
+  if (!inherits(nmfObj, "NMFfit")) {
+    stop("'nmfObj' should be a NMFfit object.")
+  }
   #Activity
   h = NMF::coef(nmfObj)
   rownames(h) = paste('Signature', 1:nrow(h),sep='_')
@@ -544,3 +550,75 @@ sig_get_activity = function(nmfObj) {
   list(relative = h.norm,
        absolute = h)
 }
+
+
+
+# Get correlation matrix between signatures -------------------------------
+
+#' Get correlation matrix between signatures
+#'
+#' Compute correlation matrix and corresponding statistical test values.
+#'
+#' @param cn_activity activity of copy number signature, a `list`, obtain it from
+#' [sig_get_activity] function.
+#' @param snv_activity activity of mutation signature, a `list`, obtain it from
+#' [sig_get_activity] function.
+#' @param type one of 'absolute' and 'relative'.
+#' @param ... other arguments pass to [corrplot::cor.mtest()].
+#' @return a `list`.
+#' @author Shixiang Wang
+#' @export
+#' @family signature analysis series function
+sig_get_correlation = function(cn_activity=NULL, snv_activity=NULL,
+                               type = c("absolute", "relative"),
+                               ...){
+  if (is.null(cn_activity) & is.null(snv_activity)) {
+    stop("At least one of 'cn_activity' and 'snv_activity' should be setted.")
+  }
+
+  type = match.arg(type)
+
+  gen_mat = function(cn_activity, snv_activity, type) {
+    if (!is.null(cn_activity) & !is.null(snv_activity)) {
+      cn_mat = t(cn_activity[[type]])
+      snv_mat = t(snv_activity[[type]])
+      colnames(cn_mat) = paste0("CN_", colnames(cn_mat))
+      colnames(snv_mat) = paste0("SNV_", colnames(snv_mat))
+
+      samps = base::intersect(rownames(cn_mat), rownames(snv_mat))
+
+      samps.diff.cn = base::setdiff(rownames(cn_mat), samps)
+      if (length(samps.diff.cn) > 0) {
+        message("Following samples removed from copy number signature activity matrix:")
+        print(samps.diff.cn)
+      }
+      samps.diff.snv = base::setdiff(rownames(snv_mat), samps)
+      if (length(samps.diff.snv) > 0) {
+        message("Following samples removed from mutation signature activity matrix:")
+        print(samps.diff.snv)
+      }
+
+      mat = cbind(cn_mat[samps, ], snv_mat[samps, ])
+      return(mat)
+
+    } else if (!is.null(cn_activity)) {
+      mat = t(cn_activity[[type]])
+      return(mat)
+
+    } else {
+      mat = t(snv_activity[[type]])
+      return(mat)
+
+    }
+  }
+
+  mat = gen_mat(cn_activity, snv_activity, type)
+
+  corr = list(correlation = stats::cor(mat))
+
+  c(
+    corr,
+    corrplot::cor.mtest(mat, ...)
+  )
+}
+

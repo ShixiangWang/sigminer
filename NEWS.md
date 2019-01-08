@@ -1,4 +1,9 @@
 
+# sigminer 0.1.2
+
+* add `sig_get_correlation` function.
+* add `draw_sig_corrplot` function.
+
 # sigminer 0.1.1
 
 * add `subset.CopyNumber()` for subset CopyNumber object
