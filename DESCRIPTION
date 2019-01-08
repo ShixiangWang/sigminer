@@ -1,6 +1,6 @@
 Package: sigminer
 Title: Capture Genomic Variation Signatures using 'NMF'
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: 
     person(given = "Shixiang",
            family = "Wang",

@@ -17,6 +17,10 @@ S4 class for storing summarized absolute copy number profile.
 
 \item{\code{genome_build}}{genome build version, should be one of 'hg19' or 'hg38'.}
 
+\item{\code{genome_measure}}{Set 'called' will use autosomo called segments size to compute total size
+for CNA burden calculation, this option is useful for WES and target sequencing.
+Set 'wg' will autosome size from genome build, this option is useful for WGS, SNP etc..}
+
 \item{\code{annotation}}{data.table of annotation for copy number segments.}
 
 \item{\code{dropoff.segs}}{data.table of copy number segments dropped from raw input.}
