@@ -25,7 +25,8 @@ Currently support copy number signatures and mutation signatures.
 }
 \seealso{
 Other signature plot: \code{\link{draw_sig_corrplot}},
-  \code{\link{draw_sig_profile}}
+  \code{\link{draw_sig_profile}},
+  \code{\link{draw_subtypes_comparison}}
 }
 \author{
 Shixiang Wang

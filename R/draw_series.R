@@ -525,6 +525,142 @@ draw_sig_corrplot = function(mat_list, order = "original", type = "lower",
 }
 
 
+
+# Plot comparison between signature subtypes ------------------------------
+
+#' Plot comparison between signature subtypes
+#'
+#' Using result data from [sig_summarize_subtypes] function, this function plot
+#' genotypes/phenotypes comparison between signature subtypes using **ggplot2** package and return
+#' a list of `ggplot` object contains individual and combined plots. The combined
+#' plot is easily saved to local using [cowplot::save_plot()].
+#' @param subtype_summary a list from result of [sig_summarize_subtypes] function.
+#' @param xlab lab name of x axis for all plots.
+#' @param ylab_co lab name of y axis for plots of continuous type data. Of note,
+#' this argument should be a character vector has same length as `subtype_summary`,
+#' the location for categorical type data should mark with `NA`.
+#' @param legend_title_ca legend title for plots of categorical type data.
+#' Of note,
+#' this argument should be a character vector has same length as `subtype_summary`,
+#' the location for continuous type data should mark with `NA`.
+#' @param show_pvalue if `TRUE`, show p value for comparison of continuous data types.
+#' @param ... other paramters pass to [ggpubr::stat_compare_means()].
+#' @author Shixiang Wang <w_shixiang@163.com>
+#' @return a `list` of `ggplot` objects.
+#' @import ggplot2
+#' @export
+#' @family signature plot
+draw_subtypes_comparison = function(subtype_summary,
+                                    xlab = "subtype", ylab_co = NA,
+                                    legend_title_ca = NA,
+                                    show_pvalue = TRUE,
+                                    ...) {
+  # parameter with ca/co in the end need fill values
+
+  # add parameters
+  subtype_summary = Map(function(x, xlab, legend_title_ca, ylab_co){
+    x[["xlab"]] = xlab
+    if (x[["type"]] == "categorical") x[["legend_title"]] = legend_title_ca
+    if (x[["type"]] == "continuous")  x[["ylab"]] = ylab_co
+    x
+  }, subtype_summary, xlab, legend_title_ca, ylab_co)
+
+  # split input into two list according to element is categorical or continuous
+  ca_index = which(sapply(subtype_summary, function(x) x$type) == "categorical")
+  co_index = which(sapply(subtype_summary, function(x) x$type) == "continuous")
+
+  n_left = length(subtype_summary) - length(ca_index) - length(co_index)
+
+  if (n_left > 0)
+    warning(n_left, " elements drop of because their type is not either categorical or continuous.")
+
+  if (length(ca_index) > 0) ca_list = subtype_summary[ca_index]
+  if (length(co_index) > 0) co_list = subtype_summary[co_index]
+
+  #library(ggplot2)
+  #library(cowplot)
+  if (length(ca_index) > 0) {
+    # plot categorical data
+    ca_res = lapply(ca_list, function(df) {
+      data = df[["data"]]
+      p = ggplot(data, aes_string(x = "subtype", fill = colnames(data)[2])) +
+        geom_bar(position = "fill") +
+        xlab(df[["xlab"]]) +
+        cowplot::theme_cowplot() +
+        theme(axis.title.y = element_blank())
+
+      if (!is.na(df[["legend_title"]])) {
+        p = p + scale_fill_discrete(name = df[["legend_title"]])
+      }
+      p
+    })
+    names(ca_res) = names(ca_list)
+  } else {
+    ca_res = NA
+  }
+
+  if (length(co_index) > 0) {
+    # plot continuous data
+    co_res = lapply(co_list, function(df, ...){
+      data = df[["data"]]
+      my_comparisons = combn(unique(as.character(data[["subtype"]])),
+                             2, simplify = FALSE)
+      p = ggplot(data, aes_string(x = "subtype", y = colnames(data)[2])) +
+        geom_boxplot() + xlab(df[["xlab"]]) + cowplot::theme_cowplot()
+
+      if (show_pvalue) {
+        if (!requireNamespace("ggpubr")) {
+          stop("'ggpubr' package is need for plotting p values.")
+        }
+        p = p + ggpubr::stat_compare_means(comparisons = my_comparisons,
+                                           ...)
+      }
+      p
+    }, ...)
+    names(co_res) = names(co_list)
+  } else {
+    co_res = NA
+  }
+
+  if (all(!is.na(ca_res))) {
+    if (length(ca_res) <= 3) {
+      ca_comb = cowplot::plot_grid(plotlist = ca_res, align = "h")
+    } else if (length(ca_res) == 4) {
+      ca_comb = cowplot::plot_grid(plotlist = ca_res, align = "h", ncol = 2)
+    } else if (length(ca_res) <= 9 ) {
+      ca_comb = cowplot::plot_grid(plotlist = ca_res, align = "h", ncol = 3)
+    } else {
+      ca_comb = cowplot::plot_grid(plotlist = ca_res, align = "h", ncol = 4)
+    }
+
+  } else {
+    ca_comb = NA
+  }
+
+  if (all(!is.na(co_res))) {
+    if (length(co_res) <= 3) {
+      co_comb = cowplot::plot_grid(plotlist = co_res, align = "h")
+    } else if (length(co_res) == 4) {
+      co_comb = cowplot::plot_grid(plotlist = co_res, align = "h",
+                                   axis = "l", ncol = 2)
+    } else if (length(co_res) <= 9 ) {
+      co_comb = cowplot::plot_grid(plotlist = co_res, align = "h",
+                                   axis = "l", ncol = 3)
+    } else {
+      co_comb = cowplot::plot_grid(plotlist = co_res, align = "h",
+                                   axis = "l", ncol = 4)
+    }
+
+  } else {
+    co_comb = NA
+  }
+
+  list(ca = ca_res,
+       ca_comb = ca_comb,
+       co = co_res,
+       co_comb = co_comb)
+}
+
 # Global variables --------------------------------------------------------
 
 utils::globalVariables(

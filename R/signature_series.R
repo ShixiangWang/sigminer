@@ -622,3 +622,88 @@ sig_get_correlation = function(cn_activity=NULL, snv_activity=NULL,
   )
 }
 
+
+# Get signature subtype summary -------------------------------------------
+
+#' Get summary of signature subtypes
+#'
+#' Summarize genotypes/phenotypes based on signature subtypes. For categorical
+#' type, calculate fisher p value (using [stats::fisher.test]) and count table.
+#' For continuous type, calculate anova p value (using [stats::aov]),
+#' summary table and Tukey Honest significant difference (using [stats::TukeyHSD]).
+#' The result of this function can be plotted by [draw_subtypes_comparison()].
+#'
+#' @param data a `data.frame` contains signature subtypes and genotypes/phenotypes
+#' (including categorical and continuous type data) want to analyze. User need to
+#' construct this `data.frame` by him/herself.
+#' @param col_subtype column name of signature subtypes.
+#' @param cols_to_summary column names of genotypes/phenotypes want to summarize based on subtypes.
+#' @param type a characater vector with length same as `cols_to_summary`,
+#' 'ca' for categorical type and 'co' for continuous type.
+#' @param verbose if `TRUE`, print extra information.
+#' @author Shixiang Wang <w_shixiang@163.com>
+#' @return a `list` contains data, summary, p value etc..
+#' @export
+#'
+#' @family signature analysis series function
+sig_summarize_subtypes = function(data, col_subtype, cols_to_summary,
+                               type = "ca", verbose = FALSE){
+
+  if (!all(type %in% c("ca", "co"))) {
+    stop("all elements in 'type' must be 'ca' for 'categorical' and 'co' for 'continuous'.")
+  }
+  if (!is.data.frame(data)) stop("'data' must be a data.frame object.")
+  data.table::setDT(data)
+
+  # subset
+  data = data[, c(col_subtype, cols_to_summary), with = FALSE]
+  colnames(data)[1] = "subtype"
+  data = data[!is.na(data[["subtype"]])]
+
+  do_summary = function(col, type = c("ca", "co"),
+                        verbose = FALSE) {
+    type = match.arg(type)
+
+    df = data[, c("subtype", col), with = FALSE]
+    df = df[!is.na(df[[col]])]
+
+    if (type == "ca") {
+      if (verbose) message("Treat ", col, " as categorical variable.")
+
+      table_df = table(df[["subtype"]], df[[col]])
+
+      table_p = tryCatch({
+        test = fisher.test(table_df)
+        test[["p.value"]]
+      }, error = function(e) {
+        NA
+      })
+
+      list(data = df, table = table_df, p_value = table_p, type = "categorical", extra = NA)
+    } else {
+      if (verbose) message("Treat ", col, " as continuous variable.")
+
+      table_df = summary(df)
+
+      fit = tryCatch({
+        stats::aov(as.formula(paste0(col, " ~ subtype")), data = df)
+
+      }, error = function(e) {
+        NA
+      })
+
+      if (inherits(fit, "aov")) {
+        p_value = summary(fit)[[1]][["Pr(>F)"]][1] # get anova p value
+        extra = stats::TukeyHSD(fit)[[1]]
+      } else {
+        p_value = NA
+        extra = NA
+      }
+      list(data = df, table = table_df, p_value = p_value, type = "continuous", extra = extra)
+    }
+  }
+
+  res = Map(do_summary, cols_to_summary, type, verbose)
+  names(res) = cols_to_summary
+  res
+}

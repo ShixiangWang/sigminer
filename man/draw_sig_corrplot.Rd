@@ -40,7 +40,8 @@ Plot correlation between signature activities
 }
 \seealso{
 Other signature plot: \code{\link{draw_sig_activity}},
-  \code{\link{draw_sig_profile}}
+  \code{\link{draw_sig_profile}},
+  \code{\link{draw_subtypes_comparison}}
 }
 \author{
 Shixiang Wang
