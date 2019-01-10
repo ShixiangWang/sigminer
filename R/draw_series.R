@@ -534,7 +534,7 @@ draw_sig_corrplot = function(mat_list, order = "original", type = "lower",
 #' genotypes/phenotypes comparison between signature subtypes using **ggplot2** package and return
 #' a list of `ggplot` object contains individual and combined plots. The combined
 #' plot is easily saved to local using [cowplot::save_plot()].
-#' @param subtype_summary a list from result of [sig_summarize_subtypes] function.
+#' @param subtype_summary a `list` from result of [sig_summarize_subtypes] function.
 #' @param xlab lab name of x axis for all plots.
 #' @param ylab_co lab name of y axis for plots of continuous type data. Of note,
 #' this argument should be a character vector has same length as `subtype_summary`,

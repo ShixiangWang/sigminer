@@ -7,7 +7,7 @@ segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
 
 
 test_that("signature analysis series and result visualization functions work", {
-  skip_on_cran()
+  # skip_on_cran() # try testing on cran?
 
   # focus on copy number signatures for now
   cn = read_copynumber(segTabs,
@@ -42,6 +42,28 @@ test_that("signature analysis series and result visualization functions work", {
 
   p2 = draw_sig_activity(res$nmfObj)
   expect_true(inherits(p2, "ggplot"))
+
+  sig_activity = sig_get_activity(res$nmfObj)
+  expect_true(is.list(sig_activity))
+
+  sig_cor = sig_get_correlation(sig_activity)
+  expect_true(is.list(sig_cor))
+
+  draw_sig_corrplot(sig_cor)
+
+  subtypes = sig_assign_samples(res$nmfObj)
+  expect_true(inherits(subtypes, "data.frame"))
+  set.seed(1234)
+  subtypes$new_group = sample(c("1", "2","3", "4"), size = nrow(subtypes), replace = TRUE)
+
+  subtypes.sum = sig_summarize_subtypes(subtypes[, -1], col_subtype = "nmf_subtypes",
+                                        cols_to_summary = colnames(subtypes[, -1])[-1],
+                                        type = c("co", "ca"), verbose = TRUE)
+  expect_true(is.list(subtypes.sum))
+
+  p_list = draw_subtypes_comparison(subtypes.sum)
+  expect_true(is.list(p_list))
+
 })
 
 # clean

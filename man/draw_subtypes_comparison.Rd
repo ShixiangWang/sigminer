@@ -8,7 +8,7 @@ draw_subtypes_comparison(subtype_summary, xlab = "subtype",
   ylab_co = NA, legend_title_ca = NA, show_pvalue = TRUE, ...)
 }
 \arguments{
-\item{subtype_summary}{a list from result of \link{sig_summarize_subtypes} function.}
+\item{subtype_summary}{a \code{list} from result of \link{sig_summarize_subtypes} function.}
 
 \item{xlab}{lab name of x axis for all plots.}
 
