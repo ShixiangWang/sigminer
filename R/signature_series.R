@@ -207,6 +207,7 @@ sig_estimate <-
         print(nmf.sum.random)
       }
     } else {
+      estim.r.random = NULL
       nmf.sum.random = NULL
     }
 
