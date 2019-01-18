@@ -7,7 +7,7 @@ segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
 
 
 test_that("signature analysis series and result visualization functions work", {
-  # skip_on_cran() # try testing on cran?
+  skip_on_cran() # can not pass windows when using more than 1 cpu
 
   # focus on copy number signatures for now
   cn = read_copynumber(segTabs,

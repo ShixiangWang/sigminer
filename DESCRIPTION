@@ -1,14 +1,17 @@
 Package: sigminer
-Title: Capture Genomic Variation Signatures using 'NMF'
-Version: 0.1.3
-Authors@R: 
-    person(given = "Shixiang",
-           family = "Wang",
-           role = c("aut", "cre"),
-           email = "w_shixiang@163.com",
-           comment = c(ORCID = "0000-0001-9855-7357"))
-Description: Contains functions for capturing copy number signatures and 
-  mutation signatures using 'NMF' package, signature analysis and visualization.
+Title: Capture Genomic Variation Signatures using Non-negative Matrix Factorization
+Version: 0.1.3.9000
+Authors@R: c(
+    person("Shixiang", "Wang", email = "w_shixiang@163.com",
+           role = c("aut", "cre"), comment = c(ORCID = "0000-0001-9855-7357")),
+    person("Geoffrey", "Macintyre", role = c("ctb")))
+Description: Contains functions for identification of  
+  copy number signatures (Geoffrey Macintyre et al. (2018) <doi:10.1038/s41588-018-0179-8>) and 
+  mutation signatures (Alexandrov, Ludmil B et al. (2018) <doi:10.1038/nature12477>) 
+  by non-negative matrix factorization, signature analysis and visualization. 
+  It can be used to capture signatures of genomic variation, compare genotype or
+  phenotype features of different signatures and thus uncover the relationship 
+  between the mechanism of genomic variation and phenotypes in cancer.
 URL: https://github.com/ShixiangWang/sigminer
 BugReports: https://github.com/ShixiangWang/sigminer/issues
 Depends: R (>= 3.5)
