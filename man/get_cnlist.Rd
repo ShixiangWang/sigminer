@@ -16,9 +16,11 @@ a \code{list}
 Extract copy number profile as list from CopyNumber object
 }
 \examples{
+\donttest{
 extdata_dir = system.file("extdata", package = "sigminer", mustWork = TRUE)
 cp = read_copynumber(extdata_dir, pattern = "txt", genome_build = "hg19")
 cn_list = get_cnlist(cp)
+}
 }
 \seealso{
 Other internal calculation function series: \code{\link{get_ArmLocation}},

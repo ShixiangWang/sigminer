@@ -35,9 +35,11 @@
 #' @return a `list`
 #' @export
 #' @examples
+#' \donttest{
 #' extdata_dir = system.file("extdata", package = "sigminer", mustWork = TRUE)
 #' cp = read_copynumber(extdata_dir, pattern = "txt", genome_build = "hg19")
 #' cn_list = get_cnlist(cp)
+#' }
 #' @family internal calculation function series
 
 get_cnlist = function(CopyNumber) {
@@ -391,10 +393,12 @@ get_matrix = function(CN_features,
 #' @return a data table
 #' @export
 #' @examples
+#' \donttest{
 #' extdata_dir = system.file("extdata", package = "sigminer", mustWork = TRUE)
 #' cp = read_copynumber(extdata_dir, pattern = "txt", genome_build = "hg19")
 #' cn_list = get_cnlist(cp)
 #' annot = get_LengthFraction(cn_list, seg_cols = c("chromosome", "start", "end", "segVal"))
+#' }
 #' @family internal calculation function series
 get_LengthFraction = function(CN_data,
                               genome_build = c("hg19", "hg38"),
