@@ -1,4 +1,8 @@
 
+# sigminer v0.1.4
+
+* add examples for all exported functions
+
 # sigminer v0.1.3
 
 * add `sig_summarize_subtypes` function for summarize subtype data
