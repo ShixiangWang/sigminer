@@ -6,8 +6,8 @@
 \usage{
 sig_estimate(nmf_matrix, range = 2:5, nrun = 10, what = "all",
   cores = 1, seed = 123456, use_random = TRUE, save_plots = FALSE,
-  plot_basename = "nmf", method = "brunet", pConstant = NULL,
-  verbose = FALSE)
+  plot_basename = file.path(tempdir(), "nmf"), method = "brunet",
+  pConstant = NULL, verbose = FALSE)
 }
 \arguments{
 \item{nmf_matrix}{a \code{matrix} used for NMF decomposition (with rownames and colnames),
