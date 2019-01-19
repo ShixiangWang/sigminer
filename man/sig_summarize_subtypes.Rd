@@ -31,6 +31,24 @@ For continuous type, calculate anova p value (using \link[stats:aov]{stats::aov}
 summary table and Tukey Honest significant difference (using \link[stats:TukeyHSD]{stats::TukeyHSD}).
 The result of this function can be plotted by \code{\link[=draw_subtypes_comparison]{draw_subtypes_comparison()}}.
 }
+\examples{
+\donttest{
+load(system.file("extdata", "example_cn_list.RData",
+     package = "sigminer", mustWork = TRUE))
+segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
+cn = read_copynumber(segTabs,
+                     seg_cols = c("chromosome", "start", "end", "segVal"),
+                     genome_build = "hg19")
+cn_prepare =  sig_prepare(cn)
+res = sig_extract(cn_prepare$nmf_matrix, 3, mode = "copynumber", nrun = 5)
+subtypes = sig_assign_samples(res$nmfObj)
+set.seed(1234)
+subtypes$new_group = sample(c("1", "2","3", "4"), size = nrow(subtypes), replace = TRUE)
+subtypes.sum = sig_summarize_subtypes(subtypes[, -1], col_subtype = "nmf_subtypes",
+                                     cols_to_summary = colnames(subtypes[, -1])[-1],
+                                     type = c("co", "ca"), verbose = TRUE)
+}
+}
 \seealso{
 Other signature analysis series function: \code{\link{sig_assign_samples}},
   \code{\link{sig_estimate}}, \code{\link{sig_extract}},

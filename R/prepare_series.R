@@ -2,6 +2,9 @@
 # Signature analysis prepare functions
 #---------------------------------------------
 
+
+# Prepare nmf matrix for CopyNumber ---------------------------------------
+
 #' Prepare nmf input matrix for copy number signature analysis
 #' @inheritParams get_cnlist
 #' @inheritParams get_features
@@ -16,6 +19,16 @@
 #' @author Shixiang Wang
 #' @return a `list` contains `matrix` for NMF input, copy number features and components.
 #' @export
+#' @examples
+#' \donttest{
+#' load(system.file("extdata", "example_cn_list.RData",
+#'      package = "sigminer", mustWork = TRUE))
+#' segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
+#' cn = read_copynumber(segTabs,
+#'                      seg_cols = c("chromosome", "start", "end", "segVal"),
+#'                      genome_build = "hg19")
+#' cn_prepare =  prepare_copynumber(cn)
+#' }
 #' @family signature analysis prepare function series
 prepare_copynumber = function(CopyNumber,
                               reference_components = FALSE,
@@ -45,21 +58,28 @@ prepare_copynumber = function(CopyNumber,
 }
 
 
-#' @inherit get_context
-#' @export
+# Prepare MAF: Get trinucleotide matrix ------------------------------------
+
+#' Prepare nmf input matrix for mutation signature analysis
+#'
+#' NMF input matrix here is trinucletiode matrix. This function calls
+#' `trinucleotideMatirx` provided by **maftools** to extract 96 mutation motifs.
+#' @inherit maftools::trinucleotideMatrix
 #' @family signature analysis prepare function series
 #' @examples
-#' \dontrun{
-#' laml.tnm <- prepare_maf(maf = laml, ref_genome = 'BSgenome.Hsapiens.UCSC.hg19',
+#' \donttest{
+#' laml.maf = system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
+#' laml = read_maf(maf = laml.maf)
+#' library(BSgenome.Hsapiens.UCSC.hg19)
+#' laml.tnm = prepare_maf(maf = laml, ref_genome = 'BSgenome.Hsapiens.UCSC.hg19',
 #'     prefix = 'chr', add = TRUE, useSyn = TRUE)
 #' }
 prepare_maf = function(
   maf, ref_genome = NULL, prefix = NULL,
   add = TRUE, ignoreChr = NULL, useSyn = TRUE, fn = NULL
-) {
-  suppressMessages(get_context(
+){
+  maftools::trinucleotideMatrix(
     maf, ref_genome = ref_genome, prefix = prefix,
     add = add, ignoreChr = ignoreChr, useSyn = useSyn, fn = fn
-  ))
+  )
 }
-

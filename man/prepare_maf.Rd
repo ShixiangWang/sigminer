@@ -2,7 +2,7 @@
 % Please edit documentation in R/prepare_series.R
 \name{prepare_maf}
 \alias{prepare_maf}
-\title{Extract single 5' and 3' bases flanking the mutated site for de-novo signature analysis. Also estimates APOBEC enrichment scores.}
+\title{Prepare nmf input matrix for mutation signature analysis}
 \usage{
 prepare_maf(maf, ref_genome = NULL, prefix = NULL, add = TRUE,
   ignoreChr = NULL, useSyn = TRUE, fn = NULL)
@@ -27,7 +27,8 @@ Default NULL, tries to auto-detect from installed genomes.}
 list of 2. A matrix of dimension nx96, where n is the number of samples in the MAF and a table describing APOBEC enrichment per sample.
 }
 \description{
-Extract single 5' and 3' bases flanking the mutated site for de-novo signature analysis. Also estimates APOBEC enrichment scores.
+NMF input matrix here is trinucletiode matrix. This function calls
+\code{trinucleotideMatirx} provided by \strong{maftools} to extract 96 mutation motifs.
 }
 \details{
 Extracts immediate 5' and 3' bases flanking the mutated site and classifies them into 96 substitution classes.
@@ -46,8 +47,11 @@ APOBEC Enrichment: Enrichment score is calculated using the same method describe
 One-sided Fisher's Exact test is performed to determine the enrichment of APOBEC tcw mutations over background.
 }
 \examples{
-\dontrun{
-laml.tnm <- prepare_maf(maf = laml, ref_genome = 'BSgenome.Hsapiens.UCSC.hg19',
+\donttest{
+laml.maf = system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
+laml = read_maf(maf = laml.maf)
+library(BSgenome.Hsapiens.UCSC.hg19)
+laml.tnm = prepare_maf(maf = laml, ref_genome = 'BSgenome.Hsapiens.UCSC.hg19',
     prefix = 'chr', add = TRUE, useSyn = TRUE)
 }
 }

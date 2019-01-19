@@ -21,6 +21,22 @@ a \link{GenomicVariation} object
 Read \link{CopyNumber} and \link{MAF} object as a new S4 object \link{GenomicVariation}
 for uniform variation analysis. \strong{The function is initialized to construct structure of sigminer, please dont use it for now}.
 }
+\examples{
+\donttest{
+# Read MAF
+laml.maf = system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
+laml = read_maf(maf = laml.maf)
+# Read absolute copy number profile
+load(system.file("extdata", "example_cn_list.RData",
+             package = "sigminer", mustWork = TRUE))
+segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
+cn = read_copynumber(segTabs,
+                     seg_cols = c("chromosome", "start", "end", "segVal"),
+                                                   genome_build = "hg19")
+# Combine as GenomicVariation object
+gv = read_variation(cn, laml)
+}
+}
 \seealso{
 Other read genomic variation data function series: \code{\link{read_copynumber}},
   \code{\link{read_maf}}

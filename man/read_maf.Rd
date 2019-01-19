@@ -54,9 +54,9 @@ FLAGS - If you get a note on possible FLAGS while reading MAF, it means some of 
 This note can be ignored without any harm, it's only generated as to make user aware of such genes. See references for details on FLAGS.
 }
 \examples{
-\dontrun{
-laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
-laml <- read_maf(maf = laml.maf)
+\donttest{
+laml.maf = system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
+laml = read_maf(maf = laml.maf)
 }
 
 }

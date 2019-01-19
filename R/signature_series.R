@@ -16,6 +16,16 @@
 #' @return a `matrix` used for NMF de-composition.
 #' @author Shixiang Wang
 #' @export
+#' @examples
+#' \donttest{
+#' load(system.file("extdata", "example_cn_list.RData",
+#'      package = "sigminer", mustWork = TRUE))
+#' segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
+#' cn = read_copynumber(segTabs,
+#'                      seg_cols = c("chromosome", "start", "end", "segVal"),
+#'                      genome_build = "hg19")
+#' cn_prepare =  sig_prepare(cn)
+#' }
 #' @family signature analysis series function
 sig_prepare = function(object, ...){
   UseMethod("sig_prepare")
@@ -82,6 +92,19 @@ sig_prepare.MAF = function(object, ref_genome = NULL, prefix = NULL,
 #' @return a `list` contains information of NMF run and rank survey.
 #' @import NMF
 #' @export
+#' @examples
+#' \donttest{
+#' load(system.file("extdata", "example_cn_list.RData",
+#'      package = "sigminer", mustWork = TRUE))
+#' segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
+#' cn = read_copynumber(segTabs,
+#'                      seg_cols = c("chromosome", "start", "end", "segVal"),
+#'                      genome_build = "hg19")
+#' cn_prepare =  sig_prepare(cn)
+#' library(NMF)
+#' cn_estimate = sig_estimate(cn_prepare$nmf_matrix, cores = 1, nrun = 5,
+#'                            verbose = TRUE)
+#' }
 #' @family signature analysis series function
 sig_estimate <-
   function(nmf_matrix,
@@ -92,7 +115,7 @@ sig_estimate <-
            seed = 123456,
            use_random = TRUE,
            save_plots = FALSE,
-           plot_basename = "nmf",
+           plot_basename = file.path(tempdir(), "nmf"),
            method = "brunet",
            pConstant = NULL,
            verbose = FALSE)
@@ -268,6 +291,17 @@ sig_estimate <-
 #' @return a `list` contains NMF object, signature matrix and activity matrix.
 #' @import NMF
 #' @export
+#' @examples
+#' \donttest{
+#' load(system.file("extdata", "example_cn_list.RData",
+#'      package = "sigminer", mustWork = TRUE))
+#' segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
+#' cn = read_copynumber(segTabs,
+#'                      seg_cols = c("chromosome", "start", "end", "segVal"),
+#'                      genome_build = "hg19")
+#' cn_prepare =  sig_prepare(cn)
+#' res = sig_extract(cn_prepare$nmf_matrix, 3, mode = "copynumber", nrun = 5)
+#' }
 #' @family signature analysis series function
 sig_extract = function(nmf_matrix,
                        n_sig,
@@ -477,6 +511,18 @@ sig_extract = function(nmf_matrix,
 #' @return a `data.frame`
 #' @import NMF cluster
 #' @export
+#' @examples
+#' \donttest{
+#' load(system.file("extdata", "example_cn_list.RData",
+#'      package = "sigminer", mustWork = TRUE))
+#' segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
+#' cn = read_copynumber(segTabs,
+#'                      seg_cols = c("chromosome", "start", "end", "segVal"),
+#'                      genome_build = "hg19")
+#' cn_prepare =  sig_prepare(cn)
+#' res = sig_extract(cn_prepare$nmf_matrix, 3, mode = "copynumber", nrun = 5)
+#' subtypes = sig_assign_samples(res$nmfObj)
+#' }
 #' @family signature analysis series function
 sig_assign_samples = function(nmfObj, type="consensus", matchConseOrder=F){
 
@@ -526,6 +572,18 @@ sig_assign_samples = function(nmfObj, type="consensus", matchConseOrder=F){
 #' @inheritParams draw_sig_profile
 #' @return a `list`
 #' @export
+#' @examples
+#' \donttest{
+#' load(system.file("extdata", "example_cn_list.RData",
+#'      package = "sigminer", mustWork = TRUE))
+#' segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
+#' cn = read_copynumber(segTabs,
+#'                      seg_cols = c("chromosome", "start", "end", "segVal"),
+#'                      genome_build = "hg19")
+#' cn_prepare =  sig_prepare(cn)
+#' res = sig_extract(cn_prepare$nmf_matrix, 3, mode = "copynumber", nrun = 5)
+#' sig_activity = sig_get_activity(res$nmfObj)
+#' }
 #' @family signature analysis series function
 sig_get_activity = function(nmfObj) {
 
@@ -569,6 +627,19 @@ sig_get_activity = function(nmfObj) {
 #' @return a `list`.
 #' @author Shixiang Wang
 #' @export
+#' @examples
+#' \donttest{
+#' load(system.file("extdata", "example_cn_list.RData",
+#'      package = "sigminer", mustWork = TRUE))
+#' segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
+#' cn = read_copynumber(segTabs,
+#'                      seg_cols = c("chromosome", "start", "end", "segVal"),
+#'                      genome_build = "hg19")
+#' cn_prepare =  sig_prepare(cn)
+#' res = sig_extract(cn_prepare$nmf_matrix, 3, mode = "copynumber", nrun = 5)
+#' sig_activity = sig_get_activity(res$nmfObj)
+#' sig_cor = sig_get_correlation(sig_activity)
+#' }
 #' @family signature analysis series function
 sig_get_correlation = function(cn_activity=NULL, snv_activity=NULL,
                                type = c("absolute", "relative"),
@@ -645,7 +716,23 @@ sig_get_correlation = function(cn_activity=NULL, snv_activity=NULL,
 #' @author Shixiang Wang <w_shixiang@163.com>
 #' @return a `list` contains data, summary, p value etc..
 #' @export
-#'
+#' @examples
+#' \donttest{
+#' load(system.file("extdata", "example_cn_list.RData",
+#'      package = "sigminer", mustWork = TRUE))
+#' segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
+#' cn = read_copynumber(segTabs,
+#'                      seg_cols = c("chromosome", "start", "end", "segVal"),
+#'                      genome_build = "hg19")
+#' cn_prepare =  sig_prepare(cn)
+#' res = sig_extract(cn_prepare$nmf_matrix, 3, mode = "copynumber", nrun = 5)
+#' subtypes = sig_assign_samples(res$nmfObj)
+#' set.seed(1234)
+#' subtypes$new_group = sample(c("1", "2","3", "4"), size = nrow(subtypes), replace = TRUE)
+#' subtypes.sum = sig_summarize_subtypes(subtypes[, -1], col_subtype = "nmf_subtypes",
+#'                                      cols_to_summary = colnames(subtypes[, -1])[-1],
+#'                                      type = c("co", "ca"), verbose = TRUE)
+#' }
 #' @family signature analysis series function
 sig_summarize_subtypes = function(data, col_subtype, cols_to_summary,
                                type = "ca", verbose = FALSE){

@@ -35,13 +35,21 @@ a \code{list} contain \code{flexmix} object of copy-number features.
 Apply mixture modelling to breakdown each feature distribution into mixtures
 of Gaussian or mixtures of Poison distributions using \strong{flexmix} package.
 }
+\examples{
+\donttest{
+extdata_dir = system.file("extdata", package = "sigminer", mustWork = TRUE)
+cp = read_copynumber(extdata_dir, pattern = "txt", genome_build = "hg19")
+cn_list = get_cnlist(cp)
+cn_features = get_features(cn_list, cores = 1)
+cn_components = get_components(cn_features)
+}
+}
 \seealso{
 Other internal calculation function series: \code{\link{get_ArmLocation}},
   \code{\link{get_LengthFraction}},
   \code{\link{get_cnlist}},
   \code{\link{get_cnsummary_sample}},
-  \code{\link{get_context}}, \code{\link{get_features}},
-  \code{\link{get_matrix}}
+  \code{\link{get_features}}, \code{\link{get_matrix}}
 }
 \author{
 Geoffrey Macintyre, Shixiang Wang

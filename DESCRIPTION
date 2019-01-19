@@ -1,6 +1,6 @@
 Package: sigminer
 Title: Capture Genomic Variation Signatures using Non-negative Matrix Factorization
-Version: 0.1.3.9000
+Version: 0.1.4
 Authors@R: c(
     person("Shixiang", "Wang", email = "w_shixiang@163.com",
            role = c("aut", "cre"), comment = c(ORCID = "0000-0001-9855-7357")),
@@ -33,6 +33,7 @@ Imports:
     magrittr
 biocViews:
 Suggests: 
+    BSgenome.Hsapiens.UCSC.hg19,
     cowsay,
     ggpubr,
     knitr,

@@ -9,7 +9,7 @@ get_cnsummary_sample(segTab, genome_build = c("hg19", "hg38"),
 }
 \arguments{
 \item{segTab}{a \code{data.frame} with 'chromosome', 'start', 'end' and 'segVal'
-and 'sample' these five ordered columns.}
+and 'sample' these five ordered columns. 'chromosome' should have prefix "chr".}
 
 \item{genome_build}{genome build version, should be 'hg19' or 'hg38'.}
 
@@ -19,7 +19,7 @@ this option is useful for WES and target sequencing.
 Set 'wg' will autosome size from genome build, this option is useful for WGS, SNP etc..}
 
 \item{min_seg_len}{minimal length of CNV segment for CNA burden calculation,
-default is 1000.}
+default is 1000. (!NOT implement NOW!)}
 }
 \value{
 a data table
@@ -32,6 +32,15 @@ number of CNV deletion segments etc..
 CNA burden, a simple metric of CNA level defined as the percent of the
 autosomal tumor genome bearing CNAs, could be used as an informative measure of CNA.
 }
+\examples{
+\donttest{
+load(system.file("extdata", "example_cn_list.RData",
+                package = "sigminer", mustWork = TRUE))
+segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
+segTabs$chromosome = paste0("chr", segTabs$chromosome)
+samp_sum = get_cnsummary_sample(segTabs[, c(2:5,1)])
+}
+}
 \references{
 Hieronymus, Haley, et al. "Copy number alteration burden predicts prostate cancer relapse." Proceedings of the National Academy of Sciences 111.30 (2014): 11139-11144.
 }
@@ -39,8 +48,7 @@ Hieronymus, Haley, et al. "Copy number alteration burden predicts prostate cance
 Other internal calculation function series: \code{\link{get_ArmLocation}},
   \code{\link{get_LengthFraction}},
   \code{\link{get_cnlist}}, \code{\link{get_components}},
-  \code{\link{get_context}}, \code{\link{get_features}},
-  \code{\link{get_matrix}}
+  \code{\link{get_features}}, \code{\link{get_matrix}}
 }
 \author{
 Shixiang Wang \href{mailto:w_shixiang@163.com}{w_shixiang@163.com}

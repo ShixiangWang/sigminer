@@ -8,9 +8,9 @@
 #' @inherit maftools::read.maf
 #' @family read genomic variation data function series
 #' @examples
-#' \dontrun{
-#' laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
-#' laml <- read_maf(maf = laml.maf)
+#' \donttest{
+#' laml.maf = system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
+#' laml = read_maf(maf = laml.maf)
 #' }
 #'
 
@@ -67,6 +67,15 @@ read_maf = function(
 #' @author Shixiang Wang <w_shixiang@163.com>
 #' @return a [CopyNumber] object
 #' @export
+#' @examples
+#' \donttest{
+#' load(system.file("extdata", "example_cn_list.RData",
+#'              package = "sigminer", mustWork = TRUE))
+#' segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
+#' cn = read_copynumber(segTabs,
+#'                      seg_cols = c("chromosome", "start", "end", "segVal"),
+#'                                                    genome_build = "hg19")
+#' }
 #' @family read genomic variation data function series
 read_copynumber = function(input,
                            pattern = NULL,
@@ -116,7 +125,7 @@ read_copynumber = function(input,
       stop("Only can take one directory as input!")
     }
     # get files and exclude directories
-    all.files <- list.files(
+    all.files = list.files(
       path = input,
       pattern = pattern,
       all.files = FALSE,
@@ -405,6 +414,21 @@ validate_segTab = function(object, verbose = FALSE){
 #' @author Shixiang Wang <w_shixiang@163.com>
 #' @return a [GenomicVariation] object
 #' @export
+#' @examples
+#' \donttest{
+#' # Read MAF
+#' laml.maf = system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
+#' laml = read_maf(maf = laml.maf)
+#' # Read absolute copy number profile
+#' load(system.file("extdata", "example_cn_list.RData",
+#'              package = "sigminer", mustWork = TRUE))
+#' segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
+#' cn = read_copynumber(segTabs,
+#'                      seg_cols = c("chromosome", "start", "end", "segVal"),
+#'                                                    genome_build = "hg19")
+#' # Combine as GenomicVariation object
+#' gv = read_variation(cn, laml)
+#' }
 #' @family read genomic variation data function series
 read_variation = function(copynumber, maf, clinical_data = NULL) {
 

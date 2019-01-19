@@ -10,7 +10,8 @@ get_LengthFraction(CN_data, genome_build = c("hg19", "hg38"),
 }
 \arguments{
 \item{CN_data}{a \code{data.frame} with 'chromosome', 'start', 'end' and 'segVal'
-(optinal) and 'sample' these five columns (specify column names using \code{seg_cols} and \code{samp_cols} options)
+(optinal) and 'sample' these five columns
+(specify column names using \code{seg_cols} and \code{samp_cols} options)
 or a \code{list} contains multiple data.frames,
 each \code{data.frame} stores copy-number profile for one sample with
 'chromosome', 'start', 'end' and 'segVal' (optional) these four columns.
@@ -30,12 +31,18 @@ a data table
 \description{
 Calculate length fraction profile of copy number
 }
+\examples{
+extdata_dir = system.file("extdata", package = "sigminer", mustWork = TRUE)
+cp = read_copynumber(extdata_dir, pattern = "txt", genome_build = "hg19")
+cn_list = get_cnlist(cp)
+annot = get_LengthFraction(cn_list, seg_cols = c("chromosome", "start", "end", "segVal"))
+}
 \seealso{
 Other internal calculation function series: \code{\link{get_ArmLocation}},
   \code{\link{get_cnlist}},
   \code{\link{get_cnsummary_sample}},
-  \code{\link{get_components}}, \code{\link{get_context}},
-  \code{\link{get_features}}, \code{\link{get_matrix}}
+  \code{\link{get_components}}, \code{\link{get_features}},
+  \code{\link{get_matrix}}
 }
 \author{
 Shixiang Wang \href{mailto:w_shixiang@163.com}{w_shixiang@163.com}

@@ -34,6 +34,25 @@ genotypes/phenotypes comparison between signature subtypes using \strong{ggplot2
 a list of \code{ggplot} object contains individual and combined plots. The combined
 plot is easily saved to local using \code{\link[cowplot:save_plot]{cowplot::save_plot()}}.
 }
+\examples{
+\donttest{
+load(system.file("extdata", "example_cn_list.RData",
+     package = "sigminer", mustWork = TRUE))
+segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
+cn = read_copynumber(segTabs,
+                     seg_cols = c("chromosome", "start", "end", "segVal"),
+                     genome_build = "hg19")
+cn_prepare =  sig_prepare(cn)
+res = sig_extract(cn_prepare$nmf_matrix, 3, mode = "copynumber", nrun = 5)
+subtypes = sig_assign_samples(res$nmfObj)
+set.seed(1234)
+subtypes$new_group = sample(c("1", "2","3", "4"), size = nrow(subtypes), replace = TRUE)
+subtypes.sum = sig_summarize_subtypes(subtypes[, -1], col_subtype = "nmf_subtypes",
+                                     cols_to_summary = colnames(subtypes[, -1])[-1],
+                                     type = c("co", "ca"), verbose = TRUE)
+plot_list = draw_subtypes_comparison(subtypes.sum)
+}
+}
 \seealso{
 Other signature plot: \code{\link{draw_sig_activity}},
   \code{\link{draw_sig_corrplot}},

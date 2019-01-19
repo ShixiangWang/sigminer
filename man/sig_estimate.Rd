@@ -49,6 +49,20 @@ starts decreasing (Used by this function). Another approach is to choose the ran
 of the residual sum of squares (RSS) between the input matrix and its estimate shows an inflection point.
 More custom features please directly use \link[NMF:nmfEstimateRank]{NMF::nmfEstimateRank}.
 }
+\examples{
+\donttest{
+load(system.file("extdata", "example_cn_list.RData",
+     package = "sigminer", mustWork = TRUE))
+segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
+cn = read_copynumber(segTabs,
+                     seg_cols = c("chromosome", "start", "end", "segVal"),
+                     genome_build = "hg19")
+cn_prepare =  sig_prepare(cn)
+library(NMF)
+cn_estimate = sig_estimate(cn_prepare$nmf_matrix, cores = 1, nrun = 5,
+                           verbose = TRUE)
+}
+}
 \seealso{
 Other signature analysis series function: \code{\link{sig_assign_samples}},
   \code{\link{sig_extract}},

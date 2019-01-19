@@ -34,6 +34,10 @@
 #' @param CopyNumber a [CopyNumber] object.
 #' @return a `list`
 #' @export
+#' @examples
+#' extdata_dir = system.file("extdata", package = "sigminer", mustWork = TRUE)
+#' cp = read_copynumber(extdata_dir, pattern = "txt", genome_build = "hg19")
+#' cn_list = get_cnlist(cp)
 #' @family internal calculation function series
 
 get_cnlist = function(CopyNumber) {
@@ -68,6 +72,13 @@ get_cnlist = function(CopyNumber) {
 #' @return a `list` contains six copy number feature distributions.
 #' @import foreach
 #' @export
+#' @examples
+#' \donttest{
+#' extdata_dir = system.file("extdata", package = "sigminer", mustWork = TRUE)
+#' cp = read_copynumber(extdata_dir, pattern = "txt", genome_build = "hg19")
+#' cn_list = get_cnlist(cp)
+#' cn_features = get_features(cn_list, cores = 1)
+#' }
 #' @family internal calculation function series
 
 get_features = function(CN_data,
@@ -121,13 +132,13 @@ get_features = function(CN_data,
     }
     unlist(temp_list, recursive = FALSE)
   } else {
-    bp10MB <- getBPnum(CN_data, chrlen)
-    copynumber <- getCN(CN_data)
-    changepoint <- getChangepointCN(CN_data)
-    bpchrarm <-
+    bp10MB = getBPnum(CN_data, chrlen)
+    copynumber = getCN(CN_data)
+    changepoint = getChangepointCN(CN_data)
+    bpchrarm =
       getCentromereDistCounts(CN_data, centromeres, chrlen)
-    osCN <- getOscilation(CN_data)
-    segsize <- getSegsize(CN_data)
+    osCN = getOscilation(CN_data)
+    segsize = getSegsize(CN_data)
     list(
       segsize = segsize,
       bp10MB = bp10MB,
@@ -164,6 +175,14 @@ get_features = function(CN_data,
 #' @return a `list` contain `flexmix` object of copy-number features.
 #' @importClassesFrom flexmix FLXcontrol
 #' @export
+#' @examples
+#' \donttest{
+#' extdata_dir = system.file("extdata", package = "sigminer", mustWork = TRUE)
+#' cp = read_copynumber(extdata_dir, pattern = "txt", genome_build = "hg19")
+#' cn_list = get_cnlist(cp)
+#' cn_features = get_features(cn_list, cores = 1)
+#' cn_components = get_components(cn_features)
+#' }
 #' @family internal calculation function series
 get_components = function(CN_features,
                             seed = 123456,
@@ -174,9 +193,9 @@ get_components = function(CN_features,
                             nrep = 1,
                             niter = 1000) {
 
-    dat <- as.numeric(CN_features[["segsize"]][, 2])
+    dat = as.numeric(CN_features[["segsize"]][, 2])
     message("Fit feature: Segment size")
-    segsize_mm <-
+    segsize_mm =
       fitComponent(
         dat,
         seed = seed,
@@ -188,9 +207,9 @@ get_components = function(CN_features,
         max_comp = max_comp
       )
 
-    dat <- as.numeric(CN_features[["bp10MB"]][, 2])
+    dat = as.numeric(CN_features[["bp10MB"]][, 2])
     message("Fit feature: Breakpoint count per 10 Mb")
-    bp10MB_mm <-
+    bp10MB_mm =
       fitComponent(
         dat,
         dist = "pois",
@@ -203,9 +222,9 @@ get_components = function(CN_features,
         max_comp = max_comp
       )
 
-    dat <- as.numeric(CN_features[["osCN"]][, 2])
+    dat = as.numeric(CN_features[["osCN"]][, 2])
     message("Fit feature: Length of oscillating copy-number chain")
-    osCN_mm <-
+    osCN_mm =
       fitComponent(
         dat,
         dist = "pois",
@@ -218,9 +237,9 @@ get_components = function(CN_features,
         max_comp = max_comp
       )
 
-    dat <- as.numeric(CN_features[["bpchrarm"]][, 2])
+    dat = as.numeric(CN_features[["bpchrarm"]][, 2])
     message("Fit feature: Breakpoint count per arm")
-    bpchrarm_mm <-
+    bpchrarm_mm =
       fitComponent(
         dat,
         dist = "pois",
@@ -233,9 +252,9 @@ get_components = function(CN_features,
         max_comp = max_comp
       )
 
-    dat <- as.numeric(CN_features[["changepoint"]][, 2])
+    dat = as.numeric(CN_features[["changepoint"]][, 2])
     message("Fit feature: Copy number change")
-    changepoint_mm <-
+    changepoint_mm =
       fitComponent(
         dat,
         seed = seed,
@@ -247,9 +266,9 @@ get_components = function(CN_features,
         max_comp = max_comp
       )
 
-    dat <- as.numeric(CN_features[["copynumber"]][, 2])
+    dat = as.numeric(CN_features[["copynumber"]][, 2])
     message("Fit feature: Absolute copy number")
-    copynumber_mm <-
+    copynumber_mm =
       fitComponent(
         dat,
         seed = seed,
@@ -289,6 +308,15 @@ get_components = function(CN_features,
 #' @return a numeric sample-by-component `matrix`
 #' @importFrom utils data download.file str
 #' @export
+#' @examples
+#' \donttest{
+#' extdata_dir = system.file("extdata", package = "sigminer", mustWork = TRUE)
+#' cp = read_copynumber(extdata_dir, pattern = "txt", genome_build = "hg19")
+#' cn_list = get_cnlist(cp)
+#' cn_features = get_features(cn_list, cores = 1)
+#' cn_components = get_components(cn_features)
+#' cn_matrix = get_matrix(cn_features, cn_components)
+#' }
 #' @family internal calculation function series
 get_matrix = function(CN_features,
                       all_components = NULL,
@@ -305,13 +333,13 @@ get_matrix = function(CN_features,
         "Nat_Gen_component_parameters.rds doesnot exist, will download reference components."
       )
       download.file(url = "https://github.com/ShixiangWang/absoluteCNVdata/raw/master/component_parameters.rds",
-                    destfile = "Nat_Gen_component_parameters.rds")
+                    destfile = file.path(tempdir(),"Nat_Gen_component_parameters.rds"))
     }
-    all_components <-
-      readRDS("Nat_Gen_component_parameters.rds")
+    all_components =
+      readRDS(file.path(tempdir(),"Nat_Gen_component_parameters.rds"))
   }
 
-  full_mat <- cbind(
+  full_mat = cbind(
     calculateSumOfPosteriors(CN_features[["bp10MB"]],
                              all_components[["bp10MB"]],
                              "bp10MB",
@@ -338,8 +366,8 @@ get_matrix = function(CN_features,
                              cores = cores)
   )
 
-  rownames(full_mat) <- unique(CN_features[["segsize"]][, 1])
-  full_mat[is.na(full_mat)] <- 0
+  rownames(full_mat) = unique(CN_features[["segsize"]][, 1])
+  full_mat[is.na(full_mat)] = 0
   full_mat
 }
 
@@ -352,7 +380,8 @@ get_matrix = function(CN_features,
 #' @inheritParams get_features
 #' @inheritParams read_copynumber
 #' @param CN_data a `data.frame` with 'chromosome', 'start', 'end' and 'segVal'
-#' (optinal) and 'sample' these five columns (specify column names using `seg_cols` and `samp_cols` options)
+#' (optinal) and 'sample' these five columns
+#' (specify column names using `seg_cols` and `samp_cols` options)
 #' or a `list` contains multiple data.frames,
 #' each `data.frame` stores copy-number profile for one sample with
 #' 'chromosome', 'start', 'end' and 'segVal' (optional) these four columns.
@@ -361,6 +390,11 @@ get_matrix = function(CN_features,
 #' @author Shixiang Wang <w_shixiang@163.com>
 #' @return a data table
 #' @export
+#' @examples
+#' extdata_dir = system.file("extdata", package = "sigminer", mustWork = TRUE)
+#' cp = read_copynumber(extdata_dir, pattern = "txt", genome_build = "hg19")
+#' cn_list = get_cnlist(cp)
+#' annot = get_LengthFraction(cn_list, seg_cols = c("chromosome", "start", "end", "segVal"))
 #' @family internal calculation function series
 get_LengthFraction = function(CN_data,
                               genome_build = c("hg19", "hg38"),
@@ -479,6 +513,9 @@ get_LengthFraction = function(CN_data,
 #' Get chromosome arm location
 #' @inheritParams read_copynumber
 #' @export
+#' @examples
+#' hg19_arm = get_ArmLocation("hg19")
+#' hg38_arm = get_ArmLocation("hg38")
 #' @family internal calculation function series
 
 get_ArmLocation = function(genome_build = c("hg19", "hg38")) {
@@ -568,13 +605,21 @@ get_ArmLocation = function(genome_build = c("hg19", "hg38")) {
 #'
 #' @inheritParams read_copynumber
 #' @param segTab a `data.frame` with 'chromosome', 'start', 'end' and 'segVal'
-#' and 'sample' these five ordered columns.
+#' and 'sample' these five ordered columns. 'chromosome' should have prefix "chr".
 #' @param min_seg_len minimal length of CNV segment for CNA burden calculation,
-#' default is 1000.
+#' default is 1000. (!NOT implement NOW!)
 #' @references Hieronymus, Haley, et al. "Copy number alteration burden predicts prostate cancer relapse." Proceedings of the National Academy of Sciences 111.30 (2014): 11139-11144.
 #' @author Shixiang Wang <w_shixiang@163.com>
 #' @return a data table
 #' @export
+#' @examples
+#' \donttest{
+#' load(system.file("extdata", "example_cn_list.RData",
+#'                 package = "sigminer", mustWork = TRUE))
+#' segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
+#' segTabs$chromosome = paste0("chr", segTabs$chromosome)
+#' samp_sum = get_cnsummary_sample(segTabs[, c(2:5,1)])
+#' }
 #' @family internal calculation function series
 get_cnsummary_sample = function(segTab, genome_build = c("hg19", "hg38"),
                                 genome_measure = c("called", "wg"),
@@ -634,26 +679,6 @@ get_cnsummary_sample = function(segTab, genome_build = c("hg19", "hg38"),
       data.table::as.data.table()
   }
   seg_summary
-}
-
-
-# Get trinucleotide matrix ------------------------------------------------
-
-#' @inherit maftools::trinucleotideMatrix
-#' @family internal calculation function series
-#' @examples
-#' \dontrun{
-#' laml.tnm <- get_context(maf = laml, ref_genome = 'BSgenome.Hsapiens.UCSC.hg19',
-#'     prefix = 'chr', add = TRUE, useSyn = TRUE)
-#' }
-get_context = function(
-  maf, ref_genome = NULL, prefix = NULL,
-  add = TRUE, ignoreChr = NULL, useSyn = TRUE, fn = NULL
-){
-  maftools::trinucleotideMatrix(
-    maf, ref_genome = ref_genome, prefix = prefix,
-    add = add, ignoreChr = ignoreChr, useSyn = useSyn, fn = fn
-  )
 }
 
 

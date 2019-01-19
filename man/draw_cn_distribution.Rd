@@ -28,6 +28,19 @@ Visually summarize copy number distribution either by copy number segment length
 or chromosome. When input is a \link{CopyNumber} object, \code{genome_build} option will
 read from \code{genome_build} slot of object instead of using argument set in function.
 }
+\examples{
+\donttest{
+load(system.file("extdata", "example_cn_list.RData",
+     package = "sigminer", mustWork = TRUE))
+segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
+cn = read_copynumber(segTabs,
+                     seg_cols = c("chromosome", "start", "end", "segVal"),
+                     genome_build = "hg19")
+draw_cn_distribution(cn)
+draw_cn_distribution(cn, mode = "cd")
+draw_cn_distribution(cn, mode = "cd", fill = TRUE)
+}
+}
 \seealso{
 Other copy number plot: \code{\link{draw_cn_components}},
   \code{\link{draw_cn_features}}
