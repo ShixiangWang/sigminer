@@ -8,6 +8,8 @@ hello <- function() {
   } else {
     msg = paste0("Welcome to 'sigminer' package!
 =========================================================================
+Quick overview please type ?sigminer
+
 Github page: https://github.com/ShixiangWang/sigminer
 Bug report: https://github.com/ShixiangWang/sigminer/issues
 Documentation: https://github.com/ShixiangWang/sigminer
