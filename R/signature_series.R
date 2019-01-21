@@ -612,9 +612,9 @@ sig_get_activity = function(nmfObj) {
 
 
 
-# Get correlation matrix between signatures -------------------------------
+# Get correlation matrix between signature activities -------------------------
 
-#' Get correlation matrix between signatures
+#' Get correlation matrix between signature activities
 #'
 #' Compute correlation matrix and corresponding statistical test values.
 #'
@@ -694,6 +694,59 @@ sig_get_correlation = function(cn_activity=NULL, snv_activity=NULL,
   )
 }
 
+
+
+# Get similarity between signatures ---------------------------------------
+
+
+#' Get similarity between signatures
+#'
+#' Obtain similarity for two signature matrix, their rows (features) must match.
+#'
+#' @param sig1 signature 1, result of [sig_extract] function or
+#' a `data.frame` which rows are features and columns are signatures
+#' (colnames are necessary).
+#' @param sig2 signature 2, result of [sig_extract] function or
+#' a `data.frame` which rows are features and columns are signatures
+#' (colnames are necessary).
+#' @param type could be "cos" (default, cosine similarity) or "cor" (correlation).
+#' @author Shixiang Wang
+#' @return a `matrix` which rownames from `sig1` and colnames from `sig2`.
+#' @export
+#' @family signature analysis series function
+sig_get_similarity = function(sig1, sig2, type = c("cos", "cor")) {
+
+  if (is.list(sig1)) {
+    mat1 = sig1[["signature"]]
+  } else {
+    mat1 = sig1
+  }
+
+  if (is.list(sig2)) {
+    mat2 = sig2[["signature"]]
+  } else {
+    mat2 = sig2
+  }
+
+  type = match.arg(type)
+
+  ResMat = c()
+  for (i in 1:ncol(mat1)) {
+    sig = mat1[, i]
+    if (type == "cos") {
+      ResMat = rbind(ResMat, apply(mat2, 2, function(x) {
+        round(crossprod(sig, x) / sqrt(crossprod(x) * crossprod(sig)), digits = 3)
+      }))
+    } else {
+      ResMat = rbind(ResMat, apply(mat2, 2, function(x) cor.test(x, sig)$estimate[[1]])) #Calulate correlation coeff.
+    }
+  }
+
+  rownames(ResMat) = colnames(mat1)
+
+  message("rownames come from sig1 and colnames come from sig2.")
+  ResMat
+}
 
 # Get signature subtype summary -------------------------------------------
 

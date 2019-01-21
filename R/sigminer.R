@@ -28,7 +28,8 @@
 #' * [sig_assign_samples()] - assign samples to signatures. This classify samples
 #' into different subgroups based on the dominant signature.
 #' * [sig_get_activity()] - obtain signature activity in samples.
-#' * [sig_get_correlation()] - obtain correlation matrix between signatures.
+#' * [sig_get_correlation()] - obtain correlation matrix between signatures activity.
+#' * [sig_get_similarity()] - get similarity between signatures.
 #' * [sig_summarize_subtypes()] - get summary of signature subtypes.
 #'
 #' @section draw_ functions:

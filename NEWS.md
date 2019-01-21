@@ -1,3 +1,8 @@
+# sigminer v0.1.5
+
+* update intro for package
+* fix text problem provided by CRAN check team
+* add `sig_get_similarity` function
 
 # sigminer v0.1.4
 

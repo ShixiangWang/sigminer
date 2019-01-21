@@ -2,7 +2,7 @@
 % Please edit documentation in R/signature_series.R
 \name{sig_get_correlation}
 \alias{sig_get_correlation}
-\title{Get correlation matrix between signatures}
+\title{Get correlation matrix between signature activities}
 \usage{
 sig_get_correlation(cn_activity = NULL, snv_activity = NULL,
   type = c("absolute", "relative"), ...)
@@ -42,6 +42,7 @@ sig_cor = sig_get_correlation(sig_activity)
 Other signature analysis series function: \code{\link{sig_assign_samples}},
   \code{\link{sig_estimate}}, \code{\link{sig_extract}},
   \code{\link{sig_get_activity}},
+  \code{\link{sig_get_similarity}},
   \code{\link{sig_prepare}},
   \code{\link{sig_summarize_subtypes}}
 }

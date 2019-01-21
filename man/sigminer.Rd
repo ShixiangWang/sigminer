@@ -38,7 +38,8 @@ for selecting the best signature number.
 \item \code{\link[=sig_assign_samples]{sig_assign_samples()}} - assign samples to signatures. This classify samples
 into different subgroups based on the dominant signature.
 \item \code{\link[=sig_get_activity]{sig_get_activity()}} - obtain signature activity in samples.
-\item \code{\link[=sig_get_correlation]{sig_get_correlation()}} - obtain correlation matrix between signatures.
+\item \code{\link[=sig_get_correlation]{sig_get_correlation()}} - obtain correlation matrix between signatures activity.
+\item \code{\link[=sig_get_similarity]{sig_get_similarity()}} - get similarity between signatures.
 \item \code{\link[=sig_summarize_subtypes]{sig_summarize_subtypes()}} - get summary of signature subtypes.
 }
 }
