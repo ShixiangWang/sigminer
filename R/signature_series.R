@@ -5,25 +5,25 @@
 
 # S3 method for signature analysis prepare --------------------------------
 
-#' Variation signature analysis prepare generic
+#' Prepare variation signature analysis
 #'
 #' Generate a matrix for NMF de-composition.
 #'
 #' The result matrix generated further need to transpose before calling NMF
 #' if user use [NMF::nmf] by hand.
-#' @param object a [CopyNumber] object or [MAF] object or [GenomicVariation] object.
-#' @param ... custom setting for operating object.
-#' @return a `matrix` used for NMF de-composition.
+#' @param object a [CopyNumber] object or [MAF] object or
+#' [GenomicVariation] (not support for now) object.
+#' @param ... custom setting for operating object. Detail see S3 method for
+#' corresponding class.
+#' @return a `list` contains a `matrix` used for NMF de-composition.
 #' @author Shixiang Wang
 #' @export
 #' @examples
 #' \donttest{
-#' load(system.file("extdata", "example_cn_list.RData",
-#'      package = "sigminer", mustWork = TRUE))
-#' segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
-#' cn = read_copynumber(segTabs,
-#'                      seg_cols = c("chromosome", "start", "end", "segVal"),
-#'                      genome_build = "hg19")
+#' # Load copy number object
+#' load(system.file("extdata", "toy_copynumber.RData",
+#'              package = "sigminer", mustWork = TRUE))
+#' # Prepare copy number signature analysis
 #' cn_prepare =  sig_prepare(cn)
 #' }
 #' @family signature analysis series function
@@ -55,10 +55,10 @@ sig_prepare.MAF = function(object, ref_genome = NULL, prefix = NULL,
                     add = add, ignoreChr = ignoreChr, useSyn = useSyn, fn = NULL)
 }
 
-# # sig_prepare Signature analysis prepare for GenomicVariation object
-# sig_prepare.GenomicVariation = function(object) {
-#   print("Not support right now.")
-# }
+#' @describeIn sig_prepare Signature analysis prepare for GenomicVariation object
+sig_prepare.GenomicVariation = function(object) {
+  print("Not support right now.")
+}
 
 
 
@@ -94,13 +94,9 @@ sig_prepare.MAF = function(object, ref_genome = NULL, prefix = NULL,
 #' @export
 #' @examples
 #' \donttest{
-#' load(system.file("extdata", "example_cn_list.RData",
-#'      package = "sigminer", mustWork = TRUE))
-#' segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
-#' cn = read_copynumber(segTabs,
-#'                      seg_cols = c("chromosome", "start", "end", "segVal"),
-#'                      genome_build = "hg19")
-#' cn_prepare =  sig_prepare(cn)
+#' # Load copy number prepare object
+#' load(system.file("extdata", "toy_copynumber_prepare.RData",
+#'              package = "sigminer", mustWork = TRUE))
 #' library(NMF)
 #' cn_estimate = sig_estimate(cn_prepare$nmf_matrix, cores = 1, nrun = 5,
 #'                            verbose = TRUE)
@@ -293,14 +289,11 @@ sig_estimate <-
 #' @export
 #' @examples
 #' \donttest{
-#' load(system.file("extdata", "example_cn_list.RData",
-#'      package = "sigminer", mustWork = TRUE))
-#' segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
-#' cn = read_copynumber(segTabs,
-#'                      seg_cols = c("chromosome", "start", "end", "segVal"),
-#'                      genome_build = "hg19")
-#' cn_prepare =  sig_prepare(cn)
-#' res = sig_extract(cn_prepare$nmf_matrix, 3, mode = "copynumber", nrun = 5)
+#' # Load copy number prepare object
+#' load(system.file("extdata", "toy_copynumber_prepare.RData",
+#'              package = "sigminer", mustWork = TRUE))
+#' # Extract copy number signatures
+#' res = sig_extract(cn_prepare$nmf_matrix, 2, mode = "copynumber", nrun = 1)
 #' }
 #' @family signature analysis series function
 sig_extract = function(nmf_matrix,
@@ -506,23 +499,18 @@ sig_extract = function(nmf_matrix,
 #' More detail please see [NMF::predict()].
 #' @param nmfObj a `NMF` result object which is an element return from [sig_extract]
 #' or run results of **NMF** package.
-#' @param type cluster type, could be 'consensus' or 'sample'.
-#' @param matchConseOrder if `TRUE`, the result will match order as shown in consensus map.
-#' @return a `data.frame`
+#' @param type cluster type, could be 'consensus' or 'samples'.
+#' @param matchConseOrder if `TRUE`, the result will match order as shown in consensus map
+#' when type argument is 'consensus'.
+#' @return a `data.table` object
 #' @import NMF cluster
 #' @export
 #' @examples
-#' \donttest{
-#' load(system.file("extdata", "example_cn_list.RData",
-#'      package = "sigminer", mustWork = TRUE))
-#' segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
-#' cn = read_copynumber(segTabs,
-#'                      seg_cols = c("chromosome", "start", "end", "segVal"),
-#'                      genome_build = "hg19")
-#' cn_prepare =  sig_prepare(cn)
-#' res = sig_extract(cn_prepare$nmf_matrix, 3, mode = "copynumber", nrun = 5)
-#' subtypes = sig_assign_samples(res$nmfObj)
-#' }
+#' # Load copy number signature
+#' load(system.file("extdata", "toy_copynumber_signature.RData",
+#'              package = "sigminer", mustWork = TRUE))
+#' # Assign samples to clusters
+#' subtypes = sig_assign_samples(res$nmfObj, type = "samples")
 #' @family signature analysis series function
 sig_assign_samples = function(nmfObj, type="consensus", matchConseOrder=F){
 
@@ -573,17 +561,11 @@ sig_assign_samples = function(nmfObj, type="consensus", matchConseOrder=F){
 #' @return a `list`
 #' @export
 #' @examples
-#' \donttest{
-#' load(system.file("extdata", "example_cn_list.RData",
-#'      package = "sigminer", mustWork = TRUE))
-#' segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
-#' cn = read_copynumber(segTabs,
-#'                      seg_cols = c("chromosome", "start", "end", "segVal"),
-#'                      genome_build = "hg19")
-#' cn_prepare =  sig_prepare(cn)
-#' res = sig_extract(cn_prepare$nmf_matrix, 3, mode = "copynumber", nrun = 5)
+#' # Load copy number signature
+#' load(system.file("extdata", "toy_copynumber_signature.RData",
+#'              package = "sigminer", mustWork = TRUE))
+#' # Get activity of signatures
 #' sig_activity = sig_get_activity(res$nmfObj)
-#' }
 #' @family signature analysis series function
 sig_get_activity = function(nmfObj) {
 
@@ -628,18 +610,13 @@ sig_get_activity = function(nmfObj) {
 #' @author Shixiang Wang
 #' @export
 #' @examples
-#' \donttest{
-#' load(system.file("extdata", "example_cn_list.RData",
-#'      package = "sigminer", mustWork = TRUE))
-#' segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
-#' cn = read_copynumber(segTabs,
-#'                      seg_cols = c("chromosome", "start", "end", "segVal"),
-#'                      genome_build = "hg19")
-#' cn_prepare =  sig_prepare(cn)
-#' res = sig_extract(cn_prepare$nmf_matrix, 3, mode = "copynumber", nrun = 5)
+#' # Load copy number signature
+#' load(system.file("extdata", "toy_copynumber_signature.RData",
+#'              package = "sigminer", mustWork = TRUE))
+#' # Get activity of signatures
 #' sig_activity = sig_get_activity(res$nmfObj)
+#' # Get correlation matrix between signature activities
 #' sig_cor = sig_get_correlation(sig_activity)
-#' }
 #' @family signature analysis series function
 sig_get_correlation = function(cn_activity=NULL, snv_activity=NULL,
                                type = c("absolute", "relative"),
@@ -770,22 +747,19 @@ sig_get_similarity = function(sig1, sig2, type = c("cos", "cor")) {
 #' @return a `list` contains data, summary, p value etc..
 #' @export
 #' @examples
-#' \donttest{
-#' load(system.file("extdata", "example_cn_list.RData",
-#'      package = "sigminer", mustWork = TRUE))
-#' segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
-#' cn = read_copynumber(segTabs,
-#'                      seg_cols = c("chromosome", "start", "end", "segVal"),
-#'                      genome_build = "hg19")
-#' cn_prepare =  sig_prepare(cn)
-#' res = sig_extract(cn_prepare$nmf_matrix, 3, mode = "copynumber", nrun = 5)
-#' subtypes = sig_assign_samples(res$nmfObj)
+#' # Load copy number signature
+#' load(system.file("extdata", "toy_copynumber_signature.RData",
+#'              package = "sigminer", mustWork = TRUE))
+#' # Assign samples to clusters
+#' subtypes = sig_assign_samples(res$nmfObj, type = "samples")
+#'
 #' set.seed(1234)
+#' # Add custom groups
 #' subtypes$new_group = sample(c("1", "2","3", "4"), size = nrow(subtypes), replace = TRUE)
+#' # Summarize subtypes
 #' subtypes.sum = sig_summarize_subtypes(subtypes[, -1], col_subtype = "nmf_subtypes",
-#'                                      cols_to_summary = colnames(subtypes[, -1])[-1],
-#'                                      type = c("co", "ca"), verbose = TRUE)
-#' }
+#'                          cols_to_summary = colnames(subtypes[, -1])[c(-1,-2)],
+#'                          type = c("co", "ca"), verbose = TRUE)
 #' @family signature analysis series function
 sig_summarize_subtypes = function(data, col_subtype, cols_to_summary,
                                type = "ca", verbose = FALSE){

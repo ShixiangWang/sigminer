@@ -29,17 +29,13 @@ or chromosome. When input is a \link{CopyNumber} object, \code{genome_build} opt
 read from \code{genome_build} slot of object instead of using argument set in function.
 }
 \examples{
-\donttest{
-load(system.file("extdata", "example_cn_list.RData",
-     package = "sigminer", mustWork = TRUE))
-segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
-cn = read_copynumber(segTabs,
-                     seg_cols = c("chromosome", "start", "end", "segVal"),
-                     genome_build = "hg19")
+# Load copy number object
+load(system.file("extdata", "toy_copynumber.RData",
+             package = "sigminer", mustWork = TRUE))
+# Plot distribution
 draw_cn_distribution(cn)
 draw_cn_distribution(cn, mode = "cd")
 draw_cn_distribution(cn, mode = "cd", fill = TRUE)
-}
 }
 \seealso{
 Other copy number plot: \code{\link{draw_cn_components}},

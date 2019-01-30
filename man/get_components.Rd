@@ -37,10 +37,9 @@ of Gaussian or mixtures of Poison distributions using \strong{flexmix} package.
 }
 \examples{
 \donttest{
-extdata_dir = system.file("extdata", package = "sigminer", mustWork = TRUE)
-cp = read_copynumber(extdata_dir, pattern = "txt", genome_build = "hg19")
-cn_list = get_cnlist(cp)
-cn_features = get_features(cn_list, cores = 1)
+# Load copy number features
+load(system.file("extdata", "toy_cn_features.RData",
+             package = "sigminer", mustWork = TRUE))
 cn_components = get_components(cn_features)
 }
 }

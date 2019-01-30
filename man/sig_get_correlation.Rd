@@ -25,18 +25,13 @@ a \code{list}.
 Compute correlation matrix and corresponding statistical test values.
 }
 \examples{
-\donttest{
-load(system.file("extdata", "example_cn_list.RData",
-     package = "sigminer", mustWork = TRUE))
-segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
-cn = read_copynumber(segTabs,
-                     seg_cols = c("chromosome", "start", "end", "segVal"),
-                     genome_build = "hg19")
-cn_prepare =  sig_prepare(cn)
-res = sig_extract(cn_prepare$nmf_matrix, 3, mode = "copynumber", nrun = 5)
+# Load copy number signature
+load(system.file("extdata", "toy_copynumber_signature.RData",
+             package = "sigminer", mustWork = TRUE))
+# Get activity of signatures
 sig_activity = sig_get_activity(res$nmfObj)
+# Get correlation matrix between signature activities
 sig_cor = sig_get_correlation(sig_activity)
-}
 }
 \seealso{
 Other signature analysis series function: \code{\link{sig_assign_samples}},

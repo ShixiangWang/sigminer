@@ -1,9 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# sigminer
-
-<img src="https://github.com/ShixiangWang/sigminer/blob/master/inst/figures/sigminer.png" height="200" align="right" />
+# sigminer <img src='man/figures/logo.png' align="right" height="139" />
 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/sigminer)](https://cran.r-project.org/package=sigminer)
@@ -32,15 +30,15 @@ and [maftools](https://github.com/PoisonAlien/maftools) package.
 You can install the development version of sigminer from Github with:
 
 ``` r
-devtools::install_github("ShixiangWang/sigminer")
+remotes::install_github("ShixiangWang/sigminer")
 ```
 
 ## Citation
 
-  - *Macintyre, Geoff, et al. “Copy number signatures and mutational
+  - *Macintyre, Geoff, et al. “Copy number signatures and mutational
     processes in ovarian carcinoma.” Nature genetics 50.9 (2018): 1262.*
 
-  - *Wang, Shixiang, et al. “APOBEC3B and APOBEC mutational signature as
+  - *Wang, Shixiang, et al. “APOBEC3B and APOBEC mutational signature as
     potential predictive markers for immunotherapy response in non-small
     cell lung cancer.” Oncogene (2018).*
 

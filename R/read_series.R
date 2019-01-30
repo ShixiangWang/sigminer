@@ -12,7 +12,8 @@
 #' laml.maf = system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
 #' laml = read_maf(maf = laml.maf)
 #' }
-#'
+#' @export
+#' @family read genomic variation data function series
 
 read_maf = function(
   maf, clinicalData = NULL, removeDuplicatedVariants = TRUE,
@@ -68,14 +69,12 @@ read_maf = function(
 #' @return a [CopyNumber] object
 #' @export
 #' @examples
-#' \donttest{
-#' load(system.file("extdata", "example_cn_list.RData",
+#' # Load toy dataset of absolute copynumber profile
+#' load(system.file("extdata", "toy_segTab.RData",
 #'              package = "sigminer", mustWork = TRUE))
-#' segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
 #' cn = read_copynumber(segTabs,
-#'                      seg_cols = c("chromosome", "start", "end", "segVal"),
-#'                                                    genome_build = "hg19")
-#' }
+#'              seg_cols = c("chromosome", "start", "end", "segVal"),
+#'              genome_build = "hg19", complement = FALSE, verbose = TRUE)
 #' @family read genomic variation data function series
 read_copynumber = function(input,
                            pattern = NULL,
@@ -339,6 +338,9 @@ read_copynumber = function(input,
     message("  Filter - ", nrow(dropoff_df))
   }
 
+  # make sure seg value is integer
+  data_df[["segVal"]] = as.integer(round(data_df[["segVal"]]))
+
   if (verbose) message("Anotating...")
   annot = get_LengthFraction(data_df,
                              genome_build = genome_build,
@@ -350,27 +352,16 @@ read_copynumber = function(input,
                                     genome_measure = genome_measure )
 
   if (verbose) message("Done!")
-  if (is.null(clinical_data)) {
-    res = CopyNumber(
-      data =  data_df,
-      summary.per.sample = sum_sample,
-      genome_build = genome_build,
-      genome_measure = genome_measure,
-      annotation = annot,
-      dropoff.segs = dropoff_df,
-      clinical.data = data.table::data.table()
-    )
-  } else {
-    res = CopyNumber(
-      data =  data_df,
-      summary.per.sample = sum_sample,
-      genome_build = genome_build,
-      genome_measure = genome_measure,
-      annotation = annot,
-      dropoff.segs = dropoff_df,
-      clinical.data = data.table::as.data.table(clinical_data)
-    )
-  }
+
+  res = CopyNumber(
+    data =  data_df,
+    summary.per.sample = sum_sample,
+    genome_build = genome_build,
+    genome_measure = genome_measure,
+    annotation = annot,
+    dropoff.segs = dropoff_df,
+    clinical.data = data.table::as.data.table(clinical_data)
+  )
 
   res = validate_segTab(res, verbose = verbose)
   res
@@ -415,20 +406,14 @@ validate_segTab = function(object, verbose = FALSE){
 #' @return a [GenomicVariation] object
 #' @export
 #' @examples
-#' \donttest{
 #' # Read MAF
 #' laml.maf = system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
 #' laml = read_maf(maf = laml.maf)
-#' # Read absolute copy number profile
-#' load(system.file("extdata", "example_cn_list.RData",
+#' # Load copy number object
+#' load(system.file("extdata", "toy_copynumber.RData",
 #'              package = "sigminer", mustWork = TRUE))
-#' segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
-#' cn = read_copynumber(segTabs,
-#'                      seg_cols = c("chromosome", "start", "end", "segVal"),
-#'                                                    genome_build = "hg19")
 #' # Combine as GenomicVariation object
 #' gv = read_variation(cn, laml)
-#' }
 #' @family read genomic variation data function series
 read_variation = function(copynumber, maf, clinical_data = NULL) {
 

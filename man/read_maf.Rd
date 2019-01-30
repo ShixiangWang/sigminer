@@ -58,12 +58,14 @@ This note can be ignored without any harm, it's only generated as to make user a
 laml.maf = system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
 laml = read_maf(maf = laml.maf)
 }
-
 }
 \references{
 Shyr C, Tarailo-Graovac M, Gottlieb M, Lee JJ, van Karnebeek C, Wasserman WW. FLAGS, frequently mutated genes in public exomes. BMC Med Genomics 2014; 7: 64.
 }
 \seealso{
+Other read genomic variation data function series: \code{\link{read_copynumber}},
+  \code{\link{read_variation}}
+
 Other read genomic variation data function series: \code{\link{read_copynumber}},
   \code{\link{read_variation}}
 }

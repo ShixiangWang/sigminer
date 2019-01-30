@@ -18,17 +18,13 @@
 #' @import ggplot2
 #' @export
 #' @examples
-#' \donttest{
-#' load(system.file("extdata", "example_cn_list.RData",
-#'      package = "sigminer", mustWork = TRUE))
-#' segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
-#' cn = read_copynumber(segTabs,
-#'                      seg_cols = c("chromosome", "start", "end", "segVal"),
-#'                      genome_build = "hg19")
+#' # Load copy number object
+#' load(system.file("extdata", "toy_copynumber.RData",
+#'              package = "sigminer", mustWork = TRUE))
+#' # Plot distribution
 #' draw_cn_distribution(cn)
 #' draw_cn_distribution(cn, mode = "cd")
 #' draw_cn_distribution(cn, mode = "cd", fill = TRUE)
-#' }
 #' @family copy number plot
 draw_cn_distribution = function(data,
                                 rm_normal = TRUE,
@@ -169,16 +165,10 @@ draw_cn_distribution = function(data,
 #' @import ggplot2
 #' @family copy number plot
 #' @examples
-#' \donttest{
-#' load(system.file("extdata", "example_cn_list.RData",
-#'      package = "sigminer", mustWork = TRUE))
-#' segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
-#' cn = read_copynumber(segTabs,
-#'                      seg_cols = c("chromosome", "start", "end", "segVal"),
-#'                      genome_build = "hg19")
-#' cn_prepare =  sig_prepare(cn)
+#' # Load copy number prepare object
+#' load(system.file("extdata", "toy_copynumber_prepare.RData",
+#'              package = "sigminer", mustWork = TRUE))
 #' draw_cn_features(cn_prepare$features)
-#' }
 #' @export
 #'
 draw_cn_features = function(features, ylab = "", ...) {
@@ -243,16 +233,10 @@ draw_cn_features = function(features, ylab = "", ...) {
 #' @import ggplot2
 #' @export
 #' @examples
-#' \donttest{
-#' load(system.file("extdata", "example_cn_list.RData",
-#'      package = "sigminer", mustWork = TRUE))
-#' segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
-#' cn = read_copynumber(segTabs,
-#'                      seg_cols = c("chromosome", "start", "end", "segVal"),
-#'                      genome_build = "hg19")
-#' cn_prepare =  sig_prepare(cn)
+#' # Load copy number prepare object
+#' load(system.file("extdata", "toy_copynumber_prepare.RData",
+#'              package = "sigminer", mustWork = TRUE))
 #' draw_cn_components(cn_prepare$features, cn_prepare$components)
-#' }
 #' @family copy number plot
 #'
 draw_cn_components = function(features, components, ...) {
@@ -376,17 +360,10 @@ draw_cn_components = function(features, components, ...) {
 #' @import ggplot2
 #' @export
 #' @examples
-#' \donttest{
-#' load(system.file("extdata", "example_cn_list.RData",
-#'      package = "sigminer", mustWork = TRUE))
-#' segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
-#' cn = read_copynumber(segTabs,
-#'                      seg_cols = c("chromosome", "start", "end", "segVal"),
-#'                      genome_build = "hg19")
-#' cn_prepare =  sig_prepare(cn)
-#' res = sig_extract(cn_prepare$nmf_matrix, 3, mode = "copynumber", nrun = 5)
+#' # Load copy number signature
+#' load(system.file("extdata", "toy_copynumber_signature.RData",
+#'              package = "sigminer", mustWork = TRUE))
 #' draw_sig_profile(res$nmfObj)
-#' }
 #' @family signature plot
 draw_sig_profile = function(nmfObj, mode = c("copynumber", "mutation"),
                             y_scale = c("relative", "absolute"), font_scale = 1) {
@@ -481,17 +458,10 @@ draw_sig_profile = function(nmfObj, mode = c("copynumber", "mutation"),
 #' @importFrom grDevices rainbow
 #' @export
 #' @examples
-#' \donttest{
-#' load(system.file("extdata", "example_cn_list.RData",
-#'      package = "sigminer", mustWork = TRUE))
-#' segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
-#' cn = read_copynumber(segTabs,
-#'                      seg_cols = c("chromosome", "start", "end", "segVal"),
-#'                      genome_build = "hg19")
-#' cn_prepare =  sig_prepare(cn)
-#' res = sig_extract(cn_prepare$nmf_matrix, 3, mode = "copynumber", nrun = 5)
+#' # Load copy number signature
+#' load(system.file("extdata", "toy_copynumber_signature.RData",
+#'              package = "sigminer", mustWork = TRUE))
 #' draw_sig_activity(res$nmfObj)
-#' }
 #' @family signature plot
 draw_sig_activity = function(nmfObj, mode = c("copynumber", "mutation"),
                              font_scale = 1, hide_samps = TRUE) {
@@ -574,14 +544,9 @@ draw_sig_activity = function(nmfObj, mode = c("copynumber", "mutation"),
 #' @export
 #' @examples
 #' \donttest{
-#' load(system.file("extdata", "example_cn_list.RData",
-#'      package = "sigminer", mustWork = TRUE))
-#' segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
-#' cn = read_copynumber(segTabs,
-#'                      seg_cols = c("chromosome", "start", "end", "segVal"),
-#'                      genome_build = "hg19")
-#' cn_prepare =  sig_prepare(cn)
-#' res = sig_extract(cn_prepare$nmf_matrix, 3, mode = "copynumber", nrun = 5)
+#' # Load copy number signature
+#' load(system.file("extdata", "toy_copynumber_signature.RData",
+#'              package = "sigminer", mustWork = TRUE))
 #' sig_activity = sig_get_activity(res$nmfObj)
 #' sig_cor = sig_get_correlation(sig_activity)
 #' draw_sig_corrplot(sig_cor)
@@ -622,23 +587,20 @@ draw_sig_corrplot = function(mat_list, order = "original", type = "lower",
 #' @import ggplot2
 #' @export
 #' @examples
-#' \donttest{
-#' load(system.file("extdata", "example_cn_list.RData",
-#'      package = "sigminer", mustWork = TRUE))
-#' segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
-#' cn = read_copynumber(segTabs,
-#'                      seg_cols = c("chromosome", "start", "end", "segVal"),
-#'                      genome_build = "hg19")
-#' cn_prepare =  sig_prepare(cn)
-#' res = sig_extract(cn_prepare$nmf_matrix, 3, mode = "copynumber", nrun = 5)
-#' subtypes = sig_assign_samples(res$nmfObj)
+#' # Load copy number signature
+#' load(system.file("extdata", "toy_copynumber_signature.RData",
+#'              package = "sigminer", mustWork = TRUE))
+#' # Assign samples to clusters
+#' subtypes = sig_assign_samples(res$nmfObj, type = "samples")
+#'
 #' set.seed(1234)
+#' # Add custom groups
 #' subtypes$new_group = sample(c("1", "2","3", "4"), size = nrow(subtypes), replace = TRUE)
+#' # Summarize subtypes
 #' subtypes.sum = sig_summarize_subtypes(subtypes[, -1], col_subtype = "nmf_subtypes",
-#'                                      cols_to_summary = colnames(subtypes[, -1])[-1],
-#'                                      type = c("co", "ca"), verbose = TRUE)
-#' plot_list = draw_subtypes_comparison(subtypes.sum)
-#' }
+#'                          cols_to_summary = colnames(subtypes[, -1])[c(-1,-2)],
+#'                          type = c("co", "ca"), verbose = TRUE)
+#' draw_subtypes_comparison(subtypes.sum)
 #' @family signature plot
 draw_subtypes_comparison = function(subtype_summary,
                                     xlab = "subtype", ylab_co = NA,

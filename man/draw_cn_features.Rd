@@ -20,16 +20,10 @@ a ggplot object
 Plot copy number feature distribution
 }
 \examples{
-\donttest{
-load(system.file("extdata", "example_cn_list.RData",
-     package = "sigminer", mustWork = TRUE))
-segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
-cn = read_copynumber(segTabs,
-                     seg_cols = c("chromosome", "start", "end", "segVal"),
-                     genome_build = "hg19")
-cn_prepare =  sig_prepare(cn)
+# Load copy number prepare object
+load(system.file("extdata", "toy_copynumber_prepare.RData",
+             package = "sigminer", mustWork = TRUE))
 draw_cn_features(cn_prepare$features)
-}
 }
 \seealso{
 Other copy number plot: \code{\link{draw_cn_components}},

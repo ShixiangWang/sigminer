@@ -32,12 +32,10 @@ a data table
 Calculate length fraction profile of copy number
 }
 \examples{
-\donttest{
-extdata_dir = system.file("extdata", package = "sigminer", mustWork = TRUE)
-cp = read_copynumber(extdata_dir, pattern = "txt", genome_build = "hg19")
-cn_list = get_cnlist(cp)
+# Load copy number list
+load(system.file("extdata", "toy_cnlist.RData",
+             package = "sigminer", mustWork = TRUE))
 annot = get_LengthFraction(cn_list, seg_cols = c("chromosome", "start", "end", "segVal"))
-}
 }
 \seealso{
 Other internal calculation function series: \code{\link{get_ArmLocation}},

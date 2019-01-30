@@ -14,9 +14,7 @@ knitr::opts_chunk$set(
 ```
 
 
-# sigminer
-
-<img src="https://github.com/ShixiangWang/sigminer/blob/master/inst/figures/sigminer.png" height="200" align="right" />
+# sigminer <img src='man/figures/logo.png' align="right" height="139" />
 
 [![CRAN status](https://www.r-pkg.org/badges/version/sigminer)](https://cran.r-project.org/package=sigminer) [![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing) [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/ShixiangWang/sigminer?branch=master&svg=true)](https://ci.appveyor.com/project/ShixiangWang/sigminer) [![Travis build status](https://travis-ci.org/ShixiangWang/sigminer.svg?branch=master)](https://travis-ci.org/ShixiangWang/sigminer) [![Coverage status](https://codecov.io/gh/ShixiangWang/sigminer/branch/master/graph/badge.svg)](https://codecov.io/github/ShixiangWang/sigminer?branch=master)
 
@@ -29,7 +27,7 @@ The goal of **sigminer** is to provide an uniform interface for genomic variatio
 You can install the development version of sigminer from Github with:
 
 ```{r, eval=FALSE}
-devtools::install_github("ShixiangWang/sigminer")
+remotes::install_github("ShixiangWang/sigminer")
 ```
 
 

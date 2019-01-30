@@ -29,14 +29,14 @@ Generate a sample-by-component matrix representing the sum of
 posterior probabilities of each copy-number event being assigned to each component.
 }
 \examples{
-\donttest{
-extdata_dir = system.file("extdata", package = "sigminer", mustWork = TRUE)
-cp = read_copynumber(extdata_dir, pattern = "txt", genome_build = "hg19")
-cn_list = get_cnlist(cp)
-cn_features = get_features(cn_list, cores = 1)
-cn_components = get_components(cn_features)
+# Load copy number components
+load(system.file("extdata", "toy_cn_components.RData",
+             package = "sigminer", mustWork = TRUE))
+# Load copy number features
+load(system.file("extdata", "toy_cn_features.RData",
+             package = "sigminer", mustWork = TRUE))
+
 cn_matrix = get_matrix(cn_features, cn_components)
-}
 }
 \seealso{
 Other internal calculation function series: \code{\link{get_ArmLocation}},

@@ -10,12 +10,13 @@ sig_assign_samples(nmfObj, type = "consensus", matchConseOrder = F)
 \item{nmfObj}{a \code{NMF} result object which is an element return from \link{sig_extract}
 or run results of \strong{NMF} package.}
 
-\item{type}{cluster type, could be 'consensus' or 'sample'.}
+\item{type}{cluster type, could be 'consensus' or 'samples'.}
 
-\item{matchConseOrder}{if \code{TRUE}, the result will match order as shown in consensus map.}
+\item{matchConseOrder}{if \code{TRUE}, the result will match order as shown in consensus map
+when type argument is 'consensus'.}
 }
 \value{
-a \code{data.frame}
+a \code{data.table} object
 }
 \description{
 One of key results from NMF decomposition is to cluster samples into different
@@ -31,17 +32,11 @@ After NMF run, use this function to select import features and assign groups for
 More detail please see \code{\link[NMF:predict]{NMF::predict()}}.
 }
 \examples{
-\donttest{
-load(system.file("extdata", "example_cn_list.RData",
-     package = "sigminer", mustWork = TRUE))
-segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
-cn = read_copynumber(segTabs,
-                     seg_cols = c("chromosome", "start", "end", "segVal"),
-                     genome_build = "hg19")
-cn_prepare =  sig_prepare(cn)
-res = sig_extract(cn_prepare$nmf_matrix, 3, mode = "copynumber", nrun = 5)
-subtypes = sig_assign_samples(res$nmfObj)
-}
+# Load copy number signature
+load(system.file("extdata", "toy_copynumber_signature.RData",
+             package = "sigminer", mustWork = TRUE))
+# Assign samples to clusters
+subtypes = sig_assign_samples(res$nmfObj, type = "samples")
 }
 \seealso{
 Other signature analysis series function: \code{\link{sig_estimate}},

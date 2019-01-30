@@ -1,8 +1,12 @@
 # sigminer v0.1.5
 
-* update intro for package
+* update introduction for package `sigminer`
 * fix text problem provided by CRAN check team
 * add `sig_get_similarity` function
+* add toy datasets & update examples 
+* fix typo in `sig_assign_samples`
+* export `read_maf` 
+* update README
 
 # sigminer v0.1.4
 

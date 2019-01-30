@@ -51,13 +51,9 @@ More custom features please directly use \link[NMF:nmfEstimateRank]{NMF::nmfEsti
 }
 \examples{
 \donttest{
-load(system.file("extdata", "example_cn_list.RData",
-     package = "sigminer", mustWork = TRUE))
-segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
-cn = read_copynumber(segTabs,
-                     seg_cols = c("chromosome", "start", "end", "segVal"),
-                     genome_build = "hg19")
-cn_prepare =  sig_prepare(cn)
+# Load copy number prepare object
+load(system.file("extdata", "toy_copynumber_prepare.RData",
+             package = "sigminer", mustWork = TRUE))
 library(NMF)
 cn_estimate = sig_estimate(cn_prepare$nmf_matrix, cores = 1, nrun = 5,
                            verbose = TRUE)

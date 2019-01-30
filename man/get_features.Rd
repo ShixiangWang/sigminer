@@ -27,12 +27,10 @@ segment copy-number, breakpoint number (per chromosome arm), length of segments 
 copy-number.
 }
 \examples{
-\donttest{
-extdata_dir = system.file("extdata", package = "sigminer", mustWork = TRUE)
-cp = read_copynumber(extdata_dir, pattern = "txt", genome_build = "hg19")
-cn_list = get_cnlist(cp)
+# Load copy number list
+load(system.file("extdata", "toy_cnlist.RData",
+             package = "sigminer", mustWork = TRUE))
 cn_features = get_features(cn_list, cores = 1)
-}
 }
 \seealso{
 Other internal calculation function series: \code{\link{get_ArmLocation}},

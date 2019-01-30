@@ -4,7 +4,8 @@
 \alias{sig_prepare}
 \alias{sig_prepare.CopyNumber}
 \alias{sig_prepare.MAF}
-\title{Variation signature analysis prepare generic}
+\alias{sig_prepare.GenomicVariation}
+\title{Prepare variation signature analysis}
 \usage{
 sig_prepare(object, ...)
 
@@ -15,11 +16,15 @@ sig_prepare(object, ...)
 
 \method{sig_prepare}{MAF}(object, ref_genome = NULL, prefix = NULL,
   add = TRUE, ignoreChr = NULL, useSyn = TRUE)
+
+\method{sig_prepare}{GenomicVariation}(object)
 }
 \arguments{
-\item{object}{a \link{CopyNumber} object or \link{MAF} object or \link{GenomicVariation} object.}
+\item{object}{a \link{CopyNumber} object or \link{MAF} object or
+\link{GenomicVariation} (not support for now) object.}
 
-\item{...}{custom setting for operating object.}
+\item{...}{custom setting for operating object. Detail see S3 method for
+corresponding class.}
 
 \item{reference_components}{default is \code{FALSE}, calculate mixture components
 from \link{CopyNumber} object.
@@ -63,7 +68,7 @@ Default NULL, tries to auto-detect from installed genomes.}
 \item{useSyn}{Logical. Whether to include synonymous variants in analysis. Defaults to TRUE}
 }
 \value{
-a \code{matrix} used for NMF de-composition.
+a \code{list} contains a \code{matrix} used for NMF de-composition.
 }
 \description{
 Generate a matrix for NMF de-composition.
@@ -77,16 +82,16 @@ if user use \link[NMF:nmf]{NMF::nmf} by hand.
 \item \code{CopyNumber}: Signature analysis prepare for CopyNumber object
 
 \item \code{MAF}: Signature analysis prepare for CopyNumber object
+
+\item \code{GenomicVariation}: Signature analysis prepare for GenomicVariation object
 }}
 
 \examples{
 \donttest{
-load(system.file("extdata", "example_cn_list.RData",
-     package = "sigminer", mustWork = TRUE))
-segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
-cn = read_copynumber(segTabs,
-                     seg_cols = c("chromosome", "start", "end", "segVal"),
-                     genome_build = "hg19")
+# Load copy number object
+load(system.file("extdata", "toy_copynumber.RData",
+             package = "sigminer", mustWork = TRUE))
+# Prepare copy number signature analysis
 cn_prepare =  sig_prepare(cn)
 }
 }

@@ -35,11 +35,9 @@
 #' @return a `list`
 #' @export
 #' @examples
-#' \donttest{
 #' extdata_dir = system.file("extdata", package = "sigminer", mustWork = TRUE)
 #' cp = read_copynumber(extdata_dir, pattern = "txt", genome_build = "hg19")
 #' cn_list = get_cnlist(cp)
-#' }
 #' @family internal calculation function series
 
 get_cnlist = function(CopyNumber) {
@@ -75,12 +73,10 @@ get_cnlist = function(CopyNumber) {
 #' @import foreach
 #' @export
 #' @examples
-#' \donttest{
-#' extdata_dir = system.file("extdata", package = "sigminer", mustWork = TRUE)
-#' cp = read_copynumber(extdata_dir, pattern = "txt", genome_build = "hg19")
-#' cn_list = get_cnlist(cp)
+#' # Load copy number list
+#' load(system.file("extdata", "toy_cnlist.RData",
+#'              package = "sigminer", mustWork = TRUE))
 #' cn_features = get_features(cn_list, cores = 1)
-#' }
 #' @family internal calculation function series
 
 get_features = function(CN_data,
@@ -179,10 +175,9 @@ get_features = function(CN_data,
 #' @export
 #' @examples
 #' \donttest{
-#' extdata_dir = system.file("extdata", package = "sigminer", mustWork = TRUE)
-#' cp = read_copynumber(extdata_dir, pattern = "txt", genome_build = "hg19")
-#' cn_list = get_cnlist(cp)
-#' cn_features = get_features(cn_list, cores = 1)
+#' # Load copy number features
+#' load(system.file("extdata", "toy_cn_features.RData",
+#'              package = "sigminer", mustWork = TRUE))
 #' cn_components = get_components(cn_features)
 #' }
 #' @family internal calculation function series
@@ -311,14 +306,14 @@ get_components = function(CN_features,
 #' @importFrom utils data download.file str
 #' @export
 #' @examples
-#' \donttest{
-#' extdata_dir = system.file("extdata", package = "sigminer", mustWork = TRUE)
-#' cp = read_copynumber(extdata_dir, pattern = "txt", genome_build = "hg19")
-#' cn_list = get_cnlist(cp)
-#' cn_features = get_features(cn_list, cores = 1)
-#' cn_components = get_components(cn_features)
+#' # Load copy number components
+#' load(system.file("extdata", "toy_cn_components.RData",
+#'              package = "sigminer", mustWork = TRUE))
+#' # Load copy number features
+#' load(system.file("extdata", "toy_cn_features.RData",
+#'              package = "sigminer", mustWork = TRUE))
+#'
 #' cn_matrix = get_matrix(cn_features, cn_components)
-#' }
 #' @family internal calculation function series
 get_matrix = function(CN_features,
                       all_components = NULL,
@@ -393,12 +388,10 @@ get_matrix = function(CN_features,
 #' @return a data table
 #' @export
 #' @examples
-#' \donttest{
-#' extdata_dir = system.file("extdata", package = "sigminer", mustWork = TRUE)
-#' cp = read_copynumber(extdata_dir, pattern = "txt", genome_build = "hg19")
-#' cn_list = get_cnlist(cp)
+#' # Load copy number list
+#' load(system.file("extdata", "toy_cnlist.RData",
+#'              package = "sigminer", mustWork = TRUE))
 #' annot = get_LengthFraction(cn_list, seg_cols = c("chromosome", "start", "end", "segVal"))
-#' }
 #' @family internal calculation function series
 get_LengthFraction = function(CN_data,
                               genome_build = c("hg19", "hg38"),
