@@ -406,6 +406,7 @@ validate_segTab = function(object, verbose = FALSE){
 #' @return a [GenomicVariation] object
 #' @export
 #' @examples
+#' \donttest{
 #' # Read MAF
 #' laml.maf = system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
 #' laml = read_maf(maf = laml.maf)
@@ -414,6 +415,7 @@ validate_segTab = function(object, verbose = FALSE){
 #'              package = "sigminer", mustWork = TRUE))
 #' # Combine as GenomicVariation object
 #' gv = read_variation(cn, laml)
+#' }
 #' @family read genomic variation data function series
 read_variation = function(copynumber, maf, clinical_data = NULL) {
 
