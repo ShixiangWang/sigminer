@@ -94,12 +94,12 @@ draw_cn_distribution = function(data,
     if (scale_chr) {
       if (genome_build == "hg19") {
         data("chromsize.hg19",
-             package = "VSHunter",
+             package = "sigminer",
              envir = environment())
         chrlen = chromsize.hg19
       } else {
         data("chromsize.hg38",
-             package = "VSHunter",
+             package = "sigminer",
              envir = environment())
         chrlen = chromsize.hg38
       }
