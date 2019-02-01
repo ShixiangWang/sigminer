@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# sigminer <img src='man/figures/logo.png' align="right" height="139" />
+# sigminer <img src="man/figures/logo.png" align="right"  height="140" width="120" alt="logo"/>
 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/sigminer)](https://cran.r-project.org/package=sigminer)
@@ -12,6 +12,8 @@ status](https://ci.appveyor.com/api/projects/status/github/ShixiangWang/sigminer
 status](https://travis-ci.org/ShixiangWang/sigminer.svg?branch=master)](https://travis-ci.org/ShixiangWang/sigminer)
 [![Coverage
 status](https://codecov.io/gh/ShixiangWang/sigminer/branch/master/graph/badge.svg)](https://codecov.io/github/ShixiangWang/sigminer?branch=master)
+
+## Overview
 
 The goal of **sigminer** is to provide an uniform interface for genomic
 variation signature analysis and visualization. **sigminer** is
