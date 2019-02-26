@@ -35,7 +35,7 @@ is a directory and cannot find \code{samp_col}, sample names will use file names
 \item{genome_measure}{default is 'called', can be 'wg' or 'called'.
 Set 'called' will use autosomo called segments size to compute total size for CNA burden calculation,
 this option is useful for WES and target sequencing.
-Set 'wg' will autosome size from genome build, this option is useful for WGS, SNP etc..}
+Set 'wg' will use autosome size from genome build, this option is useful for WGS, SNP etc..}
 
 \item{clinical_data}{a \code{data.frame} representing clinical data
 associated with each sample in copy number profile.}

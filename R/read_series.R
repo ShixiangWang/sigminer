@@ -58,7 +58,7 @@ read_maf = function(
 #' @param genome_measure default is 'called', can be 'wg' or 'called'.
 #' Set 'called' will use autosomo called segments size to compute total size for CNA burden calculation,
 #' this option is useful for WES and target sequencing.
-#' Set 'wg' will autosome size from genome build, this option is useful for WGS, SNP etc..
+#' Set 'wg' will use autosome size from genome build, this option is useful for WGS, SNP etc..
 #' @param clinical_data a `data.frame` representing clinical data
 #' associated with each sample in copy number profile.
 #' @param complement if `TRUE`, complement chromosome does not show in input data

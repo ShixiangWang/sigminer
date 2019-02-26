@@ -16,7 +16,7 @@ and 'sample' these five ordered columns. 'chromosome' should have prefix "chr".}
 \item{genome_measure}{default is 'called', can be 'wg' or 'called'.
 Set 'called' will use autosomo called segments size to compute total size for CNA burden calculation,
 this option is useful for WES and target sequencing.
-Set 'wg' will autosome size from genome build, this option is useful for WGS, SNP etc..}
+Set 'wg' will use autosome size from genome build, this option is useful for WGS, SNP etc..}
 
 \item{min_seg_len}{minimal length of CNV segment for CNA burden calculation,
 default is 1000. (!NOT implement NOW!)}
