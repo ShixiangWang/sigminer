@@ -503,9 +503,9 @@ draw_sig_activity = function(nmfObj, mode = c("copynumber", "mutation"),
   df = rbind(x1, x2)
 
   if (mode == "copynumber") {
-    df$class0 <- factor(df$class0,c("Weights","Fractions"))
+    df$class0 <- factor(df$class0,c("Coefficients","Fractions"))
   } else {
-    df$class0 <- factor(df$class0,c("Counts","Fractions"))
+    df$class0 <- factor(df$class0,c("Coefficients","Fractions"))
   }
 
   df$Sample <- factor(df$Sample,sample.ordering)
