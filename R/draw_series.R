@@ -493,11 +493,12 @@ draw_sig_activity = function(nmfObj, mode = c("copynumber", "mutation"),
   h.norm$Signature = rownames(h.norm)
   x1 = tidyr::gather(h, Sample, Activity, -Signature)
   x2 = tidyr::gather(h.norm, Sample, Activity, -Signature)
-  if (mode == "copynumber") {
-    x1$class0 = "Weights"
-  } else {
-    x1$class0 = "Counts"
-  }
+  # if (mode == "copynumber") {
+  #   x1$class0 = "Weights"
+  # } else {
+  #   x1$class0 = "Counts"
+  # }
+  x1$class0 = "Coefficients"
   x2$class0 = "Fractions"
   df = rbind(x1, x2)
 
