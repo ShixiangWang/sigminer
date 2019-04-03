@@ -435,13 +435,7 @@ draw_sig_profile = function(nmfObj, mode = c("copynumber", "mutation"),
       theme(axis.title.x = element_text(face="bold",colour="black",size=14*scale)) +
       theme(axis.title.y = element_text(face="bold",colour="black",size=14*scale))
 
-    if (mode == "copynumber") {
-      p = p + xlab("Components") + ylab("Contributions")
-    } else {
-      p = p + xlab("Motifs") + ylab("Contributions")
-    }
-
-    return(p)
+    p = p + xlab("Components") + ylab("Contributions")
 }
 
 
