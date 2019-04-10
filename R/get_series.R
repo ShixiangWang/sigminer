@@ -386,6 +386,7 @@ get_matrix = function(CN_features,
 #' @param samp_col a character used to specify the sample column name.
 #' @author Shixiang Wang <w_shixiang@163.com>
 #' @return a data table
+#' @importFrom dplyr progress_estimated
 #' @export
 #' @examples
 #' # Load copy number list
@@ -459,6 +460,8 @@ get_LengthFraction = function(CN_data,
   annotation = vector("character", nrow(segTab))
   fraction = vector("numeric", nrow(segTab))
 
+  p = dplyr::progress_estimated(nrow(segTab))
+
   for (i in 1:nrow(segTab)) {
     # locate chromosome
     arm_loc = arm_data[segTab[["chromosome"]][i], on = "chrom"]
@@ -495,6 +498,8 @@ get_LengthFraction = function(CN_data,
       annotation[i] = "segment locate in centromere region"
       fraction[i] = 2 * ((y[2] - y[1] + 1) / arm_loc$total_size)
     }
+
+    p$tick()$print()
   }
 
   cbind(segTab, data.table::data.table(
