@@ -2,7 +2,7 @@
 % Please edit documentation in R/prepare_series.R
 \name{prepare_maf}
 \alias{prepare_maf}
-\title{Prepare nmf input matrix for mutation signature analysis}
+\title{Prepare nmf input matrix for mutational signature analysis}
 \usage{
 prepare_maf(maf, ref_genome = NULL, prefix = NULL, add = TRUE,
   ignoreChr = NULL, useSyn = TRUE, fn = NULL)

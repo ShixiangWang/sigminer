@@ -57,7 +57,7 @@ prepare_copynumber = function(CopyNumber,
 
 # Prepare MAF: Get trinucleotide matrix ------------------------------------
 
-#' Prepare nmf input matrix for mutation signature analysis
+#' Prepare nmf input matrix for mutational signature analysis
 #'
 #' NMF input matrix here is trinucletiode matrix. This function calls
 #' `trinucleotideMatirx` provided by **maftools** to extract 96 mutation motifs.

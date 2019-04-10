@@ -21,7 +21,7 @@ or run results of \strong{NMF} package.}
 a \code{ggplot} object
 }
 \description{
-Currently support copy number signatures and mutation signatures.
+Currently support copy number signatures and mutational signatures.
 }
 \examples{
 # Load copy number signature

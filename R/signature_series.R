@@ -598,11 +598,11 @@ sig_get_activity = function(nmfObj) {
 
 #' Get correlation matrix between signature activities
 #'
-#' Compute correlation matrix and corresponding statistical test values.
+#' Compute correlation matrix and corresponding statistical test values between signature activies.
 #'
 #' @param cn_activity activity of copy number signature, a `list`, obtain it from
 #' [sig_get_activity] function.
-#' @param snv_activity activity of mutation signature, a `list`, obtain it from
+#' @param snv_activity activity of mutational signature, a `list`, obtain it from
 #' [sig_get_activity] function.
 #' @param type one of 'absolute' and 'relative'.
 #' @param ... other arguments pass to [corrplot::cor.mtest()].

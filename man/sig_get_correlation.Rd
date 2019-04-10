@@ -11,7 +11,7 @@ sig_get_correlation(cn_activity = NULL, snv_activity = NULL,
 \item{cn_activity}{activity of copy number signature, a \code{list}, obtain it from
 \link{sig_get_activity} function.}
 
-\item{snv_activity}{activity of mutation signature, a \code{list}, obtain it from
+\item{snv_activity}{activity of mutational signature, a \code{list}, obtain it from
 \link{sig_get_activity} function.}
 
 \item{type}{one of 'absolute' and 'relative'.}
@@ -22,7 +22,7 @@ sig_get_correlation(cn_activity = NULL, snv_activity = NULL,
 a \code{list}.
 }
 \description{
-Compute correlation matrix and corresponding statistical test values.
+Compute correlation matrix and corresponding statistical test values between signature activies.
 }
 \examples{
 # Load copy number signature

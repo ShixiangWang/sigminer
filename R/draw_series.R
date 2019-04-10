@@ -444,7 +444,7 @@ draw_sig_profile = function(nmfObj, mode = c("copynumber", "mutation"),
 
 #' Plot signature activity
 #'
-#' Currently support copy number signatures and mutation signatures.
+#' Currently support copy number signatures and mutational signatures.
 #' @inheritParams draw_sig_profile
 #' @param hide_samps if `TRUE`, not show sample names.
 #' @author Shixiang Wang
