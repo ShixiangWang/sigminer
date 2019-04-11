@@ -14,7 +14,7 @@
 #' @param object a [CopyNumber] object or [MAF] object or
 #' [GenomicVariation] (not support for now) object.
 #' @param ... custom setting for operating object. Detail see S3 method for
-#' corresponding class.
+#' corresponding class (e.g. `CopyNumber`).
 #' @return a `list` contains a `matrix` used for NMF de-composition.
 #' @author Shixiang Wang
 #' @export
@@ -39,7 +39,7 @@ sig_prepare.CopyNumber = function(object, reference_components = FALSE,
                                   min_comp = 2, max_comp = 10,
                                   min_prior = 0.001,
                                   model_selection = "BIC",
-                                  nrep = 1, niter = 1000, rowIter = 1000){
+                                  nrep = 1, niter = 1000, rowIter = 1000, ...){
   prepare_copynumber(object, reference_components = reference_components,
                      cores = cores, seed = seed,
                      min_comp = min_comp, max_comp = max_comp,
@@ -52,13 +52,13 @@ sig_prepare.CopyNumber = function(object, reference_components = FALSE,
 #' @inheritParams prepare_maf
 #' @export
 sig_prepare.MAF = function(object, ref_genome = NULL, prefix = NULL,
-                           add = TRUE, ignoreChr = NULL, useSyn = TRUE){
+                           add = TRUE, ignoreChr = NULL, useSyn = TRUE, ...){
   res = prepare_maf(object, ref_genome = ref_genome, prefix = prefix,
                     add = add, ignoreChr = ignoreChr, useSyn = useSyn, fn = NULL)
 }
 
 #' @describeIn sig_prepare Signature analysis prepare for GenomicVariation object
-sig_prepare.GenomicVariation = function(object) {
+sig_prepare.GenomicVariation = function(object, ...) {
   print("Not support right now.")
 }
 

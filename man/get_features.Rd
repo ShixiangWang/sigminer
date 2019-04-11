@@ -30,7 +30,9 @@ copy-number.
 # Load copy number list
 load(system.file("extdata", "toy_cnlist.RData",
              package = "sigminer", mustWork = TRUE))
+\donttest{
 cn_features = get_features(cn_list, cores = 1)
+}
 }
 \seealso{
 Other internal calculation function series: \code{\link{get_ArmLocation}},

@@ -12,19 +12,19 @@ sig_prepare(object, ...)
 \method{sig_prepare}{CopyNumber}(object, reference_components = FALSE,
   cores = 1, seed = 123456, min_comp = 2, max_comp = 10,
   min_prior = 0.001, model_selection = "BIC", nrep = 1,
-  niter = 1000, rowIter = 1000)
+  niter = 1000, rowIter = 1000, ...)
 
 \method{sig_prepare}{MAF}(object, ref_genome = NULL, prefix = NULL,
-  add = TRUE, ignoreChr = NULL, useSyn = TRUE)
+  add = TRUE, ignoreChr = NULL, useSyn = TRUE, ...)
 
-\method{sig_prepare}{GenomicVariation}(object)
+\method{sig_prepare}{GenomicVariation}(object, ...)
 }
 \arguments{
 \item{object}{a \link{CopyNumber} object or \link{MAF} object or
 \link{GenomicVariation} (not support for now) object.}
 
 \item{...}{custom setting for operating object. Detail see S3 method for
-corresponding class.}
+corresponding class (e.g. \code{CopyNumber}).}
 
 \item{reference_components}{default is \code{FALSE}, calculate mixture components
 from \link{CopyNumber} object.

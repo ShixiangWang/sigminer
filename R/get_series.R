@@ -76,7 +76,9 @@ get_cnlist = function(CopyNumber) {
 #' # Load copy number list
 #' load(system.file("extdata", "toy_cnlist.RData",
 #'              package = "sigminer", mustWork = TRUE))
+#' \donttest{
 #' cn_features = get_features(cn_list, cores = 1)
+#' }
 #' @family internal calculation function series
 
 get_features = function(CN_data,
@@ -387,6 +389,7 @@ get_matrix = function(CN_features,
 #' @author Shixiang Wang <w_shixiang@163.com>
 #' @return a data table
 #' @importFrom dplyr progress_estimated
+#' @importFrom purrr pmap_df
 #' @export
 #' @examples
 #' # Load copy number list
@@ -456,57 +459,116 @@ get_LengthFraction = function(CN_data,
   arm_data = get_ArmLocation(genome_build)
   data.table::setDT(arm_data)
 
-  location = vector("character", nrow(segTab))
-  annotation = vector("character", nrow(segTab))
-  fraction = vector("numeric", nrow(segTab))
+  segTab = dplyr::left_join(segTab, arm_data, by = c("chromosome"="chrom"))
 
-  p = dplyr::progress_estimated(nrow(segTab))
+  .annot_fun = function(chrom, start, end, p_start, p_end, p_length, q_start, q_end, q_length, total_size) {
 
-  for (i in 1:nrow(segTab)) {
-    # locate chromosome
-    arm_loc = arm_data[segTab[["chromosome"]][i], on = "chrom"]
-
-    y = c(segTab$start[i], segTab$end[i])
-    if (y[2] <= arm_loc$p_end & y[1] >= arm_loc$p_start) {
-      location[i] = paste0(sub("chr", "", arm_loc$chrom), "p")
-      annotation[i] = "short arm"
-      fraction[i] = (y[2] - y[1] + 1) / (arm_loc$p_end - arm_loc$p_start + 1)
-    } else if (y[2] <= arm_loc$q_end &
-               y[1] >= arm_loc$q_start) {
-      location[i] = paste0(sub("chr", "", arm_loc$chrom), "q")
-      annotation[i] = "long arm"
-      fraction[i] = (y[2] - y[1] + 1) / (arm_loc$q_end - arm_loc$q_start + 1)
-    } else if (y[1] >= arm_loc$p_start &
-               y[1] <= arm_loc$p_end &
-               y[2] >= arm_loc$q_start & y[2] <= arm_loc$q_end) {
-      location[i] = paste0(sub("chr", "", arm_loc$chrom), "pq") # across p and q arm
-      annotation[i] = "across short and long arm"
-      fraction[i] = 2 * ((y[2] - y[1] + 1) / arm_loc$total_size)
-    } else if (y[1] < arm_loc$p_end & y[2] < arm_loc$q_start) {
-      location[i] = paste0(sub("chr", "", arm_loc$chrom), "p")
-      annotation[i] = "short arm intersect with centromere region"
+    if (end <= p_end & start >= p_start) {
+      location = paste0(sub("chr", "", chrom), "p")
+      annotation = "short arm"
+      fraction = (end - start + 1) / (p_end - p_start + 1)
+    } else if (end <= q_end &
+               start >= q_start) {
+      location = paste0(sub("chr", "", chrom), "q")
+      annotation = "long arm"
+      fraction = (end - start + 1) / (q_end - q_start + 1)
+    } else if (start >= p_start &
+               start <= p_end &
+               end >= q_start & end <= q_end) {
+      location = paste0(sub("chr", "", chrom), "pq") # across p and q arm
+      annotation = "across short and long arm"
+      fraction = 2 * ((end - start + 1) / total_size)
+    } else if (start < p_end & end < q_start) {
+      location = paste0(sub("chr", "", chrom), "p")
+      annotation = "short arm intersect with centromere region"
       # only calculate region does not intersect
-      fraction[i] = (y[2] - y[1] + 1 - (y[2] - arm_loc$p_end)) / (arm_loc$p_end - arm_loc$p_start + 1)
-    } else if (y[1] > arm_loc$p_end &
-               y[1] < arm_loc$q_start & y[2] > arm_loc$q_start) {
-      location[i] = paste0(sub("chr", "", arm_loc$chrom), "q")
-      annotation[i] = "long arm intersect with centromere region"
+      fraction = (end - start + 1 - (end - p_end)) / (p_end - p_start + 1)
+    } else if (start > p_end &
+               start < q_start & end > q_start) {
+      location = paste0(sub("chr", "", chrom), "q")
+      annotation = "long arm intersect with centromere region"
       # only calculate region does not intersect
-      fraction[i] = (y[2] - y[1] + 1 - (y[1] - arm_loc$q_start)) / (arm_loc$q_end - arm_loc$q_start + 1)
+      fraction = (end - start + 1 - (start - q_start)) / (q_end - q_start + 1)
     } else {
-      location[i] = paste0(sub("chr", "", arm_loc$chrom), "pq") # suppose as pq
-      annotation[i] = "segment locate in centromere region"
-      fraction[i] = 2 * ((y[2] - y[1] + 1) / arm_loc$total_size)
+      location = paste0(sub("chr", "", chrom), "pq") # suppose as pq
+      annotation = "segment locate in centromere region"
+      fraction = 2 * ((end - start + 1) / total_size)
     }
 
-    p$tick()$print()
+    dplyr::tibble(location=location, annotation=annotation, fraction=fraction)
   }
 
-  cbind(segTab, data.table::data.table(
-    location = location,
-    annotation = annotation,
-    fraction = fraction
-  ))
+  annot_fun <- function(chrom, start, end, p_start, p_end, p_length, q_start,
+                         q_end, q_length, total_size, .pb = NULL) {
+    if (.pb$i < .pb$n) .pb$tick()$print()
+    .annot_fun(chrom, start, end, p_start, p_end, p_length, q_start,
+              q_end, q_length, total_size)
+  }
+
+  pb <- progress_estimated(nrow(segTab), 0)
+
+  annot = purrr::pmap_df(
+    list(
+      chrom = segTab$chromosome,
+      start = segTab$start,
+      end = segTab$end,
+      p_start = segTab$p_start,
+      p_end = segTab$p_end,
+      p_length = segTab$p_length,
+      q_start = segTab$q_start,
+      q_end = segTab$q_end,
+      q_length = segTab$q_length,
+      total_size = segTab$total_size
+    ), annot_fun, .pb=pb)
+
+
+  # location = vector("character", nrow(segTab))
+  # annotation = vector("character", nrow(segTab))
+  # fraction = vector("numeric", nrow(segTab))
+  #
+  # p = dplyr::progress_estimated(nrow(segTab))
+  #
+  # for (i in 1:nrow(segTab)) {
+  #   # locate chromosome
+  #   arm_loc = arm_data[segTab[["chromosome"]][i], on = "chrom"]
+  #
+  #   y = c(segTab$start[i], segTab$end[i])
+  #   if (y[2] <= arm_loc$p_end & y[1] >= arm_loc$p_start) {
+  #     location[i] = paste0(sub("chr", "", arm_loc$chrom), "p")
+  #     annotation[i] = "short arm"
+  #     fraction[i] = (y[2] - y[1] + 1) / (arm_loc$p_end - arm_loc$p_start + 1)
+  #   } else if (y[2] <= arm_loc$q_end &
+  #              y[1] >= arm_loc$q_start) {
+  #     location[i] = paste0(sub("chr", "", arm_loc$chrom), "q")
+  #     annotation[i] = "long arm"
+  #     fraction[i] = (y[2] - y[1] + 1) / (arm_loc$q_end - arm_loc$q_start + 1)
+  #   } else if (y[1] >= arm_loc$p_start &
+  #              y[1] <= arm_loc$p_end &
+  #              y[2] >= arm_loc$q_start & y[2] <= arm_loc$q_end) {
+  #     location[i] = paste0(sub("chr", "", arm_loc$chrom), "pq") # across p and q arm
+  #     annotation[i] = "across short and long arm"
+  #     fraction[i] = 2 * ((y[2] - y[1] + 1) / arm_loc$total_size)
+  #   } else if (y[1] < arm_loc$p_end & y[2] < arm_loc$q_start) {
+  #     location[i] = paste0(sub("chr", "", arm_loc$chrom), "p")
+  #     annotation[i] = "short arm intersect with centromere region"
+  #     # only calculate region does not intersect
+  #     fraction[i] = (y[2] - y[1] + 1 - (y[2] - arm_loc$p_end)) / (arm_loc$p_end - arm_loc$p_start + 1)
+  #   } else if (y[1] > arm_loc$p_end &
+  #              y[1] < arm_loc$q_start & y[2] > arm_loc$q_start) {
+  #     location[i] = paste0(sub("chr", "", arm_loc$chrom), "q")
+  #     annotation[i] = "long arm intersect with centromere region"
+  #     # only calculate region does not intersect
+  #     fraction[i] = (y[2] - y[1] + 1 - (y[1] - arm_loc$q_start)) / (arm_loc$q_end - arm_loc$q_start + 1)
+  #   } else {
+  #     location[i] = paste0(sub("chr", "", arm_loc$chrom), "pq") # suppose as pq
+  #     annotation[i] = "segment locate in centromere region"
+  #     fraction[i] = 2 * ((y[2] - y[1] + 1) / arm_loc$total_size)
+  #   }
+  #
+  #   p$tick()$print()
+  # }
+
+  cbind(data.table::setDT(segTab)[, colnames(arm_data)[-1]:=NULL], data.table::setDT(annot))
 }
 
 

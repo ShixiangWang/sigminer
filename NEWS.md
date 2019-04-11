@@ -1,3 +1,9 @@
+
+# sigminer v0.1.6
+
+* export `sig_prepare` S3 methods
+* promote speed of `get_LengthFraction` function
+
 # sigminer v0.1.5
 
 * update introduction for package `sigminer`
