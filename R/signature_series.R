@@ -33,6 +33,7 @@ sig_prepare = function(object, ...){
 
 #' @describeIn sig_prepare Signature analysis prepare for CopyNumber object
 #' @inheritParams prepare_copynumber
+#' @export
 sig_prepare.CopyNumber = function(object, reference_components = FALSE,
                                   cores = 1, seed = 123456,
                                   min_comp = 2, max_comp = 10,
@@ -49,6 +50,7 @@ sig_prepare.CopyNumber = function(object, reference_components = FALSE,
 
 #' @describeIn sig_prepare Signature analysis prepare for CopyNumber object
 #' @inheritParams prepare_maf
+#' @export
 sig_prepare.MAF = function(object, ref_genome = NULL, prefix = NULL,
                            add = TRUE, ignoreChr = NULL, useSyn = TRUE){
   res = prepare_maf(object, ref_genome = ref_genome, prefix = prefix,
