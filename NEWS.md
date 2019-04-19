@@ -1,6 +1,7 @@
 
 # sigminer v0.1.6
 
+* update readme & citation & authors
 * export `sig_prepare` S3 methods
 * promote speed of `get_LengthFraction` function
 

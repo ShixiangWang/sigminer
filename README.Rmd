@@ -43,6 +43,8 @@ Wang, Shixiang, et al. “APOBEC3B and APOBEC mutational signature as
     cell lung cancer.” Oncogene (2018).
 ```
 
+## Acknowledgments
+
 The code for extracting copy number signatures was based on the source code from 
 paper *Copy number signatures and mutational processes in ovarian carcinoma*, 
 if you use this feature, please also cite:
@@ -52,7 +54,7 @@ Macintyre, Geoff, et al. "Copy number signatures and mutational
     processes in ovarian carcinoma." Nature genetics 50.9 (2018): 1262.
 ```
 
-The code for extracting mutational signatures was based inpart on the source 
+The code for extracting mutational signatures was based in part on the source 
 code of the **maftools** package, if you use this feature, please also cite:
 
 ```
@@ -61,8 +63,6 @@ Mayakonda, Anand, et al. "Maftools: efficient and comprehensive analysis
 ```
 
 
-## TODO
+## LICENSE
 
-* survival analysis, including
-  * Cox
-  * KM
+MIT © Shixiang Wang
