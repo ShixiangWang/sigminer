@@ -51,9 +51,9 @@ and
 
 ## Acknowledgments
 
-The code for extracting copy number signatures was based on the source
-code from paper *Copy number signatures and mutational processes in
-ovarian carcinoma*, if you use this feature, please also cite:
+The code for extracting copy number signatures was based in part on the
+source code from paper *Copy number signatures and mutational processes
+in ovarian carcinoma*, if you use this feature, please also cite:
 
     Macintyre, Geoff, et al. "Copy number signatures and mutational
         processes in ovarian carcinoma." Nature genetics 50.9 (2018): 1262.
