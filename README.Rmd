@@ -43,6 +43,13 @@ Wang, Shixiang, et al. “APOBEC3B and APOBEC mutational signature as
     cell lung cancer.” Oncogene (2018).
 ```
 
+and
+
+```
+Gaujoux, Renaud, and Cathal Seoighe. "A Flexible R Package for 
+    Nonnegative Matrix Factorization."" BMC Bioinformatics 11, no. 1 (December 2010).
+```
+
 ## Acknowledgments
 
 The code for extracting copy number signatures was based on the source code from 

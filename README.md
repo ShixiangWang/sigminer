@@ -44,6 +44,11 @@ If you use **sigminer** in academic field, please cite:
         potential predictive markers for immunotherapy response in non-small
         cell lung cancer.” Oncogene (2018).
 
+and
+
+    Gaujoux, Renaud, and Cathal Seoighe. "A Flexible R Package for 
+        Nonnegative Matrix Factorization."" BMC Bioinformatics 11, no. 1 (December 2010).
+
 ## Acknowledgments
 
 The code for extracting copy number signatures was based on the source
