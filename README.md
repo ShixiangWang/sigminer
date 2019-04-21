@@ -38,11 +38,12 @@ remotes::install_github("ShixiangWang/sigminer")
 
 ## Citation
 
-If you use **sigminer** in academic field, please cite:
+If you use **sigminer** in academic field, please
+    cite:
 
-    Wang, Shixiang, et al. “APOBEC3B and APOBEC mutational signature as
-        potential predictive markers for immunotherapy response in non-small
-        cell lung cancer.” Oncogene (2018).
+    Wang, Shixiang, et al. "The predictive power of tumor mutational burden 
+        in lung cancer immunotherapy response is influenced by patients' sex."
+        International journal of cancer (2019).
 
 and
 
