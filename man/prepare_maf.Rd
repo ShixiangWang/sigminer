@@ -48,11 +48,13 @@ One-sided Fisher's Exact test is performed to determine the enrichment of APOBEC
 }
 \examples{
 \donttest{
-laml.maf = system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
-laml = read_maf(maf = laml.maf)
+laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
+laml <- read_maf(maf = laml.maf)
 library(BSgenome.Hsapiens.UCSC.hg19)
-laml.tnm = prepare_maf(maf = laml, ref_genome = 'BSgenome.Hsapiens.UCSC.hg19',
-    prefix = 'chr', add = TRUE, useSyn = TRUE)
+laml.tnm <- prepare_maf(
+  maf = laml, ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
+  prefix = "chr", add = TRUE, useSyn = TRUE
+)
 }
 }
 \references{

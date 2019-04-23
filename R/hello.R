@@ -3,10 +3,10 @@
 #' @examples
 #' hello()
 hello <- function() {
-  if (!requireNamespace("cowsay",  quietly = TRUE)) {
+  if (!requireNamespace("cowsay", quietly = TRUE)) {
     stop("Package 'cowsay' is not installed.")
   } else {
-    msg = paste0("Welcome to 'sigminer' package!
+    msg <- paste0("Welcome to 'sigminer' package!
 =========================================================================
 Quick overview please type ?sigminer
 

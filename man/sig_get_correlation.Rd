@@ -27,11 +27,12 @@ Compute correlation matrix and corresponding statistical test values between sig
 \examples{
 # Load copy number signature
 load(system.file("extdata", "toy_copynumber_signature.RData",
-             package = "sigminer", mustWork = TRUE))
+  package = "sigminer", mustWork = TRUE
+))
 # Get activity of signatures
-sig_activity = sig_get_activity(res$nmfObj)
+sig_activity <- sig_get_activity(res$nmfObj)
 # Get correlation matrix between signature activities
-sig_cor = sig_get_correlation(sig_activity)
+sig_cor <- sig_get_correlation(sig_activity)
 }
 \seealso{
 Other signature analysis series function: \code{\link{sig_assign_samples}},

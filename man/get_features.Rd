@@ -29,9 +29,10 @@ copy-number.
 \examples{
 # Load copy number list
 load(system.file("extdata", "toy_cnlist.RData",
-             package = "sigminer", mustWork = TRUE))
+  package = "sigminer", mustWork = TRUE
+))
 \donttest{
-cn_features = get_features(cn_list, cores = 1)
+cn_features <- get_features(cn_list, cores = 1)
 }
 }
 \seealso{

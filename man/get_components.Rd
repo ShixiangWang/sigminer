@@ -39,8 +39,9 @@ of Gaussian or mixtures of Poison distributions using \strong{flexmix} package.
 \donttest{
 # Load copy number features
 load(system.file("extdata", "toy_cn_features.RData",
-             package = "sigminer", mustWork = TRUE))
-cn_components = get_components(cn_features)
+  package = "sigminer", mustWork = TRUE
+))
+cn_components <- get_components(cn_features)
 }
 }
 \seealso{

@@ -26,7 +26,8 @@ Currently support copy number signatures and mutational signatures.
 \examples{
 # Load copy number signature
 load(system.file("extdata", "toy_copynumber_signature.RData",
-             package = "sigminer", mustWork = TRUE))
+  package = "sigminer", mustWork = TRUE
+))
 draw_sig_activity(res$nmfObj)
 }
 \seealso{

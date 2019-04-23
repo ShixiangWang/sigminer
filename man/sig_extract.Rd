@@ -37,9 +37,10 @@ Do NMF de-composition and then extract signatures.
 \donttest{
 # Load copy number prepare object
 load(system.file("extdata", "toy_copynumber_prepare.RData",
-             package = "sigminer", mustWork = TRUE))
+  package = "sigminer", mustWork = TRUE
+))
 # Extract copy number signatures
-res = sig_extract(cn_prepare$nmf_matrix, 2, mode = "copynumber", nrun = 1)
+res <- sig_extract(cn_prepare$nmf_matrix, 2, mode = "copynumber", nrun = 1)
 }
 }
 \seealso{

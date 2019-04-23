@@ -22,7 +22,8 @@ Plot copy number feature distribution
 \examples{
 # Load copy number prepare object
 load(system.file("extdata", "toy_copynumber_prepare.RData",
-             package = "sigminer", mustWork = TRUE))
+  package = "sigminer", mustWork = TRUE
+))
 draw_cn_features(cn_prepare$features)
 }
 \seealso{

@@ -53,10 +53,13 @@ More custom features please directly use \link[NMF:nmfEstimateRank]{NMF::nmfEsti
 \donttest{
 # Load copy number prepare object
 load(system.file("extdata", "toy_copynumber_prepare.RData",
-             package = "sigminer", mustWork = TRUE))
+  package = "sigminer", mustWork = TRUE
+))
 library(NMF)
-cn_estimate = sig_estimate(cn_prepare$nmf_matrix, cores = 1, nrun = 5,
-                           verbose = TRUE)
+cn_estimate <- sig_estimate(cn_prepare$nmf_matrix,
+  cores = 1, nrun = 5,
+  verbose = TRUE
+)
 }
 }
 \seealso{

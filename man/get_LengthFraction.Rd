@@ -34,8 +34,9 @@ Calculate length fraction profile of copy number
 \examples{
 # Load copy number list
 load(system.file("extdata", "toy_cnlist.RData",
-             package = "sigminer", mustWork = TRUE))
-annot = get_LengthFraction(cn_list, seg_cols = c("chromosome", "start", "end", "segVal"))
+  package = "sigminer", mustWork = TRUE
+))
+annot <- get_LengthFraction(cn_list, seg_cols = c("chromosome", "start", "end", "segVal"))
 }
 \seealso{
 Other internal calculation function series: \code{\link{get_ArmLocation}},

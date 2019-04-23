@@ -2,24 +2,21 @@
 
 fitComponent <-
   function(dat,
-           dist = "norm",
-           seed = 77777,
-           model_selection = "BIC",
-           min_prior = 0.001,
-           niter = 1000,
-           nrep = 1,
-           min_comp = 2,
-           max_comp = 10)
-  {
+             dist = "norm",
+             seed = 77777,
+             model_selection = "BIC",
+             min_prior = 0.001,
+             niter = 1000,
+             nrep = 1,
+             min_comp = 2,
+             max_comp = 10) {
     control <- new("FLXcontrol")
     control@minprior <- min_prior
     control@iter.max <- niter
 
     set.seed(seed)
-    if (dist == "norm")
-    {
-      if (min_comp == max_comp)
-      {
+    if (dist == "norm") {
+      if (min_comp == max_comp) {
         fit <-
           flexmix::flexmix(
             dat ~ 1,
@@ -27,7 +24,7 @@ fitComponent <-
             k = min_comp,
             control = control
           )
-      } else{
+      } else {
         fit <-
           flexmix::stepFlexmix(
             dat ~ 1,
@@ -41,11 +38,8 @@ fitComponent <-
           fit <- flexmix::getModel(fit, which = model_selection)
         }
       }
-
-    } else if (dist == "pois")
-    {
-      if (min_comp == max_comp)
-      {
+    } else if (dist == "pois") {
+      if (min_comp == max_comp) {
         fit <-
           flexmix::flexmix(
             dat ~ 1,
@@ -53,7 +47,7 @@ fitComponent <-
             k = min_comp,
             control = control
           )
-      } else{
+      } else {
         fit <-
           flexmix::stepFlexmix(
             dat ~ 1,
@@ -72,27 +66,26 @@ fitComponent <-
 
 calculateSumOfPosteriors <-
   function(CN_feature,
-           components,
-           name,
-           rowIter = 1000,
-           cores = 1)
-  {
+             components,
+             name,
+             rowIter = 1000,
+             cores = 1) {
     if (cores > 1) {
 
-      #attachNamespace("foreach")
-      #attachNamespace("doParallel")
+      # attachNamespace("foreach")
+      # attachNamespace("doParallel")
 
-      len = dim(CN_feature)[1]
-      iters = floor(len / rowIter)
-      lastiter = iters[length(iters)]
+      len <- dim(CN_feature)[1]
+      iters <- floor(len / rowIter)
+      lastiter <- iters[length(iters)]
 
       doParallel::registerDoParallel(cores = cores)
-      curr_posterior = foreach::foreach(i = 0:iters, .combine = rbind) %dopar% {
-        start = i * rowIter + 1
+      curr_posterior <- foreach::foreach(i = 0:iters, .combine = rbind) %dopar% {
+        start <- i * rowIter + 1
         if (i != lastiter) {
-          end = (i + 1) * rowIter
+          end <- (i + 1) * rowIter
         } else {
-          end = len
+          end <- len
         }
         flexmix::posterior(components, data.frame(dat = as.numeric(CN_feature[start:end, 2])))
       }
@@ -111,12 +104,10 @@ calculateSumOfPosteriors <-
         rbind(posterior_sum, colSums(mat[mat$ID == i, c(-1, -2)]))
     }
     params <- flexmix::parameters(components)
-    if (!is.null(nrow(params)))
-    {
-      posterior_sum <- posterior_sum[, order(params[1,])]
+    if (!is.null(nrow(params))) {
+      posterior_sum <- posterior_sum[, order(params[1, ])]
     }
-    else
-    {
+    else {
       posterior_sum <- posterior_sum[, order(params)]
     }
     colnames(posterior_sum) <-
@@ -125,8 +116,7 @@ calculateSumOfPosteriors <-
     posterior_sum
   }
 
-getSegsize <- function(abs_profiles)
-{
+getSegsize <- function(abs_profiles) {
   out <- c()
   samps <- names(abs_profiles)
   for (i in samps)
@@ -142,8 +132,7 @@ getSegsize <- function(abs_profiles)
   data.frame(out, stringsAsFactors = F)
 }
 
-getBPnum <- function(abs_profiles, chrlen)
-{
+getBPnum <- function(abs_profiles, chrlen) {
   out <- c()
   samps <- names(abs_profiles)
   for (i in samps)
@@ -155,13 +144,14 @@ getBPnum <- function(abs_profiles, chrlen)
     allBPnum <- c()
     for (c in chrs)
     {
-      currseg <- segTab[chromosome == c,]
+      currseg <- segTab[chromosome == c, ]
       intervals <-
         seq(1, chrlen[chrlen[, 1] == c, 2] + 10000000, 10000000)
       res <-
         hist(currseg$end[-nrow(currseg)],
-             breaks = intervals,
-             plot = FALSE)$counts
+          breaks = intervals,
+          plot = FALSE
+        )$counts
       allBPnum <- c(allBPnum, res)
     }
     out <-
@@ -171,8 +161,7 @@ getBPnum <- function(abs_profiles, chrlen)
   data.frame(out, stringsAsFactors = F)
 }
 
-getOscilation <- function(abs_profiles)
-{
+getOscilation <- function(abs_profiles) {
   out <- c()
   samps <- names(abs_profiles)
   for (i in samps)
@@ -185,18 +174,16 @@ getOscilation <- function(abs_profiles)
     for (c in chrs)
     {
       currseg <- segTab[chromosome == c][["segVal"]]
-      if (length(currseg) > 3)
-      {
+      if (length(currseg) > 3) {
         prevval <- currseg[1]
-        count = 0
+        count <- 0
         for (j in 3:length(currseg))
         {
-          if (currseg[j] == prevval & currseg[j] != currseg[j - 1])
-          {
+          if (currseg[j] == prevval & currseg[j] != currseg[j - 1]) {
             count <- count + 1
-          } else{
+          } else {
             oscCounts <- c(oscCounts, count)
-            count = 0
+            count <- 0
           }
           prevval <- currseg[j - 1]
         }
@@ -204,8 +191,7 @@ getOscilation <- function(abs_profiles)
     }
     out <-
       rbind(out, cbind(ID = rep(i, length(oscCounts)), value = oscCounts))
-    if (length(oscCounts) == 0)
-    {
+    if (length(oscCounts) == 0) {
       out <- rbind(out, cbind(ID = i, value = 0))
     }
   }
@@ -214,8 +200,7 @@ getOscilation <- function(abs_profiles)
 }
 
 getCentromereDistCounts <-
-  function(abs_profiles, centromeres, chrlen)
-  {
+  function(abs_profiles, centromeres, chrlen) {
     out <- c()
     samps <- names(abs_profiles)
     for (i in samps)
@@ -227,8 +212,7 @@ getCentromereDistCounts <-
       all_dists <- c()
       for (c in chrs)
       {
-        if (nrow(segTab) > 1)
-        {
+        if (nrow(segTab) > 1) {
           starts <- segTab[chromosome == c][["start"]][-1]
           segstart <- segTab[chromosome == c][["start"]][1]
           ends <- segTab[chromosome == c][["end"]]
@@ -260,20 +244,18 @@ getCentromereDistCounts <-
           all_dists <- rbind(all_dists, sum(ndist <= 0))
         }
       }
-      if (nrow(all_dists) > 0)
-      {
+      if (nrow(all_dists) > 0) {
         out <- rbind(out, cbind(ID = i, value = all_dists[, 1]))
       }
     }
     rownames(out) <- NULL
-    out = data.frame(out, stringsAsFactors = F)
-    out = stats::na.omit(out)
+    out <- data.frame(out, stringsAsFactors = F)
+    out <- stats::na.omit(out)
     out
   }
 
 
-getChangepointCN <- function(abs_profiles)
-{
+getChangepointCN <- function(abs_profiles) {
   out <- c()
   samps <- names(abs_profiles)
   for (i in samps)
@@ -289,9 +271,8 @@ getChangepointCN <- function(abs_profiles)
       allcp <-
         c(allcp, abs(currseg[-1] - currseg[-length(currseg)]))
     }
-    if (length(allcp) == 0)
-    {
-      allcp <- 0 #if there are no changepoints
+    if (length(allcp) == 0) {
+      allcp <- 0 # if there are no changepoints
     }
     out <-
       rbind(out, cbind(ID = rep(i, length(allcp)), value = allcp))
@@ -300,8 +281,7 @@ getChangepointCN <- function(abs_profiles)
   data.frame(out, stringsAsFactors = F)
 }
 
-getCN <- function(abs_profiles)
-{
+getCN <- function(abs_profiles) {
   out <- c()
   samps <- names(abs_profiles)
   for (i in samps)
@@ -316,8 +296,7 @@ getCN <- function(abs_profiles)
   data.frame(out, stringsAsFactors = F)
 }
 
-getPloidy <- function(abs_profiles)
-{
+getPloidy <- function(abs_profiles) {
   out <- c()
   samps <- names(abs_profiles)
   for (i in samps)
@@ -333,8 +312,7 @@ getPloidy <- function(abs_profiles)
 }
 
 
-normaliseMatrix <- function(signature_by_sample, sig_thresh = 0.01)
-{
+normaliseMatrix <- function(signature_by_sample, sig_thresh = 0.01) {
   norm_const <- colSums(signature_by_sample)
   sample_by_signature <-
     apply(signature_by_sample, 1, function(x) {
@@ -352,13 +330,11 @@ normaliseMatrix <- function(signature_by_sample, sig_thresh = 0.01)
   signature_by_sample
 }
 
-lower_norm <- function(x, sig_thresh = 0.01)
-{
+lower_norm <- function(x, sig_thresh = 0.01) {
   new_x <- x
   for (i in 1:length(x))
   {
-    if (x[i] < sig_thresh)
-    {
+    if (x[i] < sig_thresh) {
       new_x[i] <- 0
     }
   }

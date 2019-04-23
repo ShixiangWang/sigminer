@@ -22,43 +22,48 @@
 #' \donttest{
 #' # Load copy number object
 #' load(system.file("extdata", "toy_copynumber.RData",
-#'              package = "sigminer", mustWork = TRUE))
+#'   package = "sigminer", mustWork = TRUE
+#' ))
 #' # Prepare copy number signature analysis
-#' cn_prepare =  sig_prepare(cn)
+#' cn_prepare <- sig_prepare(cn)
 #' }
 #' @family signature analysis series function
-sig_prepare = function(object, ...){
+sig_prepare <- function(object, ...) {
   UseMethod("sig_prepare")
 }
 
 #' @describeIn sig_prepare Signature analysis prepare for CopyNumber object
 #' @inheritParams prepare_copynumber
 #' @export
-sig_prepare.CopyNumber = function(object, reference_components = FALSE,
-                                  cores = 1, seed = 123456,
-                                  min_comp = 2, max_comp = 10,
-                                  min_prior = 0.001,
-                                  model_selection = "BIC",
-                                  nrep = 1, niter = 1000, rowIter = 1000, ...){
-  prepare_copynumber(object, reference_components = reference_components,
-                     cores = cores, seed = seed,
-                     min_comp = min_comp, max_comp = max_comp,
-                     min_prior = min_prior,
-                     model_selection = model_selection,
-                     nrep = nrep, niter = niter, rowIter = rowIter)
+sig_prepare.CopyNumber <- function(object, reference_components = FALSE,
+                                   cores = 1, seed = 123456,
+                                   min_comp = 2, max_comp = 10,
+                                   min_prior = 0.001,
+                                   model_selection = "BIC",
+                                   nrep = 1, niter = 1000, rowIter = 1000, ...) {
+  prepare_copynumber(object,
+    reference_components = reference_components,
+    cores = cores, seed = seed,
+    min_comp = min_comp, max_comp = max_comp,
+    min_prior = min_prior,
+    model_selection = model_selection,
+    nrep = nrep, niter = niter, rowIter = rowIter
+  )
 }
 
 #' @describeIn sig_prepare Signature analysis prepare for CopyNumber object
 #' @inheritParams prepare_maf
 #' @export
-sig_prepare.MAF = function(object, ref_genome = NULL, prefix = NULL,
-                           add = TRUE, ignoreChr = NULL, useSyn = TRUE, ...){
-  res = prepare_maf(object, ref_genome = ref_genome, prefix = prefix,
-                    add = add, ignoreChr = ignoreChr, useSyn = useSyn, fn = NULL)
+sig_prepare.MAF <- function(object, ref_genome = NULL, prefix = NULL,
+                            add = TRUE, ignoreChr = NULL, useSyn = TRUE, ...) {
+  res <- prepare_maf(object,
+    ref_genome = ref_genome, prefix = prefix,
+    add = add, ignoreChr = ignoreChr, useSyn = useSyn, fn = NULL
+  )
 }
 
 #' @describeIn sig_prepare Signature analysis prepare for GenomicVariation object
-sig_prepare.GenomicVariation = function(object, ...) {
+sig_prepare.GenomicVariation <- function(object, ...) {
   print("Not support right now.")
 }
 
@@ -98,26 +103,28 @@ sig_prepare.GenomicVariation = function(object, ...) {
 #' \donttest{
 #' # Load copy number prepare object
 #' load(system.file("extdata", "toy_copynumber_prepare.RData",
-#'              package = "sigminer", mustWork = TRUE))
+#'   package = "sigminer", mustWork = TRUE
+#' ))
 #' library(NMF)
-#' cn_estimate = sig_estimate(cn_prepare$nmf_matrix, cores = 1, nrun = 5,
-#'                            verbose = TRUE)
+#' cn_estimate <- sig_estimate(cn_prepare$nmf_matrix,
+#'   cores = 1, nrun = 5,
+#'   verbose = TRUE
+#' )
 #' }
 #' @family signature analysis series function
 sig_estimate <-
   function(nmf_matrix,
-           range = 2:5,
-           nrun = 10,
-           what = "all",
-           cores = 1,
-           seed = 123456,
-           use_random = TRUE,
-           save_plots = FALSE,
-           plot_basename = file.path(tempdir(), "nmf"),
-           method = "brunet",
-           pConstant = NULL,
-           verbose = FALSE)
-  {
+             range = 2:5,
+             nrun = 10,
+             what = "all",
+             cores = 1,
+             seed = 123456,
+             use_random = TRUE,
+             save_plots = FALSE,
+             plot_basename = file.path(tempdir(), "nmf"),
+             method = "brunet",
+             pConstant = NULL,
+             verbose = FALSE) {
 
     # loadNamespace("utils")
     # loadNamespace("registry")
@@ -126,14 +133,14 @@ sig_estimate <-
     # loadNamespace("cluster")
     # loadNamespace("NMF")
 
-    mat = t(nmf_matrix)
+    mat <- t(nmf_matrix)
 
-    #To avoid error due to non-conformable arrays
-    if(!is.null(pConstant)){
-      if(pConstant < 0 | pConstant == 0){
+    # To avoid error due to non-conformable arrays
+    if (!is.null(pConstant)) {
+      if (pConstant < 0 | pConstant == 0) {
         stop("pConstant must be > 0")
       }
-      mat = mat+pConstant
+      mat <- mat + pConstant
     }
 
     if (cores > 1) {
@@ -155,13 +162,14 @@ sig_estimate <-
           method = method,
           nrun = nrun,
           verbose = verbose,
-          seed = seed)
+          seed = seed
+        )
     }
 
     if (save_plots) {
       pdf(
         paste0(plot_basename, "_consensus.pdf"),
-        bg = 'white',
+        bg = "white",
         pointsize = 9,
         width = 12,
         height = 12,
@@ -169,10 +177,10 @@ sig_estimate <-
       )
       NMF::consensusmap(estim.r)
       dev.off()
-      if (verbose) message('created ', paste0(plot_basename, "_consensus.pdf"))
+      if (verbose) message("created ", paste0(plot_basename, "_consensus.pdf"))
     }
 
-    nmf.sum = NMF::summary(estim.r) # Get summary of estimates
+    nmf.sum <- NMF::summary(estim.r) # Get summary of estimates
     if (verbose) {
       message("Estimation of rank based on observed data.")
       print(nmf.sum)
@@ -219,17 +227,18 @@ sig_estimate <-
             method = method,
             nrun = nrun,
             verbose = verbose,
-            seed = seed)
+            seed = seed
+          )
       }
 
-      nmf.sum.random = NMF::summary(estim.r.random) # Get summary of estimates
+      nmf.sum.random <- NMF::summary(estim.r.random) # Get summary of estimates
       if (verbose) {
         message("Estimation of rank based on random data.")
         print(nmf.sum.random)
       }
     } else {
-      estim.r.random = NULL
-      nmf.sum.random = NULL
+      estim.r.random <- NULL
+      nmf.sum.random <- NULL
     }
 
     if (use_random) {
@@ -254,7 +263,7 @@ sig_estimate <-
     if (save_plots) {
       pdf(
         paste0(plot_basename, "_survey.pdf"),
-        bg = 'white',
+        bg = "white",
         pointsize = 9,
         width = 6,
         height = 6,
@@ -262,7 +271,7 @@ sig_estimate <-
       )
       print(p)
       dev.off()
-      if (verbose) message('created ', paste0(plot_basename, "_survey.pdf"))
+      if (verbose) message("created ", paste0(plot_basename, "_survey.pdf"))
     }
 
     return(
@@ -293,34 +302,34 @@ sig_estimate <-
 #' \donttest{
 #' # Load copy number prepare object
 #' load(system.file("extdata", "toy_copynumber_prepare.RData",
-#'              package = "sigminer", mustWork = TRUE))
+#'   package = "sigminer", mustWork = TRUE
+#' ))
 #' # Extract copy number signatures
-#' res = sig_extract(cn_prepare$nmf_matrix, 2, mode = "copynumber", nrun = 1)
+#' res <- sig_extract(cn_prepare$nmf_matrix, 2, mode = "copynumber", nrun = 1)
 #' }
 #' @family signature analysis series function
-sig_extract = function(nmf_matrix,
-                       n_sig,
-                       mode = c("copynumber", "mutation"),
-                       nrun = 10,
-                       cores = 1,
-                       method = "brunet",
-                       pConstant = NULL,
-                       seed = 123456){
+sig_extract <- function(nmf_matrix,
+                        n_sig,
+                        mode = c("copynumber", "mutation"),
+                        nrun = 10,
+                        cores = 1,
+                        method = "brunet",
+                        pConstant = NULL,
+                        seed = 123456) {
+  mode <- match.arg(mode)
 
-  mode = match.arg(mode)
+  # transpose matrix
+  mat <- t(nmf_matrix)
 
-  #transpose matrix
-  mat = t(nmf_matrix)
-
-  #To avoid error due to non-conformable arrays
-  if(!is.null(pConstant)){
-    if(pConstant < 0 | pConstant == 0){
+  # To avoid error due to non-conformable arrays
+  if (!is.null(pConstant)) {
+    if (pConstant < 0 | pConstant == 0) {
       stop("pConstant must be > 0")
     }
-    mat = mat+pConstant
+    mat <- mat + pConstant
   }
 
-  nmf.res = NMF::nmf(
+  nmf.res <- NMF::nmf(
     mat,
     n_sig,
     seed = seed,
@@ -330,40 +339,42 @@ sig_extract = function(nmf_matrix,
   )
 
 
-  #Signatures
-  w = NMF::basis(nmf.res)
-  w = apply(w, 2, function(x) x/sum(x)) #Scale the signatures (basis)
-  colnames(w) = paste('Signature', 1:ncol(w),sep='_')
+  # Signatures
+  w <- NMF::basis(nmf.res)
+  w <- apply(w, 2, function(x) x / sum(x)) # Scale the signatures (basis)
+  colnames(w) <- paste("Signature", 1:ncol(w), sep = "_")
 
-  #Contribution
-  h = NMF::coef(nmf.res)
-  colnames(h) = colnames(mat) #correct colnames
-  #For single signature, contribution will be 100% per sample
-  if(n_sig == 1){
-    h = h/h
-    rownames(h) = paste('Signature', '1', sep = '_')
-  }else{
-    h = apply(h, 2, function(x) x/sum(x)) #Scale contributions (coefs)
-    rownames(h) = paste('Signature', 1:nrow(h),sep='_')
+  # Contribution
+  h <- NMF::coef(nmf.res)
+  colnames(h) <- colnames(mat) # correct colnames
+  # For single signature, contribution will be 100% per sample
+  if (n_sig == 1) {
+    h <- h / h
+    rownames(h) <- paste("Signature", "1", sep = "_")
+  } else {
+    h <- apply(h, 2, function(x) x / sum(x)) # Scale contributions (coefs)
+    rownames(h) <- paste("Signature", 1:nrow(h), sep = "_")
   }
 
   if (mode == "mutation") {
     #- Copy from maftools, should update them all if something changed in maftools source
-    #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< BEGIN
-    sigs = data.table::fread(
-      input = system.file('extdata', 'signatures.txt', package = 'maftools'),
+    # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< BEGIN
+    sigs <- data.table::fread(
+      input = system.file("extdata", "signatures.txt", package = "maftools"),
       stringsAsFactors = FALSE,
       data.table = FALSE
     )
-    colnames(sigs) = gsub(pattern = ' ',
-                          replacement = '_',
-                          x = colnames(sigs))
-    rownames(sigs) = sigs$Somatic_Mutation_Type
-    sigs = sigs[, -c(1:3)]
-    #sigs = sigs[,1:22] #use only first 21 validated sigantures
-    sigs = sigs[rownames(w), ]
+    colnames(sigs) <- gsub(
+      pattern = " ",
+      replacement = "_",
+      x = colnames(sigs)
+    )
+    rownames(sigs) <- sigs$Somatic_Mutation_Type
+    sigs <- sigs[, -c(1:3)]
+    # sigs = sigs[,1:22] #use only first 21 validated sigantures
+    sigs <- sigs[rownames(w), ]
 
-    aetiology = structure(
+    aetiology <- structure(
       list(
         aetiology = c(
           "spontaneous deamination of 5-methylcytosine",
@@ -435,35 +446,37 @@ sig_extract = function(nmf_matrix,
     )
 
     message(
-      'Comparing against experimentally validated 30 signatures.. (See http://cancer.sanger.ac.uk/cosmic/signatures for details.)'
+      "Comparing against experimentally validated 30 signatures.. (See http://cancer.sanger.ac.uk/cosmic/signatures for details.)"
     )
-    #corMat = c()
-    coSineMat = c()
+    # corMat = c()
+    coSineMat <- c()
     for (i in 1:ncol(w)) {
-      sig = w[, i]
-      coSineMat = rbind(coSineMat, apply(sigs, 2, function(x) {
-        round(crossprod(sig, x) / sqrt(crossprod(x) * crossprod(sig)), digits = 3) #Estimate cosine similarity against all 30 signatures
+      sig <- w[, i]
+      coSineMat <- rbind(coSineMat, apply(sigs, 2, function(x) {
+        round(crossprod(sig, x) / sqrt(crossprod(x) * crossprod(sig)), digits = 3) # Estimate cosine similarity against all 30 signatures
       }))
-      #corMat = rbind(corMat, apply(sigs, 2, function(x) cor.test(x, sig)$estimate[[1]])) #Calulate correlation coeff.
+      # corMat = rbind(corMat, apply(sigs, 2, function(x) cor.test(x, sig)$estimate[[1]])) #Calulate correlation coeff.
     }
-    #rownames(corMat) = colnames(w)
-    rownames(coSineMat) = colnames(w)
+    # rownames(corMat) = colnames(w)
+    rownames(coSineMat) <- colnames(w)
 
     for (i in 1:nrow(coSineMat)) {
-      ae = aetiology[names(which(coSineMat[i, ] == max(coSineMat[i, ]))), ]
-      ae = paste0("Aetiology: ",
-                  ae,
-                  " [cosine-similarity: ",
-                  max(coSineMat[i, ]),
-                  "]")
-      message(
-        'Found ',
-        rownames(coSineMat)[i],
-        ' most similar to validated ',
-        names(which(coSineMat[i, ] == max(coSineMat[i, ]))),
-        '. ',
+      ae <- aetiology[names(which(coSineMat[i, ] == max(coSineMat[i, ]))), ]
+      ae <- paste0(
+        "Aetiology: ",
         ae,
-        sep = ' '
+        " [cosine-similarity: ",
+        max(coSineMat[i, ]),
+        "]"
+      )
+      message(
+        "Found ",
+        rownames(coSineMat)[i],
+        " most similar to validated ",
+        names(which(coSineMat[i, ] == max(coSineMat[i, ]))),
+        ". ",
+        ae,
+        sep = " "
       )
     }
 
@@ -473,7 +486,7 @@ sig_extract = function(nmf_matrix,
       coSineSimMat = coSineMat,
       nmfObj = nmf.res
     ))
-    #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< END
+    # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< END
   } else {
     return(list(
       signature = w,
@@ -481,7 +494,6 @@ sig_extract = function(nmf_matrix,
       nmfObj = nmf.res
     ))
   }
-
 }
 
 
@@ -510,47 +522,51 @@ sig_extract = function(nmf_matrix,
 #' @examples
 #' # Load copy number signature
 #' load(system.file("extdata", "toy_copynumber_signature.RData",
-#'              package = "sigminer", mustWork = TRUE))
+#'   package = "sigminer", mustWork = TRUE
+#' ))
 #' # Assign samples to clusters
-#' subtypes = sig_assign_samples(res$nmfObj, type = "samples")
+#' subtypes <- sig_assign_samples(res$nmfObj, type = "samples")
 #' @family signature analysis series function
-sig_assign_samples = function(nmfObj, type="consensus", matchConseOrder=F){
-
+sig_assign_samples <- function(nmfObj, type = "consensus", matchConseOrder = F) {
   data <- NULL
 
-  #loadNamespace("cluster")
-  #loadNamespace("NMF")
+  # loadNamespace("cluster")
+  # loadNamespace("NMF")
 
-  if(type=="consensus"){
-    predict.consensus <- predict(nmfObj, what="consensus")
-    silhouette.consensus <- silhouette(nmfObj, what="consensus")
+  if (type == "consensus") {
+    predict.consensus <- predict(nmfObj, what = "consensus")
+    silhouette.consensus <- silhouette(nmfObj, what = "consensus")
     # It turns out the factor levels is the NMF_assigned_groups from consensus matrix
     # that matches the original sampleNames(nmfObj) order
     # The attributes(a.predict.consensus)$iOrd is the idx order for it to match the
     # order of the samples in consensusmap(nmfObj). It is just for displaying
     # Therefore, the merged data frame sampleNames(nmfObj) + a.predict.consensus is the final
     # consensus results.
-    data <- data.frame(Sample_ID=sampleNames(nmfObj),
-                       nmf_subtypes = predict.consensus,
-                       sil_width = signif(silhouette.consensus[, "sil_width"], 3))
+    data <- data.frame(
+      Sample_ID = sampleNames(nmfObj),
+      nmf_subtypes = predict.consensus,
+      sil_width = signif(silhouette.consensus[, "sil_width"], 3)
+    )
     # If we want to display as we see in consensusmap, we just need to reoder everything.
     # Now re-order data to match consensusmap sample order
-    if(matchConseOrder){
+    if (matchConseOrder) {
       sample.order <- attributes(predict.consensus)$iOrd
       data <- data[sample.order, ]
     }
-  }else if(type=="samples"){
-    predict.samples <- predict(nmfObj, what="samples", prob=T)
-    silhouette.samples <- silhouette(nmfObj, what="samples")
-    data <- data.frame(Sample_ID=names(predict.samples$predict),
-                       nmf_subtypes = predict.samples$predict,
-                       sil_width = signif(silhouette.samples[, "sil_width"], 3),
-                       prob = signif(predict.samples$prob, 3))
-  }else{
+  } else if (type == "samples") {
+    predict.samples <- predict(nmfObj, what = "samples", prob = T)
+    silhouette.samples <- silhouette(nmfObj, what = "samples")
+    data <- data.frame(
+      Sample_ID = names(predict.samples$predict),
+      nmf_subtypes = predict.samples$predict,
+      sil_width = signif(silhouette.samples[, "sil_width"], 3),
+      prob = signif(predict.samples$prob, 3)
+    )
+  } else {
     stop(paste("Wrong type:", type, "Possible options are: 'consensus', 'samples' "))
   }
 
-  data = data.table::as.data.table(data)
+  data <- data.table::as.data.table(data)
   return(data)
 }
 
@@ -565,33 +581,35 @@ sig_assign_samples = function(nmfObj, type="consensus", matchConseOrder=F){
 #' @examples
 #' # Load copy number signature
 #' load(system.file("extdata", "toy_copynumber_signature.RData",
-#'              package = "sigminer", mustWork = TRUE))
+#'   package = "sigminer", mustWork = TRUE
+#' ))
 #' # Get activity of signatures
-#' sig_activity = sig_get_activity(res$nmfObj)
+#' sig_activity <- sig_get_activity(res$nmfObj)
 #' @family signature analysis series function
-sig_get_activity = function(nmfObj) {
-
+sig_get_activity <- function(nmfObj) {
   if (!inherits(nmfObj, "NMFfit")) {
     stop("'nmfObj' should be a NMFfit object.")
   }
-  #Activity
-  h = NMF::coef(nmfObj)
-  rownames(h) = paste('Signature', 1:nrow(h),sep='_')
+  # Activity
+  h <- NMF::coef(nmfObj)
+  rownames(h) <- paste("Signature", 1:nrow(h), sep = "_")
   # colnames(h) = colnames(mat) #correct colnames
-  #For single signature, contribution will be 100% per sample
-  if(nrow(h) == 1){
-    h.norm = h/h
-    rownames(h.norm) = paste('Signature', '1', sep = '_')
-  }else{
-    h.norm = apply(h, 2, function(x) x/sum(x)) #Scale contributions (coefs)
-    rownames(h.norm) = paste('Signature', 1:nrow(h.norm),sep='_')
+  # For single signature, contribution will be 100% per sample
+  if (nrow(h) == 1) {
+    h.norm <- h / h
+    rownames(h.norm) <- paste("Signature", "1", sep = "_")
+  } else {
+    h.norm <- apply(h, 2, function(x) x / sum(x)) # Scale contributions (coefs)
+    rownames(h.norm) <- paste("Signature", 1:nrow(h.norm), sep = "_")
   }
 
-  h = as.data.frame(h)
-  h.norm = as.data.frame(h.norm)
+  h <- as.data.frame(h)
+  h.norm <- as.data.frame(h.norm)
 
-  list(relative = h.norm,
-       absolute = h)
+  list(
+    relative = h.norm,
+    absolute = h
+  )
 }
 
 
@@ -614,58 +632,56 @@ sig_get_activity = function(nmfObj) {
 #' @examples
 #' # Load copy number signature
 #' load(system.file("extdata", "toy_copynumber_signature.RData",
-#'              package = "sigminer", mustWork = TRUE))
+#'   package = "sigminer", mustWork = TRUE
+#' ))
 #' # Get activity of signatures
-#' sig_activity = sig_get_activity(res$nmfObj)
+#' sig_activity <- sig_get_activity(res$nmfObj)
 #' # Get correlation matrix between signature activities
-#' sig_cor = sig_get_correlation(sig_activity)
+#' sig_cor <- sig_get_correlation(sig_activity)
 #' @family signature analysis series function
-sig_get_correlation = function(cn_activity=NULL, snv_activity=NULL,
-                               type = c("absolute", "relative"),
-                               ...){
+sig_get_correlation <- function(cn_activity = NULL, snv_activity = NULL,
+                                type = c("absolute", "relative"),
+                                ...) {
   if (is.null(cn_activity) & is.null(snv_activity)) {
     stop("At least one of 'cn_activity' and 'snv_activity' should be setted.")
   }
 
-  type = match.arg(type)
+  type <- match.arg(type)
 
-  gen_mat = function(cn_activity, snv_activity, type) {
+  gen_mat <- function(cn_activity, snv_activity, type) {
     if (!is.null(cn_activity) & !is.null(snv_activity)) {
-      cn_mat = t(cn_activity[[type]])
-      snv_mat = t(snv_activity[[type]])
-      colnames(cn_mat) = paste0("CN_", colnames(cn_mat))
-      colnames(snv_mat) = paste0("SNV_", colnames(snv_mat))
+      cn_mat <- t(cn_activity[[type]])
+      snv_mat <- t(snv_activity[[type]])
+      colnames(cn_mat) <- paste0("CN_", colnames(cn_mat))
+      colnames(snv_mat) <- paste0("SNV_", colnames(snv_mat))
 
-      samps = base::intersect(rownames(cn_mat), rownames(snv_mat))
+      samps <- base::intersect(rownames(cn_mat), rownames(snv_mat))
 
-      samps.diff.cn = base::setdiff(rownames(cn_mat), samps)
+      samps.diff.cn <- base::setdiff(rownames(cn_mat), samps)
       if (length(samps.diff.cn) > 0) {
         message("Following samples removed from copy number signature activity matrix:")
         print(samps.diff.cn)
       }
-      samps.diff.snv = base::setdiff(rownames(snv_mat), samps)
+      samps.diff.snv <- base::setdiff(rownames(snv_mat), samps)
       if (length(samps.diff.snv) > 0) {
         message("Following samples removed from mutation signature activity matrix:")
         print(samps.diff.snv)
       }
 
-      mat = cbind(cn_mat[samps, ], snv_mat[samps, ])
+      mat <- cbind(cn_mat[samps, ], snv_mat[samps, ])
       return(mat)
-
     } else if (!is.null(cn_activity)) {
-      mat = t(cn_activity[[type]])
+      mat <- t(cn_activity[[type]])
       return(mat)
-
     } else {
-      mat = t(snv_activity[[type]])
+      mat <- t(snv_activity[[type]])
       return(mat)
-
     }
   }
 
-  mat = gen_mat(cn_activity, snv_activity, type)
+  mat <- gen_mat(cn_activity, snv_activity, type)
 
-  corr = list(correlation = stats::cor(mat))
+  corr <- list(correlation = stats::cor(mat))
 
   c(
     corr,
@@ -693,35 +709,34 @@ sig_get_correlation = function(cn_activity=NULL, snv_activity=NULL,
 #' @return a `matrix` which rownames from `sig1` and colnames from `sig2`.
 #' @export
 #' @family signature analysis series function
-sig_get_similarity = function(sig1, sig2, type = c("cos", "cor")) {
-
+sig_get_similarity <- function(sig1, sig2, type = c("cos", "cor")) {
   if (is.list(sig1)) {
-    mat1 = sig1[["signature"]]
+    mat1 <- sig1[["signature"]]
   } else {
-    mat1 = sig1
+    mat1 <- sig1
   }
 
   if (is.list(sig2)) {
-    mat2 = sig2[["signature"]]
+    mat2 <- sig2[["signature"]]
   } else {
-    mat2 = sig2
+    mat2 <- sig2
   }
 
-  type = match.arg(type)
+  type <- match.arg(type)
 
-  ResMat = c()
+  ResMat <- c()
   for (i in 1:ncol(mat1)) {
-    sig = mat1[, i]
+    sig <- mat1[, i]
     if (type == "cos") {
-      ResMat = rbind(ResMat, apply(mat2, 2, function(x) {
+      ResMat <- rbind(ResMat, apply(mat2, 2, function(x) {
         round(crossprod(sig, x) / sqrt(crossprod(x) * crossprod(sig)), digits = 3)
       }))
     } else {
-      ResMat = rbind(ResMat, apply(mat2, 2, function(x) cor.test(x, sig)$estimate[[1]])) #Calulate correlation coeff.
+      ResMat <- rbind(ResMat, apply(mat2, 2, function(x) cor.test(x, sig)$estimate[[1]])) # Calulate correlation coeff.
     }
   }
 
-  rownames(ResMat) = colnames(mat1)
+  rownames(ResMat) <- colnames(mat1)
 
   message("rownames come from sig1 and colnames come from sig2.")
   ResMat
@@ -751,21 +766,23 @@ sig_get_similarity = function(sig1, sig2, type = c("cos", "cor")) {
 #' @examples
 #' # Load copy number signature
 #' load(system.file("extdata", "toy_copynumber_signature.RData",
-#'              package = "sigminer", mustWork = TRUE))
+#'   package = "sigminer", mustWork = TRUE
+#' ))
 #' # Assign samples to clusters
-#' subtypes = sig_assign_samples(res$nmfObj, type = "samples")
-#'
+#' subtypes <- sig_assign_samples(res$nmfObj, type = "samples")
+#' 
 #' set.seed(1234)
 #' # Add custom groups
-#' subtypes$new_group = sample(c("1", "2","3", "4"), size = nrow(subtypes), replace = TRUE)
+#' subtypes$new_group <- sample(c("1", "2", "3", "4"), size = nrow(subtypes), replace = TRUE)
 #' # Summarize subtypes
-#' subtypes.sum = sig_summarize_subtypes(subtypes[, -1], col_subtype = "nmf_subtypes",
-#'                          cols_to_summary = colnames(subtypes[, -1])[c(-1,-2)],
-#'                          type = c("co", "ca"), verbose = TRUE)
+#' subtypes.sum <- sig_summarize_subtypes(subtypes[, -1],
+#'   col_subtype = "nmf_subtypes",
+#'   cols_to_summary = colnames(subtypes[, -1])[c(-1, -2)],
+#'   type = c("co", "ca"), verbose = TRUE
+#' )
 #' @family signature analysis series function
-sig_summarize_subtypes = function(data, col_subtype, cols_to_summary,
-                               type = "ca", verbose = FALSE){
-
+sig_summarize_subtypes <- function(data, col_subtype, cols_to_summary,
+                                   type = "ca", verbose = FALSE) {
   if (!all(type %in% c("ca", "co"))) {
     stop("all elements in 'type' must be 'ca' for 'categorical' and 'co' for 'continuous'.")
   }
@@ -773,24 +790,24 @@ sig_summarize_subtypes = function(data, col_subtype, cols_to_summary,
   data.table::setDT(data)
 
   # subset
-  data = data[, c(col_subtype, cols_to_summary), with = FALSE]
-  colnames(data)[1] = "subtype"
-  data = data[!is.na(data[["subtype"]])]
+  data <- data[, c(col_subtype, cols_to_summary), with = FALSE]
+  colnames(data)[1] <- "subtype"
+  data <- data[!is.na(data[["subtype"]])]
 
-  do_summary = function(col, type = c("ca", "co"),
-                        verbose = FALSE) {
-    type = match.arg(type)
+  do_summary <- function(col, type = c("ca", "co"),
+                           verbose = FALSE) {
+    type <- match.arg(type)
 
-    df = data[, c("subtype", col), with = FALSE]
-    df = df[!is.na(df[[col]])]
+    df <- data[, c("subtype", col), with = FALSE]
+    df <- df[!is.na(df[[col]])]
 
     if (type == "ca") {
       if (verbose) message("Treat ", col, " as categorical variable.")
 
-      table_df = table(df[["subtype"]], df[[col]])
+      table_df <- table(df[["subtype"]], df[[col]])
 
-      table_p = tryCatch({
-        test = fisher.test(table_df)
+      table_p <- tryCatch({
+        test <- fisher.test(table_df)
         test[["p.value"]]
       }, error = function(e) {
         NA
@@ -800,27 +817,26 @@ sig_summarize_subtypes = function(data, col_subtype, cols_to_summary,
     } else {
       if (verbose) message("Treat ", col, " as continuous variable.")
 
-      table_df = summary(df)
+      table_df <- summary(df)
 
-      fit = tryCatch({
+      fit <- tryCatch({
         stats::aov(as.formula(paste0(col, " ~ subtype")), data = df)
-
       }, error = function(e) {
         NA
       })
 
       if (inherits(fit, "aov")) {
-        p_value = summary(fit)[[1]][["Pr(>F)"]][1] # get anova p value
-        extra = stats::TukeyHSD(fit)[[1]]
+        p_value <- summary(fit)[[1]][["Pr(>F)"]][1] # get anova p value
+        extra <- stats::TukeyHSD(fit)[[1]]
       } else {
-        p_value = NA
-        extra = NA
+        p_value <- NA
+        extra <- NA
       }
       list(data = df, table = table_df, p_value = p_value, type = "continuous", extra = extra)
     }
   }
 
-  res = Map(do_summary, cols_to_summary, type, verbose)
-  names(res) = cols_to_summary
+  res <- Map(do_summary, cols_to_summary, type, verbose)
+  names(res) <- cols_to_summary
   res
 }

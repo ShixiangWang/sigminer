@@ -35,10 +35,11 @@ autosomal tumor genome bearing CNAs, could be used as an informative measure of 
 \examples{
 \donttest{
 load(system.file("extdata", "example_cn_list.RData",
-                package = "sigminer", mustWork = TRUE))
-segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
-segTabs$chromosome = paste0("chr", segTabs$chromosome)
-samp_sum = get_cnsummary_sample(segTabs[, c(2:5,1)])
+  package = "sigminer", mustWork = TRUE
+))
+segTabs <- data.table::rbindlist(tcga_segTabs, idcol = "sample")
+segTabs$chromosome <- paste0("chr", segTabs$chromosome)
+samp_sum <- get_cnsummary_sample(segTabs[, c(2:5, 1)])
 }
 }
 \references{

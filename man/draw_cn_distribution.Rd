@@ -31,7 +31,8 @@ read from \code{genome_build} slot of object instead of using argument set in fu
 \examples{
 # Load copy number object
 load(system.file("extdata", "toy_copynumber.RData",
-             package = "sigminer", mustWork = TRUE))
+  package = "sigminer", mustWork = TRUE
+))
 # Plot distribution
 draw_cn_distribution(cn)
 draw_cn_distribution(cn, mode = "cd")

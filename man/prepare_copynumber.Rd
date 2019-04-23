@@ -51,8 +51,9 @@ Prepare nmf input matrix for copy number signature analysis
 \donttest{
 # Load copy number object
 load(system.file("extdata", "toy_copynumber.RData",
-             package = "sigminer", mustWork = TRUE))
-cn_prepare =  prepare_copynumber(cn)
+  package = "sigminer", mustWork = TRUE
+))
+cn_prepare <- prepare_copynumber(cn)
 }
 }
 \seealso{

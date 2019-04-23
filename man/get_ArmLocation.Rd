@@ -13,8 +13,8 @@ get_ArmLocation(genome_build = c("hg19", "hg38"))
 Get chromosome arm location
 }
 \examples{
-hg19_arm = get_ArmLocation("hg19")
-hg38_arm = get_ArmLocation("hg38")
+hg19_arm <- get_ArmLocation("hg19")
+hg38_arm <- get_ArmLocation("hg38")
 }
 \seealso{
 Other internal calculation function series: \code{\link{get_LengthFraction}},

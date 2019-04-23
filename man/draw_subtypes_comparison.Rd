@@ -37,17 +37,20 @@ plot is easily saved to local using \code{\link[cowplot:save_plot]{cowplot::save
 \examples{
 # Load copy number signature
 load(system.file("extdata", "toy_copynumber_signature.RData",
-             package = "sigminer", mustWork = TRUE))
+  package = "sigminer", mustWork = TRUE
+))
 # Assign samples to clusters
-subtypes = sig_assign_samples(res$nmfObj, type = "samples")
+subtypes <- sig_assign_samples(res$nmfObj, type = "samples")
 
 set.seed(1234)
 # Add custom groups
-subtypes$new_group = sample(c("1", "2","3", "4"), size = nrow(subtypes), replace = TRUE)
+subtypes$new_group <- sample(c("1", "2", "3", "4"), size = nrow(subtypes), replace = TRUE)
 # Summarize subtypes
-subtypes.sum = sig_summarize_subtypes(subtypes[, -1], col_subtype = "nmf_subtypes",
-                         cols_to_summary = colnames(subtypes[, -1])[c(-1,-2)],
-                         type = c("co", "ca"), verbose = TRUE)
+subtypes.sum <- sig_summarize_subtypes(subtypes[, -1],
+  col_subtype = "nmf_subtypes",
+  cols_to_summary = colnames(subtypes[, -1])[c(-1, -2)],
+  type = c("co", "ca"), verbose = TRUE
+)
 draw_subtypes_comparison(subtypes.sum)
 }
 \seealso{

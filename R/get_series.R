@@ -1,6 +1,6 @@
-#========================================================
+# ========================================================
 # internal analysis functions, use get_ as start
-#========================================================
+# ========================================================
 
 # Get copy number list ----------------------------------------------------
 
@@ -10,20 +10,20 @@
 #' @return a `list`
 #' @export
 #' @examples
-#' extdata_dir = system.file("extdata", package = "sigminer", mustWork = TRUE)
-#' cp = read_copynumber(extdata_dir, pattern = "txt", genome_build = "hg19")
-#' cn_list = get_cnlist(cp)
+#' extdata_dir <- system.file("extdata", package = "sigminer", mustWork = TRUE)
+#' cp <- read_copynumber(extdata_dir, pattern = "txt", genome_build = "hg19")
+#' cn_list <- get_cnlist(cp)
 #' @family internal calculation function series
 
-get_cnlist = function(CopyNumber) {
+get_cnlist <- function(CopyNumber) {
   if (!inherits(CopyNumber, "CopyNumber")) {
-    stop('Input must be a CopyNumber object!')
+    stop("Input must be a CopyNumber object!")
   }
-  segTab = CopyNumber@data
-  samps = unique(segTab[["sample"]])
-  res = list()
+  segTab <- CopyNumber@data
+  samps <- unique(segTab[["sample"]])
+  res <- list()
   for (i in samps) {
-    res[[i]] = segTab[sample == i, ]
+    res[[i]] <- segTab[sample == i, ]
   }
 
   res
@@ -50,46 +50,51 @@ get_cnlist = function(CopyNumber) {
 #' @examples
 #' # Load copy number list
 #' load(system.file("extdata", "toy_cnlist.RData",
-#'              package = "sigminer", mustWork = TRUE))
+#'   package = "sigminer", mustWork = TRUE
+#' ))
 #' \donttest{
-#' cn_features = get_features(cn_list, cores = 1)
+#' cn_features <- get_features(cn_list, cores = 1)
 #' }
 #' @family internal calculation function series
 
-get_features = function(CN_data,
-                        cores = 1,
-                        genome_build = c("hg19", "hg38")) {
-  genome_build = match.arg(genome_build)
+get_features <- function(CN_data,
+                         cores = 1,
+                         genome_build = c("hg19", "hg38")) {
+  genome_build <- match.arg(genome_build)
   # get chromosome lengths and centromere locations
   if (genome_build == "hg19") {
     data("chromsize.hg19",
-         package = "sigminer",
-         envir = environment())
+      package = "sigminer",
+      envir = environment()
+    )
     data("centromeres.hg19",
-         package = "sigminer",
-         envir = environment())
-    chrlen = chromsize.hg19
-    centromeres = centromeres.hg19
+      package = "sigminer",
+      envir = environment()
+    )
+    chrlen <- chromsize.hg19
+    centromeres <- centromeres.hg19
   } else {
     data("chromsize.hg38",
-         package = "sigminer",
-         envir = environment())
+      package = "sigminer",
+      envir = environment()
+    )
     data("centromeres.hg38",
-         package = "sigminer",
-         envir = environment())
-    chrlen = chromsize.hg38
-    centromeres = centromeres.hg38
+      package = "sigminer",
+      envir = environment()
+    )
+    chrlen <- chromsize.hg38
+    centromeres <- centromeres.hg38
   }
 
   # only keep 1:22 and x, y
-  chrlen = chrlen[chrlen$chrom %in% centromeres$chrom,]
+  chrlen <- chrlen[chrlen$chrom %in% centromeres$chrom, ]
   if (cores > 1) {
 
-    #attachNamespace("foreach")
-    #attachNamespace("doParallel")
+    # attachNamespace("foreach")
+    # attachNamespace("doParallel")
     doParallel::registerDoParallel(cores = cores)
 
-    temp_list = foreach::foreach(i = 1:6) %dopar% {
+    temp_list <- foreach::foreach(i = 1:6) %dopar% {
       if (i == 1) {
         list(bp10MB = getBPnum(CN_data, chrlen))
       } else if (i == 2) {
@@ -103,17 +108,16 @@ get_features = function(CN_data,
       } else {
         list(segsize = getSegsize(CN_data))
       }
-
     }
     unlist(temp_list, recursive = FALSE)
   } else {
-    bp10MB = getBPnum(CN_data, chrlen)
-    copynumber = getCN(CN_data)
-    changepoint = getChangepointCN(CN_data)
-    bpchrarm =
+    bp10MB <- getBPnum(CN_data, chrlen)
+    copynumber <- getCN(CN_data)
+    changepoint <- getChangepointCN(CN_data)
+    bpchrarm <-
       getCentromereDistCounts(CN_data, centromeres, chrlen)
-    osCN = getOscilation(CN_data)
-    segsize = getSegsize(CN_data)
+    osCN <- getOscilation(CN_data)
+    segsize <- getSegsize(CN_data)
     list(
       segsize = segsize,
       bp10MB = bp10MB,
@@ -123,7 +127,6 @@ get_features = function(CN_data,
       copynumber = copynumber
     )
   }
-
 }
 
 
@@ -154,114 +157,114 @@ get_features = function(CN_data,
 #' \donttest{
 #' # Load copy number features
 #' load(system.file("extdata", "toy_cn_features.RData",
-#'              package = "sigminer", mustWork = TRUE))
-#' cn_components = get_components(cn_features)
+#'   package = "sigminer", mustWork = TRUE
+#' ))
+#' cn_components <- get_components(cn_features)
 #' }
 #' @family internal calculation function series
-get_components = function(CN_features,
-                            seed = 123456,
-                            min_comp = 2,
-                            max_comp = 10,
-                            min_prior = 0.001,
-                            model_selection = "BIC",
-                            nrep = 1,
-                            niter = 1000) {
-
-    dat = as.numeric(CN_features[["segsize"]][, 2])
-    message("Fit feature: Segment size")
-    segsize_mm =
-      fitComponent(
-        dat,
-        seed = seed,
-        model_selection = model_selection,
-        min_prior = min_prior,
-        niter = niter,
-        nrep = nrep,
-        min_comp = min_comp,
-        max_comp = max_comp
-      )
-
-    dat = as.numeric(CN_features[["bp10MB"]][, 2])
-    message("Fit feature: Breakpoint count per 10 Mb")
-    bp10MB_mm =
-      fitComponent(
-        dat,
-        dist = "pois",
-        seed = seed,
-        model_selection = model_selection,
-        min_prior = min_prior,
-        niter = niter,
-        nrep = nrep,
-        min_comp = min_comp,
-        max_comp = max_comp
-      )
-
-    dat = as.numeric(CN_features[["osCN"]][, 2])
-    message("Fit feature: Length of oscillating copy-number chain")
-    osCN_mm =
-      fitComponent(
-        dat,
-        dist = "pois",
-        seed = seed,
-        model_selection = model_selection,
-        min_prior = min_prior,
-        niter = niter,
-        nrep = nrep,
-        min_comp = min_comp,
-        max_comp = max_comp
-      )
-
-    dat = as.numeric(CN_features[["bpchrarm"]][, 2])
-    message("Fit feature: Breakpoint count per arm")
-    bpchrarm_mm =
-      fitComponent(
-        dat,
-        dist = "pois",
-        seed = seed,
-        model_selection = model_selection,
-        min_prior = min_prior,
-        niter = niter,
-        nrep = nrep,
-        min_comp = min_comp,
-        max_comp = max_comp
-      )
-
-    dat = as.numeric(CN_features[["changepoint"]][, 2])
-    message("Fit feature: Copy number change")
-    changepoint_mm =
-      fitComponent(
-        dat,
-        seed = seed,
-        model_selection = model_selection,
-        min_prior = min_prior,
-        niter = niter,
-        nrep = nrep,
-        min_comp = min_comp,
-        max_comp = max_comp
-      )
-
-    dat = as.numeric(CN_features[["copynumber"]][, 2])
-    message("Fit feature: Absolute copy number")
-    copynumber_mm =
-      fitComponent(
-        dat,
-        seed = seed,
-        model_selection = model_selection,
-        nrep = nrep,
-        min_comp = min_comp,
-        max_comp = max_comp,
-        min_prior = min_prior,
-        niter = niter
-      )
-
-    list(
-      segsize = segsize_mm,
-      bp10MB = bp10MB_mm,
-      osCN = osCN_mm,
-      bpchrarm = bpchrarm_mm,
-      changepoint = changepoint_mm,
-      copynumber = copynumber_mm
+get_components <- function(CN_features,
+                           seed = 123456,
+                           min_comp = 2,
+                           max_comp = 10,
+                           min_prior = 0.001,
+                           model_selection = "BIC",
+                           nrep = 1,
+                           niter = 1000) {
+  dat <- as.numeric(CN_features[["segsize"]][, 2])
+  message("Fit feature: Segment size")
+  segsize_mm <-
+    fitComponent(
+      dat,
+      seed = seed,
+      model_selection = model_selection,
+      min_prior = min_prior,
+      niter = niter,
+      nrep = nrep,
+      min_comp = min_comp,
+      max_comp = max_comp
     )
+
+  dat <- as.numeric(CN_features[["bp10MB"]][, 2])
+  message("Fit feature: Breakpoint count per 10 Mb")
+  bp10MB_mm <-
+    fitComponent(
+      dat,
+      dist = "pois",
+      seed = seed,
+      model_selection = model_selection,
+      min_prior = min_prior,
+      niter = niter,
+      nrep = nrep,
+      min_comp = min_comp,
+      max_comp = max_comp
+    )
+
+  dat <- as.numeric(CN_features[["osCN"]][, 2])
+  message("Fit feature: Length of oscillating copy-number chain")
+  osCN_mm <-
+    fitComponent(
+      dat,
+      dist = "pois",
+      seed = seed,
+      model_selection = model_selection,
+      min_prior = min_prior,
+      niter = niter,
+      nrep = nrep,
+      min_comp = min_comp,
+      max_comp = max_comp
+    )
+
+  dat <- as.numeric(CN_features[["bpchrarm"]][, 2])
+  message("Fit feature: Breakpoint count per arm")
+  bpchrarm_mm <-
+    fitComponent(
+      dat,
+      dist = "pois",
+      seed = seed,
+      model_selection = model_selection,
+      min_prior = min_prior,
+      niter = niter,
+      nrep = nrep,
+      min_comp = min_comp,
+      max_comp = max_comp
+    )
+
+  dat <- as.numeric(CN_features[["changepoint"]][, 2])
+  message("Fit feature: Copy number change")
+  changepoint_mm <-
+    fitComponent(
+      dat,
+      seed = seed,
+      model_selection = model_selection,
+      min_prior = min_prior,
+      niter = niter,
+      nrep = nrep,
+      min_comp = min_comp,
+      max_comp = max_comp
+    )
+
+  dat <- as.numeric(CN_features[["copynumber"]][, 2])
+  message("Fit feature: Absolute copy number")
+  copynumber_mm <-
+    fitComponent(
+      dat,
+      seed = seed,
+      model_selection = model_selection,
+      nrep = nrep,
+      min_comp = min_comp,
+      max_comp = max_comp,
+      min_prior = min_prior,
+      niter = niter
+    )
+
+  list(
+    segsize = segsize_mm,
+    bp10MB = bp10MB_mm,
+    osCN = osCN_mm,
+    bpchrarm = bpchrarm_mm,
+    changepoint = changepoint_mm,
+    copynumber = copynumber_mm
+  )
 }
 
 
@@ -285,20 +288,20 @@ get_components = function(CN_features,
 #' @examples
 #' # Load copy number components
 #' load(system.file("extdata", "toy_cn_components.RData",
-#'              package = "sigminer", mustWork = TRUE))
+#'   package = "sigminer", mustWork = TRUE
+#' ))
 #' # Load copy number features
 #' load(system.file("extdata", "toy_cn_features.RData",
-#'              package = "sigminer", mustWork = TRUE))
-#'
-#' cn_matrix = get_matrix(cn_features, cn_components)
+#'   package = "sigminer", mustWork = TRUE
+#' ))
+#' 
+#' cn_matrix <- get_matrix(cn_features, cn_components)
 #' @family internal calculation function series
-get_matrix = function(CN_features,
-                      all_components = NULL,
-                      cores = 1,
-                      rowIter = 1000)
-{
-  if (is.null(all_components))
-  {
+get_matrix <- function(CN_features,
+                       all_components = NULL,
+                       cores = 1,
+                       rowIter = 1000) {
+  if (is.null(all_components)) {
     message(
       "About reference components\n   more detail please see https://github.com/ShixiangWang/absoluteCNVdata"
     )
@@ -306,42 +309,50 @@ get_matrix = function(CN_features,
       message(
         "Nat_Gen_component_parameters.rds doesnot exist, will download reference components."
       )
-      download.file(url = "https://github.com/ShixiangWang/absoluteCNVdata/raw/master/component_parameters.rds",
-                    destfile = file.path(tempdir(),"Nat_Gen_component_parameters.rds"))
+      download.file(
+        url = "https://github.com/ShixiangWang/absoluteCNVdata/raw/master/component_parameters.rds",
+        destfile = file.path(tempdir(), "Nat_Gen_component_parameters.rds")
+      )
     }
-    all_components =
-      readRDS(file.path(tempdir(),"Nat_Gen_component_parameters.rds"))
+    all_components <-
+      readRDS(file.path(tempdir(), "Nat_Gen_component_parameters.rds"))
   }
 
-  full_mat = cbind(
+  full_mat <- cbind(
     calculateSumOfPosteriors(CN_features[["bp10MB"]],
-                             all_components[["bp10MB"]],
-                             "bp10MB",
-                             cores = cores),
+      all_components[["bp10MB"]],
+      "bp10MB",
+      cores = cores
+    ),
     calculateSumOfPosteriors(CN_features[["copynumber"]],
-                             all_components[["copynumber"]],
-                             "copynumber",
-                             cores = cores),
+      all_components[["copynumber"]],
+      "copynumber",
+      cores = cores
+    ),
     calculateSumOfPosteriors(CN_features[["changepoint"]],
-                             all_components[["changepoint"]],
-                             "changepoint",
-                             cores = cores),
+      all_components[["changepoint"]],
+      "changepoint",
+      cores = cores
+    ),
     calculateSumOfPosteriors(CN_features[["bpchrarm"]],
-                             all_components[["bpchrarm"]],
-                             "bpchrarm",
-                             cores = cores),
+      all_components[["bpchrarm"]],
+      "bpchrarm",
+      cores = cores
+    ),
     calculateSumOfPosteriors(CN_features[["osCN"]],
-                             all_components[["osCN"]],
-                             "osCN",
-                             cores = cores),
+      all_components[["osCN"]],
+      "osCN",
+      cores = cores
+    ),
     calculateSumOfPosteriors(CN_features[["segsize"]],
-                             all_components[["segsize"]],
-                             "segsize",
-                             cores = cores)
+      all_components[["segsize"]],
+      "segsize",
+      cores = cores
+    )
   )
 
-  rownames(full_mat) = unique(CN_features[["segsize"]][, 1])
-  full_mat[is.na(full_mat)] = 0
+  rownames(full_mat) <- unique(CN_features[["segsize"]][, 1])
+  full_mat[is.na(full_mat)] <- 0
   full_mat
 }
 
@@ -369,40 +380,42 @@ get_matrix = function(CN_features,
 #' @examples
 #' # Load copy number list
 #' load(system.file("extdata", "toy_cnlist.RData",
-#'              package = "sigminer", mustWork = TRUE))
-#' annot = get_LengthFraction(cn_list, seg_cols = c("chromosome", "start", "end", "segVal"))
+#'   package = "sigminer", mustWork = TRUE
+#' ))
+#' annot <- get_LengthFraction(cn_list, seg_cols = c("chromosome", "start", "end", "segVal"))
 #' @family internal calculation function series
-get_LengthFraction = function(CN_data,
-                              genome_build = c("hg19", "hg38"),
-                              seg_cols = c("Chromosome", "Start.bp", "End.bp", "modal_cn"),
-                              samp_col = "sample") {
-
+get_LengthFraction <- function(CN_data,
+                               genome_build = c("hg19", "hg38"),
+                               seg_cols = c("Chromosome", "Start.bp", "End.bp", "modal_cn"),
+                               samp_col = "sample") {
   stopifnot(is.list(CN_data) | is.data.frame(CN_data))
-  genome_build = match.arg(genome_build)
+  genome_build <- match.arg(genome_build)
 
   if (inherits(CN_data, "list")) {
-    segTab = data.table::rbindlist(CN_data, use.names = TRUE, fill = TRUE)
-    #segTab = base::Reduce(rbind, CN_data)
-    if (! samp_col %in% colnames(segTab)) {
-      segTab$sample = base::rep(x = names(CN_data),
-                                times = sapply(CN_data, function(x)
-                                  nrow(x)))
-      samp_col = "sample"
+    segTab <- data.table::rbindlist(CN_data, use.names = TRUE, fill = TRUE)
+    # segTab = base::Reduce(rbind, CN_data)
+    if (!samp_col %in% colnames(segTab)) {
+      segTab$sample <- base::rep(
+        x = names(CN_data),
+        times = sapply(CN_data, function(x)
+          nrow(x))
+      )
+      samp_col <- "sample"
     }
   } else {
-    segTab = CN_data
+    segTab <- CN_data
   }
 
   if (inherits(segTab, "data.table")) {
-    segTab = segTab[, c(seg_cols, samp_col), with = FALSE]
+    segTab <- segTab[, c(seg_cols, samp_col), with = FALSE]
   } else {
-    segTab = segTab[, c(seg_cols, samp_col)]
+    segTab <- segTab[, c(seg_cols, samp_col)]
   }
 
   if (ncol(segTab) == 5) {
-    colnames(segTab) = c("chromosome", "start", "end", "segVal", "sample")
+    colnames(segTab) <- c("chromosome", "start", "end", "segVal", "sample")
   } else if (ncol(segTab) == 4) {
-    colnames(segTab) = c("chromosome", "start", "end", "sample")
+    colnames(segTab) <- c("chromosome", "start", "end", "sample")
   } else {
     stop(
       "If input is a data.frame, must have 4 necessary columns (chr, start, end, sample) and 1 optional column (segVal)."
@@ -410,79 +423,80 @@ get_LengthFraction = function(CN_data,
   }
 
   data.table::setDT(segTab)
-  segTab$start = as.integer(segTab$start)
-  segTab$end = as.integer(segTab$end)
+  segTab$start <- as.integer(segTab$start)
+  segTab$end <- as.integer(segTab$end)
   # unify chromosome column
-  segTab$chromosome = as.character(segTab$chromosome)
-  segTab$chromosome = sub(
+  segTab$chromosome <- as.character(segTab$chromosome)
+  segTab$chromosome <- sub(
     pattern = "chr",
     replacement = "chr",
     x = segTab$chromosome,
     ignore.case = TRUE
   )
   if (any(!grepl("chr", segTab$chromosome))) {
-    segTab$chromosome[!grepl("chr", segTab$chromosome)] = paste0("chr", segTab$chromosome[!grepl("chr", segTab$chromosome)])
+    segTab$chromosome[!grepl("chr", segTab$chromosome)] <- paste0("chr", segTab$chromosome[!grepl("chr", segTab$chromosome)])
   }
 
-  valid_chr = c(paste0("chr", 1:22), "chrX", "chrY")
+  valid_chr <- c(paste0("chr", 1:22), "chrX", "chrY")
   if (!all(segTab$chromosome %in% valid_chr)) {
     message("Filter some invalid segments... (not as 1:22 and X, Y)")
 
-    segTab = segTab[valid_chr, on="chromosome"]
+    segTab <- segTab[valid_chr, on = "chromosome"]
   }
 
-  arm_data = get_ArmLocation(genome_build)
+  arm_data <- get_ArmLocation(genome_build)
   data.table::setDT(arm_data)
 
-  segTab = dplyr::left_join(segTab, arm_data, by = c("chromosome"="chrom"))
+  segTab <- dplyr::left_join(segTab, arm_data, by = c("chromosome" = "chrom"))
 
-  .annot_fun = function(chrom, start, end, p_start, p_end, p_length, q_start, q_end, q_length, total_size) {
-
+  .annot_fun <- function(chrom, start, end, p_start, p_end, p_length, q_start, q_end, q_length, total_size) {
     if (end <= p_end & start >= p_start) {
-      location = paste0(sub("chr", "", chrom), "p")
-      annotation = "short arm"
-      fraction = (end - start + 1) / (p_end - p_start + 1)
+      location <- paste0(sub("chr", "", chrom), "p")
+      annotation <- "short arm"
+      fraction <- (end - start + 1) / (p_end - p_start + 1)
     } else if (end <= q_end &
-               start >= q_start) {
-      location = paste0(sub("chr", "", chrom), "q")
-      annotation = "long arm"
-      fraction = (end - start + 1) / (q_end - q_start + 1)
+      start >= q_start) {
+      location <- paste0(sub("chr", "", chrom), "q")
+      annotation <- "long arm"
+      fraction <- (end - start + 1) / (q_end - q_start + 1)
     } else if (start >= p_start &
-               start <= p_end &
-               end >= q_start & end <= q_end) {
-      location = paste0(sub("chr", "", chrom), "pq") # across p and q arm
-      annotation = "across short and long arm"
-      fraction = 2 * ((end - start + 1) / total_size)
+      start <= p_end &
+      end >= q_start & end <= q_end) {
+      location <- paste0(sub("chr", "", chrom), "pq") # across p and q arm
+      annotation <- "across short and long arm"
+      fraction <- 2 * ((end - start + 1) / total_size)
     } else if (start < p_end & end < q_start) {
-      location = paste0(sub("chr", "", chrom), "p")
-      annotation = "short arm intersect with centromere region"
+      location <- paste0(sub("chr", "", chrom), "p")
+      annotation <- "short arm intersect with centromere region"
       # only calculate region does not intersect
-      fraction = (end - start + 1 - (end - p_end)) / (p_end - p_start + 1)
+      fraction <- (end - start + 1 - (end - p_end)) / (p_end - p_start + 1)
     } else if (start > p_end &
-               start < q_start & end > q_start) {
-      location = paste0(sub("chr", "", chrom), "q")
-      annotation = "long arm intersect with centromere region"
+      start < q_start & end > q_start) {
+      location <- paste0(sub("chr", "", chrom), "q")
+      annotation <- "long arm intersect with centromere region"
       # only calculate region does not intersect
-      fraction = (end - start + 1 - (start - q_start)) / (q_end - q_start + 1)
+      fraction <- (end - start + 1 - (start - q_start)) / (q_end - q_start + 1)
     } else {
-      location = paste0(sub("chr", "", chrom), "pq") # suppose as pq
-      annotation = "segment locate in centromere region"
-      fraction = 2 * ((end - start + 1) / total_size)
+      location <- paste0(sub("chr", "", chrom), "pq") # suppose as pq
+      annotation <- "segment locate in centromere region"
+      fraction <- 2 * ((end - start + 1) / total_size)
     }
 
-    dplyr::tibble(location=location, annotation=annotation, fraction=fraction)
+    dplyr::tibble(location = location, annotation = annotation, fraction = fraction)
   }
 
   annot_fun <- function(chrom, start, end, p_start, p_end, p_length, q_start,
-                         q_end, q_length, total_size, .pb = NULL) {
+                          q_end, q_length, total_size, .pb = NULL) {
     if (.pb$i < .pb$n) .pb$tick()$print()
-    .annot_fun(chrom, start, end, p_start, p_end, p_length, q_start,
-              q_end, q_length, total_size)
+    .annot_fun(
+      chrom, start, end, p_start, p_end, p_length, q_start,
+      q_end, q_length, total_size
+    )
   }
 
   pb <- progress_estimated(nrow(segTab), 0)
 
-  annot = purrr::pmap_df(
+  annot <- purrr::pmap_df(
     list(
       chrom = segTab$chromosome,
       start = segTab$start,
@@ -494,7 +508,9 @@ get_LengthFraction = function(CN_data,
       q_end = segTab$q_end,
       q_length = segTab$q_length,
       total_size = segTab$total_size
-    ), annot_fun, .pb=pb)
+    ), annot_fun,
+    .pb = pb
+  )
 
 
   # location = vector("character", nrow(segTab))
@@ -543,7 +559,7 @@ get_LengthFraction = function(CN_data,
   #   p$tick()$print()
   # }
 
-  cbind(data.table::setDT(segTab)[, colnames(arm_data)[-1]:=NULL], data.table::setDT(annot))
+  cbind(data.table::setDT(segTab)[, colnames(arm_data)[-1] := NULL], data.table::setDT(annot))
 }
 
 
@@ -553,42 +569,46 @@ get_LengthFraction = function(CN_data,
 #' @inheritParams read_copynumber
 #' @export
 #' @examples
-#' hg19_arm = get_ArmLocation("hg19")
-#' hg38_arm = get_ArmLocation("hg38")
+#' hg19_arm <- get_ArmLocation("hg19")
+#' hg38_arm <- get_ArmLocation("hg38")
 #' @family internal calculation function series
 
-get_ArmLocation = function(genome_build = c("hg19", "hg38")) {
-  genome_build = match.arg(genome_build)
+get_ArmLocation <- function(genome_build = c("hg19", "hg38")) {
+  genome_build <- match.arg(genome_build)
   # get chromosome lengths and centromere locations
   if (genome_build == "hg19") {
     data("chromsize.hg19",
-         package = "sigminer",
-         envir = environment())
+      package = "sigminer",
+      envir = environment()
+    )
     data("centromeres.hg19",
-         package = "sigminer",
-         envir = environment())
-    chrlen = chromsize.hg19
-    centromeres = centromeres.hg19
+      package = "sigminer",
+      envir = environment()
+    )
+    chrlen <- chromsize.hg19
+    centromeres <- centromeres.hg19
   } else {
     data("chromsize.hg38",
-         package = "sigminer",
-         envir = environment())
+      package = "sigminer",
+      envir = environment()
+    )
     data("centromeres.hg38",
-         package = "sigminer",
-         envir = environment())
-    chrlen = chromsize.hg38
-    centromeres = centromeres.hg38
+      package = "sigminer",
+      envir = environment()
+    )
+    chrlen <- chromsize.hg38
+    centromeres <- centromeres.hg38
   }
 
   # only keep 1:22 and x, y
-  chrlen = chrlen[chrlen$chrom %in% centromeres$chrom,]
+  chrlen <- chrlen[chrlen$chrom %in% centromeres$chrom, ]
 
   # sort
-  chrlen = chrlen[order(chrlen$chrom),]
-  centromeres = centromeres[order(centromeres$chrom),]
+  chrlen <- chrlen[order(chrlen$chrom), ]
+  centromeres <- centromeres[order(centromeres$chrom), ]
 
   # compute and get results
-  res = data.frame(
+  res <- data.frame(
     chrom = vector(mode = "character", length = 24),
     p_start = vector("integer", length = 24),
     p_end = vector("integer", length = 24),
@@ -600,31 +620,33 @@ get_ArmLocation = function(genome_build = c("hg19", "hg38")) {
     stringsAsFactors = FALSE
   )
 
-  i = 1
+  i <- 1
   for (chr in chrlen$chrom) {
-    chrom = chr
+    chrom <- chr
 
     # p
-    p_start = 1
-    p_end = centromeres$left.base[centromeres$chrom == chr]
-    p_length = p_end - p_start + 1
+    p_start <- 1
+    p_end <- centromeres$left.base[centromeres$chrom == chr]
+    p_length <- p_end - p_start + 1
 
     # q
-    q_start = centromeres$right.base[centromeres$chrom == chr]
-    q_end = chrlen$size[chrlen$chrom == chr]
-    q_length = q_end - q_start + 1
+    q_start <- centromeres$right.base[centromeres$chrom == chr]
+    q_end <- chrlen$size[chrlen$chrom == chr]
+    q_length <- q_end - q_start + 1
 
-    total_size = chrlen$size[chrlen$chrom == chr]
+    total_size <- chrlen$size[chrlen$chrom == chr]
 
-    res[i, 1] = as.character(chrom)
-    res[i, 2:8] = c(p_start,
-                    p_end,
-                    p_length,
-                    q_start,
-                    q_end,
-                    q_length,
-                    total_size)
-    i = i + 1
+    res[i, 1] <- as.character(chrom)
+    res[i, 2:8] <- c(
+      p_start,
+      p_end,
+      p_length,
+      q_start,
+      q_end,
+      q_length,
+      total_size
+    )
+    i <- i + 1
   }
 
   res
@@ -654,21 +676,22 @@ get_ArmLocation = function(genome_build = c("hg19", "hg38")) {
 #' @examples
 #' \donttest{
 #' load(system.file("extdata", "example_cn_list.RData",
-#'                 package = "sigminer", mustWork = TRUE))
-#' segTabs = data.table::rbindlist(tcga_segTabs, idcol = "sample")
-#' segTabs$chromosome = paste0("chr", segTabs$chromosome)
-#' samp_sum = get_cnsummary_sample(segTabs[, c(2:5,1)])
+#'   package = "sigminer", mustWork = TRUE
+#' ))
+#' segTabs <- data.table::rbindlist(tcga_segTabs, idcol = "sample")
+#' segTabs$chromosome <- paste0("chr", segTabs$chromosome)
+#' samp_sum <- get_cnsummary_sample(segTabs[, c(2:5, 1)])
 #' }
 #' @family internal calculation function series
-get_cnsummary_sample = function(segTab, genome_build = c("hg19", "hg38"),
-                                genome_measure = c("called", "wg"),
-                                min_seg_len = 1000L) {
-  genome_build = match.arg(genome_build)
-  genome_measure = match.arg(genome_measure)
+get_cnsummary_sample <- function(segTab, genome_build = c("hg19", "hg38"),
+                                 genome_measure = c("called", "wg"),
+                                 min_seg_len = 1000L) {
+  genome_build <- match.arg(genome_build)
+  genome_measure <- match.arg(genome_measure)
 
-  segTab = segTab[, 1:5]
+  segTab <- segTab[, 1:5]
   if (ncol(segTab) == 5) {
-    colnames(segTab) = c("chromosome", "start", "end", "segVal", "sample")
+    colnames(segTab) <- c("chromosome", "start", "end", "segVal", "sample")
   } else {
     stop(
       "Input must have 5 ordered columns (chr, start, end, segVal, sample)."
@@ -676,28 +699,30 @@ get_cnsummary_sample = function(segTab, genome_build = c("hg19", "hg38"),
   }
 
   data.table::setDT(segTab)
-  segTab$start = as.integer(segTab$start)
-  segTab$end = as.integer(segTab$end)
+  segTab$start <- as.integer(segTab$start)
+  segTab$end <- as.integer(segTab$end)
 
-  autosome = paste0("chr", 1:22)
+  autosome <- paste0("chr", 1:22)
 
   if (genome_measure == "wg") {
     if (genome_build == "hg19") {
       data("chromsize.hg19",
-           package = "sigminer",
-           envir = environment())
-      chrlen = chromsize.hg19
+        package = "sigminer",
+        envir = environment()
+      )
+      chrlen <- chromsize.hg19
     } else {
       data("chromsize.hg38",
-           package = "sigminer",
-           envir = environment())
-      chrlen = chromsize.hg38
+        package = "sigminer",
+        envir = environment()
+      )
+      chrlen <- chromsize.hg38
     }
 
-    chrlen = chrlen[chrlen[["chrom"]] %in% paste0("chr", 1:22), ]
-    total_size = sum(chrlen[["size"]])
+    chrlen <- chrlen[chrlen[["chrom"]] %in% paste0("chr", 1:22), ]
+    total_size <- sum(chrlen[["size"]])
 
-    seg_summary = segTab %>%
+    seg_summary <- segTab %>%
       dplyr::group_by(sample) %>%
       dplyr::summarise(
         n_of_cnv = sum(segVal != 2),
@@ -707,7 +732,7 @@ get_cnsummary_sample = function(segTab, genome_build = c("hg19", "hg38"),
       ) %>%
       data.table::as.data.table()
   } else {
-    seg_summary = segTab %>%
+    seg_summary <- segTab %>%
       dplyr::group_by(sample) %>%
       dplyr::summarise(
         n_of_cnv = sum(segVal != 2),

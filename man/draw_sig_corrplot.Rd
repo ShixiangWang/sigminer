@@ -42,9 +42,10 @@ Plot correlation between signature activities
 \donttest{
 # Load copy number signature
 load(system.file("extdata", "toy_copynumber_signature.RData",
-             package = "sigminer", mustWork = TRUE))
-sig_activity = sig_get_activity(res$nmfObj)
-sig_cor = sig_get_correlation(sig_activity)
+  package = "sigminer", mustWork = TRUE
+))
+sig_activity <- sig_get_activity(res$nmfObj)
+sig_cor <- sig_get_correlation(sig_activity)
 draw_sig_corrplot(sig_cor)
 }
 }

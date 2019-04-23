@@ -17,25 +17,25 @@
 #' @exportClass MAF
 
 ## MAF object
-MAF = setClass(
-  Class = 'MAF',
-  slots =  c(
-    data = 'data.table',
-    variants.per.sample = 'data.table',
-    variant.type.summary = 'data.table',
-    variant.classification.summary = 'data.table',
-    gene.summary = 'data.table',
-    summary = 'data.table',
-    maf.silent = 'data.table',
-    clinical.data = 'data.table'
+MAF <- setClass(
+  Class = "MAF",
+  slots = c(
+    data = "data.table",
+    variants.per.sample = "data.table",
+    variant.type.summary = "data.table",
+    variant.classification.summary = "data.table",
+    gene.summary = "data.table",
+    summary = "data.table",
+    maf.silent = "data.table",
+    clinical.data = "data.table"
   )
 )
 
 setMethod(
-  f = 'show',
-  signature = 'MAF',
+  f = "show",
+  signature = "MAF",
   definition = function(object) {
-    cat(paste('An object of class', class(object), "\n"))
+    cat(paste("An object of class", class(object), "\n"))
     cat("======================\n")
     print(object@summary)
   }
@@ -55,11 +55,11 @@ setMethod(
 #' @slot clinical.data data associated with each sample in copy number profile.
 #' @export CopyNumber
 #' @exportClass CopyNumber
-CopyNumber = setClass(
+CopyNumber <- setClass(
   Class = "CopyNumber",
   slots = c(
     data = "data.table",
-    summary.per.sample = 'data.table',
+    summary.per.sample = "data.table",
     genome_build = "character",
     genome_measure = "character",
     annotation = "data.table",
@@ -70,10 +70,10 @@ CopyNumber = setClass(
 
 
 setMethod(
-  f = 'show',
-  signature = 'CopyNumber',
+  f = "show",
+  signature = "CopyNumber",
   definition = function(object) {
-    cat(paste('An object of class', class(object), "\n"))
+    cat(paste("An object of class", class(object), "\n"))
     cat("=============================\n")
     print(object@summary.per.sample)
   }
@@ -89,17 +89,19 @@ setMethod(
 #' object and `MAF` object.
 #' @export GenomicVariation
 #' @exportClass GenomicVariation
-GenomicVariation = setClass(
+GenomicVariation <- setClass(
   Class = "GenomicVariation",
-  slots = c(CopyNumber = "CopyNumber",  MAF = "MAF",
-  clinical.data = "data.table")
+  slots = c(
+    CopyNumber = "CopyNumber", MAF = "MAF",
+    clinical.data = "data.table"
+  )
 )
 
 setMethod(
-  f = 'show',
-  signature = 'GenomicVariation',
+  f = "show",
+  signature = "GenomicVariation",
   definition = function(object) {
-    cat(paste('An object of class', class(object), "\n"))
+    cat(paste("An object of class", class(object), "\n"))
     cat("===================================\n")
     str(object, max.level = 2)
   }
@@ -121,18 +123,19 @@ setMethod(
 #' @author Shixiang Wang
 #' @return a [CopyNumber] object
 #' @export
-subset.CopyNumber = function(x, subset = TRUE, ...) {
-  data = x@data
-  enclos = parent.frame()
-  subset = substitute(subset)
-  row_selector = eval(subset, data, enclos)
+subset.CopyNumber <- function(x, subset = TRUE, ...) {
+  data <- x@data
+  enclos <- parent.frame()
+  subset <- substitute(subset)
+  row_selector <- eval(subset, data, enclos)
 
-  x@dropoff.segs = rbind(x@dropoff.segs, data[!row_selector])
-  x@data = data[row_selector]
-  x@annotation = x@annotation[row_selector]
+  x@dropoff.segs <- rbind(x@dropoff.segs, data[!row_selector])
+  x@data <- data[row_selector]
+  x@annotation <- x@annotation[row_selector]
 
-  x@summary.per.sample = get_cnsummary_sample(x@data,
-                                              genome_build = x@genome_build,
-                                              genome_measure = x@genome_measure)
+  x@summary.per.sample <- get_cnsummary_sample(x@data,
+    genome_build = x@genome_build,
+    genome_measure = x@genome_measure
+  )
   x
 }

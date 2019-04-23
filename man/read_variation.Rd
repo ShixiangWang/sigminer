@@ -24,13 +24,14 @@ for uniform variation analysis. \strong{The function is initialized to construct
 \examples{
 \donttest{
 # Read MAF
-laml.maf = system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
-laml = read_maf(maf = laml.maf)
+laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
+laml <- read_maf(maf = laml.maf)
 # Load copy number object
 load(system.file("extdata", "toy_copynumber.RData",
-             package = "sigminer", mustWork = TRUE))
+  package = "sigminer", mustWork = TRUE
+))
 # Combine as GenomicVariation object
-gv = read_variation(cn, laml)
+gv <- read_variation(cn, laml)
 }
 }
 \seealso{

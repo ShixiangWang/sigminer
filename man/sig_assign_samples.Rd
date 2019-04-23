@@ -34,9 +34,10 @@ More detail please see \code{\link[NMF:predict]{NMF::predict()}}.
 \examples{
 # Load copy number signature
 load(system.file("extdata", "toy_copynumber_signature.RData",
-             package = "sigminer", mustWork = TRUE))
+  package = "sigminer", mustWork = TRUE
+))
 # Assign samples to clusters
-subtypes = sig_assign_samples(res$nmfObj, type = "samples")
+subtypes <- sig_assign_samples(res$nmfObj, type = "samples")
 }
 \seealso{
 Other signature analysis series function: \code{\link{sig_estimate}},

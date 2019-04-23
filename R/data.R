@@ -6,7 +6,8 @@
 #' @name centromeres.hg19
 #' @format A data.frame
 #' @source Generate from UCSC gold path
-#' @examples data(centromeres.hg19)
+#' @examples
+#' data(centromeres.hg19)
 NULL
 
 #' location of centromeres at genome build hg38
@@ -14,7 +15,8 @@ NULL
 #' @name centromeres.hg38
 #' @format A data.frame
 #' @source Generate from Genome Reference Consortium
-#' @examples data(centromeres.hg38)
+#' @examples
+#' data(centromeres.hg38)
 NULL
 
 #' chromosome size of genome build hg19
@@ -22,7 +24,8 @@ NULL
 #' @name chromsize.hg19
 #' @format A data.frame
 #' @source Generate from UCSC gold path
-#' @examples data(chromsize.hg19)
+#' @examples
+#' data(chromsize.hg19)
 NULL
 
 #' chromosome size of genome build hg38
@@ -30,6 +33,6 @@ NULL
 #' @name chromsize.hg38
 #' @format A data.frame
 #' @source Generate from UCSC gold path
-#' @examples data(chromsize.hg38)
+#' @examples
+#' data(chromsize.hg38)
 NULL
-

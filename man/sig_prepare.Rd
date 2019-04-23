@@ -90,9 +90,10 @@ if user use \link[NMF:nmf]{NMF::nmf} by hand.
 \donttest{
 # Load copy number object
 load(system.file("extdata", "toy_copynumber.RData",
-             package = "sigminer", mustWork = TRUE))
+  package = "sigminer", mustWork = TRUE
+))
 # Prepare copy number signature analysis
-cn_prepare =  sig_prepare(cn)
+cn_prepare <- sig_prepare(cn)
 }
 }
 \seealso{

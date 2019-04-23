@@ -31,12 +31,14 @@ posterior probabilities of each copy-number event being assigned to each compone
 \examples{
 # Load copy number components
 load(system.file("extdata", "toy_cn_components.RData",
-             package = "sigminer", mustWork = TRUE))
+  package = "sigminer", mustWork = TRUE
+))
 # Load copy number features
 load(system.file("extdata", "toy_cn_features.RData",
-             package = "sigminer", mustWork = TRUE))
+  package = "sigminer", mustWork = TRUE
+))
 
-cn_matrix = get_matrix(cn_features, cn_components)
+cn_matrix <- get_matrix(cn_features, cn_components)
 }
 \seealso{
 Other internal calculation function series: \code{\link{get_ArmLocation}},

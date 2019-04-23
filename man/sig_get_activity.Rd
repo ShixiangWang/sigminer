@@ -19,9 +19,10 @@ Get signature activity
 \examples{
 # Load copy number signature
 load(system.file("extdata", "toy_copynumber_signature.RData",
-             package = "sigminer", mustWork = TRUE))
+  package = "sigminer", mustWork = TRUE
+))
 # Get activity of signatures
-sig_activity = sig_get_activity(res$nmfObj)
+sig_activity <- sig_get_activity(res$nmfObj)
 }
 \seealso{
 Other signature analysis series function: \code{\link{sig_assign_samples}},
