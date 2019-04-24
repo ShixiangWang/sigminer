@@ -1,4 +1,14 @@
 
+# sigminer v0.1.8
+
+* promote `get_cnlist` function
+* support setting individual component numbers for each feature in `get_components` function
+* add `test_run_components` function
+
+# sigminer v0.1.7
+
+* try submitting to CRAN
+
 # sigminer v0.1.6
 
 * update readme & citation & authors

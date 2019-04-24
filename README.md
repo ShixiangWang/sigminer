@@ -69,4 +69,4 @@ also
 
 ## LICENSE
 
-MIT © Shixiang Wang
+MIT © Shixiang Wang, Xue-Song Liu

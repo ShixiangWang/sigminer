@@ -24,9 +24,11 @@ many cores you can use.}
 
 \item{seed}{seed number.}
 
-\item{min_comp}{minimal number of components to fit, default is 2.}
+\item{min_comp}{minimal number of components to fit, default is 2.
+Can also be a vector with length 6, which apply to each feature.}
 
-\item{max_comp}{maximal number of components to fit, default is 10.}
+\item{max_comp}{maximal number of components to fit, default is 10.
+Can also be a vector with length 6, which apply to each feature.}
 
 \item{min_prior}{minimal prior value, default is 0.001.
 Details about custom setting please refer to \strong{flexmix} package.}

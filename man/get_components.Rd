@@ -13,9 +13,11 @@ get_components(CN_features, seed = 123456, min_comp = 2,
 
 \item{seed}{seed number.}
 
-\item{min_comp}{minimal number of components to fit, default is 2.}
+\item{min_comp}{minimal number of components to fit, default is 2.
+Can also be a vector with length 6, which apply to each feature.}
 
-\item{max_comp}{maximal number of components to fit, default is 10.}
+\item{max_comp}{maximal number of components to fit, default is 10.
+Can also be a vector with length 6, which apply to each feature.}
 
 \item{min_prior}{minimal prior value, default is 0.001.
 Details about custom setting please refer to \strong{flexmix} package.}
@@ -33,7 +35,9 @@ a \code{list} contain \code{flexmix} object of copy-number features.
 }
 \description{
 Apply mixture modelling to breakdown each feature distribution into mixtures
-of Gaussian or mixtures of Poison distributions using \strong{flexmix} package.
+of Gaussian or mixtures of Poison distributions using \strong{flexmix} package. The order of
+features is 'Segment size', 'Breakpoint count per 10 Mb', 'Length of oscillating copy-number chain',
+'Breakpoint count per arm',  'Copy number change', 'Absolute copy number'.
 }
 \examples{
 \donttest{

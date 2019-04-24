@@ -19,13 +19,7 @@ get_cnlist <- function(CopyNumber) {
   if (!inherits(CopyNumber, "CopyNumber")) {
     stop("Input must be a CopyNumber object!")
   }
-  segTab <- CopyNumber@data
-  samps <- unique(segTab[["sample"]])
-  res <- list()
-  for (i in samps) {
-    res[[i]] <- segTab[sample == i, ]
-  }
-
+  res <- split(CopyNumber@data, by = "sample")
   res
 }
 
@@ -136,12 +130,17 @@ get_features <- function(CN_data,
 
 #' @title Fit optimal number of mixture model components
 #' @description Apply mixture modelling to breakdown each feature distribution into mixtures
-#' of Gaussian or mixtures of Poison distributions using **flexmix** package.
+#' of Gaussian or mixtures of Poison distributions using **flexmix** package. The order of
+#' features is 'Segment size', 'Breakpoint count per 10 Mb', 'Length of oscillating copy-number chain',
+#' 'Breakpoint count per arm',  'Copy number change', 'Absolute copy number'.
+#'
 #'
 #' @param CN_features a `list` generate from [get_features()] function.
 #' @param seed seed number.
 #' @param min_comp minimal number of components to fit, default is 2.
+#' Can also be a vector with length 6, which apply to each feature.
 #' @param max_comp maximal number of components to fit, default is 10.
+#' Can also be a vector with length 6, which apply to each feature.
 #' @param min_prior minimal prior value, default is 0.001.
 #' Details about custom setting please refer to **flexmix** package.
 #' @param model_selection model selection strategy, default is 'BIC'.
@@ -170,6 +169,24 @@ get_components <- function(CN_features,
                            model_selection = "BIC",
                            nrep = 1,
                            niter = 1000) {
+
+  flag_min = FALSE
+  flag_max = FALSE
+
+  if (length(min_comp) > 1) {
+     if (length(min_comp) != 6) {
+       stop("If you use more than 1 values, length must be 6, each value for corresponding feature!")
+     }
+    flag_min = TRUE
+  }
+
+  if (length(max_comp) > 1) {
+    if (length(max_comp) != 6) {
+      stop("If you use more than 1 values, length must be 6, each value for corresponding feature!")
+    }
+    flag_max = TRUE
+  }
+
   dat <- as.numeric(CN_features[["segsize"]][, 2])
   message("Fit feature: Segment size")
   segsize_mm <-
@@ -180,8 +197,8 @@ get_components <- function(CN_features,
       min_prior = min_prior,
       niter = niter,
       nrep = nrep,
-      min_comp = min_comp,
-      max_comp = max_comp
+      min_comp = if (flag_min) min_comp[1] else min_comp,
+      max_comp = if (flag_max) max_comp[1] else max_comp
     )
 
   dat <- as.numeric(CN_features[["bp10MB"]][, 2])
@@ -195,8 +212,8 @@ get_components <- function(CN_features,
       min_prior = min_prior,
       niter = niter,
       nrep = nrep,
-      min_comp = min_comp,
-      max_comp = max_comp
+      min_comp = if (flag_min) min_comp[2] else min_comp,
+      max_comp = if (flag_max) max_comp[2] else max_comp
     )
 
   dat <- as.numeric(CN_features[["osCN"]][, 2])
@@ -210,8 +227,8 @@ get_components <- function(CN_features,
       min_prior = min_prior,
       niter = niter,
       nrep = nrep,
-      min_comp = min_comp,
-      max_comp = max_comp
+      min_comp = if (flag_min) min_comp[3] else min_comp,
+      max_comp = if (flag_max) max_comp[3] else max_comp
     )
 
   dat <- as.numeric(CN_features[["bpchrarm"]][, 2])
@@ -225,8 +242,8 @@ get_components <- function(CN_features,
       min_prior = min_prior,
       niter = niter,
       nrep = nrep,
-      min_comp = min_comp,
-      max_comp = max_comp
+      min_comp = if (flag_min) min_comp[4] else min_comp ,
+      max_comp = if (flag_max) max_comp[4] else max_comp
     )
 
   dat <- as.numeric(CN_features[["changepoint"]][, 2])
@@ -239,8 +256,8 @@ get_components <- function(CN_features,
       min_prior = min_prior,
       niter = niter,
       nrep = nrep,
-      min_comp = min_comp,
-      max_comp = max_comp
+      min_comp = if (flag_min) min_comp[5] else min_comp,
+      max_comp = if (flag_max) max_comp[5] else max_comp
     )
 
   dat <- as.numeric(CN_features[["copynumber"]][, 2])
@@ -251,8 +268,8 @@ get_components <- function(CN_features,
       seed = seed,
       model_selection = model_selection,
       nrep = nrep,
-      min_comp = min_comp,
-      max_comp = max_comp,
+      min_comp = if (flag_min) min_comp[6] else min_comp,
+      max_comp = if (flag_max) max_comp[6] else max_comp,
       min_prior = min_prior,
       niter = niter
     )
@@ -294,7 +311,7 @@ get_components <- function(CN_features,
 #' load(system.file("extdata", "toy_cn_features.RData",
 #'   package = "sigminer", mustWork = TRUE
 #' ))
-#' 
+#'
 #' cn_matrix <- get_matrix(cn_features, cn_components)
 #' @family internal calculation function series
 get_matrix <- function(CN_features,

@@ -72,4 +72,4 @@ Mayakonda, Anand, et al. "Maftools: efficient and comprehensive analysis
 
 ## LICENSE
 
-MIT © Shixiang Wang
+MIT &copy; Shixiang Wang, Xue-Song Liu
