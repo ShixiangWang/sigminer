@@ -1,3 +1,6 @@
+# sigminer v0.1.9
+
+* add `pheatmap` to suggest
 
 # sigminer v0.1.8
 
