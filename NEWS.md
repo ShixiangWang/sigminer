@@ -4,6 +4,8 @@
 * promote `get_cnlist` function
 * support setting individual component numbers for each feature in `get_components` function
 * add `test_run_components` function
+* update author list
+* add package site
 
 # sigminer v0.1.7
 

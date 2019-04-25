@@ -21,7 +21,7 @@
 #' load(system.file("extdata", "toy_cn_features.RData",
 #'   package = "sigminer", mustWork = TRUE
 #' ))
-#'
+#' 
 #' # Test component number from 2 to 3 for feature 'sigment size'
 #' test_run_components(cn_features, feature_name = "segsize", max_comp = 3)
 #' @family test function series

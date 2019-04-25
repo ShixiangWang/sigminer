@@ -32,12 +32,68 @@ The goal of **sigminer** is to provide an uniform interface for genomic variatio
 
 ## Installation
 
-You can install the development version of sigminer from Github with:
+You can install the stable release of **sigminer** from CRAN with:
+
+```{r, eval=FALSE}
+install.packages("sigminer")
+```
+
+You can also install the development version of sigminer from Github with:
 
 ```{r, eval=FALSE}
 remotes::install_github("ShixiangWang/sigminer")
 ```
 
+
+## Usage
+
+An example for how to extract mutational signatures are given as the following.
+
+```{r}
+library(sigminer)
+```
+
+### Load data as a MAF object
+
+```{r}
+laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
+laml <- read_maf(maf = laml.maf)
+```
+
+
+
+### Prepare data for signature analysis
+
+```{r}
+library(BSgenome.Hsapiens.UCSC.hg19, quietly = TRUE)
+
+sig_pre <- sig_prepare(laml, ref_genome = "BSgenome.Hsapiens.UCSC.hg19", 
+                      prefix = "chr", add = TRUE)
+```
+
+
+### Extract signatures
+
+Before extracting signatures, we can estimate signature number with `sig_estimate` function.
+
+```{r}
+library(NMF)
+```
+
+
+```{r}
+sig_est <- sig_estimate(sig_pre$nmf_matrix, range = 2:5, pConstant = 0.01)
+```
+
+`sig_est` keeps all information of estimation.
+
+
+```{r}
+sig_laml <- sig_extract(sig_pre$nmf_matrix, n_sig = 2, mode = "mutation", pConstant = 0.01)
+```
+
+> Please note the 'pConstant' option: 	
+It is a small positive value to add to the matrix. Use it ONLY if the functions throws an non-conformable arrays error.
 
 ## Citation
 
@@ -78,4 +134,4 @@ Mayakonda, Anand, et al. "Maftools: efficient and comprehensive analysis
 
 ## LICENSE
 
-MIT © Shixiang Wang
+MIT &copy; 2019 Shixiang Wang, Geoffrey Macintyre, Xue-Song Liu

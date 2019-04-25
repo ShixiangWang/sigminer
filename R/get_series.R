@@ -169,22 +169,21 @@ get_components <- function(CN_features,
                            model_selection = "BIC",
                            nrep = 1,
                            niter = 1000) {
-
-  flag_min = FALSE
-  flag_max = FALSE
+  flag_min <- FALSE
+  flag_max <- FALSE
 
   if (length(min_comp) > 1) {
-     if (length(min_comp) != 6) {
-       stop("If you use more than 1 values, length must be 6, each value for corresponding feature!")
-     }
-    flag_min = TRUE
+    if (length(min_comp) != 6) {
+      stop("If you use more than 1 values, length must be 6, each value for corresponding feature!")
+    }
+    flag_min <- TRUE
   }
 
   if (length(max_comp) > 1) {
     if (length(max_comp) != 6) {
       stop("If you use more than 1 values, length must be 6, each value for corresponding feature!")
     }
-    flag_max = TRUE
+    flag_max <- TRUE
   }
 
   dat <- as.numeric(CN_features[["segsize"]][, 2])
@@ -242,7 +241,7 @@ get_components <- function(CN_features,
       min_prior = min_prior,
       niter = niter,
       nrep = nrep,
-      min_comp = if (flag_min) min_comp[4] else min_comp ,
+      min_comp = if (flag_min) min_comp[4] else min_comp,
       max_comp = if (flag_max) max_comp[4] else max_comp
     )
 
@@ -311,7 +310,7 @@ get_components <- function(CN_features,
 #' load(system.file("extdata", "toy_cn_features.RData",
 #'   package = "sigminer", mustWork = TRUE
 #' ))
-#'
+#' 
 #' cn_matrix <- get_matrix(cn_features, cn_components)
 #' @family internal calculation function series
 get_matrix <- function(CN_features,

@@ -3,7 +3,9 @@ Title: Capture Genomic Variation Signatures using Non-Negative Matrix Factorizat
 Version: 0.1.8
 Authors@R: c(
     person("Shixiang", "Wang", email = "w_shixiang@163.com",
-           role = c("aut", "cre"), comment = c(ORCID = "0000-0001-9855-7357")))
+           role = c("aut", "cre"), comment = c(ORCID = "0000-0001-9855-7357")),
+           person("Geoffrey", "Macintyre", role = c("ctb")), 
+           person("Xue-Song", "Liu", role = c("ctb")))
 Description: Contains functions for identification of  
   copy number signatures (Geoffrey et al. (2018) <doi:10.1038/s41588-018-0179-8>) and 
   mutation signatures (Alexandrov et al. (2018) <doi:10.1038/nature12477>) 
