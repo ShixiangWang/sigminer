@@ -103,7 +103,7 @@ draw_sig_profile(sig_laml$nmfObj, mode = "mutation")
 
 Plot cosine similarities against validated signatures.
 
-```{r}
+```{r, eval=FALSE}
 pheatmap::pheatmap(mat= sig_laml$coSineSimMat, cluster_rows = FALSE, 
                    main = "Cosine similarity against validated COSMIC signatures")
 ```
