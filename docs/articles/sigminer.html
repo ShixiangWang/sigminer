@@ -250,6 +250,13 @@ ShanghaiTech. University</h4>
 <p>Please note the ‘pConstant’ option:<br>
 It is a small positive value to add to the matrix. Use it ONLY if the functions throws an non-conformable arrays error.</p>
 </blockquote>
+<p>Plot mutational signatures.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="../reference/draw_sig_profile.html">draw_sig_profile</a></span>(sig_laml<span class="op">$</span>nmfObj, <span class="dt">mode =</span> <span class="st">"mutation"</span>)</a></code></pre></div>
+<p><img src="sigminer_files/figure-html/unnamed-chunk-9-1.png" width="960"></p>
+<p>Plot cosine similarities against validated signatures.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">pheatmap<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/pheatmap/topics/pheatmap">pheatmap</a></span>(<span class="dt">mat=</span> sig_laml<span class="op">$</span>coSineSimMat, <span class="dt">cluster_rows =</span> <span class="ot">FALSE</span>, </a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">                   <span class="dt">main =</span> <span class="st">"Cosine similarity against validated COSMIC signatures"</span>)</a></code></pre></div>
+<p><img src="sigminer_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
 </div>
 </div>
 <div id="citation" class="section level2">

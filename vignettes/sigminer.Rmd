@@ -95,6 +95,20 @@ sig_laml <- sig_extract(sig_pre$nmf_matrix, n_sig = 2, mode = "mutation", pConst
 > Please note the 'pConstant' option: 	
 It is a small positive value to add to the matrix. Use it ONLY if the functions throws an non-conformable arrays error.
 
+Plot mutational signatures.
+
+```{r, fig.width=10}
+draw_sig_profile(sig_laml$nmfObj, mode = "mutation")
+```
+
+Plot cosine similarities against validated signatures.
+
+```{r}
+pheatmap::pheatmap(mat= sig_laml$coSineSimMat, cluster_rows = FALSE, 
+                   main = "Cosine similarity against validated COSMIC signatures")
+```
+
+
 ## Citation
 
 If you use **sigminer** in academic field, please cite:
