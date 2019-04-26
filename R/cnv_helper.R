@@ -101,7 +101,7 @@ calculateSumOfPosteriors <-
     for (i in unique(mat$ID))
     {
       posterior_sum <-
-        rbind(posterior_sum, colSums(mat[mat$ID == i, c(-1, -2)]))
+        rbind(posterior_sum, colSums(mat[mat$ID == i, c(-1, -2), drop = FALSE]))
     }
     params <- flexmix::parameters(components)
     if (!is.null(nrow(params))) {
