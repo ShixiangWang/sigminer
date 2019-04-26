@@ -105,10 +105,10 @@ calculateSumOfPosteriors <-
     }
     params <- flexmix::parameters(components)
     if (!is.null(nrow(params))) {
-      posterior_sum <- posterior_sum[, order(params[1, ])]
+      posterior_sum <- posterior_sum[, order(params[1, ]), drop = FALSE]
     }
     else {
-      posterior_sum <- posterior_sum[, order(params)]
+      posterior_sum <- posterior_sum[, order(params), drop = FALSE]
     }
     colnames(posterior_sum) <-
       paste0(name, 1:ncol(posterior_sum))

@@ -99,3 +99,5 @@ laml.sign = extractSignatures(mat = laml.tnm, nTry = 6, plotBestFitRes = FALSE)
 laml.sign = sig_extract(laml.tnm$nmf_matrix, n_sig = 2, mode = "mutation", pConstant = 1)
 
 
+load("~/Downloads/data_Metastasis.RData")
+prepare_copynumber(data_Metastasis2, cores = 4, min_comp = c(2,2,2,2,1,2))
