@@ -420,6 +420,7 @@ draw_sig_profile <- function(nmfObj, mode = c("copynumber", "mutation"),
   # <<<<<<<<<<<<<<<<< Setting theme
 
   # >>>>>>>>>>>>>>>>> identify mode and do data transformation
+  # w = rbind(w, matrix(c(0.1, 0.2), ncol = 2, dimnames = list("segsize10")))
   mat <- as.data.frame(w)
   mat$context <- rownames(mat)
 
@@ -428,7 +429,8 @@ draw_sig_profile <- function(nmfObj, mode = c("copynumber", "mutation"),
 
     mat <- tidyr::gather(mat, class, signature, dplyr::contains("Signature"))
     mat <- dplyr::mutate(mat,
-      context = factor(context),
+      context = factor(context,
+                       levels = unique(mat[["context"]])),
       base = factor(base, levels = c(
         "bp10MB", "copynumber",
         "changepoint", "bpchrarm",
@@ -636,7 +638,7 @@ draw_sig_corrplot <- function(mat_list, order = "original", type = "lower",
 #' ))
 #' # Assign samples to clusters
 #' subtypes <- sig_assign_samples(res$nmfObj, type = "samples")
-#' 
+#'
 #' set.seed(1234)
 #' # Add custom groups
 #' subtypes$new_group <- sample(c("1", "2", "3", "4"), size = nrow(subtypes), replace = TRUE)

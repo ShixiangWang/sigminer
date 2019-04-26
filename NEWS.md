@@ -1,3 +1,8 @@
+# sigminer v0.1.10
+
+* correct year for <doi:10.1038/nature12477>
+* fix #9
+
 # sigminer v0.1.9
 
 * add `pheatmap` to suggest
