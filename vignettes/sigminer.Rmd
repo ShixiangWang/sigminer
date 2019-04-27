@@ -81,14 +81,14 @@ library(NMF)
 ```
 
 
-```{r}
+```{r, eval=FALSE}
 sig_est <- sig_estimate(sig_pre$nmf_matrix, range = 2:5, pConstant = 0.01)
 ```
 
 `sig_est` keeps all information of estimation.
 
 
-```{r}
+```{r, eval=FALSE}
 sig_laml <- sig_extract(sig_pre$nmf_matrix, n_sig = 2, mode = "mutation", pConstant = 0.01)
 ```
 
@@ -97,7 +97,7 @@ It is a small positive value to add to the matrix. Use it ONLY if the functions 
 
 Plot mutational signatures.
 
-```{r, fig.width=10}
+```{r, fig.width=10, eval=FALSE}
 draw_sig_profile(sig_laml$nmfObj, mode = "mutation")
 ```
 

@@ -36,6 +36,7 @@ Imports:
 biocViews:
 Suggests: 
     BSgenome,
+    BSgenome.Hsapiens.UCSC.hg19,
     cowsay,
     ggpubr,
     knitr,
