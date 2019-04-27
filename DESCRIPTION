@@ -35,7 +35,7 @@ Imports:
     purrr
 biocViews:
 Suggests: 
-    BSgenome.Hsapiens.UCSC.hg19,
+    BSgenome,
     cowsay,
     ggpubr,
     knitr,
