@@ -26,7 +26,15 @@ The goal of **sigminer** is to provide an uniform interface for genomic variatio
 
 ## Installation
 
-You can install the development version of sigminer from Github with:
+You can install the stable release of **sigminer** from CRAN with:
+
+```{r, eval=FALSE}
+install.packages("sigminer")
+# Or
+BiocManager::install("sigminer")
+```
+
+You can install the development version of **sigminer** from Github with:
 
 ```{r, eval=FALSE}
 remotes::install_github("ShixiangWang/sigminer")

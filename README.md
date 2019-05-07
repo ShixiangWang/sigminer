@@ -25,7 +25,16 @@ and [maftools](https://github.com/PoisonAlien/maftools) package.
 
 ## Installation
 
-You can install the development version of sigminer from Github with:
+You can install the stable release of **sigminer** from CRAN with:
+
+``` r
+install.packages("sigminer")
+# Or
+BiocManager::install("sigminer")
+```
+
+You can install the development version of **sigminer** from Github
+with:
 
 ``` r
 remotes::install_github("ShixiangWang/sigminer")
