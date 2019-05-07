@@ -53,6 +53,7 @@ sig_prepare.CopyNumber <- function(object, reference_components = FALSE,
 
 #' @describeIn sig_prepare Signature analysis prepare for CopyNumber object
 #' @inheritParams prepare_maf
+#' @references Mayakonda, Anand, et al. "Maftools: efficient and comprehensive analysis of somatic variants in cancer." Genome research 28.11 (2018): 1747-1756.
 #' @export
 sig_prepare.MAF <- function(object, ref_genome = NULL, prefix = NULL,
                             add = TRUE, ignoreChr = NULL, useSyn = TRUE, ...) {
@@ -95,6 +96,7 @@ sig_prepare.GenomicVariation <- function(object, ...) {
 #' @param pConstant A small positive value to add to the matrix. Use it ONLY if the functions throws an \code{non-conformable arrays} error.
 #' @param verbose if `TRUE`, print extra message.
 #' @author Shixiang Wang
+#' @references Gaujoux, Renaud, and Cathal Seoighe. "A flexible R package for nonnegative matrix factorization." BMC bioinformatics 11.1 (2010): 367.
 #' @importFrom grDevices pdf dev.off
 #' @return a `list` contains information of NMF run and rank survey.
 #' @import NMF
@@ -125,13 +127,6 @@ sig_estimate <-
              method = "brunet",
              pConstant = NULL,
              verbose = FALSE) {
-
-    # loadNamespace("utils")
-    # loadNamespace("registry")
-    # loadNamespace("pkgmaker")
-    # loadNamespace("rngtools")
-    # loadNamespace("cluster")
-    # loadNamespace("NMF")
 
     mat <- t(nmf_matrix)
 
@@ -173,11 +168,12 @@ sig_estimate <-
         pointsize = 9,
         width = 12,
         height = 12,
-        paper = "special"
+        paper = "special",
+        onefile = FALSE
       )
       NMF::consensusmap(estim.r)
       dev.off()
-      if (verbose) message("created ", paste0(plot_basename, "_consensus.pdf"))
+      if (verbose) message("Created ", paste0(plot_basename, "_consensus.pdf"))
     }
 
     nmf.sum <- NMF::summary(estim.r) # Get summary of estimates
@@ -271,7 +267,7 @@ sig_estimate <-
       )
       print(p)
       dev.off()
-      if (verbose) message("created ", paste0(plot_basename, "_survey.pdf"))
+      if (verbose) message("Created ", paste0(plot_basename, "_survey.pdf"))
     }
 
     return(
@@ -295,6 +291,8 @@ sig_estimate <-
 #' @param n_sig number of signature. Please run [sig_prepare] to select a suitable value.
 #' @param mode variation type to decompose, currently support "copynumber" or "mutation".
 #' @author Shixiang Wang
+#' @references Gaujoux, Renaud, and Cathal Seoighe. "A flexible R package for nonnegative matrix factorization." BMC bioinformatics 11.1 (2010): 367.
+#' @references Mayakonda, Anand, et al. "Maftools: efficient and comprehensive analysis of somatic variants in cancer." Genome research 28.11 (2018): 1747-1756.
 #' @return a `list` contains NMF object, signature matrix and activity matrix.
 #' @import NMF
 #' @export
@@ -770,7 +768,7 @@ sig_get_similarity <- function(sig1, sig2, type = c("cos", "cor")) {
 #' ))
 #' # Assign samples to clusters
 #' subtypes <- sig_assign_samples(res$nmfObj, type = "samples")
-#' 
+#'
 #' set.seed(1234)
 #' # Add custom groups
 #' subtypes$new_group <- sample(c("1", "2", "3", "4"), size = nrow(subtypes), replace = TRUE)

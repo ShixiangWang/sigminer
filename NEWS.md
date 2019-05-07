@@ -1,3 +1,7 @@
+# sigminer v0.1.11
+
+* fix #11
+
 # sigminer v0.1.10
 
 * correct year for \doi{10.1038/nature12477}

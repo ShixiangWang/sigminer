@@ -98,6 +98,9 @@ load(system.file("extdata", "toy_copynumber.RData",
 cn_prepare <- sig_prepare(cn)
 }
 }
+\references{
+Mayakonda, Anand, et al. "Maftools: efficient and comprehensive analysis of somatic variants in cancer." Genome research 28.11 (2018): 1747-1756.
+}
 \seealso{
 Other signature analysis series function: \code{\link{sig_assign_samples}},
   \code{\link{sig_estimate}}, \code{\link{sig_extract}},

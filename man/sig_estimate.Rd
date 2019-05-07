@@ -62,6 +62,9 @@ cn_estimate <- sig_estimate(cn_prepare$nmf_matrix,
 )
 }
 }
+\references{
+Gaujoux, Renaud, and Cathal Seoighe. "A flexible R package for nonnegative matrix factorization." BMC bioinformatics 11.1 (2010): 367.
+}
 \seealso{
 Other signature analysis series function: \code{\link{sig_assign_samples}},
   \code{\link{sig_extract}},

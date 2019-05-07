@@ -43,6 +43,11 @@ load(system.file("extdata", "toy_copynumber_prepare.RData",
 res <- sig_extract(cn_prepare$nmf_matrix, 2, mode = "copynumber", nrun = 1)
 }
 }
+\references{
+Gaujoux, Renaud, and Cathal Seoighe. "A flexible R package for nonnegative matrix factorization." BMC bioinformatics 11.1 (2010): 367.
+
+Mayakonda, Anand, et al. "Maftools: efficient and comprehensive analysis of somatic variants in cancer." Genome research 28.11 (2018): 1747-1756.
+}
 \seealso{
 Other signature analysis series function: \code{\link{sig_assign_samples}},
   \code{\link{sig_estimate}},
