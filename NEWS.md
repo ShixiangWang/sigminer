@@ -1,5 +1,9 @@
 # sigminer v0.1.11
 
+* rewrite `get_components` function
+
+# sigminer v0.1.11
+
 * fix #11
 
 # sigminer v0.1.10

@@ -39,3 +39,25 @@ draw_sig_activity(res$nmfObj)
 
 sig_activity = sig_get_activity(res$nmfObj)
 sig_cor = sig_get_correlation(sig_activity)
+
+
+# parallel computation for getting components
+load(system.file("extdata", "toy_cn_features.RData",
+                 package = "sigminer", mustWork = TRUE
+))
+system.time(
+  cn_components <- get_components(cn_features)
+)
+# 用户  系统  流逝
+# 9.152 0.187 9.975
+
+# New
+system.time(
+  cn_components3 <- get_components(cn_features)
+)
+
+# 用户  系统  流逝
+# 8.932 0.193 9.716
+
+# > names(cn_features)
+# [1] "segsize"     "bp10MB"      "osCN"        "bpchrarm"    "changepoint" "copynumber"

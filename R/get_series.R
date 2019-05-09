@@ -186,101 +186,49 @@ get_components <- function(CN_features,
     flag_max <- TRUE
   }
 
-  dat <- as.numeric(CN_features[["segsize"]][, 2])
-  message("Fit feature: Segment size")
-  segsize_mm <-
-    fitComponent(
-      dat,
-      seed = seed,
-      model_selection = model_selection,
-      min_prior = min_prior,
-      niter = niter,
-      nrep = nrep,
-      min_comp = if (flag_min) min_comp[1] else min_comp,
-      max_comp = if (flag_max) max_comp[1] else max_comp
-    )
+  dist_map = c("norm", "pois", "pois", "pois", "norm", "norm")
+  names(dist_map) = c("segsize","bp10MB","osCN","bpchrarm","changepoint","copynumber")
+  apply_fitComponent = function(CN_feature,
+                                feature_name,
+                                dist_map,
+                                seed = 123456,
+                                min_comp = 2,
+                                max_comp = 10,
+                                min_prior = 0.001,
+                                model_selection = "BIC",
+                                nrep = 1,
+                                niter = 1000) {
 
-  dat <- as.numeric(CN_features[["bp10MB"]][, 2])
-  message("Fit feature: Breakpoint count per 10 Mb")
-  bp10MB_mm <-
-    fitComponent(
-      dat,
-      dist = "pois",
-      seed = seed,
-      model_selection = model_selection,
-      min_prior = min_prior,
-      niter = niter,
-      nrep = nrep,
-      min_comp = if (flag_min) min_comp[2] else min_comp,
-      max_comp = if (flag_max) max_comp[2] else max_comp
-    )
+    dat <- as.numeric(CN_feature[, 2])
+    message("Fit feature: ", feature_name)
+    segsize_mm <-
+      fitComponent(
+        dat,
+        dist = dist_map[feature_name],
+        seed = seed,
+        model_selection = model_selection,
+        min_prior = min_prior,
+        niter = niter,
+        nrep = nrep,
+        min_comp = min_comp,
+        max_comp = max_comp
+      )
+  }
 
-  dat <- as.numeric(CN_features[["osCN"]][, 2])
-  message("Fit feature: Length of oscillating copy-number chain")
-  osCN_mm <-
-    fitComponent(
-      dat,
-      dist = "pois",
-      seed = seed,
-      model_selection = model_selection,
-      min_prior = min_prior,
-      niter = niter,
-      nrep = nrep,
-      min_comp = if (flag_min) min_comp[3] else min_comp,
-      max_comp = if (flag_max) max_comp[3] else max_comp
-    )
-
-  dat <- as.numeric(CN_features[["bpchrarm"]][, 2])
-  message("Fit feature: Breakpoint count per arm")
-  bpchrarm_mm <-
-    fitComponent(
-      dat,
-      dist = "pois",
-      seed = seed,
-      model_selection = model_selection,
-      min_prior = min_prior,
-      niter = niter,
-      nrep = nrep,
-      min_comp = if (flag_min) min_comp[4] else min_comp,
-      max_comp = if (flag_max) max_comp[4] else max_comp
-    )
-
-  dat <- as.numeric(CN_features[["changepoint"]][, 2])
-  message("Fit feature: Copy number change")
-  changepoint_mm <-
-    fitComponent(
-      dat,
-      seed = seed,
-      model_selection = model_selection,
-      min_prior = min_prior,
-      niter = niter,
-      nrep = nrep,
-      min_comp = if (flag_min) min_comp[5] else min_comp,
-      max_comp = if (flag_max) max_comp[5] else max_comp
-    )
-
-  dat <- as.numeric(CN_features[["copynumber"]][, 2])
-  message("Fit feature: Absolute copy number")
-  copynumber_mm <-
-    fitComponent(
-      dat,
-      seed = seed,
-      model_selection = model_selection,
-      nrep = nrep,
-      min_comp = if (flag_min) min_comp[6] else min_comp,
-      max_comp = if (flag_max) max_comp[6] else max_comp,
-      min_prior = min_prior,
-      niter = niter
-    )
-
-  list(
-    segsize = segsize_mm,
-    bp10MB = bp10MB_mm,
-    osCN = osCN_mm,
-    bpchrarm = bpchrarm_mm,
-    changepoint = changepoint_mm,
-    copynumber = copynumber_mm
+  purrr::pmap(list(
+    CN_feature = CN_features,
+    feature_name = names(CN_features),
+    min_comp = if (flag_min) min_comp else rep(min_comp, 6),
+    max_comp = if (flag_max) max_comp else rep(max_comp, 6)
+  ), apply_fitComponent,
+  seed = seed,
+  min_prior = min_prior,
+  model_selection = model_selection,
+  nrep = nrep,
+  niter = niter,
+  dist_map = dist_map
   )
+
 }
 
 
@@ -310,7 +258,7 @@ get_components <- function(CN_features,
 #' load(system.file("extdata", "toy_cn_features.RData",
 #'   package = "sigminer", mustWork = TRUE
 #' ))
-#' 
+#'
 #' cn_matrix <- get_matrix(cn_features, cn_components)
 #' @family internal calculation function series
 get_matrix <- function(CN_features,

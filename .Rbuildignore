@@ -7,3 +7,4 @@
 ^sigminer\.Rproj$
 ^\.Rproj\.user$
 docs
+inst/test
