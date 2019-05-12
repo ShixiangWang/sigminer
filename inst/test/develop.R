@@ -61,3 +61,20 @@ system.time(
 
 # > names(cn_features)
 # [1] "segsize"     "bp10MB"      "osCN"        "bpchrarm"    "changepoint" "copynumber"
+# Load copy number features
+load(system.file("extdata", "toy_cn_features.RData",
+                 package = "sigminer", mustWork = TRUE
+))
+
+system.time(
+  cn_components <- get_components(cn_features, nrep = 10, cores = 1)
+)
+
+system.time(
+  cn_components <- get_components(cn_features, nrep = 10, cores = 4)
+)
+
+
+
+fitComponent(dat = as.numeric(cn_features$segsize$value), cores = 4, nrep = 3) -> test_result2
+fitComponent(dat = as.numeric(cn_features$segsize$value), cores = 4, nrep = 1) -> test_result2

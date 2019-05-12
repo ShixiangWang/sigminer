@@ -1,3 +1,7 @@
+# sigminer v0.1.12
+
+* created function `stepFlexmix_v2` (modify code from flexmix package, see #12) to implement parallel computation in `get_component` function
+
 # sigminer v0.1.11
 
 * rewrite `get_components` function

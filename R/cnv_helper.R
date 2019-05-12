@@ -9,7 +9,8 @@ fitComponent <-
              niter = 1000,
              nrep = 1,
              min_comp = 2,
-             max_comp = 10) {
+             max_comp = 10,
+             cores = 1) {
     control <- new("FLXcontrol")
     control@minprior <- min_prior
     control@iter.max <- niter
@@ -19,6 +20,8 @@ fitComponent <-
     stepFlexmix_v2 = function (..., k = NULL, nrep = 3, verbose = TRUE, drop = TRUE,
               unique = FALSE, cores = 1)
     {
+
+      doParallel::registerDoParallel(cores = cores)
       MYCALL <- match.call()
       MYCALL1 <- MYCALL
       bestFlexmix <- function(...) {
@@ -27,10 +30,10 @@ fitComponent <-
         for (m in seq_len(nrep)) {
           if (verbose)
             cat(" *")
-          x = try(flexmix::flexmix(...))
+          x = try(flexmix(...))
           if (!is(x, "try-error")) {
-            logLiks[m] <- stats::logLik(x)
-            if (stats::logLik(x) > stats::logLik(z))
+            logLiks[m] <- logLik(x)
+            if (logLik(x) > logLik(z))
               z = x
           }
         }
@@ -38,7 +41,7 @@ fitComponent <-
       }
       z = list()
       if (is.null(k)) {
-        RET = flexmix::bestFlexmix(...)
+        RET = bestFlexmix(...)
         z[[1]] <- RET$z
         logLiks <- as.matrix(RET$logLiks)
         z[[1]]@call <- MYCALL
@@ -49,21 +52,39 @@ fitComponent <-
       }
       else {
         k = as.integer(k)
-        logLiks <- matrix(nrow = length(k), ncol = nrep)
-        for (n in seq_along(k)) {
+        #logLiks <- matrix(nrow = length(k), ncol = nrep)
+        z_list = foreach (n = seq_along(k)) %dopar% {
           ns <- as.character(k[n])
           if (verbose)
             cat(k[n], ":")
-          RET <- flexmix::bestFlexmix(..., k = k[n])
+          RET <- bestFlexmix(..., k = k[n])
           z[[ns]] = RET$z
-          logLiks[n, ] <- RET$logLiks
+          #logLiks[n, ] <- RET$logLiks
           MYCALL1[["k"]] <- as.numeric(k[n])
           z[[ns]]@call <- MYCALL1
           z[[ns]]@control@nrep <- nrep
           if (verbose)
             cat("\n")
+          list(
+            z = z,
+            logLiks = RET$logLiks
+          )
         }
       }
+
+      z = lapply(z_list, function(x) x[["z"]])
+      z = purrr::flatten(z)
+
+      # k by nrep matrix
+      if (nrep == 1) {
+        logLiks = as.matrix(sapply(z_list, function(x) x[["logLiks"]]))
+      } else {
+        logLiks = t(sapply(z_list, function(x) x[["logLiks"]]))
+      }
+
+      #print(logLiks)
+      # logLiks = as.matrix(sapply(z, function(x) x@logLik))
+
       logLiks <- logLiks[is.finite(sapply(z, logLik)), , drop = FALSE]
       z <- z[is.finite(sapply(z, logLik))]
       rownames(logLiks) <- names(z)
@@ -93,12 +114,13 @@ fitComponent <-
           )
       } else {
         fit <-
-          flexmix::stepFlexmix(
+          stepFlexmix_v2(
             dat ~ 1,
             model = flexmix::FLXMCnorm1(),
             k = min_comp:max_comp,
             nrep = nrep,
-            control = control
+            control = control,
+            cores = cores
           )
 
         if (inherits(fit, "stepFlexmix")) {
@@ -116,12 +138,13 @@ fitComponent <-
           )
       } else {
         fit <-
-          flexmix::stepFlexmix(
+          stepFlexmix_v2(
             dat ~ 1,
             model = flexmix::FLXMCmvpois(),
             k = min_comp:max_comp,
             nrep = nrep,
-            control = control
+            control = control,
+            cores = cores
           )
         if (inherits(fit, "stepFlexmix")) {
           fit <- flexmix::getModel(fit, which = model_selection)
@@ -407,3 +430,6 @@ lower_norm <- function(x, sig_thresh = 0.01) {
   }
   new_x
 }
+
+
+utils::globalVariables(c("n"))

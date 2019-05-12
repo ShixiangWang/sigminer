@@ -148,9 +148,11 @@ get_features <- function(CN_data,
 #' @param nrep number of run times for each value of component,
 #' keep only the solution with maximum likelihood.
 #' @param niter maximal number of iteration to achive converge.
+#' @inheritParams get_features
 #' @author Geoffrey Macintyre, Shixiang Wang
 #' @return a `list` contain `flexmix` object of copy-number features.
-#' @importClassesFrom flexmix FLXcontrol
+#' @import flexmix
+#' @import foreach
 #' @export
 #' @examples
 #' \donttest{
@@ -167,8 +169,9 @@ get_components <- function(CN_features,
                            max_comp = 10,
                            min_prior = 0.001,
                            model_selection = "BIC",
-                           nrep = 1,
-                           niter = 1000) {
+                           nrep = 3,
+                           niter = 1000,
+                           cores = 1) {
   flag_min <- FALSE
   flag_max <- FALSE
 
@@ -197,7 +200,8 @@ get_components <- function(CN_features,
                                 min_prior = 0.001,
                                 model_selection = "BIC",
                                 nrep = 1,
-                                niter = 1000) {
+                                niter = 1000,
+                                cores = 1) {
 
     dat <- as.numeric(CN_feature[, 2])
     message("Fit feature: ", feature_name)
@@ -211,7 +215,8 @@ get_components <- function(CN_features,
         niter = niter,
         nrep = nrep,
         min_comp = min_comp,
-        max_comp = max_comp
+        max_comp = max_comp,
+        cores = cores
       )
   }
 
@@ -226,7 +231,8 @@ get_components <- function(CN_features,
   model_selection = model_selection,
   nrep = nrep,
   niter = niter,
-  dist_map = dist_map
+  dist_map = dist_map,
+  cores = cores
   )
 
 }

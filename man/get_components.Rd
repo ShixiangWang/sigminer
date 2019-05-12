@@ -6,7 +6,7 @@
 \usage{
 get_components(CN_features, seed = 123456, min_comp = 2,
   max_comp = 10, min_prior = 0.001, model_selection = "BIC",
-  nrep = 1, niter = 1000)
+  nrep = 3, niter = 1000, cores = 1)
 }
 \arguments{
 \item{CN_features}{a \code{list} generate from \code{\link[=get_features]{get_features()}} function.}
@@ -29,6 +29,10 @@ Details about custom setting please refer to \strong{flexmix} package.}
 keep only the solution with maximum likelihood.}
 
 \item{niter}{maximal number of iteration to achive converge.}
+
+\item{cores}{number of compute cores to run this task.
+You can use \code{\link[parallel:detectCores]{parallel::detectCores()}} function to check how
+many cores you can use.}
 }
 \value{
 a \code{list} contain \code{flexmix} object of copy-number features.

@@ -51,7 +51,7 @@ prepare_copynumber <- function(CopyNumber,
       min_comp = min_comp, max_comp = max_comp,
       min_prior = min_prior,
       model_selection = model_selection,
-      nrep = nrep, niter = niter
+      nrep = nrep, niter = niter, cores = cores
     )
   }
 

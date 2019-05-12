@@ -19,7 +19,7 @@ test_that("signature analysis series and result visualization functions work", {
   p1 <- draw_cn_distribution(cn)
   expect_true(inherits(p1, "ggplot"))
 
-  cn_prepare <- sig_prepare(cn, cores = 2)
+  cn_prepare <- sig_prepare(cn, cores = 2, nrep = 1)
   expect_true(inherits(cn_prepare, "list"))
   expect_true(length(cn_prepare) == 3)
 

@@ -9,7 +9,7 @@ test_that("prepare_* series functions work", {
   cp <- read_copynumber(extdata_dir, pattern = "txt", genome_build = "hg19")
   expect_s4_class(cp, "CopyNumber")
 
-  cn_prepare <- prepare_copynumber(cp)
+  cn_prepare <- prepare_copynumber(cp, nrep = 1)
   expect_true(inherits(cn_prepare, "list"))
   expect_true(length(cn_prepare) == 3)
 

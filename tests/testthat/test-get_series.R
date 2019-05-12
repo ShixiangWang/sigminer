@@ -16,7 +16,7 @@ test_that("get_* series functions work", {
   expect_true(inherits(cn_features, "list"))
   expect_true(length(cn_features) == 6)
 
-  cn_components <- get_components(cn_features)
+  cn_components <- get_components(cn_features, nrep = 1)
   expect_true(inherits(cn_components, "list"))
   expect_true(length(cn_components) == 6)
 
