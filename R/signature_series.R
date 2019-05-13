@@ -89,7 +89,9 @@ sig_prepare.GenomicVariation <- function(object, ...) {
 #' @param cores number of cpu cores to run NMF.
 #' @param seed specification of the starting point or seeding method, which will compute a starting point, usually using data from the target matrix in order to provide a good guess.
 #' @param use_random Should generate random data from input to test measurements. Default is `TRUE`.
-#' @param save_plots if `TRUE`, save plots to local machine.
+#' @param save_plots if `TRUE`, save plots to local machine. Of note, if pdf file consensus map has extra blank page, please call
+#' `pdf(..., onefile=FALSE)`, it may fix this problem, see
+#' <https://stackoverflow.com/questions/12481267/in-r-how-to-prevent-blank-page-in-pdf-when-using-gridbase-to-embed-subplot-insi>.
 #' @param plot_basename when save plots, set custom basename for file path.
 #' @param method specification of the NMF algorithm. Use 'brunet' as default.
 #' Available methods for nmf decompositions are 'brunet', 'lee', 'ls-nmf', 'nsNMF', 'offset'.
@@ -168,8 +170,7 @@ sig_estimate <-
         pointsize = 9,
         width = 12,
         height = 12,
-        paper = "special",
-        onefile = FALSE
+        paper = "special"
       )
       NMF::consensusmap(estim.r)
       dev.off()

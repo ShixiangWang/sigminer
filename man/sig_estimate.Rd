@@ -25,7 +25,9 @@ generate from \link{sig_prepare} function.}
 
 \item{use_random}{Should generate random data from input to test measurements. Default is \code{TRUE}.}
 
-\item{save_plots}{if \code{TRUE}, save plots to local machine.}
+\item{save_plots}{if \code{TRUE}, save plots to local machine. Of note, if pdf file consensus map has extra blank page, please call
+\code{pdf(..., onefile=FALSE)}, it may fix this problem, see
+\url{https://stackoverflow.com/questions/12481267/in-r-how-to-prevent-blank-page-in-pdf-when-using-gridbase-to-embed-subplot-insi}.}
 
 \item{plot_basename}{when save plots, set custom basename for file path.}
 
