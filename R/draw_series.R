@@ -382,6 +382,10 @@ draw_cn_components <- function(features, components, ...) {
 #' @param y_scale one of 'relative' or 'absolute', if choose 'relative',
 #' signature columns will be scaled to sum as 1.
 #' @param font_scale a number used to set font scale.
+#' @param sig_names set name of signatures, can be a character vector.
+#' Default is `NULL`, prefix 'Signature_' plus number is used.
+#' @param sig_orders set order of signatures, can be a character vector.
+#' Default is `NULL`, the signatures are ordered by alphabetical order.
 #' @author Shixiang Wang
 #' @return a `ggplot` object
 #' @import ggplot2
@@ -394,7 +398,8 @@ draw_cn_components <- function(features, components, ...) {
 #' draw_sig_profile(res$nmfObj)
 #' @family signature plot
 draw_sig_profile <- function(nmfObj, mode = c("copynumber", "mutation"),
-                             y_scale = c("relative", "absolute"), font_scale = 1) {
+                             y_scale = c("relative", "absolute"), font_scale = 1,
+                             sig_names = NULL, sig_orders = NULL) {
   mode <- match.arg(mode)
   y_scale <- match.arg(y_scale)
 
@@ -454,6 +459,18 @@ draw_sig_profile <- function(nmfObj, mode = c("copynumber", "mutation"),
     )
   }
 
+  # >>>>>>> Set signature name and order
+  if (!is.null(sig_names)) {
+    if (length(sig_names) != length(unique(mat[["class"]]))){
+      stop("The length of input signature names is not equal to signature number")
+    }
+    names(sig_names) = paste0("Signature_", seq_along(sig_names))
+    mat[["class"]] = sig_names[mat[["class"]]]
+  }
+
+  if (!is.null(sig_orders)) {
+    mat[["class"]] = factor(mat[["class"]], levels = sig_orders)
+  }
   # >>>>>>>>>>>>>>>>>>>>>>> Plot
   p <- ggplot(mat) +
     geom_bar(aes_string(x = "context", y = "signature", fill = "base"),

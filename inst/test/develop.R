@@ -78,3 +78,11 @@ system.time(
 
 fitComponent(dat = as.numeric(cn_features$segsize$value), cores = 4, nrep = 3) -> test_result2
 fitComponent(dat = as.numeric(cn_features$segsize$value), cores = 4, nrep = 1) -> test_result2
+
+
+# set order and names for signature profile
+# Load copy number signature
+load(system.file("extdata", "toy_copynumber_signature.RData",
+                 package = "sigminer", mustWork = TRUE
+))
+draw_sig_profile(res$nmfObj, sig_names = c("CN.Sig.2", "CN.Sig.1"), sig_orders = c("CN.Sig.2", "CN.Sig.1"))

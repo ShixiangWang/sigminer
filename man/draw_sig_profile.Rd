@@ -5,7 +5,8 @@
 \title{Plot signature profile}
 \usage{
 draw_sig_profile(nmfObj, mode = c("copynumber", "mutation"),
-  y_scale = c("relative", "absolute"), font_scale = 1)
+  y_scale = c("relative", "absolute"), font_scale = 1,
+  sig_names = NULL, sig_orders = NULL)
 }
 \arguments{
 \item{nmfObj}{a \code{NMF} result object which is an element return from \link{sig_extract}
@@ -17,6 +18,12 @@ or run results of \strong{NMF} package.}
 signature columns will be scaled to sum as 1.}
 
 \item{font_scale}{a number used to set font scale.}
+
+\item{sig_names}{set name of signatures, can be a character vector.
+Default is \code{NULL}, prefix 'Signature_' plus number is used.}
+
+\item{sig_orders}{set order of signatures, can be a character vector.
+Default is \code{NULL}, the signatures are ordered by alphabetical order.}
 }
 \value{
 a \code{ggplot} object

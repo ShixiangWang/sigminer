@@ -1,5 +1,6 @@
 # sigminer v0.1.12
 
+* added two option for `draw_sig_profile()` function to set name and order of signatures
 * #11 is a side effect of `pdf()` function and cannot be fixed, return code to original version and show this case in function option to users
 * created function `stepFlexmix_v2` (modify code from flexmix package, see #12) to implement parallel computation in `get_component` function
 
