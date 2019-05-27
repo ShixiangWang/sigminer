@@ -551,14 +551,15 @@ sig_assign_samples <- function(nmfObj, type = "consensus", matchConseOrder = F) 
     if (matchConseOrder) {
       sample.order <- attributes(predict.consensus)$iOrd
       data <- data[sample.order, ]
+      colnames(data) <- c("Sample_ID", "Subgroup", "silhouette_width")
     }
   } else if (type == "samples") {
     predict.samples <- predict(nmfObj, what = "samples", prob = T)
     silhouette.samples <- silhouette(nmfObj, what = "samples")
     data <- data.frame(
       Sample_ID = names(predict.samples$predict),
-      nmf_subtypes = predict.samples$predict,
-      sil_width = signif(silhouette.samples[, "sil_width"], 3),
+      Subgroup = predict.samples$predict,
+      silhouette_width = signif(silhouette.samples[, "sil_width"], 3),
       prob = signif(predict.samples$prob, 3)
     )
   } else {
