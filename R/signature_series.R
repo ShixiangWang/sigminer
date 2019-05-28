@@ -546,12 +546,12 @@ sig_assign_samples <- function(nmfObj, type = "consensus", matchConseOrder = F) 
       nmf_subtypes = predict.consensus,
       sil_width = signif(silhouette.consensus[, "sil_width"], 3)
     )
+    colnames(data) <- c("Sample_ID", "Subgroup", "silhouette_width")
     # If we want to display as we see in consensusmap, we just need to reoder everything.
     # Now re-order data to match consensusmap sample order
     if (matchConseOrder) {
       sample.order <- attributes(predict.consensus)$iOrd
       data <- data[sample.order, ]
-      colnames(data) <- c("Sample_ID", "Subgroup", "silhouette_width")
     }
   } else if (type == "samples") {
     predict.samples <- predict(nmfObj, what = "samples", prob = T)
@@ -776,7 +776,7 @@ sig_get_similarity <- function(sig1, sig2, type = c("cos", "cor")) {
 #' subtypes$new_group <- sample(c("1", "2", "3", "4"), size = nrow(subtypes), replace = TRUE)
 #' # Summarize subtypes
 #' subtypes.sum <- sig_summarize_subtypes(subtypes[, -1],
-#'   col_subtype = "nmf_subtypes",
+#'   col_subtype = "Subgroup",
 #'   cols_to_summary = colnames(subtypes[, -1])[c(-1, -2)],
 #'   type = c("co", "ca"), verbose = TRUE
 #' )

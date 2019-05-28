@@ -661,7 +661,7 @@ draw_sig_corrplot <- function(mat_list, order = "original", type = "lower",
 #' subtypes$new_group <- sample(c("1", "2", "3", "4"), size = nrow(subtypes), replace = TRUE)
 #' # Summarize subtypes
 #' subtypes.sum <- sig_summarize_subtypes(subtypes[, -1],
-#'   col_subtype = "nmf_subtypes",
+#'   col_subtype = "Subgroup",
 #'   cols_to_summary = colnames(subtypes[, -1])[c(-1, -2)],
 #'   type = c("co", "ca"), verbose = TRUE
 #' )
