@@ -86,3 +86,14 @@ load(system.file("extdata", "toy_copynumber_signature.RData",
                  package = "sigminer", mustWork = TRUE
 ))
 draw_sig_profile(res$nmfObj, sig_names = c("CN.Sig.2", "CN.Sig.1"), sig_orders = c("CN.Sig.2", "CN.Sig.1"))
+
+
+# feature enrichment and plot (for categorical variables)
+laml.maf = system.file('extdata', 'tcga_laml.maf.gz', package = 'maftools')
+laml.clin = system.file('extdata', 'tcga_laml_annot.tsv', package = 'maftools')
+laml = read.maf(maf = laml.maf, clinicalData = laml.clin)
+tt = clinicalEnrichment(laml, 'FAB_classification')
+
+
+am_data = sig_group_enrichment(test_df)
+plotEnrichmentResults(am_data, showTitle = TRUE)

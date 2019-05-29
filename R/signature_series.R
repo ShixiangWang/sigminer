@@ -840,3 +840,113 @@ sig_summarize_subtypes <- function(data, col_subtype, cols_to_summary,
   names(res) <- cols_to_summary
   res
 }
+
+
+# Group enrichment for alteration features --------------------------------
+
+#' Performs alteration enrichment analysis for a given group
+#'
+#' Performs paiwise and groupwise fisher exact tests to find differentially enriched features
+#'  for every factor within a group. This is a modified version of `clinicalEnrichment()`
+#'  function from **maftools** package. Of note, this function only works when feature has
+#'  2 factors. The result can be passed to `plotEnrichmentResults()` function of **maftools** package.
+#'
+#' @param data a `data.frame` contains group column, feature columns.
+#' @param ft_cols a character vector for storing column name of features
+#' @param group_col column name for group
+#' @param positive_flag the flag indicating the feature is alterated in sample, e.g., `TRUE` for mutant and
+#' `FALSE` for WT
+#' @param id_col column name for sample id
+#' @return a `list`
+#' @seealso [maftools::plotEnrichmentResults()]
+#' @export
+#' @family signature analysis series function
+sig_group_enrichment = function(data, ft_cols,
+                                group_col,
+                                positive_flag = TRUE,
+                                id_col = "Tumor_Sample_Barcode") {
+  stopifnot(is.data.frame(data), length(group_col) == 1, length(id_col) ==1)
+  if (!all(ft_cols %in% colnames(data))) stop("not all feature columns are available")
+  if (!(group_col %in% colnames(data))) stop("column ", group_col, " is not available")
+  if (!(id_col %in% colnames(data))) stop("column ", id_col, " is not available")
+
+  # Source code from maftools
+  # https://github.com/PoisonAlien/maftools/blob/master/R/ClinicalEnrichment.R
+
+  cd = data.table::as.data.table(data)
+  cd = cd[,c(id_col, group_col, ft_cols), with = FALSE]
+  colnames(cd)[1:2] = c("Tumor_Sample_Barcode", "cf")
+  cd$cf = as.character(cd$cf)
+  cf.tbl = table(cd$cf)
+  message(paste0("Sample size per factor in ", group_col, ":"))
+  print(cf.tbl)
+
+  if(length(cf.tbl) == 1){
+    stop("Single factor. Nothing to compare..")
+  }
+
+  plist = lapply(ft_cols, function(x){
+    cd$Genotype = ifelse(cd[[x]] == positive_flag, "Mutant", "WT")
+
+    #Perform groupwise comparision for given gene
+    ft = lapply(X = names(cf.tbl), FUN = function(y){
+      cd$Group = ifelse(test = cd$cf %in% y, yes = y, no = "Other")
+      cd$Genotype = factor(x = cd$Genotype, levels = c("WT", "Mutant"))
+      cd$Group = factor(x = cd$Group, levels = c(y, "Other"))
+      cd.tbl = with(cd, table(Genotype, Group))
+      cd.tbl = cd.tbl[c("WT", "Mutant") ,c(y, "Other")]
+      ft = fisher.test(cd.tbl, alternative = 'l')
+      ft.tbl = data.table::data.table(Group1 = y, Group2 = "Rest",
+                                      n_mutated_group1 = paste0(nrow(cd[Group %in% y][Genotype %in% 'Mutant']), " of ", nrow(cd[Group %in% y])),
+                                      n_mutated_group2 = paste0(nrow(cd[!Group %in% y][Genotype %in% 'Mutant']), " of ", nrow(cd[!Group %in% y])),
+                                      p_value = ft$p.value, OR_low = ft$conf.int[1], OR_high = ft$conf.int[2],
+                                      Hugo_Symbol = x, Analysis = "Group")
+      ft.tbl
+    })
+    ft = data.table::rbindlist(ft)
+
+    #Perform pairwise fisher test for every gene
+    prop.tbl = pairwise.fisher.test(x = cd$Genotype, g = cd$cf, p.adjust.method = "fdr")
+    ptbl = data.table::melt(prop.tbl$p.value)
+    data.table::setDT(ptbl)
+    ptbl[,Hugo_Symbol := x][,Analysis := "Pairwise"]
+    ptbl = ptbl[,.(Hugo_Symbol, Var1, Var2, value, Analysis)]
+    colnames(ptbl) = c("Hugo_Symbol", "Feature_1", "Feature_2", "fdr", "Analysis")
+    ptbl = ptbl[!is.na(fdr)]
+
+    f1.mutants = cd[,.N,.(cf, Genotype)][Genotype %in% 'Mutant', .(cf, N)]
+    if(length(names(cf.tbl)[!names(cf.tbl) %in% f1.mutants[,cf]]) > 0){
+      #Add zero counts for missing factors
+      f1.mutants = rbind(f1.mutants,
+                         data.table::data.table(cf = names(cf.tbl)[!names(cf.tbl) %in% f1.mutants[,cf]], N = 0))
+    }
+
+    f1.mutants = merge(f1.mutants, cd[,.N,.(cf)], by = 'cf')
+    f1.mutants[,n_mutated_Feature := paste0(N.x, " of ", N.y)]
+
+    ptbl[["Feature_1"]] = as.character(ptbl[["Feature_1"]])
+    ptbl[["Feature_2"]] = as.character(ptbl[["Feature_2"]])
+    ptbl = merge(ptbl, f1.mutants[,.(cf, n_mutated_Feature)], by.x = 'Feature_1', by.y = 'cf', all.x = TRUE)
+    ptbl = merge(ptbl, f1.mutants[,.(cf, n_mutated_Feature)], by.x = 'Feature_2', by.y = 'cf', all.x = TRUE)
+    colnames(ptbl)[6:7] = c('n_mutated_Feature1', 'n_mutated_Feature2')
+    ptbl = ptbl[,.(Hugo_Symbol, Feature_1, Feature_2, n_mutated_Feature1, n_mutated_Feature2, fdr, Analysis)]
+
+    ptbl = rbind(ptbl, ft, fill = TRUE)
+    ptbl
+  })
+
+  plist = data.table::rbindlist(l = plist, fill = TRUE)
+
+  pw.pvals = plist[Analysis %in% "Pairwise",.(Hugo_Symbol, Feature_1, Feature_2, n_mutated_Feature1, n_mutated_Feature2, fdr)][order(fdr)]
+  gw.pvals = plist[Analysis %in% "Group",.(Hugo_Symbol, Group1, Group2, n_mutated_group1, n_mutated_group2, p_value, OR_low, OR_high)][order(p_value)]
+  gw.pvals[,fdr := p.adjust(p_value, method = "fdr")]
+
+  return(list(pairwise_comparision = pw.pvals, groupwise_comparision = gw.pvals, cf_sizes = cd[,.N,cf], clinicalFeature = group_col))
+}
+
+utils::globalVariables(
+  c("Group", "Genotype", "Hugo_Symbol", "Analysis", "Var1", "Var2", "fdr", "cf", "n_mutated_Feature",
+    "n_mutated_group1", "n_mutated_group2",
+    "N.x", "N.y", "Feature_1", "Feature_2", "n_mutated_Feature1", "n_mutated_Feature2", "Group1", "Group2",
+    "p_value", "OR_high", "OR_low")
+)
