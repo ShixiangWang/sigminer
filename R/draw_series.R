@@ -634,7 +634,7 @@ draw_sig_corrplot <- function(mat_list, order = "original", type = "lower",
 #' a list of `ggplot` object contains individual and combined plots. The combined
 #' plot is easily saved to local using [cowplot::save_plot()].
 #' @param subtype_summary a `list` from result of [sig_summarize_subtypes] function.
-#' @param xlab lab name of x axis for all plots.
+#' @param xlab lab name of x axis for all plots. if it is `NA`, remove title for x axis.
 #' @param ylab_co lab name of y axis for plots of continuous type data. Of note,
 #' this argument should be a character vector has same length as `subtype_summary`,
 #' the location for categorical type data should mark with `NA`.
@@ -701,11 +701,19 @@ draw_subtypes_comparison <- function(subtype_summary,
     # plot categorical data
     ca_res <- lapply(ca_list, function(df) {
       data <- df[["data"]]
+      data_sum = data %>% dplyr::count_("subtype")
+      data_sum[["labels"]] = paste(data_sum[["subtype"]], paste0("(n=",data_sum[["n"]], ")"),sep="\n")
       p <- ggplot(data, aes_string(x = "subtype", fill = colnames(data)[2])) +
         geom_bar(position = "fill") +
-        xlab(df[["xlab"]]) +
         cowplot::theme_cowplot() +
-        theme(axis.title.y = element_blank())
+        theme(axis.title.y = element_blank()) +
+        scale_x_discrete(breaks = data_sum[["subtype"]],
+                         labels = data_sum[["labels"]])
+      if (is.na(df[["xlab"]])) {
+        p = p +theme(axis.title.x = element_blank())
+      } else {
+        p = p + xlab(df[["xlab"]])
+      }
 
       if (!is.na(df[["legend_title"]])) {
         p <- p + scale_fill_discrete(name = df[["legend_title"]])
@@ -726,7 +734,13 @@ draw_subtypes_comparison <- function(subtype_summary,
         simplify = FALSE
       )
       p <- ggplot(data, aes_string(x = "subtype", y = colnames(data)[2])) +
-        geom_boxplot() + xlab(df[["xlab"]]) + cowplot::theme_cowplot()
+        geom_boxplot() + cowplot::theme_cowplot()
+
+      if (is.na(df[["xlab"]])) {
+        p = p +theme(axis.title.x = element_blank())
+      } else {
+        p = p + xlab(df[["xlab"]])
+      }
 
       if (show_pvalue) {
         if (!requireNamespace("ggpubr")) {
@@ -750,9 +764,9 @@ draw_subtypes_comparison <- function(subtype_summary,
     } else if (length(ca_res) == 4) {
       ca_comb <- cowplot::plot_grid(plotlist = ca_res, align = "h", ncol = 2)
     } else if (length(ca_res) <= 9) {
-      ca_comb <- cowplot::plot_grid(plotlist = ca_res, align = "h", ncol = 3)
+      ca_comb <- cowplot::plot_grid(plotlist = ca_res, align = "hv", ncol = 3)
     } else {
-      ca_comb <- cowplot::plot_grid(plotlist = ca_res, align = "h", ncol = 4)
+      ca_comb <- cowplot::plot_grid(plotlist = ca_res, align = "hv", ncol = 4)
     }
   } else {
     ca_comb <- NA
@@ -768,12 +782,12 @@ draw_subtypes_comparison <- function(subtype_summary,
       )
     } else if (length(co_res) <= 9) {
       co_comb <- cowplot::plot_grid(
-        plotlist = co_res, align = "h",
+        plotlist = co_res, align = "hv",
         axis = "l", ncol = 3
       )
     } else {
       co_comb <- cowplot::plot_grid(
-        plotlist = co_res, align = "h",
+        plotlist = co_res, align = "hv",
         axis = "l", ncol = 4
       )
     }

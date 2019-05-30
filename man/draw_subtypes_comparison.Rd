@@ -10,7 +10,7 @@ draw_subtypes_comparison(subtype_summary, xlab = "subtype",
 \arguments{
 \item{subtype_summary}{a \code{list} from result of \link{sig_summarize_subtypes} function.}
 
-\item{xlab}{lab name of x axis for all plots.}
+\item{xlab}{lab name of x axis for all plots. if it is \code{NA}, remove title for x axis.}
 
 \item{ylab_co}{lab name of y axis for plots of continuous type data. Of note,
 this argument should be a character vector has same length as \code{subtype_summary},
