@@ -759,6 +759,8 @@ sig_get_similarity <- function(sig1, sig2, type = c("cos", "cor")) {
 #' @param cols_to_summary column names of genotypes/phenotypes want to summarize based on subtypes.
 #' @param type a characater vector with length same as `cols_to_summary`,
 #' 'ca' for categorical type and 'co' for continuous type.
+#' @param NAs default is `NA`, filter `NA`s for categorical columns.
+#' Otherwise a value (either length 1 or length same as `cols_to_summary`) fill `NA`s.
 #' @param verbose if `TRUE`, print extra information.
 #' @author Shixiang Wang <w_shixiang@163.com>
 #' @return a `list` contains data, summary, p value etc..
@@ -773,18 +775,24 @@ sig_get_similarity <- function(sig1, sig2, type = c("cos", "cor")) {
 #'
 #' set.seed(1234)
 #' # Add custom groups
-#' subtypes$new_group <- sample(c("1", "2", "3", "4"), size = nrow(subtypes), replace = TRUE)
-#' # Summarize subtypes
+#' subtypes$new_group <- sample(c("1", "2", "3", "4", NA), size = nrow(subtypes), replace = TRUE)
+#' # Summarize subtypes (filter NAs for categorical coloumns)
 #' subtypes.sum <- sig_summarize_subtypes(subtypes[, -1],
 #'   col_subtype = "Subgroup",
 #'   cols_to_summary = colnames(subtypes[, -1])[c(-1, -2)],
 #'   type = c("co", "ca"), verbose = TRUE
 #' )
+#' # Summarize subtypes (Set NAs of categorical columns to 'Rest')
+#' subtypes.sum2 <- sig_summarize_subtypes(subtypes[, -1],
+#'   col_subtype = "Subgroup",
+#'   cols_to_summary = colnames(subtypes[, -1])[c(-1, -2)],
+#'   type = c("co", "ca"), NAs = "Rest", verbose = TRUE
+#' )
 #' @family signature analysis series function
 sig_summarize_subtypes <- function(data, col_subtype, cols_to_summary,
-                                   type = "ca", verbose = FALSE) {
+                                   type = "ca", NAs = NA, verbose = FALSE) {
   if (!all(type %in% c("ca", "co"))) {
-    stop("all elements in 'type' must be 'ca' for 'categorical' and 'co' for 'continuous'.")
+    stop("all elements in 'type' must be 'ca' for 'categorical' variable and 'co' for 'continuous' variable.")
   }
   if (!is.data.frame(data)) stop("'data' must be a data.frame object.")
   data.table::setDT(data)
@@ -795,11 +803,15 @@ sig_summarize_subtypes <- function(data, col_subtype, cols_to_summary,
   data <- data[!is.na(data[["subtype"]])]
 
   do_summary <- function(col, type = c("ca", "co"),
-                           verbose = FALSE) {
+                           verbose = FALSE, na = NA) {
     type <- match.arg(type)
 
     df <- data[, c("subtype", col), with = FALSE]
-    df <- df[!is.na(df[[col]])]
+    if (!is.na(na) & type == "ca") {
+      df[[col]] = ifelse(is.na(df[[col]]), na, df[[col]])
+    } else {
+      df <- df[!is.na(df[[col]])]
+    }
 
     if (type == "ca") {
       if (verbose) message("Treat ", col, " as categorical variable.")
@@ -836,7 +848,7 @@ sig_summarize_subtypes <- function(data, col_subtype, cols_to_summary,
     }
   }
 
-  res <- Map(do_summary, cols_to_summary, type, verbose)
+  res <- Map(do_summary, cols_to_summary, type, verbose, NAs)
   names(res) <- cols_to_summary
   res
 }

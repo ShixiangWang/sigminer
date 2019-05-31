@@ -1,5 +1,6 @@
 # sigminer v0.1.12
 
+* added option `NAs` to `sig_summarize_subtypes()`
 * updated function `draw_subtypes_comparison()`
 * added function `sig_group_enrichment()`
 * added two option for `draw_sig_profile()` function to set name and order of signatures

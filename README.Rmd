@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 
 ## Overview
 
-The goal of **sigminer** is to provide an uniform interface for genomic variation signature analysis and visualization. 
+The goal of **sigminer** is to provide a uniform interface for genomic variation signature analysis and visualization. 
 
 **sigminer** is powered by [NMF](https://github.com/renozao/NMF) package and [maftools](https://github.com/PoisonAlien/maftools) package.
 

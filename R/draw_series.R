@@ -639,6 +639,7 @@ draw_sig_corrplot <- function(mat_list, order = "original", type = "lower",
 #' this argument should be a character vector has same length as `subtype_summary`,
 #' the location for categorical type data should mark with `NA`.
 #' @param legend_title_ca legend title for plots of categorical type data.
+#' @param legend_position_ca legend position for plots of categorical type data.
 #' Of note,
 #' this argument should be a character vector has same length as `subtype_summary`,
 #' the location for continuous type data should mark with `NA`.
@@ -670,17 +671,21 @@ draw_sig_corrplot <- function(mat_list, order = "original", type = "lower",
 draw_subtypes_comparison <- function(subtype_summary,
                                      xlab = "subtype", ylab_co = NA,
                                      legend_title_ca = NA,
+                                     legend_position_ca = "bottom",
                                      show_pvalue = TRUE,
                                      ...) {
   # parameter with ca/co in the end need fill values
 
   # add parameters
-  subtype_summary <- Map(function(x, xlab, legend_title_ca, ylab_co) {
+  subtype_summary <- Map(function(x, xlab, legend_title_ca, ylab_co, legend_position_ca) {
     x[["xlab"]] <- xlab
-    if (x[["type"]] == "categorical") x[["legend_title"]] <- legend_title_ca
+    if (x[["type"]] == "categorical") {
+      x[["legend_title"]] <- legend_title_ca
+      x[["legend_position"]] <- legend_position_ca
+    }
     if (x[["type"]] == "continuous") x[["ylab"]] <- ylab_co
     x
-  }, subtype_summary, xlab, legend_title_ca, ylab_co)
+  }, subtype_summary, xlab, legend_title_ca, ylab_co, legend_position_ca)
 
   # split input into two list according to element is categorical or continuous
   ca_index <- which(sapply(subtype_summary, function(x) x$type) == "categorical")
@@ -718,7 +723,14 @@ draw_subtypes_comparison <- function(subtype_summary,
       if (!is.na(df[["legend_title"]])) {
         p <- p + scale_fill_discrete(name = df[["legend_title"]])
       }
-      p
+
+      if (show_pvalue) {
+        if (!is.na(df[["p_value"]])) {
+          p <- p + labs(title=paste0("P=",signif(df[["p_value"]], 3)))
+        }
+      }
+
+      p + theme(legend.position = df[["legend_position"]])
     })
     names(ca_res) <- names(ca_list)
   } else {
@@ -729,12 +741,16 @@ draw_subtypes_comparison <- function(subtype_summary,
     # plot continuous data
     co_res <- lapply(co_list, function(df, ...) {
       data <- df[["data"]]
+      data_sum = data %>% dplyr::count_("subtype")
+      data_sum[["labels"]] = paste(data_sum[["subtype"]], paste0("(n=",data_sum[["n"]], ")"),sep="\n")
       my_comparisons <- combn(unique(as.character(data[["subtype"]])),
         2,
         simplify = FALSE
       )
       p <- ggplot(data, aes_string(x = "subtype", y = colnames(data)[2])) +
-        geom_boxplot() + cowplot::theme_cowplot()
+        geom_boxplot() + cowplot::theme_cowplot() +
+        scale_x_discrete(breaks = data_sum[["subtype"]],
+                         labels = data_sum[["labels"]])
 
       if (is.na(df[["xlab"]])) {
         p = p +theme(axis.title.x = element_blank())
@@ -742,9 +758,13 @@ draw_subtypes_comparison <- function(subtype_summary,
         p = p + xlab(df[["xlab"]])
       }
 
+      if (!is.na(df[["ylab"]])) {
+        p = p + ylab(df[["ylab"]])
+      }
+
       if (show_pvalue) {
         if (!requireNamespace("ggpubr")) {
-          stop("'ggpubr' package is need for plotting p values.")
+          stop("'ggpubr' package is needed for plotting p values.")
         }
         p <- p + ggpubr::stat_compare_means(
           comparisons = my_comparisons,

@@ -5,7 +5,7 @@
 \title{Get summary of signature subtypes}
 \usage{
 sig_summarize_subtypes(data, col_subtype, cols_to_summary, type = "ca",
-  verbose = FALSE)
+  NAs = NA, verbose = FALSE)
 }
 \arguments{
 \item{data}{a \code{data.frame} contains signature subtypes and genotypes/phenotypes
@@ -18,6 +18,9 @@ construct this \code{data.frame} by him/herself.}
 
 \item{type}{a characater vector with length same as \code{cols_to_summary},
 'ca' for categorical type and 'co' for continuous type.}
+
+\item{NAs}{default is \code{NA}, filter \code{NA}s for categorical columns.
+Otherwise a value (either length 1 or length same as \code{cols_to_summary}) fill \code{NA}s.}
 
 \item{verbose}{if \code{TRUE}, print extra information.}
 }
@@ -41,12 +44,18 @@ subtypes <- sig_assign_samples(res$nmfObj, type = "samples")
 
 set.seed(1234)
 # Add custom groups
-subtypes$new_group <- sample(c("1", "2", "3", "4"), size = nrow(subtypes), replace = TRUE)
-# Summarize subtypes
+subtypes$new_group <- sample(c("1", "2", "3", "4", NA), size = nrow(subtypes), replace = TRUE)
+# Summarize subtypes (filter NAs for categorical coloumns)
 subtypes.sum <- sig_summarize_subtypes(subtypes[, -1],
   col_subtype = "Subgroup",
   cols_to_summary = colnames(subtypes[, -1])[c(-1, -2)],
   type = c("co", "ca"), verbose = TRUE
+)
+# Summarize subtypes (Set NAs of categorical columns to 'Rest')
+subtypes.sum2 <- sig_summarize_subtypes(subtypes[, -1],
+  col_subtype = "Subgroup",
+  cols_to_summary = colnames(subtypes[, -1])[c(-1, -2)],
+  type = c("co", "ca"), NAs = "Rest", verbose = TRUE
 )
 }
 \seealso{

@@ -17,7 +17,7 @@ status](https://codecov.io/gh/ShixiangWang/sigminer/branch/master/graph/badge.sv
 
 ## Overview
 
-The goal of **sigminer** is to provide an uniform interface for genomic
+The goal of **sigminer** is to provide a uniform interface for genomic
 variation signature analysis and visualization.
 
 **sigminer** is powered by [NMF](https://github.com/renozao/NMF) package
