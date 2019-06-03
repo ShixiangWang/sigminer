@@ -801,6 +801,11 @@ sig_summarize_subtypes <- function(data, col_subtype, cols_to_summary,
   data <- data[, c(col_subtype, cols_to_summary), with = FALSE]
   colnames(data)[1] <- "subtype"
   data <- data[!is.na(data[["subtype"]])]
+  data[["subtype"]] <- factor(data[["subtype"]])
+
+  if (length(levels(data[["subtype"]])) < 2) {
+    stop("At least two factors in ", col_subtype, " column")
+  }
 
   do_summary <- function(col, type = c("ca", "co"),
                            verbose = FALSE, na = NA) {

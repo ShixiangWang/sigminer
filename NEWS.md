@@ -1,5 +1,6 @@
 # sigminer v0.1.12
 
+* fixed #15, showing adjust p values for boxplot
 * added option `NAs` to `sig_summarize_subtypes()`
 * updated function `draw_subtypes_comparison()`
 * added function `sig_group_enrichment()`

@@ -5,7 +5,9 @@
 \title{Plot comparison between signature subtypes}
 \usage{
 draw_subtypes_comparison(subtype_summary, xlab = "subtype",
-  ylab_co = NA, legend_title_ca = NA, show_pvalue = TRUE, ...)
+  ylab_co = NA, legend_title_ca = NA, legend_position_ca = "bottom",
+  show_pvalue = TRUE, method = "wilcox.test",
+  p.adjust.method = "fdr", ...)
 }
 \arguments{
 \item{subtype_summary}{a \code{list} from result of \link{sig_summarize_subtypes} function.}
@@ -16,14 +18,22 @@ draw_subtypes_comparison(subtype_summary, xlab = "subtype",
 this argument should be a character vector has same length as \code{subtype_summary},
 the location for categorical type data should mark with \code{NA}.}
 
-\item{legend_title_ca}{legend title for plots of categorical type data.
+\item{legend_title_ca}{legend title for plots of categorical type data.}
+
+\item{legend_position_ca}{legend position for plots of categorical type data.
 Of note,
 this argument should be a character vector has same length as \code{subtype_summary},
 the location for continuous type data should mark with \code{NA}.}
 
-\item{show_pvalue}{if \code{TRUE}, show p value for comparison of continuous data types.}
+\item{show_pvalue}{if \code{TRUE}, show p values.}
 
-\item{...}{other paramters pass to \code{\link[ggpubr:stat_compare_means]{ggpubr::stat_compare_means()}}.}
+\item{method}{a character string indicating which method to be used for comparing means.
+It can be 't.test', 'wilcox.test' etc..}
+
+\item{p.adjust.method}{correction method, default is 'fdr'. Run \code{p.adjust.methods} to
+see all available options.}
+
+\item{...}{other paramters pass to \code{\link[ggpubr:compare_means]{ggpubr::compare_means()}}.}
 }
 \value{
 a \code{list} of \code{ggplot} objects.
@@ -32,7 +42,9 @@ a \code{list} of \code{ggplot} objects.
 Using result data from \link{sig_summarize_subtypes} function, this function plot
 genotypes/phenotypes comparison between signature subtypes using \strong{ggplot2} package and return
 a list of \code{ggplot} object contains individual and combined plots. The combined
-plot is easily saved to local using \code{\link[cowplot:save_plot]{cowplot::save_plot()}}.
+plot is easily saved to local using \code{\link[cowplot:save_plot]{cowplot::save_plot()}}. Of note, default fisher
+test p values are showed for categorical data and fdr values are showd for
+continuous data.
 }
 \examples{
 # Load copy number signature

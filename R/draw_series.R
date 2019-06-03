@@ -632,7 +632,10 @@ draw_sig_corrplot <- function(mat_list, order = "original", type = "lower",
 #' Using result data from [sig_summarize_subtypes] function, this function plot
 #' genotypes/phenotypes comparison between signature subtypes using **ggplot2** package and return
 #' a list of `ggplot` object contains individual and combined plots. The combined
-#' plot is easily saved to local using [cowplot::save_plot()].
+#' plot is easily saved to local using [cowplot::save_plot()]. Of note, default fisher
+#' test p values are showed for categorical data and fdr values are showd for
+#' continuous data.
+#' @inheritParams get_adj_p
 #' @param subtype_summary a `list` from result of [sig_summarize_subtypes] function.
 #' @param xlab lab name of x axis for all plots. if it is `NA`, remove title for x axis.
 #' @param ylab_co lab name of y axis for plots of continuous type data. Of note,
@@ -643,8 +646,8 @@ draw_sig_corrplot <- function(mat_list, order = "original", type = "lower",
 #' Of note,
 #' this argument should be a character vector has same length as `subtype_summary`,
 #' the location for continuous type data should mark with `NA`.
-#' @param show_pvalue if `TRUE`, show p value for comparison of continuous data types.
-#' @param ... other paramters pass to [ggpubr::stat_compare_means()].
+#' @param show_pvalue if `TRUE`, show p values.
+#' @param ... other paramters pass to [ggpubr::compare_means()].
 #' @author Shixiang Wang <w_shixiang@163.com>
 #' @return a `list` of `ggplot` objects.
 #' @import ggplot2
@@ -673,6 +676,7 @@ draw_subtypes_comparison <- function(subtype_summary,
                                      legend_title_ca = NA,
                                      legend_position_ca = "bottom",
                                      show_pvalue = TRUE,
+                                     method = "wilcox.test", p.adjust.method = "fdr",
                                      ...) {
   # parameter with ca/co in the end need fill values
 
@@ -766,10 +770,14 @@ draw_subtypes_comparison <- function(subtype_summary,
         if (!requireNamespace("ggpubr")) {
           stop("'ggpubr' package is needed for plotting p values.")
         }
-        p <- p + ggpubr::stat_compare_means(
-          comparisons = my_comparisons,
-          ...
-        )
+        p_df = get_adj_p(data, .col = colnames(data)[2], .grp = "subtype",
+                         method = method, p.adjust.method = p.adjust.method, ...)
+
+        # p <- p + ggpubr::stat_compare_means(
+        #   comparisons = my_comparisons,
+        #   ...
+        # )
+        p <- p + ggpubr::stat_pvalue_manual(p_df, label="p.adj")
       }
       p
     }, ...)

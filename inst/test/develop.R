@@ -38,5 +38,16 @@ subtypes.sum2 <- sig_summarize_subtypes(subtypes[, -1],
                                        type = c("co", "ca"), verbose = TRUE, NAs = "NA"
 )
 tt = draw_subtypes_comparison(subtypes.sum2, label="p.signif")
+tt = draw_subtypes_comparison(subtypes.sum2)
 tt$ca$new_group
 tt$co$prob
+
+
+tt <- sig_summarize_subtypes(ToothGrowth,
+                             col_subtype = "dose",
+                             cols_to_summary = "len", type = "co", verbose = TRUE)
+tt
+my_comparisons <- list( c("0.5", "1"), c("1", "2"), c("0.5", "2") )
+p+stat_compare_means(aes(label=..p.adj..),method="t.test", comparisons = my_comparisons)
+draw_subtypes_comparison(tt) -> tt_plot
+tt_plot$co$len
