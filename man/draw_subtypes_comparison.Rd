@@ -64,6 +64,16 @@ subtypes.sum <- sig_summarize_subtypes(subtypes[, -1],
   type = c("co", "ca"), verbose = TRUE
 )
 draw_subtypes_comparison(subtypes.sum)
+
+# Another example
+library(ggpubr)
+tt <- sig_summarize_subtypes(ToothGrowth,
+  col_subtype = "dose",
+  cols_to_summary = "len",
+  type = "co", verbose = TRUE
+)
+tt_plot <- draw_subtypes_comparison(tt)
+tt_plot$co$len
 }
 \seealso{
 Other signature plot: \code{\link{draw_sig_activity}},

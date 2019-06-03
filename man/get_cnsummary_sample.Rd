@@ -48,8 +48,9 @@ Hieronymus, Haley, et al. "Copy number alteration burden predicts prostate cance
 \seealso{
 Other internal calculation function series: \code{\link{get_ArmLocation}},
   \code{\link{get_LengthFraction}},
-  \code{\link{get_cnlist}}, \code{\link{get_components}},
-  \code{\link{get_features}}, \code{\link{get_matrix}}
+  \code{\link{get_adj_p}}, \code{\link{get_cnlist}},
+  \code{\link{get_components}}, \code{\link{get_features}},
+  \code{\link{get_matrix}}
 }
 \author{
 Shixiang Wang \href{mailto:w_shixiang@163.com}{w_shixiang@163.com}

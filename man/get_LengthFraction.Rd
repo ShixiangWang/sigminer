@@ -40,7 +40,7 @@ annot <- get_LengthFraction(cn_list, seg_cols = c("chromosome", "start", "end", 
 }
 \seealso{
 Other internal calculation function series: \code{\link{get_ArmLocation}},
-  \code{\link{get_cnlist}},
+  \code{\link{get_adj_p}}, \code{\link{get_cnlist}},
   \code{\link{get_cnsummary_sample}},
   \code{\link{get_components}}, \code{\link{get_features}},
   \code{\link{get_matrix}}

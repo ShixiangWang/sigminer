@@ -189,20 +189,19 @@ get_components <- function(CN_features,
     flag_max <- TRUE
   }
 
-  dist_map = c("norm", "pois", "pois", "pois", "norm", "norm")
-  names(dist_map) = c("segsize","bp10MB","osCN","bpchrarm","changepoint","copynumber")
-  apply_fitComponent = function(CN_feature,
-                                feature_name,
-                                dist_map,
-                                seed = 123456,
-                                min_comp = 2,
-                                max_comp = 10,
-                                min_prior = 0.001,
-                                model_selection = "BIC",
-                                nrep = 1,
-                                niter = 1000,
-                                cores = 1) {
-
+  dist_map <- c("norm", "pois", "pois", "pois", "norm", "norm")
+  names(dist_map) <- c("segsize", "bp10MB", "osCN", "bpchrarm", "changepoint", "copynumber")
+  apply_fitComponent <- function(CN_feature,
+                                   feature_name,
+                                   dist_map,
+                                   seed = 123456,
+                                   min_comp = 2,
+                                   max_comp = 10,
+                                   min_prior = 0.001,
+                                   model_selection = "BIC",
+                                   nrep = 1,
+                                   niter = 1000,
+                                   cores = 1) {
     dat <- as.numeric(CN_feature[, 2])
     message("Fit feature: ", feature_name)
     segsize_mm <-
@@ -234,7 +233,6 @@ get_components <- function(CN_features,
   dist_map = dist_map,
   cores = cores
   )
-
 }
 
 
@@ -741,13 +739,15 @@ get_cnsummary_sample <- function(segTab, genome_build = c("hg19", "hg38"),
 #' @param ... other arguments passed to [ggpubr::compare_means()]
 #' @source https://github.com/kassambara/ggpubr/issues/143
 #' @return a `data.frame`
+#' @family internal calculation function series
 #' @export
 #'
 #' @examples
 #' library(ggpubr)
 #' # T-test
 #' stat.test <- compare_means(
-#'   len ~ dose, data = ToothGrowth,
+#'   len ~ dose,
+#'   data = ToothGrowth,
 #'   method = "t.test",
 #'   p.adjust.method = "fdr"
 #' )
@@ -757,18 +757,18 @@ get_cnsummary_sample <- function(segTab, genome_build = c("hg19", "hg38"),
 #' p
 #'
 #' # Add p values
-#' my_comparisons <- list( c("0.5", "1"), c("1", "2"), c("0.5", "2"))
-#' p+stat_compare_means(method="t.test", comparisons = my_comparisons)
+#' my_comparisons <- list(c("0.5", "1"), c("1", "2"), c("0.5", "2"))
+#' p + stat_compare_means(method = "t.test", comparisons = my_comparisons)
 #'
 #' # Try adding adjust p values
 #' # proposed by author of ggpubr
 #' # however it does not work
-#' p+stat_compare_means(aes(label=..p.adj..),method="t.test", comparisons = my_comparisons)
+#' p + stat_compare_means(aes(label = ..p.adj..), method = "t.test", comparisons = my_comparisons)
 #'
 #' # Solution:
 #' # calculate adjust p values and their location
 #' # then use stat_pvalue_manual() function
-#' p_adj = get_adj_p(ToothGrowth, .col = "len", .grp = "dose")
+#' p_adj <- get_adj_p(ToothGrowth, .col = "len", .grp = "dose")
 #' p_adj
 #' p + stat_pvalue_manual(p_adj, label = "p.adj")
 #'
@@ -776,38 +776,40 @@ get_cnsummary_sample <- function(segTab, genome_build = c("hg19", "hg38"),
 #' # Of note, p value is ajusted
 #' # for three comparisons, but only
 #' # two are showed in figure
-#' p_adj = get_adj_p(ToothGrowth, .col = "len", .grp = "dose",
-#'            comparisons = list( c("0.5", "1"), c("1", "2")))
+#' p_adj <- get_adj_p(ToothGrowth,
+#'   .col = "len", .grp = "dose",
+#'   comparisons = list(c("0.5", "1"), c("1", "2"))
+#' )
 #' p + stat_pvalue_manual(p_adj, label = "p.adj")
 get_adj_p <- function(data, .col, .grp = "Sample", comparisons = NULL,
-                      method = "wilcox.test", p.adjust.method = "fdr", p.digits = 3L,  ...){
+                      method = "wilcox.test", p.adjust.method = "fdr", p.digits = 3L, ...) {
   # Compute p-values
   comparison.formula <- paste0(.col, "~", .grp) %>%
     as.formula()
   pvalues <- ggpubr::compare_means(
-    formula = comparison.formula,  data = data,
+    formula = comparison.formula, data = data,
     method = method,
     p.adjust.method = p.adjust.method,
     ...
   )
 
   # If a comparison list is provided, extract the comparisons of interest for plotting
-  if(!is.null(comparisons)){
+  if (!is.null(comparisons)) {
     pvalues <- purrr::map_df(comparisons, ~ pvalues %>% dplyr::filter(group1 == .x[1] & group2 == .x[2]))
-
   }
 
   # P-value y coordinates
   y.max <- data %>%
-    dplyr::pull(.col) %>% max(na.rm = TRUE)
+    dplyr::pull(.col) %>%
+    max(na.rm = TRUE)
   p.value.y.coord <- rep(y.max, nrow(pvalues))
 
-  step.increase <- (1:nrow(pvalues))*(y.max/10)
+  step.increase <- (1:nrow(pvalues)) * (y.max / 10)
   p.value.y.coord <- p.value.y.coord + step.increase
 
   pvalues <- pvalues %>%
     dplyr::mutate(
-      y.position =  p.value.y.coord,
+      y.position = p.value.y.coord,
       p.adj = format.pval(p.adj, digits = p.digits)
     )
 

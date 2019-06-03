@@ -17,54 +17,57 @@ fitComponent <-
 
     set.seed(seed)
 
-    stepFlexmix_v2 = function (..., k = NULL, nrep = 3, verbose = TRUE, drop = TRUE,
-              unique = FALSE, cores = 1)
-    {
-
+    stepFlexmix_v2 <- function(..., k = NULL, nrep = 3, verbose = TRUE, drop = TRUE,
+                                   unique = FALSE, cores = 1) {
       doParallel::registerDoParallel(cores = cores)
       MYCALL <- match.call()
       MYCALL1 <- MYCALL
       bestFlexmix <- function(...) {
-        z = new("flexmix", logLik = -Inf)
-        logLiks = rep(NA, length.out = nrep)
+        z <- new("flexmix", logLik = -Inf)
+        logLiks <- rep(NA, length.out = nrep)
         for (m in seq_len(nrep)) {
-          if (verbose)
+          if (verbose) {
             cat(" *")
-          x = try(flexmix(...))
+          }
+          x <- try(flexmix(...))
           if (!is(x, "try-error")) {
             logLiks[m] <- logLik(x)
-            if (logLik(x) > logLik(z))
-              z = x
+            if (logLik(x) > logLik(z)) {
+              z <- x
+            }
           }
         }
         return(list(z = z, logLiks = logLiks))
       }
-      z = list()
+      z <- list()
       if (is.null(k)) {
-        RET = bestFlexmix(...)
+        RET <- bestFlexmix(...)
         z[[1]] <- RET$z
         logLiks <- as.matrix(RET$logLiks)
         z[[1]]@call <- MYCALL
         z[[1]]@control@nrep <- nrep
         names(z) <- as.character(z[[1]]@k)
-        if (verbose)
+        if (verbose) {
           cat("\n")
+        }
       }
       else {
-        k = as.integer(k)
-        #logLiks <- matrix(nrow = length(k), ncol = nrep)
-        z_list = foreach (n = seq_along(k)) %dopar% {
+        k <- as.integer(k)
+        # logLiks <- matrix(nrow = length(k), ncol = nrep)
+        z_list <- foreach(n = seq_along(k)) %dopar% {
           ns <- as.character(k[n])
-          if (verbose)
+          if (verbose) {
             cat(k[n], ":")
+          }
           RET <- bestFlexmix(..., k = k[n])
-          z[[ns]] = RET$z
-          #logLiks[n, ] <- RET$logLiks
+          z[[ns]] <- RET$z
+          # logLiks[n, ] <- RET$logLiks
           MYCALL1[["k"]] <- as.numeric(k[n])
           z[[ns]]@call <- MYCALL1
           z[[ns]]@control@nrep <- nrep
-          if (verbose)
+          if (verbose) {
             cat("\n")
+          }
           list(
             z = z,
             logLiks = RET$logLiks
@@ -72,32 +75,36 @@ fitComponent <-
         }
       }
 
-      z = lapply(z_list, function(x) x[["z"]])
-      z = purrr::flatten(z)
+      z <- lapply(z_list, function(x) x[["z"]])
+      z <- purrr::flatten(z)
 
       # k by nrep matrix
       if (nrep == 1) {
-        logLiks = as.matrix(sapply(z_list, function(x) x[["logLiks"]]))
+        logLiks <- as.matrix(sapply(z_list, function(x) x[["logLiks"]]))
       } else {
-        logLiks = t(sapply(z_list, function(x) x[["logLiks"]]))
+        logLiks <- t(sapply(z_list, function(x) x[["logLiks"]]))
       }
 
-      #print(logLiks)
+      # print(logLiks)
       # logLiks = as.matrix(sapply(z, function(x) x@logLik))
 
       logLiks <- logLiks[is.finite(sapply(z, logLik)), , drop = FALSE]
       z <- z[is.finite(sapply(z, logLik))]
       rownames(logLiks) <- names(z)
-      if (!length(z))
+      if (!length(z)) {
         stop("no convergence to a suitable mixture")
+      }
       if (drop & (length(z) == 1)) {
         return(z[[1]])
       }
       else {
-        z <- return(new("stepFlexmix", models = z, k = as.integer(names(z)),
-                        nrep = as.integer(nrep), logLiks = logLiks, call = MYCALL))
-        if (unique)
+        z <- return(new("stepFlexmix",
+          models = z, k = as.integer(names(z)),
+          nrep = as.integer(nrep), logLiks = logLiks, call = MYCALL
+        ))
+        if (unique) {
           z <- unique(z)
+        }
         return(z)
       }
     }

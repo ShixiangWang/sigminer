@@ -18,7 +18,7 @@ hg38_arm <- get_ArmLocation("hg38")
 }
 \seealso{
 Other internal calculation function series: \code{\link{get_LengthFraction}},
-  \code{\link{get_cnlist}},
+  \code{\link{get_adj_p}}, \code{\link{get_cnlist}},
   \code{\link{get_cnsummary_sample}},
   \code{\link{get_components}}, \code{\link{get_features}},
   \code{\link{get_matrix}}

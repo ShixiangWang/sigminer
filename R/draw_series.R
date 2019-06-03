@@ -435,7 +435,8 @@ draw_sig_profile <- function(nmfObj, mode = c("copynumber", "mutation"),
     mat <- tidyr::gather(mat, class, signature, dplyr::contains("Signature"))
     mat <- dplyr::mutate(mat,
       context = factor(context,
-                       levels = unique(mat[["context"]])),
+        levels = unique(mat[["context"]])
+      ),
       base = factor(base, levels = c(
         "bp10MB", "copynumber",
         "changepoint", "bpchrarm",
@@ -461,15 +462,15 @@ draw_sig_profile <- function(nmfObj, mode = c("copynumber", "mutation"),
 
   # >>>>>>> Set signature name and order
   if (!is.null(sig_names)) {
-    if (length(sig_names) != length(unique(mat[["class"]]))){
+    if (length(sig_names) != length(unique(mat[["class"]]))) {
       stop("The length of input signature names is not equal to signature number")
     }
-    names(sig_names) = paste0("Signature_", seq_along(sig_names))
-    mat[["class"]] = sig_names[mat[["class"]]]
+    names(sig_names) <- paste0("Signature_", seq_along(sig_names))
+    mat[["class"]] <- sig_names[mat[["class"]]]
   }
 
   if (!is.null(sig_orders)) {
-    mat[["class"]] = factor(mat[["class"]], levels = sig_orders)
+    mat[["class"]] <- factor(mat[["class"]], levels = sig_orders)
   }
   # >>>>>>>>>>>>>>>>>>>>>>> Plot
   p <- ggplot(mat) +
@@ -670,6 +671,16 @@ draw_sig_corrplot <- function(mat_list, order = "original", type = "lower",
 #'   type = c("co", "ca"), verbose = TRUE
 #' )
 #' draw_subtypes_comparison(subtypes.sum)
+#'
+#' # Another example
+#' library(ggpubr)
+#' tt <- sig_summarize_subtypes(ToothGrowth,
+#'   col_subtype = "dose",
+#'   cols_to_summary = "len",
+#'   type = "co", verbose = TRUE
+#' )
+#' tt_plot <- draw_subtypes_comparison(tt)
+#' tt_plot$co$len
 #' @family signature plot
 draw_subtypes_comparison <- function(subtype_summary,
                                      xlab = "subtype", ylab_co = NA,
@@ -710,18 +721,20 @@ draw_subtypes_comparison <- function(subtype_summary,
     # plot categorical data
     ca_res <- lapply(ca_list, function(df) {
       data <- df[["data"]]
-      data_sum = data %>% dplyr::count_("subtype")
-      data_sum[["labels"]] = paste(data_sum[["subtype"]], paste0("(n=",data_sum[["n"]], ")"),sep="\n")
+      data_sum <- data %>% dplyr::count_("subtype")
+      data_sum[["labels"]] <- paste(data_sum[["subtype"]], paste0("(n=", data_sum[["n"]], ")"), sep = "\n")
       p <- ggplot(data, aes_string(x = "subtype", fill = colnames(data)[2])) +
         geom_bar(position = "fill") +
         cowplot::theme_cowplot() +
         theme(axis.title.y = element_blank()) +
-        scale_x_discrete(breaks = data_sum[["subtype"]],
-                         labels = data_sum[["labels"]])
+        scale_x_discrete(
+          breaks = data_sum[["subtype"]],
+          labels = data_sum[["labels"]]
+        )
       if (is.na(df[["xlab"]])) {
-        p = p +theme(axis.title.x = element_blank())
+        p <- p + theme(axis.title.x = element_blank())
       } else {
-        p = p + xlab(df[["xlab"]])
+        p <- p + xlab(df[["xlab"]])
       }
 
       if (!is.na(df[["legend_title"]])) {
@@ -730,7 +743,7 @@ draw_subtypes_comparison <- function(subtype_summary,
 
       if (show_pvalue) {
         if (!is.na(df[["p_value"]])) {
-          p <- p + labs(title=paste0("P=",signif(df[["p_value"]], 3)))
+          p <- p + labs(title = paste0("P=", signif(df[["p_value"]], 3)))
         }
       }
 
@@ -745,39 +758,43 @@ draw_subtypes_comparison <- function(subtype_summary,
     # plot continuous data
     co_res <- lapply(co_list, function(df, ...) {
       data <- df[["data"]]
-      data_sum = data %>% dplyr::count_("subtype")
-      data_sum[["labels"]] = paste(data_sum[["subtype"]], paste0("(n=",data_sum[["n"]], ")"),sep="\n")
+      data_sum <- data %>% dplyr::count_("subtype")
+      data_sum[["labels"]] <- paste(data_sum[["subtype"]], paste0("(n=", data_sum[["n"]], ")"), sep = "\n")
       my_comparisons <- combn(unique(as.character(data[["subtype"]])),
         2,
         simplify = FALSE
       )
       p <- ggplot(data, aes_string(x = "subtype", y = colnames(data)[2])) +
         geom_boxplot() + cowplot::theme_cowplot() +
-        scale_x_discrete(breaks = data_sum[["subtype"]],
-                         labels = data_sum[["labels"]])
+        scale_x_discrete(
+          breaks = data_sum[["subtype"]],
+          labels = data_sum[["labels"]]
+        )
 
       if (is.na(df[["xlab"]])) {
-        p = p +theme(axis.title.x = element_blank())
+        p <- p + theme(axis.title.x = element_blank())
       } else {
-        p = p + xlab(df[["xlab"]])
+        p <- p + xlab(df[["xlab"]])
       }
 
       if (!is.na(df[["ylab"]])) {
-        p = p + ylab(df[["ylab"]])
+        p <- p + ylab(df[["ylab"]])
       }
 
       if (show_pvalue) {
         if (!requireNamespace("ggpubr")) {
           stop("'ggpubr' package is needed for plotting p values.")
         }
-        p_df = get_adj_p(data, .col = colnames(data)[2], .grp = "subtype",
-                         method = method, p.adjust.method = p.adjust.method, ...)
+        p_df <- get_adj_p(data,
+          .col = colnames(data)[2], .grp = "subtype",
+          method = method, p.adjust.method = p.adjust.method, ...
+        )
 
         # p <- p + ggpubr::stat_compare_means(
         #   comparisons = my_comparisons,
         #   ...
         # )
-        p <- p + ggpubr::stat_pvalue_manual(p_df, label="p.adj")
+        p <- p + ggpubr::stat_pvalue_manual(p_df, label = "p.adj")
       }
       p
     }, ...)
