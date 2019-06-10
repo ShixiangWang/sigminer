@@ -648,7 +648,8 @@ draw_sig_corrplot <- function(mat_list, order = "original", type = "lower",
 #' this argument should be a character vector has same length as `subtype_summary`,
 #' the location for continuous type data should mark with `NA`.
 #' @param show_pvalue if `TRUE`, show p values.
-#' @param ... other paramters pass to [ggpubr::compare_means()].
+#' @param ... other paramters pass to [ggpubr::compare_means()] or [ggpubr::stat_compare_means()]
+#' according to the specified `method`.
 #' @author Shixiang Wang <w_shixiang@163.com>
 #' @return a `list` of `ggplot` objects.
 #' @import ggplot2
@@ -785,17 +786,22 @@ draw_subtypes_comparison <- function(subtype_summary,
         if (!requireNamespace("ggpubr")) {
           stop("'ggpubr' package is needed for plotting p values.")
         }
-        p_df <- get_adj_p(data,
-          .col = colnames(data)[2], .grp = "subtype",
-          method = method, p.adjust.method = p.adjust.method, ...
-        )
 
-        # p <- p + ggpubr::stat_compare_means(
-        #   comparisons = my_comparisons,
-        #   ...
-        # )
-        p <- p + ggpubr::stat_pvalue_manual(p_df, label = "p.adj")
-      }
+        if ((method != "wilcox.test") & (method != "t.test")) {
+          p = p + ggpubr::stat_compare_means(method = method, ...)
+        } else {
+          p_df <- get_adj_p(data,
+                            .col = colnames(data)[2], .grp = "subtype",
+                            method = method, p.adjust.method = p.adjust.method, ...
+          )
+
+          # p <- p + ggpubr::stat_compare_means(
+          #   comparisons = my_comparisons,
+          #   ...
+          # )
+          p <- p + ggpubr::stat_pvalue_manual(p_df, label = "p.adj")
+        }
+        }
       p
     }, ...)
     names(co_res) <- names(co_list)

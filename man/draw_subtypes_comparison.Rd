@@ -33,7 +33,8 @@ It can be 't.test', 'wilcox.test' etc..}
 \item{p.adjust.method}{correction method, default is 'fdr'. Run \code{p.adjust.methods} to
 see all available options.}
 
-\item{...}{other paramters pass to \code{\link[ggpubr:compare_means]{ggpubr::compare_means()}}.}
+\item{...}{other paramters pass to \code{\link[ggpubr:compare_means]{ggpubr::compare_means()}} or \code{\link[ggpubr:stat_compare_means]{ggpubr::stat_compare_means()}}
+according to the specified \code{method}.}
 }
 \value{
 a \code{list} of \code{ggplot} objects.
