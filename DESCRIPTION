@@ -31,6 +31,7 @@ Imports:
     methods,
     NMF,
     RColorBrewer,
+    tibble,
     tidyr,
     magrittr,
     purrr

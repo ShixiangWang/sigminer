@@ -35,3 +35,9 @@ pairwise.fisher.test <- function(x, g, p.adjust.method, ...) {
   class(ans) <- "pairwise.htest"
   return(ans)
 }
+
+
+# https://stackoverflow.com/questions/8396577/check-if-character-value-is-a-valid-r-object-name
+isValidAndUnreserved <- function(string) {
+  make.names(string) == string
+}
