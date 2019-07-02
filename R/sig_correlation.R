@@ -10,7 +10,7 @@
 #' @param min_n a minimal fraction (e.g. 0.01) or a integer number (e.g. 10) for filtering some variables with few positive events.
 #' Default is 0.01.
 #' @param verbose if `TRUE`, print extra message.
-#' @param ... other arguments passing to
+#' @param ... other arguments passing to test functions, like `cor.test`.
 #'
 #' @return a `list`
 #' @export
@@ -65,7 +65,7 @@ sig_summarize_correlation <- function(data, cols_to_sigs, cols_to_summary,
     for (i in 1:(n - 1)) {
       for (j in (i + 1):n) {
         tryCatch({
-          tmp <- cor.test(x = mat[, i], y = mat[, j], ...)
+          suppressWarnings(tmp <- cor.test(x = mat[, i], y = mat[, j], ...))
           p.mat[i, j] <- p.mat[j, i] <- tmp$p.value
         }, error = function(e) {
           p.mat[i, j] <- NA
@@ -103,10 +103,21 @@ sig_summarize_correlation <- function(data, cols_to_sigs, cols_to_summary,
       if (min_n > 1) {
         if (any(var_tb < min_n)) return(NA)
       }
-      var_name = ifelse(isValidAndUnreserved(var_name), var_name, paste0("`",var_name,"`"))
-      f = as.formula(paste("exposure", "~", var_name))
+      var_name2 = ifelse(isValidAndUnreserved(var_name), var_name, paste0("`",var_name,"`"))
+      f = as.formula(paste("exposure", "~", var_name2))
       mod = .fun(f, data = df, ...)
       mod$counts=sum(var_tb, na.rm = TRUE)
+
+      # If wilcox is used, measure difference in median
+      # If t.test is used, measure difference in mean
+      if (grepl("wilcox", body(.fun)[[2]])) {
+        mod$measure = df %>% split(., .[[var_name]]) %>%
+          purrr::map_dbl(., ~median(.$exposure, na.rm=TRUE))
+      } else if (grepl("t.test", body(.fun)[[2]])) {
+        mod$measure = df %>% split(., .[[var_name]]) %>%
+          purrr::map_dbl(., ~mean(.$exposure, na.rm=TRUE))
+      }
+
       return(mod)
     }
 
@@ -120,10 +131,11 @@ sig_summarize_correlation <- function(data, cols_to_sigs, cols_to_summary,
     if (verbose) message("--> obtaining model results...")
     # measure在t检验里计算的是均值之差
     # 使用wilcox test没有estimate
+    # wilcox 比较的是中位数
     res = lapply(tt, function(x) {
       x %>%
         dplyr::mutate(measure=purrr::map_dbl(model, ~ifelse(all(is.na(.)), NA,
-                                                            ifelse(is.null(.$estimate), NA, diff(.$estimate)))),
+                                                            ifelse(is.null(.$measure), NA, diff(.$measure)))),
                       count=purrr::map_int(model, ~ifelse(all(is.na(.)), NA, .$counts)),
                       p=purrr::map_dbl(model, ~ifelse(all(is.na(.)), NA, .$p.value))
         )
