@@ -1,5 +1,6 @@
 # sigminer v0.1.12
 
+* added functions to plot enrichment result
 * added functions to calculate and visualize association between signature activity and other features 
 * fixed #15, showing adjust p values for boxplot
 * added option `NAs` to `sig_summarize_subtypes()`

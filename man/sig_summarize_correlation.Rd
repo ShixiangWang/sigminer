@@ -27,7 +27,7 @@ Default is 0.01.}
 
 \item{verbose}{if \code{TRUE}, print extra message.}
 
-\item{...}{other arguments passing to}
+\item{...}{other arguments passing to test functions, like \code{cor.test}.}
 }
 \value{
 a \code{list}

@@ -788,11 +788,11 @@ draw_subtypes_comparison <- function(subtype_summary,
         }
 
         if ((method != "wilcox.test") & (method != "t.test")) {
-          p = p + ggpubr::stat_compare_means(method = method, ...)
+          p <- p + ggpubr::stat_compare_means(method = method, ...)
         } else {
           p_df <- get_adj_p(data,
-                            .col = colnames(data)[2], .grp = "subtype",
-                            method = method, p.adjust.method = p.adjust.method, ...
+            .col = colnames(data)[2], .grp = "subtype",
+            method = method, p.adjust.method = p.adjust.method, ...
           )
 
           # p <- p + ggpubr::stat_compare_means(
@@ -801,7 +801,7 @@ draw_subtypes_comparison <- function(subtype_summary,
           # )
           p <- p + ggpubr::stat_pvalue_manual(p_df, label = "p.adj")
         }
-        }
+      }
       p
     }, ...)
     names(co_res) <- names(co_list)
@@ -854,6 +854,200 @@ draw_subtypes_comparison <- function(subtype_summary,
   )
 }
 
+#' Plot signature enrichment result
+#'
+#' A modified version of [maftools::plotEnrichmentResults].
+#'
+#' @inheritParams maftools::plotEnrichmentResults
+#' @param enrich_res results from [sig_group_enrichment],
+#' or [maftools::clinicalEnrichment] or [maftools::signatureEnrichment].
+#' @param addGeneDist Distance added to Gene label. Default is 0.
+#' @param title title for plot.
+#' @param showLegend if `TRUE`, show legend.
+#' @return a base plot
+#' @export
+draw_sig_enrichment <-
+  function(enrich_res, pVal = 0.05, cols = NULL, addGeneDist = 0, annoFontSize = 0.8,
+             geneFontSize = 0.8, legendFontSize = 0.8, title = NULL, showTitle = TRUE, showLegend = TRUE) {
+    # A modified version of maftools::plotEnrichmentResults
+    binconf = 'maftools' %:::% 'binconf'
+    res <- enrich_res$groupwise_comparision
+    plot.dat <- data.table::data.table(
+      Hugo_Symbol = res$Hugo_Symbol,
+      g1_muts = as.numeric(sapply(strsplit(
+        x = res$n_mutated_group1,
+        split = " of "
+      ), "[[", 1)), g1_tot = as.numeric(sapply(strsplit(
+        x = res$n_mutated_group1,
+        split = " of "
+      ), "[[", 2)), g2_muts = as.numeric(sapply(strsplit(
+        x = res$n_mutated_group2,
+        split = " of "
+      ), "[[", 1)), g2_tot = as.numeric(sapply(strsplit(
+        x = res$n_mutated_group2,
+        split = " of "
+      ), "[[", 2)), P_value = res$p_value,
+      Group1 = res$Group1, Group2 = "Res"
+    )
+    plot.dat <- plot.dat[P_value < pVal]
+    if (nrow(plot.dat) < 1) {
+      stop(paste0(
+        "No significant associations found at p-value < ",
+        pVal
+      ))
+    }
+    conf_int_g1 <- lapply(1:nrow(plot.dat), function(i) {
+      as.data.frame(binconf(x = plot.dat[i, g1_muts], n = plot.dat[
+        i,
+        g1_tot
+      ], alpha = pVal))
+    })
+    conf_int_g1 <- data.table::rbindlist(l = conf_int_g1)
+    conf_int_g2 <- lapply(1:nrow(plot.dat), function(i) {
+      as.data.frame(binconf(x = plot.dat[i, g2_muts], n = plot.dat[
+        i,
+        g2_tot
+      ], alpha = pVal))
+    })
+    conf_int_g2 <- data.table::rbindlist(l = conf_int_g2)
+    plot.dat$g1_muts_fract <- apply(plot.dat, 1, function(x) round(as.numeric(x[2]) / as.numeric(x[3]),
+        digits = 3
+      ))
+    plot.dat$g2_muts_fract <- apply(plot.dat, 1, function(x) round(as.numeric(x[4]) / as.numeric(x[5]),
+        digits = 3
+      ))
+    plot.dat[, `:=`(g1_title, paste0(g1_muts, "/", g1_tot))]
+    plot.dat[, `:=`(g2_title, paste0(g2_muts, "/", g2_tot))]
+    if (is.null(cols)) {
+      cols <- c(
+        RColorBrewer::brewer.pal(n = 9, name = "Set1"),
+        RColorBrewer::brewer.pal(n = 8, name = "Dark2"),
+        RColorBrewer::brewer.pal(n = 8, name = "Accent")
+      )
+      cols <- cols[1:length(unique(plot.dat$Group1))]
+      names(cols) <- as.character(unique(plot.dat$Group1))
+    }
+    else {
+      names(cols) <- as.character(enrich_res$cf_sizes$cf)
+    }
+    bar.cols <- cols[plot.dat[, Group1]]
+    legend.cols <- cols[unique(plot.dat[, Group1])]
+    add_legend <- function(...) {
+      opar <- par(
+        fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0),
+        mar = c(0, 0, 0, 0), new = TRUE
+      )
+      on.exit(par(opar))
+      plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n")
+      legend(...)
+    }
+    yl_max <- max(rbind(conf_int_g1, conf_int_g2), na.rm = TRUE)
+    if (yl_max <= 1) {
+      yl_max <- 1
+    }
+    data.table::setDF(x = conf_int_g1)
+    data.table::setDF(x = conf_int_g2)
+    par(
+      bty = "n", mgp = c(0.5, 0.5, 0), las = 1, tcl = -0.25,
+      font.main = 4, xpd = TRUE, mar = c(4, 3, 3.5, 1)
+    )
+    b <- barplot(height = plot.dat$g1_muts_fract, ylim = c(
+      -1.25,
+      yl_max
+    ), axes = FALSE, border = 0.1, col = bar.cols)
+    axis(
+      side = 2, at = seq(-1, 1, 0.25), labels = c(rev(seq(
+        0,
+        1, 0.25
+      )), seq(0, 1, 0.25)[2:5]), lwd = 1.2, font.axis = 2,
+      cex = 1.5, font = 1
+    )
+    for (i in 1:nrow(conf_int_g1)) {
+      segments(x0 = b[i, 1], y0 = conf_int_g1[i, 2], x1 = b[
+        i,
+        1
+      ], y1 = conf_int_g1[i, 3], lwd = 1.5)
+    }
+    text(b, conf_int_g1$Upper + 0.03, plot.dat$g1_title,
+      cex = annoFontSize,
+      las = 2, srt = 90, adj = 0, xpd = TRUE, font = 1
+    )
+    b2 <- barplot(
+      height = -plot.dat$g2_muts_fract, add = TRUE,
+      axes = FALSE, border = 0.1
+    )
+    for (i in 1:nrow(conf_int_g2)) {
+      segments(x0 = b2[i, 1], y0 = -conf_int_g2[i, 2], x1 = b2[
+        i,
+        1
+      ], y1 = -conf_int_g2[i, 3], lwd = 1.5)
+    }
+    text(b, -conf_int_g2$Upper - 0.03, plot.dat$g2_title,
+      cex = annoFontSize,
+      las = 2, srt = 90, adj = 1, xpd = TRUE, font = 1
+    )
+    text(b, -0.75 + (-addGeneDist), plot.dat$Hugo_Symbol,
+      cex = geneFontSize,
+      las = 2, srt = 90, adj = 1, xpd = TRUE, font = 3
+    )
+    if (length(legend.cols) <= 4) {
+      n_col <- 1
+    }
+    else {
+      n_col <- (length(legend.cols) %/% 4) + 1
+    }
+
+    if (showLegend) {
+      legend(
+        x = 0, y = -1.1, pt.lwd = 2, ncol = n_col, legend = c(
+          names(legend.cols),
+          "Rest"
+        ), fill = c(legend.cols, "gray70"), bty = "n",
+        cex = legendFontSize, border = NA, xpd = TRUE, text.font = 3
+      )
+    }
+    if (showTitle) {
+      if (is.null(title)) {
+        title(
+          main = enrich_res$clinicalFeature, adj = 0, cex.main = 1,
+          outer = FALSE, font.main = 1
+        )
+      } else {
+        title(
+          main = title, adj = 0, cex.main = 1,
+          outer = FALSE, font.main = 1
+        )
+      }
+    }
+  }
+
+#' Filter enrichment result
+#'
+#' @param enrich results from [sig_group_enrichment],
+#' or [maftools::clinicalEnrichment] or [maftools::signatureEnrichment].
+#' @param subset logical expression used to subset data according to `type`.
+#' @param type data type to subset, either 'groupwise' or 'pairwise'.
+#' @return a filtered enrichment result
+#' @export
+filter_enrichment <- function(enrich, subset = TRUE, type = c("groupwise", "pairwise")) {
+  type <- match.arg(type)
+  enclos <- parent.frame()
+  subset <- substitute(subset)
+  if (type == "groupwise") {
+    data <- enrich$groupwise_comparision
+    row_selector <- eval(subset, data, enclos)
+    data <- data[row_selector, ]
+    enrich$groupwise_comparision <- data
+  } else {
+    data <- enrich$pairwise_comparision
+    row_selector <- eval(subset, data, enclos)
+    data <- data[row_selector, ]
+    enrich$pairwise_comparision <- data
+  }
+
+  enrich
+}
+
 # Global variables --------------------------------------------------------
 
 utils::globalVariables(
@@ -869,6 +1063,13 @@ utils::globalVariables(
     "Sample",
     "Signature",
     "base",
-    "context"
+    "context",
+    "P_value",
+    "g1_muts",
+    "g1_title",
+    "g1_tot",
+    "g2_muts",
+    "g2_title",
+    "g2_tot"
   )
 )

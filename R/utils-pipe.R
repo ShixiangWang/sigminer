@@ -41,3 +41,8 @@ pairwise.fisher.test <- function(x, g, p.adjust.method, ...) {
 isValidAndUnreserved <- function(string) {
   make.names(string) == string
 }
+
+`%:::%` <- function(pkg, fun) get(fun,
+    envir = asNamespace(pkg),
+    inherits = FALSE
+  )
