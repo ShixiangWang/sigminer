@@ -724,7 +724,11 @@ draw_subtypes_comparison <- function(subtype_summary,
       data <- df[["data"]]
       data_sum <- data %>% dplyr::count_("subtype")
       data_sum[["labels"]] <- paste(data_sum[["subtype"]], paste0("(n=", data_sum[["n"]], ")"), sep = "\n")
-      p <- ggplot(data, aes_string(x = "subtype", fill = colnames(data)[2])) +
+
+      var_name <- colnames(data)[2]
+      var_name2 <- ifelse(isValidAndUnreserved(var_name), var_name, paste0("`", var_name, "`"))
+
+      p <- ggplot(data, aes_string(x = "subtype", fill = var_name2)) +
         geom_bar(position = "fill") +
         cowplot::theme_cowplot() +
         theme(axis.title.y = element_blank()) +
@@ -765,7 +769,11 @@ draw_subtypes_comparison <- function(subtype_summary,
         2,
         simplify = FALSE
       )
-      p <- ggplot(data, aes_string(x = "subtype", y = colnames(data)[2])) +
+
+      var_name <- colnames(data)[2]
+      var_name2 <- ifelse(isValidAndUnreserved(var_name), var_name, paste0("`", var_name, "`"))
+
+      p <- ggplot(data, aes_string(x = "subtype", y = var_name2)) +
         geom_boxplot() + cowplot::theme_cowplot() +
         scale_x_discrete(
           breaks = data_sum[["subtype"]],
@@ -791,7 +799,7 @@ draw_subtypes_comparison <- function(subtype_summary,
           p <- p + ggpubr::stat_compare_means(method = method, ...)
         } else {
           p_df <- get_adj_p(data,
-            .col = colnames(data)[2], .grp = "subtype",
+            .col = var_name2, .grp = "subtype",
             method = method, p.adjust.method = p.adjust.method, ...
           )
 
@@ -870,7 +878,7 @@ draw_sig_enrichment <-
   function(enrich_res, pVal = 0.05, cols = NULL, addGeneDist = 0, annoFontSize = 0.8,
              geneFontSize = 0.8, legendFontSize = 0.8, title = NULL, showTitle = TRUE, showLegend = TRUE) {
     # A modified version of maftools::plotEnrichmentResults
-    binconf = 'maftools' %:::% 'binconf'
+    binconf <- "maftools" %:::% "binconf"
     res <- enrich_res$groupwise_comparision
     plot.dat <- data.table::data.table(
       Hugo_Symbol = res$Hugo_Symbol,

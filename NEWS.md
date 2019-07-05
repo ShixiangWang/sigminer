@@ -1,5 +1,6 @@
 # sigminer v0.1.12
 
+* fixed illegar R name cannot show in plots
 * fixed showing p value when in larger than 2x2 table
 * added functions to plot enrichment result
 * added functions to calculate and visualize association between signature activity and other features 
