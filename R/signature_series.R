@@ -751,6 +751,8 @@ sig_get_similarity <- function(sig1, sig2, type = c("cos", "cor")) {
 #' summary table and Tukey Honest significant difference (using [stats::TukeyHSD]).
 #' The result of this function can be plotted by [draw_subtypes_comparison()].
 #'
+#' Compute p-values by Monte Carlo simulation, in larger than 2 by 2 tables.
+#'
 #' @param data a `data.frame` contains signature subtypes and genotypes/phenotypes
 #' (including categorical and continuous type data) want to analyze. User need to
 #' construct this `data.frame` by him/herself.
@@ -823,7 +825,12 @@ sig_summarize_subtypes <- function(data, col_subtype, cols_to_summary,
       table_df <- table(df[["subtype"]], df[[col]])
 
       table_p <- tryCatch({
-        test <- fisher.test(table_df)
+        if (any(dim(table_df) > 2)) {
+          # compute p-values by Monte Carlo simulation, in larger than 2 by 2 tables.
+          test <- fisher.test(table_df, simulate.p.value = TRUE)
+        } else {
+          test <- fisher.test(table_df)
+        }
         test[["p.value"]]
       }, error = function(e) {
         NA

@@ -34,6 +34,9 @@ For continuous type, calculate anova p value (using \link[stats:aov]{stats::aov}
 summary table and Tukey Honest significant difference (using \link[stats:TukeyHSD]{stats::TukeyHSD}).
 The result of this function can be plotted by \code{\link[=draw_subtypes_comparison]{draw_subtypes_comparison()}}.
 }
+\details{
+Compute p-values by Monte Carlo simulation, in larger than 2 by 2 tables.
+}
 \examples{
 # Load copy number signature
 load(system.file("extdata", "toy_copynumber_signature.RData",
