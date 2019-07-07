@@ -336,20 +336,35 @@ draw_cn_components <- function(features, components, ...) {
   comp_bpchrarm <- flexmix::parameters(components[["bpchrarm"]])
   comp_osCN <- flexmix::parameters(components[["osCN"]])
 
+  # Sort params
+  comp_segsize <- comp_segsize[, order(comp_segsize[1, ])]
+  comp_copynumber <- comp_copynumber[, order(comp_copynumber[1, ])]
+  comp_changepoint <- comp_changepoint[, order(comp_changepoint[1, ])]
+
+  comp_bp10MB <- comp_bp10MB[order(comp_bp10MB)]
+  comp_bpchrarm <- comp_bpchrarm[order(comp_bpchrarm)]
+  comp_osCN <- comp_osCN[order(comp_osCN)]
+
   # output parameters
-  parameters = dplyr::tibble(
-    components = c(paste0("segsize", 1:ncol(comp_segsize)),
-                   paste0("copynumber", 1:ncol(comp_copynumber)),
-                   paste0("changepoint", 1:ncol(comp_changepoint)),
-                   paste0("bp10MB", 1:length(comp_bp10MB)),
-                   paste0("bpchrarm", 1:length(comp_bpchrarm)),
-                   paste0("osCN", 1:length(comp_osCN))),
-    stats = c(sort(comp_segsize[1,]), sort(comp_copynumber[1,]),
-              sort(comp_changepoint[1,]),
-              sort(comp_bp10MB), sort(comp_bpchrarm),
-              sort(comp_osCN)),
-    dist = c(rep("norm", ncol(comp_segsize)+ncol(comp_copynumber)+ncol(comp_changepoint)),
-             rep("pois", length(comp_bp10MB)+length(comp_bpchrarm)+length(comp_osCN)))
+  parameters <- dplyr::tibble(
+    components = c(
+      paste0("segsize", 1:ncol(comp_segsize)),
+      paste0("copynumber", 1:ncol(comp_copynumber)),
+      paste0("changepoint", 1:ncol(comp_changepoint)),
+      paste0("bp10MB", 1:length(comp_bp10MB)),
+      paste0("bpchrarm", 1:length(comp_bpchrarm)),
+      paste0("osCN", 1:length(comp_osCN))
+    ),
+    stats = c(
+      comp_segsize[1, ], comp_copynumber[1, ],
+      comp_changepoint[1, ],
+      comp_bp10MB, comp_bpchrarm,
+      comp_osCN
+    ),
+    dist = c(
+      rep("norm", ncol(comp_segsize) + ncol(comp_copynumber) + ncol(comp_changepoint)),
+      rep("pois", length(comp_bp10MB) + length(comp_bpchrarm) + length(comp_osCN))
+    )
   )
 
   # norm plots
@@ -380,7 +395,7 @@ draw_cn_components <- function(features, components, ...) {
     align = "hv",
     ...
   )
-  p[["parameters"]] = parameters
+  p[["parameters"]] <- parameters
   p
 }
 
