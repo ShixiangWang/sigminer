@@ -336,10 +336,24 @@ draw_cn_components <- function(features, components, ...) {
   comp_bpchrarm <- flexmix::parameters(components[["bpchrarm"]])
   comp_osCN <- flexmix::parameters(components[["osCN"]])
 
+  # output parameters
+  parameters = dplyr::tibble(
+    components = c(paste0("segsize", 1:ncol(comp_segsize)),
+                   paste0("copynumber", 1:ncol(comp_copynumber)),
+                   paste0("changepoint", 1:ncol(comp_changepoint)),
+                   paste0("bp10MB", 1:length(comp_bp10MB)),
+                   paste0("bpchrarm", 1:length(comp_bpchrarm)),
+                   paste0("osCN", 1:length(comp_osCN))),
+    stats = c(sort(comp_segsize[1,]), sort(comp_copynumber[1,]),
+              sort(comp_changepoint[1,]),
+              sort(comp_bp10MB), sort(comp_bpchrarm),
+              sort(comp_osCN)),
+    dist = c(rep("norm", ncol(comp_segsize)+ncol(comp_copynumber)+ncol(comp_changepoint)),
+             rep("pois", length(comp_bp10MB)+length(comp_bpchrarm)+length(comp_osCN)))
+  )
+
   # norm plots
   p_1 <- plotNormDensity(log10(features[["segsize"]]$value), comp_segsize, xlab = "Segment size (log10 based)")
-  # p_1 = p_1 + scale_x_continuous(breaks = 10 ^c(0, 7:9),
-  #         labels = scales::trans_format("log10", scales::math_format(10^.x)))
   p_2 <- plotNormDensity(features[["copynumber"]]$value, comp_copynumber, xlab = "Copy number")
   p_3 <- plotNormDensity(features[["changepoint"]]$value, comp_changepoint, xlab = "Copy-number changepoint")
 
@@ -366,6 +380,7 @@ draw_cn_components <- function(features, components, ...) {
     align = "hv",
     ...
   )
+  p[["parameters"]] = parameters
   p
 }
 
