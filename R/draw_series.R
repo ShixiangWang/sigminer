@@ -410,7 +410,8 @@ draw_cn_components <- function(features, components, ...) {
 #' @inheritParams sig_extract
 #' @inheritParams sig_assign_samples
 #' @param params params data of components.
-#' @param y_params y location for plotting params.
+#' @param y_expand y expand height for plotting params of copy number signatures.
+#' @param digits digits for plotting params of copy number signatures.
 #' @param y_scale one of 'relative' or 'absolute', if choose 'relative',
 #' signature columns will be scaled to sum as 1.
 #' @param font_scale a number used to set font scale.
@@ -429,7 +430,8 @@ draw_cn_components <- function(features, components, ...) {
 #' ))
 #' draw_sig_profile(res$nmfObj)
 #' @family signature plot
-draw_sig_profile <- function(nmfObj, mode = c("copynumber", "mutation"), params=NULL, y_params=0.01,
+draw_sig_profile <- function(nmfObj, mode = c("copynumber", "mutation"), params=NULL, y_expand=1,
+                             digits = 1,
                              y_scale = c("relative", "absolute"), font_scale = 1,
                              sig_names = NULL, sig_orders = NULL) {
   mode <- match.arg(mode)
@@ -515,16 +517,18 @@ draw_sig_profile <- function(nmfObj, mode = c("copynumber", "mutation"), params=
     ))
 
   if (mode == "copynumber") {
-    p <- p + facet_grid(class ~ ., scales = "free")
 
     if (!is.null(params)) {
-      p <- p + geom_text(aes(x=components, y=y_params,
+      params$class = levels(mat[["class"]])[1]
+      p <- p + geom_text(aes(x=components, y=Inf,
                              label=ifelse(dist=="norm",
-                                          paste0("\u03BC=",round(stats,2)),
-                                          paste0("\u03BB=",round(stats,2)))),
+                                          paste0("\u03BC=",round(stats,digits)),
+                                          paste0("\u03BB=",round(stats,digits)))),
                          data = params, angle=90,
-                         hjust=0)
+                         hjust=-0.1, vjust=0.5) +
+        coord_cartesian(clip = "off")
     }
+    p <- p + facet_grid(class ~ ., scales = "free")
 
   } else {
     p <- p + facet_grid(class ~ base, scales = "free")
@@ -534,6 +538,10 @@ draw_sig_profile <- function(nmfObj, mode = c("copynumber", "mutation"), params=
     guides(fill = FALSE) + .theme_ss +
     theme(axis.title.x = element_text(face = "bold", colour = "black", size = 14 * scale)) +
     theme(axis.title.y = element_text(face = "bold", colour = "black", size = 14 * scale))
+
+  if (all(mode=="copynumber", !is.null(params))) {
+    p <- p + theme(plot.margin = margin(30*y_expand, 2, 2, 2, unit = "pt")) # Add regions
+  }
 
   p <- p + xlab("Components") + ylab("Contributions")
   return(p)

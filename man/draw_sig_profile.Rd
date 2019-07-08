@@ -5,7 +5,7 @@
 \title{Plot signature profile}
 \usage{
 draw_sig_profile(nmfObj, mode = c("copynumber", "mutation"),
-  params = NULL, y_params = 0.01, y_scale = c("relative",
+  params = NULL, y_expand = 1, digits = 1, y_scale = c("relative",
   "absolute"), font_scale = 1, sig_names = NULL, sig_orders = NULL)
 }
 \arguments{
@@ -16,7 +16,9 @@ or run results of \strong{NMF} package.}
 
 \item{params}{params data of components.}
 
-\item{y_params}{y location for plotting params.}
+\item{y_expand}{y expand height for plotting params of copy number signatures.}
+
+\item{digits}{digits for plotting params of copy number signatures.}
 
 \item{y_scale}{one of 'relative' or 'absolute', if choose 'relative',
 signature columns will be scaled to sum as 1.}
