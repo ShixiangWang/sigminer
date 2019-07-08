@@ -5,14 +5,18 @@
 \title{Plot signature profile}
 \usage{
 draw_sig_profile(nmfObj, mode = c("copynumber", "mutation"),
-  y_scale = c("relative", "absolute"), font_scale = 1,
-  sig_names = NULL, sig_orders = NULL)
+  params = NULL, y_params = 0.01, y_scale = c("relative",
+  "absolute"), font_scale = 1, sig_names = NULL, sig_orders = NULL)
 }
 \arguments{
 \item{nmfObj}{a \code{NMF} result object which is an element return from \link{sig_extract}
 or run results of \strong{NMF} package.}
 
 \item{mode}{variation type to decompose, currently support "copynumber" or "mutation".}
+
+\item{params}{params data of components.}
+
+\item{y_params}{y location for plotting params.}
 
 \item{y_scale}{one of 'relative' or 'absolute', if choose 'relative',
 signature columns will be scaled to sum as 1.}
