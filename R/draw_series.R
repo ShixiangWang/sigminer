@@ -430,7 +430,7 @@ draw_cn_components <- function(features, components, ...) {
 #' ))
 #' draw_sig_profile(res$nmfObj)
 #' @family signature plot
-draw_sig_profile <- function(nmfObj, mode = c("copynumber", "mutation"), params=NULL, y_expand=1,
+draw_sig_profile <- function(nmfObj, mode = c("copynumber", "mutation"), params = NULL, y_expand = 1,
                              digits = 1,
                              y_scale = c("relative", "absolute"), font_scale = 1,
                              sig_names = NULL, sig_orders = NULL) {
@@ -440,7 +440,11 @@ draw_sig_profile <- function(nmfObj, mode = c("copynumber", "mutation"), params=
   # Signatures
   w <- NMF::basis(nmfObj)
   if (y_scale == "relative") {
-    w <- apply(w, 2, function(x) x / sum(x)) # Scale the signatures (basis)
+    if (mode == "copynumber") {
+      w <- t(apply(w, 1, function(x) x / sum(x))) # Scale the component weight
+    } else if (mode == "mutation") {
+      w <- apply(w, 2, function(x) x / sum(x)) # Scale the signatures
+    }
   }
   colnames(w) <- paste("Signature", 1:ncol(w), sep = "_")
 
@@ -517,19 +521,21 @@ draw_sig_profile <- function(nmfObj, mode = c("copynumber", "mutation"), params=
     ))
 
   if (mode == "copynumber") {
-
     if (!is.null(params)) {
-      params$class = levels(mat[["class"]])[1]
-      p <- p + geom_text(aes(x=components, y=Inf,
-                             label=ifelse(dist=="norm",
-                                          paste0("\u03BC=",round(stats,digits)),
-                                          paste0("\u03BB=",round(stats,digits)))),
-                         data = params, angle=90,
-                         hjust=-0.1, vjust=0.5) +
+      params$class <- levels(mat[["class"]])[1]
+      p <- p + geom_text(aes(
+        x = components, y = Inf,
+        label = ifelse(dist == "norm",
+          paste0("\u03BC=", round(stats, digits)),
+          paste0("\u03BB=", round(stats, digits))
+        )
+      ),
+      data = params, angle = 90,
+      hjust = -0.1, vjust = 0.5
+      ) +
         coord_cartesian(clip = "off")
     }
     p <- p + facet_grid(class ~ ., scales = "free")
-
   } else {
     p <- p + facet_grid(class ~ base, scales = "free")
   }
@@ -539,11 +545,17 @@ draw_sig_profile <- function(nmfObj, mode = c("copynumber", "mutation"), params=
     theme(axis.title.x = element_text(face = "bold", colour = "black", size = 14 * scale)) +
     theme(axis.title.y = element_text(face = "bold", colour = "black", size = 14 * scale))
 
-  if (all(mode=="copynumber", !is.null(params))) {
-    p <- p + theme(plot.margin = margin(30*y_expand, 2, 2, 2, unit = "pt")) # Add regions
+  if (all(mode == "copynumber", !is.null(params))) {
+    p <- p + theme(plot.margin = margin(30 * y_expand, 2, 2, 2, unit = "pt")) # Add regions
   }
 
-  p <- p + xlab("Components") + ylab("Contributions")
+  p <- p + xlab("Components")
+
+  if (mode == "copynumber") {
+    p <- p + ylab("Weights")
+  } else if (mode == "mutation") {
+    p <- p + ylab("Contributions")
+  }
   return(p)
 }
 
@@ -612,8 +624,8 @@ draw_sig_activity <- function(nmfObj, mode = c("copynumber", "mutation"),
 
   if (mode == "copynumber") {
     df$class0 <- factor(df$class0, c("Coefficients", "Fractions"))
-  } else {
-    df$class0 <- factor(df$class0, c("Coefficients", "Fractions"))
+  } else if (mode == "mutation") {
+    df$class0 <- factor(df$class0, c("Counts", "Fractions"))
   }
 
   df$Sample <- factor(df$Sample, sample.ordering)

@@ -339,18 +339,23 @@ sig_extract <- function(nmf_matrix,
 
   # Signatures
   w <- NMF::basis(nmf.res)
-  w <- apply(w, 2, function(x) x / sum(x)) # Scale the signatures (basis)
+  if (mode == "copynumber") {
+    w <- t(apply(w, 1, function(x) x / sum(x))) # Scale the component weight
+  } else if (mode == "mutation") {
+    w <- apply(w, 2, function(x) x / sum(x)) # Scale the signatures
+  }
+
   colnames(w) <- paste("Signature", 1:ncol(w), sep = "_")
 
-  # Contribution
+  # Activity/exposure
   h <- NMF::coef(nmf.res)
   colnames(h) <- colnames(mat) # correct colnames
-  # For single signature, contribution will be 100% per sample
+  # For single signature, relative activity will be 100% per sample
   if (n_sig == 1) {
     h <- h / h
     rownames(h) <- paste("Signature", "1", sep = "_")
   } else {
-    h <- apply(h, 2, function(x) x / sum(x)) # Scale contributions (coefs)
+    h <- apply(h, 2, function(x) x / sum(x)) # Scale activity (coefs)
     rownames(h) <- paste("Signature", 1:nrow(h), sep = "_")
   }
 
