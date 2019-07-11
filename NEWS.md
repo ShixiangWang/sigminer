@@ -1,5 +1,6 @@
 # sigminer v0.1.12
 
+* added some options for operating x axis of drawing comparison
 * fixed illegar R name cannot show in plots
 * fixed showing p value when in larger than 2x2 table
 * added functions to plot enrichment result

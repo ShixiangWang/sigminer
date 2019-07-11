@@ -7,7 +7,8 @@
 draw_subtypes_comparison(subtype_summary, xlab = "subtype",
   ylab_co = NA, legend_title_ca = NA, legend_position_ca = "bottom",
   show_pvalue = TRUE, method = "wilcox.test",
-  p.adjust.method = "fdr", ...)
+  p.adjust.method = "fdr", font_size_x = 12, text_angle_x = 30,
+  hjust = 0.2, ...)
 }
 \arguments{
 \item{subtype_summary}{a \code{list} from result of \link{sig_summarize_subtypes} function.}
@@ -33,6 +34,12 @@ It can be 't.test', 'wilcox.test' etc..}
 \item{p.adjust.method}{correction method, default is 'fdr'. Run \code{p.adjust.methods} to
 see all available options.}
 
+\item{font_size_x}{font size for x.}
+
+\item{text_angle_x}{text angle for x.}
+
+\item{hjust}{adjust x axis text}
+
 \item{...}{other paramters pass to \code{\link[ggpubr:compare_means]{ggpubr::compare_means()}} or \code{\link[ggpubr:stat_compare_means]{ggpubr::stat_compare_means()}}
 according to the specified \code{method}.}
 }
@@ -44,7 +51,7 @@ Using result data from \link{sig_summarize_subtypes} function, this function plo
 genotypes/phenotypes comparison between signature subtypes using \strong{ggplot2} package and return
 a list of \code{ggplot} object contains individual and combined plots. The combined
 plot is easily saved to local using \code{\link[cowplot:save_plot]{cowplot::save_plot()}}. Of note, default fisher
-test p values are showed for categorical data and fdr values are showd for
+test p values are shown for categorical data and fdr values are shown for
 continuous data.
 }
 \examples{

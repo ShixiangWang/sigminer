@@ -696,7 +696,7 @@ draw_sig_corrplot <- function(mat_list, order = "original", type = "lower",
 #' genotypes/phenotypes comparison between signature subtypes using **ggplot2** package and return
 #' a list of `ggplot` object contains individual and combined plots. The combined
 #' plot is easily saved to local using [cowplot::save_plot()]. Of note, default fisher
-#' test p values are showed for categorical data and fdr values are showd for
+#' test p values are shown for categorical data and fdr values are shown for
 #' continuous data.
 #' @inheritParams get_adj_p
 #' @param subtype_summary a `list` from result of [sig_summarize_subtypes] function.
@@ -710,6 +710,9 @@ draw_sig_corrplot <- function(mat_list, order = "original", type = "lower",
 #' this argument should be a character vector has same length as `subtype_summary`,
 #' the location for continuous type data should mark with `NA`.
 #' @param show_pvalue if `TRUE`, show p values.
+#' @param font_size_x font size for x.
+#' @param text_angle_x text angle for x.
+#' @param hjust adjust x axis text
 #' @param ... other paramters pass to [ggpubr::compare_means()] or [ggpubr::stat_compare_means()]
 #' according to the specified `method`.
 #' @author Shixiang Wang <w_shixiang@163.com>
@@ -751,6 +754,9 @@ draw_subtypes_comparison <- function(subtype_summary,
                                      legend_position_ca = "bottom",
                                      show_pvalue = TRUE,
                                      method = "wilcox.test", p.adjust.method = "fdr",
+                                     font_size_x = 12,
+                                     text_angle_x = 30,
+                                     hjust = 0.2,
                                      ...) {
   # parameter with ca/co in the end need fill values
 
@@ -814,7 +820,8 @@ draw_subtypes_comparison <- function(subtype_summary,
         }
       }
 
-      p + theme(legend.position = df[["legend_position"]])
+      p + theme(legend.position = df[["legend_position"]],
+                axis.text.x = element_text(size = font_size_x, angle = text_angle_x, hjust = hjust))
     })
     names(ca_res) <- names(ca_list)
   } else {
@@ -872,7 +879,7 @@ draw_subtypes_comparison <- function(subtype_summary,
           p <- p + ggpubr::stat_pvalue_manual(p_df, label = "p.adj")
         }
       }
-      p
+      p + theme(axis.text.x = element_text(size = font_size_x, angle = text_angle_x, hjust = hjust))
     }, ...)
     names(co_res) <- names(co_list)
   } else {
