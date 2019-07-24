@@ -101,3 +101,18 @@ laml.sign = sig_extract(laml.tnm$nmf_matrix, n_sig = 2, mode = "mutation", pCons
 
 load("~/Downloads/data_Metastasis.RData")
 prepare_copynumber(data_Metastasis2, cores = 4, min_comp = c(2,2,2,2,1,2))
+
+
+#-------------- Plot signatures
+# Load copy number prepare object
+load(system.file("extdata", "toy_copynumber_prepare.RData",
+                 package = "sigminer", mustWork = TRUE
+))
+p = draw_cn_components(cn_prepare$features, cn_prepare$components)
+p$parameters
+# Load copy number signature
+load(system.file("extdata", "toy_copynumber_signature.RData",
+                 package = "sigminer", mustWork = TRUE
+))
+draw_sig_profile(res$nmfObj, params = p$parameters, y_expand = 2.5)
+

@@ -355,11 +355,17 @@ draw_cn_components <- function(features, components, ...) {
       paste0("bpchrarm", 1:length(comp_bpchrarm)),
       paste0("osCN", 1:length(comp_osCN))
     ),
-    stats = c(
+    mu = c(
       comp_segsize[1, ], comp_copynumber[1, ],
       comp_changepoint[1, ],
       comp_bp10MB, comp_bpchrarm,
       comp_osCN
+    ),
+    sd = c(
+      comp_segsize[2, ], comp_copynumber[2, ],
+      comp_changepoint[2, ],
+      rep(NA, length(comp_bp10MB)), rep(NA, length(comp_bpchrarm)),
+      rep(NA, length(comp_osCN))
     ),
     dist = c(
       rep("norm", ncol(comp_segsize) + ncol(comp_copynumber) + ncol(comp_changepoint)),
@@ -526,12 +532,12 @@ draw_sig_profile <- function(nmfObj, mode = c("copynumber", "mutation"), params 
       p <- p + geom_text(aes(
         x = components, y = Inf,
         label = ifelse(dist == "norm",
-          paste0("\u03BC=", round(stats, digits)),
-          paste0("\u03BB=", round(stats, digits))
+          paste0("\u03BC=", signif(mu, digits), ";\u03C3=", signif(sd, digits)),
+          paste0("\u03BB=", signif(mu, digits))
         )
       ),
       data = params, angle = 90,
-      hjust = -0.1, vjust = 0.5
+      hjust = -0.02, vjust = 0.5
       ) +
         coord_cartesian(clip = "off")
     }
