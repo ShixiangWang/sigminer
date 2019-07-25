@@ -328,7 +328,7 @@ draw_cn_components <- function(features, components, ...) {
   })
 
   # norm distribution
-  comp_segsize <- log10(flexmix::parameters(components[["segsize"]]))
+  comp_segsize <- flexmix::parameters(components[["segsize"]])
   comp_copynumber <- flexmix::parameters(components[["copynumber"]])
   comp_changepoint <- flexmix::parameters(components[["changepoint"]])
   # pois distribution
