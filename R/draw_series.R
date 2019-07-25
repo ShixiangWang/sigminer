@@ -362,7 +362,7 @@ draw_cn_components <- function(features, components, ...) {
       comp_osCN
     ),
     sd = c(
-      comp_segsize[2, ], comp_copynumber[2, ],
+      10^comp_segsize[2, ], comp_copynumber[2, ],
       comp_changepoint[2, ],
       rep(NA, length(comp_bp10MB)), rep(NA, length(comp_bpchrarm)),
       rep(NA, length(comp_osCN))
