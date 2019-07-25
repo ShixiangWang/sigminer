@@ -170,6 +170,7 @@ draw_cn_distribution <- function(data,
 #'
 #' @param features a `list` generate from [get_features] or [sig_prepare] function.
 #' @param ylab lab of y axis.
+#' @param return_plotlist if `TRUE`, return a list of ggplot objects but a combined plot.
 #' @param ... other options pass to \code{\link[cowplot]{plot_grid}} function of `cowplot` package.
 #'
 #' @return a ggplot object
@@ -183,7 +184,7 @@ draw_cn_distribution <- function(data,
 #' draw_cn_features(cn_prepare$features)
 #' @export
 #'
-draw_cn_features <- function(features, ylab = "", ...) {
+draw_cn_features <- function(features, ylab = "", return_plotlist=FALSE, ...) {
   features <- lapply(features, function(x) {
     x[["value"]] <- as.numeric(x[["value"]])
     return(x)
@@ -216,6 +217,11 @@ draw_cn_features <- function(features, ylab = "", ...) {
   p_6 <- ggplot(data = features$osCN, aes(x = value)) +
     geom_bar(stat = "count") + labs(x = "Oscilating CN chain length", y = ylab) +
     theme(plot.margin = unit(c(0.05, 0.05, 0.05, 0.05), "cm")) + cowplot::theme_cowplot(font_size = 12)
+
+  if (return_plotlist) {
+    return(list(segsize=p_1, copynumber=p_2, changepoint=p_3,
+                bp10MB=p_4, bpchrarm=p_5, osCN=p_6))
+  }
 
   p <- cowplot::plot_grid(p_1,
     p_2,
@@ -253,7 +259,8 @@ draw_cn_features <- function(features, ylab = "", ...) {
 #' draw_cn_components(cn_prepare$features, cn_prepare$components)
 #' @family copy number plot
 #'
-draw_cn_components <- function(features, components, ...) {
+draw_cn_components <- function(features, components, return_plotlist=FALSE, ...) {
+  stopifnot(is.logical(return_plotlist))
   requireNamespace("cowplot")
   cbPalette <-
     c(
@@ -390,6 +397,11 @@ draw_cn_components <- function(features, components, ...) {
     max_value = 50
   )
   p_6 <- plotPoisDensity(features[["osCN"]]$value, comp_osCN, xlab = "Oscilating CN chain length")
+
+  if (return_plotlist) {
+    return(list(segsize=p_1, copynumber=p_2, changepoint=p_3,
+                bp10MB=p_4, bpchrarm=p_5, osCN=p_6, parameters = parameters))
+  }
 
   p <- cowplot::plot_grid(p_1,
     p_2,

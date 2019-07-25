@@ -12,6 +12,8 @@ draw_cn_features(features, ylab = "", ...)
 \item{ylab}{lab of y axis.}
 
 \item{...}{other options pass to \code{\link[cowplot]{plot_grid}} function of \code{cowplot} package.}
+
+\item{return_plotlist}{if \code{TRUE}, return a list of ggplot objects but a combined plot.}
 }
 \value{
 a ggplot object
