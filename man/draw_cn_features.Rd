@@ -4,16 +4,16 @@
 \alias{draw_cn_features}
 \title{Plot copy number feature distribution}
 \usage{
-draw_cn_features(features, ylab = "", ...)
+draw_cn_features(features, ylab = "", return_plotlist = FALSE, ...)
 }
 \arguments{
 \item{features}{a \code{list} generate from \link{get_features} or \link{sig_prepare} function.}
 
 \item{ylab}{lab of y axis.}
 
-\item{...}{other options pass to \code{\link[cowplot]{plot_grid}} function of \code{cowplot} package.}
-
 \item{return_plotlist}{if \code{TRUE}, return a list of ggplot objects but a combined plot.}
+
+\item{...}{other options pass to \code{\link[cowplot]{plot_grid}} function of \code{cowplot} package.}
 }
 \value{
 a ggplot object
