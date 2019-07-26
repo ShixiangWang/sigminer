@@ -1167,6 +1167,7 @@ utils::globalVariables(
     "g2_title",
     "g2_tot",
     "components",
-    "stats"
+    "stats",
+    "mu"
   )
 )
