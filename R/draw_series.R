@@ -473,10 +473,10 @@ draw_sig_profile <- function(nmfObj, mode = c("copynumber", "mutation"), params 
     theme(
       axis.text.x = element_text(
         angle = 90, vjust = 0.5,
-        hjust = 1, size = 10 * scale, family = "mono"
+        hjust = 1, size = 10 * scale
       ),
-      axis.text.y = element_text(hjust = 0.5, size = 12 * scale, family = "mono"),
-      axis.text = element_text(size = 14 * scale, family = "mono")
+      axis.text.y = element_text(hjust = 0.5, size = 12 * scale),
+      axis.text = element_text(size = 14 * scale)
     )
   # <<<<<<<<<<<<<<<<< Setting theme
 
@@ -608,10 +608,10 @@ draw_sig_activity <- function(nmfObj, mode = c("copynumber", "mutation"),
     theme(
       axis.text.x = element_text(
         angle = 90, vjust = 0.5,
-        hjust = 1, size = 10 * scale, family = "mono"
+        hjust = 1, size = 10 * scale
       ),
-      axis.text.y = element_text(hjust = 0.5, size = 12 * scale, family = "mono"),
-      axis.text = element_text(size = 8 * scale, family = "mono")
+      axis.text.y = element_text(hjust = 0.5, size = 12 * scale),
+      axis.text = element_text(size = 8 * scale)
     )
 
   activity <- sig_get_activity(nmfObj)
