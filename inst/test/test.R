@@ -114,5 +114,14 @@ p$parameters
 load(system.file("extdata", "toy_copynumber_signature.RData",
                  package = "sigminer", mustWork = TRUE
 ))
+draw_sig_profile(res$nmfObj)
 draw_sig_profile(res$nmfObj, params = p$parameters, y_expand = 2.5)
+draw_sig_profile(res$nmfObj, params = p$parameters, y_expand = 2.5, sig_names = 1:2)
+draw_sig_profile(res$nmfObj, params = p$parameters, y_expand = 2.5, sig_names = paste0("CN", 1:2))
+draw_sig_profile(res$nmfObj, params = p$parameters, y_expand = 2.5, sig_names = paste0("CN", 1:2),
+                 sig_orders = c("CN2", "CN1"))
+draw_sig_profile(res$nmfObj, sig_names = paste0("CN", 1:2),
+                 sig_orders = c("CN2", "CN1"))
+
+
 

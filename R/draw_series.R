@@ -527,6 +527,8 @@ draw_sig_profile <- function(nmfObj, mode = c("copynumber", "mutation"), params 
 
   if (!is.null(sig_orders)) {
     mat[["class"]] <- factor(mat[["class"]], levels = sig_orders)
+  } else {
+    mat[["class"]] <- factor(mat[["class"]])
   }
   # >>>>>>>>>>>>>>>>>>>>>>> Plot
   p <- ggplot(mat) +
@@ -540,7 +542,7 @@ draw_sig_profile <- function(nmfObj, mode = c("copynumber", "mutation"), params 
 
   if (mode == "copynumber") {
     if (!is.null(params)) {
-      params$class <- levels(mat[["class"]])[1]
+      params$class <- factor(levels(mat[["class"]])[1], levels = levels(mat[["class"]]))
       p <- p + geom_text(aes(
         x = components, y = Inf,
         label = ifelse(dist == "norm",
