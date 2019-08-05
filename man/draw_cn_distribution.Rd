@@ -5,7 +5,8 @@
 \title{Plot copy number distribution either by length or chromosome}
 \usage{
 draw_cn_distribution(data, rm_normal = TRUE, mode = c("ld", "cd"),
-  fill = FALSE, scale_chr = TRUE, genome_build = c("hg19", "hg38"))
+  fill = FALSE, scale_chr = TRUE, genome_build = c("hg19", "hg38"),
+  base_size = 14)
 }
 \arguments{
 \item{data}{result from \link{get_LengthFraction} function result or a \link{CopyNumber} object.}
@@ -19,6 +20,8 @@ draw_cn_distribution(data, rm_normal = TRUE, mode = c("ld", "cd"),
 \item{scale_chr}{logical. If \code{TRUE}, normalize count to per Megabase unit.}
 
 \item{genome_build}{genome build version, should be 'hg19' or 'hg38'.}
+
+\item{base_size}{overall font size.}
 }
 \value{
 a ggplot object

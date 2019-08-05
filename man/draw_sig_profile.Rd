@@ -5,9 +5,9 @@
 \title{Plot signature profile}
 \usage{
 draw_sig_profile(nmfObj, mode = c("copynumber", "mutation"),
-  params = NULL, params_label_size = 2, y_expand = 1, digits = 1,
-  y_scale = c("relative", "absolute"), font_scale = 1,
-  sig_names = NULL, sig_orders = NULL)
+  params = NULL, params_label_size = 3, y_expand = 1, digits = 1,
+  base_size = 12, y_scale = c("relative", "absolute"),
+  font_scale = 1, sig_names = NULL, sig_orders = NULL)
 }
 \arguments{
 \item{nmfObj}{a \code{NMF} result object which is an element return from \link{sig_extract}
@@ -22,6 +22,8 @@ or run results of \strong{NMF} package.}
 \item{y_expand}{y expand height for plotting params of copy number signatures.}
 
 \item{digits}{digits for plotting params of copy number signatures.}
+
+\item{base_size}{overall font size.}
 
 \item{y_scale}{one of 'relative' or 'absolute', if choose 'relative',
 signature columns will be scaled to sum as 1.}

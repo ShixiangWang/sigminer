@@ -4,7 +4,8 @@
 \alias{draw_cn_components}
 \title{Plot mixture fit model components}
 \usage{
-draw_cn_components(features, components, return_plotlist = FALSE, ...)
+draw_cn_components(features, components, return_plotlist = FALSE,
+  base_size = 12, ...)
 }
 \arguments{
 \item{features}{a \code{list} generate from \link{get_features} or \link{sig_prepare} function.}
@@ -14,6 +15,8 @@ from \link{get_components} function or use pre-compiled components data which co
 \url{https://www.nature.com/articles/s41588-018-0179-8} (set this argument as \code{NULL}).}
 
 \item{return_plotlist}{if \code{TRUE}, return a list of ggplot objects but a combined plot.}
+
+\item{base_size}{overall font size.}
 
 \item{...}{other options pass to \code{\link[cowplot]{plot_grid}} function of \strong{cowplot} package.}
 }

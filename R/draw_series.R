@@ -1,11 +1,3 @@
-theme_pub = theme(
-  axis.title.x = element_text(size = 10),
-  axis.title.y = element_text(size = 10),
-  axis.text.x  = element_text(size = 8),
-  axis.text.y = element_text(size = 8),
-  strip.text.y = element_text(size = 8)
-)
-
 # Plot copy number distribution -------------------------------------------
 
 
@@ -21,6 +13,7 @@ theme_pub = theme(
 #' @param fill when `mode` is "cd" and `fill` is `TRUE`, plot percentage instead of count.
 #' @param scale_chr logical. If `TRUE`, normalize count to per Megabase unit.
 #' @inheritParams get_features
+#' @param base_size overall font size.
 #' @author Shixiang Wang <w_shixiang@163.com>
 #' @return a ggplot object
 #' @import ggplot2
@@ -40,7 +33,8 @@ draw_cn_distribution <- function(data,
                                  mode = c("ld", "cd"),
                                  fill = FALSE,
                                  scale_chr = TRUE,
-                                 genome_build = c("hg19", "hg38")) {
+                                 genome_build = c("hg19", "hg38"),
+                                 base_size = 14) {
   stopifnot(
     is.logical(rm_normal),
     is.data.frame(data) | inherits(data, "CopyNumber"),
@@ -50,7 +44,7 @@ draw_cn_distribution <- function(data,
 
   genome_build <- match.arg(genome_build)
 
-  ggplot2::theme_set(cowplot::theme_cowplot())
+  ggplot2::theme_set(cowplot::theme_cowplot(font_size = base_size))
   # requireNamespace("ggplot2")
   # requireNamespace("cowplot")
 
@@ -180,7 +174,7 @@ draw_cn_distribution <- function(data,
 #' @param ylab lab of y axis.
 #' @param return_plotlist if `TRUE`, return a list of ggplot objects but a combined plot.
 #' @param ... other options pass to \code{\link[cowplot]{plot_grid}} function of `cowplot` package.
-#'
+#' @inheritParams draw_cn_distribution
 #' @return a ggplot object
 #' @import ggplot2
 #' @family copy number plot
@@ -192,7 +186,8 @@ draw_cn_distribution <- function(data,
 #' draw_cn_features(cn_prepare$features)
 #' @export
 #'
-draw_cn_features <- function(features, ylab = NULL, return_plotlist=FALSE, ...) {
+draw_cn_features <- function(features, ylab = NULL, return_plotlist=FALSE,
+                             base_size=12, ...) {
   features <- lapply(features, function(x) {
     x[["value"]] <- as.numeric(x[["value"]])
     return(x)
@@ -203,28 +198,28 @@ draw_cn_features <- function(features, ylab = NULL, return_plotlist=FALSE, ...) 
   # ggplot2::theme_set(cowplot::theme_cowplot(font_size = 12))
   p_1 <- ggplot(data = features$segsize, aes(x = log10(value))) +
     geom_line(stat = "density") + labs(x = "Segment size (log10 based)", y = ylab) +
-    theme(plot.margin = unit(c(0.05, 0.05, 0.05, 0.05), "cm")) + cowplot::theme_cowplot(font_size = 12)
+    theme(plot.margin = unit(c(0.05, 0.05, 0.05, 0.05), "cm")) + cowplot::theme_cowplot(font_size = base_size)
   # p_1 = p_1 + scale_x_continuous(breaks = 10 ^c(7, 8),
   #                               labels = scales::trans_format("log10", scales::math_format(10^.x)))
 
   p_2 <- ggplot(data = features$copynumber, aes(x = value)) +
     geom_line(stat = "density") + labs(x = "Copy number", y = ylab) +
-    theme(plot.margin = unit(c(0.05, 0.05, 0.05, 0.05), "cm")) + cowplot::theme_cowplot(font_size = 12)
+    theme(plot.margin = unit(c(0.05, 0.05, 0.05, 0.05), "cm")) + cowplot::theme_cowplot(font_size = base_size)
 
   p_3 <- ggplot(data = features$changepoint, aes(x = value)) +
     geom_line(stat = "density") + labs(x = "Copy number changepoint", y = ylab) +
-    theme(plot.margin = unit(c(0.05, 0.05, 0.05, 0.05), "cm")) + cowplot::theme_cowplot(font_size = 12)
+    theme(plot.margin = unit(c(0.05, 0.05, 0.05, 0.05), "cm")) + cowplot::theme_cowplot(font_size = base_size)
 
   p_4 <- ggplot(data = features$bp10MB, aes(x = value)) +
     geom_bar(stat = "count") + labs(x = "Breakpoint count per 10MB", y = ylab) +
-    theme(plot.margin = unit(c(0.05, 0.05, 0.05, 0.05), "cm")) + cowplot::theme_cowplot(font_size = 12)
+    theme(plot.margin = unit(c(0.05, 0.05, 0.05, 0.05), "cm")) + cowplot::theme_cowplot(font_size = base_size)
   p_5 <- ggplot(data = features$bpchrarm, aes(x = value)) +
     geom_bar(stat = "count") + labs(x = "Breakpoint count per chr arm", y = ylab) +
-    theme(plot.margin = unit(c(0.05, 0.05, 0.05, 0.05), "cm")) + cowplot::theme_cowplot(font_size = 12)
+    theme(plot.margin = unit(c(0.05, 0.05, 0.05, 0.05), "cm")) + cowplot::theme_cowplot(font_size = base_size)
 
   p_6 <- ggplot(data = features$osCN, aes(x = value)) +
     geom_bar(stat = "count") + labs(x = "Oscilating CN chain length", y = ylab) +
-    theme(plot.margin = unit(c(0.05, 0.05, 0.05, 0.05), "cm")) + cowplot::theme_cowplot(font_size = 12)
+    theme(plot.margin = unit(c(0.05, 0.05, 0.05, 0.05), "cm")) + cowplot::theme_cowplot(font_size = base_size)
 
   if (return_plotlist) {
     return(list(segsize=p_1, copynumber=p_2, changepoint=p_3,
@@ -255,6 +250,7 @@ draw_cn_features <- function(features, ylab = NULL, return_plotlist=FALSE, ...) 
 #' from [get_components] function or use pre-compiled components data which come from CNV signature paper
 #' <https://www.nature.com/articles/s41588-018-0179-8> (set this argument as `NULL`).
 #' @param ... other options pass to \code{\link[cowplot]{plot_grid}} function of **cowplot** package.
+#' @inheritParams draw_cn_distribution
 #' @author Shixiang Wang <w_shixiang@163.com>
 #' @return a ggplot object
 #' @import ggplot2
@@ -267,7 +263,8 @@ draw_cn_features <- function(features, ylab = NULL, return_plotlist=FALSE, ...) 
 #' draw_cn_components(cn_prepare$features, cn_prepare$components)
 #' @family copy number plot
 #'
-draw_cn_components <- function(features, components, return_plotlist=FALSE, ...) {
+draw_cn_components <- function(features, components, return_plotlist=FALSE,
+                               base_size=12, ...) {
   stopifnot(is.logical(return_plotlist))
   requireNamespace("cowplot")
   cbPalette <-
@@ -297,7 +294,7 @@ draw_cn_components <- function(features, components, return_plotlist=FALSE, ...)
       )
     }
 
-    p <- p + xlab(xlab) + cowplot::theme_cowplot(font_size = 12)
+    p <- p + xlab(xlab) + cowplot::theme_cowplot(font_size = base_size)
     p
   }
 
@@ -331,7 +328,7 @@ draw_cn_components <- function(features, components, return_plotlist=FALSE, ...)
       )
     }
 
-    p <- p + xlab(xlab) + cowplot::theme_cowplot(font_size = 12)
+    p <- p + xlab(xlab) + cowplot::theme_cowplot(font_size = base_size)
     p
   }
 
@@ -435,6 +432,7 @@ draw_cn_components <- function(features, components, return_plotlist=FALSE, ...)
 #'
 #' @inheritParams sig_extract
 #' @inheritParams sig_assign_samples
+#' @inheritParams draw_cn_distribution
 #' @param params params data of components.
 #' @param params_label_size font size for params label.
 #' @param y_expand y expand height for plotting params of copy number signatures.
@@ -459,7 +457,7 @@ draw_cn_components <- function(features, components, return_plotlist=FALSE, ...)
 #' @family signature plot
 draw_sig_profile <- function(nmfObj, mode = c("copynumber", "mutation"),
                              params = NULL, params_label_size = 3, y_expand = 1,
-                             digits = 1,
+                             digits = 1, base_size = 12,
                              y_scale = c("relative", "absolute"), font_scale = 1,
                              sig_names = NULL, sig_orders = NULL) {
   mode <- match.arg(mode)
@@ -479,13 +477,13 @@ draw_sig_profile <- function(nmfObj, mode = c("copynumber", "mutation"),
   # >>>>>>>>>>>>>>>>> Setting theme
   scale <- font_scale
 
-  .theme_ss <- theme_bw(base_size = 10) +
+  .theme_ss <- theme_bw(base_size = base_size) +
     theme(
       axis.text.x = element_text(
         angle = 90, vjust = 0.5,
-        hjust = 1, size = 10 * scale
+        hjust = 1, size = (base_size-2) * scale
       ),
-      axis.text.y = element_text(hjust = 0.5, size = 12 * scale)
+      axis.text.y = element_text(hjust = 0.5, size = base_size * scale)
     )
   # <<<<<<<<<<<<<<<<< Setting theme
 
@@ -572,9 +570,7 @@ draw_sig_profile <- function(nmfObj, mode = c("copynumber", "mutation"),
   }
 
   p <- p +
-    guides(fill = FALSE) + .theme_ss +
-    theme(axis.title.x = element_text(face = "bold", colour = "black", size = 14 * scale)) +
-    theme(axis.title.y = element_text(face = "bold", colour = "black", size = 14 * scale))
+    guides(fill = FALSE) + .theme_ss
 
   if (all(mode == "copynumber", !is.null(params))) {
     p <- p + theme(plot.margin = margin(30 * y_expand, 2, 2, 2, unit = "pt")) # Add regions
@@ -611,19 +607,21 @@ draw_sig_profile <- function(nmfObj, mode = c("copynumber", "mutation"),
 #' draw_sig_activity(res$nmfObj)
 #' @family signature plot
 draw_sig_activity <- function(nmfObj, mode = c("copynumber", "mutation"),
+                              base_size = 12,
                               font_scale = 1, hide_samps = TRUE) {
   mode <- match.arg(mode)
 
   scale <- font_scale
-  .theme_ss <- theme_bw(base_size = 12) +
+
+  .theme_ss <- theme_bw(base_size = base_size) +
     theme(
       axis.text.x = element_text(
         angle = 90, vjust = 0.5,
-        hjust = 1, size = 10 * scale
+        hjust = 1, size = (base_size - 2) * scale
       ),
-      axis.text.y = element_text(hjust = 0.5, size = 12 * scale),
-      axis.text = element_text(size = 8 * scale)
+      axis.text.y = element_text(hjust = 0.5, size = base_size * scale)
     )
+
 
   activity <- sig_get_activity(nmfObj)
 
@@ -667,9 +665,6 @@ draw_sig_activity <- function(nmfObj, mode = c("copynumber", "mutation"),
   p <- p + facet_grid(class0 ~ ., scales = "free_y")
   p <- p + xlab("Samples") + ylab("Signature Activities")
   p <- p + .theme_ss
-  p <- p + theme(axis.title.x = element_text(face = "bold", colour = "black", size = 14 * scale))
-  p <- p + theme(axis.title.y = element_text(face = "bold", colour = "black", size = 14 * scale))
-  # p = p + theme(legend.title=element_blank())
   p <- p + theme(legend.position = "top")
 
   if (hide_samps) {
@@ -730,6 +725,7 @@ draw_sig_corrplot <- function(mat_list, order = "original", type = "lower",
 #' test p values are shown for categorical data and fdr values are shown for
 #' continuous data.
 #' @inheritParams get_adj_p
+#' @inheritParams draw_cn_distribution
 #' @param subtype_summary a `list` from result of [sig_summarize_subtypes] function.
 #' @param xlab lab name of x axis for all plots. if it is `NA`, remove title for x axis.
 #' @param ylab_co lab name of y axis for plots of continuous type data. Of note,
@@ -785,6 +781,7 @@ draw_subtypes_comparison <- function(subtype_summary,
                                      legend_position_ca = "bottom",
                                      show_pvalue = TRUE,
                                      method = "wilcox.test", p.adjust.method = "fdr",
+                                     base_size = 12,
                                      font_size_x = 12,
                                      text_angle_x = 30,
                                      hjust = 0.2,
@@ -829,7 +826,7 @@ draw_subtypes_comparison <- function(subtype_summary,
 
       p <- ggplot(data, aes_string(x = "subtype", fill = var_name2)) +
         geom_bar(position = "fill") +
-        cowplot::theme_cowplot() +
+        cowplot::theme_cowplot(font_size = base_size) +
         theme(axis.title.y = element_blank()) +
         scale_x_discrete(
           breaks = data_sum[["subtype"]],
@@ -874,7 +871,7 @@ draw_subtypes_comparison <- function(subtype_summary,
       var_name2 <- ifelse(isValidAndUnreserved(var_name), var_name, paste0("`", var_name, "`"))
 
       p <- ggplot(data, aes_string(x = "subtype", y = var_name2)) +
-        geom_boxplot() + cowplot::theme_cowplot() +
+        geom_boxplot() + cowplot::theme_cowplot(font_size = base_size) +
         scale_x_discrete(
           breaks = data_sum[["subtype"]],
           labels = data_sum[["labels"]]

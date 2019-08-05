@@ -7,8 +7,8 @@
 draw_subtypes_comparison(subtype_summary, xlab = "subtype",
   ylab_co = NA, legend_title_ca = NA, legend_position_ca = "bottom",
   show_pvalue = TRUE, method = "wilcox.test",
-  p.adjust.method = "fdr", font_size_x = 12, text_angle_x = 30,
-  hjust = 0.2, ...)
+  p.adjust.method = "fdr", base_size = 12, font_size_x = 12,
+  text_angle_x = 30, hjust = 0.2, ...)
 }
 \arguments{
 \item{subtype_summary}{a \code{list} from result of \link{sig_summarize_subtypes} function.}
@@ -33,6 +33,8 @@ It can be 't.test', 'wilcox.test' etc..}
 
 \item{p.adjust.method}{correction method, default is 'fdr'. Run \code{p.adjust.methods} to
 see all available options.}
+
+\item{base_size}{overall font size.}
 
 \item{font_size_x}{font size for x.}
 

@@ -4,7 +4,8 @@
 \alias{draw_cn_features}
 \title{Plot copy number feature distribution}
 \usage{
-draw_cn_features(features, ylab = NULL, return_plotlist = FALSE, ...)
+draw_cn_features(features, ylab = NULL, return_plotlist = FALSE,
+  base_size = 12, ...)
 }
 \arguments{
 \item{features}{a \code{list} generate from \link{get_features} or \link{sig_prepare} function.}
@@ -12,6 +13,8 @@ draw_cn_features(features, ylab = NULL, return_plotlist = FALSE, ...)
 \item{ylab}{lab of y axis.}
 
 \item{return_plotlist}{if \code{TRUE}, return a list of ggplot objects but a combined plot.}
+
+\item{base_size}{overall font size.}
 
 \item{...}{other options pass to \code{\link[cowplot]{plot_grid}} function of \code{cowplot} package.}
 }

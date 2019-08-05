@@ -5,13 +5,15 @@
 \title{Plot signature activity}
 \usage{
 draw_sig_activity(nmfObj, mode = c("copynumber", "mutation"),
-  font_scale = 1, hide_samps = TRUE)
+  base_size = 12, font_scale = 1, hide_samps = TRUE)
 }
 \arguments{
 \item{nmfObj}{a \code{NMF} result object which is an element return from \link{sig_extract}
 or run results of \strong{NMF} package.}
 
 \item{mode}{variation type to decompose, currently support "copynumber" or "mutation".}
+
+\item{base_size}{overall font size.}
 
 \item{font_scale}{a number used to set font scale.}
 
