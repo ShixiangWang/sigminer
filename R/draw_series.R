@@ -1,6 +1,6 @@
 theme_pub = theme(
-  axis.title.x = element_text(size = 12),
-  axis.title.y = element_text(size = 12),
+  axis.title.x = element_text(size = 10),
+  axis.title.y = element_text(size = 10),
   axis.text.x  = element_text(size = 8),
   axis.text.y = element_text(size = 8),
   strip.text.y = element_text(size = 8)
@@ -458,7 +458,7 @@ draw_cn_components <- function(features, components, return_plotlist=FALSE, ...)
 #' draw_sig_profile(res$nmfObj)
 #' @family signature plot
 draw_sig_profile <- function(nmfObj, mode = c("copynumber", "mutation"),
-                             params = NULL, params_label_size = 2, y_expand = 1,
+                             params = NULL, params_label_size = 3, y_expand = 1,
                              digits = 1,
                              y_scale = c("relative", "absolute"), font_scale = 1,
                              sig_names = NULL, sig_orders = NULL) {
@@ -479,14 +479,13 @@ draw_sig_profile <- function(nmfObj, mode = c("copynumber", "mutation"),
   # >>>>>>>>>>>>>>>>> Setting theme
   scale <- font_scale
 
-  .theme_ss <- theme_bw(base_size = 12) +
+  .theme_ss <- theme_bw(base_size = 10) +
     theme(
       axis.text.x = element_text(
         angle = 90, vjust = 0.5,
         hjust = 1, size = 10 * scale
       ),
-      axis.text.y = element_text(hjust = 0.5, size = 12 * scale),
-      axis.text = element_text(size = 14 * scale)
+      axis.text.y = element_text(hjust = 0.5, size = 12 * scale)
     )
   # <<<<<<<<<<<<<<<<< Setting theme
 
