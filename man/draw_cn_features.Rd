@@ -4,7 +4,7 @@
 \alias{draw_cn_features}
 \title{Plot copy number feature distribution}
 \usage{
-draw_cn_features(features, ylab = "", return_plotlist = FALSE, ...)
+draw_cn_features(features, ylab = NULL, return_plotlist = FALSE, ...)
 }
 \arguments{
 \item{features}{a \code{list} generate from \link{get_features} or \link{sig_prepare} function.}

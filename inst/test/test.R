@@ -124,4 +124,13 @@ draw_sig_profile(res$nmfObj, sig_names = paste0("CN", 1:2),
                  sig_orders = c("CN2", "CN1"))
 
 
+p1 = draw_sig_profile(res$nmfObj, params = p$parameters, y_expand = 2.5)
+theme_pub = theme(
+  axis.title.x = element_text(size = 12),
+  axis.title.y = element_text(size = 12),
+  axis.text.x  = element_text(size = 8),
+  axis.text.y = element_text(size = 8),
+  strip.text.y = element_text(size = 8)
+)
 
+p1 + sigminer:::theme_pub

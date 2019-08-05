@@ -5,8 +5,9 @@
 \title{Plot signature profile}
 \usage{
 draw_sig_profile(nmfObj, mode = c("copynumber", "mutation"),
-  params = NULL, y_expand = 1, digits = 1, y_scale = c("relative",
-  "absolute"), font_scale = 1, sig_names = NULL, sig_orders = NULL)
+  params = NULL, params_label_size = 2, y_expand = 1, digits = 1,
+  y_scale = c("relative", "absolute"), font_scale = 1,
+  sig_names = NULL, sig_orders = NULL)
 }
 \arguments{
 \item{nmfObj}{a \code{NMF} result object which is an element return from \link{sig_extract}
@@ -15,6 +16,8 @@ or run results of \strong{NMF} package.}
 \item{mode}{variation type to decompose, currently support "copynumber" or "mutation".}
 
 \item{params}{params data of components.}
+
+\item{params_label_size}{font size for params label.}
 
 \item{y_expand}{y expand height for plotting params of copy number signatures.}
 

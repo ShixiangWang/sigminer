@@ -1,3 +1,11 @@
+theme_pub = theme(
+  axis.title.x = element_text(size = 12),
+  axis.title.y = element_text(size = 12),
+  axis.text.x  = element_text(size = 8),
+  axis.text.y = element_text(size = 8),
+  strip.text.y = element_text(size = 8)
+)
+
 # Plot copy number distribution -------------------------------------------
 
 
@@ -184,7 +192,7 @@ draw_cn_distribution <- function(data,
 #' draw_cn_features(cn_prepare$features)
 #' @export
 #'
-draw_cn_features <- function(features, ylab = "", return_plotlist=FALSE, ...) {
+draw_cn_features <- function(features, ylab = NULL, return_plotlist=FALSE, ...) {
   features <- lapply(features, function(x) {
     x[["value"]] <- as.numeric(x[["value"]])
     return(x)
@@ -428,6 +436,7 @@ draw_cn_components <- function(features, components, return_plotlist=FALSE, ...)
 #' @inheritParams sig_extract
 #' @inheritParams sig_assign_samples
 #' @param params params data of components.
+#' @param params_label_size font size for params label.
 #' @param y_expand y expand height for plotting params of copy number signatures.
 #' @param digits digits for plotting params of copy number signatures.
 #' @param y_scale one of 'relative' or 'absolute', if choose 'relative',
@@ -448,7 +457,8 @@ draw_cn_components <- function(features, components, return_plotlist=FALSE, ...)
 #' ))
 #' draw_sig_profile(res$nmfObj)
 #' @family signature plot
-draw_sig_profile <- function(nmfObj, mode = c("copynumber", "mutation"), params = NULL, y_expand = 1,
+draw_sig_profile <- function(nmfObj, mode = c("copynumber", "mutation"),
+                             params = NULL, params_label_size = 2, y_expand = 1,
                              digits = 1,
                              y_scale = c("relative", "absolute"), font_scale = 1,
                              sig_names = NULL, sig_orders = NULL) {
@@ -550,7 +560,9 @@ draw_sig_profile <- function(nmfObj, mode = c("copynumber", "mutation"), params 
           paste0(" \u03BB=", signif(mu, digits))
         )
       ),
-      data = params, angle = 90,
+      data = params,
+      size = params_label_size,
+      angle = 90,
       hjust = 0, vjust = 0.5
       ) +
         coord_cartesian(clip = "off")
