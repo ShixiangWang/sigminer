@@ -42,8 +42,9 @@ remotes::install_github("ShixiangWang/sigminer")
 
 ## Citation
 
-If you use **sigminer** in academic field, please
-    cite:
+**sigminer** has not been published. If you use **sigminer** in academic
+field, please cite our recent
+    work:
 
     Wang, Shixiang, et al. "The predictive power of tumor mutational burden 
         in lung cancer immunotherapy response is influenced by patients' sex."
