@@ -31,7 +31,7 @@ environment:
     R_ARCH: x64
     USE_RTOOLS: true
   matrix:
-    - R_VERSION: 3.6.0rc
+    - R_VERSION: 3.6.1
 
 artifacts:
   - path: '*.Rcheck\**\*.log'
