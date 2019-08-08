@@ -6,6 +6,7 @@ init:
         $ErrorActionPreference = "Stop"
         Invoke-WebRequest http://raw.github.com/krlmlr/r-appveyor/master/scripts/appveyor-tool.ps1 -OutFile "..\appveyor-tool.ps1"
         Import-Module '..\appveyor-tool.ps1'
+
 install:
   ps: Bootstrap
 
@@ -49,3 +50,7 @@ artifacts:
 
   - path: '\*_*.zip'
     name: Bits
+
+matrix:
+  - R_VERSION: 3.6.0
+    GCC_PATH: mingw_64
