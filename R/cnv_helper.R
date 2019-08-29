@@ -244,11 +244,17 @@ getBPnum <- function(abs_profiles, chrlen) {
       currseg <- segTab[chromosome == c, ]
       intervals <-
         seq(1, chrlen[chrlen[, 1] == c, 2] + 10000000, 10000000)
-      res <-
+      res <- tryCatch(
         hist(currseg$end[-nrow(currseg)],
-          breaks = intervals,
-          plot = FALSE
-        )$counts
+             breaks = intervals,
+             plot = FALSE
+        )$counts, error = function(e) {
+          stop("Stop due to the following reason. Please check if your genome build is right.",
+               "\n", e$message)
+        }
+      )
+      res <-
+
       allBPnum <- c(allBPnum, res)
     }
     out <-
