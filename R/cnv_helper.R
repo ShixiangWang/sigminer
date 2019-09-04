@@ -3,7 +3,7 @@
 fitComponent <-
   function(dat,
              dist = "norm",
-             seed = 77777,
+             seed = 123456,
              model_selection = "BIC",
              min_prior = 0.001,
              niter = 1000,
