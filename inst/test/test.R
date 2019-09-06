@@ -134,3 +134,22 @@ theme_pub = theme(
 )
 
 p1 + sigminer:::theme_pub
+
+
+# Fix compnents has similar mu --------------------------------------------
+
+load(system.file("extdata", "toy_copynumber.RData",
+                 package = "sigminer", mustWork = TRUE
+))
+# Prepare copy number signature analysis
+
+load(system.file("extdata", "toy_cn_features.RData",
+                 package = "sigminer", mustWork = TRUE
+))
+cn_components <- get_components(cn_features)
+
+cn_prepare <- prepare_copynumber(cn, cores = 1)
+debug(prepare_copynumber)
+
+t = c(8.826573e-10,  1.046303e+01,  5.440898e-08,  1.906380e+00,  2.590165e-09 )
+diff(sort(t)) < 0.1

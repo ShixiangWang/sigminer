@@ -154,7 +154,23 @@ fitComponent <-
             cores = cores
           )
         if (inherits(fit, "stepFlexmix")) {
+          # TODO: 创建一个函数回调自身直到均值差都小于阈值
+          fits <- fit
           fit <- flexmix::getModel(fit, which = model_selection)
+          if (is.matrix(parameters(fit))) {
+            mu <- parameters(fit)[1, ]
+          } else {
+            mu <- parameters(fit)
+          }
+          mu <- sort(mu)
+          cat("Params for components...\n")
+          print(parameters(fit))
+          sub_len = sum(diff(mu) < 0.1)
+          if (sub_len > 0) {
+            K = fit@k
+            cat("Getting model for K ", K - sub_len)
+            fit <- flexmix::getModel(fits, which = as.character(K - sub_len))
+          }
         }
       }
     }
