@@ -5,6 +5,7 @@ fitComponent <-
              dist = "norm",
              seed = 123456,
              model_selection = "BIC",
+             threshold = 0.1,
              min_prior = 0.001,
              niter = 1000,
              nrep = 1,
@@ -131,7 +132,12 @@ fitComponent <-
           )
 
         if (inherits(fit, "stepFlexmix")) {
-          fit <- flexmix::getModel(fit, which = model_selection)
+          fit <- recur_fit_component(
+            fit = fit, dist = dist,
+            threshold = threshold,
+            control = control,
+            model_selection = model_selection
+          )
         }
       }
     } else if (dist == "pois") {
@@ -154,23 +160,12 @@ fitComponent <-
             cores = cores
           )
         if (inherits(fit, "stepFlexmix")) {
-          # TODO: 创建一个函数回调自身直到均值差都小于阈值
-          fits <- fit
-          fit <- flexmix::getModel(fit, which = model_selection)
-          if (is.matrix(parameters(fit))) {
-            mu <- parameters(fit)[1, ]
-          } else {
-            mu <- parameters(fit)
-          }
-          mu <- sort(mu)
-          cat("Params for components...\n")
-          print(parameters(fit))
-          sub_len = sum(diff(mu) < 0.1)
-          if (sub_len > 0) {
-            K = fit@k
-            cat("Getting model for K ", K - sub_len)
-            fit <- flexmix::getModel(fits, which = as.character(K - sub_len))
-          }
+          fit <- recur_fit_component(
+            fit = fit, dist = dist,
+            threshold = threshold,
+            control = control,
+            model_selection = model_selection
+          )
         }
       }
     }
@@ -262,16 +257,19 @@ getBPnum <- function(abs_profiles, chrlen) {
         seq(1, chrlen[chrlen[, 1] == c, 2] + 10000000, 10000000)
       res <- tryCatch(
         hist(currseg$end[-nrow(currseg)],
-             breaks = intervals,
-             plot = FALSE
-        )$counts, error = function(e) {
-          stop("Stop due to the following reason. Please check if your genome build is right.",
-               "\n", e$message)
+          breaks = intervals,
+          plot = FALSE
+        )$counts,
+        error = function(e) {
+          stop(
+            "Stop due to the following reason. Please check if your genome build is right.",
+            "\n", e$message
+          )
         }
       )
       res <-
 
-      allBPnum <- c(allBPnum, res)
+        allBPnum <- c(allBPnum, res)
     }
     out <-
       rbind(out, cbind(ID = rep(i, length(allBPnum)), value = allBPnum))

@@ -186,8 +186,8 @@ draw_cn_distribution <- function(data,
 #' draw_cn_features(cn_prepare$features)
 #' @export
 #'
-draw_cn_features <- function(features, ylab = NULL, return_plotlist=FALSE,
-                             base_size=12, ...) {
+draw_cn_features <- function(features, ylab = NULL, return_plotlist = FALSE,
+                             base_size = 12, ...) {
   features <- lapply(features, function(x) {
     x[["value"]] <- as.numeric(x[["value"]])
     return(x)
@@ -222,8 +222,10 @@ draw_cn_features <- function(features, ylab = NULL, return_plotlist=FALSE,
     theme(plot.margin = unit(c(0.05, 0.05, 0.05, 0.05), "cm")) + cowplot::theme_cowplot(font_size = base_size)
 
   if (return_plotlist) {
-    return(list(segsize=p_1, copynumber=p_2, changepoint=p_3,
-                bp10MB=p_4, bpchrarm=p_5, osCN=p_6))
+    return(list(
+      segsize = p_1, copynumber = p_2, changepoint = p_3,
+      bp10MB = p_4, bpchrarm = p_5, osCN = p_6
+    ))
   }
 
   p <- cowplot::plot_grid(p_1,
@@ -263,8 +265,8 @@ draw_cn_features <- function(features, ylab = NULL, return_plotlist=FALSE,
 #' draw_cn_components(cn_prepare$features, cn_prepare$components)
 #' @family copy number plot
 #'
-draw_cn_components <- function(features, components, return_plotlist=FALSE,
-                               base_size=12, ...) {
+draw_cn_components <- function(features, components, return_plotlist = FALSE,
+                               base_size = 12, ...) {
   stopifnot(is.logical(return_plotlist))
   requireNamespace("cowplot")
   cbPalette <-
@@ -404,8 +406,10 @@ draw_cn_components <- function(features, components, return_plotlist=FALSE,
   p_6 <- plotPoisDensity(features[["osCN"]]$value, comp_osCN, xlab = "Oscilating CN chain length")
 
   if (return_plotlist) {
-    return(list(segsize=p_1, copynumber=p_2, changepoint=p_3,
-                bp10MB=p_4, bpchrarm=p_5, osCN=p_6, parameters = parameters))
+    return(list(
+      segsize = p_1, copynumber = p_2, changepoint = p_3,
+      bp10MB = p_4, bpchrarm = p_5, osCN = p_6, parameters = parameters
+    ))
   }
 
   p <- cowplot::plot_grid(p_1,
@@ -481,7 +485,7 @@ draw_sig_profile <- function(nmfObj, mode = c("copynumber", "mutation"),
     theme(
       axis.text.x = element_text(
         angle = 90, vjust = 0.5,
-        hjust = 1, size = (base_size-2) * scale
+        hjust = 1, size = (base_size - 2) * scale
       ),
       axis.text.y = element_text(hjust = 0.5, size = base_size * scale)
     )
@@ -753,7 +757,7 @@ draw_sig_corrplot <- function(mat_list, order = "original", type = "lower",
 #' ))
 #' # Assign samples to clusters
 #' subtypes <- sig_assign_samples(res$nmfObj, type = "samples")
-#'
+#' 
 #' set.seed(1234)
 #' # Add custom groups
 #' subtypes$new_group <- sample(c("1", "2", "3", "4"), size = nrow(subtypes), replace = TRUE)
@@ -764,7 +768,7 @@ draw_sig_corrplot <- function(mat_list, order = "original", type = "lower",
 #'   type = c("co", "ca"), verbose = TRUE
 #' )
 #' draw_subtypes_comparison(subtypes.sum)
-#'
+#' 
 #' # Another example
 #' library(ggpubr)
 #' tt <- sig_summarize_subtypes(ToothGrowth,
@@ -848,8 +852,10 @@ draw_subtypes_comparison <- function(subtype_summary,
         }
       }
 
-      p + theme(legend.position = df[["legend_position"]],
-                axis.text.x = element_text(size = font_size_x, angle = text_angle_x, hjust = hjust))
+      p + theme(
+        legend.position = df[["legend_position"]],
+        axis.text.x = element_text(size = font_size_x, angle = text_angle_x, hjust = hjust)
+      )
     })
     names(ca_res) <- names(ca_list)
   } else {

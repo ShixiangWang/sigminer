@@ -6,7 +6,7 @@
 \usage{
 get_components(CN_features, seed = 123456, min_comp = 2,
   max_comp = 10, min_prior = 0.001, model_selection = "BIC",
-  nrep = 3, niter = 1000, cores = 1)
+  threshold = 0.1, nrep = 3, niter = 1000, cores = 1)
 }
 \arguments{
 \item{CN_features}{a \code{list} generate from \code{\link[=get_features]{get_features()}} function.}
@@ -24,6 +24,11 @@ Details about custom setting please refer to \strong{flexmix} package.}
 
 \item{model_selection}{model selection strategy, default is 'BIC'.
 Details about custom setting please refer to \strong{flexmix} package.}
+
+\item{threshold}{default is \code{0.1}. Sometimes, the result components
+include adjacent distributions with similar mu
+(two and more distribution are very close), we use this threshold
+to obtain a more meaningful fit with less components.}
 
 \item{nrep}{number of run times for each value of component,
 keep only the solution with maximum likelihood.}

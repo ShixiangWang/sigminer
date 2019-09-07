@@ -778,7 +778,7 @@ sig_get_similarity <- function(sig1, sig2, type = c("cos", "cor")) {
 #' ))
 #' # Assign samples to clusters
 #' subtypes <- sig_assign_samples(res$nmfObj, type = "samples")
-#'
+#' 
 #' set.seed(1234)
 #' # Add custom groups
 #' subtypes$new_group <- sample(c("1", "2", "3", "4", NA), size = nrow(subtypes), replace = TRUE)

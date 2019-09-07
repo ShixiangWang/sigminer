@@ -145,6 +145,10 @@ get_features <- function(CN_data,
 #' Details about custom setting please refer to **flexmix** package.
 #' @param model_selection model selection strategy, default is 'BIC'.
 #' Details about custom setting please refer to **flexmix** package.
+#' @param threshold default is `0.1`. Sometimes, the result components
+#' include adjacent distributions with similar mu
+#' (two and more distribution are very close), we use this threshold
+#' to obtain a more meaningful fit with less components.
 #' @param nrep number of run times for each value of component,
 #' keep only the solution with maximum likelihood.
 #' @param niter maximal number of iteration to achive converge.
@@ -169,6 +173,7 @@ get_components <- function(CN_features,
                            max_comp = 10,
                            min_prior = 0.001,
                            model_selection = "BIC",
+                           threshold = 0.1,
                            nrep = 3,
                            niter = 1000,
                            cores = 1) {
@@ -199,6 +204,7 @@ get_components <- function(CN_features,
                                    max_comp = 10,
                                    min_prior = 0.001,
                                    model_selection = "BIC",
+                                   threshold = 0.1,
                                    nrep = 1,
                                    niter = 1000,
                                    cores = 1) {
@@ -210,6 +216,7 @@ get_components <- function(CN_features,
         dist = dist_map[feature_name],
         seed = seed,
         model_selection = model_selection,
+        threshold = threshold,
         min_prior = min_prior,
         niter = niter,
         nrep = nrep,
@@ -228,6 +235,7 @@ get_components <- function(CN_features,
   seed = seed,
   min_prior = min_prior,
   model_selection = model_selection,
+  threshold = threshold,
   nrep = nrep,
   niter = niter,
   dist_map = dist_map,
