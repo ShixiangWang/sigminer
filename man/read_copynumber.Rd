@@ -6,9 +6,10 @@
 \usage{
 read_copynumber(input, pattern = NULL, ignore_case = FALSE,
   seg_cols = c("Chromosome", "Start.bp", "End.bp", "modal_cn"),
-  samp_col = "sample", use_all = FALSE, min_segnum = 0,
-  genome_build = c("hg19", "hg38"), genome_measure = c("called", "wg"),
-  clinical_data = NULL, complement = TRUE, verbose = FALSE, ...)
+  samp_col = "sample", use_all = FALSE, min_segnum = 0L,
+  max_copynumber = 20L, genome_build = c("hg19", "hg38"),
+  genome_measure = c("called", "wg"), clinical_data = NULL,
+  complement = TRUE, verbose = FALSE, ...)
 }
 \arguments{
 \item{input}{a \code{data.frame} or a file or a directory contains copy number profile.}
@@ -29,6 +30,8 @@ is a directory and cannot find \code{samp_col}, sample names will use file names
 \item{use_all}{default is \code{FALSE}. If \code{True}, use all columns from raw input.}
 
 \item{min_segnum}{minimal number of copy number segments within a sample.}
+
+\item{max_copynumber}{bigger copy number within a sample will be reset to this value.}
 
 \item{genome_build}{genome build version, should be 'hg19' or 'hg38'.}
 

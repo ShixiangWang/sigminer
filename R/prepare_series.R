@@ -34,6 +34,7 @@ prepare_copynumber <- function(CopyNumber,
                                min_comp = 2, max_comp = 10,
                                min_prior = 0.001,
                                model_selection = "BIC",
+                               threshold = 0.1,
                                nrep = 1, niter = 1000, rowIter = 1000) {
   stopifnot(is.logical(reference_components) | is.list(reference_components) | is.null(reference_components))
 
@@ -51,6 +52,7 @@ prepare_copynumber <- function(CopyNumber,
       min_comp = min_comp, max_comp = max_comp,
       min_prior = min_prior,
       model_selection = model_selection,
+      threshold = threshold,
       nrep = nrep, niter = niter, cores = cores
     )
   }

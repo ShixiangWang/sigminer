@@ -54,6 +54,7 @@ read_maf <- function(
 #' (set this parameter to `NULL` is recommended in this case).
 #' @param use_all default is `FALSE`. If `True`, use all columns from raw input.
 #' @param min_segnum minimal number of copy number segments within a sample.
+#' @param max_copynumber bigger copy number within a sample will be reset to this value.
 #' @param genome_build genome build version, should be 'hg19' or 'hg38'.
 #' @param genome_measure default is 'called', can be 'wg' or 'called'.
 #' Set 'called' will use autosomo called segments size to compute total size for CNA burden calculation,
@@ -84,7 +85,8 @@ read_copynumber <- function(input,
                             seg_cols = c("Chromosome", "Start.bp", "End.bp", "modal_cn"),
                             samp_col = "sample",
                             use_all = FALSE,
-                            min_segnum = 0,
+                            min_segnum = 0L,
+                            max_copynumber = 20L,
                             genome_build = c("hg19", "hg38"),
                             genome_measure = c("called", "wg"),
                             clinical_data = NULL,
@@ -343,6 +345,8 @@ read_copynumber <- function(input,
     message("  Filter - ", nrow(dropoff_df))
   }
 
+  # reset copy number for high copy number segments
+  data_df$segVal[data_df$segVal > max_copynumber] <- max_copynumber
   # make sure seg value is integer
   data_df[["segVal"]] <- as.integer(round(data_df[["segVal"]]))
 

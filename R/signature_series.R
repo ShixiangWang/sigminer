@@ -40,6 +40,7 @@ sig_prepare.CopyNumber <- function(object, reference_components = FALSE,
                                    min_comp = 2, max_comp = 10,
                                    min_prior = 0.001,
                                    model_selection = "BIC",
+                                   threshold = 0.1,
                                    nrep = 1, niter = 1000, rowIter = 1000, ...) {
   prepare_copynumber(object,
     reference_components = reference_components,
@@ -47,6 +48,7 @@ sig_prepare.CopyNumber <- function(object, reference_components = FALSE,
     min_comp = min_comp, max_comp = max_comp,
     min_prior = min_prior,
     model_selection = model_selection,
+    threshold = threshold,
     nrep = nrep, niter = niter, rowIter = rowIter
   )
 }
@@ -778,7 +780,7 @@ sig_get_similarity <- function(sig1, sig2, type = c("cos", "cor")) {
 #' ))
 #' # Assign samples to clusters
 #' subtypes <- sig_assign_samples(res$nmfObj, type = "samples")
-#' 
+#'
 #' set.seed(1234)
 #' # Add custom groups
 #' subtypes$new_group <- sample(c("1", "2", "3", "4", NA), size = nrow(subtypes), replace = TRUE)
