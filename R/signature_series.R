@@ -164,19 +164,19 @@ sig_estimate <-
         )
     }
 
-    if (save_plots) {
-      pdf(
-        paste0(plot_basename, "_consensus.pdf"),
-        bg = "white",
-        pointsize = 9,
-        width = 12,
-        height = 12,
-        paper = "special"
-      )
-      NMF::consensusmap(estim.r)
-      dev.off()
-      if (verbose) message("Created ", paste0(plot_basename, "_consensus.pdf"))
-    }
+    # if (save_plots) {
+    #   pdf(
+    #     paste0(plot_basename, "_consensus.pdf"),
+    #     bg = "white",
+    #     pointsize = 9,
+    #     width = 12,
+    #     height = 12,
+    #     paper = "special"
+    #   )
+    #   NMF::consensusmap(estim.r)
+    #   dev.off()
+    #   if (verbose) message("Created ", paste0(plot_basename, "_consensus.pdf"))
+    # }
 
     nmf.sum <- NMF::summary(estim.r) # Get summary of estimates
     if (verbose) {
