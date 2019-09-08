@@ -6,11 +6,19 @@ init:
         $ErrorActionPreference = "Stop"
         Invoke-WebRequest http://raw.github.com/krlmlr/r-appveyor/master/scripts/appveyor-tool.ps1 -OutFile "..\appveyor-tool.ps1"
         Import-Module '..\appveyor-tool.ps1'
+
 install:
   ps: Bootstrap
 
 cache:
   - C:\RLibrary
+
+environment:
+  NOT_CRAN: true
+  # env vars that may need to be set, at least temporarily, from time to time
+  # see https://github.com/krlmlr/r-appveyor#readme for details
+  # USE_RTOOLS: true
+  # R_REMOTES_STANDALONE: true
 
 # Adapt as necessary starting from here
 
@@ -23,16 +31,6 @@ test_script:
 on_failure:
   - 7z a failure.zip *.Rcheck\*
   - appveyor PushArtifact failure.zip
-
-environment:
-  PKGTYPE: both
-  NOT_CRAN: true
-  global:
-    GCC_PATH: mingw_64
-    R_ARCH: x64
-    USE_RTOOLS: true
-  matrix:
-    - R_VERSION: 3.6.1
 
 artifacts:
   - path: '*.Rcheck\**\*.log'
