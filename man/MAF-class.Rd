@@ -6,7 +6,10 @@
 \alias{MAF}
 \title{Class MAF}
 \description{
-S4 class for storing summarized MAF.
+S4 class for storing summarized MAF. It is from \code{maftools} package.
+}
+\details{
+More about MAF object please see \href{https://github.com/PoisonAlien/maftools}{maftools}.
 }
 \section{Slots}{
 

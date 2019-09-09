@@ -13,9 +13,6 @@ More info please call 'hello()' in console.
 }
 
 .onLoad <- function(libname, pkgname) {
-  # for (i in c("NMF")) {
-  #     suppressMessages(requireNamespace(i, quietly = TRUE))
-  # }
   invisible(suppressPackageStartupMessages(
     sapply(c("NMF"),
       requireNamespace,

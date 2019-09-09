@@ -4,7 +4,7 @@
 #' hello()
 hello <- function() {
   if (!requireNamespace("cowsay", quietly = TRUE)) {
-    stop("Package 'cowsay' is not installed.")
+    message("Please install package 'cowsay' firstly.")
   } else {
     msg <- paste0("Welcome to 'sigminer' package!
 =========================================================================

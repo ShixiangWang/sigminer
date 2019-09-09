@@ -1,18 +1,16 @@
 Package: sigminer
-Title: Capture Genomic Variation Signatures using Non-Negative Matrix Factorization
+Title: Extract, Analyze and Visualize Signatures for Genomic Variations
 Version: 0.99.9000
 Authors@R: c(
     person("Shixiang", "Wang", email = "w_shixiang@163.com",
            role = c("aut", "cre"), comment = c(ORCID = "0000-0001-9855-7357")),
            person("Geoffrey", "Macintyre", role = c("ctb")), 
            person("Xue-Song", "Liu", role = c("ctb")))
-Description: Contains functions for identification of  
-  copy number signatures (Geoffrey et al. (2018) <doi:10.1038/s41588-018-0179-8>) and 
-  mutation signatures (Alexandrov et al. (2013) <doi:10.1038/nature12477>) 
-  by non-negative matrix factorization, signature analysis and visualization. 
-  It can be used to capture signatures of genomic variation, compare genotype or
-  phenotype features of different signatures and thus uncover the relationship 
-  between the mechanism of genomic variation and phenotypes in cancer.
+Description: Genomic variations including somatic mutations, copy number variations, etc. are the major force
+  for cancer initialization and development.
+  Due to the specificity of molecular lesions caused by genomic variations, we can generate characteristic
+  variation spectra, called 'signature'. This package helps users to extract, analyze and visualize signatures
+  from genomic variations, thus providing new insight into cancer study.
 URL: https://github.com/ShixiangWang/sigminer
 BugReports: https://github.com/ShixiangWang/sigminer/issues
 Depends: R (>= 3.5)
@@ -21,7 +19,6 @@ Imports:
     corrplot,
     cowplot,
     data.table,
-    doParallel,
     dplyr,
     flexmix,
     foreach,
@@ -34,7 +31,11 @@ Imports:
     tibble,
     tidyr,
     magrittr,
-    purrr
+    purrr,
+    rlang (>= 0.1.2),
+    doFuture,
+    future,
+    doParallel
 biocViews:
 Suggests: 
     BSgenome,
@@ -43,9 +44,10 @@ Suggests:
     knitr,
     rmarkdown,
     covr,
-    testthat,
+    testthat (>= 2.1.0),
     prettydoc,
-    pheatmap
+    pheatmap,
+    roxygen2
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

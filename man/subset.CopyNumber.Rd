@@ -18,7 +18,7 @@ Useless here.}
 a \link{CopyNumber} object
 }
 \description{
-Subset data slot of \link{CopyNumber} object, un-selected rows will move to
+Subset \code{data} slot of \link{CopyNumber} object, un-selected rows will move to
 dropoff.segs slot, annotation slot will update in the same way.
 }
 \author{

@@ -1,8 +1,13 @@
+# Create classes and associated methods
 
 # Set Class ---------------------------------------------------------------
 
 #' Class MAF
-#' @description S4 class for storing summarized MAF.
+#'
+#' S4 class for storing summarized MAF. It is from `maftools` package.
+#'
+#' More about MAF object please see [maftools](https://github.com/PoisonAlien/maftools).
+#'
 #' @slot data data.table of MAF file containing all non-synonymous variants.
 #' @slot variants.per.sample table containing variants per sample
 #' @slot variant.type.summary table containing variant types per sample
@@ -12,7 +17,7 @@
 #' @slot maf.silent subset of main MAF containing only silent variants
 #' @slot clinical.data clinical data associated with each sample/Tumor_Sample_Barcode in MAF.
 #' @import methods
-#' @import data.table
+#' @importClassesFrom data.table data.table
 #' @export MAF
 #' @exportClass MAF
 
@@ -52,7 +57,6 @@ setMethod(
 #' Set 'wg' will autosome size from genome build, this option is useful for WGS, SNP etc..
 #' @slot annotation data.table of annotation for copy number segments.
 #' @slot dropoff.segs data.table of copy number segments dropped from raw input.
-#' @slot clinical.data data associated with each sample in copy number profile.
 #' @export CopyNumber
 #' @exportClass CopyNumber
 CopyNumber <- setClass(
@@ -63,8 +67,7 @@ CopyNumber <- setClass(
     genome_build = "character",
     genome_measure = "character",
     annotation = "data.table",
-    dropoff.segs = "data.table",
-    clinical.data = "data.table"
+    dropoff.segs = "data.table"
   )
 )
 
@@ -79,41 +82,11 @@ setMethod(
   }
 )
 
-
-#' Class GenomicVariation
-#' @description S4 class for storing summarized genomic variation profile.
-#' @slot CopyNumber a `CopyNumber` object.
-#' @slot MAF a `MAF` object.
-#' @slot clinical.data data associated with each sample in copy number profile
-#' and MAF. This slot is intersection of `clinical.data` slot in both `CopyNumber`
-#' object and `MAF` object.
-#' @export GenomicVariation
-#' @exportClass GenomicVariation
-GenomicVariation <- setClass(
-  Class = "GenomicVariation",
-  slots = c(
-    CopyNumber = "CopyNumber", MAF = "MAF",
-    clinical.data = "data.table"
-  )
-)
-
-setMethod(
-  f = "show",
-  signature = "GenomicVariation",
-  definition = function(object) {
-    cat(paste("An object of class", class(object), "\n"))
-    cat("===================================\n")
-    str(object, max.level = 2)
-  }
-)
-
-
-
 # Methods -----------------------------------------------------------------
 
 #' Subsetting CopyNumber object
 #'
-#' Subset data slot of [CopyNumber] object, un-selected rows will move to
+#' Subset `data` slot of [CopyNumber] object, un-selected rows will move to
 #' dropoff.segs slot, annotation slot will update in the same way.
 #'
 #' @param x a [CopyNumber] object to be subsetted.
@@ -138,4 +111,29 @@ subset.CopyNumber <- function(x, subset = TRUE, ...) {
     genome_measure = x@genome_measure
   )
   x
+}
+
+# Parameter - object: a CopyNumber object
+validate_segTab <- function(object, verbose = FALSE) {
+  if (!is.integer(object@data[["start"]])) {
+    object@data[["start"]] <- as.integer(object@data[["start"]])
+  }
+
+  if (!is.integer(object@data[["end"]])) {
+    object@data[["end"]] <- as.integer(object@data[["end"]])
+  }
+
+  if (!is.integer(object@data[["segVal"]])) {
+    if (is.character(object@data[["segVal"]])) {
+      if (verbose) message("'segVal' is characater type, try transforming to integer.")
+      object@data[["segVal"]] <- as.integer(object@data[["segVal"]])
+    }
+
+    if (is.double(object@data[["segVal"]])) {
+      if (verbose) message("'segVal' is not integer type, round it to integer.")
+      object@data[["segVal"]] <- as.integer(round(object@data[["segVal"]]))
+    }
+  }
+
+  object
 }

@@ -1,42 +1,3 @@
-# =====================================================
-# Function: read data as S4 object
-# =====================================================
-
-
-# Read MAF data -----------------------------------------------------------
-
-#' @inherit maftools::read.maf
-#' @family read genomic variation data function series
-#' @examples
-#' \donttest{
-#' laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
-#' laml <- read_maf(maf = laml.maf)
-#' }
-#' @export
-#' @family read genomic variation data function series
-
-read_maf <- function(
-                     maf, clinicalData = NULL, removeDuplicatedVariants = TRUE,
-                     useAll = TRUE, gisticAllLesionsFile = NULL,
-                     gisticAmpGenesFile = NULL, gisticDelGenesFile = NULL,
-                     gisticScoresFile = NULL, cnLevel = "all", cnTable = NULL,
-                     isTCGA = FALSE, vc_nonSyn = NULL, verbose = TRUE) {
-  maftools::read.maf(
-    maf,
-    clinicalData = clinicalData,
-    removeDuplicatedVariants = removeDuplicatedVariants,
-    useAll = useAll,
-    gisticAllLesionsFile = gisticAllLesionsFile,
-    gisticAmpGenesFile = gisticAmpGenesFile,
-    gisticDelGenesFile = gisticDelGenesFile,
-    gisticScoresFile = gisticScoresFile,
-    cnLevel = cnLevel, cnTable = cnTable,
-    isTCGA = isTCGA, vc_nonSyn = vc_nonSyn,
-    verbose = verbose
-  )
-}
-
-
 # Read absolute copy number profile ------------------------------------------------
 
 #' @title  Read absolute copy number profile
@@ -57,12 +18,10 @@ read_maf <- function(
 #' @param max_copynumber bigger copy number within a sample will be reset to this value.
 #' @param genome_build genome build version, should be 'hg19' or 'hg38'.
 #' @param genome_measure default is 'called', can be 'wg' or 'called'.
-#' Set 'called' will use autosomo called segments size to compute total size for CNA burden calculation,
+#' Set 'called' will use called segments size to compute total size for CNA burden calculation,
 #' this option is useful for WES and target sequencing.
 #' Set 'wg' will use autosome size from genome build, this option is useful for WGS, SNP etc..
-#' @param clinical_data a `data.frame` representing clinical data
-#' associated with each sample in copy number profile.
-#' @param complement if `TRUE`, complement chromosome does not show in input data
+#' @param complement if `TRUE`, complement chromosome (except 'Y') does not show in input data
 #' with normal copy 2 and force `use_all` to `FALSE` (no matter what user input).
 #' @param verbose print extra messages.
 #' @param ... other parameters pass to [data.table::fread()]
@@ -78,7 +37,6 @@ read_maf <- function(
 #'   seg_cols = c("chromosome", "start", "end", "segVal"),
 #'   genome_build = "hg19", complement = FALSE, verbose = TRUE
 #' )
-#' @family read genomic variation data function series
 read_copynumber <- function(input,
                             pattern = NULL,
                             ignore_case = FALSE,
@@ -89,7 +47,6 @@ read_copynumber <- function(input,
                             max_copynumber = 20L,
                             genome_build = c("hg19", "hg38"),
                             genome_measure = c("called", "wg"),
-                            clinical_data = NULL,
                             complement = TRUE,
                             verbose = FALSE,
                             ...) {
@@ -107,20 +64,19 @@ read_copynumber <- function(input,
   # get chromosome lengths
   if (genome_build == "hg19") {
     data("chromsize.hg19",
-      package = "sigminer",
-      envir = environment()
+         package = "sigminer",
+         envir = environment()
     )
     chrlen <- chromsize.hg19
   } else {
     data("chromsize.hg38",
-      package = "sigminer",
-      envir = environment()
+         package = "sigminer",
+         envir = environment()
     )
     chrlen <- chromsize.hg38
   }
 
   data.table::setDT(chrlen)
-  # chrlen = chrlen[chrom %in% c(paste0("chr", c(1:22, "X", "Y")))]
   valid_chr <- c(paste0("chr", 1:22), "chrX", "chrY")
   chrlen <- chrlen[valid_chr, on = "chrom"]
 
@@ -194,6 +150,8 @@ read_copynumber <- function(input,
 
       # detect and transform chromosome 23 to "X"
       temp[["chromosome"]] <- sub("23", "X", temp[["chromosome"]])
+      # detect and transform chromosome 24 to "Y"
+      temp[["chromosome"]] <- sub("24", "Y", temp[["chromosome"]])
 
       if (complement) {
         # complement value 2 (normal copy) to chromosome not called
@@ -352,14 +310,14 @@ read_copynumber <- function(input,
 
   if (verbose) message("Anotating...")
   annot <- get_LengthFraction(data_df,
-    genome_build = genome_build,
-    seg_cols = new_cols[1:4],
-    samp_col = new_cols[5]
+                              genome_build = genome_build,
+                              seg_cols = new_cols[1:4],
+                              samp_col = new_cols[5]
   )
   if (verbose) message("Summary per sample...")
   sum_sample <- get_cnsummary_sample(data_df,
-    genome_build = genome_build,
-    genome_measure = genome_measure
+                                     genome_build = genome_build,
+                                     genome_measure = genome_measure
   )
 
   if (verbose) message("Done!")
@@ -370,75 +328,20 @@ read_copynumber <- function(input,
     genome_build = genome_build,
     genome_measure = genome_measure,
     annotation = annot,
-    dropoff.segs = dropoff_df,
-    clinical.data = data.table::as.data.table(clinical_data)
+    dropoff.segs = dropoff_df
   )
 
   res <- validate_segTab(res, verbose = verbose)
   res
 }
 
-# Parameter - object: a CopyNumber object
-validate_segTab <- function(object, verbose = FALSE) {
-  if (!is.integer(object@data[["start"]])) {
-    object@data[["start"]] <- as.integer(object@data[["start"]])
-  }
 
-  if (!is.integer(object@data[["end"]])) {
-    object@data[["end"]] <- as.integer(object@data[["end"]])
-  }
+# Global variables --------------------------------------------------------
 
-  if (!is.integer(object@data[["segVal"]])) {
-    if (is.character(object@data[["segVal"]])) {
-      if (verbose) message("'segVal' is characater type, try transforming to integer.")
-      object@data[["segVal"]] <- as.integer(object@data[["segVal"]])
-    }
-
-    if (is.double(object@data[["segVal"]])) {
-      if (verbose) message("'segVal' is not integer type, round it to integer.")
-      object@data[["segVal"]] <- as.integer(round(object@data[["segVal"]]))
-    }
-  }
-
-  object
-}
-
-# Read genomic variation --------------------------------------------------
-
-#' Read genomic variation profile
-#'
-#' @description Read [CopyNumber] and [MAF] object as a new S4 object [GenomicVariation]
-#' for uniform variation analysis. **The function is initialized to construct structure of sigminer, please dont use it for now**.
-#' @param copynumber a [CopyNumber] object
-#' @param maf a [MAF] object
-#' @param clinical_data clinical.data data associated with each sample in copy number profile
-#' and MAF.
-#' @author Shixiang Wang <w_shixiang@163.com>
-#' @return a [GenomicVariation] object
-#' @export
-#' @examples
-#' \donttest{
-#' # Read MAF
-#' laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
-#' laml <- read_maf(maf = laml.maf)
-#' # Load copy number object
-#' load(system.file("extdata", "toy_copynumber.RData",
-#'   package = "sigminer", mustWork = TRUE
-#' ))
-#' # Combine as GenomicVariation object
-#' gv <- read_variation(cn, laml)
-#' }
-#' @family read genomic variation data function series
-read_variation <- function(copynumber, maf, clinical_data = NULL) {
-  if (is.null(clinical_data)) {
-    clinical_data <- data.table::data.table()
-  } else if (!inherits(clinical_data, "data.table")) {
-    clinical_data <- data.table::as.data.table(clinical_data)
-  }
-
-  GenomicVariation(
-    CopyNumber = copynumber,
-    MAF = maf,
-    clinical.data = clinical_data
+utils::globalVariables(
+  c(
+    ".",
+    "N",
+    ".N"
   )
-}
+)

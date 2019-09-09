@@ -24,7 +24,5 @@ Set 'wg' will autosome size from genome build, this option is useful for WGS, SN
 \item{\code{annotation}}{data.table of annotation for copy number segments.}
 
 \item{\code{dropoff.segs}}{data.table of copy number segments dropped from raw input.}
-
-\item{\code{clinical.data}}{data associated with each sample in copy number profile.}
 }}
 
