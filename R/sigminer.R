@@ -32,7 +32,5 @@
 #' @importFrom dplyr progress_estimated
 #' @import foreach
 #' @import flexmix
-#' @import doFuture
-#' @import future
 #' @name sigminer
 NULL

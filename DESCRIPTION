@@ -33,8 +33,6 @@ Imports:
     magrittr,
     purrr,
     rlang (>= 0.1.2),
-    doFuture,
-    future,
     doParallel
 biocViews:
 Suggests: 
