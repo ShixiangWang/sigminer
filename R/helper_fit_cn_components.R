@@ -120,13 +120,12 @@ fitComponent <-
           )
       } else {
         fit <-
-          stepFlexmix_v2(
+          stepFlexmix(
             dat ~ 1,
             model = flexmix::FLXMCnorm1(),
             k = min_comp:max_comp,
             nrep = nrep,
-            control = control,
-            cores = cores
+            control = control
           )
 
         if (inherits(fit, "stepFlexmix")) {
@@ -149,13 +148,12 @@ fitComponent <-
           )
       } else {
         fit <-
-          stepFlexmix_v2(
+          stepFlexmix(
             dat ~ 1,
             model = flexmix::FLXMCmvpois(),
             k = min_comp:max_comp,
             nrep = nrep,
-            control = control,
-            cores = cores
+            control = control
           )
         if (inherits(fit, "stepFlexmix")) {
           fit <- recur_fit_component(
