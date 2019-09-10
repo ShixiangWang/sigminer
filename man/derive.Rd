@@ -4,7 +4,7 @@
 \alias{derive}
 \alias{derive.CopyNumber}
 \alias{derive.MAF}
-\title{Derive Variation Features from Mutation Profile}
+\title{Derive Variation Matrix from Mutation Profile}
 \usage{
 derive(object, ...)
 

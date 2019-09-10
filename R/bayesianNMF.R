@@ -111,9 +111,6 @@ BayesNMF.L1KL <- function(V0, n.iter, a0, tol, K, K0, phi) {
   lambda <- (colSums(W) + rowSums(H) + b0) / C
   lambda.cut <- 1.5 * lambda.bound
 
-  n.like <- list()
-  n.evid <- list()
-  n.error <- list()
   n.lambda <- list()
   n.lambda[[1]] <- lambda
 
@@ -126,17 +123,16 @@ BayesNMF.L1KL <- function(V0, n.iter, a0, tol, K, K0, phi) {
     lambda <- (colSums(W) + rowSums(H) + b0) / C
     del <- max(abs(lambda - n.lambda[[iter - 1]]) / n.lambda[[iter - 1]])
     like <- sum(V * log(V / V.ap) + V.ap - V)
-    n.like[[iter]] <- like
-    n.evid[[iter]] <- like + phi * sum((colSums(W) + rowSums(H) + b0) / lambda + C * log(lambda))
+    evid <- like + phi * sum((colSums(W) + rowSums(H) + b0) / lambda + C * log(lambda))
     n.lambda[[iter]] <- lambda
-    n.error[[iter]] <- sum((V - V.ap)^2)
-    if (iter %% 100 == 0) {
-      cat(iter, n.evid[[iter]], n.like[[iter]], n.error[[iter]], del, sum(colSums(W) != 0), sum(lambda >= lambda.cut), "
+    error <- sum((V - V.ap)^2)
+    if (iter %% 10000 == 0) {
+      cat(iter, evid, like, error, del, sum(colSums(W) != 0), sum(lambda >= lambda.cut), "
 ")
     }
     iter <- iter + 1
   }
-  return(list(W, H, n.like, n.evid, n.lambda, n.error))
+  return(list(W, H, like, evid, lambda, error))
 }
 
 ## Bayesian NMF algorithm with hlaf-normal priors for W and H
@@ -160,9 +156,7 @@ BayesNMF.L2KL <- function(V0, n.iter, a0, tol, K, K0, phi) {
   lambda.cut <- b0 / C * 1.25
 
   I <- array(1, dim = c(N, M))
-  n.like <- list()
-  n.evid <- list()
-  n.error <- list()
+
   n.lambda <- list()
   n.lambda[[1]] <- lambda
   iter <- 2
@@ -174,17 +168,16 @@ BayesNMF.L2KL <- function(V0, n.iter, a0, tol, K, K0, phi) {
     V.ap <- W %*% H + eps
     del <- max(abs(lambda - n.lambda[[iter - 1]]) / n.lambda[[iter - 1]])
     like <- sum(V * log((V + eps) / (V.ap + eps)) + V.ap - V)
-    n.like[[iter]] <- like
-    n.evid[[iter]] <- like + phi * sum((0.5 * colSums(W^2) + 0.5 * rowSums(H^2) + b0) / lambda + C * log(lambda))
+    evid <- like + phi * sum((0.5 * colSums(W^2) + 0.5 * rowSums(H^2) + b0) / lambda + C * log(lambda))
     n.lambda[[iter]] <- lambda
-    n.error[[iter]] <- sum((V - V.ap)^2)
-    if (iter %% 100 == 0) {
-      cat(iter, n.evid[[iter]], n.like[[iter]], n.error[[iter]], del, sum(colSums(W) != 0), sum(lambda >= lambda.cut), "
+    error <- sum((V - V.ap)^2)
+    if (iter %% 10000 == 0) {
+      cat(iter, evid, like, error, del, sum(colSums(W) != 0), sum(lambda >= lambda.cut), "
 ")
     }
     iter <- iter + 1
   }
-  return(list(W, H, n.like, n.evid, n.lambda, n.error))
+  return(list(W, H, like, evid, lambda, error))
 }
 
 

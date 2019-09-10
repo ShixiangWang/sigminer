@@ -1,4 +1,4 @@
-#' Derive Variation Features from Mutation Profile
+#' Derive Variation Matrix from Mutation Profile
 #'
 #' Generate a matrix for NMF de-composition and more. This is a generic function,
 #' so it can be further extended to other mutation cases.

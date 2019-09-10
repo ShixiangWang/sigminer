@@ -1,16 +1,16 @@
-get_bayesian_result = function(run_info) {
-  necessary_cols = c("Run", "file")
+get_bayesian_result <- function(run_info) {
+  necessary_cols <- c("Run", "file")
   stopifnot(all(necessary_cols %in% colnames(run_info)))
   stopifnot(nrow(run_info) == 1)
 
-  result = readRDS(run_info$file)
+  result <- readRDS(run_info$file)
 
-  W = result[[1]]
-  H = result[[2]]
-  index = colSums(W) > 1
-  W = W[, index]
-  H = H[index, ]
-  K = sum(index)
+  W <- result[[1]]
+  H <- result[[2]]
+  index <- colSums(W) > 1
+  W <- W[, index]
+  H <- H[index, ]
+  K <- sum(index)
 
   Signature <- W
   Exposure <- H
