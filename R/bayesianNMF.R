@@ -84,8 +84,6 @@ BayesNMF.L1W.L2H <- function(V0, n.iter, a0, b0, tol, K, K0, phi) {
       evid <- like + sum((colSums(W) + 0.5 * rowSums(H * H) + b0) * beta - C * log(beta))
       cat(iter, evid, like, error, del, sum(colSums(W) > 1.e-05), sum(beta <= beta.cut), "
 ")
-      res <- list(W, H, like, evid, beta, error)
-      save(res, file = file.path(tempdir(), paste("Bayes.L1W.L2H.temp", iter, "RData", sep = ".")))
     }
     iter <- iter + 1
   }

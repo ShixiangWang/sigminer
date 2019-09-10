@@ -78,8 +78,8 @@ sig_extract <- function(nmf_matrix,
     Exposure = Exposure,
     Exposure.norm = Exposure.norm,
     K = K,
-    raw = list(
-      nmfObj = nmf.res,
+    Raw = list(
+      nmf_obj = nmf.res,
       W = W,
       H = H
     )

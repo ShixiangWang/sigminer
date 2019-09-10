@@ -2,42 +2,64 @@ sig_auto_extract <- function(nmf_matrix,
                              result_prefix = "BayesNMF",
                              destdir = tempdir(),
                              K0 = 25,
-                             n_run = 10,
-                             n_iter = 2e6,
-                             tol = 1e-05,
+                             nrun = 10,
+                             n_iter = 2e5,
+                             tol = 1e-07,
                              cores = 1) {
 
+  on.exit(invisible(gc()))  # clean when exit
+  nmf_matrix = t(nmf_matrix)  # rows for mutation types and columns for samples
 
-  # Apply BayesNMF - L1W.L2H for an exponential prior for W and a half-normal prior for H
-  for (i in n_run) {
+  filelist = file.path(destdir, paste(result_prefix, seq_len(nrun), "rds", sep = "."))
+  future::plan("multiprocess", workers = cores)
+  furrr::future_map(seq_len(nrun), function(i) {
+    # Apply BayesNMF - L1W.L2H for an exponential prior for W and a half-normal prior for H
     res <- BayesNMF.L1W.L2H(nmf_matrix, n_iter, 10, 5, tol, K0, K0, 1)
-    save(res, file = file.path(destdir, paste(result_prefix, i, "RData", sep = "."), sep = ""))
+    saveRDS(res, file = filelist[i])
+  }, .progress = TRUE)
 
-    W <- res[[1]] # signature loading
-    H <- res[[2]] # activity loading
-    index.W <- colSums(W) > 1 # only keep columns in W with non-zero contributions
-    W <- W[, index.W]
-    H <- H[index.W, ]
-    colsum <- colSums(W)
-    rowsum <- rowSums(H)
+  summary.run = purrr::map_df(seq_len(nrun), function(i) {
+    res = readRDS(filelist[i])
+    K = sum(colSums(res[[1]]) > 1)
+    posterior = -res[[4]]  # res[[4]] = -log(posterior)
+    dplyr::tibble(
+     Run = i,
+     K = K,
+     posterior = posterior,
+     file = filelist[i]
+    )
+  })
 
-    # By scaling the signature loading matrix has all mutation burdens - each signture (column in W) now represents a number of mutations
-    # assigned to each signature.
-    for (j in 1:ncol(W)) {
-      W[, j] <- W[, j] * rowsum[j]
-      H[j, ] <- H[j, ] * colsum[j]
-    }
-    K <- ncol(W) # number of extracted signatures
-    colnames(W) <- paste("W", seq(1:K), sep = "")
+  summary.run = summary.run %>%
+    dplyr::arrange(dplyr::desc(.data$posterior))
 
+  # select best solution
+  best = names(sort(table(summary.run$K), decreasing = TRUE))[1] %>%
+    as.integer()
 
-    summary.run[i, 1] <- i
-    summary.run[i, 2] <- K
-    summary.run[i, 3] <- -res[[4]]
-  }
+  best_row = dplyr::filter(summary.run, .data$K == best) %>%
+    head(1)
 
-  colnames(summary.run) <- c("Run", "K", "posterior")
-  summary.run <- data.frame(summary.run)
-  # chosen the solution (Run 7) having a maximum posterior at K=12; "L1W.L2H.LEGO96.Biliary.7.RData"
-  summary.run <- summary.run[order(summary.run$posterior, decreasing = T), ] ### summary.run is ordered by a posterior
+  message("Select Run ", best_row$Run, ", which K = ", best_row$K, " as best solution.")
+  best_solution = get_bayesian_result(best_row)
+
+  res <- list(
+    Signature = best_solution$Signature,
+    Signature.norm = best_solution$Signature.norm,
+    Exposure = best_solution$Exposure,
+    Exposure.norm = best_solution$Exposure.norm,
+    K = best_solution$K,
+    Raw = list(
+      summary_run = summary.run,
+      W = best_solution$W,
+      H = best_solution$H,
+      best_run = best_row$Run
+    )
+  )
+  class(res) <- "Signature"
+  attr(res, "nrun") <- nrun
+  #attr(res, "seed") <- seed
+  attr(res, "call_method") <- "BayesianNMF"
+
+  res
 }
