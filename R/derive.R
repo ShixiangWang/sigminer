@@ -33,7 +33,7 @@ derive <- function(object, ...) {
 #' Can also be a vector with length 6, which apply to each feature.
 #' @param max_comp maximal number of components to fit, default is 10.
 #' Can also be a vector with length 6, which apply to each feature.
-#' @param min_prior minimal prior value, default is 0.001.
+#' @param min_prior the minimum relative size of components, default is 0.001.
 #' Details about custom setting please refer to **flexmix** package.
 #' @param model_selection model selection strategy, default is 'BIC'.
 #' Details about custom setting please refer to **flexmix** package.
@@ -43,7 +43,7 @@ derive <- function(object, ...) {
 #' to obtain a more meaningful fit with less components.
 #' @param nrep number of run times for each value of component,
 #' keep only the solution with maximum likelihood.
-#' @param niter maximal number of iteration to achive converge.
+#' @param niter the maximum number of iterations.
 #' @param rowIter step size of iteration for rows of ech CNV feature.
 #' @param keep_only_matrix if `TRUE`, keep only matrix for signature extraction.
 #' @export

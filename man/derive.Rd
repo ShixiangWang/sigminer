@@ -39,7 +39,7 @@ Can also be a vector with length 6, which apply to each feature.}
 \item{max_comp}{maximal number of components to fit, default is 10.
 Can also be a vector with length 6, which apply to each feature.}
 
-\item{min_prior}{minimal prior value, default is 0.001.
+\item{min_prior}{the minimum relative size of components, default is 0.001.
 Details about custom setting please refer to \strong{flexmix} package.}
 
 \item{model_selection}{model selection strategy, default is 'BIC'.
@@ -53,7 +53,7 @@ to obtain a more meaningful fit with less components.}
 \item{nrep}{number of run times for each value of component,
 keep only the solution with maximum likelihood.}
 
-\item{niter}{maximal number of iteration to achive converge.}
+\item{niter}{the maximum number of iterations.}
 
 \item{rowIter}{step size of iteration for rows of ech CNV feature.}
 
