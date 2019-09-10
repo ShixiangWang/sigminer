@@ -17,6 +17,7 @@
 #'   package = "sigminer", mustWork = TRUE
 #' ))
 #' # Extract copy number signatures
+#' library(NMF)
 #' res <- sig_extract(cn_prepare$nmf_matrix, 2, nrun = 1)
 #' }
 sig_extract <- function(nmf_matrix,

@@ -36,6 +36,7 @@ load(system.file("extdata", "toy_copynumber_prepare.RData",
   package = "sigminer", mustWork = TRUE
 ))
 # Extract copy number signatures
+## If nrun > 1, please run 'library(NMF)' firstly
 res <- sig_extract(cn_prepare$nmf_matrix, 2, nrun = 1)
 }
 }
