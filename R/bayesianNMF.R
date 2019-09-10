@@ -78,10 +78,10 @@ BayesNMF.L1W.L2H <- function(V0, n.iter, a0, b0, tol, K, K0, phi) {
     V.ap <- W %*% H + eps
     n.beta[[iter]] <- beta
     error <- sum((V - V.ap)^2)
-    if (iter %% 100 == 0) {
-      del <- max(abs(beta - n.beta[[iter - 1]]) / n.beta[[iter - 1]])
-      like <- sum(V * log((V + eps) / (V.ap + eps)) + V.ap - V)
-      evid <- like + sum((colSums(W) + 0.5 * rowSums(H * H) + b0) * beta - C * log(beta))
+    del <- max(abs(beta - n.beta[[iter - 1]]) / n.beta[[iter - 1]])
+    like <- sum(V * log((V + eps) / (V.ap + eps)) + V.ap - V)
+    evid <- like + sum((colSums(W) + 0.5 * rowSums(H * H) + b0) * beta - C * log(beta))
+    if (iter %% 10000 == 0) {
       cat(iter, evid, like, error, del, sum(colSums(W) > 1.e-05), sum(beta <= beta.cut), "
 ")
     }
@@ -104,7 +104,6 @@ BayesNMF.L1KL <- function(V0, n.iter, a0, tol, K, K0, phi) {
   W <- matrix(runif(N * K) * sqrt(Vmax), ncol = K)
   H <- matrix(runif(M * K) * sqrt(Vmax), ncol = M)
   V.ap <- W %*% H + eps
-  I <- array(1, dim = c(N, M))
 
   C <- N + M + a0 + 1
   b0 <- sqrt((a0 - 1) * (a0 - 2) * mean(V, na.rm = T) / K0)
@@ -119,7 +118,6 @@ BayesNMF.L1KL <- function(V0, n.iter, a0, tol, K, K0, phi) {
   n.lambda[[1]] <- lambda
 
   iter <- 2
-  count <- 1
   while ((del >= tol) & (iter < n.iter)) {
     H <- H * (t(W) %*% (V / V.ap)) / (matrix(rep(colSums(W) + phi / lambda, M), ncol = M) + eps)
     V.ap <- W %*% H + eps
@@ -159,7 +157,6 @@ BayesNMF.L2KL <- function(V0, n.iter, a0, tol, K, K0, phi) {
   C <- (N + M) / 2 + a0 + 1
   b0 <- 3.14 * (a0 - 1) * mean(V) / (2 * K0)
   lambda <- (0.5 * colSums(W * W) + 0.5 * rowSums(H * H) + b0) / C
-  lambda.bound <- b0 / C
   lambda.cut <- b0 / C * 1.25
 
   I <- array(1, dim = c(N, M))
@@ -169,7 +166,6 @@ BayesNMF.L2KL <- function(V0, n.iter, a0, tol, K, K0, phi) {
   n.lambda <- list()
   n.lambda[[1]] <- lambda
   iter <- 2
-  count <- 1
   while ((del >= tol) & (iter < n.iter)) {
     H <- H * (t(W) %*% (V / V.ap) / (t(W) %*% I + phi * H / matrix(rep(lambda, M), ncol = M) + eps))^0.5
     V.ap <- W %*% H + eps
@@ -207,7 +203,6 @@ BayesNMF.L1.KL.fixed_W.Z <- function(V, W, H, Z, lambda, n.iter, a0, tol, phi) {
   K <- ncol(W)
   K0 <- K
   V.ap <- W %*% H + eps
-  I <- array(1, dim = c(N, M))
   C <- N + M + a0 + 1
   b0 <- sqrt((a0 - 1) * (a0 - 2) * mean(V, na.rm = T) / K0)
   lambda.bound <- b0 / C
@@ -216,7 +211,6 @@ BayesNMF.L1.KL.fixed_W.Z <- function(V, W, H, Z, lambda, n.iter, a0, tol, phi) {
   n.lambda <- list()
   n.lambda[[1]] <- lambda
   iter <- 2
-  count <- 1
   while (del >= tol & iter < n.iter) {
     H <- H * (t(W) %*% (V / V.ap)) / (matrix(rep(colSums(W) + phi / lambda, M), ncol = M) + eps)
     H <- H * Z
@@ -256,7 +250,6 @@ BayesNMF.L1.KL.fixed_W.Z.sample <- function(V, W, H, Z, lambda, n.iter, a0, tol,
   K <- ncol(W)
   K0 <- K
   V.ap <- W %*% H + eps
-  I <- array(1, dim = c(N, M))
   C <- N + M + a0 + 1
   b0 <- sqrt((a0 - 1) * (a0 - 2) * mean(V, na.rm = T) / K0)
   lambda.bound <- b0 / C
@@ -265,7 +258,7 @@ BayesNMF.L1.KL.fixed_W.Z.sample <- function(V, W, H, Z, lambda, n.iter, a0, tol,
   n.lambda <- list()
   n.lambda[[1]] <- lambda
   iter <- 2
-  count <- 1
+
   Z0 <- Z
   while (del >= tol & iter < n.iter) {
     H <- H * (t(W) %*% (V / V.ap)) / (matrix(rep(colSums(W) + 0 * phi / lambda, M), ncol = M) + eps)
