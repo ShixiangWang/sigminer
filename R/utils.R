@@ -31,6 +31,6 @@ isValidAndUnreserved <- function(string) {
 }
 
 `%:::%` <- function(pkg, fun) get(fun,
-                                  envir = asNamespace(pkg),
-                                  inherits = FALSE
-)
+    envir = asNamespace(pkg),
+    inherits = FALSE
+  )

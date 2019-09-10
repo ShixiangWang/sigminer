@@ -31,8 +31,8 @@ getBPnum <- function(abs_profiles, chrlen) {
         seq(1, chrlen[chrlen[, 1] == c, 2] + 10000000, 10000000)
       res <- tryCatch(
         hist(currseg$end[-nrow(currseg)],
-             breaks = intervals,
-             plot = FALSE
+          breaks = intervals,
+          plot = FALSE
         )$counts,
         error = function(e) {
           stop(

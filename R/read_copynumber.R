@@ -64,14 +64,14 @@ read_copynumber <- function(input,
   # get chromosome lengths
   if (genome_build == "hg19") {
     data("chromsize.hg19",
-         package = "sigminer",
-         envir = environment()
+      package = "sigminer",
+      envir = environment()
     )
     chrlen <- chromsize.hg19
   } else {
     data("chromsize.hg38",
-         package = "sigminer",
-         envir = environment()
+      package = "sigminer",
+      envir = environment()
     )
     chrlen <- chromsize.hg38
   }
@@ -310,14 +310,14 @@ read_copynumber <- function(input,
 
   if (verbose) message("Anotating...")
   annot <- get_LengthFraction(data_df,
-                              genome_build = genome_build,
-                              seg_cols = new_cols[1:4],
-                              samp_col = new_cols[5]
+    genome_build = genome_build,
+    seg_cols = new_cols[1:4],
+    samp_col = new_cols[5]
   )
   if (verbose) message("Summary per sample...")
   sum_sample <- get_cnsummary_sample(data_df,
-                                     genome_build = genome_build,
-                                     genome_measure = genome_measure
+    genome_build = genome_build,
+    genome_measure = genome_measure
   )
 
   if (verbose) message("Done!")

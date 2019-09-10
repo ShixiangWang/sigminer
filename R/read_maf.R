@@ -7,11 +7,11 @@
 #' @export
 
 read_maf <- function(
-  maf, clinicalData = NULL, removeDuplicatedVariants = TRUE,
-  useAll = TRUE, gisticAllLesionsFile = NULL,
-  gisticAmpGenesFile = NULL, gisticDelGenesFile = NULL,
-  gisticScoresFile = NULL, cnLevel = "all", cnTable = NULL,
-  isTCGA = FALSE, vc_nonSyn = NULL, verbose = TRUE) {
+                     maf, clinicalData = NULL, removeDuplicatedVariants = TRUE,
+                     useAll = TRUE, gisticAllLesionsFile = NULL,
+                     gisticAmpGenesFile = NULL, gisticDelGenesFile = NULL,
+                     gisticScoresFile = NULL, cnLevel = "all", cnTable = NULL,
+                     isTCGA = FALSE, vc_nonSyn = NULL, verbose = TRUE) {
   maftools::read.maf(
     maf,
     clinicalData = clinicalData,

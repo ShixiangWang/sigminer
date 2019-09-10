@@ -21,23 +21,23 @@ get_features <- function(CN_data,
   # get chromosome lengths and centromere locations
   if (genome_build == "hg19") {
     data("chromsize.hg19",
-         package = "sigminer",
-         envir = environment()
+      package = "sigminer",
+      envir = environment()
     )
     data("centromeres.hg19",
-         package = "sigminer",
-         envir = environment()
+      package = "sigminer",
+      envir = environment()
     )
     chrlen <- chromsize.hg19
     centromeres <- centromeres.hg19
   } else {
     data("chromsize.hg38",
-         package = "sigminer",
-         envir = environment()
+      package = "sigminer",
+      envir = environment()
     )
     data("centromeres.hg38",
-         package = "sigminer",
-         envir = environment()
+      package = "sigminer",
+      envir = environment()
     )
     chrlen <- chromsize.hg38
     centromeres <- centromeres.hg38
@@ -46,7 +46,6 @@ get_features <- function(CN_data,
   # only keep 1:22 and x, y
   chrlen <- chrlen[chrlen$chrom %in% centromeres$chrom, ]
   if (cores > 1) {
-
     doParallel::registerDoParallel(cores = cores)
 
     temp_list <- foreach::foreach(i = 1:6) %dopar% {
@@ -119,17 +118,16 @@ get_components <- function(CN_features,
   dist_map <- c("norm", "pois", "pois", "pois", "norm", "norm")
   names(dist_map) <- c("segsize", "bp10MB", "osCN", "bpchrarm", "changepoint", "copynumber")
   apply_fitComponent <- function(CN_feature,
-                                 feature_name,
-                                 dist_map,
-                                 seed = 123456,
-                                 min_comp = 2,
-                                 max_comp = 10,
-                                 min_prior = 0.001,
-                                 model_selection = "BIC",
-                                 threshold = 0.1,
-                                 nrep = 1,
-                                 niter = 1000,
-                                 cores = 1) {
+                                   feature_name,
+                                   dist_map,
+                                   seed = 123456,
+                                   min_comp = 2,
+                                   max_comp = 10,
+                                   min_prior = 0.001,
+                                   model_selection = "BIC",
+                                   threshold = 0.1,
+                                   nrep = 1,
+                                   niter = 1000) {
     dat <- as.numeric(CN_feature[, 2])
     message("Fit feature: ", feature_name)
     segsize_mm <-
@@ -143,26 +141,49 @@ get_components <- function(CN_features,
         niter = niter,
         nrep = nrep,
         min_comp = min_comp,
-        max_comp = max_comp,
-        cores = cores
+        max_comp = max_comp
       )
   }
 
-  purrr::pmap(list(
-    CN_feature = CN_features,
-    feature_name = names(CN_features),
-    min_comp = if (flag_min) min_comp else rep(min_comp, 6),
-    max_comp = if (flag_max) max_comp else rep(max_comp, 6)
-  ), apply_fitComponent,
-  seed = seed,
-  min_prior = min_prior,
-  model_selection = model_selection,
-  threshold = threshold,
-  nrep = nrep,
-  niter = niter,
-  dist_map = dist_map,
-  cores = cores
-  )
+  median_burden <- sapply(CN_features, nrow) %>% median(na.rm = TRUE)
+  if (median_burden < 2000) {
+    # // When task is small, use pmap is more faster
+    res <- purrr::pmap(list(
+      CN_feature = CN_features,
+      feature_name = names(CN_features),
+      min_comp = if (flag_min) min_comp else rep(min_comp, 6),
+      max_comp = if (flag_max) max_comp else rep(max_comp, 6)
+    ), apply_fitComponent,
+    seed = seed,
+    min_prior = min_prior,
+    model_selection = model_selection,
+    threshold = threshold,
+    nrep = nrep,
+    niter = niter,
+    dist_map = dist_map
+    )
+  } else {
+    future::plan("multiprocess", workers = cores)
+
+    res <- furrr::future_pmap(list(
+      CN_feature = CN_features,
+      feature_name = names(CN_features),
+      min_comp = if (flag_min) min_comp else rep(min_comp, 6),
+      max_comp = if (flag_max) max_comp else rep(max_comp, 6)
+    ), apply_fitComponent,
+    seed = seed,
+    min_prior = min_prior,
+    model_selection = model_selection,
+    threshold = threshold,
+    nrep = nrep,
+    niter = niter,
+    dist_map = dist_map,
+    .progress = TRUE
+    )
+  }
+
+  res <- res %>% setNames(names(CN_features))
+  res
 }
 
 
@@ -192,34 +213,40 @@ get_matrix <- function(CN_features,
 
   full_mat <- cbind(
     calculateSumOfPosteriors(CN_features[["bp10MB"]],
-                             all_components[["bp10MB"]],
-                             "bp10MB",
-                             cores = cores
+      all_components[["bp10MB"]],
+      "bp10MB",
+      rowIter = rowIter,
+      cores = cores
     ),
     calculateSumOfPosteriors(CN_features[["copynumber"]],
-                             all_components[["copynumber"]],
-                             "copynumber",
-                             cores = cores
+      all_components[["copynumber"]],
+      "copynumber",
+      rowIter = rowIter,
+      cores = cores
     ),
     calculateSumOfPosteriors(CN_features[["changepoint"]],
-                             all_components[["changepoint"]],
-                             "changepoint",
-                             cores = cores
+      all_components[["changepoint"]],
+      "changepoint",
+      rowIter = rowIter,
+      cores = cores
     ),
     calculateSumOfPosteriors(CN_features[["bpchrarm"]],
-                             all_components[["bpchrarm"]],
-                             "bpchrarm",
-                             cores = cores
+      all_components[["bpchrarm"]],
+      "bpchrarm",
+      rowIter = rowIter,
+      cores = cores
     ),
     calculateSumOfPosteriors(CN_features[["osCN"]],
-                             all_components[["osCN"]],
-                             "osCN",
-                             cores = cores
+      all_components[["osCN"]],
+      "osCN",
+      rowIter = rowIter,
+      cores = cores
     ),
     calculateSumOfPosteriors(CN_features[["segsize"]],
-                             all_components[["segsize"]],
-                             "segsize",
-                             cores = cores
+      all_components[["segsize"]],
+      "segsize",
+      rowIter = rowIter,
+      cores = cores
     )
   )
 
@@ -303,13 +330,13 @@ get_LengthFraction <- function(CN_data,
       annotation <- "short arm"
       fraction <- (end - start + 1) / (p_end - p_start + 1)
     } else if (end <= q_end &
-               start >= q_start) {
+      start >= q_start) {
       location <- paste0(sub("chr", "", chrom), "q")
       annotation <- "long arm"
       fraction <- (end - start + 1) / (q_end - q_start + 1)
     } else if (start >= p_start &
-               start <= p_end &
-               end >= q_start & end <= q_end) {
+      start <= p_end &
+      end >= q_start & end <= q_end) {
       location <- paste0(sub("chr", "", chrom), "pq") # across p and q arm
       annotation <- "across short and long arm"
       fraction <- 2 * ((end - start + 1) / total_size)
@@ -319,7 +346,7 @@ get_LengthFraction <- function(CN_data,
       # only calculate region does not intersect
       fraction <- (end - start + 1 - (end - p_end)) / (p_end - p_start + 1)
     } else if (start > p_end &
-               start < q_start & end > q_start) {
+      start < q_start & end > q_start) {
       location <- paste0(sub("chr", "", chrom), "q")
       annotation <- "long arm intersect with centromere region"
       # only calculate region does not intersect
@@ -334,7 +361,7 @@ get_LengthFraction <- function(CN_data,
   }
 
   annot_fun <- function(chrom, start, end, p_start, p_end, p_length, q_start,
-                        q_end, q_length, total_size, .pb = NULL) {
+                          q_end, q_length, total_size, .pb = NULL) {
     if (.pb$i < .pb$n) .pb$tick()$print()
     .annot_fun(
       chrom, start, end, p_start, p_end, p_length, q_start,
@@ -371,23 +398,23 @@ get_ArmLocation <- function(genome_build = c("hg19", "hg38")) {
   # get chromosome lengths and centromere locations
   if (genome_build == "hg19") {
     data("chromsize.hg19",
-         package = "sigminer",
-         envir = environment()
+      package = "sigminer",
+      envir = environment()
     )
     data("centromeres.hg19",
-         package = "sigminer",
-         envir = environment()
+      package = "sigminer",
+      envir = environment()
     )
     chrlen <- chromsize.hg19
     centromeres <- centromeres.hg19
   } else {
     data("chromsize.hg38",
-         package = "sigminer",
-         envir = environment()
+      package = "sigminer",
+      envir = environment()
     )
     data("centromeres.hg38",
-         package = "sigminer",
-         envir = environment()
+      package = "sigminer",
+      envir = environment()
     )
     chrlen <- chromsize.hg38
     centromeres <- centromeres.hg38
@@ -471,14 +498,14 @@ get_cnsummary_sample <- function(segTab, genome_build = c("hg19", "hg38"),
   if (genome_measure == "wg") {
     if (genome_build == "hg19") {
       data("chromsize.hg19",
-           package = "sigminer",
-           envir = environment()
+        package = "sigminer",
+        envir = environment()
       )
       chrlen <- chromsize.hg19
     } else {
       data("chromsize.hg38",
-           package = "sigminer",
-           envir = environment()
+        package = "sigminer",
+        envir = environment()
       )
       chrlen <- chromsize.hg38
     }

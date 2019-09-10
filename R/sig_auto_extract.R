@@ -1,20 +1,20 @@
 sig_auto_extract <- function(
-  V0,
-  result_prefix,
-  destdir = tempdir(),
-  K0 = 25,
-  n_run = 10,
-  n_iter = 2e6,
-  tol = 1e-05) {
+                             V0,
+                             result_prefix,
+                             destdir = tempdir(),
+                             K0 = 25,
+                             n_run = 10,
+                             n_iter = 2e6,
+                             tol = 1e-05) {
 
   # Apply BayesNMF - L1W.L2H for an exponential prior for W and a half-normal prior for H
   for (i in n_run) {
     res <- BayesNMF.L1W.L2H(V0, n_iter, 10, 5, tol, K0, 1)
     save(res, file = file.path(destdir, paste(result_prefix, i, "RData", sep = "."), sep = ""))
 
-    W <- res[[1]]  # signature loading
-    H <- res[[2]]  # activity loading
-    index.W <- colSums(W) > 1  # only keep columns in W with non-zero contributions
+    W <- res[[1]] # signature loading
+    H <- res[[2]] # activity loading
+    index.W <- colSums(W) > 1 # only keep columns in W with non-zero contributions
     W <- W[, index.W]
     H <- H[index.W, ]
     colsum <- colSums(W)

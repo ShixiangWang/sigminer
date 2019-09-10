@@ -52,40 +52,43 @@ sig_extract <- function(nmf_matrix,
   # Exposure loading
   H <- NMF::coef(nmf.res)
 
-  K = ncol(W)
-  Signature = W
-  Exposure = H
+  K <- ncol(W)
+  Signature <- W
+  Exposure <- H
 
   # By scaling the signature loading matrix has all mutation burdens
   # - each signture (column in W) now represents a number of mutations
   # assigned to each signature.
   for (j in seq_len(K)) {
-    Signature[, j] = Signature[, j] * rowSums(H)[j]
-    Exposure[j, ] = Exposure[j, ] * colSums(W)[j]
+    Signature[, j] <- Signature[, j] * rowSums(H)[j]
+    Exposure[j, ] <- Exposure[j, ] * colSums(W)[j]
   }
 
-  Signature.norm = apply(Signature, 2, function(x) x/sum(x, na.rm = TRUE))
-  Exposure.norm = apply(Exposure, 2, function(x) x/sum(x, na.rm = TRUE))
+  Signature.norm <- apply(Signature, 2, function(x) x / sum(x, na.rm = TRUE))
+  Exposure.norm <- apply(Exposure, 2, function(x) x / sum(x, na.rm = TRUE))
 
-  sig_names = paste0("Sig", seq_len(K))
+  sig_names <- paste0("Sig", seq_len(K))
   colnames(W) <- colnames(Signature) <- colnames(Signature.norm) <- sig_names
   rownames(H) <- rownames(Exposure) <- rownames(Exposure.norm) <- sig_names
 
-  res = list(
+  res <- list(
     Signature = Signature,
     Signature.norm = Signature.norm,
     Exposure = Exposure,
     Exposure.norm = Exposure.norm,
     K = K,
-    raw = list(nmfObj = nmf.res,
-               W = W,
-               H = H)
+    raw = list(
+      nmfObj = nmf.res,
+      W = W,
+      H = H
+    )
   )
-  class(res) = "Signature"
-  attr(res, "nrun") = nrun
-  attr(res, "method") = method
-  attr(res, "pConstant") = pConstant
-  attr(res, "seed") = seed
+  class(res) <- "Signature"
+  attr(res, "nrun") <- nrun
+  attr(res, "method") <- method
+  attr(res, "pConstant") <- pConstant
+  attr(res, "seed") <- seed
+  attr(res, "call_method") <- "NMF"
 
   invisible(res)
 }

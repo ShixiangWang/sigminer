@@ -1,9 +1,9 @@
 calculateSumOfPosteriors <-
   function(CN_feature,
-           components,
-           name,
-           rowIter = 1000,
-           cores = 1) {
+             components,
+             name,
+             rowIter = 1000,
+             cores = 1) {
     if (cores > 1) {
 
       # attachNamespace("foreach")
@@ -11,8 +11,8 @@ calculateSumOfPosteriors <-
 
       len <- dim(CN_feature)[1]
       iters <- len %/% rowIter
-      if(len %% rowIter == 0) {
-        iters = iters - 1
+      if (len %% rowIter == 0) {
+        iters <- iters - 1
       }
 
       doParallel::registerDoParallel(cores = cores)

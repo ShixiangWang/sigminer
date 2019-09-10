@@ -2,9 +2,15 @@ load(system.file("extdata", "toy_copynumber.RData",
                  package = "sigminer", mustWork = TRUE
 ))
 # Prepare copy number signature analysis
-cn_prepare <- derive(cn, cores = 1)
+system.time(
+  cn_prepare <- derive(cn, cores = 1)
+)
+system.time(
+  cn_prepare <- derive.CopyNumber(cn, cores = 4)
+)
+
 cn_prepare <- derive.CopyNumber(cn, cores = 2)
-cn_prepare <- derive(cn, cores = 4)
+
 
 registerDoFuture()
 plan(multiprocess, workers = 2)
@@ -16,5 +22,5 @@ load(system.file("extdata", "toy_copynumber_prepare.RData",
                  package = "sigminer", mustWork = TRUE
 ))
 # Extract copy number signatures
-res <- sig_extract(cn_prepare$nmf_matrix, 2, mode = "copynumber", nrun = 1)
+res <- sig_extract(cn_prepare$nmf_matrix, 2, nrun = 1)
 res

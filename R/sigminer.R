@@ -30,6 +30,8 @@
 #'
 #' @docType package
 #' @importFrom dplyr progress_estimated
+#' @importFrom future plan
+#' @importFrom furrr future_pmap
 #' @import foreach
 #' @import flexmix
 #' @name sigminer

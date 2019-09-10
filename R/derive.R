@@ -47,15 +47,15 @@ derive <- function(object, ...) {
 #' @param rowIter step size of iteration for rows of ech CNV feature.
 #' @param keep_only_matrix if `TRUE`, keep only matrix for signature extraction.
 #' @export
-derive.CopyNumber = function(object, reference_components = FALSE,
-                             cores = 1, seed = 123456,
-                             min_comp = 2, max_comp = 10,
-                             min_prior = 0.001,
-                             model_selection = "BIC",
-                             threshold = 0.1,
-                             nrep = 1, niter = 1000, rowIter = 1000,
-                             keep_only_matrix = FALSE,
-                             ...) {
+derive.CopyNumber <- function(object, reference_components = FALSE,
+                              cores = 1, seed = 123456,
+                              min_comp = 2, max_comp = 10,
+                              min_prior = 0.001,
+                              model_selection = "BIC",
+                              threshold = 0.1,
+                              nrep = 1, niter = 1000, rowIter = 1000,
+                              keep_only_matrix = FALSE,
+                              ...) {
   stopifnot(is.logical(reference_components) | is.list(reference_components) | is.null(reference_components))
 
   cn_list <- get_cnlist(object)
@@ -95,7 +95,8 @@ derive.CopyNumber = function(object, reference_components = FALSE,
 #' laml <- read_maf(maf = laml.maf)
 #' library(BSgenome.Hsapiens.UCSC.hg19)
 #' mt_prepare <- derive(
-#'   laml, ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
+#'   laml,
+#'   ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
 #'   prefix = "chr", add = TRUE, useSyn = TRUE
 #' )
 #' }
@@ -104,9 +105,9 @@ derive.MAF <- function(object, ref_genome = NULL, prefix = NULL,
                        add = TRUE, ignoreChr = NULL, useSyn = TRUE,
                        keep_only_matrix = FALSE,
                        ...) {
-  #// TODO: Rewrite this function instead of using maftools
-  #// Make result consistent with result from derive.CopyNumber
-  res = maftools::trinucleotideMatrix(
+  # // TODO: Rewrite this function instead of using maftools
+  # // Make result consistent with result from derive.CopyNumber
+  res <- maftools::trinucleotideMatrix(
     object,
     ref_genome = ref_genome, prefix = prefix,
     add = add, ignoreChr = ignoreChr, useSyn = useSyn, fn = NULL
