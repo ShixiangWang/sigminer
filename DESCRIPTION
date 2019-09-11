@@ -33,9 +33,9 @@ Imports:
     magrittr,
     purrr,
     rlang (>= 0.1.2),
-    doParallel,
     future,
-    furrr
+    furrr,
+    doFuture
 biocViews:
 Suggests: 
     BSgenome,

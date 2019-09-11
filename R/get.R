@@ -46,7 +46,9 @@ get_features <- function(CN_data,
   # only keep 1:22 and x, y
   chrlen <- chrlen[chrlen$chrom %in% centromeres$chrom, ]
   if (cores > 1) {
-    doParallel::registerDoParallel(cores = cores)
+    #doParallel::registerDoParallel(cores = cores)
+    doFuture::registerDoFuture()
+    future::plan("multiprocess", workers = cores)
 
     temp_list <- foreach::foreach(i = 1:6) %dopar% {
       if (i == 1) {

@@ -15,7 +15,10 @@ calculateSumOfPosteriors <-
         iters <- iters - 1
       }
 
-      doParallel::registerDoParallel(cores = cores)
+      #doParallel::registerDoParallel(cores = cores)
+      doFuture::registerDoFuture()
+      future::plan("multiprocess", workers = cores)
+
       curr_posterior <- foreach::foreach(i = 0:iters, .combine = rbind) %dopar% {
         start <- i * rowIter + 1
         if (i != iters) {
