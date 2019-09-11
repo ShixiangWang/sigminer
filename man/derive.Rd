@@ -106,6 +106,9 @@ mt_prepare <- derive(
 }
 }
 \references{
+Macintyre, Geoff, et al. "Copy number signatures and mutational
+processes in ovarian carcinoma." Nature genetics 50.9 (2018): 1262.
+
 Mayakonda, Anand, et al. "Maftools: efficient and comprehensive analysis of somatic variants in cancer." Genome research 28.11 (2018): 1747-1756.
 }
 \author{
