@@ -83,7 +83,10 @@ derive.CopyNumber <- function(object, reference_components = FALSE,
   if (keep_only_matrix) {
     cn_matrix
   } else {
-    list(features = cn_features, components = cn_components, nmf_matrix = cn_matrix)
+    list(features = cn_features,
+         components = cn_components,
+         parameters = get_tidy_parameter(cn_components),
+         nmf_matrix = cn_matrix)
   }
 }
 
