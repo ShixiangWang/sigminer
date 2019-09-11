@@ -4,6 +4,7 @@
 #'
 #' @inheritParams sig_estimate
 #' @param n_sig number of signature. Please run [sig_estimate] to select a suitable value.
+#' @param ... other arguments passed to [NMF::nmf()].
 #' @author Shixiang Wang
 #' @references Gaujoux, Renaud, and Cathal Seoighe. "A flexible R package for nonnegative matrix factorization." BMC bioinformatics 11.1 (2010): 367.
 #' @references Mayakonda, Anand, et al. "Maftools: efficient and comprehensive analysis of somatic variants in cancer." Genome research 28.11 (2018): 1747-1756.
@@ -26,7 +27,7 @@ sig_extract <- function(nmf_matrix,
                         cores = 1,
                         method = "brunet",
                         pConstant = NULL,
-                        seed = 123456) {
+                        seed = 123456, ...) {
   # transpose matrix
   mat <- t(nmf_matrix)
 
@@ -44,7 +45,8 @@ sig_extract <- function(nmf_matrix,
     seed = seed,
     nrun = nrun,
     method = method,
-    .opt = paste0("p", cores)
+    .opt = paste0("p", cores),
+    ...
   )
 
 

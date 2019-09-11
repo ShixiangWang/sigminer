@@ -5,7 +5,7 @@
 \title{Extract Signatures through}
 \usage{
 sig_extract(nmf_matrix, n_sig, nrun = 10, cores = 1,
-  method = "brunet", pConstant = NULL, seed = 123456)
+  method = "brunet", pConstant = NULL, seed = 123456, ...)
 }
 \arguments{
 \item{nmf_matrix}{a \code{matrix} used for NMF decomposition with rows indicate samples and columns indicate components.}
@@ -22,6 +22,8 @@ Available methods for nmf decompositions are 'brunet', 'lee', 'ls-nmf', 'nsNMF',
 \item{pConstant}{A small positive value to add to the matrix. Use it ONLY if the functions throws an \code{non-conformable arrays} error.}
 
 \item{seed}{specification of the starting point or seeding method, which will compute a starting point, usually using data from the target matrix in order to provide a good guess.}
+
+\item{...}{other arguments passed to \code{\link[NMF:nmf]{NMF::nmf()}}.}
 }
 \value{
 a \code{list} with \code{Signature} class.

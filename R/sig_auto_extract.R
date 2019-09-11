@@ -31,6 +31,8 @@
 #' @param K0 number of initial signatures.
 #' @param nrun number of independent simulations.
 #' @param tol tolerance for convergence.
+#' @param recover if `TRUE`, try to recover result from previous runs based on input `result_prefix`,
+#' `destdir` and `nrun`. This is pretty useful for reproducing result.
 #' @author Shixiang Wang
 #' @references
 #' Tan, Vincent YF, and Cédric Févotte. "Automatic relevance determination in nonnegative matrix factorization with the/spl beta/-divergence."
@@ -52,7 +54,7 @@
 #' res <- sig_auto_extract(cn_prepare$nmf_matrix, result_prefix = "Test_copynumber", nrun = 1)
 #' # At default, all run files are stored in tempdir()
 #' dir(tempdir())
-sig_auto_extract <- function(nmf_matrix,
+sig_auto_extract <- function(nmf_matrix = NULL,
                              result_prefix = "BayesNMF",
                              destdir = tempdir(),
                              method = c("L1W.L2H", "L1KL", "L2KL"),
@@ -60,27 +62,40 @@ sig_auto_extract <- function(nmf_matrix,
                              nrun = 10,
                              niter = 2e5,
                              tol = 1e-07,
-                             cores = 1) {
+                             cores = 1,
+                             recover = FALSE) {
   on.exit(invisible(gc())) # clean when exit
   method <- match.arg(method)
 
-  nmf_matrix <- t(nmf_matrix) # rows for mutation types and columns for samples
-
   filelist <- file.path(destdir, paste(result_prefix, seq_len(nrun), "rds", sep = "."))
-  future::plan("multiprocess", workers = cores)
-  furrr::future_map(seq_len(nrun), function(i, method, filelist) {
-    if (method == "L1W.L2H") {
-      # Apply BayesNMF - L1W.L2H for an exponential prior for W and a half-normal prior for H
-      res <- BayesNMF.L1W.L2H(nmf_matrix, niter, 10, 5, tol, K0, K0, 1)
-    } else if (method == "L1KL") {
-      # Apply BayesNMF - L1KL for expoential priors
-      res <- BayesNMF.L1KL(nmf_matrix, niter, 10, tol, K0, K0, 1)
-    } else {
-      # Apply BayesNMF - L2KL for half-normal priors
-      res <- BayesNMF.L2KL(nmf_matrix, niter, 10, tol, K0, K0, 1)
+
+  if (recover) {
+    message("Recover mode is on, check if all files exist...")
+    all_exist = all(file.exists(filelist))
+    if (!all_exist) {
+      stop("Recover failed, cannot find previous result files, please run with 'recover = FALSE'.")
     }
-    saveRDS(res, file = filelist[i])
-  }, method = method, filelist = filelist, .progress = TRUE)
+    message("Yup! Recovering...")
+  }
+
+  if (!recover) {
+    nmf_matrix <- t(nmf_matrix) # rows for mutation types and columns for samples
+
+    future::plan("multiprocess", workers = cores)
+    furrr::future_map(seq_len(nrun), function(i, method, filelist) {
+      if (method == "L1W.L2H") {
+        # Apply BayesNMF - L1W.L2H for an exponential prior for W and a half-normal prior for H
+        res <- BayesNMF.L1W.L2H(nmf_matrix, niter, 10, 5, tol, K0, K0, 1)
+      } else if (method == "L1KL") {
+        # Apply BayesNMF - L1KL for expoential priors
+        res <- BayesNMF.L1KL(nmf_matrix, niter, 10, tol, K0, K0, 1)
+      } else {
+        # Apply BayesNMF - L2KL for half-normal priors
+        res <- BayesNMF.L2KL(nmf_matrix, niter, 10, tol, K0, K0, 1)
+      }
+      saveRDS(res, file = filelist[i])
+    }, method = method, filelist = filelist, .progress = TRUE)
+  }
 
   summary.run <- purrr::map_df(seq_len(nrun), function(i) {
     res <- readRDS(filelist[i])
@@ -122,6 +137,7 @@ sig_auto_extract <- function(nmf_matrix,
   )
   class(res) <- "Signature"
   attr(res, "nrun") <- nrun
+  attr(res, "method") <- method
   # attr(res, "seed") <- seed
   attr(res, "call_method") <- "BayesianNMF"
 
