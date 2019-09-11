@@ -43,6 +43,8 @@ get_features <- function(CN_data,
     centromeres <- centromeres.hg38
   }
 
+  message("Obtaining feature info...")
+
   # only keep 1:22 and x, y
   chrlen <- chrlen[chrlen$chrom %in% centromeres$chrom, ]
   if (cores > 1) {
@@ -132,7 +134,7 @@ get_components <- function(CN_features,
                                    nrep = 1,
                                    niter = 1000) {
     dat <- as.numeric(CN_feature[, 2])
-    message("Fit feature: ", feature_name)
+    message("Fitting feature: ", feature_name)
     segsize_mm <-
       fitComponent(
         dat,
@@ -197,8 +199,7 @@ get_components <- function(CN_features,
 
 get_matrix <- function(CN_features,
                        all_components = NULL,
-                       cores = 1,
-                       rowIter = 1000) {
+                       cores = 1) {
   if (is.null(all_components)) {
     message(
       "About reference components\n   more detail please see https://github.com/ShixiangWang/absoluteCNVdata"
@@ -216,44 +217,29 @@ get_matrix <- function(CN_features,
       readRDS(file.path(tempdir(), "Nat_Gen_component_parameters.rds"))
   }
 
-  full_mat <- cbind(
-    calculateSumOfPosteriors(CN_features[["bp10MB"]],
-      all_components[["bp10MB"]],
-      "bp10MB",
-      rowIter = rowIter,
-      cores = cores
+  feature_orders = c("bp10MB", "copynumber", "changepoint", "bpchrarm", "osCN", "segsize")
+  # Make sure have same order
+  CN_features = CN_features[feature_orders]
+  all_components = all_components[feature_orders]
+
+  oplan <- future::plan()
+  future::plan("multiprocess", workers = cores)
+  on.exit(future::plan(oplan), add = TRUE)
+
+  full_mat = furrr::future_pmap(
+    list(
+      feature = CN_features,
+      component = all_components,
+      name = feature_orders
     ),
-    calculateSumOfPosteriors(CN_features[["copynumber"]],
-      all_components[["copynumber"]],
-      "copynumber",
-      rowIter = rowIter,
-      cores = cores
-    ),
-    calculateSumOfPosteriors(CN_features[["changepoint"]],
-      all_components[["changepoint"]],
-      "changepoint",
-      rowIter = rowIter,
-      cores = cores
-    ),
-    calculateSumOfPosteriors(CN_features[["bpchrarm"]],
-      all_components[["bpchrarm"]],
-      "bpchrarm",
-      rowIter = rowIter,
-      cores = cores
-    ),
-    calculateSumOfPosteriors(CN_features[["osCN"]],
-      all_components[["osCN"]],
-      "osCN",
-      rowIter = rowIter,
-      cores = cores
-    ),
-    calculateSumOfPosteriors(CN_features[["segsize"]],
-      all_components[["segsize"]],
-      "segsize",
-      rowIter = rowIter,
-      cores = cores
-    )
+    function(feature, component, name) {
+      message("Calculating the sum of posterior probabilities for ",  name)
+      calculateSumOfPosteriors(feature, component, name)
+    },
+    .progress = TRUE
   )
+
+  full_mat = purrr::reduce(full_mat, .f = base::cbind)
 
   rownames(full_mat) <- unique(CN_features[["segsize"]][, 1])
   full_mat[is.na(full_mat)] <- 0

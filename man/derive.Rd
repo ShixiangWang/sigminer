@@ -55,8 +55,6 @@ keep only the solution with maximum likelihood.}
 
 \item{niter}{the maximum number of iterations.}
 
-\item{rowIter}{step size of iteration for rows of ech CNV feature.}
-
 \item{keep_only_matrix}{if \code{TRUE}, keep only matrix for signature extraction.}
 
 \item{ref_genome}{BSgenome object or name of the installed BSgenome package. Example: BSgenome.Hsapiens.UCSC.hg19

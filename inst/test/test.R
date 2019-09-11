@@ -3,8 +3,11 @@ load(system.file("extdata", "toy_copynumber.RData",
                  package = "sigminer", mustWork = TRUE
 ))
 # Prepare copy number signature analysis
-cn_prepare <- derive(cn, cores = 4)
-
+system.time(
+  cn_prepare <- derive(cn, cores = 4)
+)
+# 用户   系统   流逝
+# 15.206  1.969 42.834
 
 # Load copy number prepare object
 load(system.file("extdata", "toy_copynumber_prepare.RData",

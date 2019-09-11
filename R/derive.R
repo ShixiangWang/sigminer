@@ -44,7 +44,6 @@ derive <- function(object, ...) {
 #' @param nrep number of run times for each value of component,
 #' keep only the solution with maximum likelihood.
 #' @param niter the maximum number of iterations.
-#' @param rowIter step size of iteration for rows of ech CNV feature.
 #' @param keep_only_matrix if `TRUE`, keep only matrix for signature extraction.
 #' @references Macintyre, Geoff, et al. "Copy number signatures and mutational
 #' processes in ovarian carcinoma." Nature genetics 50.9 (2018): 1262.

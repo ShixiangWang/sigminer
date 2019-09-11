@@ -4,7 +4,7 @@
 \alias{show_sig_profile}
 \title{Show Signature Profile}
 \usage{
-show_sig_profile(nmfObj, mode = c("copynumber", "mutation"),
+show_sig_profile(Signature, mode = c("copynumber", "mutation"),
   params = NULL, params_label_size = 3, y_expand = 1, digits = 1,
   base_size = 12, y_scale = c("relative", "absolute"),
   font_scale = 1, sig_names = NULL, sig_orders = NULL)
@@ -32,6 +32,8 @@ Default is \code{NULL}, prefix 'Signature_' plus number is used.}
 
 \item{sig_orders}{set order of signatures, can be a character vector.
 Default is \code{NULL}, the signatures are ordered by alphabetical order.}
+
+\item{a}{\code{Signature} object obtained either from \link{sig_extract} or \link{sig_auto_extract}.}
 }
 \value{
 a \code{ggplot} object
