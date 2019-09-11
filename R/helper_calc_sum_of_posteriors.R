@@ -6,9 +6,6 @@ calculateSumOfPosteriors <-
              cores = 1) {
     if (cores > 1) {
 
-      # attachNamespace("foreach")
-      # attachNamespace("doParallel")
-
       len <- dim(CN_feature)[1]
       iters <- len %/% rowIter
       if (len %% rowIter == 0) {

@@ -28,7 +28,7 @@ corresponding class (e.g. \code{CopyNumber}).}
 from \link{CopyNumber} object.}
 
 \item{cores}{number of compute cores to run this task.
-You can use \code{\link[parallel:detectCores]{parallel::detectCores()}} function to check how
+You can use \code{\link[future:availableCores]{future::availableCores()}} function to check how
 many cores you can use.}
 
 \item{seed}{seed number.}

@@ -4,6 +4,7 @@
 #'
 #' @inheritParams sig_extract
 #' @inheritParams show_cn_distribution
+#' @param a `Signature` object obtained either from [sig_extract] or [sig_auto_extract].
 #' @param params params data of components.
 #' @param params_label_size font size for params label.
 #' @param y_expand y expand height for plotting params of copy number signatures.
@@ -27,7 +28,7 @@
 #' ))
 #' show_sig_profile(res$nmfObj)
 #' }
-show_sig_profile <- function(nmfObj, mode = c("copynumber", "mutation"),
+show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
                              params = NULL, params_label_size = 3, y_expand = 1,
                              digits = 1, base_size = 12,
                              y_scale = c("relative", "absolute"), font_scale = 1,
