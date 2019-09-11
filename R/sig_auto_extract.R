@@ -88,7 +88,10 @@ sig_auto_extract <- function(nmf_matrix = NULL,
   if (!recover) {
     nmf_matrix <- t(nmf_matrix) # rows for mutation types and columns for samples
 
+    oplan <- future::plan()
     future::plan("multiprocess", workers = cores)
+    on.exit(future::plan(oplan), add = TRUE)
+
     furrr::future_map(seq_len(nrun), function(i, method, filelist, skip) {
       if (skip & file.exists(filelist[i])) {
         message("Run #", i, " exists, skipping...")

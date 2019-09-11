@@ -26,7 +26,7 @@ derive <- function(object, ...) {
 #' @param reference_components default is `FALSE`, calculate mixture components
 #' from [CopyNumber] object.
 #' @param cores number of compute cores to run this task.
-#' You can use [parallel::detectCores()] function to check how
+#' You can use [future::availableCores()] function to check how
 #' many cores you can use.
 #' @param seed seed number.
 #' @param min_comp minimal number of components to fit, default is 2.

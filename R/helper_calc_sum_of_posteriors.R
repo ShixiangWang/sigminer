@@ -15,9 +15,10 @@ calculateSumOfPosteriors <-
         iters <- iters - 1
       }
 
+      ## Qs: Should put the parallel out of this fun?
       doFuture::registerDoFuture()
       oplan <- future::plan()
-      future::plan("multiprocess", workers = cores)
+      future::plan("multisession", workers = cores)
       on.exit(future::plan(oplan), add = TRUE)
 
       curr_posterior <- foreach::foreach(i = 0:iters, .combine = rbind) %dopar% {
