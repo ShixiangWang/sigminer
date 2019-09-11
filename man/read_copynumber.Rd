@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_copynumber.R
 \name{read_copynumber}
 \alias{read_copynumber}
-\title{Read absolute copy number profile}
+\title{Read Absolute Copy Number Profile}
 \usage{
 read_copynumber(input, pattern = NULL, ignore_case = FALSE,
   seg_cols = c("Chromosome", "Start.bp", "End.bp", "modal_cn"),
@@ -63,6 +63,9 @@ cn <- read_copynumber(segTabs,
   seg_cols = c("chromosome", "start", "end", "segVal"),
   genome_build = "hg19", complement = FALSE, verbose = TRUE
 )
+}
+\seealso{
+\link{read_maf} for reading mutation data to \link{MAF} object.
 }
 \author{
 Shixiang Wang \href{mailto:w_shixiang@163.com}{w_shixiang@163.com}

@@ -76,6 +76,10 @@ Nature genetics 48.6 (2016): 600.
 
 Alexandrov, Ludmil, et al. "The repertoire of mutational signatures in human cancer." BioRxiv (2018): 322859.
 }
+\seealso{
+\link{sig_extract} for extracting signatures using \strong{NMF} package, \link{sig_estimate} for
+estimating signature number for \link{sig_extract}.
+}
 \author{
 Shixiang Wang
 }

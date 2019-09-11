@@ -2,7 +2,7 @@
 % Please edit documentation in R/sig_extract.R
 \name{sig_extract}
 \alias{sig_extract}
-\title{Extract Signatures through}
+\title{Extract Signatures through NMF}
 \usage{
 sig_extract(nmf_matrix, n_sig, nrun = 10, cores = 1,
   method = "brunet", pConstant = NULL, seed = 123456, ...)
@@ -46,6 +46,10 @@ res <- sig_extract(cn_prepare$nmf_matrix, 2, nrun = 1)
 Gaujoux, Renaud, and Cathal Seoighe. "A flexible R package for nonnegative matrix factorization." BMC bioinformatics 11.1 (2010): 367.
 
 Mayakonda, Anand, et al. "Maftools: efficient and comprehensive analysis of somatic variants in cancer." Genome research 28.11 (2018): 1747-1756.
+}
+\seealso{
+\link{sig_estimate} for estimating signature number for \link{sig_extract}., \link{sig_auto_extract} for
+extracting signatures using automatic relevance determination technique.
 }
 \author{
 Shixiang Wang

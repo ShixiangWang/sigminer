@@ -1,4 +1,4 @@
-#' Say hello to users
+#' Say Hello to Users
 #' @export
 #' @examples
 #' hello()

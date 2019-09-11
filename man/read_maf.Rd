@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_maf.R
 \name{read_maf}
 \alias{read_maf}
-\title{Read MAF files.}
+\title{Read MAF Files}
 \usage{
 read_maf(maf, clinicalData = NULL, removeDuplicatedVariants = TRUE,
   useAll = TRUE, gisticAllLesionsFile = NULL,
@@ -61,5 +61,5 @@ laml <- read_maf(maf = laml.maf)
 Shyr C, Tarailo-Graovac M, Gottlieb M, Lee JJ, van Karnebeek C, Wasserman WW. FLAGS, frequently mutated genes in public exomes. BMC Med Genomics 2014; 7: 64.
 }
 \seealso{
-\code{\link{plotmafSummary}} \code{\link{write.mafSummary}}
+\link{read_copynumber} for reading copy number data to \link{CopyNumber} object.
 }

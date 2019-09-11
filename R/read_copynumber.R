@@ -1,6 +1,6 @@
 # Read absolute copy number profile ------------------------------------------------
 
-#' @title  Read absolute copy number profile
+#' @title  Read Absolute Copy Number Profile
 #' @description Read **absolute** copy number profile for preparing CNV signature
 #' analysis.
 #' @param input a `data.frame` or a file or a directory contains copy number profile.
@@ -37,6 +37,7 @@
 #'   seg_cols = c("chromosome", "start", "end", "segVal"),
 #'   genome_build = "hg19", complement = FALSE, verbose = TRUE
 #' )
+#' @seealso [read_maf] for reading mutation data to [MAF] object.
 read_copynumber <- function(input,
                             pattern = NULL,
                             ignore_case = FALSE,

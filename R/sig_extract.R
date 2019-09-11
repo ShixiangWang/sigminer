@@ -1,4 +1,4 @@
-#' Extract Signatures through
+#' Extract Signatures through NMF
 #'
 #' Do NMF de-composition and then extract signatures.
 #'
@@ -21,6 +21,8 @@
 #' library(NMF)
 #' res <- sig_extract(cn_prepare$nmf_matrix, 2, nrun = 1)
 #' }
+#' @seealso [sig_estimate] for estimating signature number for [sig_extract]., [sig_auto_extract] for
+#' extracting signatures using automatic relevance determination technique.
 sig_extract <- function(nmf_matrix,
                         n_sig,
                         nrun = 10,

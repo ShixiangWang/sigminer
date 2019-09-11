@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_adj_p.R
 \name{get_adj_p}
 \alias{get_adj_p}
-\title{Get adjust p values from group comparison}
+\title{Get Adjust P Values from Group Comparison}
 \source{
 https://github.com/kassambara/ggpubr/issues/143
 }

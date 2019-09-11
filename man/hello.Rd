@@ -2,12 +2,12 @@
 % Please edit documentation in R/hello.R
 \name{hello}
 \alias{hello}
-\title{Say hello to users}
+\title{Say Hello to Users}
 \usage{
 hello()
 }
 \description{
-Say hello to users
+Say Hello to Users
 }
 \examples{
 hello()

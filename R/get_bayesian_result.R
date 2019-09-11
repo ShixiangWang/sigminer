@@ -1,3 +1,24 @@
+#' Get Specified Bayesian NMF Result from Run
+#'
+#' Sometimes, we may want to use or inspect specified run result from [sig_auto_extract].
+#' This function is designed for this purpose.
+#'
+#' @param run_info a `data.frame` with 1 row and two necessary columns `Run` and `file`.
+#'
+#' @return a `list`.
+#' @author Shixiang Wang
+#' @export
+#'
+#' @examples
+#' # Load copy number prepare object
+#' load(system.file("extdata", "toy_copynumber_prepare.RData",
+#'   package = "sigminer", mustWork = TRUE
+#' ))
+#' res <- sig_auto_extract(cn_prepare$nmf_matrix, result_prefix = "Test_copynumber", nrun = 1)
+#'
+#' # All run info are stored in res$Raw$summary_run
+#' # Obtain result of run 1
+#' res_run1 = get_bayesian_result(res$Raw$summary_run[1, ])
 get_bayesian_result <- function(run_info) {
   necessary_cols <- c("Run", "file")
   stopifnot(all(necessary_cols %in% colnames(run_info)))

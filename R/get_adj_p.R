@@ -1,6 +1,6 @@
 # Get adjust p values -----------------------------------------------------
 
-#' Get adjust p values from group comparison
+#' Get Adjust P Values from Group Comparison
 #'
 #' Setting `aes(label=..p.adj..)` in [ggpubr::compare_means()] does not
 #' show adjust p values. The returned result of this function can be combined with [ggpubr::stat_pvalue_manual()] to fix

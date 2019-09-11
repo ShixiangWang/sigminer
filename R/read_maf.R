@@ -1,10 +1,12 @@
 # Read MAF data -----------------------------------------------------------
 
+#' @title Read MAF Files
 #' @inherit maftools::read.maf
 #' @examples
 #' laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
 #' laml <- read_maf(maf = laml.maf)
 #' @export
+#' @seealso [read_copynumber] for reading copy number data to [CopyNumber] object.
 
 read_maf <- function(
                      maf, clinicalData = NULL, removeDuplicatedVariants = TRUE,

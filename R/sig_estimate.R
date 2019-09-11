@@ -1,12 +1,14 @@
-#' Estimate signature number
+#' Estimate Signature Number
 #'
 #' Use **NMF** package to evaluate the optimal number of signatures.
+#' This is used along with [sig_extract].
 #' Users should `library(NMF)` firstly.
 #'
 #' The most common approach is to choose the smallest rank for which cophenetic correlation coefficient
 #' starts decreasing (Used by this function). Another approach is to choose the rank for which the plot
 #' of the residual sum of squares (RSS) between the input matrix and its estimate shows an inflection point.
 #' More custom features please directly use [NMF::nmfEstimateRank].
+#'
 #' @param nmf_matrix a `matrix` used for NMF decomposition with rows indicate samples and columns indicate components.
 #' @param range a `numeric` vector containing the ranks of factorization to try. Note that duplicates are removed and values are sorted in increasing order. The results are notably returned in this order.
 #' @param nrun a `numeric` giving the number of run to perform for each value in `range`, `nrun` set to 30~50 is enough to achieve robust result.
@@ -40,6 +42,8 @@
 #'   verbose = TRUE
 #' )
 #' }
+#' @seealso [sig_extract] for extracting signatures using **NMF** package, [sig_auto_extract] for
+#' extracting signatures using automatic relevance determination technique.
 sig_estimate <-
   function(nmf_matrix,
              range = 2:5,

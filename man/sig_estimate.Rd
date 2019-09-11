@@ -2,7 +2,7 @@
 % Please edit documentation in R/sig_estimate.R
 \name{sig_estimate}
 \alias{sig_estimate}
-\title{Estimate signature number}
+\title{Estimate Signature Number}
 \usage{
 sig_estimate(nmf_matrix, range = 2:5, nrun = 10, what = "all",
   cores = 1, seed = 123456, use_random = TRUE, save_plots = FALSE,
@@ -42,6 +42,7 @@ a \code{list} contains information of NMF run and rank survey.
 }
 \description{
 Use \strong{NMF} package to evaluate the optimal number of signatures.
+This is used along with \link{sig_extract}.
 Users should \code{library(NMF)} firstly.
 }
 \details{
@@ -65,6 +66,10 @@ cn_estimate <- sig_estimate(cn_prepare$nmf_matrix,
 }
 \references{
 Gaujoux, Renaud, and Cathal Seoighe. "A flexible R package for nonnegative matrix factorization." BMC bioinformatics 11.1 (2010): 367.
+}
+\seealso{
+\link{sig_extract} for extracting signatures using \strong{NMF} package, \link{sig_auto_extract} for
+extracting signatures using automatic relevance determination technique.
 }
 \author{
 Shixiang Wang
