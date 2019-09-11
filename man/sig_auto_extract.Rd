@@ -7,7 +7,7 @@
 sig_auto_extract(nmf_matrix = NULL, result_prefix = "BayesNMF",
   destdir = tempdir(), method = c("L1W.L2H", "L1KL", "L2KL"),
   K0 = 25, nrun = 10, niter = 2e+05, tol = 1e-07, cores = 1,
-  recover = FALSE)
+  skip = FALSE, recover = FALSE)
 }
 \arguments{
 \item{nmf_matrix}{a \code{matrix} used for NMF decomposition with rows indicate samples and columns indicate components.}
@@ -31,6 +31,10 @@ implemented by \href{https://software.broadinstitute.org/cancer/cga/msp}{Signatu
 \item{tol}{tolerance for convergence.}
 
 \item{cores}{number of cpu cores to run NMF.}
+
+\item{skip}{if \code{TRUE}, it will skip running a previous stored result. This can be used to
+extend run times, e.g. you try running 10 times firstly and then you want to extend it to
+20 times.}
 
 \item{recover}{if \code{TRUE}, try to recover result from previous runs based on input \code{result_prefix},
 \code{destdir} and \code{nrun}. This is pretty useful for reproducing result.}

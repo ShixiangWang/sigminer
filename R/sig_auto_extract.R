@@ -18,7 +18,6 @@
 #' in **sigminer** package. Besides, I implemented parallel computation to speed up
 #' the calculation process and a similar input and output structure like [sig_extract()].
 #'
-#'
 #' @inheritParams sig_estimate
 #' @inheritParams derive
 #' @param result_prefix prefix for result data files.
@@ -31,6 +30,9 @@
 #' @param K0 number of initial signatures.
 #' @param nrun number of independent simulations.
 #' @param tol tolerance for convergence.
+#' @param skip if `TRUE`, it will skip running a previous stored result. This can be used to
+#' extend run times, e.g. you try running 10 times firstly and then you want to extend it to
+#' 20 times.
 #' @param recover if `TRUE`, try to recover result from previous runs based on input `result_prefix`,
 #' `destdir` and `nrun`. This is pretty useful for reproducing result.
 #' @author Shixiang Wang
@@ -65,6 +67,7 @@ sig_auto_extract <- function(nmf_matrix = NULL,
                              niter = 2e5,
                              tol = 1e-07,
                              cores = 1,
+                             skip = FALSE,
                              recover = FALSE) {
   on.exit(invisible(gc())) # clean when exit
   method <- match.arg(method)
@@ -75,28 +78,33 @@ sig_auto_extract <- function(nmf_matrix = NULL,
     message("Recover mode is on, check if all files exist...")
     all_exist = all(file.exists(filelist))
     if (!all_exist) {
-      stop("Recover failed, cannot find previous result files, please run with 'recover = FALSE'.")
+      stop("Recover failed, cannot find previous result files, please run with 'recover = FALSE'.",
+           call. = FALSE)
     }
     message("Yup! Recovering...")
   }
 
   if (!recover) {
-    nmf_matrix <- t(nmf_matrix) # rows for mutation types and columns for samples
+    nmf_matrix <- t(nmf_matrix)  # rows for mutation types and columns for samples
 
     future::plan("multiprocess", workers = cores)
-    furrr::future_map(seq_len(nrun), function(i, method, filelist) {
-      if (method == "L1W.L2H") {
-        # Apply BayesNMF - L1W.L2H for an exponential prior for W and a half-normal prior for H
-        res <- BayesNMF.L1W.L2H(nmf_matrix, niter, 10, 5, tol, K0, K0, 1)
-      } else if (method == "L1KL") {
-        # Apply BayesNMF - L1KL for expoential priors
-        res <- BayesNMF.L1KL(nmf_matrix, niter, 10, tol, K0, K0, 1)
-      } else {
-        # Apply BayesNMF - L2KL for half-normal priors
-        res <- BayesNMF.L2KL(nmf_matrix, niter, 10, tol, K0, K0, 1)
-      }
-      saveRDS(res, file = filelist[i])
-    }, method = method, filelist = filelist, .progress = TRUE)
+    furrr::future_map(seq_len(nrun), function(i, method, filelist, skip) {
+     if (skip & file.exists(filelist[i])) {
+        message("Run #", i, " exists, skipping...")
+     } else {
+       if (method == "L1W.L2H") {
+         # Apply BayesNMF - L1W.L2H for an exponential prior for W and a half-normal prior for H
+         res <- BayesNMF.L1W.L2H(nmf_matrix, niter, 10, 5, tol, K0, K0, 1)
+       } else if (method == "L1KL") {
+         # Apply BayesNMF - L1KL for expoential priors
+         res <- BayesNMF.L1KL(nmf_matrix, niter, 10, tol, K0, K0, 1)
+       } else {
+         # Apply BayesNMF - L2KL for half-normal priors
+         res <- BayesNMF.L2KL(nmf_matrix, niter, 10, tol, K0, K0, 1)
+       }
+       saveRDS(res, file = filelist[i])
+     }
+    }, method = method, filelist = filelist, skip = skip, .progress = TRUE)
   }
 
   summary.run <- purrr::map_df(seq_len(nrun), function(i) {
