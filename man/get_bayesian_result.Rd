@@ -25,7 +25,7 @@ res <- sig_auto_extract(cn_prepare$nmf_matrix, result_prefix = "Test_copynumber"
 
 # All run info are stored in res$Raw$summary_run
 # Obtain result of run 1
-res_run1 = get_bayesian_result(res$Raw$summary_run[1, ])
+res_run1 <- get_bayesian_result(res$Raw$summary_run[1, ])
 }
 \author{
 Shixiang Wang

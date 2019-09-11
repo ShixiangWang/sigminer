@@ -6,7 +6,6 @@
 #' @param ... other options pass to \code{\link[cowplot]{plot_grid}} function of `cowplot` package.
 #' @inheritParams show_cn_distribution
 #' @return a `ggplot` object
-#' @import ggplot2
 #' @examples
 #' # Load copy number prepare object
 #' load(system.file("extdata", "toy_copynumber_prepare.RData",
@@ -58,14 +57,18 @@ show_cn_features <- function(features, ylab = NULL, return_plotlist = FALSE,
   }
 
   p <- cowplot::plot_grid(p_1,
-                          p_2,
-                          p_3,
-                          p_4,
-                          p_5,
-                          p_6,
-                          nrow = 2,
-                          align = "hv",
-                          ...
+    p_2,
+    p_3,
+    p_4,
+    p_5,
+    p_6,
+    nrow = 2,
+    align = "hv",
+    ...
   )
   p
 }
+
+utils::globalVariables(
+  "value"
+)

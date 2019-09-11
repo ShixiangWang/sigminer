@@ -13,7 +13,6 @@
 #' @param base_size overall font size.
 #' @author Shixiang Wang <w_shixiang@163.com>
 #' @return a `ggplot` object
-#' @import ggplot2
 #' @export
 #' @examples
 #' # Load copy number object
@@ -80,16 +79,16 @@ show_cn_distribution <- function(data,
       data <- subset(data, chromosome %in% c(1:22, "X"))
     }
 
-    #// TODO: Find a better way to generate chromosome distribution.
+    # // TODO: Find a better way to generate chromosome distribution.
 
     # only keep chr 1 to 22, X
     data$chromosome <- factor(as.character(data$chromosome),
-                              levels = c(1:22, "X")
+      levels = c(1:22, "X")
     )
 
     # only keep p, q, pq
     data$location <- factor(sub("[0-9X]*", "", data$location),
-                            levels = c("p", "pq", "q")
+      levels = c("p", "pq", "q")
     )
     # if (sum(!(data$location %in% c("p", "pq", "q"))) > 0){
     #   message("Discarding segments which located in centromere region...")
@@ -99,14 +98,14 @@ show_cn_distribution <- function(data,
     if (scale_chr) {
       if (genome_build == "hg19") {
         data("chromsize.hg19",
-             package = "sigminer",
-             envir = environment()
+          package = "sigminer",
+          envir = environment()
         )
         chrlen <- chromsize.hg19
       } else {
         data("chromsize.hg38",
-             package = "sigminer",
-             envir = environment()
+          package = "sigminer",
+          envir = environment()
         )
         chrlen <- chromsize.hg38
       }
@@ -161,6 +160,9 @@ show_cn_distribution <- function(data,
 
 
 utils::globalVariables(
-  c(
-  )
+  c("fraction",
+    "..density..",
+    "location",
+    "x",
+    "count")
 )

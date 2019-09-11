@@ -9,9 +9,13 @@ test_that("sig_extract works", {
   library(NMF)
   res <- sig_extract(cn_prepare$nmf_matrix, 2, nrun = 1)
   expect_s3_class(res, "Signature")
+  res <- sig_extract(cn_prepare$nmf_matrix, 2, nrun = 1, cores = 2)
+  expect_s3_class(res, "Signature")
 
   # Auto-extract copy number signatures
   res <- sig_auto_extract(cn_prepare$nmf_matrix, result_prefix = "Test_copynumber", nrun = 1)
+  expect_s3_class(res, "Signature")
+  res <- sig_auto_extract(cn_prepare$nmf_matrix, result_prefix = "Test_copynumber", nrun = 1, cores = 2)
   expect_s3_class(res, "Signature")
   res <- sig_auto_extract(cn_prepare$nmf_matrix, result_prefix = "Test_copynumber", nrun = 1, method = "L1KL")
   expect_s3_class(res, "Signature")

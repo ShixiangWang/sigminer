@@ -46,9 +46,10 @@ get_features <- function(CN_data,
   # only keep 1:22 and x, y
   chrlen <- chrlen[chrlen$chrom %in% centromeres$chrom, ]
   if (cores > 1) {
-    #doParallel::registerDoParallel(cores = cores)
     doFuture::registerDoFuture()
+    oplan <- future::plan()
     future::plan("multiprocess", workers = cores)
+    on.exit(future::plan(oplan), add = TRUE)
 
     temp_list <- foreach::foreach(i = 1:6) %dopar% {
       if (i == 1) {
@@ -165,7 +166,9 @@ get_components <- function(CN_features,
     dist_map = dist_map
     )
   } else {
+    oplan <- future::plan()
     future::plan("multiprocess", workers = cores)
+    on.exit(future::plan(oplan), add = TRUE)
 
     res <- furrr::future_pmap(list(
       CN_feature = CN_features,

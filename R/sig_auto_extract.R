@@ -76,34 +76,35 @@ sig_auto_extract <- function(nmf_matrix = NULL,
 
   if (recover) {
     message("Recover mode is on, check if all files exist...")
-    all_exist = all(file.exists(filelist))
+    all_exist <- all(file.exists(filelist))
     if (!all_exist) {
       stop("Recover failed, cannot find previous result files, please run with 'recover = FALSE'.",
-           call. = FALSE)
+        call. = FALSE
+      )
     }
     message("Yup! Recovering...")
   }
 
   if (!recover) {
-    nmf_matrix <- t(nmf_matrix)  # rows for mutation types and columns for samples
+    nmf_matrix <- t(nmf_matrix) # rows for mutation types and columns for samples
 
     future::plan("multiprocess", workers = cores)
     furrr::future_map(seq_len(nrun), function(i, method, filelist, skip) {
-     if (skip & file.exists(filelist[i])) {
+      if (skip & file.exists(filelist[i])) {
         message("Run #", i, " exists, skipping...")
-     } else {
-       if (method == "L1W.L2H") {
-         # Apply BayesNMF - L1W.L2H for an exponential prior for W and a half-normal prior for H
-         res <- BayesNMF.L1W.L2H(nmf_matrix, niter, 10, 5, tol, K0, K0, 1)
-       } else if (method == "L1KL") {
-         # Apply BayesNMF - L1KL for expoential priors
-         res <- BayesNMF.L1KL(nmf_matrix, niter, 10, tol, K0, K0, 1)
-       } else {
-         # Apply BayesNMF - L2KL for half-normal priors
-         res <- BayesNMF.L2KL(nmf_matrix, niter, 10, tol, K0, K0, 1)
-       }
-       saveRDS(res, file = filelist[i])
-     }
+      } else {
+        if (method == "L1W.L2H") {
+          # Apply BayesNMF - L1W.L2H for an exponential prior for W and a half-normal prior for H
+          res <- BayesNMF.L1W.L2H(nmf_matrix, niter, 10, 5, tol, K0, K0, 1)
+        } else if (method == "L1KL") {
+          # Apply BayesNMF - L1KL for expoential priors
+          res <- BayesNMF.L1KL(nmf_matrix, niter, 10, tol, K0, K0, 1)
+        } else {
+          # Apply BayesNMF - L2KL for half-normal priors
+          res <- BayesNMF.L2KL(nmf_matrix, niter, 10, tol, K0, K0, 1)
+        }
+        saveRDS(res, file = filelist[i])
+      }
     }, method = method, filelist = filelist, skip = skip, .progress = TRUE)
   }
 

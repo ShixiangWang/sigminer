@@ -8,6 +8,8 @@ test_that("derive for CopyNumber works", {
   # Prepare copy number signature analysis
   cn_prepare <- derive(cn)
   expect_type(cn_prepare, "list")
+  cn_prepare <- derive(cn, cores = 2)
+  expect_type(cn_prepare, "list")
   cn_prepare <- derive(cn, keep_only_matrix = TRUE)
   expect_type(cn_prepare, "double")
 })

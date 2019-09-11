@@ -32,7 +32,9 @@
 #' @importFrom dplyr progress_estimated
 #' @importFrom future plan
 #' @importFrom furrr future_pmap
-#' @import foreach
+#' @importFrom foreach foreach %dopar%
+#' @importFrom doFuture registerDoFuture
 #' @import flexmix
+#' @import ggplot2
 #' @name sigminer
 NULL

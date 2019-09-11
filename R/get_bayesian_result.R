@@ -18,7 +18,7 @@
 #'
 #' # All run info are stored in res$Raw$summary_run
 #' # Obtain result of run 1
-#' res_run1 = get_bayesian_result(res$Raw$summary_run[1, ])
+#' res_run1 <- get_bayesian_result(res$Raw$summary_run[1, ])
 get_bayesian_result <- function(run_info) {
   necessary_cols <- c("Run", "file")
   stopifnot(all(necessary_cols %in% colnames(run_info)))
