@@ -150,7 +150,7 @@ get_components <- function(CN_features,
   }
 
   median_burden <- sapply(CN_features, nrow) %>% median(na.rm = TRUE)
-  if (median_burden < 2000000000) {
+  if (median_burden < 2000) {
     # // When task is small, use pmap is more faster
     res <- purrr::pmap(list(
       CN_feature = CN_features,
