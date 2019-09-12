@@ -6,8 +6,9 @@
 \usage{
 sig_auto_extract(nmf_matrix = NULL, result_prefix = "BayesNMF",
   destdir = tempdir(), method = c("L1W.L2H", "L1KL", "L2KL"),
-  K0 = 25, nrun = 10, niter = 2e+05, tol = 1e-07, cores = 1,
-  skip = FALSE, recover = FALSE)
+  strategy = c("stable", "optimal"), K0 = 25, nrun = 10,
+  niter = 2e+05, tol = 1e-07, cores = 1, skip = FALSE,
+  recover = FALSE)
 }
 \arguments{
 \item{nmf_matrix}{a \code{matrix} used for NMF decomposition with rows indicate samples and columns indicate components.}
@@ -21,6 +22,10 @@ a half-normal prior for H (This method is used by PCAWG project, see reference #
 You can also use "L1KL" to set expoential priors for both W and H, and "L2KL" to
 set half-normal priors for both W and H. The latter two methods are originally
 implemented by \href{https://software.broadinstitute.org/cancer/cga/msp}{SignatureAnalyzer software}.}
+
+\item{strategy}{the selection strategy for returned data. Set 'stable' for getting optimal
+result from the most frequent K. Set 'optimal' for getting optimal result from all Ks.
+If you want select other solution, please check \link{get_bayesian_result}.}
 
 \item{K0}{number of initial signatures.}
 

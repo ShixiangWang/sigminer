@@ -27,6 +27,9 @@
 #' You can also use "L1KL" to set expoential priors for both W and H, and "L2KL" to
 #' set half-normal priors for both W and H. The latter two methods are originally
 #' implemented by [SignatureAnalyzer software](https://software.broadinstitute.org/cancer/cga/msp).
+#' @param strategy the selection strategy for returned data. Set 'stable' for getting optimal
+#' result from the most frequent K. Set 'optimal' for getting optimal result from all Ks.
+#' If you want select other solution, please check [get_bayesian_result].
 #' @param K0 number of initial signatures.
 #' @param nrun number of independent simulations.
 #' @param tol tolerance for convergence.
@@ -62,6 +65,7 @@ sig_auto_extract <- function(nmf_matrix = NULL,
                              result_prefix = "BayesNMF",
                              destdir = tempdir(),
                              method = c("L1W.L2H", "L1KL", "L2KL"),
+                             strategy = c("stable", "optimal"),
                              K0 = 25,
                              nrun = 10,
                              niter = 2e5,
@@ -71,6 +75,7 @@ sig_auto_extract <- function(nmf_matrix = NULL,
                              recover = FALSE) {
   on.exit(invisible(gc())) # clean when exit
   method <- match.arg(method)
+  strategy <- match.arg(strategy)
 
   filelist <- file.path(destdir, paste(result_prefix, seq_len(nrun), "rds", sep = "."))
 
@@ -126,12 +131,16 @@ sig_auto_extract <- function(nmf_matrix = NULL,
   summary.run <- summary.run %>%
     dplyr::arrange(dplyr::desc(.data$posterior))
 
-  # select best solution
-  best <- names(sort(table(summary.run$K), decreasing = TRUE))[1] %>%
-    as.integer()
-
-  best_row <- dplyr::filter(summary.run, .data$K == best) %>%
-    head(1)
+  if (strategy == "stable") {
+    # Find stable K
+    best <- names(sort(table(summary.run$K), decreasing = TRUE))[1] %>%
+      as.integer()
+    # Get optimal run for stable K
+    best_row <- dplyr::filter(summary.run, .data$K == best) %>%
+      head(1)
+  } else {
+    best_row = head(summary.run, 1)
+  }
 
   message("Select Run ", best_row$Run, ", which K = ", best_row$K, " as best solution.")
   best_solution <- get_bayesian_result(best_row)

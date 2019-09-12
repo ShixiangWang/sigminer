@@ -14,7 +14,7 @@ show_sig_profile(Signature, mode = c("copynumber", "mutation"),
 
 \item{mode}{either "ld" for distribution by CN length or "cd" for distribution by chromosome.}
 
-\item{params}{params data of components.}
+\item{params}{params data of components, obtained from \link{derive}.}
 
 \item{params_label_size}{font size for params label.}
 

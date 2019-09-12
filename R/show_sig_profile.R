@@ -5,7 +5,7 @@
 #' @inheritParams sig_extract
 #' @inheritParams show_cn_distribution
 #' @param Signature a `Signature` object obtained either from [sig_extract] or [sig_auto_extract].
-#' @param params params data of components.
+#' @param params params data of components, obtained from [derive].
 #' @param params_label_size font size for params label.
 #' @param y_expand y expand height for plotting params of copy number signatures.
 #' @param digits digits for plotting params of copy number signatures.
