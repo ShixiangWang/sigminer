@@ -11,8 +11,7 @@ derive(object, ...)
 \method{derive}{CopyNumber}(object, reference_components = FALSE,
   cores = 1, seed = 123456, min_comp = 2, max_comp = 10,
   min_prior = 0.001, model_selection = "BIC", threshold = 0.1,
-  nrep = 1, niter = 1000, rowIter = 1000, keep_only_matrix = FALSE,
-  ...)
+  nrep = 1, niter = 1000, keep_only_matrix = FALSE, ...)
 
 \method{derive}{MAF}(object, ref_genome = NULL, prefix = NULL,
   add = TRUE, ignoreChr = NULL, useSyn = TRUE,

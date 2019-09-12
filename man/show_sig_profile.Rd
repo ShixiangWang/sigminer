@@ -10,6 +10,8 @@ show_sig_profile(Signature, mode = c("copynumber", "mutation"),
   font_scale = 1, sig_names = NULL, sig_orders = NULL)
 }
 \arguments{
+\item{Signature}{a \code{Signature} object obtained either from \link{sig_extract} or \link{sig_auto_extract}.}
+
 \item{mode}{either "ld" for distribution by CN length or "cd" for distribution by chromosome.}
 
 \item{params}{params data of components.}
@@ -32,8 +34,6 @@ Default is \code{NULL}, prefix 'Signature_' plus number is used.}
 
 \item{sig_orders}{set order of signatures, can be a character vector.
 Default is \code{NULL}, the signatures are ordered by alphabetical order.}
-
-\item{a}{\code{Signature} object obtained either from \link{sig_extract} or \link{sig_auto_extract}.}
 }
 \value{
 a \code{ggplot} object

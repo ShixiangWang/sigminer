@@ -54,7 +54,7 @@ derive.CopyNumber <- function(object, reference_components = FALSE,
                               min_prior = 0.001,
                               model_selection = "BIC",
                               threshold = 0.1,
-                              nrep = 1, niter = 1000, rowIter = 1000,
+                              nrep = 1, niter = 1000,
                               keep_only_matrix = FALSE,
                               ...) {
   stopifnot(is.logical(reference_components) | is.list(reference_components) | is.null(reference_components))
@@ -78,7 +78,7 @@ derive.CopyNumber <- function(object, reference_components = FALSE,
     )
   }
 
-  cn_matrix <- get_matrix(cn_features, cn_components, cores = cores, rowIter = rowIter)
+  cn_matrix <- get_matrix(cn_features, cn_components, cores = cores)
   if (keep_only_matrix) {
     cn_matrix
   } else {
