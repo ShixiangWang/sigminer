@@ -133,7 +133,7 @@ get_components <- function(CN_features,
                                    niter = 1000) {
     dat <- as.numeric(CN_feature[, 2])
     message("Fitting feature: ", feature_name)
-    segsize_mm <-
+    fit <-
       fitComponent(
         dat,
         dist = dist_map[feature_name],
@@ -146,6 +146,7 @@ get_components <- function(CN_features,
         min_comp = min_comp,
         max_comp = max_comp
       )
+    fit
   }
 
   median_burden <- sapply(CN_features, nrow) %>% median(na.rm = TRUE)
@@ -230,7 +231,7 @@ get_matrix <- function(CN_features,
       component = all_components,
       name = feature_orders
     ),
-    function(feature, component, name) {
+    .f = function(feature, component, name) {
       message("Calculating the sum of posterior probabilities for ",  name)
       calculateSumOfPosteriors(feature, component, name)
     },
