@@ -43,8 +43,6 @@ get_features <- function(CN_data,
     centromeres <- centromeres.hg38
   }
 
-  message("Obtaining feature info...")
-
   # only keep 1:22 and x, y
   chrlen <- chrlen[chrlen$chrom %in% centromeres$chrom, ]
   if (cores > 1) {

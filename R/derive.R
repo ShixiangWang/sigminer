@@ -60,11 +60,15 @@ derive.CopyNumber <- function(object, reference_components = FALSE,
   stopifnot(is.logical(reference_components) | is.list(reference_components) | is.null(reference_components))
 
   cn_list <- get_cnlist(object)
+
+  message("=> Step: getting copy number features")
+
   cn_features <- get_features(
     CN_data = cn_list, cores = cores,
     genome_build = object@genome_build
   )
 
+  message("=> Step: fitting copy number components")
   if (is.null(reference_components) | is.list(reference_components)) {
     cn_components <- reference_components
   } else {
@@ -78,6 +82,7 @@ derive.CopyNumber <- function(object, reference_components = FALSE,
     )
   }
 
+  message("=> Step: calculating the sum of posterior probabilities")
   cn_matrix <- get_matrix(cn_features, cn_components, cores = cores)
   if (keep_only_matrix) {
     cn_matrix
