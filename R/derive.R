@@ -84,6 +84,8 @@ derive.CopyNumber <- function(object, reference_components = FALSE,
 
   message("=> Step: calculating the sum of posterior probabilities")
   cn_matrix <- get_matrix(cn_features, cn_components, cores = cores)
+
+  message("=> Done.")
   if (keep_only_matrix) {
     cn_matrix
   } else {

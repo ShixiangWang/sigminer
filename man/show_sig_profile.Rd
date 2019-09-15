@@ -5,27 +5,32 @@
 \title{Show Signature Profile}
 \usage{
 show_sig_profile(Signature, mode = c("copynumber", "mutation"),
-  params = NULL, params_label_size = 3, y_expand = 1, digits = 1,
-  base_size = 12, y_scale = c("relative", "absolute"),
-  font_scale = 1, sig_names = NULL, sig_orders = NULL)
+  normalize = c("row", "column", "raw"), params = NULL,
+  params_label_size = 3, params_label_angle = 60, y_expand = 1,
+  digits = 2, base_size = 12, font_scale = 1, sig_names = NULL,
+  sig_orders = NULL)
 }
 \arguments{
-\item{Signature}{a \code{Signature} object obtained either from \link{sig_extract} or \link{sig_auto_extract}.}
+\item{Signature}{a \code{Signature} object obtained either from \link{sig_extract} or \link{sig_auto_extract},
+or just a raw signature matrix with row representing components (motifs) and column
+representing signatures (column names must start with 'Sig').}
 
-\item{mode}{either "ld" for distribution by CN length or "cd" for distribution by chromosome.}
+\item{mode}{signature type for plotting, now supports 'copynumber' or 'mutation'.}
 
-\item{params}{params data of components, obtained from \link{derive}.}
+\item{normalize}{one of 'row', 'column' and 'raw', for row normalization (signature),
+column normalization (component) and raw data, respectively.}
+
+\item{params}{params \code{data.frame} of components, obtained from \link{derive}.}
 
 \item{params_label_size}{font size for params label.}
+
+\item{params_label_angle}{font angle for params label.}
 
 \item{y_expand}{y expand height for plotting params of copy number signatures.}
 
 \item{digits}{digits for plotting params of copy number signatures.}
 
 \item{base_size}{overall font size.}
-
-\item{y_scale}{one of 'relative' or 'absolute', if choose 'relative',
-signature columns will be scaled to sum as 1.}
 
 \item{font_scale}{a number used to set font scale.}
 
@@ -43,12 +48,29 @@ Who don't like to show a barplot for signature profile? This is for it.
 }
 \examples{
 \donttest{
+# Load mutational signature
+load(system.file("extdata", "toy_mutational_signature.RData",
+  package = "sigminer", mustWork = TRUE
+))
+# Show signature profile
+show_sig_profile(sig2, mode = "mutation")
+
+
 # Load copy number signature
-#// Remove this data and create a new one
 load(system.file("extdata", "toy_copynumber_signature.RData",
   package = "sigminer", mustWork = TRUE
 ))
-show_sig_profile(res$nmfObj)
+# Show signature profile
+show_sig_profile(sig)
+
+# Add params label
+#=================
+# Load copy number prepare object
+load(system.file("extdata", "toy_copynumber_prepare.RData",
+                 package = "sigminer", mustWork = TRUE
+                 ))
+show_sig_profile(sig, params = cn_prepare$parameters, y_expand = 2)
+
 }
 }
 \author{

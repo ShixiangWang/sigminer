@@ -8,9 +8,6 @@ Authors@R:
              role = c("aut", "cre"),
              email = "w_shixiang@163.com",
              comment = c(ORCID = "0000-0001-9855-7357")),
-      person(given = "Geoffrey",
-             family = "Macintyre",
-             role = "ctb"),
       person(given = "Xue-Song",
              family = "Liu",
              role = "ctb"))

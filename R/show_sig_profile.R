@@ -4,13 +4,17 @@
 #'
 #' @inheritParams sig_extract
 #' @inheritParams show_cn_distribution
-#' @param Signature a `Signature` object obtained either from [sig_extract] or [sig_auto_extract].
-#' @param params params data of components, obtained from [derive].
+#' @param Signature a `Signature` object obtained either from [sig_extract] or [sig_auto_extract],
+#' or just a raw signature matrix with row representing components (motifs) and column
+#' representing signatures (column names must start with 'Sig').
+#' @param mode signature type for plotting, now supports 'copynumber' or 'mutation'.
+#' @param normalize one of 'row', 'column' and 'raw', for row normalization (signature),
+#' column normalization (component) and raw data, respectively.
+#' @param params params `data.frame` of components, obtained from [derive].
 #' @param params_label_size font size for params label.
+#' @param params_label_angle font angle for params label.
 #' @param y_expand y expand height for plotting params of copy number signatures.
 #' @param digits digits for plotting params of copy number signatures.
-#' @param y_scale one of 'relative' or 'absolute', if choose 'relative',
-#' signature columns will be scaled to sum as 1.
 #' @param font_scale a number used to set font scale.
 #' @param sig_names set name of signatures, can be a character vector.
 #' Default is `NULL`, prefix 'Signature_' plus number is used.
@@ -21,31 +25,55 @@
 #' @export
 #' @examples
 #' \donttest{
+#' # Load mutational signature
+#' load(system.file("extdata", "toy_mutational_signature.RData",
+#'   package = "sigminer", mustWork = TRUE
+#' ))
+#' # Show signature profile
+#' show_sig_profile(sig2, mode = "mutation")
+#'
+#'
 #' # Load copy number signature
-#' #// Remove this data and create a new one
 #' load(system.file("extdata", "toy_copynumber_signature.RData",
 #'   package = "sigminer", mustWork = TRUE
 #' ))
-#' show_sig_profile(res$nmfObj)
+#' # Show signature profile
+#' show_sig_profile(sig)
+#'
+#' # Add params label
+#' #=================
+#' # Load copy number prepare object
+#' load(system.file("extdata", "toy_copynumber_prepare.RData",
+#'                  package = "sigminer", mustWork = TRUE
+#'                  ))
+#' show_sig_profile(sig, params = cn_prepare$parameters, y_expand = 2)
+#'
 #' }
 show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
-                             params = NULL, params_label_size = 3, y_expand = 1,
-                             digits = 1, base_size = 12,
-                             y_scale = c("relative", "absolute"), font_scale = 1,
+                             normalize = c("row", "column", "raw"),
+                             params = NULL, params_label_size = 3,
+                             params_label_angle = 60, y_expand = 1,
+                             digits = 2, base_size = 12, font_scale = 1,
                              sig_names = NULL, sig_orders = NULL) {
-  mode <- match.arg(mode)
-  y_scale <- match.arg(y_scale)
-
-  # Signatures
-  w <- NMF::basis(nmfObj)
-  if (y_scale == "relative") {
-    if (mode == "copynumber") {
-      w <- t(apply(w, 1, function(x) x / sum(x))) # Scale the component weight
-    } else if (mode == "mutation") {
-      w <- apply(w, 2, function(x) x / sum(x)) # Scale the signatures
+  if (class(Signature) == "Signature") {
+    Sig = Signature$Signature
+  } else if (is.matrix(Signature)) {
+    if (!all(startsWith(colnames(Signature), "Sig"))) {
+      stop("If Signature is a matrix, column names must start with 'Sig'!", call. = FALSE)
     }
+    Sig = Signature
+  } else {
+    stop("Invalid input for 'Signature'", call. = FALSE)
   }
-  colnames(w) <- paste("Signature", 1:ncol(w), sep = "_")
+
+  mode <- match.arg(mode)
+  normalize = match.arg(normalize)
+
+  if (normalize == "row") {
+    Sig <- apply(Sig, 2, function(x) x / sum(x))
+  } else if (normalize == "column") {
+    Sig <- t(apply(Sig, 1, function(x) x / sum(x)))
+  }
 
   # >>>>>>>>>>>>>>>>> Setting theme
   scale <- font_scale
@@ -53,27 +81,26 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
   .theme_ss <- theme_bw(base_size = base_size) +
     theme(
       axis.text.x = element_text(
-        angle = 90, vjust = 0.5,
-        hjust = 1, size = (base_size - 2) * scale
+        angle = 60, vjust = 1,
+        hjust = 1, size = (base_size - 4) * scale
       ),
       axis.text.y = element_text(hjust = 0.5, size = base_size * scale)
     )
   # <<<<<<<<<<<<<<<<< Setting theme
 
   # >>>>>>>>>>>>>>>>> identify mode and do data transformation
-  # w = rbind(w, matrix(c(0.1, 0.2), ncol = 2, dimnames = list("segsize10")))
-  mat <- as.data.frame(w)
+  mat <- as.data.frame(Sig)
   mat$context <- rownames(mat)
 
   if (mode == "copynumber") {
     mat$base <- sub("\\d+$", "", mat$context)
 
-    mat <- tidyr::gather(mat, class, signature, dplyr::contains("Signature"))
+    mat <- tidyr::gather(mat, class, signature, dplyr::contains("Sig"))
     mat <- dplyr::mutate(mat,
-                         context = factor(context,
+                         context = factor(.data$context,
                                           levels = unique(mat[["context"]])
                          ),
-                         base = factor(base, levels = c(
+                         base = factor(.data$base, levels = c(
                            "bp10MB", "copynumber",
                            "changepoint", "bpchrarm",
                            "osCN", "segsize"
@@ -82,12 +109,12 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
     )
   } else {
     mat$base <- sub("[ACGT]\\[(.*)\\][ACGT]", "\\1", mat$context)
-    mat$context <- sub("(\\[.*\\])", "\\.", mat$context)
+    mat$context <- sub("(\\[.*\\])", "\\-", mat$context)
 
-    mat <- tidyr::gather(mat, class, signature, dplyr::contains("Signature"))
+    mat <- tidyr::gather(mat, class, signature, dplyr::contains("Sig"))
     mat <- dplyr::mutate(mat,
-                         context = factor(context),
-                         base = factor(base, levels = c(
+                         context = factor(.data$context),
+                         base = factor(.data$base, levels = c(
                            "C>A", "C>G",
                            "C>T", "T>A",
                            "T>C", "T>G"
@@ -124,15 +151,15 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
     if (!is.null(params)) {
       params$class <- factor(levels(mat[["class"]])[1], levels = levels(mat[["class"]]))
       p <- p + geom_text(aes(
-        x = components, y = Inf,
+        x = .data$components, y = Inf,
         label = ifelse(dist == "norm",
-                       paste0(" \u03BC=", signif(mu, digits), ";\u03C3=", signif(sd, digits)),
-                       paste0(" \u03BB=", signif(mu, digits))
+                       paste0(" \u03BC=", signif(.data$mean, digits)),
+                       paste0(" \u03BB=", signif(.data$mean, digits))
         )
       ),
       data = params,
       size = params_label_size,
-      angle = 90,
+      angle = params_label_angle,
       hjust = 0, vjust = 0.5
       ) +
         coord_cartesian(clip = "off")
@@ -149,12 +176,7 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
     p <- p + theme(plot.margin = margin(30 * y_expand, 2, 2, 2, unit = "pt")) # Add regions
   }
 
-  p <- p + xlab("Components")
+  p <- p + xlab("Components") + ylab("Contributions")
 
-  if (mode == "copynumber") {
-    p <- p + ylab("Weights")
-  } else if (mode == "mutation") {
-    p <- p + ylab("Contributions")
-  }
   return(p)
 }
