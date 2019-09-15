@@ -153,6 +153,8 @@ sig_estimate <-
     print(p)
 
     if (save_plots) {
+      destdir = basename(plot_basename)
+      if (!dir.exists(destdir)) dir.create(destdir, recursive = TRUE)
       pdf(
         paste0(plot_basename, "_survey.pdf"),
         bg = "white",

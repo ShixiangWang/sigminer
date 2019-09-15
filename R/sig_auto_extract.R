@@ -76,6 +76,7 @@ sig_auto_extract <- function(nmf_matrix = NULL,
   on.exit(invisible(gc())) # clean when exit
   method <- match.arg(method)
   strategy <- match.arg(strategy)
+  if (!dir.exists(destdir)) dir.create(destdir, recursive = TRUE)
 
   filelist <- file.path(destdir, paste(result_prefix, seq_len(nrun), "rds", sep = "."))
 
