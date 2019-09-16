@@ -33,7 +33,7 @@
 #' @importFrom future plan
 #' @importFrom furrr future_pmap
 #' @importFrom foreach foreach %dopar%
-#' @importFrom doFuture registerDoFuture
+#' @importFrom doParallel registerDoParallel
 #' @import flexmix
 #' @import ggplot2
 #' @name sigminer

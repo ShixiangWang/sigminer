@@ -24,7 +24,8 @@ get_tidy_parameter = function(x) {
       dplyr::arrange(.data$feature, .data$mean) %>%
       dplyr::group_by(.data$feature) %>%
       dplyr::mutate(components = paste0(.data$feature, dplyr::row_number())) %>%
-      dplyr::select(.data$feature, .data$components, dplyr::everything())
+      dplyr::select(.data$feature, .data$components, dplyr::everything()) %>%
+      dplyr::ungroup()
   } else if (assert_class(x, "flexmix")) {
     .get_parameter(x) %>%
       dplyr::arrange(.data$mean)

@@ -29,6 +29,7 @@ Imports:
     cowplot,
     data.table,
     doFuture,
+    doParallel,
     dplyr,
     flexmix,
     foreach,

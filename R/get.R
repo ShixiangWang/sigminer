@@ -45,48 +45,43 @@ get_features <- function(CN_data,
 
   # only keep 1:22 and x, y
   chrlen <- chrlen[chrlen$chrom %in% centromeres$chrom, ]
-  if (cores > 1) {
-    doFuture::registerDoFuture()
-    oplan <- future::plan()
-    future::plan("multiprocess", workers = cores)
-    on.exit(future::plan(oplan), add = TRUE)
 
-    temp_list <- foreach::foreach(i = 1:6) %dopar% {
-      if (i == 1) {
-        list(bp10MB = getBPnum(CN_data, chrlen))
-      } else if (i == 2) {
-        list(copynumber = getCN(CN_data))
-      } else if (i == 3) {
-        list(changepoint = getChangepointCN(CN_data))
-      } else if (i == 4) {
-        list(bpchrarm = getCentromereDistCounts(CN_data, centromeres, chrlen))
-      } else if (i == 5) {
-        list(osCN = getOscilation(CN_data))
-      } else {
-        list(segsize = getSegsize(CN_data))
-      }
-    }
-    unlist(temp_list, recursive = FALSE)
-  } else {
-    bp10MB <- getBPnum(CN_data, chrlen)
-    copynumber <- getCN(CN_data)
-    changepoint <- getChangepointCN(CN_data)
-    bpchrarm <-
+  oplan <- future::plan()
+  future::plan("multiprocess", workers = cores)
+  on.exit(future::plan(oplan), add = TRUE)
+
+
+  features = c("segsize", "bp10MB", "osCN", "bpchrarm",
+               "changepoint", "copynumber")
+
+  .get_feature = function(i) {
+    if (i == "segsize") {
+      message("Getting segsize...")
+      getSegsize(CN_data)
+    } else if (i == "bp10MB") {
+      message("Getting bp10MB...")
+      getBPnum(CN_data, chrlen)
+    } else if (i == "osCN") {
+      message("Getting osCN...")
+      getOscilation(CN_data)
+    } else if (i == "bpchrarm") {
+      message("Getting bpchrarm...")
       getCentromereDistCounts(CN_data, centromeres, chrlen)
-    osCN <- getOscilation(CN_data)
-    segsize <- getSegsize(CN_data)
-    list(
-      segsize = segsize,
-      bp10MB = bp10MB,
-      osCN = osCN,
-      bpchrarm = bpchrarm,
-      changepoint = changepoint,
-      copynumber = copynumber
-    )
+    } else if (i == "changepoint") {
+      message("Getting changepoint...")
+      getChangepointCN(CN_data)
+    } else {
+      message("Getting copynumber...")
+      getCN(CN_data)
+    }
   }
+
+  res = furrr::future_map(features, .get_feature,
+                          .progress = TRUE)
+  res = res %>% setNames(features)
+  res
+
 }
-
-
 
 
 # Get mixture model components --------------------------------------------
@@ -94,7 +89,7 @@ get_features <- function(CN_data,
 get_components <- function(CN_features,
                            seed = 123456,
                            min_comp = 2,
-                           max_comp = 10,
+                           max_comp = 15,
                            min_prior = 0.001,
                            model_selection = "BIC",
                            threshold = 0.1,
@@ -121,16 +116,17 @@ get_components <- function(CN_features,
   dist_map <- c("norm", "pois", "pois", "pois", "norm", "norm")
   names(dist_map) <- c("segsize", "bp10MB", "osCN", "bpchrarm", "changepoint", "copynumber")
   apply_fitComponent <- function(CN_feature,
-                                   feature_name,
-                                   dist_map,
-                                   seed = 123456,
-                                   min_comp = 2,
-                                   max_comp = 10,
-                                   min_prior = 0.001,
-                                   model_selection = "BIC",
-                                   threshold = 0.1,
-                                   nrep = 1,
-                                   niter = 1000) {
+                                 feature_name,
+                                 dist_map,
+                                 seed = 123456,
+                                 min_comp = 2,
+                                 max_comp = 10,
+                                 min_prior = 0.001,
+                                 model_selection = "BIC",
+                                 threshold = 0.1,
+                                 nrep = 1,
+                                 niter = 1000,
+                                 cores = 1) {
     dat <- as.numeric(CN_feature[, 2])
     message("Fitting feature: ", feature_name)
     fit <-
@@ -144,52 +140,27 @@ get_components <- function(CN_features,
         niter = niter,
         nrep = nrep,
         min_comp = min_comp,
-        max_comp = max_comp
+        max_comp = max_comp,
+        cores = cores
       )
     fit
   }
 
-  median_burden <- sapply(CN_features, nrow) %>% median(na.rm = TRUE)
-  if (median_burden < 2000) {
-    # // When task is small, use pmap is more faster
-    res <- purrr::pmap(list(
-      CN_feature = CN_features,
-      feature_name = names(CN_features),
-      min_comp = if (flag_min) min_comp else rep(min_comp, 6),
-      max_comp = if (flag_max) max_comp else rep(max_comp, 6)
-    ), apply_fitComponent,
-    seed = seed,
-    min_prior = min_prior,
-    model_selection = model_selection,
-    threshold = threshold,
-    nrep = nrep,
-    niter = niter,
-    dist_map = dist_map
-    )
-  } else {
-    oplan <- future::plan()
-    future::plan("multiprocess", workers = cores)
-    on.exit(future::plan(oplan), add = TRUE)
-
-    res <- furrr::future_pmap(list(
-      CN_feature = CN_features,
-      feature_name = names(CN_features),
-      min_comp = if (flag_min) min_comp else rep(min_comp, 6),
-      max_comp = if (flag_max) max_comp else rep(max_comp, 6)
-    ), apply_fitComponent,
-    seed = seed,
-    min_prior = min_prior,
-    model_selection = model_selection,
-    threshold = threshold,
-    nrep = nrep,
-    niter = niter,
-    dist_map = dist_map,
-    .progress = TRUE
-    )
-  }
-
-  res <- res %>% setNames(names(CN_features))
-  res
+  purrr::pmap(list(
+    CN_feature = CN_features,
+    feature_name = names(CN_features),
+    min_comp = if (flag_min) min_comp else rep(min_comp, 6),
+    max_comp = if (flag_max) max_comp else rep(max_comp, 6)
+  ), apply_fitComponent,
+  seed = seed,
+  min_prior = min_prior,
+  model_selection = model_selection,
+  threshold = threshold,
+  nrep = nrep,
+  niter = niter,
+  dist_map = dist_map,
+  cores = cores
+  )
 }
 
 
