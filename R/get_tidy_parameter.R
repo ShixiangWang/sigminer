@@ -34,20 +34,49 @@ get_tidy_parameter = function(x) {
 
 .get_parameter = function(x) {
   assert_class(x, "flexmix")
-  paras = flexmix::parameters(x)
+  paras = parameters(x)
+  # weight is how many events assigned
+  # to a cluster (component)
+  # i.e. number of observations
+  #
+  # Info from package author:
+  # the cluster sizes indicate the number
+  # of observations assigned to each of the
+  # clusters according to the a-posteriori probabilities.
+  .get_weight = function(mean, x) {
+    wt_tb = clusters(x) %>%
+      table()
+    wt = as.numeric(wt_tb)
+    if (length(wt) == length(mean)) {
+      return(wt)
+    } else {
+      names(wt) = names(wt_tb)
+      all_names = seq_along(mean) %>%
+        as.character()
+      wt[setdiff(all_names, names(wt))] = 0
+      wt[sort(names(wt))] %>% as.numeric()
+    }
+  }
+
   if (is.null(dim(paras))) {
     # Assume it is pois distribution
     dplyr::tibble(
       dist = "pois",
       mean = as.numeric(paras),
       sd = sqrt(.data$mean)
-    )
+    ) %>%
+      dplyr::mutate(
+        n_obs = .get_weight(.data$mean, x)
+      )
   } else {
     # Assume it is normal distribution
     dplyr::tibble(
       dist = "norm",
       mean = as.numeric(paras[1, ]),
       sd = as.numeric(paras[2, ])
-    )
+    ) %>%
+      dplyr::mutate(
+        n_obs = .get_weight(.data$mean, x)
+      )
   }
 }
