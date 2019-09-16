@@ -3,11 +3,10 @@ load(system.file("extdata", "toy_copynumber.RData",
                  package = "sigminer", mustWork = TRUE
 ))
 # Prepare copy number signature analysis
-cn_prepare3 <- derive(cn)
+set.seed(1234)
+cn_prepare <- derive(cn)
+
 save(cn_prepare, file = "inst/extdata/toy_copynumber_prepare.RData")
-
-
-cn_prepare <- derive(cn, cores = 2)
 
 # Load copy number prepare object
 load(system.file("extdata", "toy_copynumber_prepare.RData",
