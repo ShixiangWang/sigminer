@@ -80,4 +80,6 @@ Mayakonda, Anand, et al. "Maftools: efficient and comprehensive analysis
 
 ## LICENSE
 
-MIT &copy; 2019 Shixiang Wang, Geoffrey Macintyre, Xue-Song Liu
+&copy; 2019 Shixiang Wang, Xue-Song Liu
+
+**This software is free to researchers and not commercially available without consent**.

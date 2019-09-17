@@ -72,4 +72,7 @@ also
 
 ## LICENSE
 
-MIT © 2019 Shixiang Wang, Geoffrey Macintyre, Xue-Song Liu
+© 2019 Shixiang Wang, Xue-Song Liu
+
+**This software is free to researchers and not commercially available
+without consent**.
