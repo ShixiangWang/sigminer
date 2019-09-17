@@ -23,6 +23,10 @@ derive <- function(object, ...) {
 }
 
 #' @describeIn derive Derive copy number features, components and component-by-sample matrix
+#' @param type one of "probability", "count". Default is "probability", return a matrix
+#' with the sum of posterior probabilities for each components. If set to 'count',
+#' return a matrix with event count assigned to each components. The result for
+#' both types should be close.
 #' @param reference_components default is `FALSE`, calculate mixture components
 #' from [CopyNumber] object.
 #' @param cores number of compute cores to run this task.
@@ -48,7 +52,8 @@ derive <- function(object, ...) {
 #' @references Macintyre, Geoff, et al. "Copy number signatures and mutational
 #' processes in ovarian carcinoma." Nature genetics 50.9 (2018): 1262.
 #' @export
-derive.CopyNumber <- function(object, reference_components = FALSE,
+derive.CopyNumber <- function(object, type = c("probability", "count"),
+                              reference_components = FALSE,
                               cores = 1, seed = 123456,
                               min_comp = 2, max_comp = 10,
                               min_prior = 0.001,
@@ -58,6 +63,7 @@ derive.CopyNumber <- function(object, reference_components = FALSE,
                               keep_only_matrix = FALSE,
                               ...) {
   stopifnot(is.logical(reference_components) | is.list(reference_components) | is.null(reference_components))
+  type = match.arg(type)
 
   cn_list <- get_cnlist(object)
 
@@ -70,6 +76,7 @@ derive.CopyNumber <- function(object, reference_components = FALSE,
 
   message("=> Step: fitting copy number components")
   if (is.null(reference_components) | is.list(reference_components)) {
+    message("Detected reference components.")
     cn_components <- reference_components
   } else {
     cn_components <- get_components(
@@ -82,8 +89,17 @@ derive.CopyNumber <- function(object, reference_components = FALSE,
     )
   }
 
-  message("=> Step: calculating the sum of posterior probabilities")
-  cn_matrix <- get_matrix(cn_features, cn_components, cores = cores)
+  if (type == "count") {
+    message("=> Step: calculating the sum of posterior probabilities")
+    cn_matrix <- get_matrix(cn_features, cn_components,
+                            type = "count",
+                            cores = cores)
+  } else {
+    message("=> Step: calculating the sum of posterior probabilities")
+    cn_matrix <- get_matrix(cn_features, cn_components,
+                            type = "probability",
+                            cores = cores)
+  }
 
   message("=> Done.")
   if (keep_only_matrix) {

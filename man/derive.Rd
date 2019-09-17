@@ -8,10 +8,11 @@
 \usage{
 derive(object, ...)
 
-\method{derive}{CopyNumber}(object, reference_components = FALSE,
-  cores = 1, seed = 123456, min_comp = 2, max_comp = 10,
-  min_prior = 0.001, model_selection = "BIC", threshold = 0.1,
-  nrep = 1, niter = 1000, keep_only_matrix = FALSE, ...)
+\method{derive}{CopyNumber}(object, type = c("probability", "count"),
+  reference_components = FALSE, cores = 1, seed = 123456,
+  min_comp = 2, max_comp = 10, min_prior = 0.001,
+  model_selection = "BIC", threshold = 0.1, nrep = 1, niter = 1000,
+  keep_only_matrix = FALSE, ...)
 
 \method{derive}{MAF}(object, ref_genome = NULL, prefix = NULL,
   add = TRUE, ignoreChr = NULL, useSyn = TRUE,
@@ -22,6 +23,11 @@ derive(object, ...)
 
 \item{...}{custom setting for operating object. Detail see S3 method for
 corresponding class (e.g. \code{CopyNumber}).}
+
+\item{type}{one of "probability", "count". Default is "probability", return a matrix
+with the sum of posterior probabilities for each components. If set to 'count',
+return a matrix with event count assigned to each components. The result for
+both types should be close.}
 
 \item{reference_components}{default is \code{FALSE}, calculate mixture components
 from \link{CopyNumber} object.}

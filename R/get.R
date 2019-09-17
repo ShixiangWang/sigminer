@@ -169,7 +169,10 @@ get_components <- function(CN_features,
 
 get_matrix <- function(CN_features,
                        all_components = NULL,
+                       type = c("probability", "count"),
                        cores = 1) {
+  type = match.arg(type)
+
   if (is.null(all_components)) {
     message(
       "About reference components\n   more detail please see https://github.com/ShixiangWang/absoluteCNVdata"
@@ -202,17 +205,15 @@ get_matrix <- function(CN_features,
       component = all_components,
       name = feature_orders
     ),
-    .f = function(feature, component, name) {
-      message("Calculating the sum of posterior probabilities for ",  name)
-      calculateSumOfPosteriors(feature, component, name)
-    },
+    .f = calculateSumOfEvents,
+    type = type,
     .progress = TRUE
   )
 
   full_mat = purrr::reduce(full_mat, .f = base::cbind)
 
-  rownames(full_mat) <- unique(CN_features[["segsize"]][, 1])
-  full_mat[is.na(full_mat)] <- 0
+  # rownames(full_mat) <- unique(CN_features[["segsize"]][, 1])
+  # full_mat[is.na(full_mat)] <- 0
   full_mat
 }
 

@@ -13,6 +13,11 @@ load(system.file("extdata", "toy_copynumber_prepare.RData",
                  package = "sigminer", mustWork = TRUE
 ))
 
+t2 = clusters(cn_prepare$components$segsize,
+         newdata = data.frame(dat = cn_prepare$features$segsize$value %>% as.numeric()))
+t1 = clusters(cn_prepare$components$segsize)
+identical(t1, t2)
+
 sig = sig_auto_extract(cn_prepare$nmf_matrix)
 save(sig, file = "inst/extdata/toy_copynumber_signature.RData")
 
@@ -45,3 +50,13 @@ show_sig_profile(sig2, mode = "mutation")
 zz = show_cn_components(cn_prepare$features, cn_prepare$components)
 zz$parameters
 show_sig_profile(sig, params = cn_prepare$parameters, y_expand = 2)
+
+#------ Test the difference between count and probability type
+cn_prepare <- derive(cn)
+cn_prepare2 <- derive(cn, type = "count")
+
+sig = sig_auto_extract(cn_prepare$nmf_matrix)
+sig2 = sig_auto_extract(cn_prepare2$nmf_matrix)
+
+show_sig_profile(sig)
+show_sig_profile(sig2)
