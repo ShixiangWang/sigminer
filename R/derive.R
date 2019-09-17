@@ -55,7 +55,7 @@ derive <- function(object, ...) {
 derive.CopyNumber <- function(object, type = c("probability", "count"),
                               reference_components = FALSE,
                               cores = 1, seed = 123456,
-                              min_comp = 2, max_comp = 10,
+                              min_comp = 2, max_comp = 15,
                               min_prior = 0.001,
                               model_selection = "BIC",
                               threshold = 0.1,
