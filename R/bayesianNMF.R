@@ -277,24 +277,3 @@ BayesNMF.L1.KL.fixed_W.Z.sample <- function(V, W, H, Z, lambda, n.iter, a0, tol,
 ")
   return(list(W, H, like, evid, lambda, error))
 }
-
-######### Handling hypermutant samples; See J Kim et al Nat. Genet. DOI: 10.1038/ng.3557 for details.
-get.lego96.hyper <- function(lego96) {
-  x <- lego96
-  for (i in 1:100) {
-    SNV <- colSums(x)
-    q1 <- quantile(SNV, prob = 1 / 4)
-    q3 <- quantile(SNV, prob = 3 / 4)
-    sample.hyper <- colnames(x)[SNV > (median(SNV) + 1.5 * (q3 - q1))]
-    if (length(sample.hyper) == 0) break
-    lego96.hyper <- as.matrix(x[, (colnames(x) %in% sample.hyper)])
-    colnames(lego96.hyper) <- sample.hyper
-    lego96.nonhyper <- x[, !(colnames(x) %in% sample.hyper)]
-    lego96.hyper1 <- apply(lego96.hyper, 2, function(x) x / 2)
-    lego96.hyper2 <- lego96.hyper1
-    colnames(lego96.hyper1) <- paste(colnames(lego96.hyper1), 1, sep = "__")
-    colnames(lego96.hyper2) <- paste(colnames(lego96.hyper2), 2, sep = "__")
-    x <- cbind(lego96.nonhyper, lego96.hyper1, lego96.hyper2)
-  }
-  return(x)
-}
