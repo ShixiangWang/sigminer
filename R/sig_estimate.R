@@ -11,6 +11,7 @@
 #'
 #' @param nmf_matrix a `matrix` used for NMF decomposition with rows indicate samples and columns indicate components.
 #' @param range a `numeric` vector containing the ranks of factorization to try. Note that duplicates are removed and values are sorted in increasing order. The results are notably returned in this order.
+#' @param keep_nmfObj default is `FALSE`, if `TRUE`, keep NMF objects from runs, and the result may be huge.
 #' @param nrun a `numeric` giving the number of run to perform for each value in `range`, `nrun` set to 30~50 is enough to achieve robust result.
 #' @param what a character vector whose elements partially match one of the following item, which correspond to the measures computed by summary on each – multi-run – NMF result: ‘all’, ‘cophenetic’, ‘rss’, ‘residuals’, ‘dispersion’, ‘evar’, ‘silhouette’ (and more specific \*.coef, \*.basis, \*.consensus), ‘sparseness’ (and more specific \*.coef, \*.basis). It specifies which measure must be plotted (what='all' plots all the measures).
 #' @param cores number of cpu cores to run NMF.
@@ -48,6 +49,7 @@ sig_estimate <-
   function(nmf_matrix,
              range = 2:5,
              nrun = 10,
+             keep_nmfObj = FALSE,
              what = "all",
              cores = 1,
              seed = 123456,
@@ -168,13 +170,22 @@ sig_estimate <-
       if (verbose) message("Created ", paste0(plot_basename, "_survey.pdf"))
     }
 
-    return(
-      list(
-        nmfEstimate = estim.r,
-        nmfEstimate.random = estim.r.random,
-        survey = nmf.sum,
-        survey.random = nmf.sum.random,
-        survey_plot = p
-      )
-    )
+    if (keep_nmfObj) {
+      res = list(
+          nmfEstimate = estim.r,
+          nmfEstimate.random = estim.r.random,
+          survey = nmf.sum,
+          survey.random = nmf.sum.random,
+          survey_plot = p
+        )
+    } else {
+      res = list(
+          survey = nmf.sum,
+          survey.random = nmf.sum.random,
+          survey_plot = p
+        )
+    }
+
+    class(res) = "Survey"
+    res
   }

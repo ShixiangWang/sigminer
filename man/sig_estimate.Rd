@@ -4,10 +4,10 @@
 \alias{sig_estimate}
 \title{Estimate Signature Number}
 \usage{
-sig_estimate(nmf_matrix, range = 2:5, nrun = 10, what = "all",
-  cores = 1, seed = 123456, use_random = TRUE, save_plots = FALSE,
-  plot_basename = file.path(tempdir(), "nmf"), method = "brunet",
-  pConstant = NULL, verbose = FALSE)
+sig_estimate(nmf_matrix, range = 2:5, nrun = 10, keep_nmfObj = FALSE,
+  what = "all", cores = 1, seed = 123456, use_random = TRUE,
+  save_plots = FALSE, plot_basename = file.path(tempdir(), "nmf"),
+  method = "brunet", pConstant = NULL, verbose = FALSE)
 }
 \arguments{
 \item{nmf_matrix}{a \code{matrix} used for NMF decomposition with rows indicate samples and columns indicate components.}
@@ -15,6 +15,8 @@ sig_estimate(nmf_matrix, range = 2:5, nrun = 10, what = "all",
 \item{range}{a \code{numeric} vector containing the ranks of factorization to try. Note that duplicates are removed and values are sorted in increasing order. The results are notably returned in this order.}
 
 \item{nrun}{a \code{numeric} giving the number of run to perform for each value in \code{range}, \code{nrun} set to 30~50 is enough to achieve robust result.}
+
+\item{keep_nmfObj}{default is \code{FALSE}, if \code{TRUE}, keep NMF objects from runs, and the result may be huge.}
 
 \item{what}{a character vector whose elements partially match one of the following item, which correspond to the measures computed by summary on each – multi-run – NMF result: ‘all’, ‘cophenetic’, ‘rss’, ‘residuals’, ‘dispersion’, ‘evar’, ‘silhouette’ (and more specific *.coef, *.basis, *.consensus), ‘sparseness’ (and more specific *.coef, *.basis). It specifies which measure must be plotted (what='all' plots all the measures).}
 
