@@ -35,7 +35,7 @@ derive <- function(object, ...) {
 #' @param seed seed number.
 #' @param min_comp minimal number of components to fit, default is 2.
 #' Can also be a vector with length 6, which apply to each feature.
-#' @param max_comp maximal number of components to fit, default is 10.
+#' @param max_comp maximal number of components to fit, default is 15.
 #' Can also be a vector with length 6, which apply to each feature.
 #' @param min_prior the minimum relative size of components, default is 0.001.
 #' Details about custom setting please refer to **flexmix** package.

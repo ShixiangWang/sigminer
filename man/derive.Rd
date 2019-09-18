@@ -10,7 +10,7 @@ derive(object, ...)
 
 \method{derive}{CopyNumber}(object, type = c("probability", "count"),
   reference_components = FALSE, cores = 1, seed = 123456,
-  min_comp = 2, max_comp = 10, min_prior = 0.001,
+  min_comp = 2, max_comp = 15, min_prior = 0.001,
   model_selection = "BIC", threshold = 0.1, nrep = 1, niter = 1000,
   keep_only_matrix = FALSE, ...)
 
@@ -41,7 +41,7 @@ many cores you can use.}
 \item{min_comp}{minimal number of components to fit, default is 2.
 Can also be a vector with length 6, which apply to each feature.}
 
-\item{max_comp}{maximal number of components to fit, default is 10.
+\item{max_comp}{maximal number of components to fit, default is 15.
 Can also be a vector with length 6, which apply to each feature.}
 
 \item{min_prior}{the minimum relative size of components, default is 0.001.
