@@ -63,7 +63,7 @@ derive.CopyNumber <- function(object, type = c("probability", "count"),
                               keep_only_matrix = FALSE,
                               ...) {
   stopifnot(is.logical(reference_components) | is.list(reference_components) | is.null(reference_components))
-  type = match.arg(type)
+  type <- match.arg(type)
 
   cn_list <- get_cnlist(object)
 
@@ -92,23 +92,27 @@ derive.CopyNumber <- function(object, type = c("probability", "count"),
   if (type == "count") {
     message("=> Step: calculating the sum of posterior probabilities")
     cn_matrix <- get_matrix(cn_features, cn_components,
-                            type = "count",
-                            cores = cores)
+      type = "count",
+      cores = cores
+    )
   } else {
     message("=> Step: calculating the sum of posterior probabilities")
     cn_matrix <- get_matrix(cn_features, cn_components,
-                            type = "probability",
-                            cores = cores)
+      type = "probability",
+      cores = cores
+    )
   }
 
   message("=> Done.")
   if (keep_only_matrix) {
     cn_matrix
   } else {
-    list(features = cn_features,
-         components = cn_components,
-         parameters = get_tidy_parameter(cn_components),
-         nmf_matrix = cn_matrix)
+    list(
+      features = cn_features,
+      components = cn_components,
+      parameters = get_tidy_parameter(cn_components),
+      nmf_matrix = cn_matrix
+    )
   }
 }
 

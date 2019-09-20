@@ -22,7 +22,7 @@ handle_hyper_mutation <- function(nmf_matrix) {
     nmf_matrix.nonhyper <- x[, !(colnames(x) %in% sample.hyper)]
     nmf_matrix.hyper1 <- apply(nmf_matrix.hyper, 2, function(x) x / 2)
     nmf_matrix.hyper2 <- nmf_matrix.hyper1
-    colnames(nmf_matrix.hyper1) <- paste(colnames(nmf_matrix.hyper1), 1, sep = "_[hyper]_")  # use [hyper] as hyper mutation flag
+    colnames(nmf_matrix.hyper1) <- paste(colnames(nmf_matrix.hyper1), 1, sep = "_[hyper]_") # use [hyper] as hyper mutation flag
     colnames(nmf_matrix.hyper2) <- paste(colnames(nmf_matrix.hyper2), 2, sep = "_[hyper]_")
     x <- cbind(nmf_matrix.nonhyper, nmf_matrix.hyper1, nmf_matrix.hyper2)
   }

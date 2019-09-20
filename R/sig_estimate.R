@@ -155,7 +155,7 @@ sig_estimate <-
     print(p)
 
     if (save_plots) {
-      destdir = basename(plot_basename)
+      destdir <- basename(plot_basename)
       if (!dir.exists(destdir)) dir.create(destdir, recursive = TRUE)
       pdf(
         paste0(plot_basename, "_survey.pdf"),
@@ -171,21 +171,21 @@ sig_estimate <-
     }
 
     if (keep_nmfObj) {
-      res = list(
-          nmfEstimate = estim.r,
-          nmfEstimate.random = estim.r.random,
-          survey = nmf.sum,
-          survey.random = nmf.sum.random,
-          survey_plot = p
-        )
+      res <- list(
+        nmfEstimate = estim.r,
+        nmfEstimate.random = estim.r.random,
+        survey = nmf.sum,
+        survey.random = nmf.sum.random,
+        survey_plot = p
+      )
     } else {
-      res = list(
-          survey = nmf.sum,
-          survey.random = nmf.sum.random,
-          survey_plot = p
-        )
+      res <- list(
+        survey = nmf.sum,
+        survey.random = nmf.sum.random,
+        survey_plot = p
+      )
     }
 
-    class(res) = "Survey"
+    class(res) <- "Survey"
     res
   }

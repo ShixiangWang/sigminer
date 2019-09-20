@@ -1,4 +1,4 @@
-assert_class = function(object, class) {
+assert_class <- function(object, class) {
   if (inherits(object, what = class)) {
     TRUE
   } else {

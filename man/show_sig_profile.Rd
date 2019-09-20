@@ -47,7 +47,6 @@ a \code{ggplot} object
 Who don't like to show a barplot for signature profile? This is for it.
 }
 \examples{
-\donttest{
 # Load mutational signature
 load(system.file("extdata", "toy_mutational_signature.RData",
   package = "sigminer", mustWork = TRUE
@@ -64,14 +63,12 @@ load(system.file("extdata", "toy_copynumber_signature.RData",
 show_sig_profile(sig)
 
 # Add params label
-#=================
+# =================
 # Load copy number prepare object
 load(system.file("extdata", "toy_copynumber_prepare.RData",
-                 package = "sigminer", mustWork = TRUE
-                 ))
+  package = "sigminer", mustWork = TRUE
+))
 show_sig_profile(sig, params = cn_prepare$parameters, y_expand = 2)
-
-}
 }
 \author{
 Shixiang Wang

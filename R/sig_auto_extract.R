@@ -140,7 +140,7 @@ sig_auto_extract <- function(nmf_matrix = NULL,
     best_row <- dplyr::filter(summary.run, .data$K == best) %>%
       head(1)
   } else {
-    best_row = head(summary.run, 1)
+    best_row <- head(summary.run, 1)
   }
 
   message("Select Run ", best_row$Run, ", which K = ", best_row$K, " as best solution.")

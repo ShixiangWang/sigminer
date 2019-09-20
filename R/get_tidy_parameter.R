@@ -18,7 +18,7 @@
 #' get_tidy_parameter(cn_prepare$components)
 #' # Get parameters for segsize feature
 #' get_tidy_parameter(cn_prepare$components$segsize)
-get_tidy_parameter = function(x) {
+get_tidy_parameter <- function(x) {
   if (is.list(x)) {
     purrr::map_df(x, .get_parameter, .id = "feature") %>%
       dplyr::arrange(.data$feature, .data$mean) %>%
@@ -32,9 +32,9 @@ get_tidy_parameter = function(x) {
   }
 }
 
-.get_parameter = function(x) {
+.get_parameter <- function(x) {
   assert_class(x, "flexmix")
-  paras = parameters(x)
+  paras <- parameters(x)
   # weight is how many events assigned
   # to a cluster (component)
   # i.e. number of observations
@@ -43,17 +43,17 @@ get_tidy_parameter = function(x) {
   # the cluster sizes indicate the number
   # of observations assigned to each of the
   # clusters according to the a-posteriori probabilities.
-  .get_weight = function(mean, x) {
-    wt_tb = clusters(x) %>%
+  .get_weight <- function(mean, x) {
+    wt_tb <- clusters(x) %>%
       table()
-    wt = as.numeric(wt_tb)
+    wt <- as.numeric(wt_tb)
     if (length(wt) == length(mean)) {
       return(wt)
     } else {
-      names(wt) = names(wt_tb)
-      all_names = seq_along(mean) %>%
+      names(wt) <- names(wt_tb)
+      all_names <- seq_along(mean) %>%
         as.character()
-      wt[setdiff(all_names, names(wt))] = 0
+      wt[setdiff(all_names, names(wt))] <- 0
       wt[sort(names(wt))] %>% as.numeric()
     }
   }

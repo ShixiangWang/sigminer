@@ -51,10 +51,12 @@ get_features <- function(CN_data,
   on.exit(future::plan(oplan), add = TRUE)
 
 
-  features = c("segsize", "bp10MB", "osCN", "bpchrarm",
-               "changepoint", "copynumber")
+  features <- c(
+    "segsize", "bp10MB", "osCN", "bpchrarm",
+    "changepoint", "copynumber"
+  )
 
-  .get_feature = function(i) {
+  .get_feature <- function(i) {
     if (i == "segsize") {
       message("Getting segsize...")
       getSegsize(CN_data)
@@ -76,11 +78,11 @@ get_features <- function(CN_data,
     }
   }
 
-  res = furrr::future_map(features, .get_feature,
-                          .progress = TRUE)
-  res = res %>% setNames(features)
+  res <- furrr::future_map(features, .get_feature,
+    .progress = TRUE
+  )
+  res <- res %>% setNames(features)
   res
-
 }
 
 
@@ -116,17 +118,17 @@ get_components <- function(CN_features,
   dist_map <- c("norm", "pois", "pois", "pois", "norm", "norm")
   names(dist_map) <- c("segsize", "bp10MB", "osCN", "bpchrarm", "changepoint", "copynumber")
   apply_fitComponent <- function(CN_feature,
-                                 feature_name,
-                                 dist_map,
-                                 seed = 123456,
-                                 min_comp = 2,
-                                 max_comp = 10,
-                                 min_prior = 0.001,
-                                 model_selection = "BIC",
-                                 threshold = 0.1,
-                                 nrep = 1,
-                                 niter = 1000,
-                                 cores = 1) {
+                                   feature_name,
+                                   dist_map,
+                                   seed = 123456,
+                                   min_comp = 2,
+                                   max_comp = 10,
+                                   min_prior = 0.001,
+                                   model_selection = "BIC",
+                                   threshold = 0.1,
+                                   nrep = 1,
+                                   niter = 1000,
+                                   cores = 1) {
     dat <- as.numeric(CN_feature[, 2])
     message("Fitting feature: ", feature_name)
     fit <-
@@ -171,7 +173,7 @@ get_matrix <- function(CN_features,
                        all_components = NULL,
                        type = c("probability", "count"),
                        cores = 1) {
-  type = match.arg(type)
+  type <- match.arg(type)
 
   if (is.null(all_components)) {
     message(
@@ -190,16 +192,16 @@ get_matrix <- function(CN_features,
       readRDS(file.path(tempdir(), "Nat_Gen_component_parameters.rds"))
   }
 
-  feature_orders = c("bp10MB", "copynumber", "changepoint", "bpchrarm", "osCN", "segsize")
+  feature_orders <- c("bp10MB", "copynumber", "changepoint", "bpchrarm", "osCN", "segsize")
   # Make sure have same order
-  CN_features = CN_features[feature_orders]
-  all_components = all_components[feature_orders]
+  CN_features <- CN_features[feature_orders]
+  all_components <- all_components[feature_orders]
 
   oplan <- future::plan()
   future::plan("multiprocess", workers = cores)
   on.exit(future::plan(oplan), add = TRUE)
 
-  full_mat = furrr::future_pmap(
+  full_mat <- furrr::future_pmap(
     list(
       feature = CN_features,
       component = all_components,
@@ -210,7 +212,7 @@ get_matrix <- function(CN_features,
     .progress = TRUE
   )
 
-  full_mat = purrr::reduce(full_mat, .f = base::cbind)
+  full_mat <- purrr::reduce(full_mat, .f = base::cbind)
 
   # rownames(full_mat) <- unique(CN_features[["segsize"]][, 1])
   # full_mat[is.na(full_mat)] <- 0

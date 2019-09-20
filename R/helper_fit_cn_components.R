@@ -17,7 +17,7 @@ fitComponent <-
     set.seed(seed, kind = "L'Ecuyer-CMRG")
 
     stepFlexmix_v2 <- function(..., k = NULL, nrep = 3, verbose = TRUE, drop = TRUE,
-                               unique = FALSE, cores = 1) {
+                                   unique = FALSE, cores = 1) {
       doParallel::registerDoParallel(cores = cores)
       MYCALL <- match.call()
       MYCALL1 <- MYCALL
@@ -95,8 +95,8 @@ fitComponent <-
       }
       else {
         z <- return(new("stepFlexmix",
-                        models = z, k = as.integer(names(z)),
-                        nrep = as.integer(nrep), logLiks = logLiks, call = MYCALL
+          models = z, k = as.integer(names(z)),
+          nrep = as.integer(nrep), logLiks = logLiks, call = MYCALL
         ))
         if (unique) {
           z <- unique(z)
@@ -226,4 +226,3 @@ find_mu <- function(fit) {
 utils::globalVariables(
   c("n")
 )
-

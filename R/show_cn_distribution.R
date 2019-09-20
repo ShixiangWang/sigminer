@@ -160,9 +160,11 @@ show_cn_distribution <- function(data,
 
 
 utils::globalVariables(
-  c("fraction",
+  c(
+    "fraction",
     "..density..",
     "location",
     "x",
-    "count")
+    "count"
+  )
 )

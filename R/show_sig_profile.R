@@ -24,7 +24,6 @@
 #' @return a `ggplot` object
 #' @export
 #' @examples
-#' \donttest{
 #' # Load mutational signature
 #' load(system.file("extdata", "toy_mutational_signature.RData",
 #'   package = "sigminer", mustWork = TRUE
@@ -41,14 +40,12 @@
 #' show_sig_profile(sig)
 #'
 #' # Add params label
-#' #=================
+#' # =================
 #' # Load copy number prepare object
 #' load(system.file("extdata", "toy_copynumber_prepare.RData",
-#'                  package = "sigminer", mustWork = TRUE
-#'                  ))
+#'   package = "sigminer", mustWork = TRUE
+#' ))
 #' show_sig_profile(sig, params = cn_prepare$parameters, y_expand = 2)
-#'
-#' }
 show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
                              normalize = c("row", "column", "raw"),
                              params = NULL, params_label_size = 3,
@@ -56,18 +53,18 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
                              digits = 2, base_size = 12, font_scale = 1,
                              sig_names = NULL, sig_orders = NULL) {
   if (class(Signature) == "Signature") {
-    Sig = Signature$Signature
+    Sig <- Signature$Signature
   } else if (is.matrix(Signature)) {
     if (!all(startsWith(colnames(Signature), "Sig"))) {
       stop("If Signature is a matrix, column names must start with 'Sig'!", call. = FALSE)
     }
-    Sig = Signature
+    Sig <- Signature
   } else {
     stop("Invalid input for 'Signature'", call. = FALSE)
   }
 
   mode <- match.arg(mode)
-  normalize = match.arg(normalize)
+  normalize <- match.arg(normalize)
 
   if (normalize == "row") {
     Sig <- apply(Sig, 2, function(x) x / sum(x))
@@ -97,15 +94,15 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
 
     mat <- tidyr::gather(mat, class, signature, dplyr::contains("Sig"))
     mat <- dplyr::mutate(mat,
-                         context = factor(.data$context,
-                                          levels = unique(mat[["context"]])
-                         ),
-                         base = factor(.data$base, levels = c(
-                           "bp10MB", "copynumber",
-                           "changepoint", "bpchrarm",
-                           "osCN", "segsize"
-                         )),
-                         class = factor(class)
+      context = factor(.data$context,
+        levels = unique(mat[["context"]])
+      ),
+      base = factor(.data$base, levels = c(
+        "bp10MB", "copynumber",
+        "changepoint", "bpchrarm",
+        "osCN", "segsize"
+      )),
+      class = factor(class)
     )
   } else {
     mat$base <- sub("[ACGT]\\[(.*)\\][ACGT]", "\\1", mat$context)
@@ -113,13 +110,13 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
 
     mat <- tidyr::gather(mat, class, signature, dplyr::contains("Sig"))
     mat <- dplyr::mutate(mat,
-                         context = factor(.data$context),
-                         base = factor(.data$base, levels = c(
-                           "C>A", "C>G",
-                           "C>T", "T>A",
-                           "T>C", "T>G"
-                         )),
-                         class = factor(class)
+      context = factor(.data$context),
+      base = factor(.data$base, levels = c(
+        "C>A", "C>G",
+        "C>T", "T>A",
+        "T>C", "T>G"
+      )),
+      class = factor(class)
     )
   }
 
@@ -140,7 +137,7 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
   # >>>>>>>>>>>>>>>>>>>>>>> Plot
   p <- ggplot(mat) +
     geom_bar(aes_string(x = "context", y = "signature", fill = "base"),
-             stat = "identity", position = "identity", colour = "gray50"
+      stat = "identity", position = "identity", colour = "gray50"
     ) +
     scale_fill_manual(values = c(
       "cyan", "red", "yellow", "purple",
@@ -153,8 +150,8 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
       p <- p + geom_text(aes(
         x = .data$components, y = Inf,
         label = ifelse(dist == "norm",
-                       paste0(" \u03BC=", signif(.data$mean, digits)),
-                       paste0(" \u03BB=", signif(.data$mean, digits))
+          paste0(" \u03BC=", signif(.data$mean, digits)),
+          paste0(" \u03BB=", signif(.data$mean, digits))
         )
       ),
       data = params,
@@ -176,7 +173,13 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
     p <- p + theme(plot.margin = margin(30 * y_expand, 2, 2, 2, unit = "pt")) # Add regions
   }
 
-  p <- p + xlab("Components") + ylab("Contributions")
+  p <- p + xlab("Components")
+
+  if (normalize == "column") {
+    p <- p + ylab("Weights")
+  } else {
+    p <- p + ylab("Contributions")
+  }
 
   return(p)
 }

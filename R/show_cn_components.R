@@ -19,7 +19,7 @@
 show_cn_components <- function(features, components, return_plotlist = FALSE,
                                base_size = 12, ...) {
 
-  #//TODO: rewrite this function to make sure all components shown with their weights
+  # //TODO: rewrite this function to make sure all components shown with their weights
   stopifnot(is.logical(return_plotlist))
   requireNamespace("cowplot")
   cbPalette <-
@@ -147,14 +147,14 @@ show_cn_components <- function(features, components, return_plotlist = FALSE,
 
   # pois plots
   p_4 <- plotPoisDensity(features[["bp10MB"]]$value,
-                         comp_bp10MB,
-                         xlab = "Breakpoint count per 10MB",
-                         max_value = 10
+    comp_bp10MB,
+    xlab = "Breakpoint count per 10MB",
+    max_value = 10
   )
   p_5 <- plotPoisDensity(features[["bpchrarm"]]$value,
-                         comp_bpchrarm,
-                         xlab = "Breakpoint count per arm",
-                         max_value = 50
+    comp_bpchrarm,
+    xlab = "Breakpoint count per arm",
+    max_value = 50
   )
   p_6 <- plotPoisDensity(features[["osCN"]]$value, comp_osCN, xlab = "Oscilating CN chain length")
 
@@ -166,16 +166,15 @@ show_cn_components <- function(features, components, return_plotlist = FALSE,
   }
 
   p <- cowplot::plot_grid(p_1,
-                          p_2,
-                          p_3,
-                          p_4,
-                          p_5,
-                          p_6,
-                          nrow = 2,
-                          align = "hv",
-                          ...
+    p_2,
+    p_3,
+    p_4,
+    p_5,
+    p_6,
+    nrow = 2,
+    align = "hv",
+    ...
   )
   p[["parameters"]] <- parameters
   p
 }
-
