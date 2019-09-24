@@ -82,4 +82,6 @@ Mayakonda, Anand, et al. "Maftools: efficient and comprehensive analysis
 
 &copy; 2019 Shixiang Wang, Xue-Song Liu
 
-**This software is free to researchers and not commercially available without consent**.
+The software is made available for non commercial research purposes only under the [MIT](LICENSE.md).
+However, notwithstanding any provision of the MIT License, the software currently may not be used for commercial purposes
+without explicit written permission after contacting Shixiang Wang <wangshx@shanghaitech.edu.cn>.
