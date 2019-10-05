@@ -16,6 +16,7 @@
 #'   package = "sigminer", mustWork = TRUE
 #' ))
 #' show_cn_components(cn_prepare$features, cn_prepare$components)
+#'
 show_cn_components <- function(features, components, return_plotlist = FALSE,
                                base_size = 12, ...) {
 
@@ -147,14 +148,14 @@ show_cn_components <- function(features, components, return_plotlist = FALSE,
 
   # pois plots
   p_4 <- plotPoisDensity(features[["bp10MB"]]$value,
-    comp_bp10MB,
-    xlab = "Breakpoint count per 10MB",
-    max_value = 10
+                         comp_bp10MB,
+                         xlab = "Breakpoint count per 10MB",
+                         max_value = 10
   )
   p_5 <- plotPoisDensity(features[["bpchrarm"]]$value,
-    comp_bpchrarm,
-    xlab = "Breakpoint count per arm",
-    max_value = 50
+                         comp_bpchrarm,
+                         xlab = "Breakpoint count per arm",
+                         max_value = 50
   )
   p_6 <- plotPoisDensity(features[["osCN"]]$value, comp_osCN, xlab = "Oscilating CN chain length")
 
@@ -166,15 +167,153 @@ show_cn_components <- function(features, components, return_plotlist = FALSE,
   }
 
   p <- cowplot::plot_grid(p_1,
-    p_2,
-    p_3,
-    p_4,
-    p_5,
-    p_6,
-    nrow = 2,
-    align = "hv",
-    ...
+                          p_2,
+                          p_3,
+                          p_4,
+                          p_5,
+                          p_6,
+                          nrow = 2,
+                          align = "hv",
+                          ...
   )
   p[["parameters"]] <- parameters
   p
+}
+
+
+
+show_cn_components2 <- function(parameters, features=NULL,
+                               show_weights=TRUE,
+                               sample_size = 1000L,
+                               return_plotlist = FALSE,
+                               base_size = 12, ...) {
+
+  stopifnot(is.logical(return_plotlist))
+  dat = parameters %>%
+    dplyr::group_by(.data$feature) %>%
+    dplyr::mutate(weights = .data$n_obs / sum(.data$n_obs)) %>%
+    dplyr::ungroup()
+
+  if (!show_weights) {
+    dat$weights = 1
+  }
+
+  requireNamespace("cowplot")
+
+  cbPalette <-
+    c(
+      RColorBrewer::brewer.pal(8, "Dark2"),
+      RColorBrewer::brewer.pal(9, "Set1"),
+      "black"
+    )
+
+  plot_mix_comp_norm = function(x, mean, sd, weight) {
+    weight * dnorm(x, mean, sd)
+  }
+  plot_mix_comp_pois = function(x, mean, weight) {
+    weight * dpois(x, mean)
+  }
+
+  if (is.null(features)) {
+    zz = dat %>%
+      dplyr::mutate(n = sample_size) %>%
+      dplyr::select(.data$feature, .data$dist, .data$mean, .data$sd, .data$n) %>%
+      purrr::pmap_df(function(feature, dist, mean, sd, n) {
+        if (dist == "norm") {
+          x = rnorm(n = n, mean = mean, sd = sd)
+        } else {
+          x = rpois(n = n, lambda = mean)
+        }
+        dplyr::tibble(
+          feature = feature,
+          x = list(x)
+        )
+      }) %>%
+      dplyr::group_by(.data$feature) %>%
+      dplyr::summarise(x = list(Reduce(c, .data$x)))
+    x = zz$x
+    names(x) = zz$feature
+    rm(zz)
+  } else {
+    x <- lapply(features, function(x) {
+       as.numeric(x$value)
+    })
+  }
+
+  plotlist = list()
+  for (ft in unique(dat$feature)) {
+    x_value = x[[ft]]
+    x_df = dat %>% dplyr::filter(.data$feature == ft)
+    p = ggplot(
+      data = data.frame(x = x_value),
+      aes(x)
+    ) + ylab("")
+    for (i in seq_len(nrow(x_df))) {
+      if (unique(x_df$dist) == "pois") {
+        p <- p + stat_function(
+          fun = plot_mix_comp_pois,
+          args = list(
+            x_df$mean[i],
+            x_df$weights[i]
+          ),
+          color = cbPalette[i]
+        )
+      } else {
+        p <- p + stat_function(
+          fun = plot_mix_comp_norm,
+          args = list(
+            x_df$mean[i],
+            x_df$sd[i],
+            x_df$weights[i]
+          ),
+          color = cbPalette[i]
+        )
+      }
+    }
+    p <- p + xlab(ft) + cowplot::theme_cowplot(font_size = base_size)
+    plotlist[[ft]] = p
+  }
+
+  cowplot::plot_grid(plotlist = plotlist,
+                     nrow = 2,
+                     align = "hv",
+                     ...
+  )
+
+  # # norm plots
+  # p_1 <- plotNormDensity(log10(features[["segsize"]]$value), comp_segsize, xlab = "Segment size (log10 based)")
+  # p_2 <- plotNormDensity(features[["copynumber"]]$value, comp_copynumber, xlab = "Copy number")
+  # p_3 <- plotNormDensity(features[["changepoint"]]$value, comp_changepoint, xlab = "Copy-number changepoint")
+  #
+  # # pois plots
+  # p_4 <- plotPoisDensity(features[["bp10MB"]]$value,
+  #   comp_bp10MB,
+  #   xlab = "Breakpoint count per 10MB",
+  #   max_value = 10
+  # )
+  # p_5 <- plotPoisDensity(features[["bpchrarm"]]$value,
+  #   comp_bpchrarm,
+  #   xlab = "Breakpoint count per arm",
+  #   max_value = 50
+  # )
+  # p_6 <- plotPoisDensity(features[["osCN"]]$value, comp_osCN, xlab = "Oscilating CN chain length")
+  #
+  # if (return_plotlist) {
+  #   return(list(
+  #     segsize = p_1, copynumber = p_2, changepoint = p_3,
+  #     bp10MB = p_4, bpchrarm = p_5, osCN = p_6, parameters = parameters
+  #   ))
+  # }
+  #
+  # p <- cowplot::plot_grid(p_1,
+  #   p_2,
+  #   p_3,
+  #   p_4,
+  #   p_5,
+  #   p_6,
+  #   nrow = 2,
+  #   align = "hv",
+  #   ...
+  # )
+  # p
 }
