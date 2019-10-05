@@ -8,19 +8,23 @@ cn_estimate <- sig_estimate(cn_prepare$nmf_matrix,
 )
 
 
-# Rewriting show cn components --------------------------------------------
 
-# Load copy number prepare object
-load(system.file("extdata", "toy_copynumber_prepare.RData",
+## It seems parallel computation makes error on Windows
+
+# Load copy number object
+load(system.file("extdata", "toy_copynumber.RData",
                  package = "sigminer", mustWork = TRUE
 ))
-zz1 = show_cn_components(cn_prepare$features, cn_prepare$components)
+# Prepare copy number signature analysis
+cn_prepare <- derive(cn)
 
-zz2 = show_cn_components2(cn_prepare$parameters)
-zz3 = show_cn_components2(cn_prepare$parameters, cn_prepare$features, show_weights = F)
-data = cn_prepare$parameters
 
-# 首先按照分布进行取样
-# n_obs 用来计算权重
-sample_size = 1000
-set.seed(1234)
+# Prepare mutational signature analysis
+laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
+laml <- read_maf(maf = laml.maf)
+library(BSgenome.Hsapiens.UCSC.hg19)
+mt_prepare <- derive(
+  laml,
+  ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
+  prefix = "chr", add = TRUE, useSyn = TRUE
+)

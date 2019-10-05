@@ -116,16 +116,27 @@ fitComponent <-
             control = control
           )
       } else {
-        fit <-
-          stepFlexmix_v2(
-            dat ~ 1,
-            model = flexmix::FLXMCnorm1(),
-            k = min_comp:max_comp,
-            nrep = nrep,
-            control = control,
-            cores = cores
-          )
-
+        if (Sys.info()['sysname'] == 'Windows') {
+          fit <-
+            flexmix::stepFlexmix(
+              dat ~ 1,
+              model = flexmix::FLXMCnorm1(),
+              k = min_comp:max_comp,
+              control = control
+            )
+        } else {
+          # I don't know why this cannot work on windows
+          # so i make a workaround using code above
+          fit <-
+            stepFlexmix_v2(
+              dat ~ 1,
+              model = flexmix::FLXMCnorm1(),
+              k = min_comp:max_comp,
+              nrep = nrep,
+              control = control,
+              cores = cores
+            )
+        }
         if (inherits(fit, "stepFlexmix")) {
           fit <- recur_fit_component(
             fit = fit, dist = dist,
@@ -145,15 +156,26 @@ fitComponent <-
             control = control
           )
       } else {
-        fit <-
-          stepFlexmix_v2(
-            dat ~ 1,
-            model = flexmix::FLXMCmvpois(),
-            k = min_comp:max_comp,
-            nrep = nrep,
-            control = control,
-            cores = cores
-          )
+        if (Sys.info()['sysname'] == 'Windows') {
+          fit <-
+            flexmix::stepFlexmix(
+              dat ~ 1,
+              model = flexmix::FLXMCmvpois(),
+              k = min_comp:max_comp,
+              control = control
+            )
+        } else {
+          fit <-
+            stepFlexmix_v2(
+              dat ~ 1,
+              model = flexmix::FLXMCmvpois(),
+              k = min_comp:max_comp,
+              nrep = nrep,
+              control = control,
+              cores = cores
+            )
+        }
+
         if (inherits(fit, "stepFlexmix")) {
           fit <- recur_fit_component(
             fit = fit, dist = dist,
