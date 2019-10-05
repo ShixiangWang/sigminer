@@ -4,14 +4,14 @@
 \alias{show_cn_components}
 \title{Show Mixture Fit Model Components}
 \usage{
-show_cn_components(features, components, return_plotlist = FALSE,
-  base_size = 12, ...)
+show_cn_components(parameters, show_weights = TRUE,
+  return_plotlist = FALSE, base_size = 12, ...)
 }
 \arguments{
-\item{features}{a \code{list} generate from \link{derive} function.}
-
-\item{components}{a \code{list} contain flexmix object of copy-number features, obtain this
+\item{parameters}{a \code{data.frame} contain parameter components, obtain this
 from \link{derive} function.}
+
+\item{show_weights}{default is \code{TRUE}, show weights for each component.}
 
 \item{return_plotlist}{if \code{TRUE}, return a list of ggplot objects but a combined plot.}
 
@@ -30,7 +30,8 @@ Show mixture fit model components for copy number data.
 load(system.file("extdata", "toy_copynumber_prepare.RData",
   package = "sigminer", mustWork = TRUE
 ))
-show_cn_components(cn_prepare$features, cn_prepare$components)
+show_cn_components(cn_prepare$parameters)
+show_cn_components(cn_prepare$parameters, show_weights = FALSE)
 }
 \author{
 Shixiang Wang \href{mailto:w_shixiang@163.com}{w_shixiang@163.com}

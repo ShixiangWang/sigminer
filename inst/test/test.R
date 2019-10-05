@@ -16,7 +16,7 @@ load(system.file("extdata", "toy_copynumber_prepare.RData",
 ))
 zz1 = show_cn_components(cn_prepare$features, cn_prepare$components)
 
-zz2 = show_cn_components2(cn_prepare$parameters, cn_prepare$features)
+zz2 = show_cn_components2(cn_prepare$parameters)
 zz3 = show_cn_components2(cn_prepare$parameters, cn_prepare$features, show_weights = F)
 data = cn_prepare$parameters
 

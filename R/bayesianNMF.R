@@ -35,7 +35,7 @@
 # see J Kim, Mouw K, P Polak et al, Somatic ERCC2 mutations are associated with a distinct genomic signature in urothelial tumors
 # Nat. Genet. (2016) DOI: 10.1038/ng.3557
 # For details on the original algorithms
-# see Tan, V.Y. & Févotte, C. Automatic relevance determination in nonnegative matrix factorization with the beta-divergence.
+# see Tan, V.Y. & Fe<U+0301>votte, C. Automatic relevance determination in nonnegative matrix factorization with the beta-divergence.
 # IEEE Trans. Pattern Anal. Mach. Intell. 35, 1592–1605 (2013).
 #
 # They are modified by me for better used in sigminer

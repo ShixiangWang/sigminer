@@ -34,6 +34,9 @@
 #' @importFrom furrr future_pmap
 #' @importFrom foreach foreach %dopar%
 #' @importFrom doParallel registerDoParallel
+#' @importFrom graphics hist
+#' @importFrom stats as.formula fisher.test pairwise.table quantile setNames
+#' @importFrom utils data download.file head packageDescription
 #' @import flexmix
 #' @import ggplot2
 #' @name sigminer

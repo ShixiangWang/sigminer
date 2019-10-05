@@ -149,7 +149,7 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
       params$class <- factor(levels(mat[["class"]])[1], levels = levels(mat[["class"]]))
       p <- p + geom_text(aes(
         x = .data$components, y = Inf,
-        label = ifelse(dist == "norm",
+        label = ifelse(.data$dist == "norm",
           paste0(" \u03BC=", signif(.data$mean, digits)),
           paste0(" \u03BB=", signif(.data$mean, digits))
         )
