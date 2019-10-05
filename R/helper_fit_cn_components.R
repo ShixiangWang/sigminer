@@ -17,8 +17,12 @@ fitComponent <-
     set.seed(seed, kind = "L'Ecuyer-CMRG")
 
     stepFlexmix_v2 <- function(..., k = NULL, nrep = 3, verbose = TRUE, drop = TRUE,
-                                   unique = FALSE, cores = 1) {
-      doParallel::registerDoParallel(cores = cores)
+                                   unique = FALSE, cores = 1, seed = 123456) {
+      # doParallel doest not work in Windows
+      # doParallel::registerDoParallel(cores = cores)
+      doFuture::registerDoFuture()
+      future::plan("multiprocess", workers = cores)
+
       MYCALL <- match.call()
       MYCALL1 <- MYCALL
       bestFlexmix <- function(...) {
@@ -53,7 +57,11 @@ fitComponent <-
       else {
         k <- as.integer(k)
         # logLiks <- matrix(nrow = length(k), ncol = nrep)
-        z_list <- foreach(n = seq_along(k)) %dopar% {
+        z_list <- foreach(
+          n = seq_along(k),
+          .export = c("k", "z", "MYCALL1", "nrep", "verbose", "bestFlexmix", "seed", "...")
+        ) %dopar% {
+          set.seed(seed, kind = "L'Ecuyer-CMRG")
           ns <- as.character(k[n])
           if (verbose) {
             cat(k[n], ":")
@@ -116,27 +124,16 @@ fitComponent <-
             control = control
           )
       } else {
-        if (Sys.info()['sysname'] == 'Windows') {
-          fit <-
-            flexmix::stepFlexmix(
-              dat ~ 1,
-              model = flexmix::FLXMCnorm1(),
-              k = min_comp:max_comp,
-              control = control
-            )
-        } else {
-          # I don't know why this cannot work on windows
-          # so i make a workaround using code above
-          fit <-
-            stepFlexmix_v2(
-              dat ~ 1,
-              model = flexmix::FLXMCnorm1(),
-              k = min_comp:max_comp,
-              nrep = nrep,
-              control = control,
-              cores = cores
-            )
-        }
+        fit <-
+          stepFlexmix_v2(
+            dat ~ 1,
+            model = flexmix::FLXMCnorm1(),
+            k = min_comp:max_comp,
+            nrep = nrep,
+            control = control,
+            cores = cores,
+            seed = 123456
+          )
         if (inherits(fit, "stepFlexmix")) {
           fit <- recur_fit_component(
             fit = fit, dist = dist,
@@ -156,26 +153,16 @@ fitComponent <-
             control = control
           )
       } else {
-        if (Sys.info()['sysname'] == 'Windows') {
-          fit <-
-            flexmix::stepFlexmix(
-              dat ~ 1,
-              model = flexmix::FLXMCmvpois(),
-              k = min_comp:max_comp,
-              control = control
-            )
-        } else {
-          fit <-
-            stepFlexmix_v2(
-              dat ~ 1,
-              model = flexmix::FLXMCmvpois(),
-              k = min_comp:max_comp,
-              nrep = nrep,
-              control = control,
-              cores = cores
-            )
-        }
-
+        fit <-
+          stepFlexmix_v2(
+            dat ~ 1,
+            model = flexmix::FLXMCmvpois(),
+            k = min_comp:max_comp,
+            nrep = nrep,
+            control = control,
+            cores = cores,
+            seed = 123456
+          )
         if (inherits(fit, "stepFlexmix")) {
           fit <- recur_fit_component(
             fit = fit, dist = dist,
