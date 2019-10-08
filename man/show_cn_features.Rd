@@ -4,13 +4,15 @@
 \alias{show_cn_features}
 \title{Show Copy Number Feature Distributions}
 \usage{
-show_cn_features(features, ylab = NULL, return_plotlist = FALSE,
-  base_size = 12, ...)
+show_cn_features(features, ylab = NULL, log_segsize = TRUE,
+  return_plotlist = FALSE, base_size = 12, ...)
 }
 \arguments{
 \item{features}{a \code{list} generate from \link{derive} function.}
 
 \item{ylab}{lab of y axis.}
+
+\item{log_segsize}{default is \code{TRUE}, show \code{log10} based segsize.}
 
 \item{return_plotlist}{if \code{TRUE}, return a list of ggplot objects but a combined plot.}
 

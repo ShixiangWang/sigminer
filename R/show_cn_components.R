@@ -5,6 +5,8 @@
 #' @inheritParams show_cn_features
 #' @param parameters a `data.frame` contain parameter components, obtain this
 #' from [derive] function.
+#' @param auto_transform default is `TRUE`, it will auto increase the `SD` for components
+#' for showing them better in the plot.
 #' @param show_weights default is `TRUE`, show weights for each component.
 #' @param ... other options pass to \code{\link[cowplot]{plot_grid}} function of **cowplot** package.
 #' @inheritParams show_cn_distribution
@@ -20,6 +22,8 @@
 #' show_cn_components(cn_prepare$parameters, show_weights = FALSE)
 show_cn_components <- function(parameters,
                                show_weights = TRUE,
+                               log_segsize = TRUE,
+                               auto_transform = TRUE,
                                return_plotlist = FALSE,
                                base_size = 12, ...) {
   stopifnot(is.logical(return_plotlist))
@@ -29,10 +33,42 @@ show_cn_components <- function(parameters,
     dplyr::ungroup()
 
   ft_order <- c("segsize", "copynumber", "changepoint", "bp10MB", "bpchrarm", "osCN")
-  ft_annot <- c(
-    "Segment size", "Copy number", "Copy number changepoint", "Breakpoint count per 10MB",
-    "Breakpoint count per chr arm", "Oscilating CN chain length"
-  )
+
+  if (log_segsize) {
+    dat$mean[dat$feature == "segsize"] = log10(dat$mean[dat$feature == "segsize"])
+    dat$sd[dat$feature == "segsize"] = log10(dat$sd[dat$feature == "segsize"])
+    ft_annot <- c(
+      "Segment size (log10 based)", "Copy number", "Copy number changepoint", "Breakpoint count per 10MB",
+      "Breakpoint count per chr arm", "Oscilating CN chain length"
+    )
+  } else {
+    ft_annot <- c(
+      "Segment size", "Copy number", "Copy number changepoint", "Breakpoint count per 10MB",
+      "Breakpoint count per chr arm", "Oscilating CN chain length"
+    )
+  }
+
+  if (auto_transform) {
+    # Make components with very small SD and norm distribution
+    # have two orders of magnitude
+    # smaller than Mean
+    .transform = function(mean, sd) {
+      tms = mean / sd
+      ifelse(
+        tms > 1000,
+        sd * 10^ceiling(log10(tms) - 2),
+        sd
+      )
+    }
+
+    dat = dat %>%
+      dplyr::mutate(
+        sd = ifelse(.data$dist == "norm",
+                    .transform(.data$mean, .data$sd),
+                    .data$sd)
+      )
+  }
+
   annot_df <- dplyr::tibble(
     feature = ft_order,
     annotation = ft_annot

@@ -4,14 +4,20 @@
 \alias{show_cn_components}
 \title{Show Mixture Fit Model Components}
 \usage{
-show_cn_components(parameters, show_weights = TRUE,
-  return_plotlist = FALSE, base_size = 12, ...)
+show_cn_components(parameters, show_weights = TRUE, log_segsize = TRUE,
+  auto_transform = TRUE, return_plotlist = FALSE, base_size = 12,
+  ...)
 }
 \arguments{
 \item{parameters}{a \code{data.frame} contain parameter components, obtain this
 from \link{derive} function.}
 
 \item{show_weights}{default is \code{TRUE}, show weights for each component.}
+
+\item{log_segsize}{default is \code{TRUE}, show \code{log10} based segsize.}
+
+\item{auto_transform}{default is \code{TRUE}, it will auto increase the \code{SD} for components
+for showing them better in the plot.}
 
 \item{return_plotlist}{if \code{TRUE}, return a list of ggplot objects but a combined plot.}
 
