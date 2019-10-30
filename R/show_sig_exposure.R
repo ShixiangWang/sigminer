@@ -2,6 +2,9 @@
 #'
 #' Currently support copy number signatures and mutational signatures.
 #' @inheritParams show_sig_profile
+#' @param Signature a `Signature` object obtained either from [sig_extract] or [sig_auto_extract],
+#' or just a raw exposure matrix with column representing samples (patients) and row
+#' representing signatures (row names must start with 'Sig').
 #' @param rm_space default is `FALSE`. If `TRUE`, it will remove border color
 #' and expand the bar width to 1. This is useful when the sample size is big.
 #' @param hide_samps if `TRUE`, hide sample names.
