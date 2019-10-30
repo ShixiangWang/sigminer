@@ -14,9 +14,8 @@
 #' ))
 #' # Get signature exposure
 #' get_sig_exposure(sig2)
-#' get_sig_exposure(sig2, type = 'relative')
-
-get_sig_exposure = function(Signature, type = c("absolute", "relative")) {
+#' get_sig_exposure(sig2, type = "relative")
+get_sig_exposure <- function(Signature, type = c("absolute", "relative")) {
   if (class(Signature) == "Signature") {
     h <- Signature$Exposure
   } else if (is.matrix(Signature)) {
@@ -32,18 +31,18 @@ get_sig_exposure = function(Signature, type = c("absolute", "relative")) {
     stop("Rownames or Colnames cannot be NULL!")
   }
 
-  type = match.arg(type)
-  if (type == 'absolute') {
-    h = t(h) %>%
+  type <- match.arg(type)
+  if (type == "absolute") {
+    h <- t(h) %>%
       as.data.frame() %>%
-      tibble::rownames_to_column(var = 'sample') %>%
+      tibble::rownames_to_column(var = "sample") %>%
       dplyr::as_tibble()
     return(h)
   } else {
     h.norm <- apply(h, 2, function(x) x / sum(x))
-    h.norm = t(h.norm) %>%
+    h.norm <- t(h.norm) %>%
       as.data.frame() %>%
-      tibble::rownames_to_column(var = 'sample') %>%
+      tibble::rownames_to_column(var = "sample") %>%
       dplyr::as_tibble()
     return(h.norm)
   }

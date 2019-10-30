@@ -28,8 +28,8 @@ get_tidy_association <- function(cor_res) {
   res[["data"]] <- dplyr::bind_rows(tidy, .id = "data_type") %>%
     tidyr::spread_(key_col = "data_type", value_col = "value") %>%
     dplyr::mutate(
-      score = ifelse(p == 0, -log10(min(p[p != 0], na.rm = TRUE)), -log10(p)),
-      score = ifelse(measure < 0, -score, score)
+      score = ifelse(.data$p == 0, -log10(min(.data$p[.data$p != 0], na.rm = TRUE)), -log10(.data$p)),
+      score = ifelse(.data$measure < 0, -score, score)
     )
   res
 }

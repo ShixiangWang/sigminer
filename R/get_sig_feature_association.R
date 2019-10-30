@@ -3,9 +3,9 @@
 #' See [get_tidy_association] for cleaning association result.
 #' @param data a `data.frame` contains signature exposures and other features
 #' @param cols_to_sigs colnames for signature exposure
-#' @param cols_to_summary colnames for other features
+#' @param cols_to_features colnames for other features
 #' @param type a character vector contains 'ca' for categorical variable and 'co' for continuous variable,
-#' it must have same length as `cols_to_summary`.
+#' it must have same length as `cols_to_features`.
 #' @param method_co method for continuous variable, default is "spearman", could also be "pearson" and "kendall".
 #' @param method_ca method for categorical variable, default is "wilcox.test"
 #' @param min_n a minimal fraction (e.g. 0.01) or a integer number (e.g. 10) for filtering some variables with few positive events.
@@ -16,11 +16,11 @@
 #' @return a `list`
 #' @export
 #' @seealso [get_tidy_association]
-get_sig_feature_association <- function(data, cols_to_sigs, cols_to_summary,
-                                      type = "ca",
-                                      method_co = c("spearman", "pearson", "kendall"),
-                                      method_ca = stats::wilcox.test,
-                                      min_n = 0.01, verbose = FALSE, ...) {
+get_sig_feature_association <- function(data, cols_to_sigs, cols_to_features,
+                                        type = "ca",
+                                        method_co = c("spearman", "pearson", "kendall"),
+                                        method_ca = stats::wilcox.test,
+                                        min_n = 0.01, verbose = FALSE, ...) {
   if (!all(type %in% c("ca", "co"))) {
     stop("all elements in 'type' must be 'ca' for 'categorical' variable and 'co' for 'continuous' variable.")
   }
@@ -30,11 +30,11 @@ get_sig_feature_association <- function(data, cols_to_sigs, cols_to_summary,
 
   if (!dplyr::is.tbl(data)) data <- dplyr::as_tibble(data)
 
-  data <- data[, c(cols_to_sigs, cols_to_summary)]
+  data <- data[, c(cols_to_sigs, cols_to_features)]
 
 
-  cols_co <- cols_to_summary[type == "co"]
-  cols_ca <- cols_to_summary[type == "ca"]
+  cols_co <- cols_to_features[type == "co"]
+  cols_ca <- cols_to_features[type == "ca"]
 
   if (verbose) message("-> Detecting and transforming possibly ordinal variables...")
   data <- data %>%
@@ -141,11 +141,11 @@ get_sig_feature_association <- function(data, cols_to_sigs, cols_to_summary,
     res <- lapply(tt, function(x) {
       x %>%
         dplyr::mutate(
-          measure = purrr::map_dbl(model, ~ ifelse(all(is.na(.)), NA,
-                                                   ifelse(is.null(.$measure), NA, diff(.$measure))
+          measure = purrr::map_dbl(.data$model, ~ ifelse(all(is.na(.)), NA,
+            ifelse(is.null(.$measure), NA, diff(.$measure))
           )),
-          count = purrr::map_int(model, ~ ifelse(all(is.na(.)), NA, .$counts)),
-          p = purrr::map_dbl(model, ~ ifelse(all(is.na(.)), NA, .$p.value))
+          count = purrr::map_int(.data$model, ~ ifelse(all(is.na(.)), NA, .$counts)),
+          p = purrr::map_dbl(.data$model, ~ ifelse(all(is.na(.)), NA, .$p.value))
         )
     })
     if (verbose) message("--> done")
@@ -188,18 +188,18 @@ get_sig_feature_association <- function(data, cols_to_sigs, cols_to_summary,
 
   corr_co <- list()
   corr_co$measure <- cor(data_co,
-                         use = "pairwise.complete.obs",
-                         method = method_co
+    use = "pairwise.complete.obs",
+    method = method_co
   )[
     cols_to_sigs,
     c(cols_to_sigs, cols_co)
-    ] %>%
+  ] %>%
     signif(digits = 3)
   corr_co$count <- pairwise_count(data_co)[cols_to_sigs, c(cols_to_sigs, cols_co)]
   corr_co$p <- matrix_cortest(data_co, method = method_co)[
     cols_to_sigs,
     c(cols_to_sigs, cols_co)
-    ] %>%
+  ] %>%
     signif(digits = 3)
 
   if (verbose) {

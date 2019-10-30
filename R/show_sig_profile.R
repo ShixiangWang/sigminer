@@ -80,12 +80,13 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
       axis.text.x = element_text(
         angle = 60, vjust = 1,
         hjust = 1, size = (base_size - 4) * scale,
-        color = 'black'
+        color = "black"
       ),
       axis.text.y = element_text(
         hjust = 0.5,
         size = base_size * scale,
-        color = 'black')
+        color = "black"
+      )
     )
   # <<<<<<<<<<<<<<<<< Setting theme
 

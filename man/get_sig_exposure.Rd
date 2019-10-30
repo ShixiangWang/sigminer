@@ -26,5 +26,5 @@ load(system.file("extdata", "toy_mutational_signature.RData",
 ))
 # Get signature exposure
 get_sig_exposure(sig2)
-get_sig_exposure(sig2, type = 'relative')
+get_sig_exposure(sig2, type = "relative")
 }

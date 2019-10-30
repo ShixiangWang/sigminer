@@ -35,8 +35,8 @@ show_cn_components <- function(parameters,
   ft_order <- c("segsize", "copynumber", "changepoint", "bp10MB", "bpchrarm", "osCN")
 
   if (log_segsize) {
-    dat$mean[dat$feature == "segsize"] = log10(dat$mean[dat$feature == "segsize"])
-    dat$sd[dat$feature == "segsize"] = log10(dat$sd[dat$feature == "segsize"])
+    dat$mean[dat$feature == "segsize"] <- log10(dat$mean[dat$feature == "segsize"])
+    dat$sd[dat$feature == "segsize"] <- log10(dat$sd[dat$feature == "segsize"])
     ft_annot <- c(
       "Segment size (log10 based)", "Copy number", "Copy number changepoint", "Breakpoint count per 10MB",
       "Breakpoint count per chr arm", "Oscilating CN chain length"
@@ -52,8 +52,8 @@ show_cn_components <- function(parameters,
     # Make components with very small SD and norm distribution
     # have two orders of magnitude
     # smaller than Mean
-    .transform = function(mean, sd) {
-      tms = mean / sd
+    .transform <- function(mean, sd) {
+      tms <- mean / sd
       ifelse(
         tms > 1000,
         sd * 10^ceiling(log10(tms) - 2),
@@ -61,11 +61,12 @@ show_cn_components <- function(parameters,
       )
     }
 
-    dat = dat %>%
+    dat <- dat %>%
       dplyr::mutate(
         sd = ifelse(.data$dist == "norm",
-                    .transform(.data$mean, .data$sd),
-                    .data$sd)
+          .transform(.data$mean, .data$sd),
+          .data$sd
+        )
       )
   }
 

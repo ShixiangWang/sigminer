@@ -4,7 +4,7 @@
 \alias{get_sig_feature_association}
 \title{Calculate Association between Signature Exposures and Other Features}
 \usage{
-get_sig_feature_association(data, cols_to_sigs, cols_to_summary,
+get_sig_feature_association(data, cols_to_sigs, cols_to_features,
   type = "ca", method_co = c("spearman", "pearson", "kendall"),
   method_ca = stats::wilcox.test, min_n = 0.01, verbose = FALSE, ...)
 }
@@ -13,10 +13,10 @@ get_sig_feature_association(data, cols_to_sigs, cols_to_summary,
 
 \item{cols_to_sigs}{colnames for signature exposure}
 
-\item{cols_to_summary}{colnames for other features}
+\item{cols_to_features}{colnames for other features}
 
 \item{type}{a character vector contains 'ca' for categorical variable and 'co' for continuous variable,
-it must have same length as \code{cols_to_summary}.}
+it must have same length as \code{cols_to_features}.}
 
 \item{method_co}{method for continuous variable, default is "spearman", could also be "pearson" and "kendall".}
 

@@ -32,7 +32,6 @@ show_sig_exposure <- function(Signature,
                               font_scale = 1,
                               rm_space = FALSE,
                               hide_samps = TRUE) {
-
   if (class(Signature) == "Signature") {
     h <- Signature$Exposure
   } else if (is.matrix(Signature)) {
@@ -45,20 +44,22 @@ show_sig_exposure <- function(Signature,
   }
 
   h.norm <- apply(h, 2, function(x) x / sum(x))
-  h = as.data.frame(h)
-  h.norm = as.data.frame(h.norm)
+  h <- as.data.frame(h)
+  h.norm <- as.data.frame(h.norm)
 
   scale <- font_scale
 
   .theme_ss <- theme_bw(base_size = base_size) +
     theme(
       axis.text.x = element_text(
-        angle = 90, vjust = 0.5, color = 'black',
+        angle = 90, vjust = 0.5, color = "black",
         hjust = 1, size = (base_size - 2) * scale
       ),
-      axis.text.y = element_text(hjust = 0.5,
-                                 size = base_size * scale,
-                                 color = 'black'),
+      axis.text.y = element_text(
+        hjust = 0.5,
+        size = base_size * scale,
+        color = "black"
+      ),
       panel.grid.major = element_blank(),
       panel.grid.minor = element_blank()
     )
@@ -75,8 +76,8 @@ show_sig_exposure <- function(Signature,
 
   h$Signature <- rownames(h)
   h.norm$Signature <- rownames(h.norm)
-  x1 <- tidyr::gather(h, 'Sample', 'Exposure', -'Signature')
-  x2 <- tidyr::gather(h.norm, 'Sample', 'Exposure', -'Signature')
+  x1 <- tidyr::gather(h, "Sample", "Exposure", -"Signature")
+  x2 <- tidyr::gather(h.norm, "Sample", "Exposure", -"Signature")
 
   x1$class0 <- "Counts"
   x2$class0 <- "Fractions"
@@ -85,7 +86,7 @@ show_sig_exposure <- function(Signature,
   df$class0 <- factor(df$class0, c("Counts", "Fractions"))
   df$Sample <- factor(df$Sample, sample.ordering)
 
-  p <- ggplot(df, aes_string(x = 'Sample', y = 'Exposure', fill = 'Signature'))
+  p <- ggplot(df, aes_string(x = "Sample", y = "Exposure", fill = "Signature"))
   if (rm_space) {
     p <- p + geom_bar(stat = "identity", position = "stack", alpha = 0.9, width = 1)
   } else {
