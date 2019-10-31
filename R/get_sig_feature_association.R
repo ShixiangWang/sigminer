@@ -130,6 +130,7 @@ get_sig_feature_association <- function(data, cols_to_sigs, cols_to_features,
     if (verbose) message("--> building test models, be patient...")
     tt <- lapply(nest_df, function(x, .fun, min_n, ...) {
       x %>%
+        dplyr::ungroup() %>%
         dplyr::transmute(signature, model = purrr::map(data, test_fun, .fun = .fun, min_n = min_n))
     }, .fun = .fun, min_n = min_n, ...)
     if (verbose) message("--> done")
