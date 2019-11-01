@@ -4,14 +4,24 @@
 #' groups. This function takes `Signature` object as input
 #' and return the membership in each cluster.
 #'
+#' Users may find there are bigger differences between using method 'samples' and 'exposure' but
+#' they use a similar idear to find dominant signature, here goes the reason:
+#'
+#' Method 'samples' using data directly from NMF decomposition, this means the two matrix
+#' `W` (basis matrix or signature matrix) and `H` (coefficient matrix or exposure matrix) are
+#' the results of NMF. For method 'exposure', it uses the signature exposure loading matrix.
+#' In this situation, each signture represents a number of mutations (alterations)
+#  assigned to each signature, thus gives a more biologically meaningful result. More
+#' about implementation please see source code of [sig_extract()] function.
+#'
 #' @param Signature a `Signature` object obtained either from [sig_extract] or [sig_auto_extract].
-#' @param method grouping method, could be one of the following:
+#' @param method grouping method, more see details, could be one of the following:
 #' - 'exposure' - the default method, which assigns a sample into a group whose signature exposure
-#' is dominant
+#' is dominant.
 #' - 'consensus' - returns the cluster membership based on the hierarchical clustering of the consensus matrix,
 #' it can only be used for the result obtained by [sig_extract()] with multiple runs using **NMF** package.
-#' - 'samples' - returns the cluster membership based on the contribution of signature to each sample
-#' using **NMF** package.
+#' - 'samples' - returns the cluster membership based on the contribution of signature to each sample,
+#' it can only be used for the result obtained by [sig_extract()] using **NMF** package.
 #' @param match_consensus only used when the `method` is 'consensus'.
 #' If `TRUE`, the result will match order as shown in consensus map.
 #' @return a `data.table` object

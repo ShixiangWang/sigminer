@@ -10,14 +10,14 @@ get_groups(Signature, method = c("exposure", "consensus", "samples"),
 \arguments{
 \item{Signature}{a \code{Signature} object obtained either from \link{sig_extract} or \link{sig_auto_extract}.}
 
-\item{method}{grouping method, could be one of the following:
+\item{method}{grouping method, more see details, could be one of the following:
 \itemize{
 \item 'exposure' - the default method, which assigns a sample into a group whose signature exposure
-is dominant
+is dominant.
 \item 'consensus' - returns the cluster membership based on the hierarchical clustering of the consensus matrix,
 it can only be used for the result obtained by \code{\link[=sig_extract]{sig_extract()}} with multiple runs using \strong{NMF} package.
-\item 'samples' - returns the cluster membership based on the contribution of signature to each sample
-using \strong{NMF} package.
+\item 'samples' - returns the cluster membership based on the contribution of signature to each sample,
+it can only be used for the result obtained by \code{\link[=sig_extract]{sig_extract()}} using \strong{NMF} package.
 }}
 
 \item{match_consensus}{only used when the \code{method} is 'consensus'.
@@ -30,6 +30,16 @@ a \code{data.table} object
 One of key results from signature analysis is to cluster samples into different
 groups. This function takes \code{Signature} object as input
 and return the membership in each cluster.
+}
+\details{
+Users may find there are bigger differences between using method 'samples' and 'exposure' but
+they use a similar idear to find dominant signature, here goes the reason:
+
+Method 'samples' using data directly from NMF decomposition, this means the two matrix
+\code{W} (basis matrix or signature matrix) and \code{H} (coefficient matrix or exposure matrix) are
+the results of NMF. For method 'exposure', it uses the signature exposure loading matrix.
+In this situation, each signture represents a number of mutations (alterations)
+about implementation please see source code of \code{\link[=sig_extract]{sig_extract()}} function.
 }
 \examples{
 \donttest{
