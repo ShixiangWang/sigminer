@@ -41,7 +41,8 @@ get_groups <- function(Signature, method = "consensus", match_consensus = FALSE)
     data <- data.frame(
       sample = sampleNames(nmfObj),
       nmf_submethods = predict.consensus,
-      sil_width = signif(silhouette.consensus[, "sil_width"], 3)
+      sil_width = signif(silhouette.consensus[, "sil_width"], 3),
+      stringsAsFactors = FALSE
     )
     colnames(data) <- c("sample", "group", "silhouette_width")
     # If we want to display as we see in consensusmap, we just need to reoder everything.
@@ -61,12 +62,14 @@ get_groups <- function(Signature, method = "consensus", match_consensus = FALSE)
       sample = names(predict.samples$predict),
       group = predict.samples$predict,
       silhouette_width = signif(silhouette.samples[, "sil_width"], 3),
-      prob = signif(predict.samples$prob, 3)
+      prob = signif(predict.samples$prob, 3),
+      stringsAsFactors = FALSE
     )
   } else {
     stop(paste("Wrong method:", method, "Possible options are: 'consensus', 'samples' "))
   }
 
   data <- data.table::as.data.table(data)
+  data$group = as.character(data$group)
   return(data)
 }
