@@ -1,11 +1,17 @@
-#' Get Sample Groups from NMF Decomposition Information
+#' Get Sample Groups from Signature Decomposition Information
 #'
 #' One of key results from signature analysis is to cluster samples into different
 #' groups. This function takes `Signature` object as input
 #' and return the membership in each cluster.
 #'
 #' @param Signature a `Signature` object obtained either from [sig_extract] or [sig_auto_extract].
-#' @param method cluster method, could be 'consensus' or 'samples'.
+#' @param method grouping method, could be one of the following:
+#' - 'exposure' - the default method, which assigns a sample into a group whose signature exposure
+#' is dominant
+#' - 'consensus' - returns the cluster membership based on the hierarchical clustering of the consensus matrix,
+#' it can only be used for the result obtained by [sig_extract()] with multiple runs using **NMF** package.
+#' - 'samples' - returns the cluster membership based on the contribution of signature to each sample
+#' using **NMF** package.
 #' @param match_consensus only used when the `method` is 'consensus'.
 #' If `TRUE`, the result will match order as shown in consensus map.
 #' @return a `data.table` object
@@ -23,12 +29,13 @@
 #'
 #' # Methods 'consensus' and 'samples' are from NMF::predict()
 #' get_groups(sig)
-#' get_groups(sig, match_consensus = TRUE)
+#' get_groups(sig, method = "consensus", match_consensus = TRUE)
 #' get_groups(sig, method = "samples")
 #' }
 #' @seealso [NMF::predict()]
-get_groups <- function(Signature, method = "consensus", match_consensus = FALSE) {
+get_groups <- function(Signature, method = c("exposure", "consensus", "samples"), match_consensus = FALSE) {
   stopifnot(inherits(Signature, "Signature"))
+  method = match.arg(method)
 
   if (method == "consensus") {
     if (!"nmf_obj" %in% names(Signature$Raw)) {
@@ -51,6 +58,10 @@ get_groups <- function(Signature, method = "consensus", match_consensus = FALSE)
       sample.order <- attributes(predict.consensus)$iOrd
       data <- data[sample.order, ]
     }
+
+    data$group = as.character(data$group)
+    data = find_enriched_signature(data, Signature)
+
   } else if (method == "samples") {
     if (!"nmf_obj" %in% names(Signature$Raw)) {
       stop("Input Signature object does not contain NMF object, please select other methods")
@@ -65,11 +76,25 @@ get_groups <- function(Signature, method = "consensus", match_consensus = FALSE)
       prob = signif(predict.samples$prob, 3),
       stringsAsFactors = FALSE
     )
-  } else {
-    stop(paste("Wrong method:", method, "Possible options are: 'consensus', 'samples' "))
+
+    data$group = as.character(data$group)
+    data = find_enriched_signature(data, Signature)
+
+  } else if (method == "exposure") {
+    expo_df = get_sig_exposure(Signature, type = "relative")
+    data = expo_df %>%
+      tidyr::gather(key = 'Signature', value = 'Exposure', dplyr::starts_with("Sig")) %>%
+      dplyr::group_by(.data$sample) %>%
+      dplyr::top_n(1, .data$Exposure) %>%
+      dplyr::ungroup() %>%
+      dplyr::mutate(
+        enrich_sig = .data$Signature
+      ) %>%
+      dplyr::rename(group = .data$Signature,
+                    weight = .data$Exposure) %>%
+      dplyr::mutate(group = sub("Sig", "", .data$group))
   }
 
   data <- data.table::as.data.table(data)
-  data$group = as.character(data$group)
   return(data)
 }

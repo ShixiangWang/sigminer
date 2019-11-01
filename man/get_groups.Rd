@@ -2,14 +2,23 @@
 % Please edit documentation in R/get_groups.R
 \name{get_groups}
 \alias{get_groups}
-\title{Get Sample Groups from NMF Decomposition Information}
+\title{Get Sample Groups from Signature Decomposition Information}
 \usage{
-get_groups(Signature, method = "consensus", match_consensus = FALSE)
+get_groups(Signature, method = c("exposure", "consensus", "samples"),
+  match_consensus = FALSE)
 }
 \arguments{
 \item{Signature}{a \code{Signature} object obtained either from \link{sig_extract} or \link{sig_auto_extract}.}
 
-\item{method}{cluster method, could be 'consensus' or 'samples'.}
+\item{method}{grouping method, could be one of the following:
+\itemize{
+\item 'exposure' - the default method, which assigns a sample into a group whose signature exposure
+is dominant
+\item 'consensus' - returns the cluster membership based on the hierarchical clustering of the consensus matrix,
+it can only be used for the result obtained by \code{\link[=sig_extract]{sig_extract()}} with multiple runs using \strong{NMF} package.
+\item 'samples' - returns the cluster membership based on the contribution of signature to each sample
+using \strong{NMF} package.
+}}
 
 \item{match_consensus}{only used when the \code{method} is 'consensus'.
 If \code{TRUE}, the result will match order as shown in consensus map.}
@@ -34,7 +43,7 @@ sig <- sig_extract(cn_prepare$nmf_matrix, 2, nrun = 10)
 
 # Methods 'consensus' and 'samples' are from NMF::predict()
 get_groups(sig)
-get_groups(sig, match_consensus = TRUE)
+get_groups(sig, method = "consensus", match_consensus = TRUE)
 get_groups(sig, method = "samples")
 }
 }
