@@ -249,6 +249,8 @@ read_copynumber <- function(input,
 
     # detect and transform chromosome 23 to "X"
     temp[["chromosome"]] <- sub("23", "X", temp[["chromosome"]])
+    # detect and transform chromosome 24 to "Y"
+    temp[["chromosome"]] <- sub("24", "Y", temp[["chromosome"]])
 
     if (complement) {
       # complement value 2 (normal copy) to chromosome not called

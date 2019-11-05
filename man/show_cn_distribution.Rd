@@ -5,8 +5,7 @@
 \title{Show Copy Number Distribution either by Length or Chromosome}
 \usage{
 show_cn_distribution(data, rm_normal = TRUE, mode = c("ld", "cd"),
-  fill = FALSE, scale_chr = TRUE, genome_build = c("hg19", "hg38"),
-  base_size = 14)
+  fill = FALSE, scale_chr = TRUE, base_size = 14)
 }
 \arguments{
 \item{data}{a \link{CopyNumber} object.}
@@ -19,8 +18,6 @@ show_cn_distribution(data, rm_normal = TRUE, mode = c("ld", "cd"),
 
 \item{scale_chr}{logical. If \code{TRUE}, normalize count to per Megabase unit.}
 
-\item{genome_build}{genome build version, should be 'hg19' or 'hg38'.}
-
 \item{base_size}{overall font size.}
 }
 \value{
@@ -28,8 +25,8 @@ a \code{ggplot} object
 }
 \description{
 Visually summarize copy number distribution either by copy number segment length
-or chromosome. When input is a \link{CopyNumber} object, \code{genome_build} option will
-read from \code{genome_build} slot of object instead of using argument set in function.
+or chromosome. Input is a \link{CopyNumber} object, \code{genome_build} option will
+read from \code{genome_build} slot of object.
 }
 \examples{
 # Load copy number object

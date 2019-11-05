@@ -1,15 +1,14 @@
 #' Show Copy Number Distribution either by Length or Chromosome
 #'
 #' Visually summarize copy number distribution either by copy number segment length
-#' or chromosome. When input is a [CopyNumber] object, `genome_build` option will
-#' read from `genome_build` slot of object instead of using argument set in function.
+#' or chromosome. Input is a [CopyNumber] object, `genome_build` option will
+#' read from `genome_build` slot of object.
 #'
 #' @param data a [CopyNumber] object.
 #' @param rm_normal logical. Whether remove normal copy (i.e. "segVal" equals 2), default is `TRUE`.
 #' @param mode either "ld" for distribution by CN length or "cd" for distribution by chromosome.
 #' @param fill when `mode` is "cd" and `fill` is `TRUE`, plot percentage instead of count.
 #' @param scale_chr logical. If `TRUE`, normalize count to per Megabase unit.
-#' @inheritParams read_copynumber
 #' @param base_size overall font size.
 #' @author Shixiang Wang <w_shixiang@163.com>
 #' @return a `ggplot` object
@@ -28,30 +27,22 @@ show_cn_distribution <- function(data,
                                  mode = c("ld", "cd"),
                                  fill = FALSE,
                                  scale_chr = TRUE,
-                                 genome_build = c("hg19", "hg38"),
                                  base_size = 14) {
   stopifnot(
     is.logical(rm_normal),
-    is.data.frame(data) | inherits(data, "CopyNumber"),
+    inherits(data, "CopyNumber"),
     is.logical(fill)
   )
   mode <- match.arg(mode)
-
-  genome_build <- match.arg(genome_build)
-
   ggplot2::theme_set(cowplot::theme_cowplot(font_size = base_size))
 
-  if (inherits(data, "CopyNumber")) {
-    genome_build <- data@genome_build
-    data <- data@annotation
-  }
-
+  genome_build <- data@genome_build
+  data <- data@annotation
   # if remove normal copy number segments
   if (rm_normal) {
     if (!"segVal" %in% colnames(data)) {
       stop("'segVal' must be provided as a column.")
     }
-
     data <- data[segVal != 2]
   }
 
