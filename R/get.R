@@ -439,8 +439,7 @@ get_ArmLocation <- function(genome_build = c("hg19", "hg38")) {
 # Get summary of copy number variation per sample ------------------------------------
 
 get_cnsummary_sample <- function(segTab, genome_build = c("hg19", "hg38"),
-                                 genome_measure = c("called", "wg"),
-                                 min_seg_len = 1000L) {
+                                 genome_measure = c("called", "wg")) {
   genome_build <- match.arg(genome_build)
   genome_measure <- match.arg(genome_measure)
 
