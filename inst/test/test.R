@@ -85,3 +85,10 @@ cn <- read_copynumber(segTabs,
                       seg_cols = c("chromosome", "start", "end", "segVal"),
                       genome_build = "hg19", complement = FALSE, verbose = TRUE
 )
+
+
+b <- ggplot(mtcars, aes(wt, mpg)) +
+  geom_point()
+df <- data.frame(x1 = 2.62, x2 = 3.57, y1 = 21.0, y2 = 15.0)
+b +
+  geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2, colour = "segment"), data = df)

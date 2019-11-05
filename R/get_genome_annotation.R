@@ -4,11 +4,10 @@
 #' 'centro_loc' for location of centromeres
 #' @param genome_build one of 'hg19', 'hg38'
 #' @param chrs chromosomes start with 'chr'
-#' @param rm_extra if `TRUE`, remove extra contigs
 #' @return a `data.frame` containing annotation data
 get_genome_annotation = function(data_type = c("chr_size", "centro_loc"),
                                  chrs = paste0("chr",c(1:22, "X", "Y")),
-                                 genome_build = c("hg19", "hg38"), rm_extra=TRUE) {
+                                 genome_build = c("hg19", "hg38")) {
 
   data_type = match.arg(data_type)
   genome_build = match.arg(genome_build)
