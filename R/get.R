@@ -19,32 +19,8 @@ get_features <- function(CN_data,
                          genome_build = c("hg19", "hg38")) {
   genome_build <- match.arg(genome_build)
   # get chromosome lengths and centromere locations
-  if (genome_build == "hg19") {
-    data("chromsize.hg19",
-      package = "sigminer",
-      envir = environment()
-    )
-    data("centromeres.hg19",
-      package = "sigminer",
-      envir = environment()
-    )
-    chrlen <- chromsize.hg19
-    centromeres <- centromeres.hg19
-  } else {
-    data("chromsize.hg38",
-      package = "sigminer",
-      envir = environment()
-    )
-    data("centromeres.hg38",
-      package = "sigminer",
-      envir = environment()
-    )
-    chrlen <- chromsize.hg38
-    centromeres <- centromeres.hg38
-  }
-
-  # only keep 1:22 and x, y
-  chrlen <- chrlen[chrlen$chrom %in% centromeres$chrom, ]
+  chrlen = get_genome_annotation(data_type = "chr_size", genome_build = genome_build)
+  centromeres = get_genome_annotation(data_type = "centro_loc", genome_build = genome_build)
 
   oplan <- future::plan()
   future::plan("multiprocess", workers = cores)
@@ -360,36 +336,8 @@ get_LengthFraction <- function(CN_data,
 get_ArmLocation <- function(genome_build = c("hg19", "hg38")) {
   genome_build <- match.arg(genome_build)
   # get chromosome lengths and centromere locations
-  if (genome_build == "hg19") {
-    data("chromsize.hg19",
-      package = "sigminer",
-      envir = environment()
-    )
-    data("centromeres.hg19",
-      package = "sigminer",
-      envir = environment()
-    )
-    chrlen <- chromsize.hg19
-    centromeres <- centromeres.hg19
-  } else {
-    data("chromsize.hg38",
-      package = "sigminer",
-      envir = environment()
-    )
-    data("centromeres.hg38",
-      package = "sigminer",
-      envir = environment()
-    )
-    chrlen <- chromsize.hg38
-    centromeres <- centromeres.hg38
-  }
-
-  # only keep 1:22 and x, y
-  chrlen <- chrlen[chrlen$chrom %in% centromeres$chrom, ]
-
-  # sort
-  chrlen <- chrlen[order(chrlen$chrom), ]
-  centromeres <- centromeres[order(centromeres$chrom), ]
+  chrlen = get_genome_annotation(data_type = "chr_size", genome_build = genome_build)
+  centromeres = get_genome_annotation(data_type = "centro_loc", genome_build = genome_build)
 
   # compute and get results
   res <- data.frame(
@@ -459,21 +407,9 @@ get_cnsummary_sample <- function(segTab, genome_build = c("hg19", "hg38"),
   autosome <- paste0("chr", 1:22)
 
   if (genome_measure == "wg") {
-    if (genome_build == "hg19") {
-      data("chromsize.hg19",
-        package = "sigminer",
-        envir = environment()
-      )
-      chrlen <- chromsize.hg19
-    } else {
-      data("chromsize.hg38",
-        package = "sigminer",
-        envir = environment()
-      )
-      chrlen <- chromsize.hg38
-    }
-
-    chrlen <- chrlen[chrlen[["chrom"]] %in% paste0("chr", 1:22), ]
+    chrlen = get_genome_annotation(data_type = "chr_size",
+                                   chrs = autosome,
+                                   genome_build = genome_build)
     total_size <- sum(chrlen[["size"]])
 
     seg_summary <- segTab %>%
@@ -503,12 +439,7 @@ get_cnsummary_sample <- function(segTab, genome_build = c("hg19", "hg38"),
 # Global variables --------------------------------------------------------
 
 utils::globalVariables(
-  c(
-    "centromeres.hg19",
-    "centromeres.hg38",
-    "chromsize.hg19",
-    "chromsize.hg38",
-    "i",
+  c("i",
     "chrom",
     "chromosome",
     "segVal"

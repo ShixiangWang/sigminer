@@ -3,9 +3,12 @@
 #' @param data_type 'chr_size' for chromosome size,
 #' 'centro_loc' for location of centromeres
 #' @param genome_build one of 'hg19', 'hg38'
+#' @param chrs chromosomes start with 'chr'
+#' @param rm_extra if `TRUE`, remove extra contigs
 #' @return a `data.frame` containing annotation data
 get_genome_annotation = function(data_type = c("chr_size", "centro_loc"),
-                                 genome_build = c("hg19", "hg38")) {
+                                 chrs = paste0("chr",c(1:22, "X", "Y")),
+                                 genome_build = c("hg19", "hg38"), rm_extra=TRUE) {
 
   data_type = match.arg(data_type)
   genome_build = match.arg(genome_build)
@@ -16,13 +19,17 @@ get_genome_annotation = function(data_type = c("chr_size", "centro_loc"),
            package = "sigminer",
            envir = environment()
       )
-      res <- chromsize.hg19
+      res <- chromsize.hg19 %>%
+        dplyr::filter(.data$chrom %in% chrs) %>%
+        dplyr::arrange(factor(.data$chrom, chrs))
     } else {
       data("chromsize.hg38",
            package = "sigminer",
            envir = environment()
       )
-      res <- chromsize.hg38
+      res <- chromsize.hg38 %>%
+        dplyr::filter(.data$chrom %in% chrs) %>%
+        dplyr::arrange(factor(.data$chrom, chrs))
     }
   } else {
     if (genome_build == "hg19") {
@@ -30,15 +37,27 @@ get_genome_annotation = function(data_type = c("chr_size", "centro_loc"),
            package = "sigminer",
            envir = environment()
       )
-      res <- chromsize.hg19
+      res <- centromeres.hg19 %>%
+        dplyr::filter(.data$chrom %in% chrs) %>%
+        dplyr::arrange(factor(.data$chrom, chrs))
     } else {
       data("centromeres.hg38",
            package = "sigminer",
            envir = environment()
       )
-      res <- chromsize.hg38
+      res <- centromeres.hg38 %>%
+        dplyr::filter(.data$chrom %in% chrs) %>%
+        dplyr::arrange(factor(.data$chrom, chrs))
     }
   }
 
   res
 }
+
+
+utils::globalVariables(
+  c("centromeres.hg19",
+    "centromeres.hg38",
+    "chromsize.hg19",
+    "chromsize.hg38")
+)

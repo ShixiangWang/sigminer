@@ -63,23 +63,11 @@ read_copynumber <- function(input,
   genome_measure <- match.arg(genome_measure)
 
   # get chromosome lengths
-  if (genome_build == "hg19") {
-    data("chromsize.hg19",
-      package = "sigminer",
-      envir = environment()
-    )
-    chrlen <- chromsize.hg19
-  } else {
-    data("chromsize.hg38",
-      package = "sigminer",
-      envir = environment()
-    )
-    chrlen <- chromsize.hg38
-  }
-
-  data.table::setDT(chrlen)
   valid_chr <- c(paste0("chr", 1:22), "chrX", "chrY")
-  chrlen <- chrlen[valid_chr, on = "chrom"]
+  chrlen <- get_genome_annotation(data_type = "chr_size",
+                                  chrs = valid_chr,
+                                  genome_build = genome_build)
+  data.table::setDT(chrlen)
 
   if (tryCatch(dir.exists(input), error = function(e) FALSE)) {
     if (verbose) message("Treat input as a directory...")
