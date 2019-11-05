@@ -18,7 +18,11 @@
 #' @export
 #'
 #' @examples
-#' print("hello")
+#' # Load copy number object
+#' load(system.file("extdata", "toy_copynumber.RData",
+#'   package = "sigminer", mustWork = TRUE
+#' ))
+#'
 show_cn_profile = function(data, samples=NULL,
                            chrs = paste0("chr",c(1:22, "X")),
                            genome_build = c("hg19", "hg38"),
@@ -49,10 +53,11 @@ show_cn_profile = function(data, samples=NULL,
   data = data[data$chromosome %in% chrs]
 
   # Get plot data
-  coord_df = build_chrom_coordinate(genome_build, chrs)
+  coord_df = build_chrom_coordinate(genome_build, chrs) %>%
+    dplyr::mutate(labels = sub("chr", "", .data$chrom))
   merge_df = dplyr::left_join(data, coord_df, by=c("chromosome"="chrom")) %>%
     dplyr::mutate(start = .data$x_start + .data$start - 1,
-                  end = .data$x_end + .data$end,
+                  end = .data$x_start + .data$end,
                   segType = dplyr::case_when(
                     .data$segVal > 2 ~ "Amp",
                     .data$segVal == 2 ~ "Normal",
@@ -62,11 +67,12 @@ show_cn_profile = function(data, samples=NULL,
   plot_df = merge_df %>% dplyr::filter(sample == "TCGA-A8-A07S-01A-11D-A036-01")
 
   ggplot() +
-    geom_segment(aes(x = .data$start, y = .data$segVal,
-                     xend = .data$end, yend = .data$segVal, color=.data$segType), data = plot_df) +
+    geom_segment(aes(x = .data$start, xend = .data$end,
+                     y = .data$segVal, yend = .data$segVal,
+                     color=.data$segType), data = plot_df) +
     geom_vline(aes(xintercept = .data$x_start), linetype="dotted", data = coord_df) +
     geom_vline(xintercept = coord_df$x_end[nrow(coord_df)], linetype="dotted") +
-    scale_x_continuous(breaks = coord_df$lab_loc, labels = coord_df$chrom) +
+    scale_x_continuous(breaks = coord_df$lab_loc, labels = coord_df$labels) +
     scale_color_manual(values = c("Amp"="red", "Normal"="black", "Del"="blue"))
 }
 

@@ -4,8 +4,9 @@
 \alias{show_cn_profile}
 \title{Show Sample Copy Number Profile}
 \usage{
-show_cn_profile(data, samples = NULL, genome_build = c("hg19", "hg38"),
-  nrow = NULL, ncol = NULL, return_plotlist = FALSE)
+show_cn_profile(data, samples = NULL, chrs = paste0("chr", c(1:22,
+  "X")), genome_build = c("hg19", "hg38"), nrow = NULL, ncol = NULL,
+  return_plotlist = FALSE)
 }
 \arguments{
 \item{data}{a \link{CopyNumber} object or a \code{data.frame} containing at least 'chromosome', 'start',
@@ -13,6 +14,8 @@ show_cn_profile(data, samples = NULL, genome_build = c("hg19", "hg38"),
 
 \item{samples}{default is NULL, can be a chracter vector representing multiple samples. If \code{data} argument
 is a \code{data.frame}, a column called \code{sample} must exist.}
+
+\item{chrs}{chromosomes start with 'chr'.}
 
 \item{genome_build}{genome build version, used when \code{data} is a \code{data.frame}, , should be 'hg19' or 'hg38'.}
 
@@ -31,5 +34,9 @@ sample. This function is designed to do this job and can be further modified by 
 related packages.
 }
 \examples{
-print("hello")
+# Load copy number object
+load(system.file("extdata", "toy_copynumber.RData",
+  package = "sigminer", mustWork = TRUE
+))
+
 }

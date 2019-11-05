@@ -21,8 +21,7 @@
 #' see all available options.
 #' @param ... other arguments passed to [ggpubr::compare_means()]
 #' @source https://github.com/kassambara/ggpubr/issues/143
-#' @return a `data.frame`
-#' @family internal calculation function series
+#' @return a `data.frame` containing comparison result
 #' @export
 #'
 #' @examples

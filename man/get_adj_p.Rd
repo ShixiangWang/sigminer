@@ -34,7 +34,7 @@ see all available options.}
 \item{...}{other arguments passed to \code{\link[ggpubr:compare_means]{ggpubr::compare_means()}}}
 }
 \value{
-a \code{data.frame}
+a \code{data.frame} containing comparison result
 }
 \description{
 Setting \code{aes(label=..p.adj..)} in \code{\link[ggpubr:compare_means]{ggpubr::compare_means()}} does not
@@ -84,4 +84,3 @@ p_adj <- get_adj_p(ToothGrowth,
 )
 p + stat_pvalue_manual(p_adj, label = "p.adj")
 }
-\concept{internal calculation function series}

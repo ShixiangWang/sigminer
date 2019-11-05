@@ -6,7 +6,7 @@
 \usage{
 get_genome_annotation(data_type = c("chr_size", "centro_loc"),
   chrs = paste0("chr", c(1:22, "X", "Y")), genome_build = c("hg19",
-  "hg38"), rm_extra = TRUE)
+  "hg38"))
 }
 \arguments{
 \item{data_type}{'chr_size' for chromosome size,
@@ -15,8 +15,6 @@ get_genome_annotation(data_type = c("chr_size", "centro_loc"),
 \item{chrs}{chromosomes start with 'chr'}
 
 \item{genome_build}{one of 'hg19', 'hg38'}
-
-\item{rm_extra}{if \code{TRUE}, remove extra contigs}
 }
 \value{
 a \code{data.frame} containing annotation data
