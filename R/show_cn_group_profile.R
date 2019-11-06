@@ -14,17 +14,28 @@ show_cn_group_profile = function(data,
     data = data@data
   }
 
+  # Keep CNV data
   data_cnv = dplyr::filter(data, .data$segVal != 2)
 
   # Construct a GRanges object
   data_GR = GenomicRanges::GRanges(seqnames = data_cnv$chromosome,
                     ranges = IRanges::IRanges(start = data_cnv$start, end = data_cnv$end),
                     segVal = data_cnv$segVal)
+
+  # Get merged regions
   data_cnv_merge = IRanges::reduce(data_GR) %>% as.data.frame()
-  data_cnv_merge %>%
-    dplyr::group_by(.data$seqnames) %>%
-    dplyr::do(
-      locs = sort(unique(c(.$start, .$end)))
-    ) -> tt
+
+
+  purrr::map_df(unique(data_cnv_merge$seqnames),
+                function(x, df) {
+                  df = dplyr::filter(df, .data$seqnames == x)
+                  loc = sort(unique(c(df$start, df$end)))
+                  dplyr::tibble(
+                    chrom = x,
+                    start = loc[-length(loc)],
+                    end = loc[-1]
+                  )
+                },
+                df = data_cnv_merge)
 
 }

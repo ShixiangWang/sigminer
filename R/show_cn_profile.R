@@ -52,7 +52,7 @@ show_cn_profile = function(data, samples=NULL, show_n=NULL, show_title=FALSE,
 
   # Filter data
   if (!is.null(samples)) {
-    data = data[samples %in% data$sample]
+    data = data[data$sample %in% samples]
   }
   data = data[data$chromosome %in% chrs]
 
