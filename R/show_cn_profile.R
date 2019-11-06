@@ -15,6 +15,7 @@
 #' @param nrow number of rows in the plot grid when multiple samples are selected.
 #' @param ncol number of columns in the plot grid when multiple samples are selected.
 #' @param return_plotlist default is `FALSE`, if `TRUE`, return a plot list instead of a combined plot.
+#' @param .call User should not use it.
 #'
 #' @return a `ggplot` object or a `list`
 #' @export
@@ -30,7 +31,7 @@
 show_cn_profile = function(data, samples=NULL, show_n=NULL, show_title=FALSE,
                            chrs = paste0("chr",c(1:22, "X")),
                            genome_build = c("hg19", "hg38"),
-                           nrow=NULL, ncol=NULL, return_plotlist=FALSE) {
+                           nrow=NULL, ncol=NULL, return_plotlist=FALSE, .call=FALSE) {
   stopifnot(is.data.frame(data) | inherits(data, "CopyNumber"))
   if (is.data.frame(data)) {
     if (is.null(samples)) {
@@ -38,7 +39,7 @@ show_cn_profile = function(data, samples=NULL, show_n=NULL, show_title=FALSE,
     } else {
       nc_cols = c("chromosome", "start", "end", "segVal", "sample")
     }
-    if (!all(nc_cols %in% data)) {
+    if (!all(nc_cols %in% colnames(data))) {
       stop("Invalid input, it must contain columns: ", paste(nc_cols, collapse = " "))
     }
   }
@@ -86,10 +87,40 @@ show_cn_profile = function(data, samples=NULL, show_n=NULL, show_title=FALSE,
       )
   }
 
+  plot_cn_summary = function(plot_df, coord_df) {
+    plot_df = dplyr::bind_rows(
+      plot_df %>%
+        dplyr::select(c("start", "segVal", "segType")) %>%
+        dplyr::rename(x = .data$start),
+      plot_df %>%
+        dplyr::select(c("end", "segVal", "segType")) %>%
+        dplyr::rename(x = .data$end)
+    ) %>%
+      dplyr::mutate(segVal = .data$segVal - 2)
+    ggplot(plot_df, aes_string(x="x", y="segVal")) +
+      geom_area(aes_string(fill = "segType")) +
+      geom_line() +
+      geom_hline(yintercept = 0) +
+      geom_vline(aes(xintercept = .data$x_start), linetype="dotted", data = coord_df) +
+      geom_vline(xintercept = coord_df$x_end[nrow(coord_df)], linetype="dotted") +
+      scale_x_continuous(breaks = coord_df$lab_loc, labels = coord_df$labels) +
+      labs(x = "Chromosome", y = "Copy number variation") +
+      cowplot::theme_cowplot() +
+      theme(
+        legend.position = "none",
+        axis.text.x = element_text(angle = 60, hjust = 1, size = 9)
+      )
+  }
+
 
   if (!'sample' %in% colnames(merge_df)) {
-    # Plot as a single sample
-    gg = plot_cn_profile(merge_df, coord_df)
+    if (.call) {
+      # Plot summary profile
+      gg = plot_cn_summary(merge_df, coord_df)
+    } else {
+      # Plot as a single sample
+      gg = plot_cn_profile(merge_df, coord_df)
+    }
   } else {
     # Plot mutiple samples
     gg_df = merge_df %>%

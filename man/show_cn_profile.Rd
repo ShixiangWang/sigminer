@@ -7,7 +7,7 @@
 show_cn_profile(data, samples = NULL, show_n = NULL,
   show_title = FALSE, chrs = paste0("chr", c(1:22, "X")),
   genome_build = c("hg19", "hg38"), nrow = NULL, ncol = NULL,
-  return_plotlist = FALSE)
+  return_plotlist = FALSE, .call = FALSE)
 }
 \arguments{
 \item{data}{a \link{CopyNumber} object or a \code{data.frame} containing at least 'chromosome', 'start',
@@ -29,6 +29,8 @@ is a \code{data.frame}, a column called \code{sample} must exist.}
 \item{ncol}{number of columns in the plot grid when multiple samples are selected.}
 
 \item{return_plotlist}{default is \code{FALSE}, if \code{TRUE}, return a plot list instead of a combined plot.}
+
+\item{.call}{User should not use it.}
 }
 \value{
 a \code{ggplot} object or a \code{list}

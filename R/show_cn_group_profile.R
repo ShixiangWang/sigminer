@@ -17,25 +17,57 @@ show_cn_group_profile = function(data,
   # Keep CNV data
   data_cnv = dplyr::filter(data, .data$segVal != 2)
 
-  # Construct a GRanges object
-  data_GR = GenomicRanges::GRanges(seqnames = data_cnv$chromosome,
-                    ranges = IRanges::IRanges(start = data_cnv$start, end = data_cnv$end),
-                    segVal = data_cnv$segVal)
+  # Construct a GRanges object for all regions
+  data_GR_total = GenomicRanges::GRanges(seqnames = data$chromosome,
+                                   ranges = IRanges::IRanges(start = data$start, end = data$end)) %>%
+    GenomicRanges::reduce()
 
-  # Get merged regions
-  data_cnv_merge = IRanges::reduce(data_GR) %>% as.data.frame()
+  # Construct a GRanges object for CNV region
+  data_GR_cnv = GenomicRanges::GRanges(seqnames = data_cnv$chromosome,
+                                   ranges = IRanges::IRanges(start = data_cnv$start, end = data_cnv$end)) %>%
+    GenomicRanges::reduce()
 
+  # Get normal region
+  data_GR_normal = GenomicRanges::setdiff(data_GR_total, data_GR_cnv)
+  data_normal = data_GR_normal %>% as.data.frame() %>%
+    dplyr::mutate(chromosome = as.character(.data$seqnames),
+                  segVal = 2) %>%
+    dplyr::select(-c("seqnames", "width", "strand"))
 
-  purrr::map_df(unique(data_cnv_merge$seqnames),
+  # Construct regions
+  # Example:
+  # For a chromosome, two regions 1-100 and 20-120
+  # split them into three: 1-20, 21-100, 101-120
+  data_cnv_split = purrr::map_df(unique(data_cnv$chromosome),
                 function(x, df) {
-                  df = dplyr::filter(df, .data$seqnames == x)
+                  df = dplyr::filter(df, .data$chromosome == x)
                   loc = sort(unique(c(df$start, df$end)))
+                  start = loc[-length(loc)]
+                  start[-1] = start[-1] + 1
                   dplyr::tibble(
-                    chrom = x,
-                    start = loc[-length(loc)],
+                    chromosome = x,
+                    start = start,
                     end = loc[-1]
                   )
                 },
-                df = data_cnv_merge)
+                df = data_cnv)
 
+  data_join = fuzzyjoin::genome_join(
+    data_cnv_split, data_cnv,
+    by = c("chromosome", "start", "end")
+  ) %>%
+    dplyr::mutate(
+      ID = paste(.data$chromosome.x, .data$start.x, .data$end.x, sep = "-"),
+      segType = ifelse(.data$segVal > 2, "Amp", "Del")
+    )
+  data_join = data_join %>%
+    dplyr::group_by(.data$ID, .data$segType) %>%
+    dplyr::summarise(segVal = mean(.data$segVal)) %>%
+    tidyr::separate(col = "ID", into = c("chromosome", "start", "end")) %>%
+    dplyr::mutate(start = as.numeric(.data$start),
+                  end = as.numeric(.data$end)) %>%
+    dplyr::select(-.data$segType) %>%
+    dplyr::bind_rows(data_normal)
+
+  show_cn_profile(data_join, chrs = chrs, genome_build = genome_build, .call = TRUE)
 }
