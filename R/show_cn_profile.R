@@ -8,6 +8,8 @@
 #' 'end', 'segVal' these columns.
 #' @param samples default is NULL, can be a chracter vector representing multiple samples. If `data` argument
 #' is a `data.frame`, a column called `sample` must exist.
+#' @param show_n number of samples to show, this is used for checking.
+#' @param show_title if `TRUE`, show title for multiple samples.
 #' @param chrs chromosomes start with 'chr'.
 #' @param genome_build genome build version, used when `data` is a `data.frame`, , should be 'hg19' or 'hg38'.
 #' @param nrow number of rows in the plot grid when multiple samples are selected.
@@ -23,7 +25,9 @@
 #'   package = "sigminer", mustWork = TRUE
 #' ))
 #'
-show_cn_profile = function(data, samples=NULL,
+#' show_cn_profile(cn, nrow=5, ncol=2)
+#'
+show_cn_profile = function(data, samples=NULL, show_n=NULL, show_title=FALSE,
                            chrs = paste0("chr",c(1:22, "X")),
                            genome_build = c("hg19", "hg38"),
                            nrow=NULL, ncol=NULL, return_plotlist=FALSE) {
@@ -74,9 +78,11 @@ show_cn_profile = function(data, samples=NULL,
       geom_vline(xintercept = coord_df$x_end[nrow(coord_df)], linetype="dotted") +
       scale_x_continuous(breaks = coord_df$lab_loc, labels = coord_df$labels) +
       scale_color_manual(values = c("Amp"="red", "Normal"="black", "Del"="blue")) +
-      labs(x = "Chromosome", y = "Copy Number") +
+      labs(x = "Chromosome", y = "Copy number") +
+      cowplot::theme_cowplot() +
       theme(
-        legend.position = "none"
+        legend.position = "none",
+        axis.text.x = element_text(angle = 60, hjust = 1, size = 9)
       )
   }
 
@@ -92,7 +98,14 @@ show_cn_profile = function(data, samples=NULL,
       dplyr::mutate(gg = purrr::map(.data$data,
                                     plot_cn_profile,
                                     coord_df=coord_df))
+    if (!is.null(show_n)) {
+      gg_df = gg_df %>%
+        dplyr::slice(1:show_n)
+    }
     gg_list = gg_df$gg
+    if (show_title) {
+      gg_list = purrr::map2(gg_list, gg_df$sample, ~.x+labs(title=.y))
+    }
     names(gg_list) = gg_df$sample
     if (return_plotlist) {
       return(gg_list)

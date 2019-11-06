@@ -4,8 +4,9 @@
 \alias{show_cn_profile}
 \title{Show Sample Copy Number Profile}
 \usage{
-show_cn_profile(data, samples = NULL, chrs = paste0("chr", c(1:22,
-  "X")), genome_build = c("hg19", "hg38"), nrow = NULL, ncol = NULL,
+show_cn_profile(data, samples = NULL, show_n = NULL,
+  show_title = FALSE, chrs = paste0("chr", c(1:22, "X")),
+  genome_build = c("hg19", "hg38"), nrow = NULL, ncol = NULL,
   return_plotlist = FALSE)
 }
 \arguments{
@@ -14,6 +15,10 @@ show_cn_profile(data, samples = NULL, chrs = paste0("chr", c(1:22,
 
 \item{samples}{default is NULL, can be a chracter vector representing multiple samples. If \code{data} argument
 is a \code{data.frame}, a column called \code{sample} must exist.}
+
+\item{show_n}{number of samples to show, this is used for checking.}
+
+\item{show_title}{if \code{TRUE}, show title for multiple samples.}
 
 \item{chrs}{chromosomes start with 'chr'.}
 
@@ -38,5 +43,7 @@ related packages.
 load(system.file("extdata", "toy_copynumber.RData",
   package = "sigminer", mustWork = TRUE
 ))
+
+show_cn_profile(cn, nrow=5, ncol=2)
 
 }
