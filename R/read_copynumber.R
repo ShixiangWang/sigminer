@@ -305,7 +305,7 @@ read_copynumber <- function(input,
     seg_cols = new_cols[1:4],
     samp_col = new_cols[5]
   )
-  if (verbose) message("Summary per sample...")
+  if (verbose) message("\nSummary per sample...")
   sum_sample <- get_cnsummary_sample(data_df,
     genome_build = genome_build,
     genome_measure = genome_measure
