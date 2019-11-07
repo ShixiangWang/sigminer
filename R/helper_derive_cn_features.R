@@ -186,18 +186,3 @@ getCN <- function(abs_profiles) {
   rownames(out) <- NULL
   data.frame(out, stringsAsFactors = F)
 }
-
-getPloidy <- function(abs_profiles) {
-  out <- c()
-  samps <- names(abs_profiles)
-  for (i in samps)
-  {
-    segTab <- abs_profiles[[i]]
-
-    segLen <- segTab$end - segTab$start
-    ploidy <-
-      sum((segLen / sum(segLen)) * segTab$segVal)
-    out <- c(out, ploidy)
-  }
-  data.frame(out, stringsAsFactors = F)
-}
