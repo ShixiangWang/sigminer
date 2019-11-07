@@ -2,7 +2,7 @@
 #'
 #' @inheritParams show_cn_profile
 #'
-#' @return a value or a [data.table::data.table]
+#' @return a value or a `data.table`
 #' @export
 #'
 #' @examples

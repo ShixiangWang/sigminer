@@ -4,7 +4,10 @@
 #' or just a raw exposure matrix with column representing samples (patients) and row
 #' representing signatures.
 #' @param type 'absolute' for signature exposure and 'relative' for signature relative exposure.
-#' @return a `tibble`
+#' @param rel_threshold used when type is 'relative', relative exposure less
+#' than this value will be set to 0 and the remaining signature exposure will be scaled
+#' to make sum as 1 accordingly.
+#' @return a `data.table`
 #' @export
 #'
 #' @examples
@@ -15,7 +18,9 @@
 #' # Get signature exposure
 #' get_sig_exposure(sig2)
 #' get_sig_exposure(sig2, type = "relative")
-get_sig_exposure <- function(Signature, type = c("absolute", "relative")) {
+get_sig_exposure <- function(Signature,
+                             type = c("absolute", "relative"),
+                             rel_threshold = 0.01) {
   if (class(Signature) == "Signature") {
     h <- Signature$Exposure
   } else if (is.matrix(Signature)) {
@@ -32,18 +37,37 @@ get_sig_exposure <- function(Signature, type = c("absolute", "relative")) {
   }
 
   type <- match.arg(type)
+
   if (type == "absolute") {
     h <- t(h) %>%
       as.data.frame() %>%
       tibble::rownames_to_column(var = "sample") %>%
-      dplyr::as_tibble()
+      data.table::as.data.table()
     return(h)
   } else {
     h.norm <- apply(h, 2, function(x) x / sum(x))
     h.norm <- t(h.norm) %>%
       as.data.frame() %>%
       tibble::rownames_to_column(var = "sample") %>%
-      dplyr::as_tibble()
+      dplyr::mutate_at(dplyr::vars(dplyr::starts_with("Sig")),
+                       ~ifelse(. < rel_threshold, 0, .)) %>%
+      dplyr::mutate(sum = rowSums(.[-1])) %>%
+      dplyr::mutate_at(dplyr::vars(dplyr::starts_with("Sig")),
+                       ~./.data$sum) %>%
+      dplyr::select(-.data$sum)
+
+    na_data = h.norm %>%
+      dplyr::filter(is.na(.data$Sig1))
+
+    if (nrow(na_data) > 0) {
+      message('Filtering the samples with no signature exposure:')
+      message(paste(na_data$sample, collapse = " "))
+    }
+
+    h.norm = h.norm %>%
+      dplyr::filter(!is.na(.data$Sig1)) %>%
+      data.table::as.data.table()
+
     return(h.norm)
   }
 }

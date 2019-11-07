@@ -4,7 +4,8 @@
 \alias{get_sig_exposure}
 \title{Get Signature Exposure from 'Signature' Object}
 \usage{
-get_sig_exposure(Signature, type = c("absolute", "relative"))
+get_sig_exposure(Signature, type = c("absolute", "relative"),
+  rel_threshold = 0.01)
 }
 \arguments{
 \item{Signature}{a \code{Signature} object obtained either from \link{sig_extract} or \link{sig_auto_extract},
@@ -12,9 +13,13 @@ or just a raw exposure matrix with column representing samples (patients) and ro
 representing signatures.}
 
 \item{type}{'absolute' for signature exposure and 'relative' for signature relative exposure.}
+
+\item{rel_threshold}{used when type is 'relative', relative exposure less
+than this value will be set to 0 and the remaining signature exposure will be scaled
+to make sum as 1 accordingly.}
 }
 \value{
-a \code{tibble}
+a \code{data.table}
 }
 \description{
 Get Signature Exposure from 'Signature' Object

@@ -11,7 +11,7 @@ get_cn_ploidy(data)
 'end', 'segVal' these columns.}
 }
 \value{
-a value or a \link[data.table:data.table]{data.table::data.table}
+a value or a \code{data.table}
 }
 \description{
 Get Ploidy from Absolute Copy Number Profile
