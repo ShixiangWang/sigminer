@@ -97,8 +97,14 @@ show_cn_profile = function(data, samples=NULL, show_n=NULL, show_title=FALSE,
         dplyr::rename(x = .data$end)
     ) %>%
       dplyr::mutate(segVal = .data$segVal - 2)
-    ggplot(plot_df, aes_string(x="x", y="segVal")) +
-      geom_area(aes_string(fill = "segType")) +
+    data_amp = plot_df %>%
+      dplyr::filter(.data$segType %in% c("Amp", "Normal"))
+    data_del = plot_df %>%
+      dplyr::filter(.data$segType %in% c("Del", "Normal"))
+
+    ggplot() +
+      geom_area(aes_string(x = "x", y = "segVal"),fill="red", data = data_amp) +
+      geom_area(aes_string(x = "x", y = "segVal"),fill="blue", data = data_del) +
       geom_line() +
       geom_hline(yintercept = 0) +
       geom_vline(aes(xintercept = .data$x_start), linetype="dotted", data = coord_df) +

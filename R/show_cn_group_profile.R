@@ -1,3 +1,9 @@
+# Show a summary copy number profile for a group of samples
+#
+# TODO/NOTE:
+# This function does not work currently,
+# I will think it latter
+
 show_cn_group_profile = function(data,
                                  chrs = paste0("chr",c(1:22, "X")),
                                  genome_build = c("hg19", "hg38")) {

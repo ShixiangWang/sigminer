@@ -45,7 +45,9 @@ Imports:
     RColorBrewer,
     rlang (>= 0.1.2),
     tibble,
-    tidyr
+    tidyr,
+    GenomicRanges,
+    IRanges
 Suggests: 
     BSgenome,
     BSgenome.Hsapiens.UCSC.hg19,
