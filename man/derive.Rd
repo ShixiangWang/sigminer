@@ -84,7 +84,7 @@ so it can be further extended to other mutation cases.
 \itemize{
 \item \code{CopyNumber}: Derive copy number features, components and component-by-sample matrix
 
-\item \code{MAF}: Derive SBS mutation features, components and component-by-sample matrix
+\item \code{MAF}: Derive SBS mutation component-by-sample matrix and APOBEC enrichment
 }}
 
 \examples{

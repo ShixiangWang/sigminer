@@ -116,7 +116,7 @@ derive.CopyNumber <- function(object, type = c("probability", "count"),
   }
 }
 
-#' @describeIn derive Derive SBS mutation features, components and component-by-sample matrix
+#' @describeIn derive Derive SBS mutation component-by-sample matrix and APOBEC enrichment
 #' @inheritParams maftools::trinucleotideMatrix
 #' @references Mayakonda, Anand, et al. "Maftools: efficient and comprehensive analysis of somatic variants in cancer." Genome research 28.11 (2018): 1747-1756.
 #' @examples

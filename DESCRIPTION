@@ -47,7 +47,8 @@ Imports:
     tibble,
     tidyr,
     GenomicRanges,
-    IRanges
+    IRanges,
+    ggalluvial
 Suggests: 
     BSgenome,
     BSgenome.Hsapiens.UCSC.hg19,
