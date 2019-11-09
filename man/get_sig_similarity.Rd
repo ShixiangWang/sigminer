@@ -35,8 +35,11 @@ load(system.file("extdata", "toy_mutational_signature.RData",
   package = "sigminer", mustWork = TRUE
 ))
 
+get_sig_similarity(sig2, Ref = sig2)
+\donttest{
 get_sig_similarity(sig2)
 get_sig_similarity(sig2, sig_db = "SBS")
+}
 }
 \author{
 Shixiang Wang \href{mailto:w_shixiang@163.com}{w_shixiang@163.com}

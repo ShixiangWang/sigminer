@@ -11,6 +11,8 @@
 #' @param normalize one of 'row', 'column' and 'raw', for row normalization (signature),
 #' column normalization (component) and raw data, respectively.
 #' @param params params `data.frame` of components, obtained from [derive].
+#' @param show_cv default is `FALSE`, if `TRUE`, show coefficient of variation when
+#' `params` is not `NULL`.
 #' @param params_label_size font size for params label.
 #' @param params_label_angle font angle for params label.
 #' @param y_expand y expand height for plotting params of copy number signatures.
@@ -45,10 +47,12 @@
 #' load(system.file("extdata", "toy_copynumber_prepare.RData",
 #'   package = "sigminer", mustWork = TRUE
 #' ))
-#' show_sig_profile(sig, params = cn_prepare$parameters, y_expand = 2)
+#' params <- get_tidy_parameter(cn_prepare$components)
+#' show_sig_profile(sig, params = params, y_expand = 2)
 show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
                              normalize = c("row", "column", "raw"),
-                             params = NULL, params_label_size = 3,
+                             params = NULL, show_cv = FALSE,
+                             params_label_size = 3,
                              params_label_angle = 60, y_expand = 1,
                              digits = 2, base_size = 12, font_scale = 1,
                              sig_names = NULL, sig_orders = NULL) {
@@ -155,8 +159,14 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
       p <- p + geom_text(aes(
         x = .data$components, y = Inf,
         label = ifelse(.data$dist == "norm",
-          paste0(" \u03BC=", signif(.data$mean, digits)),
-          paste0(" \u03BB=", signif(.data$mean, digits))
+          paste0(
+            " \u03BC=", signif(.data$mean, digits),
+            ifelse(show_cv, paste0("; cv=", signif(.data$cv, digits)), "")
+          ),
+          paste0(
+            " \u03BB=", signif(.data$mean, digits),
+            ifelse(show_cv, paste0("; cv=", signif(.data$cv, digits)), "")
+          )
         )
       ),
       data = params,

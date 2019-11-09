@@ -6,9 +6,9 @@
 \usage{
 show_sig_profile(Signature, mode = c("copynumber", "mutation"),
   normalize = c("row", "column", "raw"), params = NULL,
-  params_label_size = 3, params_label_angle = 60, y_expand = 1,
-  digits = 2, base_size = 12, font_scale = 1, sig_names = NULL,
-  sig_orders = NULL)
+  show_cv = FALSE, params_label_size = 3, params_label_angle = 60,
+  y_expand = 1, digits = 2, base_size = 12, font_scale = 1,
+  sig_names = NULL, sig_orders = NULL)
 }
 \arguments{
 \item{Signature}{a \code{Signature} object obtained either from \link{sig_extract} or \link{sig_auto_extract},
@@ -21,6 +21,9 @@ representing signatures (column names must start with 'Sig').}
 column normalization (component) and raw data, respectively.}
 
 \item{params}{params \code{data.frame} of components, obtained from \link{derive}.}
+
+\item{show_cv}{default is \code{FALSE}, if \code{TRUE}, show coefficient of variation when
+\code{params} is not \code{NULL}.}
 
 \item{params_label_size}{font size for params label.}
 
@@ -68,7 +71,8 @@ show_sig_profile(sig)
 load(system.file("extdata", "toy_copynumber_prepare.RData",
   package = "sigminer", mustWork = TRUE
 ))
-show_sig_profile(sig, params = cn_prepare$parameters, y_expand = 2)
+params <- get_tidy_parameter(cn_prepare$components)
+show_sig_profile(sig, params = params, y_expand = 2)
 }
 \author{
 Shixiang Wang

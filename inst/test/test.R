@@ -8,3 +8,15 @@ laml.sign <- extractSignatures(mat = laml.tnm, n = 3, pConstant = 0.001)
 laml.sign$signatures
 
 compareSignatures(laml.sign)
+
+
+load(system.file("extdata", "toy_copynumber_signature.RData",
+                 package = "sigminer", mustWork = TRUE
+))
+# Load copy number prepare object
+load(system.file("extdata", "toy_copynumber_prepare.RData",
+                 package = "sigminer", mustWork = TRUE
+))
+params = get_tidy_parameter(cn_prepare$components)
+show_sig_profile(sig, params = params, y_expand = 2)
+show_sig_profile(sig, params = params, y_expand = 3, show_cv = T, params_label_angle = 70)

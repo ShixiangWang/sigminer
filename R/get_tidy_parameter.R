@@ -1,7 +1,8 @@
 #' Get Tidy Parameter from Flexmix Model
 #'
 #' When users derive copy number features, it is useful to know the parameters
-#' of the fit components. This function is used by [derive] function and
+#' of the fit components, including mean, sd and coefficient of variation.
+#' This function is used by [derive] function and
 #' exported to users for extra usage.
 #'
 #' @param x a `flexmix` object or a `list` of `flexmix` objects.
@@ -66,6 +67,7 @@ get_tidy_parameter <- function(x) {
       sd = sqrt(.data$mean)
     ) %>%
       dplyr::mutate(
+        cv = .data$sd / .data$mean, # Coefficient of variation
         n_obs = .get_weight(.data$mean, x)
       )
   } else {
@@ -76,6 +78,7 @@ get_tidy_parameter <- function(x) {
       sd = as.numeric(paras[2, ])
     ) %>%
       dplyr::mutate(
+        cv = .data$sd / .data$mean, # Coefficient of variation
         n_obs = .get_weight(.data$mean, x)
       )
   }

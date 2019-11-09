@@ -23,8 +23,11 @@
 #'   package = "sigminer", mustWork = TRUE
 #' ))
 #'
+#' get_sig_similarity(sig2, Ref = sig2)
+#' \donttest{
 #' get_sig_similarity(sig2)
 #' get_sig_similarity(sig2, sig_db = "SBS")
+#' }
 get_sig_similarity <- function(Signature, Ref = NULL, sig_db = "legacy", method = "cosine", verbose = TRUE) {
   if (class(Signature) == "Signature") {
     w <- Signature$Signature.norm
@@ -43,14 +46,14 @@ get_sig_similarity <- function(Signature, Ref = NULL, sig_db = "legacy", method 
   if (is.null(Ref)) {
     if (sig_db == "legacy") {
       sigs_db <- readRDS(file = system.file("extdata", "legacy_signatures.RDs",
-        package = "maftools"
+        package = "maftools", mustWork = TRUE
       ))
       sigs <- sigs_db$db
       aetiology <- sigs_db$aetiology
     }
     else {
       sigs_db <- readRDS(file = system.file("extdata", "SBS_signatures.RDs",
-        package = "maftools"
+        package = "maftools", mustWork = TRUE
       ))
       sigs <- sigs_db$db
       aetiology <- sigs_db$aetiology
