@@ -87,8 +87,10 @@ show_cn_distribution <- function(data,
     # }
 
     if (scale_chr) {
-      chrlen = get_genome_annotation(data_type = "chr_size",
-                                     genome_build = genome_build)
+      chrlen <- get_genome_annotation(
+        data_type = "chr_size",
+        genome_build = genome_build
+      )
 
       p <- ggplot(data, aes(x = chromosome, fill = location)) +
         geom_bar() + xlab("Chromosome")

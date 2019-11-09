@@ -64,12 +64,15 @@ get_sig_feature_association <- function(data, cols_to_sigs, cols_to_features,
     diag(p.mat) <- 0
     for (i in 1:(n - 1)) {
       for (j in (i + 1):n) {
-        tryCatch({
-          suppressWarnings(tmp <- cor.test(x = mat[, i], y = mat[, j], ...))
-          p.mat[i, j] <- p.mat[j, i] <- tmp$p.value
-        }, error = function(e) {
-          p.mat[i, j] <- NA
-        })
+        tryCatch(
+          {
+            suppressWarnings(tmp <- cor.test(x = mat[, i], y = mat[, j], ...))
+            p.mat[i, j] <- p.mat[j, i] <- tmp$p.value
+          },
+          error = function(e) {
+            p.mat[i, j] <- NA
+          }
+        )
       }
     }
     rownames(p.mat) <- colnames(mat)

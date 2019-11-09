@@ -19,8 +19,8 @@ get_features <- function(CN_data,
                          genome_build = c("hg19", "hg38")) {
   genome_build <- match.arg(genome_build)
   # get chromosome lengths and centromere locations
-  chrlen = get_genome_annotation(data_type = "chr_size", genome_build = genome_build)
-  centromeres = get_genome_annotation(data_type = "centro_loc", genome_build = genome_build)
+  chrlen <- get_genome_annotation(data_type = "chr_size", genome_build = genome_build)
+  centromeres <- get_genome_annotation(data_type = "centro_loc", genome_build = genome_build)
 
   oplan <- future::plan()
   future::plan("multiprocess", workers = cores)
@@ -94,17 +94,17 @@ get_components <- function(CN_features,
   dist_map <- c("norm", "pois", "pois", "pois", "norm", "norm")
   names(dist_map) <- c("segsize", "bp10MB", "osCN", "bpchrarm", "changepoint", "copynumber")
   apply_fitComponent <- function(CN_feature,
-                                   feature_name,
-                                   dist_map,
-                                   seed = 123456,
-                                   min_comp = 2,
-                                   max_comp = 10,
-                                   min_prior = 0.001,
-                                   model_selection = "BIC",
-                                   threshold = 0.1,
-                                   nrep = 1,
-                                   niter = 1000,
-                                   cores = 1) {
+                                 feature_name,
+                                 dist_map,
+                                 seed = 123456,
+                                 min_comp = 2,
+                                 max_comp = 10,
+                                 min_prior = 0.001,
+                                 model_selection = "BIC",
+                                 threshold = 0.1,
+                                 nrep = 1,
+                                 niter = 1000,
+                                 cores = 1) {
     dat <- as.numeric(CN_feature[, 2])
     message("Fitting feature: ", feature_name)
     fit <-
@@ -212,8 +212,9 @@ get_LengthFraction <- function(CN_data,
     if (!samp_col %in% colnames(segTab)) {
       segTab$sample <- base::rep(
         x = names(CN_data),
-        times = sapply(CN_data, function(x)
-          nrow(x))
+        times = sapply(CN_data, function(x) {
+          nrow(x)
+        })
       )
       samp_col <- "sample"
     }
@@ -301,7 +302,7 @@ get_LengthFraction <- function(CN_data,
   }
 
   annot_fun <- function(chrom, start, end, p_start, p_end, p_length, q_start,
-                          q_end, q_length, total_size, .pb = NULL) {
+                        q_end, q_length, total_size, .pb = NULL) {
     if (.pb$i < .pb$n) .pb$tick()$print()
     .annot_fun(
       chrom, start, end, p_start, p_end, p_length, q_start,
@@ -336,8 +337,8 @@ get_LengthFraction <- function(CN_data,
 get_ArmLocation <- function(genome_build = c("hg19", "hg38")) {
   genome_build <- match.arg(genome_build)
   # get chromosome lengths and centromere locations
-  chrlen = get_genome_annotation(data_type = "chr_size", genome_build = genome_build)
-  centromeres = get_genome_annotation(data_type = "centro_loc", genome_build = genome_build)
+  chrlen <- get_genome_annotation(data_type = "chr_size", genome_build = genome_build)
+  centromeres <- get_genome_annotation(data_type = "centro_loc", genome_build = genome_build)
 
   # compute and get results
   res <- data.frame(
@@ -407,9 +408,11 @@ get_cnsummary_sample <- function(segTab, genome_build = c("hg19", "hg38"),
   autosome <- paste0("chr", 1:22)
 
   if (genome_measure == "wg") {
-    chrlen = get_genome_annotation(data_type = "chr_size",
-                                   chrs = autosome,
-                                   genome_build = genome_build)
+    chrlen <- get_genome_annotation(
+      data_type = "chr_size",
+      chrs = autosome,
+      genome_build = genome_build
+    )
     total_size <- sum(chrlen[["size"]])
 
     seg_summary <- segTab %>%
@@ -439,7 +442,8 @@ get_cnsummary_sample <- function(segTab, genome_build = c("hg19", "hg38"),
 # Global variables --------------------------------------------------------
 
 utils::globalVariables(
-  c("i",
+  c(
+    "i",
     "chrom",
     "chromosome",
     "segVal"

@@ -1,15 +1,15 @@
 fitComponent <-
   function(dat,
-             dist = "norm",
-             seed = 123456,
-             model_selection = "BIC",
-             threshold = 0.1,
-             min_prior = 0.001,
-             niter = 1000,
-             nrep = 1,
-             min_comp = 2,
-             max_comp = 10,
-             cores = 1) {
+           dist = "norm",
+           seed = 123456,
+           model_selection = "BIC",
+           threshold = 0.1,
+           min_prior = 0.001,
+           niter = 1000,
+           nrep = 1,
+           min_comp = 2,
+           max_comp = 10,
+           cores = 1) {
     control <- new("FLXcontrol")
     control@minprior <- min_prior
     control@iter.max <- niter
@@ -17,7 +17,7 @@ fitComponent <-
     set.seed(seed, kind = "L'Ecuyer-CMRG")
 
     stepFlexmix_v2 <- function(..., k = NULL, nrep = 3, verbose = TRUE, drop = TRUE,
-                                   unique = FALSE, cores = 1, seed = 123456) {
+                               unique = FALSE, cores = 1, seed = 123456) {
       # doParallel doest not work in Windows
       # doParallel::registerDoParallel(cores = cores)
       doFuture::registerDoFuture()

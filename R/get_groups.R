@@ -45,7 +45,7 @@
 #' @seealso [NMF::predict()]
 get_groups <- function(Signature, method = c("exposure", "consensus", "samples"), match_consensus = FALSE) {
   stopifnot(inherits(Signature, "Signature"))
-  method = match.arg(method)
+  method <- match.arg(method)
 
   if (method == "consensus") {
     if (!"nmf_obj" %in% names(Signature$Raw)) {
@@ -69,9 +69,8 @@ get_groups <- function(Signature, method = c("exposure", "consensus", "samples")
       data <- data[sample.order, ]
     }
 
-    data$group = as.character(data$group)
-    data = find_enriched_signature(data, Signature)
-
+    data$group <- as.character(data$group)
+    data <- find_enriched_signature(data, Signature)
   } else if (method == "samples") {
     if (!"nmf_obj" %in% names(Signature$Raw)) {
       stop("Input Signature object does not contain NMF object, please select other methods")
@@ -87,21 +86,22 @@ get_groups <- function(Signature, method = c("exposure", "consensus", "samples")
       stringsAsFactors = FALSE
     )
 
-    data$group = as.character(data$group)
-    data = find_enriched_signature(data, Signature)
-
+    data$group <- as.character(data$group)
+    data <- find_enriched_signature(data, Signature)
   } else if (method == "exposure") {
-    expo_df = get_sig_exposure(Signature, type = "relative")
-    data = expo_df %>%
-      tidyr::gather(key = 'Signature', value = 'Exposure', dplyr::starts_with("Sig")) %>%
+    expo_df <- get_sig_exposure(Signature, type = "relative")
+    data <- expo_df %>%
+      tidyr::gather(key = "Signature", value = "Exposure", dplyr::starts_with("Sig")) %>%
       dplyr::group_by(.data$sample) %>%
       dplyr::top_n(1, .data$Exposure) %>%
       dplyr::ungroup() %>%
       dplyr::mutate(
         enrich_sig = .data$Signature
       ) %>%
-      dplyr::rename(group = .data$Signature,
-                    weight = .data$Exposure) %>%
+      dplyr::rename(
+        group = .data$Signature,
+        weight = .data$Exposure
+      ) %>%
       dplyr::mutate(group = sub("Sig", "", .data$group))
   }
 

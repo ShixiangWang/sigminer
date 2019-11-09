@@ -64,9 +64,11 @@ read_copynumber <- function(input,
 
   # get chromosome lengths
   valid_chr <- c(paste0("chr", 1:22), "chrX", "chrY")
-  chrlen <- get_genome_annotation(data_type = "chr_size",
-                                  chrs = valid_chr,
-                                  genome_build = genome_build)
+  chrlen <- get_genome_annotation(
+    data_type = "chr_size",
+    chrs = valid_chr,
+    genome_build = genome_build
+  )
   data.table::setDT(chrlen)
 
   if (tryCatch(dir.exists(input), error = function(e) FALSE)) {

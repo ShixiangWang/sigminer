@@ -1,8 +1,8 @@
 calculateSumOfEvents <-
   function(feature,
-             component,
-             name,
-             type) {
+           component,
+           name,
+           type) {
     params <- flexmix::parameters(component)
     if (!is.null(nrow(params))) {
       comp_orders <- order(params[1, ])

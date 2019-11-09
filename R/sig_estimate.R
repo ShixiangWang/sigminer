@@ -47,18 +47,18 @@
 #' extracting signatures using automatic relevance determination technique.
 sig_estimate <-
   function(nmf_matrix,
-             range = 2:5,
-             nrun = 10,
-             keep_nmfObj = FALSE,
-             what = "all",
-             cores = 1,
-             seed = 123456,
-             use_random = TRUE,
-             save_plots = FALSE,
-             plot_basename = file.path(tempdir(), "nmf"),
-             method = "brunet",
-             pConstant = NULL,
-             verbose = FALSE) {
+           range = 2:5,
+           nrun = 10,
+           keep_nmfObj = FALSE,
+           what = "all",
+           cores = 1,
+           seed = 123456,
+           use_random = TRUE,
+           save_plots = FALSE,
+           plot_basename = file.path(tempdir(), "nmf"),
+           method = "brunet",
+           pConstant = NULL,
+           verbose = FALSE) {
     mat <- t(nmf_matrix)
 
     # To avoid error due to non-conformable arrays

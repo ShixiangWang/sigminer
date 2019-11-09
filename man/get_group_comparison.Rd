@@ -8,7 +8,7 @@ get_group_comparison(data, col_group, cols_to_compare, type = "ca",
   NAs = NA, verbose = FALSE)
 }
 \arguments{
-\item{data}{a \code{data.frame} contains signature groups and genotypes/phenotypes
+\item{data}{a \code{data.frame} containing signature groups and genotypes/phenotypes
 (including categorical and continuous type data) want to analyze. User need to
 construct this \code{data.frame} by him/herself.}
 

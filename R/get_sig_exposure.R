@@ -49,22 +49,26 @@ get_sig_exposure <- function(Signature,
     h.norm <- t(h.norm) %>%
       as.data.frame() %>%
       tibble::rownames_to_column(var = "sample") %>%
-      dplyr::mutate_at(dplyr::vars(dplyr::starts_with("Sig")),
-                       ~ifelse(. < rel_threshold, 0, .)) %>%
+      dplyr::mutate_at(
+        dplyr::vars(dplyr::starts_with("Sig")),
+        ~ ifelse(. < rel_threshold, 0, .)
+      ) %>%
       dplyr::mutate(sum = rowSums(.[-1])) %>%
-      dplyr::mutate_at(dplyr::vars(dplyr::starts_with("Sig")),
-                       ~./.data$sum) %>%
+      dplyr::mutate_at(
+        dplyr::vars(dplyr::starts_with("Sig")),
+        ~ . / .data$sum
+      ) %>%
       dplyr::select(-.data$sum)
 
-    na_data = h.norm %>%
+    na_data <- h.norm %>%
       dplyr::filter(is.na(.data$Sig1))
 
     if (nrow(na_data) > 0) {
-      message('Filtering the samples with no signature exposure:')
+      message("Filtering the samples with no signature exposure:")
       message(paste(na_data$sample, collapse = " "))
     }
 
-    h.norm = h.norm %>%
+    h.norm <- h.norm %>%
       dplyr::filter(!is.na(.data$Sig1)) %>%
       data.table::as.data.table()
 

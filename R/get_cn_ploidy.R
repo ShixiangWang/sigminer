@@ -15,20 +15,20 @@
 get_cn_ploidy <- function(data) {
   stopifnot(is.data.frame(data) | inherits(data, "CopyNumber"))
   if (is.data.frame(data)) {
-    nc_cols = c("chromosome", "start", "end", "segVal")
+    nc_cols <- c("chromosome", "start", "end", "segVal")
     if (!all(nc_cols %in% colnames(data))) {
       stop("Invalid input, it must contain columns: ", paste(nc_cols, collapse = " "))
     }
   } else {
-    data = data@data
+    data <- data@data
   }
 
-  has_sample = 'sample' %in% colnames(data)
+  has_sample <- "sample" %in% colnames(data)
   data.table::setDT(data)
-  data$segLen = data$end - data$start + 1
+  data$segLen <- data$end - data$start + 1
 
   if (has_sample) {
-    ploidy = data %>%
+    ploidy <- data %>%
       dplyr::group_by(.data$sample) %>%
       dplyr::summarise(
         ploidy = sum((.data$segLen / sum(.data$segLen)) * .data$segVal)
@@ -38,10 +38,9 @@ get_cn_ploidy <- function(data) {
       ) %>%
       data.table::as.data.table()
   } else {
-    ploidy = sum((data$segLen / sum(data$segLen)) * data$segVal)
-    ploidy = round(ploidy, 2)
+    ploidy <- sum((data$segLen / sum(data$segLen)) * data$segVal)
+    ploidy <- round(ploidy, 2)
   }
 
   ploidy
 }
-

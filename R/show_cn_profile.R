@@ -26,59 +26,62 @@
 #'   package = "sigminer", mustWork = TRUE
 #' ))
 #'
-#' show_cn_profile(cn, nrow=5, ncol=2)
-#'
-show_cn_profile = function(data, samples=NULL, show_n=NULL, show_title=FALSE,
-                           chrs = paste0("chr",c(1:22, "X")),
-                           genome_build = c("hg19", "hg38"),
-                           nrow=NULL, ncol=NULL, return_plotlist=FALSE, .call=FALSE) {
+#' show_cn_profile(cn, nrow = 5, ncol = 2)
+show_cn_profile <- function(data, samples = NULL, show_n = NULL, show_title = FALSE,
+                            chrs = paste0("chr", c(1:22, "X")),
+                            genome_build = c("hg19", "hg38"),
+                            nrow = NULL, ncol = NULL, return_plotlist = FALSE, .call = FALSE) {
   stopifnot(is.data.frame(data) | inherits(data, "CopyNumber"))
   if (is.data.frame(data)) {
     if (is.null(samples)) {
-      nc_cols = c("chromosome", "start", "end", "segVal")
+      nc_cols <- c("chromosome", "start", "end", "segVal")
     } else {
-      nc_cols = c("chromosome", "start", "end", "segVal", "sample")
+      nc_cols <- c("chromosome", "start", "end", "segVal", "sample")
     }
     if (!all(nc_cols %in% colnames(data))) {
       stop("Invalid input, it must contain columns: ", paste(nc_cols, collapse = " "))
     }
   }
 
-  genome_build = match.arg(genome_build)
+  genome_build <- match.arg(genome_build)
   if (inherits(data, "CopyNumber")) {
-    genome_build = data@genome_build
-    data = data@data
+    genome_build <- data@genome_build
+    data <- data@data
   }
   data.table::setDT(data)
 
   # Filter data
   if (!is.null(samples)) {
-    data = data[data$sample %in% samples]
+    data <- data[data$sample %in% samples]
   }
-  data = data[data$chromosome %in% chrs]
+  data <- data[data$chromosome %in% chrs]
 
   # Get plot data
-  coord_df = build_chrom_coordinate(genome_build, chrs) %>%
+  coord_df <- build_chrom_coordinate(genome_build, chrs) %>%
     dplyr::mutate(labels = sub("chr", "", .data$chrom))
-  merge_df = dplyr::left_join(data, coord_df, by=c("chromosome"="chrom")) %>%
-    dplyr::mutate(start = .data$x_start + .data$start - 1,
-                  end = .data$x_start + .data$end,
-                  segType = dplyr::case_when(
-                    .data$segVal > 2 ~ "Amp",
-                    .data$segVal == 2 ~ "Normal",
-                    .data$segVal < 2 ~ "Del"
-                  ))
+  merge_df <- dplyr::left_join(data, coord_df, by = c("chromosome" = "chrom")) %>%
+    dplyr::mutate(
+      start = .data$x_start + .data$start - 1,
+      end = .data$x_start + .data$end,
+      segType = dplyr::case_when(
+        .data$segVal > 2 ~ "Amp",
+        .data$segVal == 2 ~ "Normal",
+        .data$segVal < 2 ~ "Del"
+      )
+    )
 
 
-  plot_cn_profile = function(plot_df, coord_df) {
+  plot_cn_profile <- function(plot_df, coord_df) {
     ggplot() +
-      geom_segment(aes(x = .data$start, xend = .data$end,
-                       y = .data$segVal, yend = .data$segVal,
-                       color=.data$segType), data = plot_df) +
-      geom_vline(aes(xintercept = .data$x_start), linetype="dotted", data = coord_df) +
-      geom_vline(xintercept = coord_df$x_end[nrow(coord_df)], linetype="dotted") +
+      geom_segment(aes(
+        x = .data$start, xend = .data$end,
+        y = .data$segVal, yend = .data$segVal,
+        color = .data$segType
+      ), data = plot_df) +
+      geom_vline(aes(xintercept = .data$x_start), linetype = "dotted", data = coord_df) +
+      geom_vline(xintercept = coord_df$x_end[nrow(coord_df)], linetype = "dotted") +
       scale_x_continuous(breaks = coord_df$lab_loc, labels = coord_df$labels) +
-      scale_color_manual(values = c("Amp"="red", "Normal"="black", "Del"="blue")) +
+      scale_color_manual(values = c("Amp" = "red", "Normal" = "black", "Del" = "blue")) +
       labs(x = "Chromosome", y = "Copy number") +
       cowplot::theme_cowplot() +
       theme(
@@ -87,8 +90,8 @@ show_cn_profile = function(data, samples=NULL, show_n=NULL, show_title=FALSE,
       )
   }
 
-  plot_cn_summary = function(plot_df, coord_df) {
-    plot_df = dplyr::bind_rows(
+  plot_cn_summary <- function(plot_df, coord_df) {
+    plot_df <- dplyr::bind_rows(
       plot_df %>%
         dplyr::select(c("start", "segVal", "segType")) %>%
         dplyr::rename(x = .data$start),
@@ -97,18 +100,18 @@ show_cn_profile = function(data, samples=NULL, show_n=NULL, show_title=FALSE,
         dplyr::rename(x = .data$end)
     ) %>%
       dplyr::mutate(segVal = .data$segVal - 2)
-    data_amp = plot_df %>%
+    data_amp <- plot_df %>%
       dplyr::filter(.data$segType %in% c("Amp", "Normal"))
-    data_del = plot_df %>%
+    data_del <- plot_df %>%
       dplyr::filter(.data$segType %in% c("Del", "Normal"))
 
     ggplot() +
-      geom_area(aes_string(x = "x", y = "segVal"),fill="red", data = data_amp) +
-      geom_area(aes_string(x = "x", y = "segVal"),fill="blue", data = data_del) +
+      geom_area(aes_string(x = "x", y = "segVal"), fill = "red", data = data_amp) +
+      geom_area(aes_string(x = "x", y = "segVal"), fill = "blue", data = data_del) +
       geom_line() +
       geom_hline(yintercept = 0) +
-      geom_vline(aes(xintercept = .data$x_start), linetype="dotted", data = coord_df) +
-      geom_vline(xintercept = coord_df$x_end[nrow(coord_df)], linetype="dotted") +
+      geom_vline(aes(xintercept = .data$x_start), linetype = "dotted", data = coord_df) +
+      geom_vline(xintercept = coord_df$x_end[nrow(coord_df)], linetype = "dotted") +
       scale_x_continuous(breaks = coord_df$lab_loc, labels = coord_df$labels) +
       labs(x = "Chromosome", y = "Copy number variation") +
       cowplot::theme_cowplot() +
@@ -119,55 +122,59 @@ show_cn_profile = function(data, samples=NULL, show_n=NULL, show_title=FALSE,
   }
 
 
-  if (!'sample' %in% colnames(merge_df)) {
+  if (!"sample" %in% colnames(merge_df)) {
     if (.call) {
       # Plot summary profile
-      gg = plot_cn_summary(merge_df, coord_df)
+      gg <- plot_cn_summary(merge_df, coord_df)
     } else {
       # Plot as a single sample
-      gg = plot_cn_profile(merge_df, coord_df)
+      gg <- plot_cn_profile(merge_df, coord_df)
     }
   } else {
     # Plot mutiple samples
-    gg_df = merge_df %>%
+    gg_df <- merge_df %>%
       dplyr::group_by(.data$sample) %>%
       tidyr::nest() %>%
       dplyr::mutate(gg = purrr::map(.data$data,
-                                    plot_cn_profile,
-                                    coord_df=coord_df))
+        plot_cn_profile,
+        coord_df = coord_df
+      ))
     if (!is.null(show_n)) {
-      gg_df = gg_df %>%
+      gg_df <- gg_df %>%
         dplyr::slice(1:show_n)
     }
-    gg_list = gg_df$gg
+    gg_list <- gg_df$gg
     if (show_title) {
-      gg_list = purrr::map2(gg_list, gg_df$sample, ~.x+labs(title=.y))
+      gg_list <- purrr::map2(gg_list, gg_df$sample, ~ .x + labs(title = .y))
     }
-    names(gg_list) = gg_df$sample
+    names(gg_list) <- gg_df$sample
     if (return_plotlist) {
       return(gg_list)
     }
-    gg = cowplot::plot_grid(plotlist = gg_list, align = "hv",
-                            nrow = nrow, ncol = ncol)
+    gg <- cowplot::plot_grid(
+      plotlist = gg_list, align = "hv",
+      nrow = nrow, ncol = ncol
+    )
   }
   return(gg)
 }
 
 
 # Build Chromosome Coordinates
-build_chrom_coordinate = function(genome_build, chrs){
-  chr_len = get_genome_annotation(data_type = "chr_size",
-                                  chrs = chrs,
-                                  genome_build = genome_build)
-  chr_len$x_end = cumsum(as.numeric(chr_len$size))
+build_chrom_coordinate <- function(genome_build, chrs) {
+  chr_len <- get_genome_annotation(
+    data_type = "chr_size",
+    chrs = chrs,
+    genome_build = genome_build
+  )
+  chr_len$x_end <- cumsum(as.numeric(chr_len$size))
   # chr_len$x_start = cumsum(as.numeric(c(0, chr_len$size[-1])))
-  chr_len$x_start = c(0, chr_len$x_end[-nrow(chr_len)])
+  chr_len$x_start <- c(0, chr_len$x_end[-nrow(chr_len)])
   # Set lab location as middle of chromosome
   chr_len %>%
     dplyr::mutate(lab_loc = chr_len %>%
-                    dplyr::rowwise() %>%
-                    dplyr::do(lab_loc = mean(c(.$x_start, .$x_end))) %>%
-                    dplyr::summarise(lab_loc = round(.data$lab_loc)) %>%
-                    dplyr::pull(.data$lab_loc))
-
+      dplyr::rowwise() %>%
+      dplyr::do(lab_loc = mean(c(.$x_start, .$x_end))) %>%
+      dplyr::summarise(lab_loc = round(.data$lab_loc)) %>%
+      dplyr::pull(.data$lab_loc))
 }

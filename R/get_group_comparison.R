@@ -9,7 +9,7 @@
 #'
 #' Compute p-values by Monte Carlo simulation, in larger than 2 by 2 tables.
 #'
-#' @param data a `data.frame` contains signature groups and genotypes/phenotypes
+#' @param data a `data.frame` containing signature groups and genotypes/phenotypes
 #' (including categorical and continuous type data) want to analyze. User need to
 #' construct this `data.frame` by him/herself.
 #' @param col_group column name of signature groups.
@@ -73,7 +73,7 @@ get_group_comparison <- function(data, col_group, cols_to_compare,
   }
 
   do_summary <- function(col, type = c("ca", "co"),
-                           verbose = FALSE, na = NA) {
+                         verbose = FALSE, na = NA) {
     type <- match.arg(type)
 
     df <- data[, c("group", col), with = FALSE]
@@ -88,17 +88,20 @@ get_group_comparison <- function(data, col_group, cols_to_compare,
 
       table_df <- table(df[["group"]], df[[col]])
 
-      table_p <- tryCatch({
-        if (any(dim(table_df) > 2)) {
-          # compute p-values by Monte Carlo simulation, in larger than 2 by 2 tables.
-          test <- fisher.test(table_df, simulate.p.value = TRUE)
-        } else {
-          test <- fisher.test(table_df)
+      table_p <- tryCatch(
+        {
+          if (any(dim(table_df) > 2)) {
+            # compute p-values by Monte Carlo simulation, in larger than 2 by 2 tables.
+            test <- fisher.test(table_df, simulate.p.value = TRUE)
+          } else {
+            test <- fisher.test(table_df)
+          }
+          test[["p.value"]]
+        },
+        error = function(e) {
+          NA
         }
-        test[["p.value"]]
-      }, error = function(e) {
-        NA
-      })
+      )
 
       list(data = df, table = table_df, p_value = table_p, type = "categorical", extra = NA)
     } else {
@@ -106,11 +109,14 @@ get_group_comparison <- function(data, col_group, cols_to_compare,
 
       table_df <- summary(df)
 
-      fit <- tryCatch({
-        stats::aov(as.formula(paste0(col, " ~ group")), data = df)
-      }, error = function(e) {
-        NA
-      })
+      fit <- tryCatch(
+        {
+          stats::aov(as.formula(paste0(col, " ~ group")), data = df)
+        },
+        error = function(e) {
+          NA
+        }
+      )
 
       if (inherits(fit, "aov")) {
         p_value <- summary(fit)[[1]][["Pr(>F)"]][1] # get anova p value
