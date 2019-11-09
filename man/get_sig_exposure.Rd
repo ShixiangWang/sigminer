@@ -33,3 +33,6 @@ load(system.file("extdata", "toy_mutational_signature.RData",
 get_sig_exposure(sig2)
 get_sig_exposure(sig2, type = "relative")
 }
+\author{
+Shixiang Wang \href{mailto:w_shixiang@163.com}{w_shixiang@163.com}
+}

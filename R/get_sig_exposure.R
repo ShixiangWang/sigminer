@@ -8,6 +8,7 @@
 #' than this value will be set to 0 and the remaining signature exposure will be scaled
 #' to make sum as 1 accordingly.
 #' @return a `data.table`
+#' @author Shixiang Wang <w_shixiang@163.com>
 #' @export
 #'
 #' @examples
@@ -25,7 +26,7 @@ get_sig_exposure <- function(Signature,
     h <- Signature$Exposure
   } else if (is.matrix(Signature)) {
     if (!all(startsWith(rownames(Signature), "Sig"))) {
-      stop("If Signature is a matrix, column names must start with 'Sig'!", call. = FALSE)
+      stop("If Signature is a matrix, row names must start with 'Sig'!", call. = FALSE)
     }
     h <- Signature
   } else {
