@@ -27,13 +27,13 @@ The reference signatures can be either a \code{Signature} object specified by \c
 or known COSMIC signatures specified by \code{sig_db} argument.
 Two COSMIC databases are used for comparisons - "legacy" which includes 30 signaures,
 and "SBS" - which includes updated/refined 65 signatures. This function is modified
-from \code{\link[maftools:compareSignatures]{maftools::compareSignatures()}}.
+from \code{compareSignatures()} in \strong{maftools} package.
 }
 \examples{
 # Load mutational signature
 load(system.file("extdata", "toy_mutational_signature.RData",
-                 package = "sigminer", mustWork = TRUE
-                 ))
+  package = "sigminer", mustWork = TRUE
+))
 
 get_sig_similarity(sig2)
 get_sig_similarity(sig2, sig_db = "SBS")
