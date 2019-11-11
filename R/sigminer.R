@@ -16,13 +16,47 @@
 #' @section sig_ functions:
 #' Signature analysis for genomic variations:
 #'
+#' * [sig_derive()] - generate variation matrix for signature extraction.
+#' * [sig_estimate()] - estimate signature number, work with [sig_extract()].
+#' * [sig_extract()] - extract signatures throught NMF, a proper signature
+#' number can be estimated by [sig_estimate()].
+#' * [sig_auto_extract()] - extract signatures throught automatic relevance
+#' determination technique.
 #'
-#' @section draw_ functions:
+#' @section get_ functions:
+#' Supplementary data clean and analysis functions:
+#'
+#' * [get_cn_ploidy()]
+#' * [get_bayesian_result()]
+#' * [get_groups()]
+#' * [get_sig_exposure()]
+#' * [get_sig_similarity()]
+#' * [get_genome_annotation()]
+#' * [get_adj_p()]
+#' * [get_group_comparison()]
+#' * [get_sig_feature_association()]
+#' * [get_tidy_association()]
+#' * [get_tidy_parameter()]
+#' * [handle_hyper_mutation()]
+#'
+#'
+#' @section show_ functions:
+#'
+#' Common visualization:
+#'
+#' * [show_rank_survey()]
+#' * [show_sig_profile()]
+#' * [show_sig_exposure()]
+#' * [show_group_mapping()]
+#' * [show_group_comparison()]
+#' * [show_sig_feature_corrplot()]
+#'
+#'
 #' Result visualization for copy number data:
 #'
-#'
-#' Result visualization for signature analysis:
-#'
+#' * [show_cn_distribution()]
+#' * [show_cn_features()]
+#' * [show_cn_components()]
 #'
 #' Result visualization for [MAF] is provide by **maftools** package,
 #' please read its [vignette](https://bioconductor.org/packages/release/bioc/vignettes/maftools/inst/doc/maftools.html).
