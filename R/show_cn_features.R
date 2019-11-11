@@ -1,6 +1,6 @@
 #' Show Copy Number Feature Distributions
 #'
-#' @param features a `list` generate from [derive] function.
+#' @param features a feature `list` generate from [sig_derive] function.
 #' @param ylab lab of y axis.
 #' @param log_segsize default is `TRUE`, show `log10` based segsize.
 #' @param return_plotlist if `TRUE`, return a list of ggplot objects but a combined plot.

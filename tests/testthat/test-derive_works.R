@@ -1,30 +1,30 @@
 skip_on_cran()
 
-test_that("derive for CopyNumber works", {
+test_that("sig_derive for CopyNumber works", {
   # Load copy number object
   load(system.file("extdata", "toy_copynumber.RData",
     package = "sigminer", mustWork = TRUE
   ))
   # Prepare copy number signature analysis
-  cn_prepare <- derive(cn)
+  cn_prepare <- sig_derive(cn)
   expect_type(cn_prepare, "list")
-  cn_prepare2 <- derive(cn, cores = 2)
+  cn_prepare2 <- sig_derive(cn, cores = 2)
   expect_type(cn_prepare2, "list")
   # The result is reproducible
-  cn_prepare <- derive(cn, cores = 2)
+  cn_prepare <- sig_derive(cn, cores = 2)
   expect_true(all.equal(cn_prepare, cn_prepare2))
-  cn_prepare <- derive(cn, keep_only_matrix = TRUE)
+  cn_prepare <- sig_derive(cn, keep_only_matrix = TRUE)
   expect_type(cn_prepare, "double")
 })
 
 
-test_that("derive for MAF works", {
+test_that("sig_derive for MAF works", {
   # Prepare mutational signature analysis
   laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
   laml <- read_maf(maf = laml.maf)
   library(BSgenome.Hsapiens.UCSC.hg19)
   expect_warning(
-    mt_prepare <- derive(
+    mt_prepare <- sig_derive(
       laml,
       ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
       prefix = "chr", add = TRUE, useSyn = TRUE
@@ -32,7 +32,7 @@ test_that("derive for MAF works", {
   )
   expect_type(mt_prepare, "list")
   expect_warning(
-    mt_prepare <- derive(
+    mt_prepare <- sig_derive(
       laml,
       ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
       prefix = "chr", add = TRUE, useSyn = TRUE, keep_only_matrix = TRUE

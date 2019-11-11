@@ -11,7 +11,7 @@ get_sig_similarity(Signature, Ref = NULL, sig_db = "legacy",
 \item{Signature}{a \code{Signature} object or a component-by-signature matrix (sum of each column is 1).
 More please see examples.}
 
-\item{Ref}{default is \code{NULL}, can be a same object as \code{Sig}.}
+\item{Ref}{default is \code{NULL}, can be a same object as \code{Signature}.}
 
 \item{sig_db}{can be 'legacy' or 'SBS'. Default 'legacy'.}
 

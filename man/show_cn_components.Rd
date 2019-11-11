@@ -10,7 +10,7 @@ show_cn_components(parameters, show_weights = TRUE, log_segsize = TRUE,
 }
 \arguments{
 \item{parameters}{a \code{data.frame} contain parameter components, obtain this
-from \link{derive} function.}
+from \link{sig_derive} function.}
 
 \item{show_weights}{default is \code{TRUE}, show weights for each component.}
 

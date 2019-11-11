@@ -20,7 +20,7 @@ representing signatures (column names must start with 'Sig').}
 \item{normalize}{one of 'row', 'column' and 'raw', for row normalization (signature),
 column normalization (component) and raw data, respectively.}
 
-\item{params}{params \code{data.frame} of components, obtained from \link{derive}.}
+\item{params}{params \code{data.frame} of components, obtained from \link{sig_derive}.}
 
 \item{show_cv}{default is \code{FALSE}, if \code{TRUE}, show coefficient of variation when
 \code{params} is not \code{NULL}.}

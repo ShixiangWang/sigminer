@@ -8,7 +8,7 @@ show_cn_features(features, ylab = NULL, log_segsize = TRUE,
   return_plotlist = FALSE, base_size = 12, ...)
 }
 \arguments{
-\item{features}{a \code{list} generate from \link{derive} function.}
+\item{features}{a feature \code{list} generate from \link{sig_derive} function.}
 
 \item{ylab}{lab of y axis.}
 

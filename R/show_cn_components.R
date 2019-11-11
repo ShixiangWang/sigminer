@@ -4,7 +4,7 @@
 #'
 #' @inheritParams show_cn_features
 #' @param parameters a `data.frame` contain parameter components, obtain this
-#' from [derive] function.
+#' from [sig_derive] function.
 #' @param auto_transform default is `TRUE`, it will auto increase the `SD` for components
 #' for showing them better in the plot.
 #' @param show_weights default is `TRUE`, show weights for each component.

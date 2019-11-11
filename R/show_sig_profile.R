@@ -10,7 +10,7 @@
 #' @param mode signature type for plotting, now supports 'copynumber' or 'mutation'.
 #' @param normalize one of 'row', 'column' and 'raw', for row normalization (signature),
 #' column normalization (component) and raw data, respectively.
-#' @param params params `data.frame` of components, obtained from [derive].
+#' @param params params `data.frame` of components, obtained from [sig_derive].
 #' @param show_cv default is `FALSE`, if `TRUE`, show coefficient of variation when
 #' `params` is not `NULL`.
 #' @param params_label_size font size for params label.

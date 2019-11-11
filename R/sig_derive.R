@@ -9,6 +9,9 @@
 #' @return a `list` contains a `matrix` used for NMF de-composition.
 #' @author Shixiang Wang
 #' @export
+#' @seealso [sig_derive] for getting variation matrix,
+#' [sig_estimate] for estimating signature number for [sig_extract], [sig_auto_extract] for
+#' extracting signatures using automatic relevance determination technique.
 #' @examples
 #' \donttest{
 #' # Load copy number object
@@ -16,13 +19,13 @@
 #'   package = "sigminer", mustWork = TRUE
 #' ))
 #' # Prepare copy number signature analysis
-#' cn_prepare <- derive(cn)
+#' cn_prepare <- sig_derive(cn)
 #' }
-derive <- function(object, ...) {
-  UseMethod("derive")
+sig_derive <- function(object, ...) {
+  UseMethod("sig_derive")
 }
 
-#' @describeIn derive Derive copy number features, components and component-by-sample matrix
+#' @describeIn sig_derive Derive copy number features, components and component-by-sample matrix
 #' @param type one of "probability", "count". Default is "probability", return a matrix
 #' with the sum of posterior probabilities for each components. If set to 'count',
 #' return a matrix with event count assigned to each components. The result for
@@ -52,7 +55,7 @@ derive <- function(object, ...) {
 #' @references Macintyre, Geoff, et al. "Copy number signatures and mutational
 #' processes in ovarian carcinoma." Nature genetics 50.9 (2018): 1262.
 #' @export
-derive.CopyNumber <- function(object, type = c("probability", "count"),
+sig_derive.CopyNumber <- function(object, type = c("probability", "count"),
                               reference_components = FALSE,
                               cores = 1, seed = 123456,
                               min_comp = 2, max_comp = 15,
@@ -116,7 +119,7 @@ derive.CopyNumber <- function(object, type = c("probability", "count"),
   }
 }
 
-#' @describeIn derive Derive SBS mutation component-by-sample matrix and APOBEC enrichment
+#' @describeIn sig_derive Derive SBS mutation component-by-sample matrix and APOBEC enrichment
 #' @inheritParams maftools::trinucleotideMatrix
 #' @references Mayakonda, Anand, et al. "Maftools: efficient and comprehensive analysis of somatic variants in cancer." Genome research 28.11 (2018): 1747-1756.
 #' @examples
@@ -125,19 +128,19 @@ derive.CopyNumber <- function(object, type = c("probability", "count"),
 #' laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
 #' laml <- read_maf(maf = laml.maf)
 #' library(BSgenome.Hsapiens.UCSC.hg19)
-#' mt_prepare <- derive(
+#' mt_prepare <- sig_derive(
 #'   laml,
 #'   ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
 #'   prefix = "chr", add = TRUE, useSyn = TRUE
 #' )
 #' }
 #' @export
-derive.MAF <- function(object, ref_genome = NULL, prefix = NULL,
+sig_derive.MAF <- function(object, ref_genome = NULL, prefix = NULL,
                        add = TRUE, ignoreChr = NULL, useSyn = TRUE,
                        keep_only_matrix = FALSE,
                        ...) {
   # // TODO: Rewrite this function instead of using maftools
-  # // Make result consistent with result from derive.CopyNumber
+  # // Make result consistent with result from sig_derive.CopyNumber
   res <- maftools::trinucleotideMatrix(
     object,
     ref_genome = ref_genome, prefix = prefix,

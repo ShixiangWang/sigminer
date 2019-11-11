@@ -15,7 +15,7 @@ a \code{tibble}.
 \description{
 When users derive copy number features, it is useful to know the parameters
 of the fit components, including mean, sd and coefficient of variation.
-This function is used by \link{derive} function and
+This function is used by \link{sig_derive} function and
 exported to users for extra usage.
 }
 \examples{

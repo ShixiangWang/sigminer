@@ -48,7 +48,8 @@ Gaujoux, Renaud, and Cathal Seoighe. "A flexible R package for nonnegative matri
 Mayakonda, Anand, et al. "Maftools: efficient and comprehensive analysis of somatic variants in cancer." Genome research 28.11 (2018): 1747-1756.
 }
 \seealso{
-\link{sig_estimate} for estimating signature number for \link{sig_extract}., \link{sig_auto_extract} for
+\link{sig_derive} for getting variation matrix,
+\link{sig_estimate} for estimating signature number for \link{sig_extract}, \link{sig_auto_extract} for
 extracting signatures using automatic relevance determination technique.
 }
 \author{

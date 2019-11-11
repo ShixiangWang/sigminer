@@ -19,7 +19,7 @@
 #' the calculation process and a similar input and output structure like [sig_extract()].
 #'
 #' @inheritParams sig_estimate
-#' @inheritParams derive
+#' @inheritParams sig_derive
 #' @param result_prefix prefix for result data files.
 #' @param destdir path to save data runs, default is `tempdir()`.
 #' @param method default is "L1W.L2H", which uses an exponential prior for W and
@@ -59,7 +59,8 @@
 #' res <- sig_auto_extract(cn_prepare$nmf_matrix, result_prefix = "Test_copynumber", nrun = 1)
 #' # At default, all run files are stored in tempdir()
 #' dir(tempdir())
-#' @seealso [sig_extract] for extracting signatures using **NMF** package, [sig_estimate] for
+#' @seealso [sig_derive] for getting variation matrix,
+#' [sig_extract] for extracting signatures using **NMF** package, [sig_estimate] for
 #' estimating signature number for [sig_extract].
 sig_auto_extract <- function(nmf_matrix = NULL,
                              result_prefix = "BayesNMF",
