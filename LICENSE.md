@@ -1,6 +1,7 @@
 # MIT License
 
 Copyright (c) 2019 Shixiang Wang, Xue-Song Liu
+
 Copyright (c) 2018 Geoffrey Macintyre, Anand Mayakonda
 
 Permission is hereby granted, free of charge, to any person obtaining a copy

@@ -77,6 +77,12 @@ Mayakonda, Anand, et al. "Maftools: efficient and comprehensive analysis
     of somatic variants in cancer." Genome research 28.11 (2018): 1747-1756.
 ```
 
+The code for extracting mutational signatures was based in part on the source 
+code of the **SignatureAnalyzer** package, if you use this feature, please also cite:
+
+```
+Alexandrov, Ludmil, et al. "The repertoire of mutational signatures in human cancer." BioRxiv (2018): 322859.
+```
 
 ## LICENSE
 
