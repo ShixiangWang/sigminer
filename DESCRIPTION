@@ -10,6 +10,12 @@ Authors@R:
              comment = c(ORCID = "0000-0001-9855-7357")),
       person(given = "Xue-Song",
              family = "Liu",
+             role = "ctb"),
+      person(given = "Geoffrey",
+             family = "Macintyre",
+             role = "ctb"),
+      person(given = "Anand",
+             family = "Mayakonda",
              role = "ctb"))
 Description: Genomic variations including somatic mutations,
     copy number variations, etc. are the major force for cancer
