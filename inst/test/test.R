@@ -20,3 +20,11 @@ load(system.file("extdata", "toy_copynumber_prepare.RData",
 params = get_tidy_parameter(cn_prepare$components)
 show_sig_profile(sig, params = params, y_expand = 2)
 show_sig_profile(sig, params = params, y_expand = 3, show_cv = T, params_label_angle = 70)
+
+
+
+# Optimize signature exposure
+load(system.file("extdata", "toy_copynumber_prepare.RData",
+                 package = "sigminer", mustWork = TRUE
+))
+res <- sig_auto_extract(cn_prepare$nmf_matrix, result_prefix = "Test_copynumber", nrun = 1)
