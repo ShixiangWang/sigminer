@@ -161,11 +161,11 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
         label = ifelse(.data$dist == "norm",
           paste0(
             " \u03BC=", signif(.data$mean, digits),
-            ifelse(show_cv, paste0("; cv=", signif(.data$cv, digits)), "")
+            ifelse(rep(show_cv, length(.data$cv)), paste0("; cv=", signif(.data$cv, digits)), "")
           ),
           paste0(
             " \u03BB=", signif(.data$mean, digits),
-            ifelse(show_cv, paste0("; cv=", signif(.data$cv, digits)), "")
+            ifelse(rep(show_cv, length(.data$cv)), paste0("; cv=", signif(.data$cv, digits)), "")
           )
         )
       ),
