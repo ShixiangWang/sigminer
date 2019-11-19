@@ -60,7 +60,7 @@ get_group_comparison <- function(data, col_group, cols_to_compare,
     stop("all elements in 'type' must be 'ca' for 'categorical' variable and 'co' for 'continuous' variable.")
   }
   if (!is.data.frame(data)) stop("'data' must be a data.frame object.")
-  data.table::setDT(data)
+  data = data.table::as.data.table(data)
 
   # subset
   data <- data[, c(col_group, cols_to_compare), with = FALSE]
