@@ -79,11 +79,11 @@ show_sig_exposure <- function(Signature,
   x1 <- tidyr::gather(h, "Sample", "Exposure", -"Signature")
   x2 <- tidyr::gather(h.norm, "Sample", "Exposure", -"Signature")
 
-  x1$class0 <- "Counts"
+  x1$class0 <- "Estimate_Mutations"
   x2$class0 <- "Fractions"
   df <- rbind(x1, x2)
 
-  df$class0 <- factor(df$class0, c("Counts", "Fractions"))
+  df$class0 <- factor(df$class0, c("Estimated_Mutations", "Fractions"))
   df$Sample <- factor(df$Sample, sample.ordering)
 
   p <- ggplot(df, aes_string(x = "Sample", y = "Exposure", fill = "Signature"))
