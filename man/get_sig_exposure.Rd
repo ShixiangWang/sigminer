@@ -4,8 +4,11 @@
 \alias{get_sig_exposure}
 \title{Get Signature Exposure from 'Signature' Object}
 \usage{
-get_sig_exposure(Signature, type = c("absolute", "relative"),
-  rel_threshold = 0.01)
+get_sig_exposure(
+  Signature,
+  type = c("absolute", "relative"),
+  rel_threshold = 0.01
+)
 }
 \arguments{
 \item{Signature}{a \code{Signature} object obtained either from \link{sig_extract} or \link{sig_auto_extract},

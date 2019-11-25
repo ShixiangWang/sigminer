@@ -4,9 +4,16 @@
 \alias{show_group_mapping}
 \title{Map Groups using Sankey}
 \usage{
-show_group_mapping(data, sig_col, map_cols, include_sig = FALSE,
-  title = NULL, xlab = NULL, ylab = NULL,
-  custom_theme = cowplot::theme_minimal_hgrid())
+show_group_mapping(
+  data,
+  sig_col,
+  map_cols,
+  include_sig = FALSE,
+  title = NULL,
+  xlab = NULL,
+  ylab = NULL,
+  custom_theme = cowplot::theme_minimal_hgrid()
+)
 }
 \arguments{
 \item{data}{a \code{data.frame} containing signature group and other categorical groups.}

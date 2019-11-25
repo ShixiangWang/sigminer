@@ -4,8 +4,14 @@
 \alias{get_group_comparison}
 \title{Get Comparison Result between Signature Groups}
 \usage{
-get_group_comparison(data, col_group, cols_to_compare, type = "ca",
-  NAs = NA, verbose = FALSE)
+get_group_comparison(
+  data,
+  col_group,
+  cols_to_compare,
+  type = "ca",
+  NAs = NA,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{data}{a \code{data.frame} containing signature groups and genotypes/phenotypes

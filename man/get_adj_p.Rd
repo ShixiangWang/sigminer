@@ -7,9 +7,16 @@
 https://github.com/kassambara/ggpubr/issues/143
 }
 \usage{
-get_adj_p(data, .col, .grp = "Sample", comparisons = NULL,
-  method = "wilcox.test", p.adjust.method = "fdr", p.digits = 3L,
-  ...)
+get_adj_p(
+  data,
+  .col,
+  .grp = "Sample",
+  comparisons = NULL,
+  method = "wilcox.test",
+  p.adjust.method = "fdr",
+  p.digits = 3L,
+  ...
+)
 }
 \arguments{
 \item{data}{a \code{data.frame} containing column for groups and column for comparison.}

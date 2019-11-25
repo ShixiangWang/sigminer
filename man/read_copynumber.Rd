@@ -4,12 +4,21 @@
 \alias{read_copynumber}
 \title{Read Absolute Copy Number Profile}
 \usage{
-read_copynumber(input, pattern = NULL, ignore_case = FALSE,
+read_copynumber(
+  input,
+  pattern = NULL,
+  ignore_case = FALSE,
   seg_cols = c("Chromosome", "Start.bp", "End.bp", "modal_cn"),
-  samp_col = "sample", use_all = FALSE, min_segnum = 0L,
-  max_copynumber = 20L, genome_build = c("hg19", "hg38"),
-  genome_measure = c("called", "wg"), complement = TRUE,
-  verbose = FALSE, ...)
+  samp_col = "sample",
+  use_all = FALSE,
+  min_segnum = 0L,
+  max_copynumber = 20L,
+  genome_build = c("hg19", "hg38"),
+  genome_measure = c("called", "wg"),
+  complement = TRUE,
+  verbose = FALSE,
+  ...
+)
 }
 \arguments{
 \item{input}{a \code{data.frame} or a file or a directory contains copy number profile.}

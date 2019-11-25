@@ -4,8 +4,13 @@
 \alias{get_sig_similarity}
 \title{Calculate Similarity between Identified Signatures and Reference Signatures}
 \usage{
-get_sig_similarity(Signature, Ref = NULL, sig_db = "legacy",
-  method = "cosine", verbose = TRUE)
+get_sig_similarity(
+  Signature,
+  Ref = NULL,
+  sig_db = "legacy",
+  method = "cosine",
+  verbose = TRUE
+)
 }
 \arguments{
 \item{Signature}{a \code{Signature} object or a component-by-signature matrix (sum of each column is 1).

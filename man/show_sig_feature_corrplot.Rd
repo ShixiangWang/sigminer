@@ -4,9 +4,12 @@
 \alias{show_sig_feature_corrplot}
 \title{Draw Corrplot for Signature Exposures and Other Features}
 \usage{
-show_sig_feature_corrplot(tidy_cor, features_list, breaks_count = c(0L,
-  200L, 400L, 600L, 800L, 1020L), breaks_score = c(-Inf, -16, -10, -5,
-  -1.3, 1.3, 5, 10, 16, Inf))
+show_sig_feature_corrplot(
+  tidy_cor,
+  features_list,
+  breaks_count = c(0L, 200L, 400L, 600L, 800L, 1020L),
+  breaks_score = c(-Inf, -16, -10, -5, -1.3, 1.3, 5, 10, 16, Inf)
+)
 }
 \arguments{
 \item{tidy_cor}{data returned by \link{get_tidy_association}.}

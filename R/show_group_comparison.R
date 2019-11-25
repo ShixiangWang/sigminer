@@ -18,6 +18,10 @@
 #' Of note,
 #' this argument should be a character vector has same length as `group_comparison`,
 #' the location for continuous type data should mark with `NA`.
+#' @param set_ca_sig_yaxis if `TRUE`, use y axis to show signature proportion instead of
+#' variable proportion.
+#' @param set_ca_custom_xlab only works when `set_ca_sig_yaxis` is `TRUE`. If
+#' `TRUE`, set x labels using input `xlab`, otherwise variable names will be used.
 #' @param show_pvalue if `TRUE`, show p values.
 #' @param font_size_x font size for x.
 #' @param text_angle_x text angle for x.
@@ -48,14 +52,16 @@
 #' # Compare groups (filter NAs for categorical coloumns)
 #' groups.cmp <- get_group_comparison(groups[, -1],
 #'   col_group = "group",
-#'   cols_to_compare = colnames(groups[, -1])[c(-1, -2)],
+#'   cols_to_compare = c("prob", "new_group"),
 #'   type = c("co", "ca"), verbose = TRUE
 #' )
+#'
+#' show_group_comparison(groups.cmp)
 #'
 #' # Compare groups (Set NAs of categorical columns to 'Rest')
 #' groups.cmp2 <- get_group_comparison(groups[, -1],
 #'   col_group = "group",
-#'   cols_to_compare = colnames(groups[, -1])[c(-1, -2)],
+#'   cols_to_compare = c("prob", "new_group"),
 #'   type = c("co", "ca"), NAs = "Rest", verbose = TRUE
 #' )
 #'
@@ -67,6 +73,8 @@ show_group_comparison <- function(group_comparison,
                                   xlab = "group", ylab_co = NA,
                                   legend_title_ca = NA,
                                   legend_position_ca = "bottom",
+                                  set_ca_sig_yaxis = FALSE,
+                                  set_ca_custom_xlab = FALSE,
                                   show_pvalue = TRUE,
                                   method = "wilcox.test",
                                   p.adjust.method = "fdr",
@@ -101,16 +109,26 @@ show_group_comparison <- function(group_comparison,
   if (length(ca_index) > 0) ca_list <- group_comparison[ca_index]
   if (length(co_index) > 0) co_list <- group_comparison[co_index]
 
-  # library(ggplot2)
-  # library(cowplot)
+  if (set_ca_custom_xlab) {
+    ca_list <- lapply(ca_list, function(x) {
+      x$extra <- TRUE
+      return(x)
+    })
+  }
   if (length(ca_index) > 0) {
     # plot categorical data
     ca_res <- lapply(ca_list, function(df) {
       data <- df[["data"]]
+      if (set_ca_sig_yaxis) {
+        if (!isTRUE(df[["extra"]])) {
+          df[["xlab"]] <- colnames(data)[2]
+        }
+        colnames(data) <- c("Dominant Signature", "group")
+      }
       data_sum <- data %>% dplyr::count_("group")
       data_sum[["labels"]] <- paste(data_sum[["group"]], paste0("(n=", data_sum[["n"]], ")"), sep = "\n")
 
-      var_name <- colnames(data)[2]
+      var_name <- setdiff(colnames(data), "group")
       var_name2 <- ifelse(isValidAndUnreserved(var_name), var_name, paste0("`", var_name, "`"))
 
       p <- ggplot(data, aes_string(x = "group", fill = var_name2)) +

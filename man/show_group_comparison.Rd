@@ -4,11 +4,23 @@
 \alias{show_group_comparison}
 \title{Plot Group Comparison Result}
 \usage{
-show_group_comparison(group_comparison, xlab = "group", ylab_co = NA,
-  legend_title_ca = NA, legend_position_ca = "bottom",
-  show_pvalue = TRUE, method = "wilcox.test",
-  p.adjust.method = "fdr", base_size = 12, font_size_x = 12,
-  text_angle_x = 30, hjust = 0.2, ...)
+show_group_comparison(
+  group_comparison,
+  xlab = "group",
+  ylab_co = NA,
+  legend_title_ca = NA,
+  legend_position_ca = "bottom",
+  set_ca_sig_yaxis = FALSE,
+  set_ca_custom_xlab = FALSE,
+  show_pvalue = TRUE,
+  method = "wilcox.test",
+  p.adjust.method = "fdr",
+  base_size = 12,
+  font_size_x = 12,
+  text_angle_x = 30,
+  hjust = 0.2,
+  ...
+)
 }
 \arguments{
 \item{group_comparison}{a \code{list} from result of \link{get_group_comparison} function.}
@@ -25,6 +37,12 @@ the location for categorical type data should mark with \code{NA}.}
 Of note,
 this argument should be a character vector has same length as \code{group_comparison},
 the location for continuous type data should mark with \code{NA}.}
+
+\item{set_ca_sig_yaxis}{if \code{TRUE}, use y axis to show signature proportion instead of
+variable proportion.}
+
+\item{set_ca_custom_xlab}{only works when \code{set_ca_sig_yaxis} is \code{TRUE}. If
+\code{TRUE}, set x labels using input \code{xlab}, otherwise variable names will be used.}
 
 \item{show_pvalue}{if \code{TRUE}, show p values.}
 
@@ -76,14 +94,16 @@ groups$new_group <- sample(c("1", "2", "3", "4", NA), size = nrow(groups), repla
 # Compare groups (filter NAs for categorical coloumns)
 groups.cmp <- get_group_comparison(groups[, -1],
   col_group = "group",
-  cols_to_compare = colnames(groups[, -1])[c(-1, -2)],
+  cols_to_compare = c("prob", "new_group"),
   type = c("co", "ca"), verbose = TRUE
 )
+
+show_group_comparison(groups.cmp)
 
 # Compare groups (Set NAs of categorical columns to 'Rest')
 groups.cmp2 <- get_group_comparison(groups[, -1],
   col_group = "group",
-  cols_to_compare = colnames(groups[, -1])[c(-1, -2)],
+  cols_to_compare = c("prob", "new_group"),
   type = c("co", "ca"), NAs = "Rest", verbose = TRUE
 )
 

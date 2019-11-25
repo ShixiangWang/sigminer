@@ -4,24 +4,35 @@
 \alias{sig_extract}
 \title{Extract Signatures through NMF}
 \usage{
-sig_extract(nmf_matrix, n_sig, nrun = 10, cores = 1,
-  method = "brunet", pConstant = NULL, seed = 123456, ...)
+sig_extract(
+  nmf_matrix,
+  n_sig,
+  nrun = 10,
+  cores = 1,
+  method = "brunet",
+  pConstant = NULL,
+  seed = 123456,
+  ...
+)
 }
 \arguments{
 \item{nmf_matrix}{a \code{matrix} used for NMF decomposition with rows indicate samples and columns indicate components.}
 
 \item{n_sig}{number of signature. Please run \link{sig_estimate} to select a suitable value.}
 
-\item{nrun}{a \code{numeric} giving the number of run to perform for each value in \code{range}, \code{nrun} set to 30~50 is enough to achieve robust result.}
+\item{nrun}{a \code{numeric} giving the number of run to perform for each value in \code{range}, \code{nrun} set to 30~50 is
+enough to achieve robust result.}
 
 \item{cores}{number of cpu cores to run NMF.}
 
 \item{method}{specification of the NMF algorithm. Use 'brunet' as default.
 Available methods for nmf decompositions are 'brunet', 'lee', 'ls-nmf', 'nsNMF', 'offset'.}
 
-\item{pConstant}{A small positive value to add to the matrix. Use it ONLY if the functions throws an \code{non-conformable arrays} error.}
+\item{pConstant}{A small positive value to add to the matrix. Use it ONLY if the functions throws
+an \code{non-conformable arrays} error.}
 
-\item{seed}{specification of the starting point or seeding method, which will compute a starting point, usually using data from the target matrix in order to provide a good guess.}
+\item{seed}{specification of the starting point or seeding method, which will compute a starting point,
+usually using data from the target matrix in order to provide a good guess.}
 
 \item{...}{other arguments passed to \code{\link[NMF:nmf]{NMF::nmf()}}.}
 }

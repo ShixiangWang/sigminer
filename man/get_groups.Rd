@@ -4,8 +4,11 @@
 \alias{get_groups}
 \title{Get Sample Groups from Signature Decomposition Information}
 \usage{
-get_groups(Signature, method = c("exposure", "consensus", "samples"),
-  match_consensus = FALSE)
+get_groups(
+  Signature,
+  method = c("exposure", "consensus", "samples"),
+  match_consensus = FALSE
+)
 }
 \arguments{
 \item{Signature}{a \code{Signature} object obtained either from \link{sig_extract} or \link{sig_auto_extract}.}

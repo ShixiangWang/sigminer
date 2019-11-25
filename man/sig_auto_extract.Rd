@@ -4,11 +4,20 @@
 \alias{sig_auto_extract}
 \title{Extract Signatures through the Automatic Relevance Determination Technique}
 \usage{
-sig_auto_extract(nmf_matrix = NULL, result_prefix = "BayesNMF",
-  destdir = tempdir(), method = c("L1W.L2H", "L1KL", "L2KL"),
-  strategy = c("stable", "optimal"), K0 = 25, nrun = 10,
-  niter = 2e+05, tol = 1e-07, cores = 1, skip = FALSE,
-  recover = FALSE)
+sig_auto_extract(
+  nmf_matrix = NULL,
+  result_prefix = "BayesNMF",
+  destdir = tempdir(),
+  method = c("L1W.L2H", "L1KL", "L2KL"),
+  strategy = c("stable", "optimal"),
+  K0 = 25,
+  nrun = 10,
+  niter = 2e+05,
+  tol = 1e-07,
+  cores = 1,
+  skip = FALSE,
+  recover = FALSE
+)
 }
 \arguments{
 \item{nmf_matrix}{a \code{matrix} used for NMF decomposition with rows indicate samples and columns indicate components.}

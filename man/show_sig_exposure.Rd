@@ -4,8 +4,13 @@
 \alias{show_sig_exposure}
 \title{Plot Signature Exposure}
 \usage{
-show_sig_exposure(Signature, base_size = 12, font_scale = 1,
-  rm_space = FALSE, hide_samps = TRUE)
+show_sig_exposure(
+  Signature,
+  base_size = 12,
+  font_scale = 1,
+  rm_space = FALSE,
+  hide_samps = TRUE
+)
 }
 \arguments{
 \item{Signature}{a \code{Signature} object obtained either from \link{sig_extract} or \link{sig_auto_extract},

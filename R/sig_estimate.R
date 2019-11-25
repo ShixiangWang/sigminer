@@ -10,20 +10,30 @@
 #' More custom features please directly use [NMF::nmfEstimateRank].
 #'
 #' @param nmf_matrix a `matrix` used for NMF decomposition with rows indicate samples and columns indicate components.
-#' @param range a `numeric` vector containing the ranks of factorization to try. Note that duplicates are removed and values are sorted in increasing order. The results are notably returned in this order.
+#' @param range a `numeric` vector containing the ranks of factorization to try. Note that duplicates are removed
+#' and values are sorted in increasing order. The results are notably returned in this order.
 #' @param keep_nmfObj default is `FALSE`, if `TRUE`, keep NMF objects from runs, and the result may be huge.
-#' @param nrun a `numeric` giving the number of run to perform for each value in `range`, `nrun` set to 30~50 is enough to achieve robust result.
-#' @param what a character vector whose elements partially match one of the following item, which correspond to the measures computed by summary on each – multi-run – NMF result: ‘all’, ‘cophenetic’, ‘rss’, ‘residuals’, ‘dispersion’, ‘evar’, ‘silhouette’ (and more specific \*.coef, \*.basis, \*.consensus), ‘sparseness’ (and more specific \*.coef, \*.basis). It specifies which measure must be plotted (what='all' plots all the measures).
+#' @param nrun a `numeric` giving the number of run to perform for each value in `range`, `nrun` set to 30~50 is
+#' enough to achieve robust result.
+#' @param what a character vector whose elements partially match one of the following item, which correspond to
+#' the measures computed by summary on each multi-run NMF result: ‘all’, ‘cophenetic’, ‘rss’, ‘residuals’,
+#'  ‘dispersion’, ‘evar’, ‘silhouette’ (and more specific .coef, .basis, .consensus), ‘sparseness’
+#'  (and more specific .coef, .basis). It specifies which measure must be plotted
+#'  (what='all' plots all the measures).
+#'
 #' @param cores number of cpu cores to run NMF.
-#' @param seed specification of the starting point or seeding method, which will compute a starting point, usually using data from the target matrix in order to provide a good guess.
+#' @param seed specification of the starting point or seeding method, which will compute a starting point,
+#'  usually using data from the target matrix in order to provide a good guess.
 #' @param use_random Should generate random data from input to test measurements. Default is `TRUE`.
-#' @param save_plots if `TRUE`, save plots to local machine. Of note, if pdf file consensus map has extra blank page, please call
+#' @param save_plots if `TRUE`, save plots to local machine. Of note, if pdf file consensus map
+#' has extra blank page, please call
 #' `pdf(..., onefile=FALSE)`, it may fix this problem, see
 #' <https://stackoverflow.com/questions/12481267/in-r-how-to-prevent-blank-page-in-pdf-when-using-gridbase-to-embed-subplot-insi>.
 #' @param plot_basename when save plots, set custom basename for file path.
 #' @param method specification of the NMF algorithm. Use 'brunet' as default.
 #' Available methods for nmf decompositions are 'brunet', 'lee', 'ls-nmf', 'nsNMF', 'offset'.
-#' @param pConstant A small positive value to add to the matrix. Use it ONLY if the functions throws an \code{non-conformable arrays} error.
+#' @param pConstant A small positive value to add to the matrix. Use it ONLY if the functions throws
+#' an \code{non-conformable arrays} error.
 #' @param verbose if `TRUE`, print extra message.
 #' @author Shixiang Wang
 #' @references Gaujoux, Renaud, and Cathal Seoighe. "A flexible R package for nonnegative matrix factorization." BMC bioinformatics 11.1 (2010): 367.

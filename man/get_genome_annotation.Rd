@@ -4,9 +4,11 @@
 \alias{get_genome_annotation}
 \title{Get Genome Annotation}
 \usage{
-get_genome_annotation(data_type = c("chr_size", "centro_loc"),
-  chrs = paste0("chr", c(1:22, "X", "Y")), genome_build = c("hg19",
-  "hg38"))
+get_genome_annotation(
+  data_type = c("chr_size", "centro_loc"),
+  chrs = paste0("chr", c(1:22, "X", "Y")),
+  genome_build = c("hg19", "hg38")
+)
 }
 \arguments{
 \item{data_type}{'chr_size' for chromosome size,

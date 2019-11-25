@@ -8,15 +8,33 @@
 \usage{
 sig_derive(object, ...)
 
-\method{sig_derive}{CopyNumber}(object, type = c("probability", "count"),
-  reference_components = FALSE, cores = 1, seed = 123456,
-  min_comp = 2, max_comp = 15, min_prior = 0.001,
-  model_selection = "BIC", threshold = 0.1, nrep = 1, niter = 1000,
-  keep_only_matrix = FALSE, ...)
+\method{sig_derive}{CopyNumber}(
+  object,
+  type = c("probability", "count"),
+  reference_components = FALSE,
+  cores = 1,
+  seed = 123456,
+  min_comp = 2,
+  max_comp = 15,
+  min_prior = 0.001,
+  model_selection = "BIC",
+  threshold = 0.1,
+  nrep = 1,
+  niter = 1000,
+  keep_only_matrix = FALSE,
+  ...
+)
 
-\method{sig_derive}{MAF}(object, ref_genome = NULL, prefix = NULL,
-  add = TRUE, ignoreChr = NULL, useSyn = TRUE,
-  keep_only_matrix = FALSE, ...)
+\method{sig_derive}{MAF}(
+  object,
+  ref_genome = NULL,
+  prefix = NULL,
+  add = TRUE,
+  ignoreChr = NULL,
+  useSyn = TRUE,
+  keep_only_matrix = FALSE,
+  ...
+)
 }
 \arguments{
 \item{object}{a \link{CopyNumber} object or \link{MAF} object.}

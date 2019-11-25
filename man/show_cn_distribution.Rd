@@ -4,8 +4,14 @@
 \alias{show_cn_distribution}
 \title{Show Copy Number Distribution either by Length or Chromosome}
 \usage{
-show_cn_distribution(data, rm_normal = TRUE, mode = c("ld", "cd"),
-  fill = FALSE, scale_chr = TRUE, base_size = 14)
+show_cn_distribution(
+  data,
+  rm_normal = TRUE,
+  mode = c("ld", "cd"),
+  fill = FALSE,
+  scale_chr = TRUE,
+  base_size = 14
+)
 }
 \arguments{
 \item{data}{a \link{CopyNumber} object.}

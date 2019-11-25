@@ -4,9 +4,15 @@
 \alias{show_cn_components}
 \title{Show Mixture Fit Model Components}
 \usage{
-show_cn_components(parameters, show_weights = TRUE, log_segsize = TRUE,
-  auto_transform = TRUE, return_plotlist = FALSE, base_size = 12,
-  ...)
+show_cn_components(
+  parameters,
+  show_weights = TRUE,
+  log_segsize = TRUE,
+  auto_transform = TRUE,
+  return_plotlist = FALSE,
+  base_size = 12,
+  ...
+)
 }
 \arguments{
 \item{parameters}{a \code{data.frame} contain parameter components, obtain this

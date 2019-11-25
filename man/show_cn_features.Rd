@@ -4,8 +4,14 @@
 \alias{show_cn_features}
 \title{Show Copy Number Feature Distributions}
 \usage{
-show_cn_features(features, ylab = NULL, log_segsize = TRUE,
-  return_plotlist = FALSE, base_size = 12, ...)
+show_cn_features(
+  features,
+  ylab = NULL,
+  log_segsize = TRUE,
+  return_plotlist = FALSE,
+  base_size = 12,
+  ...
+)
 }
 \arguments{
 \item{features}{a feature \code{list} generate from \link{sig_derive} function.}

@@ -4,9 +4,16 @@
 \alias{show_rank_survey}
 \title{Show Simplified Rank Survey}
 \usage{
-show_rank_survey(object, x = "rank", left_y = "cophenetic",
-  right_y = "rss", left_name = left_y, right_name = toupper(right_y),
-  left_color = "black", right_color = "red")
+show_rank_survey(
+  object,
+  x = "rank",
+  left_y = "cophenetic",
+  right_y = "rss",
+  left_name = left_y,
+  right_name = toupper(right_y),
+  left_color = "black",
+  right_color = "red"
+)
 }
 \arguments{
 \item{object}{a \code{Survey} object generated from \link{sig_estimate}, or

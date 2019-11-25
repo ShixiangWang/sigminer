@@ -4,11 +4,21 @@
 \alias{show_sig_profile}
 \title{Show Signature Profile}
 \usage{
-show_sig_profile(Signature, mode = c("copynumber", "mutation"),
-  normalize = c("row", "column", "raw"), params = NULL,
-  show_cv = FALSE, params_label_size = 3, params_label_angle = 60,
-  y_expand = 1, digits = 2, base_size = 12, font_scale = 1,
-  sig_names = NULL, sig_orders = NULL)
+show_sig_profile(
+  Signature,
+  mode = c("copynumber", "mutation"),
+  normalize = c("row", "column", "raw"),
+  params = NULL,
+  show_cv = FALSE,
+  params_label_size = 3,
+  params_label_angle = 60,
+  y_expand = 1,
+  digits = 2,
+  base_size = 12,
+  font_scale = 1,
+  sig_names = NULL,
+  sig_orders = NULL
+)
 }
 \arguments{
 \item{Signature}{a \code{Signature} object obtained either from \link{sig_extract} or \link{sig_auto_extract},

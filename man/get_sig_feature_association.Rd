@@ -4,9 +4,17 @@
 \alias{get_sig_feature_association}
 \title{Calculate Association between Signature Exposures and Other Features}
 \usage{
-get_sig_feature_association(data, cols_to_sigs, cols_to_features,
-  type = "ca", method_co = c("spearman", "pearson", "kendall"),
-  method_ca = stats::wilcox.test, min_n = 0.01, verbose = FALSE, ...)
+get_sig_feature_association(
+  data,
+  cols_to_sigs,
+  cols_to_features,
+  type = "ca",
+  method_co = c("spearman", "pearson", "kendall"),
+  method_ca = stats::wilcox.test,
+  min_n = 0.01,
+  verbose = FALSE,
+  ...
+)
 }
 \arguments{
 \item{data}{a \code{data.frame} contains signature exposures and other features}

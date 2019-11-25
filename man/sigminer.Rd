@@ -3,7 +3,6 @@
 \docType{package}
 \name{sigminer}
 \alias{sigminer}
-\alias{sigminer-package}
 \title{sigminer: Capture Genomic Variation Signatures using Non-Negative Matrix Factorization}
 \description{
 Genomic variations including somatic mutations, copy number variations, etc. are the major
