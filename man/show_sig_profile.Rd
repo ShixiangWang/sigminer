@@ -17,7 +17,8 @@ show_sig_profile(
   base_size = 12,
   font_scale = 1,
   sig_names = NULL,
-  sig_orders = NULL
+  sig_orders = NULL,
+  check_sig_names = TRUE
 )
 }
 \arguments{
@@ -52,6 +53,9 @@ Default is \code{NULL}, prefix 'Signature_' plus number is used.}
 
 \item{sig_orders}{set order of signatures, can be a character vector.
 Default is \code{NULL}, the signatures are ordered by alphabetical order.}
+
+\item{check_sig_names}{if \code{TRUE}, check signature names when input is
+a matrix, i.e., all signatures (colnames) must start with 'Sig'.}
 }
 \value{
 a \code{ggplot} object

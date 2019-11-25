@@ -22,6 +22,8 @@
 #' Default is `NULL`, prefix 'Signature_' plus number is used.
 #' @param sig_orders set order of signatures, can be a character vector.
 #' Default is `NULL`, the signatures are ordered by alphabetical order.
+#' @param check_sig_names if `TRUE`, check signature names when input is
+#' a matrix, i.e., all signatures (colnames) must start with 'Sig'.
 #' @author Shixiang Wang
 #' @return a `ggplot` object
 #' @export
@@ -55,12 +57,15 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
                              params_label_size = 3,
                              params_label_angle = 60, y_expand = 1,
                              digits = 2, base_size = 12, font_scale = 1,
-                             sig_names = NULL, sig_orders = NULL) {
+                             sig_names = NULL, sig_orders = NULL,
+                             check_sig_names = TRUE) {
   if (class(Signature) == "Signature") {
     Sig <- Signature$Signature
   } else if (is.matrix(Signature)) {
-    if (!all(startsWith(colnames(Signature), "Sig"))) {
-      stop("If Signature is a matrix, column names must start with 'Sig'!", call. = FALSE)
+    if (check_sig_names) {
+      if (!all(startsWith(colnames(Signature), "Sig"))) {
+        stop("If Signature is a matrix, column names must start with 'Sig'!", call. = FALSE)
+      }
     }
     Sig <- Signature
   } else {
@@ -101,7 +106,7 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
   if (mode == "copynumber") {
     mat$base <- sub("\\d+$", "", mat$context)
 
-    mat <- tidyr::gather(mat, class, signature, dplyr::contains("Sig"))
+    mat <- tidyr::gather(mat, class, signature, -c("context", "base"))
     mat <- dplyr::mutate(mat,
       context = factor(.data$context,
         levels = unique(mat[["context"]])
@@ -117,7 +122,7 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
     mat$base <- sub("[ACGT]\\[(.*)\\][ACGT]", "\\1", mat$context)
     mat$context <- sub("(\\[.*\\])", "\\-", mat$context)
 
-    mat <- tidyr::gather(mat, class, signature, dplyr::contains("Sig"))
+    mat <- tidyr::gather(mat, class, signature, -c("context", "base"))
     mat <- dplyr::mutate(mat,
       context = factor(.data$context),
       base = factor(.data$base, levels = c(
