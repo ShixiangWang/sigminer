@@ -6,12 +6,11 @@
 [![CRAN
 status](https://www.r-pkg.org/badges/version/sigminer)](https://cran.r-project.org/package=sigminer)
 [![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
-[![Travis build
-status](https://travis-ci.org/ShixiangWang/sigminer.svg?branch=master)](https://travis-ci.org/ShixiangWang/sigminer)
+[![R build
+status](https://github.com/ShixiangWang/sigminer/workflows/R-CMD-check/badge.svg)](https://github.com/ShixiangWang/sigminer/actions?workflow=R-CMD-check)
 [![Coverage
 status](https://codecov.io/gh/ShixiangWang/sigminer/branch/master/graph/badge.svg)](https://codecov.io/github/ShixiangWang/sigminer?branch=master)
 [![](http://cranlogs.r-pkg.org/badges/grand-total/sigminer?color=orange)](https://cran.r-project.org/package=sigminer)
-[![emoji-log](https://cdn.rawgit.com/ahmadawais/stuff/ca97874/emoji-log/non-flat-round.svg)](https://github.com/ahmadawais/Emoji-Log/)
 
 ## Overview
 
@@ -41,8 +40,7 @@ remotes::install_github("ShixiangWang/sigminer")
 ## Citation
 
 **sigminer** has not been published. If you use **sigminer** in academic
-field, please cite our recent
-    work:
+field, please cite our recent work:
 
     Wang, Shixiang, et al. "The predictive power of tumor mutational burden 
         in lung cancer immunotherapy response is influenced by patients' sex."
@@ -64,16 +62,14 @@ in ovarian carcinoma*, if you use this feature, please also cite:
 
 The code for extracting mutational signatures was based in part on the
 source code of the **maftools** package, if you use this feature, please
-also
-    cite:
+also cite:
 
     Mayakonda, Anand, et al. "Maftools: efficient and comprehensive analysis
         of somatic variants in cancer." Genome research 28.11 (2018): 1747-1756.
 
 The code for extracting mutational signatures was based in part on the
 source code of the **SignatureAnalyzer** package, if you use this
-feature, please also
-    cite:
+feature, please also cite:
 
     Alexandrov, Ludmil, et al. "The repertoire of mutational signatures in human cancer." BioRxiv (2018): 322859.
 
