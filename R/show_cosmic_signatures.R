@@ -5,7 +5,7 @@
 #' @inheritParams get_sig_similarity
 #' @param ... other arguments passing to [show_sig_profile].
 #'
-#' @return
+#' @return a `ggplot` object
 #' @export
 #' @author Shixiang Wang <w_shixiang@163.com>
 #' @examples

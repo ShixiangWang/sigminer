@@ -21,7 +21,7 @@ show_cosmic_sig_profile(
 \item{...}{other arguments passing to \link{show_sig_profile}.}
 }
 \value{
-
+a \code{ggplot} object
 }
 \description{
 Plot COSMIC Signature Profile

@@ -54,7 +54,8 @@ Imports:
     tidyr,
     GenomicRanges,
     IRanges,
-    ggalluvial
+    ggalluvial,
+    stats
 Suggests: 
     BSgenome,
     BSgenome.Hsapiens.UCSC.hg19,
