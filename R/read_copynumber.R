@@ -116,6 +116,10 @@ read_copynumber <- function(input,
       new_cols <- c("chromosome", "start", "end", "segVal", "sample")
       colnames(temp)[1:5] <- new_cols
 
+      if (any(is.na(temp$segVal))) {
+        temp <- temp[!is.na(temp$segVal)]
+      }
+
       # unify chromosome column
       if (verbose) message("Check chromosome names...")
       temp[, chromosome := sub(
@@ -213,6 +217,10 @@ read_copynumber <- function(input,
     data.table::setcolorder(temp, neworder = c(seg_cols, samp_col))
     new_cols <- c("chromosome", "start", "end", "segVal", "sample")
     colnames(temp)[1:5] <- new_cols
+
+    if (any(is.na(temp$segVal))) {
+      temp <- temp[!is.na(temp$segVal)]
+    }
 
     # unify chromosome column
     if (verbose) message("Check chromosome names...")
