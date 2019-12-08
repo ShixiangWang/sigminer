@@ -9,3 +9,4 @@
 docs
 inst/test
 .github
+^data-raw$

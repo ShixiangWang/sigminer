@@ -55,7 +55,8 @@ Imports:
     GenomicRanges,
     IRanges,
     ggalluvial,
-    stats
+    stats,
+    dtplyr
 Suggests: 
     BSgenome,
     BSgenome.Hsapiens.UCSC.hg19,

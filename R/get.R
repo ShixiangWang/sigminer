@@ -263,7 +263,7 @@ get_LengthFraction <- function(CN_data,
   arm_data <- get_ArmLocation(genome_build)
   data.table::setDT(arm_data)
 
-  segTab <- dplyr::left_join(segTab, arm_data, by = c("chromosome" = "chrom"))
+  segTab = data.table::merge.data.table(segTab, arm_data, by.x = "chromosome", by.y = "chrom", all.x = TRUE)
 
   .annot_fun <- function(chrom, start, end, p_start, p_end, p_length, q_start, q_end, q_length, total_size) {
     if (end <= p_end & start >= p_start) {
@@ -328,7 +328,8 @@ get_LengthFraction <- function(CN_data,
     .pb = pb
   )
 
-  cbind(data.table::setDT(segTab)[, colnames(arm_data)[-1] := NULL], data.table::setDT(annot))
+  cbind(data.table::as.data.table(segTab)[, colnames(arm_data)[-1] := NULL],
+        data.table::as.data.table(annot))
 }
 
 
@@ -416,6 +417,7 @@ get_cnsummary_sample <- function(segTab, genome_build = c("hg19", "hg38"),
     total_size <- sum(chrlen[["size"]])
 
     seg_summary <- segTab %>%
+      dtplyr::lazy_dt() %>%
       dplyr::group_by(sample) %>%
       dplyr::summarise(
         n_of_cnv = sum(segVal != 2),
@@ -426,6 +428,7 @@ get_cnsummary_sample <- function(segTab, genome_build = c("hg19", "hg38"),
       data.table::as.data.table()
   } else {
     seg_summary <- segTab %>%
+      dtplyr::lazy_dt() %>%
       dplyr::group_by(sample) %>%
       dplyr::summarise(
         n_of_cnv = sum(segVal != 2),
