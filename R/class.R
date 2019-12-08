@@ -115,13 +115,6 @@ subset.CopyNumber <- function(x, subset = TRUE, ...) {
 
 # Parameter - object: a CopyNumber object
 validate_segTab <- function(object, verbose = FALSE) {
-  if (!is.integer(object@data[["start"]])) {
-    object@data[["start"]] <- as.integer(object@data[["start"]])
-  }
-
-  if (!is.integer(object@data[["end"]])) {
-    object@data[["end"]] <- as.integer(object@data[["end"]])
-  }
 
   if (!is.integer(object@data[["segVal"]])) {
     if (is.character(object@data[["segVal"]])) {

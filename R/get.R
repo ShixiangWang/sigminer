@@ -239,8 +239,8 @@ get_LengthFraction <- function(CN_data,
   }
 
   data.table::setDT(segTab)
-  segTab$start <- as.integer(segTab$start)
-  segTab$end <- as.integer(segTab$end)
+  segTab$start <- as.numeric(segTab$start)
+  segTab$end <- as.numeric(segTab$end)
   # unify chromosome column
   segTab$chromosome <- as.character(segTab$chromosome)
   segTab$chromosome <- sub(
@@ -344,13 +344,13 @@ get_ArmLocation <- function(genome_build = c("hg19", "hg38")) {
   # compute and get results
   res <- data.frame(
     chrom = vector(mode = "character", length = 24),
-    p_start = vector("integer", length = 24),
-    p_end = vector("integer", length = 24),
-    p_length = vector("integer", length = 24),
-    q_start = vector("integer", length = 24),
-    q_end = vector("integer", length = 24),
-    q_length = vector("integer", length = 24),
-    total_size = vector("integer", length = 24),
+    p_start = vector("numeric", length = 24),
+    p_end = vector("numeric", length = 24),
+    p_length = vector("numeric", length = 24),
+    q_start = vector("numeric", length = 24),
+    q_end = vector("numeric", length = 24),
+    q_length = vector("numeric", length = 24),
+    total_size = vector("numeric", length = 24),
     stringsAsFactors = FALSE
   )
 
@@ -403,8 +403,8 @@ get_cnsummary_sample <- function(segTab, genome_build = c("hg19", "hg38"),
   }
 
   data.table::setDT(segTab)
-  segTab$start <- as.integer(segTab$start)
-  segTab$end <- as.integer(segTab$end)
+  segTab$start <- as.numeric(segTab$start)
+  segTab$end <- as.numeric(segTab$end)
 
   autosome <- paste0("chr", 1:22)
 

@@ -29,27 +29,19 @@ load(system.file("extdata", "toy_copynumber_prepare.RData",
 ))
 res <- sig_auto_extract(cn_prepare$nmf_matrix, result_prefix = "Test_copynumber", nrun = 1)
 
+str(cn_prepare$features$segsize)
+
+
 load(system.file("extdata", "toy_segTab.RData",
                  package = "sigminer", mustWork = TRUE
 ))
-cn <- read_copynumber(segTabs,
-                      seg_cols = c("chromosome", "start", "end", "segVal"),
-                      genome_build = "hg19", complement = FALSE, verbose = TRUE
-)
+
+segTabs$start = as.character(segTabs$start)
+segTabs$end = as.numeric(segTabs$end)
 
 system.time(
-  cn2 <- read_copynumber(segTabs,
-                         seg_cols = c("chromosome", "start", "end", "segVal"),
-                         genome_build = "hg19", complement = FALSE, verbose = TRUE
+  cn <- read_copynumber(segTabs,
+                        seg_cols = c("chromosome", "start", "end", "segVal"),
+                        genome_build = "hg19", complement = FALSE, verbose = TRUE
   )
 )
-
-system.time(
-  cn3 <- read_copynumber(segTabs,
-                         seg_cols = c("chromosome", "start", "end", "segVal"),
-                         genome_build = "hg19", complement = FALSE, verbose = TRUE
-  )
-)
-
-all.equal(cn2, cn3)
-

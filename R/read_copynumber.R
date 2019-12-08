@@ -72,7 +72,7 @@ read_copynumber <- function(input,
   data.table::setDT(chrlen)
 
   if (tryCatch(dir.exists(input), error = function(e) FALSE)) {
-    if (verbose) message("Treat input as a directory...")
+    if (verbose) message("Treating input as a directory...")
     if (length(input) != 1) {
       stop("Only can take one directory as input!")
     }
@@ -121,7 +121,7 @@ read_copynumber <- function(input,
       }
 
       # unify chromosome column
-      if (verbose) message("Check chromosome names...")
+      if (verbose) message("Checking chromosome names...")
       temp[, chromosome := sub(
         pattern = "chr",
         replacement = "chr",
@@ -188,7 +188,7 @@ read_copynumber <- function(input,
     }
   } else if (all(is.character(input)) | is.data.frame(input)) {
     if (!is.data.frame(input)) {
-      if (verbose) message("Treat input as a file...")
+      if (verbose) message("Treating input as a file...")
       if (length(input) > 1) {
         stop("Muliple files are not a valid input, please use directory as input.")
       }
@@ -198,7 +198,7 @@ read_copynumber <- function(input,
 
       temp <- data.table::fread(input, ...)
     } else {
-      if (verbose) message("Treat input as a data frame...")
+      if (verbose) message("Treating input as a data frame...")
       temp <- data.table::as.data.table(input)
     }
 
@@ -223,7 +223,7 @@ read_copynumber <- function(input,
     }
 
     # unify chromosome column
-    if (verbose) message("Check chromosome names...")
+    if (verbose) message("Checking chromosome names...")
     temp[, chromosome := sub(
       pattern = "chr",
       replacement = "chr",
@@ -308,6 +308,9 @@ read_copynumber <- function(input,
   data_df$segVal[data_df$segVal > max_copynumber] <- max_copynumber
   # make sure seg value is integer
   data_df[["segVal"]] <- as.integer(round(data_df[["segVal"]]))
+  # make sure position is numeric
+  data_df$start = as.numeric(data_df$start)
+  data_df$end = as.numeric(data_df$end)
 
   if (verbose) message("Anotating...")
   annot <- get_LengthFraction(data_df,
@@ -315,7 +318,7 @@ read_copynumber <- function(input,
     seg_cols = new_cols[1:4],
     samp_col = new_cols[5]
   )
-  if (verbose) message("\nSummary per sample...")
+  if (verbose) message("\nSummarizing per sample...")
   sum_sample <- get_cnsummary_sample(data_df,
     genome_build = genome_build,
     genome_measure = genome_measure
