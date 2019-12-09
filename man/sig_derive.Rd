@@ -10,6 +10,8 @@ sig_derive(object, ...)
 
 \method{sig_derive}{CopyNumber}(
   object,
+  feature_setting = sigminer::CN.features,
+  method = "Macintyre",
   type = c("probability", "count"),
   reference_components = FALSE,
   cores = 1,
@@ -42,41 +44,57 @@ sig_derive(object, ...)
 \item{...}{custom setting for operating object. Detail see S3 method for
 corresponding class (e.g. \code{CopyNumber}).}
 
+\item{feature_setting}{a \code{data.frame} used for classification.
+Only used when method is "Wang" ("W").
+Default is \link{CN.features}. Users can also set custom input with "feature",
+"min" and "max" columns avaiable. Valid features can be printed by
+\code{unique(CN.features$feature)}.}
+
+\item{method}{method for feature classfication, can be one of "Macintyre" ("M") and
+"Wang" ("W").}
+
 \item{type}{one of "probability", "count". Default is "probability", return a matrix
 with the sum of posterior probabilities for each components. If set to 'count',
 return a matrix with event count assigned to each components. The result for
-both types should be close.}
+both types should be close. Only used when method is "Macintyre".}
 
 \item{reference_components}{default is \code{FALSE}, calculate mixture components
-from \link{CopyNumber} object.}
+from \link{CopyNumber} object. Only used when method is "Macintyre".}
 
 \item{cores}{number of compute cores to run this task.
 You can use \code{\link[future:availableCores]{future::availableCores()}} function to check how
 many cores you can use.}
 
-\item{seed}{seed number.}
+\item{seed}{seed number. Only used when method is "Macintyre".}
 
 \item{min_comp}{minimal number of components to fit, default is 2.
-Can also be a vector with length 6, which apply to each feature.}
+Can also be a vector with length 6, which apply to each feature.
+Only used when method is "Macintyre".}
 
 \item{max_comp}{maximal number of components to fit, default is 15.
-Can also be a vector with length 6, which apply to each feature.}
+Can also be a vector with length 6, which apply to each feature.
+Only used when method is "Macintyre".}
 
 \item{min_prior}{the minimum relative size of components, default is 0.001.
-Details about custom setting please refer to \strong{flexmix} package.}
+Details about custom setting please refer to \strong{flexmix} package.
+Only used when method is "Macintyre".}
 
 \item{model_selection}{model selection strategy, default is 'BIC'.
-Details about custom setting please refer to \strong{flexmix} package.}
+Details about custom setting please refer to \strong{flexmix} package.
+Only used when method is "Macintyre".}
 
 \item{threshold}{default is \code{0.1}. Sometimes, the result components
 include adjacent distributions with similar mu
 (two and more distribution are very close), we use this threshold
-to obtain a more meaningful fit with less components.}
+to obtain a more meaningful fit with less components.
+Only used when method is "Macintyre".}
 
 \item{nrep}{number of run times for each value of component,
-keep only the solution with maximum likelihood.}
+keep only the solution with maximum likelihood.
+Only used when method is "Macintyre".}
 
-\item{niter}{the maximum number of iterations.}
+\item{niter}{the maximum number of iterations.
+Only used when method is "Macintyre".}
 
 \item{keep_only_matrix}{if \code{TRUE}, keep only matrix for signature extraction.}
 

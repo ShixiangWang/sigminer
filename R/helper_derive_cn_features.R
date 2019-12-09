@@ -1,38 +1,22 @@
 getSegsize <- function(abs_profiles) {
-  out <- c()
-  samps <- names(abs_profiles)
-  for (i in samps)
-  {
-    segTab <- abs_profiles[[i]]
-    segTab$segVal[segTab$segVal < 0] <- 0
-    seglen <- segTab$end - segTab$start
-    seglen <- seglen[seglen > 0]
-    out <-
-      rbind(out, cbind(ID = rep(i, length(seglen)), value = seglen))
-  }
-  rownames(out) <- NULL
-  data.frame(out, stringsAsFactors = F)
+  segsize = purrr::map_df(abs_profiles, function(x) {
+    x$segsize = x$end - x$start + 1
+    x[, c("sample", "segsize"), with = FALSE]
+  })
+  colnames(segsize) = c("ID", "value")
+  segsize
 }
 
 getBPnum <- function(abs_profiles, chrlen) {
-  out <- c()
-  samps <- names(abs_profiles)
-  for (i in samps)
-  {
-    segTab <- abs_profiles[[i]]
+  res = purrr::map_df(abs_profiles, function(x, chrlen) {
 
-    chrs <- unique(segTab$chromosome)
-
-    allBPnum <- c()
-    for (c in chrs)
-    {
-      currseg <- segTab[chromosome == c, ]
+    calcBPnum = function(df, c, chrlen) {
       intervals <-
         seq(1, chrlen[chrlen[, 1] == c, 2] + 10000000, 10000000)
-      res <- tryCatch(
-        hist(currseg$end[-nrow(currseg)],
-          breaks = intervals,
-          plot = FALSE
+      y <- tryCatch(
+        hist(df$end[-nrow(df)],
+             breaks = intervals,
+             plot = FALSE
         )$counts,
         error = function(e) {
           stop(
@@ -41,148 +25,170 @@ getBPnum <- function(abs_profiles, chrlen) {
           )
         }
       )
-      res <-
-
-        allBPnum <- c(allBPnum, res)
+      y
     }
-    out <-
-      rbind(out, cbind(ID = rep(i, length(allBPnum)), value = allBPnum))
-  }
-  rownames(out) <- NULL
-  data.frame(out, stringsAsFactors = F)
+
+    x = x %>%
+      dplyr::as_tibble() %>%
+      dplyr::group_by(.data$chromosome) %>%
+      tidyr::nest() %>%
+      dplyr::mutate(value = purrr::map2(
+        data, .data$chromosome, calcBPnum, chrlen = chrlen)) %>%
+      dplyr::ungroup() %>%
+      dplyr::select(c("value"))
+    data.table::data.table(
+      value = purrr::reduce(x$value, c)
+    )
+  }, chrlen = chrlen, .id = "ID")
+
+  return(res)
 }
 
 getOscilation <- function(abs_profiles) {
-  out <- c()
-  samps <- names(abs_profiles)
-  for (i in samps)
-  {
-    segTab <- abs_profiles[[i]]
-
-    chrs <- unique(segTab$chromosome)
-
-    oscCounts <- c()
-    for (c in chrs)
-    {
-      currseg <- segTab[chromosome == c][["segVal"]]
-      if (length(currseg) > 3) {
-        prevval <- currseg[1]
-        count <- 0
-        for (j in 3:length(currseg))
-        {
-          if (currseg[j] == prevval & currseg[j] != currseg[j - 1]) {
-            count <- count + 1
-          } else {
-            oscCounts <- c(oscCounts, count)
+  oscCounts = purrr::map_df(abs_profiles, function(x) {
+    x = x %>%
+      dplyr::as_tibble() %>%
+      dplyr::group_by(.data$chromosome) %>%
+      tidyr::nest() %>%
+      dplyr::mutate(value = purrr::map(
+        data, function(df) {
+          currseg <- df$segVal
+          oscCounts <- c()
+          if (length(currseg) > 3) {
+            prevval <- currseg[1]
             count <- 0
+            for (j in 3:length(currseg))
+            {
+              if (currseg[j] == prevval & currseg[j] != currseg[j - 1]) {
+                count <- count + 1
+              } else {
+                oscCounts <- c(oscCounts, count)
+                count <- 0
+              }
+              prevval <- currseg[j - 1]
+            }
+            return(oscCounts)
+          } else {
+            return(NULL)
           }
-          prevval <- currseg[j - 1]
         }
-      }
-    }
-    out <-
-      rbind(out, cbind(ID = rep(i, length(oscCounts)), value = oscCounts))
-    if (length(oscCounts) == 0) {
-      out <- rbind(out, cbind(ID = i, value = 0))
-    }
-  }
-  rownames(out) <- NULL
-  data.frame(out, stringsAsFactors = F)
+      )) %>%
+      dplyr::ungroup() %>%
+      dplyr::select(c("value"))
+    data.table::data.table(
+      value = purrr::reduce(x$value, c)
+    )
+  }, .id = "ID")
+
+  oscCounts
 }
 
 getCentromereDistCounts <-
   function(abs_profiles, centromeres, chrlen) {
-    out <- c()
-    samps <- names(abs_profiles)
-    for (i in samps)
-    {
-      segTab <- abs_profiles[[i]]
 
-      chrs <- unique(segTab$chromosome)
-
+    calcArmBP = function(df, c, centromeres, chrlen) {
       all_dists <- c()
-      for (c in chrs)
-      {
-        if (nrow(segTab) > 1) {
-          starts <- segTab[chromosome == c][["start"]][-1]
-          segstart <- segTab[chromosome == c][["start"]][1]
-          ends <- segTab[chromosome == c][["end"]]
-          segend <- ends[length(ends)]
-          ends <- ends[-length(ends)]
-          # centstart <-
-          #     as.numeric(centromeres[substr(centromeres[, 2], 4, 5) == c, 3])
-          # centend <-
-          #     as.numeric(centromeres[substr(centromeres[, 2], 4, 5) == c, 4])
-          # chrend <- chrlen[substr(chrlen[, 1], 4, 5) == c, 2]
 
-          centstart <- centromeres[centromeres$chrom == c, 2]
-          centend <- centromeres[centromeres$chrom == c, 3]
-          chrend <- chrlen[chrlen$chrom == c, 2]
+      if (nrow(df) > 1) {
+        starts <- df$start[-1]
+        segstart <- df$start[1]
+        ends <- df$end
+        segend <- ends[length(ends)]
+        ends <- ends[-length(ends)]
 
-          ndist <-
-            cbind(rep(NA, length(starts)), rep(NA, length(starts)))
-          ndist[starts <= centstart, 1] <-
-            (centstart - starts[starts <= centstart]) / (centstart - segstart) * -1
-          ndist[starts >= centend, 1] <-
-            (starts[starts >= centend] - centend) / (segend - centend)
-          ndist[ends <= centstart, 2] <-
-            (centstart - ends[ends <= centstart]) / (centstart - segstart) * -1
-          ndist[ends >= centend, 2] <-
-            (ends[ends >= centend] - centend) / (segend - centend)
-          ndist <- apply(ndist, 1, min)
+        centstart <- centromeres[centromeres$chrom == c, 2]
+        centend <- centromeres[centromeres$chrom == c, 3]
+        chrend <- chrlen[chrlen$chrom == c, 2]
 
-          all_dists <- rbind(all_dists, sum(ndist > 0))
-          all_dists <- rbind(all_dists, sum(ndist <= 0))
+        ndist <-
+          cbind(rep(NA, length(starts)), rep(NA, length(starts)))
+        ndist[starts <= centstart, 1] <-
+          (centstart - starts[starts <= centstart]) / (centstart - segstart) * -1
+        ndist[starts >= centend, 1] <-
+          (starts[starts >= centend] - centend) / (segend - centend)
+        ndist[ends <= centstart, 2] <-
+          (centstart - ends[ends <= centstart]) / (centstart - segstart) * -1
+        ndist[ends >= centend, 2] <-
+          (ends[ends >= centend] - centend) / (segend - centend)
+        ndist <- apply(ndist, 1, min)
+
+        all_dists <- rbind(all_dists, sum(ndist > 0))
+        all_dists <- rbind(all_dists, sum(ndist <= 0))
+
+        if (nrow(all_dists) > 0) {
+          return(as.integer(all_dists[, 1]))
+        } else {
+          return(rep(0L, 2))
         }
-      }
-      if (nrow(all_dists) > 0) {
-        out <- rbind(out, cbind(ID = i, value = all_dists[, 1]))
+
+      } else {
+        return(rep(0L, 2))
       }
     }
-    rownames(out) <- NULL
-    out <- data.frame(out, stringsAsFactors = F)
-    out <- stats::na.omit(out)
-    out
-  }
 
+    res = purrr::map_df(abs_profiles, function(x, centromeres, chrlen) {
+
+      x = x %>%
+        dplyr::as_tibble() %>%
+        dplyr::group_by(.data$chromosome) %>%
+        tidyr::nest() %>%
+        dplyr::mutate(value = purrr::map2(
+          data, .data$chromosome, calcArmBP, centromeres = centromeres, chrlen = chrlen)) %>%
+        dplyr::ungroup() %>%
+        dplyr::select(c("value"))
+      data.table::data.table(
+        value = purrr::reduce(x$value, c)
+      )
+    }, centromeres = centromeres, chrlen = chrlen, .id = "ID")
+
+    return(res)
+}
 
 getChangepointCN <- function(abs_profiles) {
-  out <- c()
-  samps <- names(abs_profiles)
-  for (i in samps)
-  {
-    segTab <- abs_profiles[[i]]
 
-    segTab$segVal[segTab$segVal < 0] <- 0
-    chrs <- unique(segTab$chromosome)
-    allcp <- c()
-    for (c in chrs)
-    {
-      currseg <- segTab[chromosome == c][["segVal"]]
-      allcp <-
-        c(allcp, abs(currseg[-1] - currseg[-length(currseg)]))
-    }
-    if (length(allcp) == 0) {
-      allcp <- 0 # if there are no changepoints
-    }
-    out <-
-      rbind(out, cbind(ID = rep(i, length(allcp)), value = allcp))
-  }
-  rownames(out) <- NULL
-  data.frame(out, stringsAsFactors = F)
+  cp = purrr::map_df(abs_profiles, function(x) {
+    x = x %>%
+      dplyr::as_tibble() %>%
+      dplyr::group_by(.data$chromosome) %>%
+      tidyr::nest() %>%
+      dplyr::mutate(value = purrr::map(
+        data, function(df) {
+          if (nrow(df) <= 1) {
+            return(NULL)
+          } else {
+            return(as.integer(abs(diff(df$segVal))))
+          }
+        }
+      )) %>%
+      dplyr::ungroup() %>%
+      dplyr::select(c("value"))
+    data.table::data.table(
+      value = purrr::reduce(x$value, c)
+    )
+  }, .id = "ID")
+
+  return(cp)
 }
 
 getCN <- function(abs_profiles) {
-  out <- c()
-  samps <- names(abs_profiles)
-  for (i in samps)
-  {
-    segTab <- abs_profiles[[i]]
-    segTab$segVal[segTab$segVal < 0] <- 0
-    cn <- segTab$segVal
-    out <-
-      rbind(out, cbind(ID = rep(i, length(cn)), value = cn))
+  cn = purrr::map_df(abs_profiles, function(x) {
+    x[, c("sample", "segVal"), with = FALSE]
+  })
+  colnames(cn) = c("ID", "value")
+  cn
+}
+
+# Number of Chromosome with CNV
+getNChrV <- function(abs_profiles, genome_build="hg38") {
+  genome_build = match.arg(genome_build, choices = c("hg19", "hg38"))
+
+  if (genome_build %in% c("hg19", "hg38")) {
+    autosome = paste0("chr", 1:22)
   }
-  rownames(out) <- NULL
-  data.frame(out, stringsAsFactors = F)
+
+  cn = purrr::map_df(abs_profiles, function(x) {
+    x = x[x$chromosome %in% autosome, c("sample", "chromosome", "segVal"), with = FALSE][x$segVal != 2]
+    data.table::data.table(ID = x$sample[1], value = length(unique(x$chromosome)))
+  })
+  cn
 }

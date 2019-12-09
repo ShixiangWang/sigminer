@@ -105,7 +105,7 @@ get_components <- function(CN_features,
                                  nrep = 1,
                                  niter = 1000,
                                  cores = 1) {
-    dat <- as.numeric(CN_feature[, 2])
+    dat <- CN_feature$value
     message("Fitting feature: ", feature_name)
     fit <-
       fitComponent(

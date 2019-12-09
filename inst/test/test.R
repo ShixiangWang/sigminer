@@ -45,3 +45,24 @@ system.time(
                         genome_build = "hg19", complement = FALSE, verbose = TRUE
   )
 )
+
+
+# Load copy number object
+load(system.file("extdata", "toy_copynumber.RData",
+                 package = "sigminer", mustWork = TRUE
+))
+# Prepare copy number signature analysis
+system.time(
+  cn_prepare <- sig_derive(cn)
+)
+# 31s
+
+str(cn_prepare$features$copynumber)
+
+cc = getBPnum(cn_list, chrlen = sigminer::chromsize.hg19)
+cc = getOscilation(cn_list)
+cc2 = getOscilation(cn_list)
+
+cc = getCentromereDistCounts(cn_list, centromeres.hg19, chromsize.hg19)
+cc2 = getCentromereDistCounts2(cn_list, centromeres.hg19, chromsize.hg19)
+debug(getCentromereDistCounts2)

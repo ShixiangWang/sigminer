@@ -26,37 +26,52 @@ sig_derive <- function(object, ...) {
 }
 
 #' @describeIn sig_derive Derive copy number features, components and component-by-sample matrix
+#' @param method method for feature classfication, can be one of "Macintyre" ("M") and
+#' "Wang" ("W").
+#' @param feature_setting a `data.frame` used for classification.
+#' Only used when method is "Wang" ("W").
+#' Default is [CN.features]. Users can also set custom input with "feature",
+#' "min" and "max" columns avaiable. Valid features can be printed by
+#' `unique(CN.features$feature)`.
 #' @param type one of "probability", "count". Default is "probability", return a matrix
 #' with the sum of posterior probabilities for each components. If set to 'count',
 #' return a matrix with event count assigned to each components. The result for
-#' both types should be close.
+#' both types should be close. Only used when method is "Macintyre".
 #' @param reference_components default is `FALSE`, calculate mixture components
-#' from [CopyNumber] object. Only used when method "Macintyre".
+#' from [CopyNumber] object. Only used when method is "Macintyre".
 #' @param cores number of compute cores to run this task.
 #' You can use [future::availableCores()] function to check how
 #' many cores you can use.
-#' @param seed seed number.
+#' @param seed seed number. Only used when method is "Macintyre".
 #' @param min_comp minimal number of components to fit, default is 2.
 #' Can also be a vector with length 6, which apply to each feature.
+#' Only used when method is "Macintyre".
 #' @param max_comp maximal number of components to fit, default is 15.
 #' Can also be a vector with length 6, which apply to each feature.
+#' Only used when method is "Macintyre".
 #' @param min_prior the minimum relative size of components, default is 0.001.
 #' Details about custom setting please refer to **flexmix** package.
+#' Only used when method is "Macintyre".
 #' @param model_selection model selection strategy, default is 'BIC'.
 #' Details about custom setting please refer to **flexmix** package.
+#' Only used when method is "Macintyre".
 #' @param threshold default is `0.1`. Sometimes, the result components
 #' include adjacent distributions with similar mu
 #' (two and more distribution are very close), we use this threshold
 #' to obtain a more meaningful fit with less components.
+#' Only used when method is "Macintyre".
 #' @param nrep number of run times for each value of component,
 #' keep only the solution with maximum likelihood.
+#' Only used when method is "Macintyre".
 #' @param niter the maximum number of iterations.
+#' Only used when method is "Macintyre".
 #' @param keep_only_matrix if `TRUE`, keep only matrix for signature extraction.
 #' @references Macintyre, Geoff, et al. "Copy number signatures and mutational
 #' processes in ovarian carcinoma." Nature genetics 50.9 (2018): 1262.
 #' @export
 sig_derive.CopyNumber <- function(object,
-                                  method = c("Macintyre", "Wang"),
+                                  feature_setting = sigminer::CN.features,
+                                  method = "Macintyre",
                                   type = c("probability", "count"),
                                   reference_components = FALSE,
                                   cores = 1, seed = 123456,
@@ -68,43 +83,55 @@ sig_derive.CopyNumber <- function(object,
                                   keep_only_matrix = FALSE,
                                   ...) {
   stopifnot(is.logical(reference_components) | is.list(reference_components) | is.null(reference_components))
-  type <- match.arg(type)
+  method = match.arg(method, choices = c("Macintyre", "M", "Wang", "W"))
 
   cn_list <- get_cnlist(object)
 
-  message("=> Step: getting copy number features")
+  if (startsWith(method, "M")) {
+    # Method: Macintyre
+    type <- match.arg(type)
 
-  cn_features <- get_features(
-    CN_data = cn_list, cores = cores,
-    genome_build = object@genome_build
-  )
-
-  message("=> Step: fitting copy number components")
-  if (is.null(reference_components) | is.list(reference_components)) {
-    message("Detected reference components.")
-    cn_components <- reference_components
-  } else {
-    cn_components <- get_components(
-      CN_features = cn_features, seed = seed,
-      min_comp = min_comp, max_comp = max_comp,
-      min_prior = min_prior,
-      model_selection = model_selection,
-      threshold = threshold,
-      nrep = nrep, niter = niter, cores = cores
+    message("=> Step: getting copy number features")
+    cn_features <- get_features(
+      CN_data = cn_list, cores = cores,
+      genome_build = object@genome_build
     )
-  }
+    cn_features = lapply(cn_features, function(x) as.data.frame(x))
 
-  if (type == "count") {
-    message("=> Step: calculating the sum of posterior probabilities")
-    cn_matrix <- get_matrix(cn_features, cn_components,
-      type = "count",
-      cores = cores
-    )
+    message("=> Step: fitting copy number components")
+    if (is.null(reference_components) | is.list(reference_components)) {
+      message("Detected reference components.")
+      cn_components <- reference_components
+    } else {
+      cn_components <- get_components(
+        CN_features = cn_features, seed = seed,
+        min_comp = min_comp, max_comp = max_comp,
+        min_prior = min_prior,
+        model_selection = model_selection,
+        threshold = threshold,
+        nrep = nrep, niter = niter, cores = cores
+      )
+    }
+
+    if (type == "count") {
+      message("=> Step: calculating the sum of posterior probabilities")
+      cn_matrix <- get_matrix(cn_features, cn_components,
+                              type = "count",
+                              cores = cores
+      )
+    } else {
+      message("=> Step: calculating the sum of posterior probabilities")
+      cn_matrix <- get_matrix(cn_features, cn_components,
+                              type = "probability",
+                              cores = cores
+      )
+    }
   } else {
-    message("=> Step: calculating the sum of posterior probabilities")
-    cn_matrix <- get_matrix(cn_features, cn_components,
-      type = "probability",
-      cores = cores
+    # Method: Wang Shixiang
+    message("=> Step: getting copy number features")
+    cn_features <- get_features(
+      CN_data = cn_list, cores = cores,
+      genome_build = object@genome_build
     )
   }
 
