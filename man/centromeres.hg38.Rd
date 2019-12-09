@@ -3,13 +3,13 @@
 \docType{data}
 \name{centromeres.hg38}
 \alias{centromeres.hg38}
-\title{location of centromeres at genome build hg38}
+\title{Location of Centromeres at Genome Build hg38}
 \format{A data.frame}
 \source{
 Generate from Genome Reference Consortium
 }
 \description{
-location of centromeres at genome build hg38
+Location of Centromeres at Genome Build hg38
 }
 \examples{
 data(centromeres.hg38)

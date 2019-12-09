@@ -31,7 +31,7 @@ sig_derive <- function(object, ...) {
 #' return a matrix with event count assigned to each components. The result for
 #' both types should be close.
 #' @param reference_components default is `FALSE`, calculate mixture components
-#' from [CopyNumber] object.
+#' from [CopyNumber] object. Only used when method "Macintyre".
 #' @param cores number of compute cores to run this task.
 #' You can use [future::availableCores()] function to check how
 #' many cores you can use.
@@ -55,7 +55,9 @@ sig_derive <- function(object, ...) {
 #' @references Macintyre, Geoff, et al. "Copy number signatures and mutational
 #' processes in ovarian carcinoma." Nature genetics 50.9 (2018): 1262.
 #' @export
-sig_derive.CopyNumber <- function(object, type = c("probability", "count"),
+sig_derive.CopyNumber <- function(object,
+                                  method = c("Macintyre", "Wang"),
+                                  type = c("probability", "count"),
                                   reference_components = FALSE,
                                   cores = 1, seed = 123456,
                                   min_comp = 2, max_comp = 15,

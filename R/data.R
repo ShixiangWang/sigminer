@@ -1,7 +1,7 @@
 ## how to document datasets: you need to specify @docType and @name; do not
 ## forget NULL in the end
 
-#' location of centromeres at genome build hg19
+#' Location of Centromeres at Genome Build hg19
 #' @docType data
 #' @name centromeres.hg19
 #' @format A data.frame
@@ -10,7 +10,7 @@
 #' data(centromeres.hg19)
 NULL
 
-#' location of centromeres at genome build hg38
+#' Location of Centromeres at Genome Build hg38
 #' @docType data
 #' @name centromeres.hg38
 #' @format A data.frame
@@ -19,7 +19,7 @@ NULL
 #' data(centromeres.hg38)
 NULL
 
-#' chromosome size of genome build hg19
+#' Chromosome Size of Genome Build hg19
 #' @docType data
 #' @name chromsize.hg19
 #' @format A data.frame
@@ -28,11 +28,20 @@ NULL
 #' data(chromsize.hg19)
 NULL
 
-#' chromosome size of genome build hg38
+#' Chromosome Size of Genome Build hg38
 #' @docType data
 #' @name chromsize.hg38
 #' @format A data.frame
 #' @source Generate from UCSC gold path
 #' @examples
 #' data(chromsize.hg38)
+NULL
+
+#' Classfication Table of Copy Number Features Devised by Wang et al.
+#' @docType data
+#' @name CN.features
+#' @format A `data.table` with "sigminer.features" class name
+#' @source Generate from code under data_raw/
+#' @examples
+#' data(CN.features)
 NULL

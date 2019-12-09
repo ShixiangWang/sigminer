@@ -3,13 +3,13 @@
 \docType{data}
 \name{chromsize.hg38}
 \alias{chromsize.hg38}
-\title{chromosome size of genome build hg38}
+\title{Chromosome Size of Genome Build hg38}
 \format{A data.frame}
 \source{
 Generate from UCSC gold path
 }
 \description{
-chromosome size of genome build hg38
+Chromosome Size of Genome Build hg38
 }
 \examples{
 data(chromsize.hg38)

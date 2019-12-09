@@ -3,13 +3,13 @@
 \docType{data}
 \name{chromsize.hg19}
 \alias{chromsize.hg19}
-\title{chromosome size of genome build hg19}
+\title{Chromosome Size of Genome Build hg19}
 \format{A data.frame}
 \source{
 Generate from UCSC gold path
 }
 \description{
-chromosome size of genome build hg19
+Chromosome Size of Genome Build hg19
 }
 \examples{
 data(chromsize.hg19)

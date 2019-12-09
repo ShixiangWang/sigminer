@@ -441,6 +441,34 @@ get_cnsummary_sample <- function(segTab, genome_build = c("hg19", "hg38"),
   seg_summary
 }
 
+# Classify copy number features into components ------------------------------------
+# Automatically handle and support official/custom copy number feature classfication setting
+
+get_feature_components = function(x) {
+  stopifnot(is.data.frame(x), all(c("feature", "min", "max") %in% colnames(x)))
+
+  x = x %>%
+    dplyr::mutate(
+      component = dplyr::case_when(
+        .data$min == .data$max ~ sprintf("%s[%s]", .data$feature, .data$min),
+        is.infinite(.data$min) ~ sprintf("%s[<=%s]", .data$feature, .data$max),
+        is.infinite(.data$max) ~ sprintf("%s[>%s]", .data$feature, .data$min),
+        .data$max > .data$min ~ sprintf("%s[>%s & <=%s]", .data$feature, .data$min, .data$max),
+        TRUE ~ NA_character_
+      ),
+      label = ifelse(.data$min == .data$max, "point", "range")
+    ) %>%
+    data.table::as.data.table()
+
+  x = x[, c("feature", "component", "label", "min", "max")]
+
+  if (any(is.na(x$component))) {
+    stop("Result componet column contain NAs, please check your input!")
+  } else {
+    class(x) = c(class(x), "sigminer.features")
+    return(x)
+  }
+}
 
 # Global variables --------------------------------------------------------
 
