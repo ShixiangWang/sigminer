@@ -29,8 +29,8 @@ get_bayesian_result <- function(run_info) {
   W <- result[[1]]
   H <- result[[2]]
   index <- colSums(W) > 1
-  W <- W[, index]
-  H <- H[index, ]
+  W <- W[, index, drop = FALSE]
+  H <- H[index, , drop = FALSE]
   K <- sum(index)
 
   Signature <- W
@@ -66,6 +66,11 @@ get_bayesian_result <- function(run_info) {
 
   Signature.norm <- apply(Signature, 2, function(x) x / sum(x, na.rm = TRUE))
   Exposure.norm <- apply(Exposure, 2, function(x) x / sum(x, na.rm = TRUE))
+
+  # When only one signature
+  if (!is.matrix(Exposure.norm)) {
+    Exposure.norm = matrix(Exposure.norm, nrow = 1, dimnames = list(NULL, names(Exposure.norm)))
+  }
 
   sig_names <- paste0("Sig", seq_len(K))
   colnames(W) <- colnames(Signature) <- colnames(Signature.norm) <- sig_names

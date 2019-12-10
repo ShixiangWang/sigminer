@@ -135,6 +135,8 @@ sig_derive.CopyNumber <- function(object,
       CN_data = cn_list, cores = cores,
       genome_build = object@genome_build
     )
+    # Make order as unique(feature_setting)$feature
+    cn_features = cn_features[unique(feature_setting$feature)]
 
     message("=> Step: generating copy number components")
     # Chck feature setting
@@ -155,6 +157,7 @@ sig_derive.CopyNumber <- function(object,
     # Order the matrix as feature_setting
     cn_matrix <- cn_matrix[feature_setting$component, ] %>%
       t()
+    feature_setting$n_obs = colSums(cn_matrix, na.rm = TRUE)
   }
 
   message("=> Done.")

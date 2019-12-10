@@ -20,7 +20,8 @@ from \link{sig_derive} function.}
 
 \item{show_weights}{default is \code{TRUE}, show weights for each component.}
 
-\item{log_segsize}{default is \code{TRUE}, show \code{log10} based segsize.}
+\item{log_segsize}{default is \code{TRUE}, show \code{log10} based segsize, only
+works for input from "Macintyre" ("M") method.}
 
 \item{auto_transform}{default is \code{TRUE}, it will auto increase the \code{SD} for components
 for showing them better in the plot.}

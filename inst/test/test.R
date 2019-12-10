@@ -71,3 +71,20 @@ cc2 = getOscilation(cn_list)
 cc = getCentromereDistCounts(cn_list, centromeres.hg19, chromsize.hg19)
 cc2 = getCentromereDistCounts2(cn_list, centromeres.hg19, chromsize.hg19)
 debug(getCentromereDistCounts2)
+
+
+show_cn_features(cn_prepare$features)
+show_cn_features(cn_prepare2$features, method = "Wang")
+
+show_cn_components(cn_prepare$parameters)
+show_cn_components(cn_prepare2$parameters, method = "W")
+
+# Test show signature profile
+sigs = sig_auto_extract(cn_prepare2$nmf_matrix)
+
+library(NMF)
+sigs_est = sig_estimate(cn_prepare2$nmf_matrix, pConstant = 0.001, verbose = TRUE)
+show_rank_survey(sigs_est)
+sigs = sig_extract(cn_prepare2$nmf_matrix, n_sig = 3, pConstant = 0.001)
+
+show_sig_profile(sigs)

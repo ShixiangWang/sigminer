@@ -6,6 +6,7 @@
 \usage{
 show_cn_features(
   features,
+  method = "Macintyre",
   ylab = NULL,
   log_segsize = TRUE,
   return_plotlist = FALSE,
@@ -16,9 +17,13 @@ show_cn_features(
 \arguments{
 \item{features}{a feature \code{list} generate from \link{sig_derive} function.}
 
+\item{method}{method for feature classfication, can be one of "Macintyre" ("M") and
+"Wang" ("W").}
+
 \item{ylab}{lab of y axis.}
 
-\item{log_segsize}{default is \code{TRUE}, show \code{log10} based segsize.}
+\item{log_segsize}{default is \code{TRUE}, show \code{log10} based segsize, only
+works for input from "Macintyre" ("M") method.}
 
 \item{return_plotlist}{if \code{TRUE}, return a list of ggplot objects but a combined plot.}
 
