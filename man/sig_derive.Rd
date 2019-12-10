@@ -10,8 +10,10 @@ sig_derive(object, ...)
 
 \method{sig_derive}{CopyNumber}(
   object,
-  feature_setting = sigminer::CN.features[1:50],
   method = "Macintyre",
+  rm_sex_chrs = FALSE,
+  is_female = TRUE,
+  feature_setting = sigminer::CN.features[1:50],
   type = c("probability", "count"),
   reference_components = FALSE,
   cores = 1,
@@ -44,14 +46,22 @@ sig_derive(object, ...)
 \item{...}{custom setting for operating object. Detail see S3 method for
 corresponding class (e.g. \code{CopyNumber}).}
 
+\item{method}{method for feature classfication, can be one of "Macintyre" ("M") and
+"Wang" ("W").}
+
+\item{rm_sex_chrs}{default is \code{FALSE}, if \code{TRUE}, remove segments in sex chromosomes for analysis.}
+
+\item{is_female}{default is \code{TRUE}, only used when \code{rm_sex_chrs} is \code{FALSE}.
+If this argument is \code{FALSE}, double copy number of sex chromosomes will be
+used. If input object contains both male and female samples, please pre-process
+the copy number value of sex chromosomes and leave the \code{rm_sex_chrs} and
+\code{is_female} as default values (i.e. don't set them by hand).}
+
 \item{feature_setting}{a \code{data.frame} used for classification.
 Only used when method is "Wang" ("W").
 Default is \link{CN.features}. Users can also set custom input with "feature",
 "min" and "max" columns avaiable. Valid features can be printed by
 \code{unique(CN.features$feature)}.}
-
-\item{method}{method for feature classfication, can be one of "Macintyre" ("M") and
-"Wang" ("W").}
 
 \item{type}{one of "probability", "count". Default is "probability", return a matrix
 with the sum of posterior probabilities for each components. If set to 'count',

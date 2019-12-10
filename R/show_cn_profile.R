@@ -1,7 +1,7 @@
 #' Show Sample Copy Number Profile
 #'
 #' Sometimes it is very useful to check details about copy number profile for one or multiple
-#' sample. This function is designed to do this job and can be further modified by **ggplot2**
+#' samples. This function is designed to do this job and can be further modified by **ggplot2**
 #' related packages.
 #'
 #' @param data a [CopyNumber] object or a `data.frame` containing at least 'chromosome', 'start',
@@ -11,7 +11,7 @@
 #' @param show_n number of samples to show, this is used for checking.
 #' @param show_title if `TRUE`, show title for multiple samples.
 #' @param chrs chromosomes start with 'chr'.
-#' @param genome_build genome build version, used when `data` is a `data.frame`, , should be 'hg19' or 'hg38'.
+#' @param genome_build genome build version, used when `data` is a `data.frame`, should be 'hg19' or 'hg38'.
 #' @param nrow number of rows in the plot grid when multiple samples are selected.
 #' @param ncol number of columns in the plot grid when multiple samples are selected.
 #' @param return_plotlist default is `FALSE`, if `TRUE`, return a plot list instead of a combined plot.
@@ -59,7 +59,9 @@ show_cn_profile <- function(data, samples = NULL, show_n = NULL, show_title = FA
   # Get plot data
   coord_df <- build_chrom_coordinate(genome_build, chrs) %>%
     dplyr::mutate(labels = sub("chr", "", .data$chrom))
-  merge_df <- dplyr::left_join(data, coord_df, by = c("chromosome" = "chrom")) %>%
+  merge_df <- data %>%
+    dplyr::as_tibble() %>%
+    dplyr::left_join(coord_df, by = c("chromosome" = "chrom")) %>%
     dplyr::mutate(
       start = .data$x_start + .data$start - 1,
       end = .data$x_start + .data$end,

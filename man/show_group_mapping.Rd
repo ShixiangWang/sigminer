@@ -45,7 +45,8 @@ data <- dplyr::tibble(
   Group2 = rep(LETTERS[6:15], each = 5),
   zzzz = c(rep("xx", 20), rep("yy", 20), rep(NA, 10))
 )
-
+\donttest{
 show_group_mapping(data, sig_col = "Group1", map_cols = colnames(data)[-1])
 show_group_mapping(data, sig_col = "Group1", map_cols = colnames(data)[-1], include_sig = TRUE)
+}
 }

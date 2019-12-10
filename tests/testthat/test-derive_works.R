@@ -6,15 +6,15 @@ test_that("sig_derive for CopyNumber works", {
     package = "sigminer", mustWork = TRUE
   ))
   # Prepare copy number signature analysis
-  cn_prepare <- sig_derive(cn)
+  cn_prepare <- sig_derive(cn, method = "W")
   expect_type(cn_prepare, "list")
-  cn_prepare2 <- sig_derive(cn, cores = 2)
+  cn_prepare2 <- sig_derive(cn, cores = 2, method = "W")
   expect_type(cn_prepare2, "list")
   # The result is reproducible
-  cn_prepare <- sig_derive(cn, cores = 2)
+  cn_prepare <- sig_derive(cn, cores = 2, method = "W")
   expect_true(all.equal(cn_prepare, cn_prepare2))
-  cn_prepare <- sig_derive(cn, keep_only_matrix = TRUE)
-  expect_type(cn_prepare, "double")
+  cn_prepare <- sig_derive(cn, keep_only_matrix = TRUE, method = "W")
+  expect_type(cn_prepare, "integer")
 })
 
 

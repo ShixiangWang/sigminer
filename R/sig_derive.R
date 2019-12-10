@@ -28,6 +28,12 @@ sig_derive <- function(object, ...) {
 }
 
 #' @describeIn sig_derive Derive copy number features, components and component-by-sample matrix
+#' @param rm_sex_chrs default is `FALSE`, if `TRUE`, remove segments in sex chromosomes for analysis.
+#' @param is_female default is `TRUE`, only used when `rm_sex_chrs` is `FALSE`.
+#' If this argument is `FALSE`, double copy number of sex chromosomes will be
+#' used. If input object contains both male and female samples, please pre-process
+#' the copy number value of sex chromosomes and leave the `rm_sex_chrs` and
+#' `is_female` as default values (i.e. don't set them by hand).
 #' @param method method for feature classfication, can be one of "Macintyre" ("M") and
 #' "Wang" ("W").
 #' @param feature_setting a `data.frame` used for classification.
@@ -72,8 +78,10 @@ sig_derive <- function(object, ...) {
 #' processes in ovarian carcinoma." Nature genetics 50.9 (2018): 1262.
 #' @export
 sig_derive.CopyNumber <- function(object,
-                                  feature_setting = sigminer::CN.features[1:50],
                                   method = "Macintyre",
+                                  rm_sex_chrs = FALSE,
+                                  is_female = TRUE,
+                                  feature_setting = sigminer::CN.features[1:50],
                                   type = c("probability", "count"),
                                   reference_components = FALSE,
                                   cores = 1, seed = 123456,
@@ -87,7 +95,7 @@ sig_derive.CopyNumber <- function(object,
   stopifnot(is.logical(reference_components) | is.list(reference_components) | is.null(reference_components))
   method <- match.arg(method, choices = c("Macintyre", "M", "Wang", "W"))
 
-  cn_list <- get_cnlist(object)
+  cn_list <- get_cnlist(object, rm_sex_chrs = FALSE, is_female = TRUE)
 
   if (startsWith(method, "M")) {
     # Method: Macintyre

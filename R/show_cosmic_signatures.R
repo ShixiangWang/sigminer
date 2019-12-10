@@ -16,6 +16,11 @@
 show_cosmic_sig_profile <- function(sig_index = NULL, show_index = TRUE, sig_db = "legacy", ...) {
   sig_db <- match.arg(arg = sig_db, choices = c("legacy", "SBS"))
 
+  if (packageVersion("maftools") < "2.2.0") {
+    message("This feature requires maftools >=2.2.0, please install it firstly!")
+    return(invisible())
+  }
+
   if (sig_db == "legacy") {
     sigs_db <- readRDS(file = system.file("extdata", "legacy_signatures.RDs",
       package = "maftools", mustWork = TRUE

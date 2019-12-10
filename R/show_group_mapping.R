@@ -21,9 +21,10 @@
 #'   Group2 = rep(LETTERS[6:15], each = 5),
 #'   zzzz = c(rep("xx", 20), rep("yy", 20), rep(NA, 10))
 #' )
-#'
+#' \donttest{
 #' show_group_mapping(data, sig_col = "Group1", map_cols = colnames(data)[-1])
 #' show_group_mapping(data, sig_col = "Group1", map_cols = colnames(data)[-1], include_sig = TRUE)
+#' }
 show_group_mapping <- function(data, sig_col, map_cols, include_sig = FALSE,
                                title = NULL, xlab = NULL, ylab = NULL,
                                custom_theme = cowplot::theme_minimal_hgrid()) {

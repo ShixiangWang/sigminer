@@ -30,7 +30,7 @@ is a \code{data.frame}, a column called \code{sample} must exist.}
 
 \item{chrs}{chromosomes start with 'chr'.}
 
-\item{genome_build}{genome build version, used when \code{data} is a \code{data.frame}, , should be 'hg19' or 'hg38'.}
+\item{genome_build}{genome build version, used when \code{data} is a \code{data.frame}, should be 'hg19' or 'hg38'.}
 
 \item{nrow}{number of rows in the plot grid when multiple samples are selected.}
 
@@ -45,7 +45,7 @@ a \code{ggplot} object or a \code{list}
 }
 \description{
 Sometimes it is very useful to check details about copy number profile for one or multiple
-sample. This function is designed to do this job and can be further modified by \strong{ggplot2}
+samples. This function is designed to do this job and can be further modified by \strong{ggplot2}
 related packages.
 }
 \examples{
