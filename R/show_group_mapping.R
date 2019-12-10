@@ -7,6 +7,7 @@
 #' @param sig_col length-1 character showing the colname of signature group.
 #' @param map_cols character vector showing colnames of other groups.
 #' @param include_sig default if `FALSE`, if `TRUE`, showing signature group.
+#' @param fill_na length-1 string to fill NA, default is `FALSE`.
 #' @param title the title.
 #' @param xlab label for x axis.
 #' @param ylab label for y axis.
@@ -26,6 +27,7 @@
 #' show_group_mapping(data, sig_col = "Group1", map_cols = colnames(data)[-1], include_sig = TRUE)
 #' }
 show_group_mapping <- function(data, sig_col, map_cols, include_sig = FALSE,
+                               fill_na = FALSE,
                                title = NULL, xlab = NULL, ylab = NULL,
                                custom_theme = cowplot::theme_minimal_hgrid()) {
   stopifnot(is.data.frame(data), length(sig_col) == 1)
@@ -39,11 +41,21 @@ show_group_mapping <- function(data, sig_col, map_cols, include_sig = FALSE,
       dplyr::mutate(class_ = .data[[sig_col]]) %>%
       dplyr::select(c(sig_col, map_cols, "class_"))
 
+    if (!isFALSE(fill_na)) {
+      data <- data %>%
+        dplyr::mutate_all(dplyr::funs(ifelse(is.na(.), tidyr::replace_na(., fill_na), .)))
+    }
+
     data_long <- ggalluvial::to_lodes_form(data, c(sig_col, map_cols))
   } else {
     data <- data %>%
       dplyr::mutate(class_ = .data[[sig_col]]) %>%
       dplyr::select(c(map_cols, "class_"))
+
+    if (!isFALSE(fill_na)) {
+      data <- data %>%
+        dplyr::mutate_all(dplyr::funs(ifelse(is.na(.), tidyr::replace_na(., fill_na), .)))
+    }
 
     data_long <- ggalluvial::to_lodes_form(data, map_cols)
   }

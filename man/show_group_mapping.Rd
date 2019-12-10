@@ -9,6 +9,7 @@ show_group_mapping(
   sig_col,
   map_cols,
   include_sig = FALSE,
+  fill_na = FALSE,
   title = NULL,
   xlab = NULL,
   ylab = NULL,
@@ -23,6 +24,8 @@ show_group_mapping(
 \item{map_cols}{character vector showing colnames of other groups.}
 
 \item{include_sig}{default if \code{FALSE}, if \code{TRUE}, showing signature group.}
+
+\item{fill_na}{length-1 string to fill NA, default is \code{FALSE}.}
 
 \item{title}{the title.}
 

@@ -112,3 +112,16 @@ get_sig_exposure(ss, type = "relative")
 
 show_cn_features(cc$features, method = "W")
 show_cn_components(cc$parameters, method = "W")
+
+
+data <- dplyr::tibble(
+  Group1 = rep(LETTERS[1:5], each = 10),
+  Group2 = rep(LETTERS[6:15], each = 5),
+  zzzz = c(rep("xx", 20), rep("yy", 20), rep(NA, 10))
+)
+
+show_group_mapping(data, sig_col = "Group1", map_cols = colnames(data)[-1], fill_na = "NA")
+
+show_group_mapping(data, sig_col = "Group1", map_cols = colnames(data)[-1], include_sig = TRUE, fill_na = "NA")
+
+df %>% mutate_all(funs(ifelse(is.na(.), replace_na(., 0), .)))
