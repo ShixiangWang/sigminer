@@ -23,7 +23,6 @@ show_cn_features <- function(features,
                              log_segsize = TRUE,
                              return_plotlist = FALSE,
                              base_size = 12, ...) {
-
   method <- match.arg(method, choices = c("Macintyre", "M", "Wang", "W"))
 
   if (startsWith(method, "M")) {
@@ -69,18 +68,18 @@ show_cn_features <- function(features,
     }
 
     p <- cowplot::plot_grid(p_1,
-                            p_2,
-                            p_3,
-                            p_4,
-                            p_5,
-                            p_6,
-                            nrow = 2,
-                            align = "hv",
-                            ...
+      p_2,
+      p_3,
+      p_4,
+      p_5,
+      p_6,
+      nrow = 2,
+      align = "hv",
+      ...
     )
   } else {
     # Method: Wang
-    p_list = purrr::map2(features, names(features), function(feature_df, f_name) {
+    p_list <- purrr::map2(features, names(features), function(feature_df, f_name) {
       ggplot(data = feature_df, aes(x = value)) +
         geom_histogram(binwidth = 1, color = "white") +
         labs(x = f_name, y = ylab) +
@@ -91,10 +90,13 @@ show_cn_features <- function(features,
     if (return_plotlist) {
       return(p_list)
     } else {
-      # p = cowplot::plot_grid(plotlist = p_list, nrow = 2, align = "hv", ...)
-      top_row = cowplot::plot_grid(plotlist = p_list[1:4], nrow = 1, align = "hv", ...)
-      bot_row = cowplot::plot_grid(plotlist = p_list[-(1:4)], nrow = 1, align = "hv", rel_widths = c(1, 1, 2), ...)
-      p = cowplot::plot_grid(top_row, bot_row, nrow = 2)
+      if (length(p_list) != 7) {
+        p <- cowplot::plot_grid(plotlist = p_list, nrow = 2, align = "hv", ...)
+      } else {
+        top_row <- cowplot::plot_grid(plotlist = p_list[1:4], nrow = 1, align = "hv", ...)
+        bot_row <- cowplot::plot_grid(plotlist = p_list[-(1:4)], nrow = 1, align = "hv", rel_widths = c(1, 1, 2), ...)
+        p <- cowplot::plot_grid(top_row, bot_row, nrow = 2)
+      }
       p
     }
   }

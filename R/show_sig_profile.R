@@ -8,6 +8,8 @@
 #' or just a raw signature matrix with row representing components (motifs) and column
 #' representing signatures (column names must start with 'Sig').
 #' @param mode signature type for plotting, now supports 'copynumber' or 'mutation'.
+#' @param method method for copy number feature classfication, can be one of "Macintyre" ("M") and
+#' "Wang" ("W").
 #' @param normalize one of 'row', 'column' and 'raw', for row normalization (signature),
 #' column normalization (component) and raw data, respectively.
 #' @param params params `data.frame` of components, obtained from [sig_derive].
@@ -19,12 +21,13 @@
 #' @param digits digits for plotting params of copy number signatures.
 #' @param font_scale a number used to set font scale.
 #' @param sig_names set name of signatures, can be a character vector.
-#' Default is `NULL`, prefix 'Signature_' plus number is used.
+#' Default is `NULL`, prefix 'Sig_' plus number is used.
 #' @param sig_orders set order of signatures, can be a character vector.
 #' Default is `NULL`, the signatures are ordered by alphabetical order.
 #' @param check_sig_names if `TRUE`, check signature names when input is
 #' a matrix, i.e., all signatures (colnames) must start with 'Sig'.
 #' @author Shixiang Wang
+#' @inheritParams sig_derive
 #' @return a `ggplot` object
 #' @export
 #' @examples
@@ -52,7 +55,9 @@
 #' params <- get_tidy_parameter(cn_prepare$components)
 #' show_sig_profile(sig, params = params, y_expand = 2)
 show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
+                             method = "Macintyre",
                              normalize = c("row", "column", "raw"),
+                             feature_setting = sigminer::CN.features,
                              params = NULL, show_cv = FALSE,
                              params_label_size = 3,
                              params_label_angle = 60, y_expand = 1,
@@ -73,6 +78,7 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
   }
 
   mode <- match.arg(mode)
+  method <- match.arg(method, choices = c("Macintyre", "M", "Wang", "W"))
   normalize <- match.arg(normalize)
 
   if (normalize == "row") {
@@ -104,20 +110,42 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
   mat$context <- rownames(mat)
 
   if (mode == "copynumber") {
-    mat$base <- sub("\\d+$", "", mat$context)
+    if (startsWith(method, "M")) {
+      mat$base <- sub("\\d+$", "", mat$context)
+      mat <- tidyr::gather(mat, class, signature, -c("context", "base"))
 
-    mat <- tidyr::gather(mat, class, signature, -c("context", "base"))
-    mat <- dplyr::mutate(mat,
-      context = factor(.data$context,
-        levels = unique(mat[["context"]])
-      ),
-      base = factor(.data$base, levels = c(
-        "bp10MB", "copynumber",
-        "changepoint", "bpchrarm",
-        "osCN", "segsize"
-      )),
-      class = factor(class)
-    )
+      mat <- dplyr::mutate(mat,
+        context = factor(.data$context,
+          levels = unique(mat[["context"]])
+        ),
+        base = factor(.data$base, levels = c(
+          "bp10MB", "copynumber",
+          "changepoint", "bpchrarm",
+          "osCN", "segsize"
+        )),
+        class = factor(class)
+      )
+    } else {
+      mat$base <- sub("\\[.*\\]$", "", mat$context)
+      mat <- tidyr::gather(mat, class, signature, -c("context", "base"))
+
+      if (!inherits(feature_setting, "sigminer.features")) {
+        feature_setting <- get_feature_components(feature_setting)
+      }
+      avail_features <- unique(feature_setting$feature)
+
+      # Make sure
+      f_orders <- avail_features[avail_features %in% mat$base]
+      comp_orders <- feature_setting$component[feature_setting$feature %in% f_orders]
+
+      mat <- dplyr::mutate(mat,
+        context = factor(.data$context,
+          levels = comp_orders
+        ),
+        base = factor(.data$base, levels = f_orders),
+        class = factor(class)
+      )
+    }
   } else {
     mat$base <- sub("[ACGT]\\[(.*)\\][ACGT]", "\\1", mat$context)
     mat$context <- sub("(\\[.*\\])", "\\-", mat$context)
@@ -139,7 +167,7 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
     if (length(sig_names) != length(unique(mat[["class"]]))) {
       stop("The length of input signature names is not equal to signature number")
     }
-    names(sig_names) <- paste0("Signature_", seq_along(sig_names))
+    names(sig_names) <- paste0("Sig_", seq_along(sig_names))
     mat[["class"]] <- sig_names[mat[["class"]]]
   }
 
@@ -158,7 +186,7 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
       "green", "blue", "black", "gray"
     ))
 
-  if (mode == "copynumber") {
+  if (mode == "copynumber" & startsWith(method, "M")) {
     if (!is.null(params)) {
       params$class <- factor(levels(mat[["class"]])[1], levels = levels(mat[["class"]]))
       p <- p + geom_text(aes(
@@ -184,6 +212,14 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
     p <- p + facet_grid(class ~ ., scales = "free")
   } else {
     p <- p + facet_grid(class ~ base, scales = "free")
+  }
+
+  # Remove prefix to keep space
+  if (startsWith(method, "W")) {
+    p <- p + scale_x_discrete(
+      breaks = mat$context,
+      labels = sub(".*(\\[.*\\])$", "\\1", mat$context)
+    )
   }
 
   p <- p +

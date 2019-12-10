@@ -69,7 +69,7 @@ get_bayesian_result <- function(run_info) {
 
   # When only one signature
   if (!is.matrix(Exposure.norm)) {
-    Exposure.norm = matrix(Exposure.norm, nrow = 1, dimnames = list(NULL, names(Exposure.norm)))
+    Exposure.norm <- matrix(Exposure.norm, nrow = 1, dimnames = list(NULL, names(Exposure.norm)))
   }
 
   sig_names <- paste0("Sig", seq_len(K))

@@ -72,7 +72,7 @@ sig_derive <- function(object, ...) {
 #' processes in ovarian carcinoma." Nature genetics 50.9 (2018): 1262.
 #' @export
 sig_derive.CopyNumber <- function(object,
-                                  feature_setting = sigminer::CN.features,
+                                  feature_setting = sigminer::CN.features[1:50],
                                   method = "Macintyre",
                                   type = c("probability", "count"),
                                   reference_components = FALSE,
@@ -136,7 +136,7 @@ sig_derive.CopyNumber <- function(object,
       genome_build = object@genome_build
     )
     # Make order as unique(feature_setting)$feature
-    cn_features = cn_features[unique(feature_setting$feature)]
+    cn_features <- cn_features[unique(feature_setting$feature)]
 
     message("=> Step: generating copy number components")
     # Chck feature setting
@@ -157,7 +157,7 @@ sig_derive.CopyNumber <- function(object,
     # Order the matrix as feature_setting
     cn_matrix <- cn_matrix[feature_setting$component, ] %>%
       t()
-    feature_setting$n_obs = colSums(cn_matrix, na.rm = TRUE)
+    feature_setting$n_obs <- colSums(cn_matrix, na.rm = TRUE)
   }
 
   message("=> Done.")

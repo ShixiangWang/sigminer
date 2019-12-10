@@ -477,6 +477,11 @@ get_cnsummary_sample <- function(segTab, genome_build = c("hg19", "hg38"),
         n_of_cnv = sum(segVal != 2),
         n_of_amp = sum(segVal > 2),
         n_of_del = sum(segVal < 2),
+        n_of_vchr = . %>%
+          dplyr::as_tibble() %>%
+          dplyr::filter(chromosome %in% autosome, segVal != 2) %>%
+          dplyr::pull(chromosome) %>%
+          unique() %>% length(),
         cna_burden = sum(end[(segVal != 2) & (chromosome %in% autosome)] - start[(segVal != 2) & (chromosome %in% autosome)] + 1) / total_size
       ) %>%
       data.table::as.data.table()
@@ -488,10 +493,17 @@ get_cnsummary_sample <- function(segTab, genome_build = c("hg19", "hg38"),
         n_of_cnv = sum(segVal != 2),
         n_of_amp = sum(segVal > 2),
         n_of_del = sum(segVal < 2),
+        n_of_vchr = . %>%
+          dplyr::as_tibble() %>%
+          dplyr::filter(chromosome %in% autosome, segVal != 2) %>%
+          dplyr::pull(chromosome) %>%
+          unique() %>% length(),
         cna_burden = sum(end[(segVal != 2) & (chromosome %in% autosome)] - start[(segVal != 2) & (chromosome %in% autosome)] + 1) / sum(end[chromosome %in% autosome] - start[chromosome %in% autosome] + 1)
       ) %>%
       data.table::as.data.table()
   }
+
+  attr(seg_summary, "Note") <- "n_of_vchr is the number of autosome with CNV.\n cna_burden also calculates from autosome."
   seg_summary
 }
 

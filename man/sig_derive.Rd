@@ -10,7 +10,7 @@ sig_derive(object, ...)
 
 \method{sig_derive}{CopyNumber}(
   object,
-  feature_setting = sigminer::CN.features,
+  feature_setting = sigminer::CN.features[1:50],
   method = "Macintyre",
   type = c("probability", "count"),
   reference_components = FALSE,

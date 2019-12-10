@@ -74,7 +74,7 @@ debug(getCentromereDistCounts2)
 
 
 show_cn_features(cn_prepare$features)
-show_cn_features(cn_prepare2$features, method = "Wang")
+show_cn_features(cn_prepare2$features[1:6], method = "Wang")
 
 show_cn_components(cn_prepare$parameters)
 show_cn_components(cn_prepare2$parameters, method = "W")
@@ -87,4 +87,28 @@ sigs_est = sig_estimate(cn_prepare2$nmf_matrix, pConstant = 0.001, verbose = TRU
 show_rank_survey(sigs_est)
 sigs = sig_extract(cn_prepare2$nmf_matrix, n_sig = 3, pConstant = 0.001)
 
-show_sig_profile(sigs)
+sigs2 = sig_extract(cn_prepare$nmf_matrix, n_sig = 3)
+
+show_sig_profile(sigs, method = "W")
+show_sig_profile(sigs2)
+
+sig = sig_auto_extract(cn_prepare2$nmf_matrix[, 1:50])
+show_sig_profile(sig, method = "W")
+
+# Load toy dataset of absolute copynumber profile
+load(system.file("extdata", "toy_segTab.RData",
+                 package = "sigminer", mustWork = TRUE
+))
+cn <- read_copynumber(segTabs,
+                      seg_cols = c("chromosome", "start", "end", "segVal"),
+                      genome_build = "hg19", complement = FALSE, verbose = TRUE
+)
+
+cc = sig_derive(cn, method = "W")
+ss = sig_auto_extract(cc$nmf_matrix)
+show_sig_profile(ss, method = "W")
+show_sig_exposure(ss)
+get_sig_exposure(ss, type = "relative")
+
+show_cn_features(cc$features, method = "W")
+show_cn_components(cc$parameters, method = "W")

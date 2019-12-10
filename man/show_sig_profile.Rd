@@ -7,7 +7,9 @@
 show_sig_profile(
   Signature,
   mode = c("copynumber", "mutation"),
+  method = "Macintyre",
   normalize = c("row", "column", "raw"),
+  feature_setting = sigminer::CN.features,
   params = NULL,
   show_cv = FALSE,
   params_label_size = 3,
@@ -28,8 +30,17 @@ representing signatures (column names must start with 'Sig').}
 
 \item{mode}{signature type for plotting, now supports 'copynumber' or 'mutation'.}
 
+\item{method}{method for copy number feature classfication, can be one of "Macintyre" ("M") and
+"Wang" ("W").}
+
 \item{normalize}{one of 'row', 'column' and 'raw', for row normalization (signature),
 column normalization (component) and raw data, respectively.}
+
+\item{feature_setting}{a \code{data.frame} used for classification.
+Only used when method is "Wang" ("W").
+Default is \link{CN.features}. Users can also set custom input with "feature",
+"min" and "max" columns avaiable. Valid features can be printed by
+\code{unique(CN.features$feature)}.}
 
 \item{params}{params \code{data.frame} of components, obtained from \link{sig_derive}.}
 
@@ -49,7 +60,7 @@ column normalization (component) and raw data, respectively.}
 \item{font_scale}{a number used to set font scale.}
 
 \item{sig_names}{set name of signatures, can be a character vector.
-Default is \code{NULL}, prefix 'Signature_' plus number is used.}
+Default is \code{NULL}, prefix 'Sig_' plus number is used.}
 
 \item{sig_orders}{set order of signatures, can be a character vector.
 Default is \code{NULL}, the signatures are ordered by alphabetical order.}
