@@ -34,22 +34,22 @@ get_features <- function(CN_data,
 
   .get_feature <- function(i) {
     if (i == "segsize") {
-      message("Getting segsize...")
+      message("Getting segment size...")
       getSegsize(CN_data)
     } else if (i == "bp10MB") {
-      message("Getting bp10MB...")
+      message("Getting breakpoint count per 10 Mb...")
       getBPnum(CN_data, chrlen)
     } else if (i == "osCN") {
-      message("Getting osCN...")
+      message("Getting length of chains of oscillating copy number...")
       getOscilation(CN_data)
     } else if (i == "bpchrarm") {
-      message("Getting bpchrarm...")
+      message("Getting breakpoint count per chromosome arm...")
       getCentromereDistCounts(CN_data, centromeres, chrlen)
     } else if (i == "changepoint") {
-      message("Getting changepoint...")
+      message("Getting copy number change point...")
       getChangepointCN(CN_data)
     } else {
-      message("Getting copynumber...")
+      message("Getting copy number...")
       getCN(CN_data)
     }
   }
@@ -61,6 +61,58 @@ get_features <- function(CN_data,
   res
 }
 
+
+
+get_features_wang <- function(CN_data,
+                              cores = 1,
+                              genome_build = c("hg19", "hg38")) {
+  genome_build <- match.arg(genome_build)
+  # get chromosome lengths and centromere locations
+  chrlen <- get_genome_annotation(data_type = "chr_size", genome_build = genome_build)
+  centromeres <- get_genome_annotation(data_type = "centro_loc", genome_build = genome_build)
+
+  oplan <- future::plan()
+  future::plan("multiprocess", workers = cores)
+  on.exit(future::plan(oplan), add = TRUE)
+
+  features <- c(
+    "SS", "BP10MB", "OsCN", "BPArm",
+    "CNCP", "CN", "NChrV"
+  )
+
+  .get_feature <- function(i) {
+    if (i == "SS") {
+      message("Getting (log10 based) segment size...")
+      zz <- getSegsize(CN_data)
+      zz$value <- log10(zz$value)
+      zz
+    } else if (i == "BP10MB") {
+      message("Getting breakpoint count per 10 Mb...")
+      getBPnum(CN_data, chrlen)
+    } else if (i == "OsCN") {
+      message("Getting length of chains of oscillating copy number...")
+      getOscilation(CN_data)
+    } else if (i == "BPArm") {
+      message("Getting breakpoint count per chromosome arm...")
+      getCentromereDistCounts(CN_data, centromeres, chrlen)
+    } else if (i == "CNCP") {
+      message("Getting copy number change point...")
+      getChangepointCN(CN_data)
+    } else if (i == "CN") {
+      message("Getting copy number...")
+      getCN(CN_data)
+    } else {
+      message("Getting number of autosome with CNV...")
+      getNChrV(CN_data, genome_build)
+    }
+  }
+
+  res <- furrr::future_map(features, .get_feature,
+    .progress = TRUE
+  )
+  res <- res %>% setNames(features)
+  res
+}
 
 # Get mixture model components --------------------------------------------
 
@@ -263,7 +315,7 @@ get_LengthFraction <- function(CN_data,
   arm_data <- get_ArmLocation(genome_build)
   data.table::setDT(arm_data)
 
-  segTab = data.table::merge.data.table(segTab, arm_data, by.x = "chromosome", by.y = "chrom", all.x = TRUE)
+  segTab <- data.table::merge.data.table(segTab, arm_data, by.x = "chromosome", by.y = "chrom", all.x = TRUE)
 
   .annot_fun <- function(chrom, start, end, p_start, p_end, p_length, q_start, q_end, q_length, total_size) {
     if (end <= p_end & start >= p_start) {
@@ -328,8 +380,10 @@ get_LengthFraction <- function(CN_data,
     .pb = pb
   )
 
-  cbind(data.table::as.data.table(segTab)[, colnames(arm_data)[-1] := NULL],
-        data.table::as.data.table(annot))
+  cbind(
+    data.table::as.data.table(segTab)[, colnames(arm_data)[-1] := NULL],
+    data.table::as.data.table(annot)
+  )
 }
 
 
@@ -444,10 +498,10 @@ get_cnsummary_sample <- function(segTab, genome_build = c("hg19", "hg38"),
 # Classify copy number features into components ------------------------------------
 # Automatically handle and support official/custom copy number feature classfication setting
 
-get_feature_components = function(x) {
+get_feature_components <- function(x) {
   stopifnot(is.data.frame(x), all(c("feature", "min", "max") %in% colnames(x)))
 
-  x = x %>%
+  x <- x %>%
     dplyr::mutate(
       component = dplyr::case_when(
         .data$min == .data$max ~ sprintf("%s[%s]", .data$feature, .data$min),
@@ -460,12 +514,12 @@ get_feature_components = function(x) {
     ) %>%
     data.table::as.data.table()
 
-  x = x[, c("feature", "component", "label", "min", "max")]
+  x <- x[, c("feature", "component", "label", "min", "max")]
 
   if (any(is.na(x$component))) {
     stop("Result componet column contain NAs, please check your input!")
   } else {
-    class(x) = c(class(x), "sigminer.features")
+    class(x) <- c(class(x), "sigminer.features")
     return(x)
   }
 }

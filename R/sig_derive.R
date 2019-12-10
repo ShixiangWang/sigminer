@@ -13,14 +13,16 @@
 #' [sig_estimate] for estimating signature number for [sig_extract], [sig_auto_extract] for
 #' extracting signatures using automatic relevance determination technique.
 #' @examples
-#' \donttest{
 #' # Load copy number object
 #' load(system.file("extdata", "toy_copynumber.RData",
 #'   package = "sigminer", mustWork = TRUE
 #' ))
+#' \donttest{
 #' # Prepare copy number signature analysis
 #' cn_prepare <- sig_derive(cn)
 #' }
+#' # Use method designed by Wang, Shixiang et al.
+#' cn_prepare <- sig_derive(cn, method = "W")
 sig_derive <- function(object, ...) {
   UseMethod("sig_derive")
 }
@@ -83,7 +85,7 @@ sig_derive.CopyNumber <- function(object,
                                   keep_only_matrix = FALSE,
                                   ...) {
   stopifnot(is.logical(reference_components) | is.list(reference_components) | is.null(reference_components))
-  method = match.arg(method, choices = c("Macintyre", "M", "Wang", "W"))
+  method <- match.arg(method, choices = c("Macintyre", "M", "Wang", "W"))
 
   cn_list <- get_cnlist(object)
 
@@ -96,7 +98,7 @@ sig_derive.CopyNumber <- function(object,
       CN_data = cn_list, cores = cores,
       genome_build = object@genome_build
     )
-    cn_features = lapply(cn_features, function(x) as.data.frame(x))
+    cn_features <- lapply(cn_features, function(x) as.data.frame(x))
 
     message("=> Step: fitting copy number components")
     if (is.null(reference_components) | is.list(reference_components)) {
@@ -116,33 +118,58 @@ sig_derive.CopyNumber <- function(object,
     if (type == "count") {
       message("=> Step: calculating the sum of posterior probabilities")
       cn_matrix <- get_matrix(cn_features, cn_components,
-                              type = "count",
-                              cores = cores
+        type = "count",
+        cores = cores
       )
     } else {
       message("=> Step: calculating the sum of posterior probabilities")
       cn_matrix <- get_matrix(cn_features, cn_components,
-                              type = "probability",
-                              cores = cores
+        type = "probability",
+        cores = cores
       )
     }
   } else {
     # Method: Wang Shixiang
     message("=> Step: getting copy number features")
-    cn_features <- get_features(
+    cn_features <- get_features_wang(
       CN_data = cn_list, cores = cores,
       genome_build = object@genome_build
     )
+
+    message("=> Step: generating copy number components")
+    # Chck feature setting
+    if (!inherits(feature_setting, "sigminer.features")) {
+      feature_setting <- get_feature_components(feature_setting)
+    }
+
+    cn_components <- purrr::map2(cn_features, names(cn_features),
+      count_components_wrapper,
+      feature_setting = feature_setting
+    )
+
+    message("=> Step: generating components by sample matrix")
+    cn_matrix <- data.table::rbindlist(cn_components, fill = TRUE, use.names = TRUE) %>%
+      dplyr::as_tibble() %>%
+      tibble::column_to_rownames(var = "component") %>%
+      as.matrix()
+    # Order the matrix as feature_setting
+    cn_matrix <- cn_matrix[feature_setting$component, ]
   }
 
   message("=> Done.")
   if (keep_only_matrix) {
     cn_matrix
   } else {
+    if (startsWith(method, "M")) {
+      para_df <- get_tidy_parameter(cn_components)
+    } else {
+      para_df <- feature_setting
+    }
+
     list(
       features = cn_features,
       components = cn_components,
-      parameters = get_tidy_parameter(cn_components),
+      parameters = para_df,
       nmf_matrix = cn_matrix
     )
   }

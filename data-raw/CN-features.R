@@ -12,29 +12,33 @@
 # Copy number change point (CNCP)
 # SegSize (SS)
 
-features = c("BP10MB", "BPArm", "CN", "CNCP", "OsCN", "SS", "NChrV")
+features <- c("BP10MB", "BPArm", "CN", "CNCP", "OsCN", "SS", "NChrV")
 
 # When component is a unique value, min=max
 # When component is a data range, make left open and right closed
-CN.features = dplyr::tibble(
+CN.features <- dplyr::tibble(
   feature = features[c(rep(1, 7), rep(2, 14), rep(3, 7), rep(4, 7), rep(5, 7), rep(6, 8), rep(7, 23))],
-  min = c(c(0:5, 5),
-          c(0:10, 10, 20, 30),
-          c(0:4, 4, 8),
-          c(0:4, 4, 8),
-          c(0:4, 4, 10),
-          c(-Inf, 2:8),
-          c(0:22)),
-  max = c(c(0:5, Inf),
-          c(0:10, 20, 30, Inf),
-          c(0:4, 8, Inf),
-          c(0:4, 8, Inf),
-          c(0:4, 10, Inf),
-          c(2:8, Inf),
-          c(0:22))
+  min = c(
+    c(0:5, 5),
+    c(0:10, 10, 20, 30),
+    c(0:4, 4, 8),
+    c(0:4, 4, 8),
+    c(0:4, 4, 10),
+    c(-Inf, 2:8),
+    c(0:22)
+  ),
+  max = c(
+    c(0:5, Inf),
+    c(0:10, 20, 30, Inf),
+    c(0:4, 8, Inf),
+    c(0:4, 8, Inf),
+    c(0:4, 10, Inf),
+    c(2:8, Inf),
+    c(0:22)
+  )
 )
 
 
-CN.features = get_feature_components(CN.features)
+CN.features <- get_feature_components(CN.features)
 
 usethis::use_data(CN.features)

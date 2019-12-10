@@ -1,22 +1,21 @@
 getSegsize <- function(abs_profiles) {
-  segsize = purrr::map_df(abs_profiles, function(x) {
-    x$segsize = x$end - x$start + 1
+  segsize <- purrr::map_df(abs_profiles, function(x) {
+    x$segsize <- x$end - x$start + 1
     x[, c("sample", "segsize"), with = FALSE]
   })
-  colnames(segsize) = c("ID", "value")
+  colnames(segsize) <- c("ID", "value")
   segsize
 }
 
 getBPnum <- function(abs_profiles, chrlen) {
-  res = purrr::map_df(abs_profiles, function(x, chrlen) {
-
-    calcBPnum = function(df, c, chrlen) {
+  res <- purrr::map_df(abs_profiles, function(x, chrlen) {
+    calcBPnum <- function(df, c, chrlen) {
       intervals <-
         seq(1, chrlen[chrlen[, 1] == c, 2] + 10000000, 10000000)
       y <- tryCatch(
         hist(df$end[-nrow(df)],
-             breaks = intervals,
-             plot = FALSE
+          breaks = intervals,
+          plot = FALSE
         )$counts,
         error = function(e) {
           stop(
@@ -28,12 +27,14 @@ getBPnum <- function(abs_profiles, chrlen) {
       y
     }
 
-    x = x %>%
+    x <- x %>%
       dplyr::as_tibble() %>%
       dplyr::group_by(.data$chromosome) %>%
       tidyr::nest() %>%
       dplyr::mutate(value = purrr::map2(
-        data, .data$chromosome, calcBPnum, chrlen = chrlen)) %>%
+        data, .data$chromosome, calcBPnum,
+        chrlen = chrlen
+      )) %>%
       dplyr::ungroup() %>%
       dplyr::select(c("value"))
     data.table::data.table(
@@ -45,8 +46,8 @@ getBPnum <- function(abs_profiles, chrlen) {
 }
 
 getOscilation <- function(abs_profiles) {
-  oscCounts = purrr::map_df(abs_profiles, function(x) {
-    x = x %>%
+  oscCounts <- purrr::map_df(abs_profiles, function(x) {
+    x <- x %>%
       dplyr::as_tibble() %>%
       dplyr::group_by(.data$chromosome) %>%
       tidyr::nest() %>%
@@ -85,8 +86,7 @@ getOscilation <- function(abs_profiles) {
 
 getCentromereDistCounts <-
   function(abs_profiles, centromeres, chrlen) {
-
-    calcArmBP = function(df, c, centromeres, chrlen) {
+    calcArmBP <- function(df, c, centromeres, chrlen) {
       all_dists <- c()
 
       if (nrow(df) > 1) {
@@ -120,20 +120,20 @@ getCentromereDistCounts <-
         } else {
           return(rep(0L, 2))
         }
-
       } else {
         return(rep(0L, 2))
       }
     }
 
-    res = purrr::map_df(abs_profiles, function(x, centromeres, chrlen) {
-
-      x = x %>%
+    res <- purrr::map_df(abs_profiles, function(x, centromeres, chrlen) {
+      x <- x %>%
         dplyr::as_tibble() %>%
         dplyr::group_by(.data$chromosome) %>%
         tidyr::nest() %>%
         dplyr::mutate(value = purrr::map2(
-          data, .data$chromosome, calcArmBP, centromeres = centromeres, chrlen = chrlen)) %>%
+          data, .data$chromosome, calcArmBP,
+          centromeres = centromeres, chrlen = chrlen
+        )) %>%
         dplyr::ungroup() %>%
         dplyr::select(c("value"))
       data.table::data.table(
@@ -142,12 +142,11 @@ getCentromereDistCounts <-
     }, centromeres = centromeres, chrlen = chrlen, .id = "ID")
 
     return(res)
-}
+  }
 
 getChangepointCN <- function(abs_profiles) {
-
-  cp = purrr::map_df(abs_profiles, function(x) {
-    x = x %>%
+  cp <- purrr::map_df(abs_profiles, function(x) {
+    x <- x %>%
       dplyr::as_tibble() %>%
       dplyr::group_by(.data$chromosome) %>%
       tidyr::nest() %>%
@@ -171,24 +170,61 @@ getChangepointCN <- function(abs_profiles) {
 }
 
 getCN <- function(abs_profiles) {
-  cn = purrr::map_df(abs_profiles, function(x) {
+  cn <- purrr::map_df(abs_profiles, function(x) {
     x[, c("sample", "segVal"), with = FALSE]
   })
-  colnames(cn) = c("ID", "value")
+  colnames(cn) <- c("ID", "value")
   cn
 }
 
 # Number of Chromosome with CNV
-getNChrV <- function(abs_profiles, genome_build="hg38") {
-  genome_build = match.arg(genome_build, choices = c("hg19", "hg38"))
+getNChrV <- function(abs_profiles, genome_build = "hg38") {
+  genome_build <- match.arg(genome_build, choices = c("hg19", "hg38"))
 
   if (genome_build %in% c("hg19", "hg38")) {
-    autosome = paste0("chr", 1:22)
+    autosome <- paste0("chr", 1:22)
   }
 
-  cn = purrr::map_df(abs_profiles, function(x) {
-    x = x[x$chromosome %in% autosome, c("sample", "chromosome", "segVal"), with = FALSE][x$segVal != 2]
+  cn <- purrr::map_df(abs_profiles, function(x) {
+    x <- x[x$chromosome %in% autosome, c("sample", "chromosome", "segVal"), with = FALSE][x$segVal != 2]
     data.table::data.table(ID = x$sample[1], value = length(unique(x$chromosome)))
   })
   cn
+}
+
+
+count_components <- function(min, max, label, feature) {
+  # Count all samples
+  if (label == "point") {
+    feature %>%
+      dplyr::group_by(.data$ID) %>%
+      dplyr::summarise(count = sum(.data$value == min, na.rm = TRUE)) %>%
+      dplyr::pull("count")
+  } else if (label == "range") {
+    feature %>%
+      dplyr::group_by(.data$ID) %>%
+      dplyr::summarise(count = sum(.data$value > min & .data$value <= max, na.rm = TRUE)) %>%
+      dplyr::pull("count")
+  } else {
+    stop("Bad labels for feature setting, can only be 'point' and 'range'!")
+  }
+}
+
+count_components_wrapper <- function(feature_df, f_name, feature_setting) {
+  samps <- unique(feature_df$ID)
+  feature_df <- feature_df %>% dplyr::as_tibble()
+  # Make sure sample order is consistent
+  feature_df$ID <- factor(feature_df$ID, levels = samps)
+
+  specific_f <- feature_setting[feature_setting$feature == f_name]
+  specific_f %>%
+    dplyr::as_tibble() %>%
+    dplyr::group_by(.data$component) %>%
+    dplyr::summarize(
+      count = list(count_components(.data$min, .data$max, .data$label, feature_df)),
+      sample = list(samps)
+    ) %>%
+    tidyr::unnest(cols = c("count", "sample")) %>%
+    tidyr::pivot_wider(names_from = "sample", values_from = "count", values_fill = list(count = 0L)) %>% # Should not have NA value, but take case of it with 0
+    data.table::as.data.table()
 }

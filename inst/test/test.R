@@ -53,7 +53,10 @@ load(system.file("extdata", "toy_copynumber.RData",
 ))
 # Prepare copy number signature analysis
 system.time(
-  cn_prepare <- sig_derive(cn)
+  cn_prepare3 <- sig_derive(cn, method = "M")
+)
+system.time(
+  cn_prepare2 <- sig_derive(cn, method = "W")
 )
 # 31s
 

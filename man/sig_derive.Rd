@@ -124,14 +124,16 @@ so it can be further extended to other mutation cases.
 }}
 
 \examples{
-\donttest{
 # Load copy number object
 load(system.file("extdata", "toy_copynumber.RData",
   package = "sigminer", mustWork = TRUE
 ))
+\donttest{
 # Prepare copy number signature analysis
 cn_prepare <- sig_derive(cn)
 }
+# Use method designed by Wang, Shixiang et al.
+cn_prepare <- sig_derive(cn, method = "W")
 \donttest{
 # Prepare mutational signature analysis
 laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools")

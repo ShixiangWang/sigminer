@@ -309,8 +309,8 @@ read_copynumber <- function(input,
   # make sure seg value is integer
   data_df[["segVal"]] <- as.integer(round(data_df[["segVal"]]))
   # make sure position is numeric
-  data_df$start = as.numeric(data_df$start)
-  data_df$end = as.numeric(data_df$end)
+  data_df$start <- as.numeric(data_df$start)
+  data_df$end <- as.numeric(data_df$end)
 
   if (verbose) message("Anotating...")
   annot <- get_LengthFraction(data_df,
