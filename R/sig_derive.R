@@ -153,7 +153,8 @@ sig_derive.CopyNumber <- function(object,
       tibble::column_to_rownames(var = "component") %>%
       as.matrix()
     # Order the matrix as feature_setting
-    cn_matrix <- cn_matrix[feature_setting$component, ]
+    cn_matrix <- cn_matrix[feature_setting$component, ] %>%
+      t()
   }
 
   message("=> Done.")

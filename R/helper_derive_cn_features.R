@@ -217,6 +217,8 @@ count_components_wrapper <- function(feature_df, f_name, feature_setting) {
   feature_df$ID <- factor(feature_df$ID, levels = samps)
 
   specific_f <- feature_setting[feature_setting$feature == f_name]
+
+  # https://www.jianshu.com/p/24bbf44e4fa2
   specific_f %>%
     dplyr::as_tibble() %>%
     dplyr::group_by(.data$component) %>%
@@ -227,4 +229,16 @@ count_components_wrapper <- function(feature_df, f_name, feature_setting) {
     tidyr::unnest(cols = c("count", "sample")) %>%
     tidyr::pivot_wider(names_from = "sample", values_from = "count", values_fill = list(count = 0L)) %>% # Should not have NA value, but take case of it with 0
     data.table::as.data.table()
+
+  # Same result as above
+  # But I don't know which is more efficient
+  #
+  # specific_f %>%
+  #   dplyr::as_tibble() %>%
+  #   dplyr::group_by(.data$component) %>%
+  #   dplyr::summarize(
+  #     count = paste(count_components(.data$min, .data$max, .data$label, feature_df), collapse = ","),
+  #   ) %>%
+  #   tidyr::separate(.data$count, samps, sep = ",", convert = TRUE) %>%
+  #   data.table::as.data.table()
 }

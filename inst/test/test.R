@@ -27,7 +27,7 @@ show_sig_profile(sig, params = params, y_expand = 3, show_cv = T, params_label_a
 load(system.file("extdata", "toy_copynumber_prepare.RData",
                  package = "sigminer", mustWork = TRUE
 ))
-res <- sig_auto_extract(cn_prepare$nmf_matrix, result_prefix = "Test_copynumber", nrun = 1)
+res <- sig_auto_extract(cn_prepare2$nmf_matrix, result_prefix = "Test_copynumber", nrun = 1)
 
 str(cn_prepare$features$segsize)
 
@@ -58,7 +58,9 @@ system.time(
 system.time(
   cn_prepare2 <- sig_derive(cn, method = "W")
 )
-# 31s
+system.time(
+  cn_prepare3 <- sig_derive(cn, method = "W")
+)
 
 str(cn_prepare$features$copynumber)
 
