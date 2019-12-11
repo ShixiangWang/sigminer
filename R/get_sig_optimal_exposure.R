@@ -4,19 +4,19 @@
 # ###### INPUTS: V - mutation counts matrix, W - columnwise-normalized signature matrix, Z - binary matrix to indicate a signature availability in each sample.
 # ###### OUTPUTS: H - activity-loading matrix
 # ###############################
-# get_sig_optimal_exposure <- function(V, Signature,
+# get_sig_optimal_exposure <- function(nmf_matrix, Signature,
 #                                      Z = 1,
 #                                      n.iter = 2e5,
 #                                      tol = 1e-07,
 #                                      phi = 1.5) {
-#   W <- Signature$Signature # ?
-#   H <- Signature$Exposure
+#   V = t(nmf_matrix)
+#   W <- Signature$Signature.norm
 #
 #   a0 <- 10
 #   # phi = ? is confusing, follow the orignal code for now
 #   K0 <- ncol(W) # of signatures
 #
-#   # First step: determine a set of optimal signatures best explaining the observed mutations in each cohort.
+#   # First step: determine a set of optimal signatures best explaining the observed mutations
 #   # The automatic relevance determination technique was applied to the H matrix only, while keeping signatures (W) frozen.
 #   lambda <- rep(1 + (sqrt((a0 - 1) * (a0 - 2) * mean(V, na.rm = T) / K0)) / (nrow(V) + ncol(V) + a0 + 1) * 2, K0)
 #   res0 <- BayesNMF.L1.KL.fixed_W.Z(as.matrix(V), as.matrix(W), as.matrix(H), as.matrix(Z), lambda, n.iter, a0, tol, 1 / phi)
@@ -25,7 +25,7 @@
 #   rownames(H2) <- colnames(W0)
 #
 #   # Second step: determine a sample-level signature attribution using selected sigantures in the first step.
-#   index.H2 <- rowSums(H2) > 1 ### identify only active signatures in the cohort
+#   index.H2 <- rowSums(H2) > 1 ### identify only active signatures
 #   Z2 <- Z1
 #   Z2[!index.H2, ] <- 0 ### only selected signatures in the first step are allowed + the original contraints on the signature availability from Z1.
 #   for (j in 1:ncol(H2)) {
@@ -48,4 +48,5 @@
 #   }
 #   colnames(H3) <- colnames(V1)
 #   rownames(H3) <- colnames(W0)
+#   H3
 # }
