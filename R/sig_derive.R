@@ -159,6 +159,7 @@ sig_derive.CopyNumber <- function(object,
     # Order the matrix as feature_setting
     cn_matrix <- cn_matrix[feature_setting$component, ] %>%
       t()
+    cn_matrix[is.na(cn_matrix)] <- 0L
     feature_setting$n_obs <- colSums(cn_matrix, na.rm = TRUE)
   }
 
