@@ -70,7 +70,7 @@ getOscilation <- function(abs_profiles) {
             }
             return(oscCounts)
           } else {
-            return(NULL)
+            return(0L)
           }
         }
       )) %>%
@@ -140,7 +140,7 @@ getChangepointCN <- function(abs_profiles) {
       dplyr::mutate(value = purrr::map(
         data, function(df) {
           if (nrow(df) <= 1) {
-            return(NULL)
+            return(0L)
           } else {
             return(as.integer(abs(diff(df$segVal))))
           }

@@ -159,7 +159,12 @@ sig_derive.CopyNumber <- function(object,
     # Order the matrix as feature_setting
     cn_matrix <- cn_matrix[feature_setting$component, ] %>%
       t()
-    cn_matrix[is.na(cn_matrix)] <- 0L
+
+    if (any(is.na(cn_matrix))) {
+      message("Warning: NA detected. There may be an issue, please contact the developer!")
+      message("\tData will still returned, but please take case of it.")
+    }
+    #cn_matrix[is.na(cn_matrix)] <- 0L
     feature_setting$n_obs <- colSums(cn_matrix, na.rm = TRUE)
   }
 
