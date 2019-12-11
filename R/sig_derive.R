@@ -95,7 +95,7 @@ sig_derive.CopyNumber <- function(object,
   stopifnot(is.logical(reference_components) | is.list(reference_components) | is.null(reference_components))
   method <- match.arg(method, choices = c("Macintyre", "M", "Wang", "W"))
 
-  cn_list <- get_cnlist(object, rm_sex_chrs = FALSE, is_female = TRUE)
+  cn_list <- get_cnlist(object, rm_sex_chrs = rm_sex_chrs, is_female = is_female)
 
   if (startsWith(method, "M")) {
     # Method: Macintyre

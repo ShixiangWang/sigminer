@@ -56,7 +56,7 @@ get_features <- function(CN_data,
       getOscilation(CN_data)
     } else if (i == "bpchrarm") {
       message("Getting breakpoint count per chromosome arm...")
-      getCentromereDistCounts(CN_data, centromeres, chrlen)
+      getCentromereDistCounts(CN_data, centromeres)
     } else if (i == "changepoint") {
       message("Getting copy number change point...")
       getChangepointCN(CN_data)
@@ -104,7 +104,7 @@ get_features_wang <- function(CN_data,
       getOscilation(CN_data)
     } else if (i == "BPArm") {
       message("Getting breakpoint count per chromosome arm...")
-      getCentromereDistCounts(CN_data, centromeres, chrlen)
+      getCentromereDistCounts(CN_data, centromeres)
     } else if (i == "CNCP") {
       message("Getting copy number change point...")
       getChangepointCN(CN_data)

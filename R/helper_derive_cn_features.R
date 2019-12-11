@@ -85,47 +85,37 @@ getOscilation <- function(abs_profiles) {
 }
 
 getCentromereDistCounts <-
-  function(abs_profiles, centromeres, chrlen) {
-    calcArmBP <- function(df, c, centromeres, chrlen) {
-      all_dists <- c()
+  function(abs_profiles, centromeres) {
+    calcArmBP <- function(df, c, centromeres) {
+
+      centstart <- centromeres[centromeres$chrom == c, 2]
+      centend <- centromeres[centromeres$chrom == c, 3]
+
+      # Remove segments located in centromere
+      df = df[!(df$start >= centstart & df$end <= centend), ]
 
       if (nrow(df) > 1) {
-        starts <- df$start[-1]
-        segstart <- df$start[1]
+
+        starts <- df$start
         ends <- df$end
-        segend <- ends[length(ends)]
-        ends <- ends[-length(ends)]
 
-        centstart <- centromeres[centromeres$chrom == c, 2]
-        centend <- centromeres[centromeres$chrom == c, 3]
-        chrend <- chrlen[chrlen$chrom == c, 2]
+        p_count = sum(ends < centend)
+        q_count = sum(ends > centend)
 
-        ndist <-
-          cbind(rep(NA, length(starts)), rep(NA, length(starts)))
-        ndist[starts <= centstart, 1] <-
-          (centstart - starts[starts <= centstart]) / (centstart - segstart) * -1
-        ndist[starts >= centend, 1] <-
-          (starts[starts >= centend] - centend) / (segend - centend)
-        ndist[ends <= centstart, 2] <-
-          (centstart - ends[ends <= centstart]) / (centstart - segstart) * -1
-        ndist[ends >= centend, 2] <-
-          (ends[ends >= centend] - centend) / (segend - centend)
-        ndist <- apply(ndist, 1, min)
-
-        all_dists <- rbind(all_dists, sum(ndist > 0))
-        all_dists <- rbind(all_dists, sum(ndist <= 0))
-
-        if (nrow(all_dists) > 0) {
-          return(as.integer(all_dists[, 1]))
-        } else {
-          return(rep(0L, 2))
+        if (!any(starts < centstart & ends > centend)) {
+          # If there is not a segment across p and q arms
+          if (p_count > 0L) p_count = p_count - 1L
         }
+        if (q_count > 0L) q_count = q_count - 1L
+
+        return(c(p_count, q_count))
+
       } else {
         return(rep(0L, 2))
       }
     }
 
-    res <- purrr::map_df(abs_profiles, function(x, centromeres, chrlen) {
+    res <- purrr::map_df(abs_profiles, function(x, centromeres) {
       x <- x %>%
         dplyr::as_tibble() %>%
         dplyr::group_by(.data$chromosome) %>%
@@ -139,7 +129,7 @@ getCentromereDistCounts <-
       data.table::data.table(
         value = purrr::reduce(x$value, c)
       )
-    }, centromeres = centromeres, chrlen = chrlen, .id = "ID")
+    }, centromeres = centromeres, .id = "ID")
 
     return(res)
   }
