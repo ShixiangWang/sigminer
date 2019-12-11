@@ -28,12 +28,6 @@ sig_derive <- function(object, ...) {
 }
 
 #' @describeIn sig_derive Derive copy number features, components and component-by-sample matrix
-#' @param rm_sex_chrs default is `FALSE`, if `TRUE`, remove segments in sex chromosomes for analysis.
-#' @param is_female default is `TRUE`, only used when `rm_sex_chrs` is `FALSE`.
-#' If this argument is `FALSE`, double copy number of sex chromosomes will be
-#' used. If input object contains both male and female samples, please pre-process
-#' the copy number value of sex chromosomes and leave the `rm_sex_chrs` and
-#' `is_female` as default values (i.e. don't set them by hand).
 #' @param method method for feature classfication, can be one of "Macintyre" ("M") and
 #' "Wang" ("W").
 #' @param feature_setting a `data.frame` used for classification.
@@ -79,8 +73,7 @@ sig_derive <- function(object, ...) {
 #' @export
 sig_derive.CopyNumber <- function(object,
                                   method = "Macintyre",
-                                  rm_sex_chrs = FALSE,
-                                  is_female = TRUE,
+                                  ignore_chrs = NULL,
                                   feature_setting = sigminer::CN.features[1:50],
                                   type = c("probability", "count"),
                                   reference_components = FALSE,
@@ -95,7 +88,7 @@ sig_derive.CopyNumber <- function(object,
   stopifnot(is.logical(reference_components) | is.list(reference_components) | is.null(reference_components))
   method <- match.arg(method, choices = c("Macintyre", "M", "Wang", "W"))
 
-  cn_list <- get_cnlist(object, rm_sex_chrs = rm_sex_chrs, is_female = is_female)
+  cn_list <- get_cnlist(object, ignore_chrs = ignore_chrs)
 
   if (startsWith(method, "M")) {
     # Method: Macintyre
@@ -190,6 +183,8 @@ sig_derive.CopyNumber <- function(object,
 
 #' @describeIn sig_derive Derive SBS mutation component-by-sample matrix and APOBEC enrichment
 #' @inheritParams maftools::trinucleotideMatrix
+#' @param ignore_chrs Chromsomes to ignore from analysis. e.g. chrX and chrY.
+#' @param use_syn Logical. Whether to include synonymous variants in analysis. Defaults to TRUE
 #' @references Mayakonda, Anand, et al. "Maftools: efficient and comprehensive analysis of somatic variants in cancer." Genome research 28.11 (2018): 1747-1756.
 #' @examples
 #' \donttest{
@@ -205,7 +200,7 @@ sig_derive.CopyNumber <- function(object,
 #' }
 #' @export
 sig_derive.MAF <- function(object, ref_genome = NULL, prefix = NULL,
-                           add = TRUE, ignoreChr = NULL, useSyn = TRUE,
+                           add = TRUE, ignore_chrs = NULL, use_syn = TRUE,
                            keep_only_matrix = FALSE,
                            ...) {
   # // TODO: Rewrite this function instead of using maftools
@@ -213,7 +208,7 @@ sig_derive.MAF <- function(object, ref_genome = NULL, prefix = NULL,
   res <- maftools::trinucleotideMatrix(
     object,
     ref_genome = ref_genome, prefix = prefix,
-    add = add, ignoreChr = ignoreChr, useSyn = useSyn, fn = NULL
+    add = add, ignoreChr = ignore_chrs, useSyn = use_syn, fn = NULL
   )
 
   if (keep_only_matrix) {

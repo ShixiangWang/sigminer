@@ -11,8 +11,7 @@ sig_derive(object, ...)
 \method{sig_derive}{CopyNumber}(
   object,
   method = "Macintyre",
-  rm_sex_chrs = FALSE,
-  is_female = TRUE,
+  ignore_chrs = NULL,
   feature_setting = sigminer::CN.features[1:50],
   type = c("probability", "count"),
   reference_components = FALSE,
@@ -34,8 +33,8 @@ sig_derive(object, ...)
   ref_genome = NULL,
   prefix = NULL,
   add = TRUE,
-  ignoreChr = NULL,
-  useSyn = TRUE,
+  ignore_chrs = NULL,
+  use_syn = TRUE,
   keep_only_matrix = FALSE,
   ...
 )
@@ -49,13 +48,7 @@ corresponding class (e.g. \code{CopyNumber}).}
 \item{method}{method for feature classfication, can be one of "Macintyre" ("M") and
 "Wang" ("W").}
 
-\item{rm_sex_chrs}{default is \code{FALSE}, if \code{TRUE}, remove segments in sex chromosomes for analysis.}
-
-\item{is_female}{default is \code{TRUE}, only used when \code{rm_sex_chrs} is \code{FALSE}.
-If this argument is \code{FALSE}, double copy number of sex chromosomes will be
-used. If input object contains both male and female samples, please pre-process
-the copy number value of sex chromosomes and leave the \code{rm_sex_chrs} and
-\code{is_female} as default values (i.e. don't set them by hand).}
+\item{ignore_chrs}{Chromsomes to ignore from analysis. e.g. chrX and chrY.}
 
 \item{feature_setting}{a \code{data.frame} used for classification.
 Only used when method is "Wang" ("W").
@@ -115,9 +108,7 @@ Default NULL, tries to auto-detect from installed genomes.}
 
 \item{add}{If prefix is used, default is to add prefix to contig names in MAF file. If false prefix will be removed from contig names.}
 
-\item{ignoreChr}{Chromsomes to ignore from analysis. e.g. chrM}
-
-\item{useSyn}{Logical. Whether to include synonymous variants in analysis. Defaults to TRUE}
+\item{use_syn}{Logical. Whether to include synonymous variants in analysis. Defaults to TRUE}
 }
 \value{
 a \code{list} contains a \code{matrix} used for NMF de-composition.

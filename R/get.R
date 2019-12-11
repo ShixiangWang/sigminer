@@ -4,21 +4,20 @@
 
 # Get copy number list ----------------------------------------------------
 
-get_cnlist <- function(CopyNumber, rm_sex_chrs, is_female) {
+get_cnlist <- function(CopyNumber, ignore_chrs=NULL) {
   if (!inherits(CopyNumber, "CopyNumber")) {
     stop("Input must be a CopyNumber object!")
   }
   data <- data.table::copy(CopyNumber@data)
-  if (isFALSE(rm_sex_chrs)) {
-    if (isFALSE(is_female)) {
-      # For male samples, we need to double the copy number of sex chromosomes
-      data_sex <- data[chromosome %in% c("chrX", "chrY")]
-      data_rm_sex <- data[!chromosome %in% c("chrX", "chrY")]
-      data_sex$segVal <- 2L * data_sex$segVal
-      data <- rbind(data_rm_sex, data_sex)
+  if (!is.null(ignore_chrs)) {
+    chrs_exist <- ignore_chrs %in% unique(data$chromosome)
+    if (!any(chrs_exist)) {
+      message("No chromosome names called ",
+              paste(ignore_chrs, collapse = ","), " found in data, skipping filter.")
+    } else {
+      message("Filtering out segments in ", paste(ignore_chrs[chrs_exist], collapse = ","))
+      data <- data[!chromosome %in% ignore_chrs[chrs_exist]]
     }
-  } else {
-    data <- data[!chromosome %in% c("chrX", "chrY")]
   }
   res <- split(data, by = "sample")
   res
