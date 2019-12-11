@@ -87,29 +87,26 @@ getOscilation <- function(abs_profiles) {
 getCentromereDistCounts <-
   function(abs_profiles, centromeres) {
     calcArmBP <- function(df, c, centromeres) {
-
       centstart <- centromeres[centromeres$chrom == c, 2]
       centend <- centromeres[centromeres$chrom == c, 3]
 
       # Remove segments located in centromere
-      df = df[!(df$start >= centstart & df$end <= centend), ]
+      df <- df[!(df$start >= centstart & df$end <= centend), ]
 
       if (nrow(df) > 1) {
-
         starts <- df$start
         ends <- df$end
 
-        p_count = sum(ends < centend)
-        q_count = sum(ends > centend)
+        p_count <- sum(ends < centend)
+        q_count <- sum(ends > centend)
 
         if (!any(starts < centstart & ends > centend)) {
           # If there is not a segment across p and q arms
-          if (p_count > 0L) p_count = p_count - 1L
+          if (p_count > 0L) p_count <- p_count - 1L
         }
-        if (q_count > 0L) q_count = q_count - 1L
+        if (q_count > 0L) q_count <- q_count - 1L
 
         return(c(p_count, q_count))
-
       } else {
         return(rep(0L, 2))
       }
@@ -122,7 +119,7 @@ getCentromereDistCounts <-
         tidyr::nest() %>%
         dplyr::mutate(value = purrr::map2(
           data, .data$chromosome, calcArmBP,
-          centromeres = centromeres, chrlen = chrlen
+          centromeres = centromeres
         )) %>%
         dplyr::ungroup() %>%
         dplyr::select(c("value"))
@@ -177,8 +174,12 @@ getNChrV <- function(abs_profiles, genome_build = "hg38") {
 
   cn <- purrr::map_df(abs_profiles, function(x) {
     x <- x[x$chromosome %in% autosome, c("sample", "chromosome", "segVal"), with = FALSE]
-    x <- x[x$segVal != 2]
-    data.table::data.table(ID = x$sample[1], value = length(unique(x$chromosome)))
+    x_cnv <- x[x$segVal != 2]
+    value = ifelse(nrow(x_cnv) == 0, 0L, length(unique(x_cnv$chromosome)))
+    data.table::data.table(
+      ID = x$sample[1],
+      value = value
+    )
   })
   cn
 }
