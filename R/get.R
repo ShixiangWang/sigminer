@@ -77,7 +77,8 @@ get_features <- function(CN_data,
 
 get_features_wang <- function(CN_data,
                               cores = 1,
-                              genome_build = c("hg19", "hg38")) {
+                              genome_build = c("hg19", "hg38"),
+                              feature_setting = sigminer::CN.features) {
   genome_build <- match.arg(genome_build)
   # get chromosome lengths and centromere locations
   chrlen <- get_genome_annotation(data_type = "chr_size", genome_build = genome_build)
@@ -87,10 +88,7 @@ get_features_wang <- function(CN_data,
   future::plan("multiprocess", workers = cores)
   on.exit(future::plan(oplan), add = TRUE)
 
-  features <- c(
-    "SS", "BP10MB", "OsCN", "BPArm",
-    "CNCP", "CN", "NChrV"
-  )
+  features <- unique(feature_setting$feature)
 
   .get_feature <- function(i) {
     if (i == "SS") {

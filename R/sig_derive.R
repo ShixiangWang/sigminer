@@ -141,10 +141,11 @@ sig_derive.CopyNumber <- function(object,
     message("=> Step: getting copy number features")
     cn_features <- get_features_wang(
       CN_data = cn_list, cores = cores,
-      genome_build = object@genome_build
+      genome_build = object@genome_build,
+      feature_setting = feature_setting
     )
     # Make order as unique(feature_setting)$feature
-    cn_features <- cn_features[unique(feature_setting$feature)]
+    # cn_features <- cn_features[unique(feature_setting$feature)]
 
     message("=> Step: generating copy number components")
     # Chck feature setting
