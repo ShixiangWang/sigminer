@@ -1,6 +1,8 @@
 #' Show Copy Number Feature Distributions
 #'
 #' @param features a feature `list` generate from [sig_derive] function.
+#' @param rm_outlier default is `FALSE`, if `TRUE`, remove outliers. Only
+#' works when method is "Wang" ("W").
 #' @param ylab lab of y axis.
 #' @param log_segsize default is `TRUE`, show `log10` based segsize, only
 #' works for input from "Macintyre" ("M") method.
@@ -19,6 +21,7 @@
 #'
 show_cn_features <- function(features,
                              method = "Macintyre",
+                             rm_outlier = FALSE,
                              ylab = NULL,
                              log_segsize = TRUE,
                              return_plotlist = FALSE,
@@ -79,13 +82,18 @@ show_cn_features <- function(features,
     )
   } else {
     # Method: Wang
-    p_list <- purrr::map2(features, names(features), function(feature_df, f_name) {
+    p_list <- purrr::map2(features, names(features), function(feature_df, f_name, rm_outlier=FALSE) {
+      if (rm_outlier) {
+        outliers = boxplot(feature_df$value, plot = FALSE)$out
+        feature_df = feature_df[!value %in% outliers]
+      }
+
       ggplot(data = feature_df, aes(x = value)) +
         geom_histogram(binwidth = 1, color = "white") +
         labs(x = f_name, y = ylab) +
         theme(plot.margin = unit(c(0.05, 0.05, 0.05, 0.05), "cm")) +
         cowplot::theme_cowplot(font_size = base_size)
-    })
+    }, rm_outlier = rm_outlier)
 
     if (return_plotlist) {
       return(p_list)

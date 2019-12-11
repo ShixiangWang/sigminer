@@ -7,6 +7,7 @@
 show_cn_features(
   features,
   method = "Macintyre",
+  rm_outlier = FALSE,
   ylab = NULL,
   log_segsize = TRUE,
   return_plotlist = FALSE,
@@ -19,6 +20,9 @@ show_cn_features(
 
 \item{method}{method for feature classfication, can be one of "Macintyre" ("M") and
 "Wang" ("W").}
+
+\item{rm_outlier}{default is \code{FALSE}, if \code{TRUE}, remove outliers. Only
+works when method is "Wang" ("W").}
 
 \item{ylab}{lab of y axis.}
 
