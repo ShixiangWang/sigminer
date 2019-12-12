@@ -79,7 +79,7 @@ show_sig_exposure <- function(Signature,
   x1 <- tidyr::gather(h, "Sample", "Exposure", -"Signature")
   x2 <- tidyr::gather(h.norm, "Sample", "Exposure", -"Signature")
 
-  x1$class0 <- "Estimate_Mutations"
+  x1$class0 <- "Estimated_Mutations"
   x2$class0 <- "Fractions"
   df <- rbind(x1, x2)
 
