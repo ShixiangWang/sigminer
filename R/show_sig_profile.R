@@ -12,6 +12,7 @@
 #' "Wang" ("W").
 #' @param normalize one of 'row', 'column' and 'raw', for row normalization (signature),
 #' column normalization (component) and raw data, respectively.
+#' @param x_label_angle font angle for x label.
 #' @param params params `data.frame` of components, obtained from [sig_derive].
 #' @param show_cv default is `FALSE`, if `TRUE`, show coefficient of variation when
 #' `params` is not `NULL`.
@@ -58,6 +59,7 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
                              method = "Macintyre",
                              normalize = c("row", "column", "raw"),
                              feature_setting = sigminer::CN.features,
+                             x_label_angle = 60,
                              params = NULL, show_cv = FALSE,
                              params_label_size = 3,
                              params_label_angle = 60, y_expand = 1,
@@ -93,7 +95,7 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
   .theme_ss <- theme_bw(base_size = base_size) +
     theme(
       axis.text.x = element_text(
-        angle = 60, vjust = 1,
+        angle = x_label_angle, vjust = 1,
         hjust = 1, size = (base_size - 4) * scale,
         color = "black"
       ),

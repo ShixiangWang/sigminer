@@ -10,6 +10,7 @@ show_sig_profile(
   method = "Macintyre",
   normalize = c("row", "column", "raw"),
   feature_setting = sigminer::CN.features,
+  x_label_angle = 60,
   params = NULL,
   show_cv = FALSE,
   params_label_size = 3,
@@ -41,6 +42,8 @@ Only used when method is "Wang" ("W").
 Default is \link{CN.features}. Users can also set custom input with "feature",
 "min" and "max" columns avaiable. Valid features can be printed by
 \code{unique(CN.features$feature)}.}
+
+\item{x_label_angle}{font angle for x label.}
 
 \item{params}{params \code{data.frame} of components, obtained from \link{sig_derive}.}
 
