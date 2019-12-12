@@ -37,7 +37,8 @@
 #' extend run times, e.g. you try running 10 times firstly and then you want to extend it to
 #' 20 times.
 #' @param recover if `TRUE`, try to recover result from previous runs based on input `result_prefix`,
-#' `destdir` and `nrun`. This is pretty useful for reproducing result.
+#' `destdir` and `nrun`. This is pretty useful for reproducing result. Please use `skip` if you want
+#' to recover an unfinished job.
 #' @author Shixiang Wang
 #' @references
 #' Tan, Vincent YF, and Cédric Févotte. "Automatic relevance determination in nonnegative matrix factorization with the/spl beta/-divergence."

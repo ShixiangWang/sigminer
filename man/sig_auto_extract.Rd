@@ -52,7 +52,8 @@ extend run times, e.g. you try running 10 times firstly and then you want to ext
 20 times.}
 
 \item{recover}{if \code{TRUE}, try to recover result from previous runs based on input \code{result_prefix},
-\code{destdir} and \code{nrun}. This is pretty useful for reproducing result.}
+\code{destdir} and \code{nrun}. This is pretty useful for reproducing result. Please use \code{skip} if you want
+to recover an unfinished job.}
 }
 \value{
 a \code{list} with \code{Signature} class.
