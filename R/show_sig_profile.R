@@ -116,15 +116,19 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
       mat$base <- sub("\\d+$", "", mat$context)
       mat <- tidyr::gather(mat, class, signature, -c("context", "base"))
 
+      mat <- mat %>%
+        dplyr::mutate(
+          base = factor(.data$base, levels = c(
+            "bp10MB", "bpchrarm",
+            "copynumber", "changepoint",
+            "osCN", "segsize"
+          ))
+        ) %>%
+        dplyr::arrange(.data$base)
+
       mat <- dplyr::mutate(mat,
         context = factor(.data$context,
-          levels = unique(mat[["context"]])
-        ),
-        base = factor(.data$base, levels = c(
-          "bp10MB", "copynumber",
-          "changepoint", "bpchrarm",
-          "osCN", "segsize"
-        )),
+          levels = unique(mat[["context"]])),
         class = factor(class)
       )
     } else {
