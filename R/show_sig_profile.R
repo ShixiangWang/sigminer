@@ -239,8 +239,14 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
 
   if (normalize == "column") {
     p <- p + ylab("Weights")
-  } else {
+  } else if (normalize == "row") {
     p <- p + ylab("Contributions")
+  } else {
+    if (mode == "copynumber") {
+      p <- p + ylab("Estimated number of events")
+    } else {
+      p <- p + ylab("Estimated mutation counts")
+    }
   }
 
   return(p)

@@ -79,11 +79,11 @@ show_sig_exposure <- function(Signature,
   x1 <- tidyr::gather(h, "Sample", "Exposure", -"Signature")
   x2 <- tidyr::gather(h.norm, "Sample", "Exposure", -"Signature")
 
-  x1$class0 <- "Estimated_Mutations"
-  x2$class0 <- "Fractions"
+  x1$class0 <- "Contribution"
+  x2$class0 <- "Fraction"
   df <- rbind(x1, x2)
 
-  df$class0 <- factor(df$class0, c("Estimated_Mutations", "Fractions"))
+  df$class0 <- factor(df$class0, c("Contribution", "Fraction"))
   df$Sample <- factor(df$Sample, sample.ordering)
 
   p <- ggplot(df, aes_string(x = "Sample", y = "Exposure", fill = "Signature"))
@@ -95,7 +95,7 @@ show_sig_exposure <- function(Signature,
 
   p <- p + scale_fill_manual(values = c("red", "cyan", "yellow", "blue", "magenta", "gray50", "orange", "darkgreen", "brown", "black", rainbow(10)[4:10]))
   p <- p + facet_grid(class0 ~ ., scales = "free_y")
-  p <- p + xlab("Samples") + ylab("Signature Exposure")
+  p <- p + xlab("Samples") + ylab("Exposure")
   p <- p + .theme_ss
   p <- p + theme(legend.position = "top")
 
