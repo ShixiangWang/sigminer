@@ -10,8 +10,9 @@
 #' @param mode signature type for plotting, now supports 'copynumber' or 'mutation'.
 #' @param method method for copy number feature classfication, can be one of "Macintyre" ("M") and
 #' "Wang" ("W").
-#' @param normalize one of 'row', 'column' and 'raw', for row normalization (signature),
-#' column normalization (component) and raw data, respectively.
+#' @param normalize one of 'row', 'column', 'raw' and "feature", for row normalization (signature),
+#' column normalization (component), raw data, row normalization by feature, respectively.
+#' Of note, 'feature' only works when the mode is 'copynumber'.
 #' @param x_label_angle font angle for x label.
 #' @param params params `data.frame` of components, obtained from [sig_derive].
 #' @param show_cv default is `FALSE`, if `TRUE`, show coefficient of variation when
@@ -57,7 +58,7 @@
 #' show_sig_profile(sig, params = params, y_expand = 2)
 show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
                              method = "Macintyre",
-                             normalize = c("row", "column", "raw"),
+                             normalize = c("row", "column", "raw", "feature"),
                              feature_setting = sigminer::CN.features,
                              x_label_angle = 60,
                              params = NULL, show_cv = FALSE,
@@ -128,7 +129,8 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
 
       mat <- dplyr::mutate(mat,
         context = factor(.data$context,
-          levels = unique(mat[["context"]])),
+          levels = unique(mat[["context"]])
+        ),
         class = factor(class)
       )
     } else {
@@ -166,6 +168,24 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
       )),
       class = factor(class)
     )
+  }
+
+  if (normalize == "feature") {
+    if (mode != "copynumber") {
+      message("normalize='feature' only supports when the argument mode is 'copynumber'. Please use another value!")
+      return(invisible())
+    } else {
+      mat <- mat %>%
+        dplyr::group_by(.data$base, .data$class) %>%
+        tidyr::nest() %>%
+        dplyr::mutate(
+          context = purrr::map(.data$data, ~ .$context),
+          signature = purrr::map(.data$data, ~ .$signature / sum(.$signature))
+        ) %>%
+        dplyr::select(-"data") %>%
+        tidyr::unnest(cols = c("context", "signature")) %>%
+        dplyr::ungroup()
+    }
   }
 
   # >>>>>>> Set signature name and order

@@ -11,7 +11,11 @@
 #' @param Ref default is `NULL`, can be a same object as `Signature`.
 #' @param sig_db can be 'legacy' or 'SBS'. Default 'legacy'.
 #' @param method default is 'cosine' for cosine similarity.
+#' @param normalize one of "row" and "feature". "row" is typically used
+#' for mutational signatures. "feature" is designed by me to use when input
+#' are copy number signatures.
 #' @param verbose if `TRUE`, print extra info.
+#' @inheritParams sig_derive
 #' @author Shixiang Wang <w_shixiang@163.com>
 #'
 #' @return a `list` containing smilarities, aetiologies if available, and best match.
@@ -28,7 +32,11 @@
 #' get_sig_similarity(sig2)
 #' get_sig_similarity(sig2, sig_db = "SBS")
 #' }
-get_sig_similarity <- function(Signature, Ref = NULL, sig_db = "legacy", method = "cosine", verbose = TRUE) {
+get_sig_similarity <- function(Signature, Ref = NULL, sig_db = "legacy",
+                               method = "cosine",
+                               normalize = c("row", "feature"),
+                               feature_setting = sigminer::CN.features,
+                               verbose = TRUE) {
   if (class(Signature) == "Signature") {
     w <- Signature$Signature.norm
   } else if (is.matrix(Signature)) {
@@ -38,6 +46,20 @@ get_sig_similarity <- function(Signature, Ref = NULL, sig_db = "legacy", method 
     }
   } else {
     stop("Invalid input for 'Signature'", call. = FALSE)
+  }
+
+  normalize <- match.arg(normalize)
+
+  if (normalize == "feature") {
+    use_W <- any(grepl("\\[.*\\]$", rownames(w)))
+    use_M <- any(grepl("\\d+$", rownames(w)))
+
+    if (use_W | use_M) {
+      w <- helper_normalize_by_feature(w, feature_setting)
+    } else {
+      message("normalize='feature' only supports copy number signatures. Please use other value!")
+      return(invisible())
+    }
   }
 
   sig_db <- match.arg(arg = sig_db, choices = c("legacy", "SBS"))
@@ -68,6 +90,18 @@ get_sig_similarity <- function(Signature, Ref = NULL, sig_db = "legacy", method 
       }
     } else {
       stop("Invalid input for 'Ref'", call. = FALSE)
+    }
+
+    if (normalize == "feature") {
+      use_W <- any(grepl("\\[.*\\]$", rownames(sigs)))
+      use_M <- any(grepl("\\d+$", rownames(sigs)))
+
+      if (use_W | use_M) {
+        sigs <- helper_normalize_by_feature(sigs, feature_setting)
+      } else {
+        message("normalize='feature' only supports copy number signatures. Please use other value!")
+        return(invisible())
+      }
     }
   }
 

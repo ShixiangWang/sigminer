@@ -164,7 +164,7 @@ sig_derive.CopyNumber <- function(object,
       message("Warning: NA detected. There may be an issue, please contact the developer!")
       message("\tData will still returned, but please take case of it.")
     }
-    #cn_matrix[is.na(cn_matrix)] <- 0L
+    # cn_matrix[is.na(cn_matrix)] <- 0L
     feature_setting$n_obs <- colSums(cn_matrix, na.rm = TRUE)
   }
 

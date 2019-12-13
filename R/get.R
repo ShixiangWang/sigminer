@@ -4,7 +4,7 @@
 
 # Get copy number list ----------------------------------------------------
 
-get_cnlist <- function(CopyNumber, ignore_chrs=NULL) {
+get_cnlist <- function(CopyNumber, ignore_chrs = NULL) {
   if (!inherits(CopyNumber, "CopyNumber")) {
     stop("Input must be a CopyNumber object!")
   }
@@ -12,8 +12,10 @@ get_cnlist <- function(CopyNumber, ignore_chrs=NULL) {
   if (!is.null(ignore_chrs)) {
     chrs_exist <- ignore_chrs %in% unique(data$chromosome)
     if (!any(chrs_exist)) {
-      message("No chromosome names called ",
-              paste(ignore_chrs, collapse = ","), " found in data, skipping filter.")
+      message(
+        "No chromosome names called ",
+        paste(ignore_chrs, collapse = ","), " found in data, skipping filter."
+      )
     } else {
       message("Filtering out segments in ", paste(ignore_chrs[chrs_exist], collapse = ","))
       data <- data[!chromosome %in% ignore_chrs[chrs_exist]]

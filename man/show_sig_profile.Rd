@@ -8,7 +8,7 @@ show_sig_profile(
   Signature,
   mode = c("copynumber", "mutation"),
   method = "Macintyre",
-  normalize = c("row", "column", "raw"),
+  normalize = c("row", "column", "raw", "feature"),
   feature_setting = sigminer::CN.features,
   x_label_angle = 60,
   params = NULL,
@@ -34,8 +34,9 @@ representing signatures (column names must start with 'Sig').}
 \item{method}{method for copy number feature classfication, can be one of "Macintyre" ("M") and
 "Wang" ("W").}
 
-\item{normalize}{one of 'row', 'column' and 'raw', for row normalization (signature),
-column normalization (component) and raw data, respectively.}
+\item{normalize}{one of 'row', 'column', 'raw' and "feature", for row normalization (signature),
+column normalization (component), raw data, row normalization by feature, respectively.
+Of note, 'feature' only works when the mode is 'copynumber'.}
 
 \item{feature_setting}{a \code{data.frame} used for classification.
 Only used when method is "Wang" ("W").

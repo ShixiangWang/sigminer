@@ -125,3 +125,4 @@ show_group_mapping(data, sig_col = "Group1", map_cols = colnames(data)[-1], fill
 show_group_mapping(data, sig_col = "Group1", map_cols = colnames(data)[-1], include_sig = TRUE, fill_na = "NA")
 
 df %>% mutate_all(funs(ifelse(is.na(.), replace_na(., 0), .)))
+

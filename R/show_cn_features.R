@@ -82,10 +82,10 @@ show_cn_features <- function(features,
     )
   } else {
     # Method: Wang
-    p_list <- purrr::map2(features, names(features), function(feature_df, f_name, rm_outlier=FALSE) {
+    p_list <- purrr::map2(features, names(features), function(feature_df, f_name, rm_outlier = FALSE) {
       if (rm_outlier) {
-        outliers = boxplot(feature_df$value, plot = FALSE)$out
-        feature_df = feature_df[!value %in% outliers]
+        outliers <- boxplot(feature_df$value, plot = FALSE)$out
+        feature_df <- feature_df[!value %in% outliers]
       }
 
       ggplot(data = feature_df, aes(x = value)) +

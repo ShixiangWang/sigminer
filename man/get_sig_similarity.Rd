@@ -9,6 +9,8 @@ get_sig_similarity(
   Ref = NULL,
   sig_db = "legacy",
   method = "cosine",
+  normalize = c("row", "feature"),
+  feature_setting = sigminer::CN.features,
   verbose = TRUE
 )
 }
@@ -21,6 +23,16 @@ More please see examples.}
 \item{sig_db}{can be 'legacy' or 'SBS'. Default 'legacy'.}
 
 \item{method}{default is 'cosine' for cosine similarity.}
+
+\item{normalize}{one of "row" and "feature". "row" is typically used
+for mutational signatures. "feature" is designed by me to use when input
+are copy number signatures.}
+
+\item{feature_setting}{a \code{data.frame} used for classification.
+Only used when method is "Wang" ("W").
+Default is \link{CN.features}. Users can also set custom input with "feature",
+"min" and "max" columns avaiable. Valid features can be printed by
+\code{unique(CN.features$feature)}.}
 
 \item{verbose}{if \code{TRUE}, print extra info.}
 }

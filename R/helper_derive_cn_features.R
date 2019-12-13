@@ -175,7 +175,7 @@ getNChrV <- function(abs_profiles, genome_build = "hg38") {
   cn <- purrr::map_df(abs_profiles, function(x) {
     x <- x[x$chromosome %in% autosome, c("sample", "chromosome", "segVal"), with = FALSE]
     x_cnv <- x[x$segVal != 2]
-    value = ifelse(nrow(x_cnv) == 0, 0L, length(unique(x_cnv$chromosome)))
+    value <- ifelse(nrow(x_cnv) == 0, 0L, length(unique(x_cnv$chromosome)))
     data.table::data.table(
       ID = x$sample[1],
       value = value
