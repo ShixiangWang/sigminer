@@ -259,7 +259,7 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
 
   if (normalize == "column") {
     p <- p + ylab("Weights")
-  } else if (normalize == "row") {
+  } else if (normalize == "row" | normalize == "feature") {
     p <- p + ylab("Contributions")
   } else {
     if (mode == "copynumber") {
