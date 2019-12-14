@@ -126,3 +126,25 @@ show_group_mapping(data, sig_col = "Group1", map_cols = colnames(data)[-1], incl
 
 df %>% mutate_all(funs(ifelse(is.na(.), replace_na(., 0), .)))
 
+
+# Load copy number signature
+load(system.file("extdata", "toy_copynumber_signature.RData",
+                 package = "sigminer", mustWork = TRUE
+))
+# Show signature profile
+show_sig_profile(sig, normalize = "column")
+
+
+c(
+  "cyan", "red", "yellow", "purple",
+  "green", "blue", "black", "gray"
+)
+#1 GnBu
+#2 Reds
+#3 Oranges
+#4 Purples
+#5 Greens
+#6 Blues
+#7 Greys
+colorRampPalette(RColorBrewer::brewer.pal(3, name = "Blues"))(50)
+

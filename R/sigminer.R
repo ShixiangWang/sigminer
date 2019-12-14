@@ -69,6 +69,7 @@
 #' @importFrom foreach foreach %dopar%
 #' @importFrom doParallel registerDoParallel
 #' @importFrom graphics hist
+#' @importFrom grDevices colorRampPalette
 #' @importFrom stats as.formula fisher.test pairwise.table quantile setNames
 #' @importFrom utils data download.file head packageDescription
 #' @import flexmix

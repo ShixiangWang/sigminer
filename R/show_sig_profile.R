@@ -203,14 +203,29 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
     mat[["class"]] <- factor(mat[["class"]])
   }
   # >>>>>>>>>>>>>>>>>>>>>>> Plot
-  p <- ggplot(mat) +
-    geom_bar(aes_string(x = "context", y = "signature", fill = "base"),
-      stat = "identity", position = "identity", colour = "gray50"
-    ) +
-    scale_fill_manual(values = c(
-      "cyan", "red", "yellow", "purple",
-      "green", "blue", "black", "gray"
-    ))
+
+  if (normalize == "column") {
+    col_df <- mat %>%
+      dplyr::filter(.data$class == .data$class[1]) %>%
+      dplyr::group_by(.data$base) %>%
+      dplyr::summarise(N = dplyr::n())
+
+    p <- ggplot(mat) +
+      geom_bar(aes_string(x = "context", y = "signature", fill = "context"),
+        stat = "identity", position = "identity", colour = "gray50"
+      ) +
+      scale_fill_manual(values = helper_create_colormap(col_df$base, col_df$N))
+  } else {
+    p <- ggplot(mat) +
+      geom_bar(aes_string(x = "context", y = "signature", fill = "base"),
+        stat = "identity", position = "identity", colour = "gray50"
+      ) +
+      scale_fill_manual(values = c(
+        "cyan", "red", "yellow", "purple",
+        "green", "blue", "black", "gray"
+      ))
+  }
+
 
   if (mode == "copynumber" & startsWith(method, "M")) {
     if (!is.null(params)) {
