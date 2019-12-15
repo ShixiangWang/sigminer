@@ -13,6 +13,8 @@
 #' @param normalize one of 'row', 'column', 'raw' and "feature", for row normalization (signature),
 #' column normalization (component), raw data, row normalization by feature, respectively.
 #' Of note, 'feature' only works when the mode is 'copynumber'.
+#' @param set_gradient_color default is `FALSE`, if `TRUE`, use gradient colors
+#' to fill bars. **This is very useful when signatures are extracted from "Macintyre" method.**
 #' @param x_label_angle font angle for x label.
 #' @param params params `data.frame` of components, obtained from [sig_derive].
 #' @param show_cv default is `FALSE`, if `TRUE`, show coefficient of variation when
@@ -60,6 +62,7 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
                              method = "Macintyre",
                              normalize = c("row", "column", "raw", "feature"),
                              feature_setting = sigminer::CN.features,
+                             set_gradient_color = FALSE,
                              x_label_angle = 60,
                              params = NULL, show_cv = FALSE,
                              params_label_size = 3,
@@ -204,7 +207,14 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
   }
   # >>>>>>>>>>>>>>>>>>>>>>> Plot
 
-  if (normalize == "column") {
+  if (set_gradient_color) {
+
+    if (mode == "mutation") {
+      message("Gradient colors are not supported for mutational signatures!")
+      message("Please set it to FALSE and re-run.")
+      return(invisible())
+    }
+
     col_df <- mat %>%
       dplyr::filter(.data$class == .data$class[1]) %>%
       dplyr::group_by(.data$base) %>%

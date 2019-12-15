@@ -10,6 +10,7 @@ show_sig_profile(
   method = "Macintyre",
   normalize = c("row", "column", "raw", "feature"),
   feature_setting = sigminer::CN.features,
+  set_gradient_color = FALSE,
   x_label_angle = 60,
   params = NULL,
   show_cv = FALSE,
@@ -43,6 +44,9 @@ Only used when method is "Wang" ("W").
 Default is \link{CN.features}. Users can also set custom input with "feature",
 "min" and "max" columns avaiable. Valid features can be printed by
 \code{unique(CN.features$feature)}.}
+
+\item{set_gradient_color}{default is \code{FALSE}, if \code{TRUE}, use gradient colors
+to fill bars. \strong{This is very useful when signatures are extracted from "Macintyre" method.}}
 
 \item{x_label_angle}{font angle for x label.}
 
