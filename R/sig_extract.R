@@ -70,8 +70,46 @@ sig_extract <- function(nmf_matrix,
     Exposure[j, ] <- Exposure[j, ] * colSums(W)[j]
   }
 
+  # Handle hyper mutant samples
+  hyper_index <- grepl("_\\[hyper\\]_", colnames(Exposure))
+  if (sum(hyper_index) > 0) {
+    H.hyper <- Exposure[, hyper_index]
+    H.nonhyper <- Exposure[, !hyper_index]
+    sample.hyper <- sapply(
+      colnames(H.hyper),
+      function(x) strsplit(x, "_\\[hyper\\]_")[[1]][[1]]
+    )
+    unique.hyper <- unique(sample.hyper)
+    n.hyper <- length(unique.hyper)
+    x.hyper <- array(0, dim = c(nrow(H.hyper), n.hyper))
+    for (i in 1:n.hyper) {
+      x.hyper[, i] <- rowSums(H.hyper[, sample.hyper %in% unique.hyper[i]])
+    }
+    colnames(x.hyper) <- unique.hyper
+    rownames(x.hyper) <- rownames(Exposure)
+    Exposure <- cbind(H.nonhyper, x.hyper)
+  }
+
   Signature.norm <- apply(Signature, 2, function(x) x / sum(x, na.rm = TRUE))
   Exposure.norm <- apply(Exposure, 2, function(x) x / sum(x, na.rm = TRUE))
+
+  # When only one signature
+  if (!is.matrix(Exposure.norm)) {
+    Exposure.norm <- matrix(Exposure.norm, nrow = 1, dimnames = list(NULL, names(Exposure.norm)))
+  }
+
+  if (ncol(Signature) > 1) {
+    # Get orders
+    sig_orders = helper_sort_signature(Signature)
+
+    Signature = Signature[, sig_orders]
+    Signature.norm = Signature.norm[, sig_orders]
+    Exposure = Exposure[sig_orders, ]
+    Exposure.norm = Exposure.norm[sig_orders, ]
+
+    W = W[, sig_orders]
+    H = H[sig_orders, ]
+  }
 
   sig_names <- paste0("Sig", seq_len(K))
   colnames(W) <- colnames(Signature) <- colnames(Signature.norm) <- sig_names

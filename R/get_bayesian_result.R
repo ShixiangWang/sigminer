@@ -72,6 +72,19 @@ get_bayesian_result <- function(run_info) {
     Exposure.norm <- matrix(Exposure.norm, nrow = 1, dimnames = list(NULL, names(Exposure.norm)))
   }
 
+  if (ncol(Signature) > 1) {
+    # Get orders
+    sig_orders = helper_sort_signature(Signature)
+
+    Signature = Signature[, sig_orders]
+    Signature.norm = Signature.norm[, sig_orders]
+    Exposure = Exposure[sig_orders, ]
+    Exposure.norm = Exposure.norm[sig_orders, ]
+
+    W = W[, sig_orders]
+    H = H[sig_orders, ]
+  }
+
   sig_names <- paste0("Sig", seq_len(K))
   colnames(W) <- colnames(Signature) <- colnames(Signature.norm) <- sig_names
   rownames(H) <- rownames(Exposure) <- rownames(Exposure.norm) <- sig_names
