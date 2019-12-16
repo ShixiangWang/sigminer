@@ -9,6 +9,7 @@ show_sig_feature_corrplot(
   feature_list,
   sort_features = FALSE,
   return_plotlist = FALSE,
+  p_val = 0.05,
   xlab = "Signatures",
   ylab = "Features",
   gradient_colors = c("blue", "white", "red"),
@@ -27,6 +28,8 @@ If missing, all features will be used.}
 step. If \code{TRUE}, sort features as \code{feature_list}.}
 
 \item{return_plotlist}{if \code{TRUE}, return as a list of \code{ggplot} objects.}
+
+\item{p_val}{p value threshold.}
 
 \item{xlab}{label for x axis.}
 

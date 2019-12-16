@@ -6,6 +6,7 @@
 #' @param sort_features default is `FALSE`, use feature order obtained from the previous
 #' step. If `TRUE`, sort features as `feature_list`.
 #' @param return_plotlist if `TRUE`, return as a list of `ggplot` objects.
+#' @param p_val p value threshold.
 #' @param xlab label for x axis.
 #' @param ylab label for y axis.
 #' @param gradient_colors gradient colors used to plot.
@@ -19,6 +20,7 @@
 show_sig_feature_corrplot <- function(tidy_cor, feature_list,
                                        sort_features = FALSE,
                                        return_plotlist = FALSE,
+                                       p_val = 0.05,
                                        xlab = "Signatures", ylab = "Features",
                                        gradient_colors = c("blue", "white", "red"),
                                        align = c("row", "column"), plot_ratio = "auto",
@@ -38,7 +40,8 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
     dplyr::mutate(
       Samples = cut(.data$count, breaks = breaks_count)
     ) %>%
-    dplyr::filter(.data$feature %in% feature_list)
+    dplyr::filter(.data$feature %in% feature_list,
+                  .data$p <= p_val)
 
   .plot_cor <- function(data) {
     if (sort_features) {
