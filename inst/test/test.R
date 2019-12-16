@@ -148,3 +148,33 @@ c(
 #7 Greys
 colorRampPalette(RColorBrewer::brewer.pal(3, name = "Blues"))(50)
 
+# Association analysis
+library(ggcor)
+library(vegan) # 使用vegan包所带的数据集
+data(varechem)
+data(varespec)
+corr <- fortify_cor(varechem, type = "upper", show.diag = TRUE,
+                    cor.test = TRUE, cluster.type = "all")
+
+mantel <- fortify_mantel(varespec[, 1:4], varechem,
+                         spec.select = list(spec01 = 1,
+                                            spec02 = 2,
+                                            spec03 = 3,
+                                            spec04 = 4),
+                         mantel.fun = "mantel.randtest")
+group <- rep(LETTERS[1:3], 8)
+mantel = fortify_mantel(varespec[ , 38:43], varechem,
+                        spec.group = group,
+                        env.group = group,
+                        is.pair = TRUE,
+                        mantel.fun = "mantel.randtest")
+
+ggcor(corr, xlim = c(-5, 14.5)) +
+  add_link(mantel, diag.label = TRUE) +
+  add_diaglab(angle = 45) +
+  geom_square() + remove_axis("y")
+
+
+corr <- cor(mtcars)
+df <- as_cor_tbl(corr)
+?as_cor_tbl_fct()

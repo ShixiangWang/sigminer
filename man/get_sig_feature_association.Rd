@@ -23,8 +23,8 @@ get_sig_feature_association(
 
 \item{cols_to_features}{colnames for other features}
 
-\item{type}{a character vector contains 'ca' for categorical variable and 'co' for continuous variable,
-it must have same length as \code{cols_to_features}.}
+\item{type}{a character vector containing 'ca' for categorical variable and 'co' for continuous variable,
+it must have the same length as \code{cols_to_features}.}
 
 \item{method_co}{method for continuous variable, default is "spearman", could also be "pearson" and "kendall".}
 
@@ -38,7 +38,8 @@ Default is 0.01.}
 \item{...}{other arguments passing to test functions, like \code{cor.test}.}
 }
 \value{
-a \code{list}
+a \code{list}. For 'co' features, 'measure' means correlation coefficient.
+For 'ca' features, 'measure' means difference in means of signature exposure.
 }
 \description{
 See \link{get_tidy_association} for cleaning association result.

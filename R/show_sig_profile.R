@@ -208,7 +208,6 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
   # >>>>>>>>>>>>>>>>>>>>>>> Plot
 
   if (set_gradient_color) {
-
     if (mode == "mutation") {
       message("Gradient colors are not supported for mutational signatures!")
       message("Please set it to FALSE and re-run.")

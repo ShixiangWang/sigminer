@@ -74,5 +74,6 @@
 #' @importFrom utils data download.file head packageDescription
 #' @import flexmix
 #' @import ggplot2
+#' @import patchwork
 #' @name sigminer
 NULL

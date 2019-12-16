@@ -6,19 +6,39 @@
 \usage{
 show_sig_feature_corrplot(
   tidy_cor,
-  features_list,
-  breaks_count = c(0L, 200L, 400L, 600L, 800L, 1020L),
-  breaks_score = c(-Inf, -16, -10, -5, -1.3, 1.3, 5, 10, 16, Inf)
+  feature_list,
+  sort_features = FALSE,
+  return_plotlist = FALSE,
+  xlab = "Signatures",
+  ylab = "Features",
+  gradient_colors = c("blue", "white", "red"),
+  align = c("row", "column"),
+  plot_ratio = "auto",
+  breaks_count = c(0L, 200L, 400L, 600L, 800L, 1020L)
 )
 }
 \arguments{
 \item{tidy_cor}{data returned by \link{get_tidy_association}.}
 
-\item{features_list}{a character vector contains features want to be plotted.}
+\item{feature_list}{a character vector contains features want to be plotted.
+If missing, all features will be used.}
+
+\item{sort_features}{default is \code{FALSE}, use feature order obtained from the previous
+step. If \code{TRUE}, sort features as \code{feature_list}.}
+
+\item{return_plotlist}{if \code{TRUE}, return as a list of \code{ggplot} objects.}
+
+\item{xlab}{label for x axis.}
+
+\item{ylab}{label for y axis.}
+
+\item{gradient_colors}{gradient colors used to plot.}
+
+\item{align}{one of "row" and "column".}
+
+\item{plot_ratio}{a length-2 numeric vector to set the height/width ratio.}
 
 \item{breaks_count}{breaks for sample count.}
-
-\item{breaks_score}{breaks for score.}
 }
 \value{
 a \code{ggplot2} object

@@ -74,15 +74,15 @@ get_bayesian_result <- function(run_info) {
 
   if (ncol(Signature) > 1) {
     # Get orders
-    sig_orders = helper_sort_signature(Signature)
+    sig_orders <- helper_sort_signature(Signature)
 
-    Signature = Signature[, sig_orders]
-    Signature.norm = Signature.norm[, sig_orders]
-    Exposure = Exposure[sig_orders, ]
-    Exposure.norm = Exposure.norm[sig_orders, ]
+    Signature <- Signature[, sig_orders]
+    Signature.norm <- Signature.norm[, sig_orders]
+    Exposure <- Exposure[sig_orders, ]
+    Exposure.norm <- Exposure.norm[sig_orders, ]
 
-    W = W[, sig_orders]
-    H = H[sig_orders, ]
+    W <- W[, sig_orders]
+    H <- H[sig_orders, ]
   }
 
   sig_names <- paste0("Sig", seq_len(K))

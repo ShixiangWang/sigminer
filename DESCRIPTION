@@ -56,7 +56,8 @@ Imports:
     rlang,
     stats,
     tibble,
-    tidyr
+    tidyr,
+    patchwork
 Suggests: 
     BSgenome,
     BSgenome.Hsapiens.UCSC.hg19,

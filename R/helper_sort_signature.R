@@ -1,9 +1,9 @@
-helper_sort_signature = function(sig) {
+helper_sort_signature <- function(sig) {
   stopifnot(is.matrix(sig), !is.null(rownames(sig)))
   # Component names are shown as rownames
   # Sort mutational signatures by C>T mutation type
   # Sort copy number signatures by fraction of the first component of BP10MB feature
-  is_c2t = grepl("C>T", rownames(sig))
+  is_c2t <- grepl("C>T", rownames(sig))
   if (any(is_c2t)) {
     to_rank <- colSums(sig[is_c2t, ])
   } else {

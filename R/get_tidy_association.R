@@ -6,30 +6,41 @@
 #' @export
 #' @seealso [get_sig_feature_association]
 get_tidy_association <- function(cor_res) {
-  all_names <- names(cor_res[["corr_ca"]])
+  co_null <- identical(cor_res$corr_co, list())
+  ca_null <- identical(cor_res$corr_ca, list())
+
+  if (all(co_null, ca_null)) {
+    message("No correlation result found, please check the previous step!")
+    return(invisible())
+  }
+
+  if (co_null) {
+    all_names <- names(cor_res$corr_ca)
+  } else {
+    all_names <- names(cor_res$corr_co)
+  }
+
   common_names <- setdiff(all_names, "data")
   res <- list()
   tidy <- list()
   for (i in common_names) {
-    if (!identical(rownames(cor_res[["corr_co"]][[i]]), rownames(cor_res[["corr_ca"]][[i]]))) {
-      stop("Bad rowname order, please report this issue to developer with your sample data")
-    }
     res[[i]] <- cbind(cor_res[["corr_co"]][[i]], cor_res[["corr_ca"]][[i]])
     tidy[[i]] <- res[[i]] %>%
       as.data.frame() %>%
       tibble::rownames_to_column("signature") %>%
       tibble::as_tibble() %>%
-      tidyr::gather_(key_col = "features", value_col = "value", gather_cols = colnames(res[[i]]))
+      tidyr::gather_(key_col = "feature", value_col = "value", gather_cols = colnames(res[[i]]))
   }
 
-  # To avoid Inf,
-  # set p == 0 to the same value
-  # as p value among p != 0
-  res[["data"]] <- dplyr::bind_rows(tidy, .id = "data_type") %>%
+  data <- dplyr::bind_rows(tidy, .id = "data_type") %>%
     tidyr::spread_(key_col = "data_type", value_col = "value") %>%
     dplyr::mutate(
-      score = ifelse(.data$p == 0, -log10(min(.data$p[.data$p != 0], na.rm = TRUE)), -log10(.data$p)),
-      score = ifelse(.data$measure < 0, -score, score)
+      type = ifelse(.data$feature %in% colnames(cor_res$corr_ca$measure), "ca", "co"),
+      feature = factor(.data$feature, levels = c(
+        colnames(cor_res$corr_co$measure),
+        colnames(cor_res$corr_ca$measure)
+      ))
     )
-  res
+
+  data
 }
