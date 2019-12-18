@@ -514,6 +514,7 @@ get_cnsummary_sample <- function(segTab, genome_build = c("hg19", "hg38"),
       data.table::as.data.table()
   }
 
+  seg_summary <- seg_summary[order(seg_summary$n_of_cnv)]
   attr(seg_summary, "Note") <- "n_of_vchr is the number of autosome with CNV.\n cna_burden also calculates from autosome."
   seg_summary
 }
