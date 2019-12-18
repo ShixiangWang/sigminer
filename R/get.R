@@ -458,13 +458,42 @@ get_cnsummary_sample <- function(segTab, genome_build = c("hg19", "hg38"),
   genome_build <- match.arg(genome_build)
   genome_measure <- match.arg(genome_measure)
 
-  segTab <- segTab[, 1:5]
+  if (ncol(segTab) > 5) {
+    segTab <- segTab[, 1:5]
+  }
   if (ncol(segTab) == 5) {
     colnames(segTab) <- c("chromosome", "start", "end", "segVal", "sample")
   } else {
     stop(
       "Input must have 5 ordered columns (chr, start, end, segVal, sample)."
     )
+  }
+
+  # Handle sex
+  sex <- getOption("sigminer.sex", default = "female")
+  if (is.character(sex)) {
+    if (sex == "male") {
+      segTab <- segTab %>%
+        dplyr::as_tibble() %>%
+        dplyr::mutate(
+          segVal = ifelse(.data$chromosome %in% c("chrX", "chrY"), 2L * .data$segVal, .data$segVal)
+        ) %>%
+        data.table::as.data.table()
+    }
+  }
+  if (is.data.frame(sex)) {
+    segTab <- segTab %>%
+      dplyr::as_tibble() %>%
+      dplyr::left_join(sex, by = "sample") %>%
+      dplyr::mutate(
+        segVal = dplyr::case_when(
+          .data$sex == "male" & .data$chromosome %in% c("chrX", "chrY") ~ 2L * .data$segVal,
+          TRUE ~ .data$segVal
+        )
+      ) %>%
+      dplyr::select(-"sex") %>%
+      dplyr::select(c("chromosome", "start", "end", "segVal", "sample")) %>%
+      data.table::as.data.table()
   }
 
   data.table::setDT(segTab)
