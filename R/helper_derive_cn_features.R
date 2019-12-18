@@ -1,3 +1,9 @@
+# sigminer.sex can be a length-1 character indicating 'female' or 'male',
+# also a data.frame with two columns 'sample' and 'sex'
+#
+# sigminer.copynumber.max can be an integer
+options(sigminer.sex = "female", sigminer.copynumber.max = NA_integer_)
+
 getSegsize <- function(abs_profiles) {
   segsize <- purrr::map_df(abs_profiles, function(x) {
     x$segsize <- x$end - x$start + 1
@@ -132,6 +138,8 @@ getCentromereDistCounts <-
   }
 
 getChangepointCN <- function(abs_profiles) {
+  abs_profiles <- handle_sex(abs_profiles)
+
   cp <- purrr::map_df(abs_profiles, function(x) {
     x <- x %>%
       dplyr::as_tibble() %>%
@@ -157,6 +165,8 @@ getChangepointCN <- function(abs_profiles) {
 }
 
 getCN <- function(abs_profiles) {
+  abs_profiles <- handle_sex(abs_profiles)
+
   cn <- purrr::map_df(abs_profiles, function(x) {
     x[, c("sample", "segVal"), with = FALSE]
   })
@@ -233,4 +243,49 @@ count_components_wrapper <- function(feature_df, f_name, feature_setting) {
   #   ) %>%
   #   tidyr::separate(.data$count, samps, sep = ",", convert = TRUE) %>%
   #   data.table::as.data.table()
+}
+
+handle_sex <- function(abs_profiles) {
+  # only works for feature 'CNCP' and 'CN'
+  sex <- getOption("sigminer.sex", default = "female")
+  cn_max <- getOption("sigminer.copynumber.max", default = NA_integer_)
+  stopifnot(is.character(sex) | is.data.frame(sex), is.na(cn_max) | is.numeric(cn_max))
+
+  if (is.character(sex)) {
+    if (sex == "male") {
+      data <- data.table::rbindlist(abs_profiles)
+      data <- data %>%
+        dplyr::as_tibble() %>%
+        dplyr::mutate(
+          segVal = ifelse(.data$chromosome %in% c("chrX", "chrY"), 2L * .data$segVal, .data$segVal)
+        ) %>%
+        data.table::as.data.table()
+    } else {
+      return(abs_profiles)
+    }
+  } else {
+    sex <- sex %>%
+      dplyr::select(c("sample", "sex"))
+
+    data <- data.table::rbindlist(abs_profiles)
+    data <- data %>%
+      dplyr::as_tibble() %>%
+      dplyr::left_join(sex, by = "sample") %>%
+      dplyr::mutate(
+        segVal = dplyr::case_when(
+          .data$sex == "male" & .data$chromosome %in% c("chrX", "chrY") ~ 2L * .data$segVal,
+          TRUE ~ .data$segVal
+        )
+      ) %>%
+      dplyr::select(-"sex") %>%
+      dplyr::select(c("chromosome", "start", "end", "segVal", "sample")) %>%
+      data.table::as.data.table()
+  }
+
+  if (!is.na(cn_max)) {
+    data$segVal[data$segVal > cn_max] <- as.integer(cn_max)
+  }
+
+  res <- split(data, by = "sample")
+  return(res)
 }

@@ -115,7 +115,29 @@ a \code{list} contains a \code{matrix} used for NMF de-composition.
 }
 \description{
 Generate a matrix for NMF de-composition and more. This is a generic function,
-so it can be further extended to other mutation cases.
+so it can be further extended to other mutation cases. Please read details
+about how to set sex for identifying copy number signatures.
+}
+\details{
+For identifying copy number signatures, we have to derive copy number
+features firstly. Due to the difference of copy number values in sex chromosomes
+between male and female, we have to do an extra step \strong{if we don't want to
+ignore them}.
+
+I create two options to control this, the default values are shown as
+the following, you can use the same way to set (per R session).
+
+\code{options(sigminer.sex = "female", sigminer.copynumber.max = NA_integer_)}
+\itemize{
+\item If your cohort are all females, you can totally ignore this.
+\item If your cohort are all males, set \code{sigminer.sex} to 'male' and
+\code{sigminer.copynumber.max} to a proper value (the best is consistent
+with \link{read_copynumber}).
+\item If your cohort contains bother males and females, set \code{sigminer.sex}
+as a \code{data.frame} with two columns "sample" and "sex". And
+set \code{sigminer.copynumber.max} to a proper value (the best is consistent
+with \link{read_copynumber}).
+}
 }
 \section{Methods (by class)}{
 \itemize{

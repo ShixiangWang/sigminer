@@ -1,7 +1,27 @@
 #' Derive Variation Matrix from Mutation Profile
 #'
 #' Generate a matrix for NMF de-composition and more. This is a generic function,
-#' so it can be further extended to other mutation cases.
+#' so it can be further extended to other mutation cases. Please read details
+#' about how to set sex for identifying copy number signatures.
+#'
+#' For identifying copy number signatures, we have to derive copy number
+#' features firstly. Due to the difference of copy number values in sex chromosomes
+#' between male and female, we have to do an extra step **if we don't want to
+#' ignore them**.
+#'
+#' I create two options to control this, the default values are shown as
+#' the following, you can use the same way to set (per R session).
+#'
+#' `options(sigminer.sex = "female", sigminer.copynumber.max = NA_integer_)`
+#'
+#' - If your cohort are all females, you can totally ignore this.
+#' - If your cohort are all males, set `sigminer.sex` to 'male' and
+#' `sigminer.copynumber.max` to a proper value (the best is consistent
+#' with [read_copynumber]).
+#' - If your cohort contains bother males and females, set `sigminer.sex`
+#' as a `data.frame` with two columns "sample" and "sex". And
+#' set `sigminer.copynumber.max` to a proper value (the best is consistent
+#' with [read_copynumber]).
 #'
 #' @param object a [CopyNumber] object or [MAF] object.
 #' @param ... custom setting for operating object. Detail see S3 method for
