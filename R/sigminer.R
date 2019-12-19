@@ -44,7 +44,7 @@
 #'
 #' Common visualization:
 #'
-#' * [show_rank_survey()]
+#' * [show_sig_number_survey()]
 #' * [show_sig_profile()]
 #' * [show_sig_exposure()]
 #' * [show_group_mapping()]

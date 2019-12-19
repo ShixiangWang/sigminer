@@ -58,7 +58,7 @@ Supplementary data clean and analysis functions:
 
 Common visualization:
 \itemize{
-\item \code{\link[=show_rank_survey]{show_rank_survey()}}
+\item \code{\link[=show_sig_number_survey]{show_sig_number_survey()}}
 \item \code{\link[=show_sig_profile]{show_sig_profile()}}
 \item \code{\link[=show_sig_exposure]{show_sig_exposure()}}
 \item \code{\link[=show_group_mapping]{show_group_mapping()}}

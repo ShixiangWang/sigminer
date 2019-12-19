@@ -153,13 +153,15 @@ sig_estimate <-
         what = what,
         xname = "Observed",
         yname = "Randomised",
-        main = "NMF Rank Survey"
+        xlab = "Number of signature",
+        main = "Signature number survey using NMF package"
       )
     } else {
       p <- NMF::plot(
         estim.r,
         what = what,
-        main = "NMF Rank Survey"
+        xlab = "Number of signature",
+        main = "Signature number survey using NMF package"
       )
     }
 
