@@ -100,7 +100,7 @@ sig_extract <- function(nmf_matrix,
 
   if (ncol(Signature) > 1) {
     # Get orders
-    sig_orders <- helper_sort_signature(Signature)
+    sig_orders <- helper_sort_signature(Signature.norm)
 
     Signature <- Signature[, sig_orders]
     Signature.norm <- Signature.norm[, sig_orders]
