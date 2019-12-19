@@ -54,7 +54,8 @@ has extra blank page, please call
 \item{method}{specification of the NMF algorithm. Use 'brunet' as default.
 Available methods for nmf decompositions are 'brunet', 'lee', 'ls-nmf', 'nsNMF', 'offset'.}
 
-\item{pConstant}{A small positive value to add to the matrix. Use it ONLY if the functions throws
+\item{pConstant}{A small positive value (like 1e-9) to add to the matrix.
+Use it ONLY if the functions throws
 an \code{non-conformable arrays} error.}
 
 \item{verbose}{if \code{TRUE}, print extra message.}

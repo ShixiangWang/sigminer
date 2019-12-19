@@ -32,7 +32,8 @@
 #' @param plot_basename when save plots, set custom basename for file path.
 #' @param method specification of the NMF algorithm. Use 'brunet' as default.
 #' Available methods for nmf decompositions are 'brunet', 'lee', 'ls-nmf', 'nsNMF', 'offset'.
-#' @param pConstant A small positive value to add to the matrix. Use it ONLY if the functions throws
+#' @param pConstant A small positive value (like 1e-9) to add to the matrix.
+#' Use it ONLY if the functions throws
 #' an \code{non-conformable arrays} error.
 #' @param verbose if `TRUE`, print extra message.
 #' @author Shixiang Wang
