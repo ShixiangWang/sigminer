@@ -5,6 +5,7 @@
 #' @param Signature a `Signature` object obtained either from [sig_extract] or [sig_auto_extract],
 #' or just a raw exposure matrix with column representing samples (patients) and row
 #' representing signatures (row names must start with 'Sig').
+#' @param cutoff a cutoff value to remove hyper-mutated samples.
 #' @param rm_space default is `FALSE`. If `TRUE`, it will remove border color
 #' and expand the bar width to 1. This is useful when the sample size is big.
 #' @param hide_samps if `TRUE`, hide sample names.
@@ -28,6 +29,7 @@
 #' # Show signature exposure
 #' show_sig_exposure(sig)
 show_sig_exposure <- function(Signature,
+                              cutoff = NULL,
                               base_size = 12,
                               font_scale = 1,
                               rm_space = FALSE,
@@ -41,6 +43,11 @@ show_sig_exposure <- function(Signature,
     h <- Signature
   } else {
     stop("Invalid input for 'Signature'", call. = FALSE)
+  }
+
+  if (!is.null(cutoff)) {
+    hyper_index <- which(colSums(h) > cutoff)
+    h <- h[, -hyper_index, drop = FALSE]
   }
 
   h.norm <- apply(h, 2, function(x) x / sum(x))
