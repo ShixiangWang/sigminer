@@ -17,6 +17,6 @@ helper_sort_signature <- function(sig) {
       to_rank <- mat[1, ] / colSums(mat)
     }
   }
-  sig_order <- rank(to_rank)
+  sig_order <- order(to_rank)
   return(sig_order)
 }
