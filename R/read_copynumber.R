@@ -13,6 +13,8 @@
 #' @param samp_col a character used to specify the sample column name. If `input`
 #' is a directory and cannot find `samp_col`, sample names will use file names
 #' (set this parameter to `NULL` is recommended in this case).
+#' @param join_adj_seg if `TRUE` (default), join adjacent segments with
+#' same copy number value. This is helpful for precisely count the number of breakpoint.
 #' @param use_all default is `FALSE`. If `True`, use all columns from raw input.
 #' @param min_segnum minimal number of copy number segments within a sample.
 #' @param max_copynumber bigger copy number within a sample will be reset to this value.
@@ -43,6 +45,7 @@ read_copynumber <- function(input,
                             ignore_case = FALSE,
                             seg_cols = c("Chromosome", "Start.bp", "End.bp", "modal_cn"),
                             samp_col = "sample",
+                            join_adj_seg = TRUE,
                             use_all = FALSE,
                             min_segnum = 0L,
                             max_copynumber = 20L,
@@ -311,6 +314,13 @@ read_copynumber <- function(input,
   # make sure position is numeric
   data_df$start <- as.numeric(data_df$start)
   data_df$end <- as.numeric(data_df$end)
+  # order by sample name
+  data_df <- data_df[order(data_df$sample)]
+
+  if (join_adj_seg) {
+    if (verbose) message("Joining adjacent segments with same copy number value...")
+    data_df <- helper_join_segments(data_df)
+  }
 
   if (verbose) message("Anotating...")
   annot <- get_LengthFraction(data_df,

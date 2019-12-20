@@ -10,6 +10,7 @@ read_copynumber(
   ignore_case = FALSE,
   seg_cols = c("Chromosome", "Start.bp", "End.bp", "modal_cn"),
   samp_col = "sample",
+  join_adj_seg = TRUE,
   use_all = FALSE,
   min_segnum = 0L,
   max_copynumber = 20L,
@@ -35,6 +36,9 @@ Default use names from ABSOLUTE calling result.}
 \item{samp_col}{a character used to specify the sample column name. If \code{input}
 is a directory and cannot find \code{samp_col}, sample names will use file names
 (set this parameter to \code{NULL} is recommended in this case).}
+
+\item{join_adj_seg}{if \code{TRUE} (default), join adjacent segments with
+same copy number value. This is helpful for precisely count the number of breakpoint.}
 
 \item{use_all}{default is \code{FALSE}. If \code{True}, use all columns from raw input.}
 

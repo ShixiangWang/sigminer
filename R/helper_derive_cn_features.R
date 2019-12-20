@@ -107,7 +107,7 @@ getCentromereDistCounts <-
         q_count <- sum(ends > centend)
 
         if (!any(starts < centstart & ends > centend)) {
-          # If there is not a segment across p and q arms
+          # If there is no segments across p and q arms
           if (p_count > 0L) p_count <- p_count - 1L
         }
         if (q_count > 0L) q_count <- q_count - 1L
