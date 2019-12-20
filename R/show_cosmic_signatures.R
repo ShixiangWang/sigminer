@@ -13,6 +13,9 @@
 #' show_cosmic_sig_profile(sig_db = "SBS")
 #' show_cosmic_sig_profile(sig_index = 1:5)
 #' show_cosmic_sig_profile(sig_db = "SBS", sig_index = c("10a", "17a"))
+#'
+#' gg <- show_cosmic_sig_profile(sig_index = 1:5)
+#' gg$aetiology
 show_cosmic_sig_profile <- function(sig_index = NULL, show_index = TRUE, sig_db = "legacy", ...) {
   sig_db <- match.arg(arg = sig_db, choices = c("legacy", "SBS"))
 
@@ -58,11 +61,19 @@ show_cosmic_sig_profile <- function(sig_index = NULL, show_index = TRUE, sig_db 
     stop(msg)
   }
 
-  index <- colnames(sigs)[avail_index %in% sig_index]
+
+  index <- c()
+  for (i in sig_index) {
+    index <- c(index, colnames(sigs)[avail_index == i])
+  }
+
   sig_mat <- as.matrix(sigs[, index, drop = FALSE])
   gg <- show_sig_profile(sig_mat,
     check_sig_names = FALSE,
-    mode = "mutation", normalize = "raw", ...
+    mode = "mutation",
+    normalize = "raw",
+    sig_orders = index,
+    ...
   )
   gg$aetiology <- aetiology[index, , drop = FALSE]
   gg
