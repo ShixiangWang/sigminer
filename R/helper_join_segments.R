@@ -15,15 +15,17 @@ helper_join_segments <- function(segTab) {
 
 join_segments <- function(df) {
   df <- df %>% dplyr::arrange(.data$start)
-  diff_vals <- which(diff(df$segVal) == 0)
+  equal_index <- which(diff(df$segVal) == 0)
 
-  to_join_index <- sort(union(diff_vals, diff_vals + 1))
+  to_join_index <- sort(union(equal_index, equal_index + 1))
 
   if (length(to_join_index) > 0) {
     not_join_index <- setdiff(1:nrow(df), to_join_index)
 
-    split_index <- which(diff(to_join_index) > 1) + 1
-    join_list <- split(to_join_index, findInterval(to_join_index, split_index))
+    cutpoint <- equal_index[which(diff(equal_index) > 1)] + 2
+    join_list <- split(to_join_index,
+                       findInterval(to_join_index, cutpoint))
+
 
     join_df <- purrr::map_df(join_list, function(index, df) {
       res = df[index, ]
