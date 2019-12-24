@@ -9,7 +9,7 @@
 #' @param p_val p value threshold.
 #' @param xlab label for x axis.
 #' @param ylab label for y axis.
-#' @param gradient_colors gradient colors used to plot.
+#' @param gradient_colors a Scale object representing gradient colors used to plot.
 #' @param align one of "row" and "column".
 #' @param plot_ratio a length-2 numeric vector to set the height/width ratio.
 #' @param breaks_count breaks for sample count.
@@ -22,7 +22,12 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
                                        return_plotlist = FALSE,
                                        p_val = 0.05,
                                        xlab = "Signatures", ylab = "Features",
-                                       gradient_colors = c("blue", "white", "red"),
+                                       gradient_colors = scale_color_gradient2(
+                                         low = "blue",
+                                         mid = "white",
+                                         high = "red",
+                                         midpoint = 0
+                                       ),
                                        align = c("row", "column"), plot_ratio = "auto",
                                        breaks_count = c(0L, 200L, 400L, 600L, 800L, 1020L)) {
   align <- match.arg(align)
@@ -66,7 +71,7 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
       colour = "measure",
       size = "Samples"
     )) +
-      ggplot2::scale_color_gradientn(colors = gradient_colors) +
+      gradient_colors +
       ggplot2::scale_size_discrete(drop = FALSE)
   }
 
