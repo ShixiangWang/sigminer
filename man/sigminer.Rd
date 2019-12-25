@@ -3,7 +3,7 @@
 \docType{package}
 \name{sigminer}
 \alias{sigminer}
-\title{sigminer: Capture Genomic Variation Signatures using Non-Negative Matrix Factorization}
+\title{sigminer: Extract, Analyze and Visualize Signatures for Genomic Variations}
 \description{
 Genomic variations including somatic mutations, copy number variations, etc. are the major
 force for cancer initialization and development. Due to the specificity of molecular lesions

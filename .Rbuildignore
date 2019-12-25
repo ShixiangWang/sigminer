@@ -10,3 +10,6 @@ docs
 inst/test
 .github
 ^data-raw$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

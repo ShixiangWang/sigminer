@@ -1,4 +1,4 @@
-#' sigminer: Capture Genomic Variation Signatures using Non-Negative Matrix Factorization
+#' sigminer: Extract, Analyze and Visualize Signatures for Genomic Variations
 #'
 #' Genomic variations including somatic mutations, copy number variations, etc. are the major
 #' force for cancer initialization and development. Due to the specificity of molecular lesions

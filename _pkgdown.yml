@@ -1,0 +1,73 @@
+destination: docs
+
+authors:
+  Shixiang Wang:
+    href: https://shixiangwang.github.io/
+  Lab:
+    href: http://liuxslab.slst.shanghaitech.edu.cn/
+
+reference:
+  - title: Data input, classes and operation
+    desc: Read genomic variation data as an R object and more.
+    contents:
+    - read_copynumber
+    - read_maf
+    - CopyNumber-class
+    - MAF-class
+    - subset.CopyNumber
+  - title: Signature identification
+    desc: Identify signatures from genomic variation profile. After reading data, the following functions construct the standard pipeline for most users.
+    contents:
+    - sig_derive
+    - handle_hyper_mutation
+    - sig_estimate
+    - show_sig_number_survey
+    - show_sig_number_survey2
+    - sig_extract
+    - sig_auto_extract
+  - title: Signature visualization
+    desc: Show signature profile and exposure.
+    contents:
+    - show_sig_profile
+    - show_sig_exposure
+    - show_cosmic_sig_profile
+  - title: Signature analysis and corresponding visualization
+    desc: Analyze signatures and output the result to visualization.
+    contents:
+    - get_sig_similarity
+    - get_sig_exposure
+    - get_sig_feature_association
+    - get_tidy_association
+    - show_sig_feature_corrplot
+    - get_groups
+    - get_group_comparison
+    - show_group_comparison
+    - show_group_mapping
+  - title: Package datasets
+    desc: Datasets used for signature identification and analysis.
+    contents:
+    - CN.features
+    - centromeres.hg19
+    - centromeres.hg38
+    - chromsize.hg19
+    - chromsize.hg38
+  - title: Helpers
+    desc: Helper functions used in the sigminer package.
+    contents:
+    - get_genome_annotation
+    - get_bayesian_result
+    - get_tidy_parameter
+    - get_adj_p
+  - title: Copy number analysis and visualization
+    desc: Functions for analyzing copy number data and visualization.
+    contents:
+    - get_cn_ploidy
+    - show_cn_profile
+    - show_cn_distribution
+    - show_cn_features
+    - show_cn_components
+  - title: Extra documentation
+    desc: Extra function and introduction.
+    contents:
+    - hello
+    - sigminer
