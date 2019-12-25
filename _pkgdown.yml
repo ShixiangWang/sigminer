@@ -3,8 +3,6 @@ destination: docs
 authors:
   Shixiang Wang:
     href: https://shixiangwang.github.io/
-  Lab:
-    href: http://liuxslab.slst.shanghaitech.edu.cn/
 
 reference:
   - title: Data input, classes and operation
