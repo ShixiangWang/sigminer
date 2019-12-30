@@ -79,7 +79,7 @@ Users should library(NMF) firstly." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -233,51 +233,17 @@ More custom features please directly use <a href='https://rdrr.io/pkg/NMF/man/nm
 extracting signatures using automatic relevance determination technique.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
-<span class='co'># Load copy number prepare object</span>
+    <pre class="examples"><div class='input'><span class='co'># Load copy number prepare object</span>
 <span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_prepare.RData"</span>,
   <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 ))
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>NMF</span>)
 <span class='no'>cn_estimate</span> <span class='kw'>&lt;-</span> <span class='fu'>sig_estimate</span>(<span class='no'>cn_prepare</span>$<span class='no'>nmf_matrix</span>,
   <span class='kw'>cores</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>nrun</span> <span class='kw'>=</span> <span class='fl'>5</span>,
   <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)</div><div class='output co'>#&gt; Compute NMF rank= 2  ... + measures ... OK
-#&gt; Compute NMF rank= 3  ... + measures ... OK
-#&gt; Compute NMF rank= 4  ... + measures ... OK
-#&gt; Compute NMF rank= 5  ... + measures ... OK</div><div class='output co'>#&gt; <span class='message'>Estimation of rank based on observed data.</span></div><div class='output co'>#&gt;   method   seed rng metric rank sparseness.basis sparseness.coef       rss
-#&gt; 2 brunet random   2     KL    2        0.7868164       0.4341062 1144.8714
-#&gt; 3 brunet random   1     KL    3        0.7944475       0.4388444  813.1814
-#&gt; 4 brunet random   2     KL    4        0.7944389       0.4887652  586.2708
-#&gt; 5 brunet random   2     KL    5        0.7901255       0.4419127  368.2307
-#&gt;        evar silhouette.coef silhouette.basis residuals niter   cpu cpu.all nrun
-#&gt; 2 0.9985533       1.0000000        1.0000000  41.97589   570 0.051   2.900    5
-#&gt; 3 0.9989724       0.7286187        0.5627588  31.71708   630 0.057   2.931    5
-#&gt; 4 0.9992592       0.5586978        0.5559367  22.86119  1400 0.081   2.998    5
-#&gt; 5 0.9995347       0.0273156        0.2546472  15.37598  1380 0.061   2.961    5
-#&gt;   cophenetic dispersion silhouette.consensus
-#&gt; 2  0.9545457     0.7312            0.8794444
-#&gt; 3  0.8491389     0.5008            0.4788515
-#&gt; 4  0.8595682     0.4112            0.2998276
-#&gt; 5  0.7723529     0.6032            0.1758547</div><div class='output co'>#&gt; <span class='message'>Generating random matrix and run NMF...</span></div><div class='output co'>#&gt; Compute NMF rank= 2  ... + measures ... OK
-#&gt; Compute NMF rank= 3  ... + measures ... OK
-#&gt; Compute NMF rank= 4  ... + measures ... OK
-#&gt; Compute NMF rank= 5  ... + measures ... OK</div><div class='output co'>#&gt; <span class='message'>Estimation of rank based on random data.</span></div><div class='output co'>#&gt;   method   seed rng metric rank sparseness.basis sparseness.coef       rss
-#&gt; 2 brunet random   2     KL    2        0.5997533       0.9039689 377521.64
-#&gt; 3 brunet random   1     KL    3        0.6831360       0.9190830 254488.45
-#&gt; 4 brunet random   2     KL    4        0.7510472       0.9008415 177285.46
-#&gt; 5 brunet random   2     KL    5        0.7933783       0.9092956  81028.84
-#&gt;        evar silhouette.coef silhouette.basis residuals niter   cpu cpu.all nrun
-#&gt; 2 0.5229561       1.0000000        1.0000000 2608.7704   420 0.029   2.934    5
-#&gt; 3 0.6784233       0.9983423        0.7955868 1776.1591   420 0.043   3.060    5
-#&gt; 4 0.7759785       0.8916780        0.6182755 1152.7439   420 0.033   3.151    5
-#&gt; 5 0.8976103       0.7897915        0.5349317  672.1096   440 0.037   2.978    5
-#&gt;   cophenetic dispersion silhouette.consensus
-#&gt; 2  0.8879280     0.4688            0.6423333
-#&gt; 3  0.9407022     0.6352            0.6407686
-#&gt; 4  0.9818863     0.8272            0.6555556
-#&gt; 5  0.9788747     0.8080            0.6111111</div><div class='img'><img src='sig_estimate-1.png' alt='' width='700' height='433' /></div><div class='input'># }
-</div></pre>
+)
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

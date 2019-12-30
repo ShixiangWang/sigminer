@@ -26,7 +26,7 @@
 #'   package = "sigminer", mustWork = TRUE
 #' ))
 #'
-#' show_cn_profile(cn, nrow = 5, ncol = 2)
+#' show_cn_profile(cn, nrow = 1, ncol = 2)
 show_cn_profile <- function(data, samples = NULL, show_n = NULL, show_title = FALSE,
                             chrs = paste0("chr", c(1:22, "X")),
                             genome_build = c("hg19", "hg38"),

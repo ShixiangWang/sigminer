@@ -77,7 +77,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -125,7 +125,7 @@
     <p>Get Tidy Signature Association Results</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_tidy_association</span>(<span class='no'>cor_res</span>)</pre>
+    <pre class="usage"><span class='fu'>get_tidy_association</span>(<span class='no'>cor_res</span>, <span class='kw'>p_adjust</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"fdr"</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -133,6 +133,15 @@
     <tr>
       <th>cor_res</th>
       <td><p>data returned by <code><a href='get_sig_feature_association.html'>get_sig_feature_association()</a></code></p></td>
+    </tr>
+    <tr>
+      <th>p_adjust</th>
+      <td><p>logical, if <code>TRUE</code>, adjust p values by data type.</p></td>
+    </tr>
+    <tr>
+      <th>method</th>
+      <td><p>p value correction method, see <a href='https://rdrr.io/r/stats/p.adjust.html'>stats::p.adjust</a> for
+more detail.</p></td>
     </tr>
     </table>
 

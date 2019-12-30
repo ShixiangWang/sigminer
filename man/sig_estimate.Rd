@@ -75,11 +75,11 @@ of the residual sum of squares (RSS) between the input matrix and its estimate s
 More custom features please directly use \link[NMF:nmfEstimateRank]{NMF::nmfEstimateRank}.
 }
 \examples{
-\donttest{
 # Load copy number prepare object
 load(system.file("extdata", "toy_copynumber_prepare.RData",
   package = "sigminer", mustWork = TRUE
 ))
+\dontrun{
 library(NMF)
 cn_estimate <- sig_estimate(cn_prepare$nmf_matrix,
   cores = 1, nrun = 5,
