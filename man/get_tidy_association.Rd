@@ -4,10 +4,15 @@
 \alias{get_tidy_association}
 \title{Get Tidy Signature Association Results}
 \usage{
-get_tidy_association(cor_res)
+get_tidy_association(cor_res, p_adjust = FALSE, method = "fdr")
 }
 \arguments{
 \item{cor_res}{data returned by \code{\link[=get_sig_feature_association]{get_sig_feature_association()}}}
+
+\item{p_adjust}{logical, if \code{TRUE}, adjust p values by data type.}
+
+\item{method}{p value correction method, see \link[stats:p.adjust]{stats::p.adjust} for
+more detail.}
 }
 \value{
 a \code{data.frame}

@@ -51,9 +51,9 @@
 #' @seealso [sig_estimate] for estimating signature number for [sig_extract],
 #' [show_sig_number_survey2] for more visualization method.
 show_sig_number_survey <- function(object, x = "rank",
-                             left_y = "cophenetic", right_y = "rss",
-                             left_name = left_y, right_name = toupper(right_y),
-                             left_color = "black", right_color = "red") {
+                                   left_y = "cophenetic", right_y = "rss",
+                                   left_name = left_y, right_name = toupper(right_y),
+                                   left_color = "black", right_color = "red") {
   stopifnot(class(object) == "Survey" | is.data.frame(object))
   if (class(object) == "Survey") {
     survey <- object$survey

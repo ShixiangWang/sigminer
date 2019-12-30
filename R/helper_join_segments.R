@@ -1,6 +1,5 @@
 helper_join_segments <- function(segTab) {
-
-  final_orders = c("chromosome", "start", "end", "segVal", "sample")
+  final_orders <- c("chromosome", "start", "end", "segVal", "sample")
   segTab <- segTab %>%
     dplyr::as_tibble() %>%
     dplyr::group_by(.data$sample, .data$chromosome) %>%
@@ -23,12 +22,14 @@ join_segments <- function(df) {
     not_join_index <- setdiff(1:nrow(df), to_join_index)
 
     cutpoint <- equal_index[which(diff(equal_index) > 1)] + 2
-    join_list <- split(to_join_index,
-                       findInterval(to_join_index, cutpoint))
+    join_list <- split(
+      to_join_index,
+      findInterval(to_join_index, cutpoint)
+    )
 
 
     join_df <- purrr::map_df(join_list, function(index, df) {
-      res = df[index, ]
+      res <- df[index, ]
       dplyr::tibble(
         start = res$start[1],
         end = res$end[length(res$end)],
@@ -44,14 +45,10 @@ join_segments <- function(df) {
         dplyr::arrange(.data$start)
 
       return(df)
-
     } else {
       return(join_df)
     }
-
-
   } else {
     return(df)
   }
-
 }

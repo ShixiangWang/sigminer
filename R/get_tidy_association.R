@@ -1,11 +1,14 @@
 #' Get Tidy Signature Association Results
 #'
 #' @param cor_res data returned by [get_sig_feature_association()]
+#' @param p_adjust logical, if `TRUE`, adjust p values by data type.
+#' @param method p value correction method, see [stats::p.adjust] for
+#' more detail.
 #'
 #' @return a `data.frame`
 #' @export
 #' @seealso [get_sig_feature_association]
-get_tidy_association <- function(cor_res) {
+get_tidy_association <- function(cor_res, p_adjust = FALSE, method = "fdr") {
   co_null <- identical(cor_res$corr_co, list())
   ca_null <- identical(cor_res$corr_ca, list())
 
@@ -41,6 +44,23 @@ get_tidy_association <- function(cor_res) {
         colnames(cor_res$corr_ca$measure)
       ))
     )
+
+  if (p_adjust) {
+    if (length(table(data$type)) > 1) {
+      col_orders = colnames(data)
+      data <- data %>%
+        dplyr::group_by(.data$type) %>%
+        tidyr::nest() %>%
+        dplyr::mutate(data = purrr::map(.data$data, function(df, method) {
+          df$p <- p.adjust(df$p, method = method)
+          df
+        }, method = method)) %>%
+        tidyr::unnest("data") %>%
+        dplyr::select(col_orders)
+    } else {
+     data$p <- p.adjust(data$p, method = method)
+    }
+  }
 
   data
 }
