@@ -2,8 +2,9 @@ destination: docs
 
 authors:
   Shixiang Wang:
-    href: https://shixiangwang.github.io/
-
+    href: https://orcid.org/0000-0001-9855-7357
+  Xue-Song Liu:
+    href: https://orcid.org/0000-0002-7736-0077
 reference:
   - title: Data input, classes and operation
     desc: Read genomic variation data as an R object and more.
