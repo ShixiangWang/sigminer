@@ -56,7 +56,8 @@ get_tidy_association <- function(cor_res, p_adjust = FALSE, method = "fdr") {
           df
         }, method = method)) %>%
         tidyr::unnest("data") %>%
-        dplyr::select(col_orders)
+        dplyr::select(col_orders) %>%
+        dplyr::ungroup()
     } else {
      data$p <- p.adjust(data$p, method = method)
     }
