@@ -16,11 +16,12 @@ issues](https://img.shields.io/github/issues-closed/ShixiangWang/sigminer.svg)](
 
 ## Overview
 
-The goal of **sigminer** is to provide a uniform interface for genomic
-variation signature analysis and visualization.
-
-**sigminer** is powered by [NMF](https://github.com/renozao/NMF) package
-and [maftools](https://github.com/PoisonAlien/maftools) package.
+Genomic variations including somatic mutations, copy number variations,
+etc. are the major force for cancer initialization and development. Due
+to the specificity of molecular lesions caused by genomic variations, we
+can generate characteristic variation spectra, called ‘**signature**’.
+**sigminer** helps users to extract, analyze and visualize signatures
+from genomic variations, thus providing new insight into cancer study.
 
 ## Installation
 
@@ -42,8 +43,7 @@ remotes::install_github("ShixiangWang/sigminer")
 ## Citation
 
 **sigminer** has not been published. If you use **sigminer** in academic
-field, please cite our recent
-    work:
+field, please cite our recent work:
 
     Wang, Shixiang, et al. "The predictive power of tumor mutational burden 
         in lung cancer immunotherapy response is influenced by patients' sex."
@@ -65,22 +65,24 @@ in ovarian carcinoma*, if you use this feature, please also cite:
 
 The code for extracting mutational signatures was based in part on the
 source code of the **maftools** package, if you use this feature, please
-also
-    cite:
+also cite:
 
     Mayakonda, Anand, et al. "Maftools: efficient and comprehensive analysis
         of somatic variants in cancer." Genome research 28.11 (2018): 1747-1756.
 
 The code for extracting mutational signatures was based in part on the
 source code of the **SignatureAnalyzer** package, if you use this
-feature, please also
-    cite:
+feature, please also cite:
 
     Alexandrov, Ludmil, et al. "The repertoire of mutational signatures in human cancer." BioRxiv (2018): 322859.
 
+**sigminer** is powered by data.table,
+[NMF](https://github.com/renozao/NMF) package and
+[maftools](https://github.com/PoisonAlien/maftools) package.
+
 ## LICENSE
 
-MIT © 2019 Shixiang Wang, Xue-Song Liu
+MIT © 2019-2020 Shixiang Wang, Xue-Song Liu
 
 MIT © 2018 Geoffrey Macintyre
 
@@ -97,4 +99,4 @@ Wang <wangshx@shanghaitech.edu.cn> or Xue-Song Liu
 
 **[Cancer Biology Group](https://github.com/XSLiuLab) @ShanghaiTech**
 
-**Research group led by Xue-Song Liu in ShanghaiTech. University**
+**Research group led by Xue-Song Liu in ShanghaiTech University**

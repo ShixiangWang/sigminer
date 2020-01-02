@@ -24,9 +24,12 @@ knitr::opts_chunk$set(
 
 ## Overview
 
-The goal of **sigminer** is to provide a uniform interface for genomic variation signature analysis and visualization. 
-
-**sigminer** is powered by [NMF](https://github.com/renozao/NMF) package and [maftools](https://github.com/PoisonAlien/maftools) package.
+Genomic variations including somatic mutations, copy number variations, etc. are the major force for cancer
+initialization and development. Due to the specificity of molecular
+lesions caused by genomic variations, we can generate characteristic
+variation spectra, called '**signature**'. **sigminer** helps users to
+extract, analyze and visualize signatures from genomic variations,
+thus providing new insight into cancer study. 
 
 ## Installation
 
@@ -88,9 +91,11 @@ code of the **SignatureAnalyzer** package, if you use this feature, please also 
 Alexandrov, Ludmil, et al. "The repertoire of mutational signatures in human cancer." BioRxiv (2018): 322859.
 ```
 
+**sigminer** is powered by data.table, [NMF](https://github.com/renozao/NMF) package and [maftools](https://github.com/PoisonAlien/maftools) package.
+
 ## LICENSE
 
-MIT &copy; 2019 Shixiang Wang, Xue-Song Liu
+MIT &copy; 2019-2020 Shixiang Wang, Xue-Song Liu
 
 MIT &copy; 2018 Geoffrey Macintyre
 
@@ -106,4 +111,4 @@ Xue-Song Liu <liuxs@shanghaitech.edu.cn>.
 
 **[Cancer Biology Group](https://github.com/XSLiuLab) @ShanghaiTech**
 
-**Research group led by Xue-Song Liu in ShanghaiTech. University**
+**Research group led by Xue-Song Liu in ShanghaiTech University**
