@@ -6,6 +6,7 @@
 \usage{
 show_sig_exposure(
   Signature,
+  sig_names = NULL,
   cutoff = NULL,
   base_size = 12,
   font_scale = 1,
@@ -17,6 +18,8 @@ show_sig_exposure(
 \item{Signature}{a \code{Signature} object obtained either from \link{sig_extract} or \link{sig_auto_extract},
 or just a raw exposure matrix with column representing samples (patients) and row
 representing signatures (row names must start with 'Sig').}
+
+\item{sig_names}{set name of signatures, can be a character vector.}
 
 \item{cutoff}{a cutoff value to remove hyper-mutated samples.}
 

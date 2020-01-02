@@ -5,6 +5,7 @@
 #' @param Signature a `Signature` object obtained either from [sig_extract] or [sig_auto_extract],
 #' or just a raw exposure matrix with column representing samples (patients) and row
 #' representing signatures (row names must start with 'Sig').
+#' @param sig_names set name of signatures, can be a character vector.
 #' @param cutoff a cutoff value to remove hyper-mutated samples.
 #' @param rm_space default is `FALSE`. If `TRUE`, it will remove border color
 #' and expand the bar width to 1. This is useful when the sample size is big.
@@ -29,6 +30,7 @@
 #' # Show signature exposure
 #' show_sig_exposure(sig)
 show_sig_exposure <- function(Signature,
+                              sig_names = NULL,
                               cutoff = NULL,
                               base_size = 12,
                               font_scale = 1,
@@ -71,9 +73,13 @@ show_sig_exposure <- function(Signature,
       panel.grid.minor = element_blank()
     )
 
-  # chop Signature off
-  rownames(h) <- sub(".*[^\\d+](\\d+)$", "\\1", rownames(h))
-  rownames(h.norm) <- sub(".*[^\\d+](\\d+)$", "\\1", rownames(h.norm))
+  if (is.null(sig_names)) {
+    # chop Signature off
+    rownames(h.norm) <- rownames(h) <- sub(".*[^\\d+](\\d+)$", "\\1", rownames(h))
+  } else {
+    rownames(h.norm) <- rownames(h) <- sig_names
+  }
+
 
   ordering <- order(colSums(h), decreasing = TRUE)
   h <- h[, ordering]
@@ -85,6 +91,11 @@ show_sig_exposure <- function(Signature,
   h.norm$Signature <- rownames(h.norm)
   x1 <- tidyr::gather(h, "Sample", "Exposure", -"Signature")
   x2 <- tidyr::gather(h.norm, "Sample", "Exposure", -"Signature")
+
+  if (!is.null(sig_names)) {
+    x1$Signature <- factor(x1$Signature, levels = sig_names)
+    x2$Signature <- factor(x2$Signature, levels = sig_names)
+  }
 
   x1$class0 <- "Contribution"
   x2$class0 <- "Fraction"

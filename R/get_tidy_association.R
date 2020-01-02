@@ -47,7 +47,7 @@ get_tidy_association <- function(cor_res, p_adjust = FALSE, method = "fdr") {
 
   if (p_adjust) {
     if (length(table(data$type)) > 1) {
-      col_orders = colnames(data)
+      col_orders <- colnames(data)
       data <- data %>%
         dplyr::group_by(.data$type) %>%
         tidyr::nest() %>%
@@ -59,7 +59,7 @@ get_tidy_association <- function(cor_res, p_adjust = FALSE, method = "fdr") {
         dplyr::select(col_orders) %>%
         dplyr::ungroup()
     } else {
-     data$p <- p.adjust(data$p, method = method)
+      data$p <- p.adjust(data$p, method = method)
     }
   }
 
