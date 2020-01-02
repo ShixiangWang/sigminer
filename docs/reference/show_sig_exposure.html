@@ -127,6 +127,7 @@
 
     <pre class="usage"><span class='fu'>show_sig_exposure</span>(
   <span class='no'>Signature</span>,
+  <span class='kw'>sig_names</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>cutoff</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>base_size</span> <span class='kw'>=</span> <span class='fl'>12</span>,
   <span class='kw'>font_scale</span> <span class='kw'>=</span> <span class='fl'>1</span>,
@@ -142,6 +143,10 @@
       <td><p>a <code>Signature</code> object obtained either from <a href='sig_extract.html'>sig_extract</a> or <a href='sig_auto_extract.html'>sig_auto_extract</a>,
 or just a raw exposure matrix with column representing samples (patients) and row
 representing signatures (row names must start with 'Sig').</p></td>
+    </tr>
+    <tr>
+      <th>sig_names</th>
+      <td><p>set name of signatures, can be a character vector.</p></td>
     </tr>
     <tr>
       <th>cutoff</th>

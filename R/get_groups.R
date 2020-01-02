@@ -16,16 +16,20 @@
 #'
 #' @param Signature a `Signature` object obtained either from [sig_extract] or [sig_auto_extract].
 #' @param method grouping method, more see details, could be one of the following:
-#' - 'exposure' - the default method, which assigns a sample into a group whose signature exposure
+#' - 'k-means' -  the default method, returns the clusters by k-means.
+#' - 'exposure' - assigns a sample into a group whose signature exposure
 #' is dominant.
 #' - 'consensus' - returns the cluster membership based on the hierarchical clustering of the consensus matrix,
 #' it can only be used for the result obtained by [sig_extract()] with multiple runs using **NMF** package.
 #' - 'samples' - returns the cluster membership based on the contribution of signature to each sample,
-#' it can only be used for the result obtained by [sig_extract()] using **NMF** package.
+#' it can only be used for the result obtained by [sig_extract()] using **NMF** package. The
+#' result is basically same as 'k-means'.
+#' @param n_cluster only used when the `method` is 'k-means'.
 #' @param match_consensus only used when the `method` is 'consensus'.
 #' If `TRUE`, the result will match order as shown in consensus map.
 #' @return a `data.table` object
 #' @import NMF cluster
+#' @importFrom stats kmeans
 #' @export
 #' @examples
 #' \donttest{
@@ -37,17 +41,22 @@
 #' library(NMF)
 #' sig <- sig_extract(cn_prepare$nmf_matrix, 2, nrun = 10)
 #'
-#' # Methods 'consensus' and 'samples' are from NMF::predict()
+#' # Default k-means clustering is used
 #' get_groups(sig)
+#' # Methods 'consensus' and 'samples' are from NMF::predict()
 #' get_groups(sig, method = "consensus", match_consensus = TRUE)
 #' get_groups(sig, method = "samples")
 #' }
 #' @seealso [NMF::predict()]
-get_groups <- function(Signature, method = c("exposure", "consensus", "samples"), match_consensus = FALSE) {
-  stopifnot(inherits(Signature, "Signature"))
+get_groups <- function(Signature,
+                       method = c("k-means", "exposure", "consensus", "samples"),
+                       n_cluster = NULL,
+                       match_consensus = FALSE) {
+  stopifnot(inherits(Signature, "Signature"), is.null(n_cluster) | n_cluster > 1)
   method <- match.arg(method)
 
   if (method == "consensus") {
+    message("Obtaining clusters from the hierarchical clustering of the consensus matrix...")
     if (!"nmf_obj" %in% names(Signature$Raw)) {
       stop("Input Signature object does not contain NMF object, please select other methods")
     }
@@ -70,8 +79,11 @@ get_groups <- function(Signature, method = c("exposure", "consensus", "samples")
     }
 
     data$group <- as.character(data$group)
+    message("Assigning samples to clusters by the dominant signature...")
     data <- find_enriched_signature(data, Signature)
   } else if (method == "samples") {
+    message("Obtaining clusters by the contribution of signature to each sample...")
+
     if (!"nmf_obj" %in% names(Signature$Raw)) {
       stop("Input Signature object does not contain NMF object, please select other methods")
     }
@@ -87,8 +99,10 @@ get_groups <- function(Signature, method = c("exposure", "consensus", "samples")
     )
 
     data$group <- as.character(data$group)
+    message("Assigning samples to clusters by the dominant signature...")
     data <- find_enriched_signature(data, Signature)
   } else if (method == "exposure") {
+    message("Creating clusters by the dominant signature (fraction is returned as weight)...")
     expo_df <- get_sig_exposure(Signature, type = "relative")
     data <- expo_df %>%
       tidyr::gather(key = "Signature", value = "Exposure", dplyr::starts_with("Sig")) %>%
@@ -103,8 +117,35 @@ get_groups <- function(Signature, method = c("exposure", "consensus", "samples")
         weight = .data$Exposure
       ) %>%
       dplyr::mutate(group = sub("Sig", "", .data$group))
+  } else if (method == "k-means") {
+    message("=> Running k-means for signature assignment..")
+    set.seed(seed = 1024)
+
+    expo_df <- get_sig_exposure(Signature, type = "relative")
+    contrib <- expo_df %>%
+      as.data.frame() %>%
+      tibble::column_to_rownames("sample")
+
+    contrib.km <- kmeans(x = contrib, centers = ifelse(is.null(n_cluster), ncol(contrib), n_cluster))
+    cluster_df <- as.data.frame(apply(contrib.km$centers, 2, function(x) which(x == max(x))))
+    colnames(cluster_df)[1] <- "group"
+    data.table::setDT(x = cluster_df, keep.rownames = TRUE)
+    colnames(cluster_df)[1] <- "enrich_sig"
+    data <- as.data.frame(contrib.km$cluster)
+    colnames(data)[1] <- "group"
+    data.table::setDT(data, keep.rownames = TRUE)
+    colnames(data)[1] <- "sample"
+    data <- merge(data, cluster_df, by = "group")
+    data$group <- as.character(data$group)
+    # Set a default value for now
+    # data$weight <- 1L
+    # data.table::setcolorder(data, neworder = c("sample", "group", "weight", "enrich_sig"))
+    data.table::setcolorder(data, neworder = c("sample", "group", "enrich_sig"))
   }
 
   data <- data.table::as.data.table(data)
+  if (!match_consensus) {
+    data <- data[order(as.integer(data$group))]
+  }
   return(data)
 }

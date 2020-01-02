@@ -131,7 +131,8 @@ and return the membership in each cluster.</p>
 
     <pre class="usage"><span class='fu'>get_groups</span>(
   <span class='no'>Signature</span>,
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"exposure"</span>, <span class='st'>"consensus"</span>, <span class='st'>"samples"</span>),
+  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"k-means"</span>, <span class='st'>"exposure"</span>, <span class='st'>"consensus"</span>, <span class='st'>"samples"</span>),
+  <span class='kw'>n_cluster</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>match_consensus</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
 )</pre>
 
@@ -145,13 +146,19 @@ and return the membership in each cluster.</p>
     <tr>
       <th>method</th>
       <td><p>grouping method, more see details, could be one of the following:</p><ul>
-<li><p>'exposure' - the default method, which assigns a sample into a group whose signature exposure
+<li><p>'k-means' -  the default method, returns the clusters by k-means.</p></li>
+<li><p>'exposure' - assigns a sample into a group whose signature exposure
 is dominant.</p></li>
 <li><p>'consensus' - returns the cluster membership based on the hierarchical clustering of the consensus matrix,
 it can only be used for the result obtained by <code><a href='sig_extract.html'>sig_extract()</a></code> with multiple runs using <strong>NMF</strong> package.</p></li>
 <li><p>'samples' - returns the cluster membership based on the contribution of signature to each sample,
-it can only be used for the result obtained by <code><a href='sig_extract.html'>sig_extract()</a></code> using <strong>NMF</strong> package.</p></li>
+it can only be used for the result obtained by <code><a href='sig_extract.html'>sig_extract()</a></code> using <strong>NMF</strong> package. The
+result is basically same as 'k-means'.</p></li>
 </ul></td>
+    </tr>
+    <tr>
+      <th>n_cluster</th>
+      <td><p>only used when the <code>method</code> is 'k-means'.</p></td>
     </tr>
     <tr>
       <th>match_consensus</th>
@@ -186,18 +193,19 @@ about implementation please see source code of <code><a href='sig_extract.html'>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>NMF</span>)
 <span class='no'>sig</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sig_extract.html'>sig_extract</a></span>(<span class='no'>cn_prepare</span>$<span class='no'>nmf_matrix</span>, <span class='fl'>2</span>, <span class='kw'>nrun</span> <span class='kw'>=</span> <span class='fl'>10</span>)
 
-<span class='co'># Methods 'consensus' and 'samples' are from NMF::predict()</span>
-<span class='fu'>get_groups</span>(<span class='no'>sig</span>)</div><div class='output co'>#&gt;                           sample group    weight enrich_sig
-#&gt;  1: TCGA-05-4417-01A-22D-1854-01     1 0.9512572       Sig1
-#&gt;  2: TCGA-A8-A07S-01A-11D-A036-01     2 0.9638279       Sig2
-#&gt;  3: TCGA-B6-A0X5-01A-21D-A107-01     2 0.9839765       Sig2
-#&gt;  4: TCGA-A5-A0G2-01A-11D-A042-01     2 0.7475197       Sig2
-#&gt;  5: TCGA-DF-A2KN-01A-11D-A17U-01     2 0.9603335       Sig2
-#&gt;  6: TCGA-06-0644-01A-02D-0310-01     2 0.8005602       Sig2
-#&gt;  7: TCGA-19-2621-01B-01D-0911-01     2 0.5913322       Sig2
-#&gt;  8: TCGA-26-6174-01A-21D-1842-01     2 0.9033573       Sig2
-#&gt;  9: TCGA-CV-7432-01A-11D-2128-01     2 0.5650982       Sig2
-#&gt; 10: TCGA-99-7458-01A-11D-2035-01     2 0.5241406       Sig2</div><div class='input'><span class='fu'>get_groups</span>(<span class='no'>sig</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"consensus"</span>, <span class='kw'>match_consensus</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;                           sample group silhouette_width enrich_sig
+<span class='co'># Default k-means clustering is used</span>
+<span class='fu'>get_groups</span>(<span class='no'>sig</span>)</div><div class='output co'>#&gt; <span class='message'>=&gt; Running k-means for signature assignment..</span></div><div class='output co'>#&gt;                           sample group enrich_sig
+#&gt;  1: TCGA-A8-A07S-01A-11D-A036-01     1       Sig2
+#&gt;  2: TCGA-B6-A0X5-01A-21D-A107-01     1       Sig2
+#&gt;  3: TCGA-A5-A0G2-01A-11D-A042-01     1       Sig2
+#&gt;  4: TCGA-DF-A2KN-01A-11D-A17U-01     1       Sig2
+#&gt;  5: TCGA-06-0644-01A-02D-0310-01     1       Sig2
+#&gt;  6: TCGA-26-6174-01A-21D-1842-01     1       Sig2
+#&gt;  7: TCGA-19-2621-01B-01D-0911-01     2       Sig1
+#&gt;  8: TCGA-CV-7432-01A-11D-2128-01     2       Sig1
+#&gt;  9: TCGA-05-4417-01A-22D-1854-01     2       Sig1
+#&gt; 10: TCGA-99-7458-01A-11D-2035-01     2       Sig1</div><div class='input'><span class='co'># Methods 'consensus' and 'samples' are from NMF::predict()</span>
+<span class='fu'>get_groups</span>(<span class='no'>sig</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"consensus"</span>, <span class='kw'>match_consensus</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Obtaining clusters from the hierarchical clustering of the consensus matrix...</span></div><div class='output co'>#&gt; <span class='message'>Assigning samples to clusters by the dominant signature...</span></div><div class='output co'>#&gt;                           sample group silhouette_width enrich_sig
 #&gt;  1: TCGA-05-4417-01A-22D-1854-01     1            1.000       Sig1
 #&gt;  2: TCGA-99-7458-01A-11D-2035-01     1            1.000       Sig1
 #&gt;  3: TCGA-19-2621-01B-01D-0911-01     1            1.000       Sig1
@@ -207,14 +215,14 @@ about implementation please see source code of <code><a href='sig_extract.html'>
 #&gt;  7: TCGA-DF-A2KN-01A-11D-A17U-01     2            0.810       Sig2
 #&gt;  8: TCGA-A5-A0G2-01A-11D-A042-01     2            0.810       Sig2
 #&gt;  9: TCGA-A8-A07S-01A-11D-A036-01     2            0.733       Sig2
-#&gt; 10: TCGA-B6-A0X5-01A-21D-A107-01     2            0.833       Sig2</div><div class='input'><span class='fu'>get_groups</span>(<span class='no'>sig</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"samples"</span>)</div><div class='output co'>#&gt;                           sample group silhouette_width  prob enrich_sig
+#&gt; 10: TCGA-B6-A0X5-01A-21D-A107-01     2            0.833       Sig2</div><div class='input'><span class='fu'>get_groups</span>(<span class='no'>sig</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"samples"</span>)</div><div class='output co'>#&gt; <span class='message'>Obtaining clusters by the contribution of signature to each sample...</span></div><div class='output co'>#&gt; <span class='message'>Assigning samples to clusters by the dominant signature...</span></div><div class='output co'>#&gt;                           sample group silhouette_width  prob enrich_sig
 #&gt;  1: TCGA-A8-A07S-01A-11D-A036-01     1                1 0.946       Sig2
 #&gt;  2: TCGA-B6-A0X5-01A-21D-A107-01     1                1 0.976       Sig2
 #&gt;  3: TCGA-A5-A0G2-01A-11D-A042-01     1                1 0.659       Sig2
 #&gt;  4: TCGA-DF-A2KN-01A-11D-A17U-01     1                1 0.940       Sig2
 #&gt;  5: TCGA-06-0644-01A-02D-0310-01     1                1 0.724       Sig2
-#&gt;  6: TCGA-19-2621-01B-01D-0911-01     2                1 0.514       Sig1
-#&gt;  7: TCGA-26-6174-01A-21D-1842-01     1                1 0.859       Sig2
+#&gt;  6: TCGA-26-6174-01A-21D-1842-01     1                1 0.859       Sig2
+#&gt;  7: TCGA-19-2621-01B-01D-0911-01     2                1 0.514       Sig1
 #&gt;  8: TCGA-CV-7432-01A-11D-2128-01     2                1 0.541       Sig1
 #&gt;  9: TCGA-05-4417-01A-22D-1854-01     2                1 0.968       Sig1
 #&gt; 10: TCGA-99-7458-01A-11D-2035-01     2                1 0.582       Sig1</div><div class='input'># }
