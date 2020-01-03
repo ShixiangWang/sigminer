@@ -5,7 +5,7 @@ most of functions have been modified, more features are implemented.
 Please read the reference list to see the function groups and their
 functionalities.
 
-I Hope it helps your research work and brings a new contribution
+I Hope it helps your research work and makes a new contribution
 to the scientific community.
 
 # sigminer 0.99.9000

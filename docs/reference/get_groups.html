@@ -153,7 +153,7 @@ is dominant.</p></li>
 it can only be used for the result obtained by <code><a href='sig_extract.html'>sig_extract()</a></code> with multiple runs using <strong>NMF</strong> package.</p></li>
 <li><p>'samples' - returns the cluster membership based on the contribution of signature to each sample,
 it can only be used for the result obtained by <code><a href='sig_extract.html'>sig_extract()</a></code> using <strong>NMF</strong> package. The
-result is basically same as 'k-means'.</p></li>
+result is basically same as 'k-means' but raw NMF object is required for this method.</p></li>
 </ul></td>
     </tr>
     <tr>
@@ -194,7 +194,8 @@ about implementation please see source code of <code><a href='sig_extract.html'>
 <span class='no'>sig</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sig_extract.html'>sig_extract</a></span>(<span class='no'>cn_prepare</span>$<span class='no'>nmf_matrix</span>, <span class='fl'>2</span>, <span class='kw'>nrun</span> <span class='kw'>=</span> <span class='fl'>10</span>)
 
 <span class='co'># Default k-means clustering is used</span>
-<span class='fu'>get_groups</span>(<span class='no'>sig</span>)</div><div class='output co'>#&gt; <span class='message'>=&gt; Running k-means for signature assignment..</span></div><div class='output co'>#&gt;                           sample group enrich_sig
+<span class='fu'>get_groups</span>(<span class='no'>sig</span>)</div><div class='output co'>#&gt; <span class='message'>=&gt; Running k-means for signature assignment..</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Summarizing...</span></div><div class='output co'>#&gt; <span class='message'>	group #1: 6</span>
+#&gt; <span class='message'>	group #2: 4</span></div><div class='output co'>#&gt;                           sample group enrich_sig
 #&gt;  1: TCGA-A8-A07S-01A-11D-A036-01     1       Sig2
 #&gt;  2: TCGA-B6-A0X5-01A-21D-A107-01     1       Sig2
 #&gt;  3: TCGA-A5-A0G2-01A-11D-A042-01     1       Sig2
@@ -205,7 +206,8 @@ about implementation please see source code of <code><a href='sig_extract.html'>
 #&gt;  8: TCGA-CV-7432-01A-11D-2128-01     2       Sig1
 #&gt;  9: TCGA-05-4417-01A-22D-1854-01     2       Sig1
 #&gt; 10: TCGA-99-7458-01A-11D-2035-01     2       Sig1</div><div class='input'><span class='co'># Methods 'consensus' and 'samples' are from NMF::predict()</span>
-<span class='fu'>get_groups</span>(<span class='no'>sig</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"consensus"</span>, <span class='kw'>match_consensus</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Obtaining clusters from the hierarchical clustering of the consensus matrix...</span></div><div class='output co'>#&gt; <span class='message'>Assigning samples to clusters by the dominant signature...</span></div><div class='output co'>#&gt;                           sample group silhouette_width enrich_sig
+<span class='fu'>get_groups</span>(<span class='no'>sig</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"consensus"</span>, <span class='kw'>match_consensus</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Obtaining clusters from the hierarchical clustering of the consensus matrix...</span></div><div class='output co'>#&gt; <span class='message'>Assigning samples to clusters by the dominant signature...</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Summarizing...</span></div><div class='output co'>#&gt; <span class='message'>	group #1: 4</span>
+#&gt; <span class='message'>	group #2: 6</span></div><div class='output co'>#&gt;                           sample group silhouette_width enrich_sig
 #&gt;  1: TCGA-05-4417-01A-22D-1854-01     1            1.000       Sig1
 #&gt;  2: TCGA-99-7458-01A-11D-2035-01     1            1.000       Sig1
 #&gt;  3: TCGA-19-2621-01B-01D-0911-01     1            1.000       Sig1
@@ -215,7 +217,8 @@ about implementation please see source code of <code><a href='sig_extract.html'>
 #&gt;  7: TCGA-DF-A2KN-01A-11D-A17U-01     2            0.810       Sig2
 #&gt;  8: TCGA-A5-A0G2-01A-11D-A042-01     2            0.810       Sig2
 #&gt;  9: TCGA-A8-A07S-01A-11D-A036-01     2            0.733       Sig2
-#&gt; 10: TCGA-B6-A0X5-01A-21D-A107-01     2            0.833       Sig2</div><div class='input'><span class='fu'>get_groups</span>(<span class='no'>sig</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"samples"</span>)</div><div class='output co'>#&gt; <span class='message'>Obtaining clusters by the contribution of signature to each sample...</span></div><div class='output co'>#&gt; <span class='message'>Assigning samples to clusters by the dominant signature...</span></div><div class='output co'>#&gt;                           sample group silhouette_width  prob enrich_sig
+#&gt; 10: TCGA-B6-A0X5-01A-21D-A107-01     2            0.833       Sig2</div><div class='input'><span class='fu'>get_groups</span>(<span class='no'>sig</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"samples"</span>)</div><div class='output co'>#&gt; <span class='message'>Obtaining clusters by the contribution of signature to each sample...</span></div><div class='output co'>#&gt; <span class='message'>Assigning samples to clusters by the dominant signature...</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Summarizing...</span></div><div class='output co'>#&gt; <span class='message'>	group #1: 6</span>
+#&gt; <span class='message'>	group #2: 4</span></div><div class='output co'>#&gt;                           sample group silhouette_width  prob enrich_sig
 #&gt;  1: TCGA-A8-A07S-01A-11D-A036-01     1                1 0.946       Sig2
 #&gt;  2: TCGA-B6-A0X5-01A-21D-A107-01     1                1 0.976       Sig2
 #&gt;  3: TCGA-A5-A0G2-01A-11D-A042-01     1                1 0.659       Sig2

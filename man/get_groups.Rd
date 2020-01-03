@@ -23,7 +23,7 @@ is dominant.
 it can only be used for the result obtained by \code{\link[=sig_extract]{sig_extract()}} with multiple runs using \strong{NMF} package.
 \item 'samples' - returns the cluster membership based on the contribution of signature to each sample,
 it can only be used for the result obtained by \code{\link[=sig_extract]{sig_extract()}} using \strong{NMF} package. The
-result is basically same as 'k-means'.
+result is basically same as 'k-means' but raw NMF object is required for this method.
 }}
 
 \item{n_cluster}{only used when the \code{method} is 'k-means'.}

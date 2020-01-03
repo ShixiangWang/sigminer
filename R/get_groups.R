@@ -23,7 +23,7 @@
 #' it can only be used for the result obtained by [sig_extract()] with multiple runs using **NMF** package.
 #' - 'samples' - returns the cluster membership based on the contribution of signature to each sample,
 #' it can only be used for the result obtained by [sig_extract()] using **NMF** package. The
-#' result is basically same as 'k-means'.
+#' result is basically same as 'k-means' but raw NMF object is required for this method.
 #' @param n_cluster only used when the `method` is 'k-means'.
 #' @param match_consensus only used when the `method` is 'consensus'.
 #' If `TRUE`, the result will match order as shown in consensus map.
@@ -147,5 +147,8 @@ get_groups <- function(Signature,
   if (!match_consensus) {
     data <- data[order(as.integer(data$group))]
   }
+  message("=> Summarizing...")
+  sum_tb <- table(data$group)
+  message(paste(paste0("\tgroup #", names(sum_tb), ": ", sum_tb), collapse = "\n"))
   return(data)
 }
