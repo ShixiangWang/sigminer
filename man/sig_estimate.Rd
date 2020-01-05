@@ -8,14 +8,14 @@ sig_estimate(
   nmf_matrix,
   range = 2:5,
   nrun = 10,
-  keep_nmfObj = FALSE,
-  what = "all",
-  cores = 1,
+  use_random = FALSE,
+  method = "brunet",
   seed = 123456,
-  use_random = TRUE,
+  cores = 1,
+  keep_nmfObj = FALSE,
   save_plots = FALSE,
   plot_basename = file.path(tempdir(), "nmf"),
-  method = "brunet",
+  what = "all",
   pConstant = NULL,
   verbose = FALSE
 )
@@ -29,30 +29,27 @@ and values are sorted in increasing order. The results are notably returned in t
 \item{nrun}{a \code{numeric} giving the number of run to perform for each value in \code{range}, \code{nrun} set to 30~50 is
 enough to achieve robust result.}
 
+\item{use_random}{Should generate random data from input to test measurements. Default is \code{TRUE}.}
+
+\item{method}{specification of the NMF algorithm. Use 'brunet' as default.
+Available methods for nmf decompositions are 'brunet', 'lee', 'ls-nmf', 'nsNMF', 'offset'.}
+
+\item{seed}{specification of the starting point or seeding method, which will compute a starting point,
+usually using data from the target matrix in order to provide a good guess.}
+
+\item{cores}{number of cpu cores to run NMF.}
+
 \item{keep_nmfObj}{default is \code{FALSE}, if \code{TRUE}, keep NMF objects from runs, and the result may be huge.}
+
+\item{save_plots}{if \code{TRUE}, save signature number survey plot to local machine.}
+
+\item{plot_basename}{when save plots, set custom basename for file path.}
 
 \item{what}{a character vector whose elements partially match one of the following item, which correspond to
 the measures computed by summary on each multi-run NMF result: ‘all’, ‘cophenetic’, ‘rss’, ‘residuals’,
 ‘dispersion’, ‘evar’, ‘silhouette’ (and more specific .coef, .basis, .consensus), ‘sparseness’
 (and more specific .coef, .basis). It specifies which measure must be plotted
 (what='all' plots all the measures).}
-
-\item{cores}{number of cpu cores to run NMF.}
-
-\item{seed}{specification of the starting point or seeding method, which will compute a starting point,
-usually using data from the target matrix in order to provide a good guess.}
-
-\item{use_random}{Should generate random data from input to test measurements. Default is \code{TRUE}.}
-
-\item{save_plots}{if \code{TRUE}, save plots to local machine. Of note, if pdf file consensus map
-has extra blank page, please call
-\code{pdf(..., onefile=FALSE)}, it may fix this problem, see
-\url{https://stackoverflow.com/questions/12481267/in-r-how-to-prevent-blank-page-in-pdf-when-using-gridbase-to-embed-subplot-insi}.}
-
-\item{plot_basename}{when save plots, set custom basename for file path.}
-
-\item{method}{specification of the NMF algorithm. Use 'brunet' as default.
-Available methods for nmf decompositions are 'brunet', 'lee', 'ls-nmf', 'nsNMF', 'offset'.}
 
 \item{pConstant}{A small positive value (like 1e-9) to add to the matrix.
 Use it ONLY if the functions throws
@@ -66,7 +63,9 @@ a \code{list} contains information of NMF run and rank survey.
 \description{
 Use \strong{NMF} package to evaluate the optimal number of signatures.
 This is used along with \link{sig_extract}.
-Users should \code{library(NMF)} firstly.
+Users should \code{library(NMF)} firstly. If NMF objects are returned,
+the result can be further visualized by NMF plot methods like
+\code{\link[NMF:consensusmap]{NMF::consensusmap()}} and \code{\link[NMF:basismap]{NMF::basismap()}}.
 }
 \details{
 The most common approach is to choose the smallest rank for which cophenetic correlation coefficient

@@ -2,7 +2,9 @@
 #'
 #' Use **NMF** package to evaluate the optimal number of signatures.
 #' This is used along with [sig_extract].
-#' Users should `library(NMF)` firstly.
+#' Users should `library(NMF)` firstly. If NMF objects are returned,
+#' the result can be further visualized by NMF plot methods like
+#' [NMF::consensusmap()] and [NMF::basismap()].
 #'
 #' The most common approach is to choose the smallest rank for which cophenetic correlation coefficient
 #' starts decreasing (Used by this function). Another approach is to choose the rank for which the plot
@@ -25,10 +27,7 @@
 #' @param seed specification of the starting point or seeding method, which will compute a starting point,
 #'  usually using data from the target matrix in order to provide a good guess.
 #' @param use_random Should generate random data from input to test measurements. Default is `TRUE`.
-#' @param save_plots if `TRUE`, save plots to local machine. Of note, if pdf file consensus map
-#' has extra blank page, please call
-#' `pdf(..., onefile=FALSE)`, it may fix this problem, see
-#' <https://stackoverflow.com/questions/12481267/in-r-how-to-prevent-blank-page-in-pdf-when-using-gridbase-to-embed-subplot-insi>.
+#' @param save_plots if `TRUE`, save signature number survey plot to local machine.
 #' @param plot_basename when save plots, set custom basename for file path.
 #' @param method specification of the NMF algorithm. Use 'brunet' as default.
 #' Available methods for nmf decompositions are 'brunet', 'lee', 'ls-nmf', 'nsNMF', 'offset'.
@@ -60,14 +59,14 @@ sig_estimate <-
   function(nmf_matrix,
            range = 2:5,
            nrun = 10,
-           keep_nmfObj = FALSE,
-           what = "all",
-           cores = 1,
+           use_random = FALSE,
+           method = "brunet",
            seed = 123456,
-           use_random = TRUE,
+           cores = 1,
+           keep_nmfObj = FALSE,
            save_plots = FALSE,
            plot_basename = file.path(tempdir(), "nmf"),
-           method = "brunet",
+           what = "all",
            pConstant = NULL,
            verbose = FALSE) {
     mat <- t(nmf_matrix)
@@ -146,28 +145,26 @@ sig_estimate <-
       nmf.sum.random <- NULL
     }
 
-    if (use_random) {
-      p <- NMF::plot(
-        estim.r,
-        estim.r.random,
-        what = what,
-        xname = "Observed",
-        yname = "Randomised",
-        xlab = "Number of signature",
-        main = "Signature number survey using NMF package"
-      )
-    } else {
-      p <- NMF::plot(
-        estim.r,
-        what = what,
-        xlab = "Number of signature",
-        main = "Signature number survey using NMF package"
-      )
-    }
-
-    print(p)
-
     if (save_plots) {
+      if (use_random) {
+        p <- NMF::plot(
+          estim.r,
+          estim.r.random,
+          what = what,
+          xname = "Observed",
+          yname = "Randomised",
+          xlab = "Number of signature",
+          main = "Signature number survey using NMF package"
+        )
+      } else {
+        p <- NMF::plot(
+          estim.r,
+          what = what,
+          xlab = "Number of signature",
+          main = "Signature number survey using NMF package"
+        )
+      }
+
       destdir <- dirname(plot_basename)
       if (!dir.exists(destdir)) dir.create(destdir, recursive = TRUE)
       pdf(
@@ -188,14 +185,12 @@ sig_estimate <-
         nmfEstimate = estim.r,
         nmfEstimate.random = estim.r.random,
         survey = nmf.sum,
-        survey.random = nmf.sum.random,
-        survey_plot = p
+        survey.random = nmf.sum.random
       )
     } else {
       res <- list(
         survey = nmf.sum,
-        survey.random = nmf.sum.random,
-        survey_plot = p
+        survey.random = nmf.sum.random
       )
     }
 

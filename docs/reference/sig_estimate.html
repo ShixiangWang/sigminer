@@ -45,7 +45,9 @@
 <meta property="og:title" content="Estimate Signature Number — sig_estimate" />
 <meta property="og:description" content="Use NMF package to evaluate the optimal number of signatures.
 This is used along with sig_extract.
-Users should library(NMF) firstly." />
+Users should library(NMF) firstly. If NMF objects are returned,
+the result can be further visualized by NMF plot methods like
+NMF::consensusmap() and NMF::basismap()." />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -126,21 +128,23 @@ Users should library(NMF) firstly." />
     <div class="ref-description">
     <p>Use <strong>NMF</strong> package to evaluate the optimal number of signatures.
 This is used along with <a href='sig_extract.html'>sig_extract</a>.
-Users should <code><a href='https://rdrr.io/r/base/library.html'>library(NMF)</a></code> firstly.</p>
+Users should <code><a href='https://rdrr.io/r/base/library.html'>library(NMF)</a></code> firstly. If NMF objects are returned,
+the result can be further visualized by NMF plot methods like
+<code><a href='https://rdrr.io/pkg/NMF/man/heatmaps.html'>NMF::consensusmap()</a></code> and <code><a href='https://rdrr.io/pkg/NMF/man/heatmaps.html'>NMF::basismap()</a></code>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>sig_estimate</span>(
   <span class='no'>nmf_matrix</span>,
   <span class='kw'>range</span> <span class='kw'>=</span> <span class='fl'>2</span>:<span class='fl'>5</span>,
   <span class='kw'>nrun</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>keep_nmfObj</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"all"</span>,
-  <span class='kw'>cores</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>use_random</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"brunet"</span>,
   <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>123456</span>,
-  <span class='kw'>use_random</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>cores</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>keep_nmfObj</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>save_plots</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>plot_basename</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>(), <span class='st'>"nmf"</span>),
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"brunet"</span>,
+  <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"all"</span>,
   <span class='kw'>pConstant</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
 )</pre>
@@ -163,8 +167,34 @@ and values are sorted in increasing order. The results are notably returned in t
 enough to achieve robust result.</p></td>
     </tr>
     <tr>
+      <th>use_random</th>
+      <td><p>Should generate random data from input to test measurements. Default is <code>TRUE</code>.</p></td>
+    </tr>
+    <tr>
+      <th>method</th>
+      <td><p>specification of the NMF algorithm. Use 'brunet' as default.
+Available methods for nmf decompositions are 'brunet', 'lee', 'ls-nmf', 'nsNMF', 'offset'.</p></td>
+    </tr>
+    <tr>
+      <th>seed</th>
+      <td><p>specification of the starting point or seeding method, which will compute a starting point,
+usually using data from the target matrix in order to provide a good guess.</p></td>
+    </tr>
+    <tr>
+      <th>cores</th>
+      <td><p>number of cpu cores to run NMF.</p></td>
+    </tr>
+    <tr>
       <th>keep_nmfObj</th>
       <td><p>default is <code>FALSE</code>, if <code>TRUE</code>, keep NMF objects from runs, and the result may be huge.</p></td>
+    </tr>
+    <tr>
+      <th>save_plots</th>
+      <td><p>if <code>TRUE</code>, save signature number survey plot to local machine.</p></td>
+    </tr>
+    <tr>
+      <th>plot_basename</th>
+      <td><p>when save plots, set custom basename for file path.</p></td>
     </tr>
     <tr>
       <th>what</th>
@@ -173,35 +203,6 @@ the measures computed by summary on each multi-run NMF result: ‘all’, ‘cop
 ‘dispersion’, ‘evar’, ‘silhouette’ (and more specific .coef, .basis, .consensus), ‘sparseness’
 (and more specific .coef, .basis). It specifies which measure must be plotted
 (what='all' plots all the measures).</p></td>
-    </tr>
-    <tr>
-      <th>cores</th>
-      <td><p>number of cpu cores to run NMF.</p></td>
-    </tr>
-    <tr>
-      <th>seed</th>
-      <td><p>specification of the starting point or seeding method, which will compute a starting point,
-usually using data from the target matrix in order to provide a good guess.</p></td>
-    </tr>
-    <tr>
-      <th>use_random</th>
-      <td><p>Should generate random data from input to test measurements. Default is <code>TRUE</code>.</p></td>
-    </tr>
-    <tr>
-      <th>save_plots</th>
-      <td><p>if <code>TRUE</code>, save plots to local machine. Of note, if pdf file consensus map
-has extra blank page, please call
-<code><a href='https://rdrr.io/r/grDevices/pdf.html'>pdf(..., onefile=FALSE)</a></code>, it may fix this problem, see
-<a href='https://stackoverflow.com/questions/12481267/in-r-how-to-prevent-blank-page-in-pdf-when-using-gridbase-to-embed-subplot-insi'>https://stackoverflow.com/questions/12481267/in-r-how-to-prevent-blank-page-in-pdf-when-using-gridbase-to-embed-subplot-insi</a>.</p></td>
-    </tr>
-    <tr>
-      <th>plot_basename</th>
-      <td><p>when save plots, set custom basename for file path.</p></td>
-    </tr>
-    <tr>
-      <th>method</th>
-      <td><p>specification of the NMF algorithm. Use 'brunet' as default.
-Available methods for nmf decompositions are 'brunet', 'lee', 'ls-nmf', 'nsNMF', 'offset'.</p></td>
     </tr>
     <tr>
       <th>pConstant</th>
