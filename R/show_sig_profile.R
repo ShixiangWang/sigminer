@@ -13,9 +13,15 @@
 #' @param normalize one of 'row', 'column', 'raw' and "feature", for row normalization (signature),
 #' column normalization (component), raw data, row normalization by feature, respectively.
 #' Of note, 'feature' only works when the mode is 'copynumber'.
+#' @param style plot style, one of 'default' and 'cosmic', works when
+#' parameter `set_gradient_color` is `FALSE`.
 #' @param set_gradient_color default is `FALSE`, if `TRUE`, use gradient colors
-#' to fill bars. **This is very useful when signatures are extracted from "Macintyre" method.**
+#' to fill bars.
+#' **This is very useful when signatures are extracted from "Macintyre" method and `normalize` is 'column'.**
+#' @param rm_grid_line default is `FALSE`, if `TRUE`, remove grid lines of plot.
 #' @param x_label_angle font angle for x label.
+#' @param x_label_vjust font vjust for x label.
+#' @param x_label_hjust font hjust for x label.
 #' @param params params `data.frame` of components, obtained from [sig_derive].
 #' @param show_cv default is `FALSE`, if `TRUE`, show coefficient of variation when
 #' `params` is not `NULL`.
@@ -62,8 +68,12 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
                              method = "Macintyre",
                              normalize = c("row", "column", "raw", "feature"),
                              feature_setting = sigminer::CN.features,
+                             style = c("default", "cosmic"),
                              set_gradient_color = FALSE,
+                             rm_grid_line = FALSE,
                              x_label_angle = 60,
+                             x_label_vjust = 1,
+                             x_label_hjust = 1,
                              params = NULL, show_cv = FALSE,
                              params_label_size = 3,
                              params_label_angle = 60, y_expand = 1,
@@ -86,6 +96,9 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
   mode <- match.arg(mode)
   method <- match.arg(method, choices = c("Macintyre", "M", "Wang", "W"))
   normalize <- match.arg(normalize)
+  style <- match.arg(style)
+
+  palette <- use_color_style(style)
 
   if (normalize == "row") {
     Sig <- apply(Sig, 2, function(x) x / sum(x))
@@ -96,19 +109,51 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
   # >>>>>>>>>>>>>>>>> Setting theme
   scale <- font_scale
 
-  .theme_ss <- theme_bw(base_size = base_size) +
+  .theme_ss <- theme_bw(
+    base_size = base_size,
+    base_family = "sans"
+  ) +
     theme(
       axis.text.x = element_text(
-        angle = x_label_angle, vjust = 1,
-        hjust = 1, size = (base_size - 4) * scale,
-        color = "black"
+        angle = x_label_angle, vjust = x_label_vjust,
+        hjust = x_label_hjust, size = (base_size - 4) * scale,
+        color = "black", family = "mono"
       ),
       axis.text.y = element_text(
         hjust = 0.5,
         size = base_size * scale,
         color = "black"
+      ),
+      strip.text.x = element_text(face = "bold"),
+      strip.text.y = element_text(face = "bold")
+    )
+
+  if (style == "cosmic") {
+    .theme_ss <- .theme_ss + theme(
+      panel.border = element_blank(),
+      panel.spacing.x = unit(0, "line"),
+      strip.background.x = element_rect(color = "white"),
+      strip.background.y = element_blank(),
+      strip.text.x = element_text(
+        color = "white",
+        face = "bold"
+      ),
+      strip.text.y = element_text(
+        size = 12,
+        vjust = 1,
+        color = "black",
+        face = "bold",
+        angle = 0
       )
     )
+  }
+
+  if (rm_grid_line) {
+    .theme_ss <- .theme_ss + theme(
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank()
+    )
+  }
   # <<<<<<<<<<<<<<<<< Setting theme
 
   # >>>>>>>>>>>>>>>>> identify mode and do data transformation
@@ -229,10 +274,7 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
       geom_bar(aes_string(x = "context", y = "signature", fill = "base"),
         stat = "identity", position = "identity", colour = "gray50"
       ) +
-      scale_fill_manual(values = c(
-        "cyan", "red", "yellow", "purple",
-        "green", "blue", "black", "gray"
-      ))
+      scale_fill_manual(values = palette)
   }
 
 
@@ -259,9 +301,9 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
       ) +
         coord_cartesian(clip = "off")
     }
-    p <- p + facet_grid(class ~ ., scales = "free")
+    p <- p + facet_grid(class ~ ., scales = "free", space = "free")
   } else {
-    p <- p + facet_grid(class ~ base, scales = "free")
+    p <- p + facet_grid(class ~ base, scales = "free", space = "free")
   }
 
   # Remove prefix to keep space
@@ -291,6 +333,23 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
     } else {
       p <- p + ylab("Estimated mutation counts")
     }
+  }
+
+  if (style != "default") {
+    ## It is hard to use geom_label/text
+    ## to add annotation for facet plot
+
+    # https://github.com/tidyverse/ggplot2/issues/2096#issuecomment-389825118
+    g <- ggplot_gtable(ggplot_build(p))
+    strip_t <- which(grepl("strip-t", g$layout$name))
+    k <- 1
+    for (i in strip_t) {
+      j <- which(grepl("rect", g$grobs[[i]]$grobs[[1]]$childrenOrder))
+      g$grobs[[i]]$grobs[[1]]$children[[j]]$gp$fill <- palette[k]
+      k <- k + 1
+    }
+    # grid::grid.draw(g)
+    p <- ggplotify::as.ggplot(g)
   }
 
   return(p)

@@ -8,6 +8,7 @@ show_sig_exposure(
   Signature,
   sig_names = NULL,
   cutoff = NULL,
+  style = c("default", "cosmic"),
   base_size = 12,
   font_scale = 1,
   rm_space = FALSE,
@@ -22,6 +23,9 @@ representing signatures (row names must start with 'Sig').}
 \item{sig_names}{set name of signatures, can be a character vector.}
 
 \item{cutoff}{a cutoff value to remove hyper-mutated samples.}
+
+\item{style}{plot style, one of 'default' and 'cosmic', works when
+parameter \code{set_gradient_color} is \code{FALSE}.}
 
 \item{base_size}{overall font size.}
 

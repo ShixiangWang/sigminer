@@ -58,7 +58,8 @@ Imports:
     stats,
     tibble,
     tidyr,
-    patchwork
+    patchwork,
+    ggplotify
 Suggests: 
     BSgenome,
     BSgenome.Hsapiens.UCSC.hg19,

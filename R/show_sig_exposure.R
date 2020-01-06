@@ -32,6 +32,7 @@
 show_sig_exposure <- function(Signature,
                               sig_names = NULL,
                               cutoff = NULL,
+                              style = c("default", "cosmic"),
                               base_size = 12,
                               font_scale = 1,
                               rm_space = FALSE,
@@ -52,17 +53,24 @@ show_sig_exposure <- function(Signature,
     h <- h[, -hyper_index, drop = FALSE]
   }
 
+  style <- match.arg(style)
+  palette <- use_color_style(style)
+
   h.norm <- apply(h, 2, function(x) x / sum(x))
   h <- as.data.frame(h)
   h.norm <- as.data.frame(h.norm)
 
   scale <- font_scale
 
-  .theme_ss <- theme_bw(base_size = base_size) +
+  .theme_ss <- theme_bw(
+    base_size = base_size,
+    base_family = "sans"
+  ) +
     theme(
       axis.text.x = element_text(
         angle = 90, vjust = 0.5, color = "black",
-        hjust = 1, size = (base_size - 2) * scale
+        hjust = 1, size = (base_size - 2) * scale,
+        family = "mono"
       ),
       axis.text.y = element_text(
         hjust = 0.5,
@@ -70,7 +78,8 @@ show_sig_exposure <- function(Signature,
         color = "black"
       ),
       panel.grid.major = element_blank(),
-      panel.grid.minor = element_blank()
+      panel.grid.minor = element_blank(),
+      strip.text.y = element_text(face = "bold")
     )
 
   if (is.null(sig_names)) {
@@ -111,7 +120,7 @@ show_sig_exposure <- function(Signature,
     p <- p + geom_bar(stat = "identity", position = "stack", color = "black", alpha = 0.9)
   }
 
-  p <- p + scale_fill_manual(values = c("red", "cyan", "yellow", "blue", "magenta", "gray50", "orange", "darkgreen", "brown", "black", rainbow(10)[4:10]))
+  p <- p + scale_fill_manual(values = palette)
   p <- p + facet_grid(class0 ~ ., scales = "free_y")
   p <- p + xlab("Samples") + ylab("Exposure")
   p <- p + .theme_ss

@@ -10,8 +10,12 @@ show_sig_profile(
   method = "Macintyre",
   normalize = c("row", "column", "raw", "feature"),
   feature_setting = sigminer::CN.features,
+  style = c("default", "cosmic"),
   set_gradient_color = FALSE,
+  rm_grid_line = FALSE,
   x_label_angle = 60,
+  x_label_vjust = 1,
+  x_label_hjust = 1,
   params = NULL,
   show_cv = FALSE,
   params_label_size = 3,
@@ -45,10 +49,20 @@ Default is \link{CN.features}. Users can also set custom input with "feature",
 "min" and "max" columns avaiable. Valid features can be printed by
 \code{unique(CN.features$feature)}.}
 
+\item{style}{plot style, one of 'default' and 'cosmic', works when
+parameter \code{set_gradient_color} is \code{FALSE}.}
+
 \item{set_gradient_color}{default is \code{FALSE}, if \code{TRUE}, use gradient colors
-to fill bars. \strong{This is very useful when signatures are extracted from "Macintyre" method.}}
+to fill bars.
+\strong{This is very useful when signatures are extracted from "Macintyre" method and \code{normalize} is 'column'.}}
+
+\item{rm_grid_line}{default is \code{FALSE}, if \code{TRUE}, remove grid lines of plot.}
 
 \item{x_label_angle}{font angle for x label.}
+
+\item{x_label_vjust}{font vjust for x label.}
+
+\item{x_label_hjust}{font hjust for x label.}
 
 \item{params}{params \code{data.frame} of components, obtained from \link{sig_derive}.}
 
