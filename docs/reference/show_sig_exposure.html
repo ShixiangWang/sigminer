@@ -129,6 +129,7 @@
   <span class='no'>Signature</span>,
   <span class='kw'>sig_names</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>cutoff</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>style</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"default"</span>, <span class='st'>"cosmic"</span>),
   <span class='kw'>base_size</span> <span class='kw'>=</span> <span class='fl'>12</span>,
   <span class='kw'>font_scale</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>rm_space</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
@@ -151,6 +152,11 @@ representing signatures (row names must start with 'Sig').</p></td>
     <tr>
       <th>cutoff</th>
       <td><p>a cutoff value to remove hyper-mutated samples.</p></td>
+    </tr>
+    <tr>
+      <th>style</th>
+      <td><p>plot style, one of 'default' and 'cosmic', works when
+parameter <code>set_gradient_color</code> is <code>FALSE</code>.</p></td>
     </tr>
     <tr>
       <th>base_size</th>

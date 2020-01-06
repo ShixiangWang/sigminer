@@ -131,8 +131,12 @@
   <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"Macintyre"</span>,
   <span class='kw'>normalize</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"row"</span>, <span class='st'>"column"</span>, <span class='st'>"raw"</span>, <span class='st'>"feature"</span>),
   <span class='kw'>feature_setting</span> <span class='kw'>=</span> <span class='kw pkg'>sigminer</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/sigminer/man/CN.features.html'>CN.features</a></span>,
+  <span class='kw'>style</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"default"</span>, <span class='st'>"cosmic"</span>),
   <span class='kw'>set_gradient_color</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>rm_grid_line</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>x_label_angle</span> <span class='kw'>=</span> <span class='fl'>60</span>,
+  <span class='kw'>x_label_vjust</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>x_label_hjust</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>params</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>show_cv</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>params_label_size</span> <span class='kw'>=</span> <span class='fl'>3</span>,
@@ -179,13 +183,31 @@ Default is <a href='CN.features.html'>CN.features</a>. Users can also set custom
 <code><a href='https://rdrr.io/r/base/unique.html'>unique(CN.features$feature)</a></code>.</p></td>
     </tr>
     <tr>
+      <th>style</th>
+      <td><p>plot style, one of 'default' and 'cosmic', works when
+parameter <code>set_gradient_color</code> is <code>FALSE</code>.</p></td>
+    </tr>
+    <tr>
       <th>set_gradient_color</th>
       <td><p>default is <code>FALSE</code>, if <code>TRUE</code>, use gradient colors
-to fill bars. <strong>This is very useful when signatures are extracted from "Macintyre" method.</strong></p></td>
+to fill bars.
+<strong>This is very useful when signatures are extracted from "Macintyre" method and <code>normalize</code> is 'column'.</strong></p></td>
+    </tr>
+    <tr>
+      <th>rm_grid_line</th>
+      <td><p>default is <code>FALSE</code>, if <code>TRUE</code>, remove grid lines of plot.</p></td>
     </tr>
     <tr>
       <th>x_label_angle</th>
       <td><p>font angle for x label.</p></td>
+    </tr>
+    <tr>
+      <th>x_label_vjust</th>
+      <td><p>font vjust for x label.</p></td>
+    </tr>
+    <tr>
+      <th>x_label_hjust</th>
+      <td><p>font hjust for x label.</p></td>
     </tr>
     <tr>
       <th>params</th>
@@ -262,7 +284,7 @@ a matrix, i.e., all signatures (colnames) must start with 'Sig'.</p></td>
   <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 ))
 <span class='no'>params</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_tidy_parameter.html'>get_tidy_parameter</a></span>(<span class='no'>cn_prepare</span>$<span class='no'>components</span>)
-<span class='fu'>show_sig_profile</span>(<span class='no'>sig</span>, <span class='kw'>params</span> <span class='kw'>=</span> <span class='no'>params</span>, <span class='kw'>y_expand</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' λ=3.7e-12'出错：&lt;ce&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' λ=3.7e-12'出错：&lt;bb&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' λ=0.92'出错：&lt;ce&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' λ=0.92'出错：&lt;bb&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' λ=1.2e-06'出错：&lt;ce&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' λ=1.2e-06'出错：&lt;bb&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' λ=1.2'出错：&lt;ce&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' λ=1.2'出错：&lt;bb&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' λ=5.5'出错：&lt;ce&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' λ=5.5'出错：&lt;bb&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=0.9'出错：&lt;ce&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=0.9'出错：&lt;bc&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=5.8'出错：&lt;ce&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=5.8'出错：&lt;bc&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=1.9'出错：&lt;ce&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=1.9'出错：&lt;bc&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=3.6'出错：&lt;ce&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=3.6'出错：&lt;bc&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' λ=0.077'出错：&lt;ce&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' λ=0.077'出错：&lt;bb&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' λ=4.6'出错：&lt;ce&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' λ=4.6'出错：&lt;bb&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=320000'出错：&lt;ce&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=320000'出错：&lt;bc&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=5500000'出错：&lt;ce&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=5500000'出错：&lt;bc&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=2.4e+07'出错：&lt;ce&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=2.4e+07'出错：&lt;bc&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=7e+07'出错：&lt;ce&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=7e+07'出错：&lt;bc&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=7.1e+07'出错：&lt;ce&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=7.1e+07'出错：&lt;bc&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=1.3e+08'出错：&lt;ce&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=1.3e+08'出错：&lt;bc&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=1.5e+08'出错：&lt;ce&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=1.5e+08'出错：&lt;bc&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=2.4e+08'出错：&lt;ce&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=2.4e+08'出错：&lt;bc&gt;代替了dot</span></div><div class='img'><img src='show_sig_profile-3.png' alt='' width='700' height='433' /></div></pre>
+<span class='fu'>show_sig_profile</span>(<span class='no'>sig</span>, <span class='kw'>params</span> <span class='kw'>=</span> <span class='no'>params</span>, <span class='kw'>y_expand</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='img'><img src='show_sig_profile-3.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
