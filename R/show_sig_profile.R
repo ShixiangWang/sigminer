@@ -301,9 +301,9 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
       ) +
         coord_cartesian(clip = "off")
     }
-    p <- p + facet_grid(class ~ ., scales = "free", space = "free")
+    p <- p + facet_grid(class ~ ., scales = "free", space = "free_x")
   } else {
-    p <- p + facet_grid(class ~ base, scales = "free", space = "free")
+    p <- p + facet_grid(class ~ base, scales = "free", space = "free_x")
   }
 
   # Remove prefix to keep space
