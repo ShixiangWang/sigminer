@@ -194,6 +194,34 @@ getNChrV <- function(abs_profiles, genome_build = "hg38") {
   cn
 }
 
+# The chromosome sequences (using integer as index) with copy number variation
+# The count of this result represents the burden (contribution) of chromosome
+getBoChr <- function(abs_profiles, genome_build = "hg38") {
+  genome_build <- match.arg(genome_build, choices = c("hg19", "hg38"))
+  abs_profiles <- handle_sex(abs_profiles)
+
+  if (genome_build %in% c("hg19", "hg38")) {
+    chrs <- c(paste0("chr", 1:22), "chrX")
+    # Create a dict for mapping
+    chrs_map <- as.character(1:23)
+    names(chrs_map) <- chrs
+  }
+
+  cn <- purrr::map_df(abs_profiles, function(x) {
+    x <- x[x$chromosome %in% chrs, c("sample", "chromosome", "segVal"), with = FALSE]
+    x_cnv <- x[x$segVal != 2]
+    if (nrow(x_cnv) == 0) {
+      value <- 0L
+    } else {
+      value <- as.integer(chrs_map[x_cnv$chromosome])
+    }
+    data.table::data.table(
+      ID = x$sample[1],
+      value = value
+    )
+  })
+  cn
+}
 
 count_components <- function(min, max, label, feature) {
   # Count all samples
@@ -246,7 +274,7 @@ count_components_wrapper <- function(feature_df, f_name, feature_setting) {
 }
 
 handle_sex <- function(abs_profiles) {
-  # only works for feature 'CNCP' and 'CN'
+  # only works for feature 'CNCP' and 'CN' and "BoChr"
   sex <- getOption("sigminer.sex", default = "female")
   cn_max <- getOption("sigminer.copynumber.max", default = NA_integer_)
   stopifnot(is.character(sex) | is.data.frame(sex), is.na(cn_max) | is.numeric(cn_max))

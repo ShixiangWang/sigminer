@@ -90,7 +90,7 @@ show_sig_number_survey <- function(object, x = "rank",
       scale_y_continuous(
         name = left_name,
         sec.axis = sec_axis(~ norm2rg(., range(survey[[right_y]])),
-                            name = right_name
+          name = right_name
         )
       ) +
       cowplot::theme_cowplot() +

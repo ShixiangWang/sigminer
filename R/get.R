@@ -112,7 +112,10 @@ get_features_wang <- function(CN_data,
     } else if (i == "CN") {
       message("Getting copy number...")
       getCN(CN_data)
-    } else {
+    } else if (i == "BoChr") {
+      message("Getting burden of chromosome...")
+      getBoChr(CN_data, genome_build)
+    } else if (i == "NChrV") {
       message("Getting number of autosome with CNV...")
       getNChrV(CN_data, genome_build)
     }

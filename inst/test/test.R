@@ -81,3 +81,23 @@ sig <- sig_extract(cn_prepare$nmf_matrix, 2, nrun = 10)
 
 # Methods 'consensus' and 'samples' are from NMF::predict()
 get_groups(sig)
+
+
+## Test BoChr
+
+# Load copy number object
+load(system.file("extdata", "toy_copynumber.RData",
+                 package = "sigminer", mustWork = TRUE
+))
+# Use method designed by Wang, Shixiang et al.
+cn_prepare <- sig_derive(cn, method = "W", feature_setting = CN.features[1:50])
+cn_prepare <- sig_derive(cn, method = "W", feature_setting = CN.features)
+
+cn_prepare$features$BoChr
+cn_prepare$components
+cn_prepare$parameters
+debug(sig_derive)
+
+library(NMF)
+sigs <- sig_extract(cn_prepare$nmf_matrix, n_sig = 3, pConstant = 1e-9)
+show_sig_profile(sigs, method = "W", normalize = "feature", style = "cosmic")
