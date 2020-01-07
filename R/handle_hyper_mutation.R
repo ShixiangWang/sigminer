@@ -1,6 +1,7 @@
 #' Handle Hypermutant Samples
 #'
-#' This can be used for SNV/INDEL count matrix.
+#' This can be used for SNV/INDEL count matrix. For copy number analysis,
+#' please skip it.
 #'
 #' @inheritParams sig_auto_extract
 #'

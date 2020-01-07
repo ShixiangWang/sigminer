@@ -13,7 +13,8 @@ handle_hyper_mutation(nmf_matrix)
 a \code{matrix}.
 }
 \description{
-This can be used for SNV/INDEL count matrix.
+This can be used for SNV/INDEL count matrix. For copy number analysis,
+please skip it.
 }
 \references{
 Kim, Jaegil, et al. "Somatic ERCC2 mutations are associated with a distinct genomic signature in urothelial tumors."

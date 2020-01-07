@@ -102,6 +102,7 @@ cn_prepare <- sig_feed(cn, method = "W", feature_setting = CN.features)
 
 cn_prepare$features$BoChr
 cn_prepare$features$NChrV
+cn_prepare$features$NC50
 cn_prepare$components
 cn_prepare$parameters
 debug(sig_feed)

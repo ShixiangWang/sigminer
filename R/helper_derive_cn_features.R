@@ -224,6 +224,40 @@ getBoChr <- function(abs_profiles, genome_build = "hg38") {
   cn
 }
 
+# The minimal number of chromosome with 50% CNV
+getNC50 <- function(abs_profiles, genome_build = "hg38") {
+  genome_build <- match.arg(genome_build, choices = c("hg19", "hg38"))
+  abs_profiles <- handle_sex(abs_profiles)
+
+  if (genome_build %in% c("hg19", "hg38")) {
+    chrs <- c(paste0("chr", 1:22), "chrX")
+  }
+
+  cn <- purrr::map_df(abs_profiles, function(x) {
+    x <- x[x$chromosome %in% chrs, c("sample", "chromosome", "segVal"), with = FALSE]
+    x_cnv <- x[x$segVal != 2]
+    if (nrow(x_cnv) == 0) {
+      value <- 0
+    } else {
+      value <- x_cnv %>%
+        dplyr::as_tibble() %>%
+        dplyr::count(.data$chromosome, sort = TRUE) %>%
+        dplyr::mutate(
+          n = cumsum(.data$n) / sum(.data$n),
+          index = dplyr::row_number()
+        ) %>%
+        dplyr::filter(.data$n >= 0.5) %>%
+        head(1) %>%
+        dplyr::pull(.data$index)
+    }
+    data.table::data.table(
+      ID = x$sample[1],
+      value = value
+    )
+  })
+  cn
+}
+
 count_components <- function(min, max, label, feature) {
   # Count all samples
   if (label == "point") {

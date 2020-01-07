@@ -118,6 +118,9 @@ get_features_wang <- function(CN_data,
     } else if (i == "NChrV") {
       message("Getting number of autosome with CNV...")
       getNChrV(CN_data, genome_build)
+    } else if (i == "NC50") {
+      message("Getting the minimal number of chromosome with 50% CNV...")
+      getNC50(CN_data, genome_build)
     }
   }
 
