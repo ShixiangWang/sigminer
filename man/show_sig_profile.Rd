@@ -15,7 +15,10 @@ show_sig_profile(
   palette = use_color_style(style),
   set_gradient_color = FALSE,
   free_space = "free_x",
+  rm_panel_border = style == "cosmic",
   rm_grid_line = FALSE,
+  bar_border_color = ifelse(style == "default", "grey50", "white"),
+  bar_width = 0.7,
   x_label_angle = 60,
   x_label_vjust = 1,
   x_label_hjust = 1,
@@ -70,7 +73,15 @@ if "free_x" their width will be proportional to the length of the x scale;
 or if "free" both height and width will vary.
 This setting has no effect unless the appropriate scales also vary.}
 
+\item{rm_panel_border}{default is \code{TRUE} for style 'cosmic',
+remove panel border to keep plot tight.}
+
 \item{rm_grid_line}{default is \code{FALSE}, if \code{TRUE}, remove grid lines of plot.}
+
+\item{bar_border_color}{the color of bar border.}
+
+\item{bar_width}{bar width. By default, set to 70\% of the resolution of the
+data.}
 
 \item{x_label_angle}{font angle for x label.}
 
