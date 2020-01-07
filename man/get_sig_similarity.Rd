@@ -31,7 +31,7 @@ are copy number signatures.}
 \item{feature_setting}{a \code{data.frame} used for classification.
 Only used when method is "Wang" ("W").
 Default is \link{CN.features}. Users can also set custom input with "feature",
-"min" and "max" columns avaiable. Valid features can be printed by
+"min" and "max" columns available. Valid features can be printed by
 \code{unique(CN.features$feature)}.}
 
 \item{verbose}{if \code{TRUE}, print extra info.}

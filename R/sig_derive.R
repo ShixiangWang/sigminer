@@ -53,7 +53,7 @@ sig_derive <- function(object, ...) {
 #' @param feature_setting a `data.frame` used for classification.
 #' Only used when method is "Wang" ("W").
 #' Default is [CN.features]. Users can also set custom input with "feature",
-#' "min" and "max" columns avaiable. Valid features can be printed by
+#' "min" and "max" columns available. Valid features can be printed by
 #' `unique(CN.features$feature)`.
 #' @param type one of "probability", "count". Default is "probability", return a matrix
 #' with the sum of posterior probabilities for each components. If set to 'count',

@@ -14,6 +14,7 @@ show_sig_profile(
   style = c("default", "cosmic"),
   palette = use_color_style(style),
   set_gradient_color = FALSE,
+  free_space = "free_x",
   rm_grid_line = FALSE,
   x_label_angle = 60,
   x_label_vjust = 1,
@@ -50,7 +51,7 @@ Of note, 'feature' only works when the mode is 'copynumber'.}
 \item{feature_setting}{a \code{data.frame} used for classification.
 Only used when method is "Wang" ("W").
 Default is \link{CN.features}. Users can also set custom input with "feature",
-"min" and "max" columns avaiable. Valid features can be printed by
+"min" and "max" columns available. Valid features can be printed by
 \code{unique(CN.features$feature)}.}
 
 \item{style}{plot style, one of 'default' and 'cosmic', works when
@@ -62,6 +63,12 @@ default use a built-in palette according to parameter \code{style}.}
 \item{set_gradient_color}{default is \code{FALSE}, if \code{TRUE}, use gradient colors
 to fill bars.
 \strong{This is very useful when signatures are extracted from "Macintyre" method and \code{normalize} is 'column'.}}
+
+\item{free_space}{default is 'free_x'. If "fixed", all panels have the same size.
+If "free_y" their height will be proportional to the length of the y scale;
+if "free_x" their width will be proportional to the length of the x scale;
+or if "free" both height and width will vary.
+This setting has no effect unless the appropriate scales also vary.}
 
 \item{rm_grid_line}{default is \code{FALSE}, if \code{TRUE}, remove grid lines of plot.}
 
