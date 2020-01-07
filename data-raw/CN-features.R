@@ -13,8 +13,11 @@
 # Copy number change point (CNCP)
 # SegSize (SS)
 # Burden of Chromosome (BoChr)
+# Number of Chromosome with 50% variation events (NC50)
 
 features <- c("BP10MB", "BPArm", "CN", "CNCP", "OsCN", "SS", "NChrV", "BoChr")
+
+# Define two datasets, the one is for the default situation, the other collects all features can be used.
 
 # When component is a unique value, min=max
 # When component is a data range, make left open and right closed
