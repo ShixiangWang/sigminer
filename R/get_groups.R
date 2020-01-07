@@ -118,25 +118,26 @@ get_groups <- function(Signature,
       ) %>%
       dplyr::mutate(group = sub("Sig", "", .data$group))
   } else if (method == "k-means") {
-    message("=> Running k-means for signature assignment..")
     set.seed(seed = 1024)
-
     expo_df <- get_sig_exposure(Signature, type = "relative")
     contrib <- expo_df %>%
       as.data.frame() %>%
       tibble::column_to_rownames("sample")
+    n_cluster <- ifelse(is.null(n_cluster), ncol(contrib), n_cluster)
+    message("=> Running k-means with ", n_cluster, " clusters for signature assignment..")
 
-    contrib.km <- kmeans(x = contrib, centers = ifelse(is.null(n_cluster), ncol(contrib), n_cluster))
-    cluster_df <- as.data.frame(apply(contrib.km$centers, 2, function(x) which(x == max(x))))
-    colnames(cluster_df)[1] <- "group"
-    data.table::setDT(x = cluster_df, keep.rownames = TRUE)
+    contrib.km <- kmeans(x = contrib, centers = n_cluster)
+    cluster_df <- as.data.frame(apply(t(contrib.km$centers), 2, function(x) which(x == max(x))))
     colnames(cluster_df)[1] <- "enrich_sig"
+    cluster_df$enrich_sig <- colnames(contrib)[cluster_df$enrich_sig]
+    data.table::setDT(x = cluster_df, keep.rownames = TRUE)
+    colnames(cluster_df)[1] <- "group"
     data <- as.data.frame(contrib.km$cluster)
     colnames(data)[1] <- "group"
     data.table::setDT(data, keep.rownames = TRUE)
     colnames(data)[1] <- "sample"
-    data <- merge(data, cluster_df, by = "group")
     data$group <- as.character(data$group)
+    data <- merge(data, cluster_df, by = "group")
     # Set a default value for now
     # data$weight <- 1L
     # data.table::setcolorder(data, neworder = c("sample", "group", "weight", "enrich_sig"))

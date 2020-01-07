@@ -67,17 +67,18 @@ laml = read.maf(maf = laml.maf)
 
 library(BSgenome.Hsapiens.UCSC.hg19, quietly = TRUE)
 laml.tnm = trinucleotideMatrix(maf = laml, prefix = 'chr', add = TRUE, ref_genome = "BSgenome.Hsapiens.UCSC.hg19")
+dim(laml.tnm$nmf_matrix)
 library('NMF')
-laml.sig = extractSignatures(mat = laml.tnm, n = 3, pConstant = 1e-9)
+laml.sig = extractSignatures(mat = laml.tnm, n = 10, pConstant = 1e-9)
 laml.se = signatureEnrichment(maf = laml, sig_res = laml.sig)
-
+sum(laml.se$cf_sizes$N)
 
 load(system.file("extdata", "toy_copynumber_prepare.RData",
                  package = "sigminer", mustWork = TRUE
 ))
 # Extract copy number signatures
 library(NMF)
-sig <- sig_extract(cn_prepare$nmf_matrix, 2, nrun = 10)
+sig <- sig_extract(cn_prepare$nmf_matrix, 5, nrun = 10)
 
 # Methods 'consensus' and 'samples' are from NMF::predict()
 get_groups(sig)
