@@ -16,7 +16,7 @@ show_cn_features(
 )
 }
 \arguments{
-\item{features}{a feature \code{list} generate from \link{sig_derive} function.}
+\item{features}{a feature \code{list} generate from \link{sig_feed} function.}
 
 \item{method}{method for feature classfication, can be one of "Macintyre" ("M") and
 "Wang" ("W").}

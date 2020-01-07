@@ -17,7 +17,7 @@ show_cn_components(
 }
 \arguments{
 \item{parameters}{a \code{data.frame} contain parameter components, obtain this
-from \link{sig_derive} function.}
+from \link{sig_feed} function.}
 
 \item{method}{method for feature classfication, can be one of "Macintyre" ("M") and
 "Wang" ("W").}

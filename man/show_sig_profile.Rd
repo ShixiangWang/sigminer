@@ -89,7 +89,7 @@ data.}
 
 \item{x_label_hjust}{font hjust for x label.}
 
-\item{params}{params \code{data.frame} of components, obtained from \link{sig_derive}.}
+\item{params}{params \code{data.frame} of components, obtained from \link{sig_feed}.}
 
 \item{show_cv}{default is \code{FALSE}, if \code{TRUE}, show coefficient of variation when
 \code{params} is not \code{NULL}.}

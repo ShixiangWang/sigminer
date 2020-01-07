@@ -21,7 +21,7 @@
 #' library(NMF)
 #' res <- sig_extract(cn_prepare$nmf_matrix, 2, nrun = 1)
 #' }
-#' @seealso [sig_derive] for getting variation matrix,
+#' @seealso [sig_feed] for getting variation matrix,
 #' [sig_estimate] for estimating signature number for [sig_extract], [sig_auto_extract] for
 #' extracting signatures using automatic relevance determination technique.
 sig_extract <- function(nmf_matrix,

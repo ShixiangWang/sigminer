@@ -236,7 +236,7 @@ Nature genetics 48.6 (2016): 600.</p>
 <p>Alexandrov, Ludmil, et al. "The repertoire of mutational signatures in human cancer." BioRxiv (2018): 322859.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><a href='sig_derive.html'>sig_derive</a> for getting variation matrix,
+    <div class='dont-index'><p><a href='sig_feed.html'>sig_feed</a> for getting variation matrix,
 <a href='sig_extract.html'>sig_extract</a> for extracting signatures using <strong>NMF</strong> package, <a href='sig_estimate.html'>sig_estimate</a> for
 estimating signature number for <a href='sig_extract.html'>sig_extract</a>.</p></div>
 
@@ -246,10 +246,7 @@ estimating signature number for <a href='sig_extract.html'>sig_extract</a>.</p><
   <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 ))
 <span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>sig_auto_extract</span>(<span class='no'>cn_prepare</span>$<span class='no'>nmf_matrix</span>, <span class='kw'>result_prefix</span> <span class='kw'>=</span> <span class='st'>"Test_copynumber"</span>, <span class='kw'>nrun</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; <span class='message'>Select Run 1, which K = 2 as best solution.</span></div><div class='input'><span class='co'># At default, all run files are stored in tempdir()</span>
-<span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>dir</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>())</div><div class='output co'>#&gt; [1] "filef172804da78.txt"             "filef172c13aab6.so"             
-#&gt; [3] "filef17391e53af.txt"             "libloc_171_a2b5c07f79246a5d.rds"
-#&gt; [5] "libloc_213_e619d72855daa0d8.rds" "libloc_242_b1fad11ebcd4094d.rds"
-#&gt; [7] "Test_copynumber.1.rds"          </div></pre>
+<span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>dir</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>(), <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"Test_copynumber"</span>)</div><div class='output co'>#&gt; [1] "Test_copynumber.1.rds"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

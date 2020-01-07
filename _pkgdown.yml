@@ -17,7 +17,7 @@ reference:
   - title: Signature identification
     desc: Identify signatures from genomic variation profile. After reading data, the following functions construct the standard pipeline for most users.
     contents:
-    - sig_derive
+    - sig_feed
     - handle_hyper_mutation
     - sig_estimate
     - show_sig_number_survey
@@ -57,6 +57,7 @@ reference:
     - get_bayesian_result
     - get_tidy_parameter
     - get_adj_p
+    - use_color_style
   - title: Copy number analysis and visualization
     desc: Functions for analyzing copy number data and visualization.
     contents:

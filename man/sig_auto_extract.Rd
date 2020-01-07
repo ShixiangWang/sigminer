@@ -85,7 +85,7 @@ load(system.file("extdata", "toy_copynumber_prepare.RData",
 ))
 res <- sig_auto_extract(cn_prepare$nmf_matrix, result_prefix = "Test_copynumber", nrun = 1)
 # At default, all run files are stored in tempdir()
-dir(tempdir())
+dir(tempdir(), pattern = "Test_copynumber")
 }
 \references{
 Tan, Vincent YF, and Cédric Févotte. "Automatic relevance determination in nonnegative matrix factorization with the/spl beta/-divergence."
@@ -97,7 +97,7 @@ Nature genetics 48.6 (2016): 600.
 Alexandrov, Ludmil, et al. "The repertoire of mutational signatures in human cancer." BioRxiv (2018): 322859.
 }
 \seealso{
-\link{sig_derive} for getting variation matrix,
+\link{sig_feed} for getting variation matrix,
 \link{sig_extract} for extracting signatures using \strong{NMF} package, \link{sig_estimate} for
 estimating signature number for \link{sig_extract}.
 }

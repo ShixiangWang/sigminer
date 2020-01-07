@@ -1,6 +1,6 @@
 #' Show Copy Number Feature Distributions
 #'
-#' @param features a feature `list` generate from [sig_derive] function.
+#' @param features a feature `list` generate from [sig_feed] function.
 #' @param rm_outlier default is `FALSE`, if `TRUE`, remove outliers. Only
 #' works when method is "Wang" ("W").
 #' @param ylab lab of y axis.
@@ -8,7 +8,7 @@
 #' works for input from "Macintyre" ("M") method.
 #' @param return_plotlist if `TRUE`, return a list of ggplot objects but a combined plot.
 #' @param ... other options pass to \code{\link[cowplot]{plot_grid}} function of `cowplot` package.
-#' @inheritParams sig_derive
+#' @inheritParams sig_feed
 #' @inheritParams show_cn_distribution
 #' @return a `ggplot` object
 #' @examples

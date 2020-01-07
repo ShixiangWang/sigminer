@@ -6,8 +6,8 @@ load(system.file("extdata", "toy_copynumber.RData",
 # Prepare copy number signature analysis
 options(sigminer.sex = "male", sigminer.copynumber.max = 10)
 
-cn_prepare <- sig_derive(cn, method = "W")
-cn_prepare <- sig_derive(cn, method = "W", cores = 2)
+cn_prepare <- sig_feed(cn, method = "W")
+cn_prepare <- sig_feed(cn, method = "W", cores = 2)
 
 df <- dplyr::tibble(
   start = c(1, 10, 20, 30, 40, 50, 60, 70, 80),
@@ -97,14 +97,14 @@ load(system.file("extdata", "toy_copynumber.RData",
                  package = "sigminer", mustWork = TRUE
 ))
 # Use method designed by Wang, Shixiang et al.
-cn_prepare <- sig_derive(cn, method = "W", feature_setting = CN.features[1:50])
-cn_prepare <- sig_derive(cn, method = "W", feature_setting = CN.features)
+cn_prepare <- sig_feed(cn, method = "W", feature_setting = CN.features[1:50])
+cn_prepare <- sig_feed(cn, method = "W", feature_setting = CN.features)
 
 cn_prepare$features$BoChr
 cn_prepare$features$NChrV
 cn_prepare$components
 cn_prepare$parameters
-debug(sig_derive)
+debug(sig_feed)
 
 library(NMF)
 sigs <- sig_extract(cn_prepare$nmf_matrix, n_sig = 3, pConstant = 1e-9)
@@ -122,3 +122,12 @@ res <- sig_extract(cn_prepare$nmf_matrix, 5, nrun = 2)
 show_sig_profile(res, normalize = "feature", style = "cosmic")
 show_sig_profile(res, normalize = "feature", style = "cosmic", filters = c("bp10MB", "bpchrarm"))
 show_sig_profile(laml.sig$signatures, mode = "mutation", style = "default",rm_panel_border = F)
+
+
+# Change name of function
+#sed -i "s/sig_derive/sig_feed/g" `grep "sig_derive" -rl R/*`
+#sed -i "s/sig_derive/sig_feed/g" `grep "sig_derive" -rl inst/*`
+#sed -i "s/sig_derive/sig_feed/g" `grep "sig_derive" -rl docs/*`
+#sed -i "s/sig_derive/sig_feed/g" `grep "sig_derive" -rl man/*`
+#sed -i "s/sig_derive/sig_feed/g" `grep "sig_derive" -rl tests/*`
+#sed -i "s/sig_derive/sig_feed/g" `grep "sig_derive" -rl _pkgdown.yml`

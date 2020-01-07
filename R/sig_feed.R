@@ -1,6 +1,7 @@
-#' Derive Variation Matrix from Mutation Profile
+#' Feed a Variation Object
 #'
-#' Generate a matrix for NMF de-composition and more. This is a generic function,
+#' Feed a variation object like [MAF] and return a matrix for NMF de-composition and more.
+#' This is a generic function,
 #' so it can be further extended to other mutation cases. Please read details
 #' about how to set sex for identifying copy number signatures.
 #'
@@ -29,9 +30,8 @@
 #' @return a `list` contains a `matrix` used for NMF de-composition.
 #' @author Shixiang Wang
 #' @export
-#' @seealso [sig_derive] for getting variation matrix,
-#' [sig_estimate] for estimating signature number for [sig_extract], [sig_auto_extract] for
-#' extracting signatures using automatic relevance determination technique.
+#' @seealso [sig_estimate] for estimating signature number for [sig_extract],
+#' [sig_auto_extract] for extracting signatures using automatic relevance determination technique.
 #' @examples
 #' # Load copy number object
 #' load(system.file("extdata", "toy_copynumber.RData",
@@ -39,15 +39,15 @@
 #' ))
 #' \donttest{
 #' # Prepare copy number signature analysis
-#' cn_prepare <- sig_derive(cn)
+#' cn_prepare <- sig_feed(cn)
 #' }
 #' # Use method designed by Wang, Shixiang et al.
-#' cn_prepare <- sig_derive(cn, method = "W")
-sig_derive <- function(object, ...) {
-  UseMethod("sig_derive")
+#' cn_prepare <- sig_feed(cn, method = "W")
+sig_feed <- function(object, ...) {
+  UseMethod("sig_feed")
 }
 
-#' @describeIn sig_derive Derive copy number features, components and component-by-sample matrix
+#' @describeIn sig_feed Returns copy number features, components and component-by-sample matrix
 #' @param method method for feature classfication, can be one of "Macintyre" ("M") and
 #' "Wang" ("W").
 #' @param feature_setting a `data.frame` used for classification.
@@ -91,7 +91,7 @@ sig_derive <- function(object, ...) {
 #' @references Macintyre, Geoff, et al. "Copy number signatures and mutational
 #' processes in ovarian carcinoma." Nature genetics 50.9 (2018): 1262.
 #' @export
-sig_derive.CopyNumber <- function(object,
+sig_feed.CopyNumber <- function(object,
                                   method = "Macintyre",
                                   ignore_chrs = NULL,
                                   feature_setting = sigminer::CN.features[1:50],
@@ -207,7 +207,7 @@ sig_derive.CopyNumber <- function(object,
   }
 }
 
-#' @describeIn sig_derive Derive SBS mutation component-by-sample matrix and APOBEC enrichment
+#' @describeIn sig_feed Returns SBS mutation component-by-sample matrix and APOBEC enrichment
 #' @inheritParams maftools::trinucleotideMatrix
 #' @param ignore_chrs Chromsomes to ignore from analysis. e.g. chrX and chrY.
 #' @param use_syn Logical. Whether to include synonymous variants in analysis. Defaults to TRUE
@@ -218,19 +218,19 @@ sig_derive.CopyNumber <- function(object,
 #' laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
 #' laml <- read_maf(maf = laml.maf)
 #' library(BSgenome.Hsapiens.UCSC.hg19)
-#' mt_prepare <- sig_derive(
+#' mt_prepare <- sig_feed(
 #'   laml,
 #'   ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
 #'   prefix = "chr", add = TRUE, useSyn = TRUE
 #' )
 #' }
 #' @export
-sig_derive.MAF <- function(object, ref_genome = NULL, prefix = NULL,
+sig_feed.MAF <- function(object, ref_genome = NULL, prefix = NULL,
                            add = TRUE, ignore_chrs = NULL, use_syn = TRUE,
                            keep_only_matrix = FALSE,
                            ...) {
   # // TODO: Rewrite this function instead of using maftools
-  # // Make result consistent with result from sig_derive.CopyNumber
+  # // Make result consistent with result from sig_feed.CopyNumber
   res <- maftools::trinucleotideMatrix(
     object,
     ref_genome = ref_genome, prefix = prefix,

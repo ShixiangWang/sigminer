@@ -16,7 +16,7 @@
 #' @section sig_ functions:
 #' Signature analysis for genomic variations:
 #'
-#' * [sig_derive()] - generate variation matrix for signature extraction.
+#' * [sig_feed()] - generate variation matrix for signature extraction.
 #' * [sig_estimate()] - estimate signature number, work with [sig_extract()].
 #' * [sig_extract()] - extract signatures throught NMF, a proper signature
 #' number can be estimated by [sig_estimate()].

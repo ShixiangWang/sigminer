@@ -15,7 +15,7 @@
 #' for mutational signatures. "feature" is designed by me to use when input
 #' are copy number signatures.
 #' @param verbose if `TRUE`, print extra info.
-#' @inheritParams sig_derive
+#' @inheritParams sig_feed
 #' @author Shixiang Wang <w_shixiang@163.com>
 #'
 #' @return a `list` containing smilarities, aetiologies if available, and best match.

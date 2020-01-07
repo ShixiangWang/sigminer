@@ -130,6 +130,7 @@
   <span class='kw'>sig_names</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>cutoff</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>style</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"default"</span>, <span class='st'>"cosmic"</span>),
+  <span class='kw'>palette</span> <span class='kw'>=</span> <span class='fu'><a href='use_color_style.html'>use_color_style</a></span>(<span class='no'>style</span>),
   <span class='kw'>base_size</span> <span class='kw'>=</span> <span class='fl'>12</span>,
   <span class='kw'>font_scale</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>rm_space</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
@@ -157,6 +158,11 @@ representing signatures (row names must start with 'Sig').</p></td>
       <th>style</th>
       <td><p>plot style, one of 'default' and 'cosmic', works when
 parameter <code>set_gradient_color</code> is <code>FALSE</code>.</p></td>
+    </tr>
+    <tr>
+      <th>palette</th>
+      <td><p>palette used to plot, default use a built-in palette
+according to parameter <code>style</code>.</p></td>
     </tr>
     <tr>
       <th>base_size</th>

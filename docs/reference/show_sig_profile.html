@@ -130,10 +130,16 @@
   <span class='kw'>mode</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"copynumber"</span>, <span class='st'>"mutation"</span>),
   <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"Macintyre"</span>,
   <span class='kw'>normalize</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"row"</span>, <span class='st'>"column"</span>, <span class='st'>"raw"</span>, <span class='st'>"feature"</span>),
+  <span class='kw'>filters</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>feature_setting</span> <span class='kw'>=</span> <span class='kw pkg'>sigminer</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/sigminer/man/CN.features.html'>CN.features</a></span>,
   <span class='kw'>style</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"default"</span>, <span class='st'>"cosmic"</span>),
+  <span class='kw'>palette</span> <span class='kw'>=</span> <span class='fu'><a href='use_color_style.html'>use_color_style</a></span>(<span class='no'>style</span>),
   <span class='kw'>set_gradient_color</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>free_space</span> <span class='kw'>=</span> <span class='st'>"free_x"</span>,
+  <span class='kw'>rm_panel_border</span> <span class='kw'>=</span> <span class='no'>style</span> <span class='kw'>==</span> <span class='st'>"cosmic"</span>,
   <span class='kw'>rm_grid_line</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>bar_border_color</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='no'>style</span> <span class='kw'>==</span> <span class='st'>"default"</span>, <span class='st'>"grey50"</span>, <span class='st'>"white"</span>),
+  <span class='kw'>bar_width</span> <span class='kw'>=</span> <span class='fl'>0.7</span>,
   <span class='kw'>x_label_angle</span> <span class='kw'>=</span> <span class='fl'>60</span>,
   <span class='kw'>x_label_vjust</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>x_label_hjust</span> <span class='kw'>=</span> <span class='fl'>1</span>,
@@ -175,11 +181,15 @@ column normalization (component), raw data, row normalization by feature, respec
 Of note, 'feature' only works when the mode is 'copynumber'.</p></td>
     </tr>
     <tr>
+      <th>filters</th>
+      <td><p>a pattern used to select components to plot.</p></td>
+    </tr>
+    <tr>
       <th>feature_setting</th>
       <td><p>a <code>data.frame</code> used for classification.
 Only used when method is "Wang" ("W").
 Default is <a href='CN.features.html'>CN.features</a>. Users can also set custom input with "feature",
-"min" and "max" columns avaiable. Valid features can be printed by
+"min" and "max" columns available. Valid features can be printed by
 <code><a href='https://rdrr.io/r/base/unique.html'>unique(CN.features$feature)</a></code>.</p></td>
     </tr>
     <tr>
@@ -188,14 +198,41 @@ Default is <a href='CN.features.html'>CN.features</a>. Users can also set custom
 parameter <code>set_gradient_color</code> is <code>FALSE</code>.</p></td>
     </tr>
     <tr>
+      <th>palette</th>
+      <td><p>palette used to plot when <code>set_gradient_color</code> is <code>FALSE</code>,
+default use a built-in palette according to parameter <code>style</code>.</p></td>
+    </tr>
+    <tr>
       <th>set_gradient_color</th>
       <td><p>default is <code>FALSE</code>, if <code>TRUE</code>, use gradient colors
 to fill bars.
 <strong>This is very useful when signatures are extracted from "Macintyre" method and <code>normalize</code> is 'column'.</strong></p></td>
     </tr>
     <tr>
+      <th>free_space</th>
+      <td><p>default is 'free_x'. If "fixed", all panels have the same size.
+If "free_y" their height will be proportional to the length of the y scale;
+if "free_x" their width will be proportional to the length of the x scale;
+or if "free" both height and width will vary.
+This setting has no effect unless the appropriate scales also vary.</p></td>
+    </tr>
+    <tr>
+      <th>rm_panel_border</th>
+      <td><p>default is <code>TRUE</code> for style 'cosmic',
+remove panel border to keep plot tight.</p></td>
+    </tr>
+    <tr>
       <th>rm_grid_line</th>
       <td><p>default is <code>FALSE</code>, if <code>TRUE</code>, remove grid lines of plot.</p></td>
+    </tr>
+    <tr>
+      <th>bar_border_color</th>
+      <td><p>the color of bar border.</p></td>
+    </tr>
+    <tr>
+      <th>bar_width</th>
+      <td><p>bar width. By default, set to 70% of the resolution of the
+data.</p></td>
     </tr>
     <tr>
       <th>x_label_angle</th>
@@ -211,7 +248,7 @@ to fill bars.
     </tr>
     <tr>
       <th>params</th>
-      <td><p>params <code>data.frame</code> of components, obtained from <a href='sig_derive.html'>sig_derive</a>.</p></td>
+      <td><p>params <code>data.frame</code> of components, obtained from <a href='sig_feed.html'>sig_feed</a>.</p></td>
     </tr>
     <tr>
       <th>show_cv</th>
@@ -284,7 +321,7 @@ a matrix, i.e., all signatures (colnames) must start with 'Sig'.</p></td>
   <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 ))
 <span class='no'>params</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_tidy_parameter.html'>get_tidy_parameter</a></span>(<span class='no'>cn_prepare</span>$<span class='no'>components</span>)
-<span class='fu'>show_sig_profile</span>(<span class='no'>sig</span>, <span class='kw'>params</span> <span class='kw'>=</span> <span class='no'>params</span>, <span class='kw'>y_expand</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='img'><img src='show_sig_profile-3.png' alt='' width='700' height='433' /></div></pre>
+<span class='fu'>show_sig_profile</span>(<span class='no'>sig</span>, <span class='kw'>params</span> <span class='kw'>=</span> <span class='no'>params</span>, <span class='kw'>y_expand</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on ' 位=3.7e-12' in 'mbcsToSbcs': dot substituted for &lt;ce&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on ' 位=3.7e-12' in 'mbcsToSbcs': dot substituted for &lt;bb&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on ' 位=0.92' in 'mbcsToSbcs': dot substituted for &lt;ce&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on ' 位=0.92' in 'mbcsToSbcs': dot substituted for &lt;bb&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on ' 位=1.2e-06' in 'mbcsToSbcs': dot substituted for &lt;ce&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on ' 位=1.2e-06' in 'mbcsToSbcs': dot substituted for &lt;bb&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on ' 位=1.2' in 'mbcsToSbcs': dot substituted for &lt;ce&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on ' 位=1.2' in 'mbcsToSbcs': dot substituted for &lt;bb&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on ' 位=5.5' in 'mbcsToSbcs': dot substituted for &lt;ce&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on ' 位=5.5' in 'mbcsToSbcs': dot substituted for &lt;bb&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on ' 位=0.077' in 'mbcsToSbcs': dot substituted for &lt;ce&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on ' 位=0.077' in 'mbcsToSbcs': dot substituted for &lt;bb&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on ' 位=4.6' in 'mbcsToSbcs': dot substituted for &lt;ce&gt;</span></div><div class='output co'>#&gt; <span class='warning'>Warning: conversion failure on ' 位=4.6' in 'mbcsToSbcs': dot substituted for &lt;bb&gt;</span></div><div class='img'><img src='show_sig_profile-3.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
