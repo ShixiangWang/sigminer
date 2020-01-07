@@ -123,6 +123,7 @@ res <- sig_extract(cn_prepare$nmf_matrix, 5, nrun = 2)
 show_sig_profile(res, normalize = "feature", style = "cosmic")
 show_sig_profile(res, normalize = "feature", style = "cosmic", filters = c("bp10MB", "bpchrarm"))
 show_sig_profile(laml.sig$signatures, mode = "mutation", style = "default",rm_panel_border = F)
+show_sig_profile(laml.sig$signatures, mode = "mutation", style = "cosmic")
 
 
 # Change name of function

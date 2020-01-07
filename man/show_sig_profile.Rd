@@ -19,6 +19,7 @@ show_sig_profile(
   rm_grid_line = FALSE,
   bar_border_color = ifelse(style == "default", "grey50", "white"),
   bar_width = 0.7,
+  paint_axis_text = TRUE,
   x_label_angle = 60,
   x_label_vjust = 1,
   x_label_hjust = 1,
@@ -82,6 +83,8 @@ remove panel border to keep plot tight.}
 
 \item{bar_width}{bar width. By default, set to 70\% of the resolution of the
 data.}
+
+\item{paint_axis_text}{if \code{TRUE}, color on text of x axis.}
 
 \item{x_label_angle}{font angle for x label.}
 

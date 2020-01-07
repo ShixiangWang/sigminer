@@ -32,6 +32,7 @@
 #' @param bar_border_color the color of bar border.
 #' @param bar_width bar width. By default, set to 70% of the resolution of the
 #' data.
+#' @param paint_axis_text if `TRUE`, color on text of x axis.
 #' @param x_label_angle font angle for x label.
 #' @param x_label_vjust font vjust for x label.
 #' @param x_label_hjust font hjust for x label.
@@ -90,6 +91,7 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
                              rm_grid_line = FALSE,
                              bar_border_color = ifelse(style == "default", "grey50", "white"),
                              bar_width = 0.7,
+                             paint_axis_text = TRUE,
                              x_label_angle = 60,
                              x_label_vjust = 1,
                              x_label_hjust = 1,
@@ -130,61 +132,6 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
       }))
     }), ]
   }
-
-  # >>>>>>>>>>>>>>>>> Setting theme
-  scale <- font_scale
-
-  .theme_ss <- theme_bw(
-    base_size = base_size,
-    base_family = "sans"
-  ) +
-    theme(
-      axis.text.x = element_text(
-        angle = x_label_angle, vjust = x_label_vjust,
-        hjust = x_label_hjust, size = (base_size - 4) * scale,
-        color = "black", family = "mono"
-      ),
-      axis.text.y = element_text(
-        hjust = 0.5,
-        size = base_size * scale,
-        color = "black"
-      ),
-      strip.text.x = element_text(face = "bold"),
-      strip.text.y = element_text(face = "bold")
-    )
-
-  if (style == "cosmic") {
-    .theme_ss <- .theme_ss + theme(
-      panel.spacing.x = unit(0, "line"),
-      strip.background.x = element_rect(color = "white"),
-      strip.background.y = element_blank(),
-      strip.text.x = element_text(
-        color = "white",
-        face = "bold"
-      ),
-      strip.text.y = element_text(
-        size = 12,
-        vjust = 1,
-        color = "black",
-        face = "bold",
-        angle = 0
-      )
-    )
-  }
-
-  if (rm_panel_border) {
-    .theme_ss <- .theme_ss + theme(
-      panel.border = element_blank()
-    )
-  }
-
-  if (rm_grid_line) {
-    .theme_ss <- .theme_ss + theme(
-      panel.grid.major = element_blank(),
-      panel.grid.minor = element_blank()
-    )
-  }
-  # <<<<<<<<<<<<<<<<< Setting theme
 
   # >>>>>>>>>>>>>>>>> identify mode and do data transformation
   mat <- as.data.frame(Sig)
@@ -346,6 +293,64 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
     )
   }
 
+
+  # >>>>>>>>>>>>>>>>> Setting theme
+  scale <- font_scale
+
+  .theme_ss <- theme_bw(
+    base_size = base_size,
+    base_family = "sans"
+  ) +
+    theme(
+      axis.text.x = element_text(
+        angle = x_label_angle, vjust = x_label_vjust,
+        hjust = x_label_hjust, size = (base_size - 4) * scale,
+        color = "black",
+        face = "bold",
+        family = "mono"
+      ),
+      axis.text.y = element_text(
+        hjust = 0.5,
+        size = base_size * scale,
+        color = "black"
+      ),
+      strip.text.x = element_text(face = "bold"),
+      strip.text.y = element_text(face = "bold")
+    )
+
+  if (style == "cosmic") {
+    .theme_ss <- .theme_ss + theme(
+      panel.spacing.x = unit(0, "line"),
+      strip.background.x = element_rect(color = "white"),
+      strip.background.y = element_blank(),
+      strip.text.x = element_text(
+        color = "white",
+        face = "bold"
+      ),
+      strip.text.y = element_text(
+        size = 12,
+        vjust = 1,
+        color = "black",
+        face = "bold",
+        angle = 0
+      )
+    )
+  }
+
+  if (rm_panel_border) {
+    .theme_ss <- .theme_ss + theme(
+      panel.border = element_blank()
+    )
+  }
+
+  if (rm_grid_line) {
+    .theme_ss <- .theme_ss + theme(
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank()
+    )
+  }
+  # <<<<<<<<<<<<<<<<< Setting theme
+
   p <- p +
     guides(fill = FALSE) + .theme_ss
 
@@ -367,18 +372,31 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
     }
   }
 
-  if (style != "default") {
-    ## It is hard to use geom_label/text
-    ## to add annotation for facet plot
+  if (style != "default" | paint_axis_text) {
 
-    # https://github.com/tidyverse/ggplot2/issues/2096#issuecomment-389825118
     g <- ggplot_gtable(ggplot_build(p))
-    strip_t <- which(grepl("strip-t", g$layout$name))
-    k <- 1
-    for (i in strip_t) {
-      j <- which(grepl("rect", g$grobs[[i]]$grobs[[1]]$childrenOrder))
-      g$grobs[[i]]$grobs[[1]]$children[[j]]$gp$fill <- palette[k]
-      k <- k + 1
+
+    if (style != "default") {
+      ## It is hard to use geom_label/text
+      ## to add annotation for facet plot
+
+      # https://github.com/tidyverse/ggplot2/issues/2096#issuecomment-389825118
+      strip_t <- which(grepl("strip-t", g$layout$name))
+      k <- 1
+      for (i in strip_t) {
+        j <- which(grepl("rect", g$grobs[[i]]$grobs[[1]]$childrenOrder))
+        g$grobs[[i]]$grobs[[1]]$children[[j]]$gp$fill <- palette[k]
+        k <- k + 1
+      }
+    }
+
+    if (paint_axis_text) {
+      axis_b <- which(grepl("axis-b", g$layout$name))
+      k <- 1
+      for (i in axis_b) {
+        g$grobs[[i]]$children[[2]]$grobs[[2]]$children[[1]]$gp$col <- palette[k]
+        k <- k + 1
+      }
     }
     # grid::grid.draw(g)
     p <- ggplotify::as.ggplot(g)

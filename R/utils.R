@@ -56,9 +56,9 @@ use_color_style <- function(style) {
   #c("red", "cyan", "yellow", "blue", "magenta", "gray50", "orange", "darkgreen", "brown", "black", rainbow(10)[4:10])
   if (style == "default") {
     palette <- c(
-      "cyan", "red", "yellow", "purple",
+      "cyan", "red", "brown", "purple",
       "green", "blue", "black", "magenta",
-      "orange", "magenta",
+      "orange", "gray50", "darkgreen", "yellow",
       rainbow(10)[4:10]
     )
   } else {
