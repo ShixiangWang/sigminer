@@ -41,6 +41,17 @@ isValidAndUnreserved <- function(string) {
 rgb2hex <- function(r, g, b) grDevices::rgb(r, g, b, maxColorValue = 255)
 col2hex <- function(col, alpha) grDevices::rgb(t(grDevices::col2rgb(col)), alpha = alpha, maxColorValue = 255)
 
+
+#' Set Color Style for Plotting
+#'
+#' @param style one of 'default' and 'cosmic'.
+#'
+#' @return color values.
+#' @export
+#'
+#' @examples
+#' use_color_style("default")
+#' use_color_style("cosmic")
 use_color_style <- function(style) {
   c("red", "cyan", "yellow", "blue", "magenta", "gray50", "orange", "darkgreen", "brown", "black", rainbow(10)[4:10])
   if (style == "default") {

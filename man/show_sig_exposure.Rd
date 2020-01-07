@@ -9,6 +9,7 @@ show_sig_exposure(
   sig_names = NULL,
   cutoff = NULL,
   style = c("default", "cosmic"),
+  palette = use_color_style(style),
   base_size = 12,
   font_scale = 1,
   rm_space = FALSE,
@@ -26,6 +27,9 @@ representing signatures (row names must start with 'Sig').}
 
 \item{style}{plot style, one of 'default' and 'cosmic', works when
 parameter \code{set_gradient_color} is \code{FALSE}.}
+
+\item{palette}{palette used to plot, default use a built-in palette
+according to parameter \code{style}.}
 
 \item{base_size}{overall font size.}
 

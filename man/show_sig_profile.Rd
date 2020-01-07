@@ -9,8 +9,10 @@ show_sig_profile(
   mode = c("copynumber", "mutation"),
   method = "Macintyre",
   normalize = c("row", "column", "raw", "feature"),
+  filters = NULL,
   feature_setting = sigminer::CN.features,
   style = c("default", "cosmic"),
+  palette = use_color_style(style),
   set_gradient_color = FALSE,
   rm_grid_line = FALSE,
   x_label_angle = 60,
@@ -43,6 +45,8 @@ representing signatures (column names must start with 'Sig').}
 column normalization (component), raw data, row normalization by feature, respectively.
 Of note, 'feature' only works when the mode is 'copynumber'.}
 
+\item{filters}{a pattern used to select components to plot.}
+
 \item{feature_setting}{a \code{data.frame} used for classification.
 Only used when method is "Wang" ("W").
 Default is \link{CN.features}. Users can also set custom input with "feature",
@@ -51,6 +55,9 @@ Default is \link{CN.features}. Users can also set custom input with "feature",
 
 \item{style}{plot style, one of 'default' and 'cosmic', works when
 parameter \code{set_gradient_color} is \code{FALSE}.}
+
+\item{palette}{palette used to plot when \code{set_gradient_color} is \code{FALSE},
+default use a built-in palette according to parameter \code{style}.}
 
 \item{set_gradient_color}{default is \code{FALSE}, if \code{TRUE}, use gradient colors
 to fill bars.

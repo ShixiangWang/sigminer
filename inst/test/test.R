@@ -117,3 +117,4 @@ load(system.file("extdata", "toy_copynumber_prepare.RData",
 library(NMF)
 res <- sig_extract(cn_prepare$nmf_matrix, 5, nrun = 2)
 show_sig_profile(res, normalize = "feature", style = "cosmic")
+show_sig_profile(res, normalize = "feature", style = "cosmic", show_features = c("bp10MB", "bpchrarm"))

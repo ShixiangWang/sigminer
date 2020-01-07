@@ -155,8 +155,10 @@ get_groups <- function(Signature,
   map_dt <- unique(data[, c("group", "enrich_sig"), with = FALSE])
   map_dic <- map_dt$enrich_sig
   names(map_dic) <- map_dt$group
-  message(paste(paste0("\tgroup #", names(sum_tb), ": ",
-                       sum_tb, " samples with ",
-                       map_dic[names(sum_tb)], " enriched."), collapse = "\n"))
+  message(paste(paste0(
+    "\tgroup #", names(sum_tb), ": ",
+    sum_tb, " samples with ",
+    map_dic[names(sum_tb)], " enriched."
+  ), collapse = "\n"))
   return(data)
 }

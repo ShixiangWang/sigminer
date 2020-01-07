@@ -13,8 +13,11 @@
 #' @param normalize one of 'row', 'column', 'raw' and "feature", for row normalization (signature),
 #' column normalization (component), raw data, row normalization by feature, respectively.
 #' Of note, 'feature' only works when the mode is 'copynumber'.
+#' @param filters a pattern used to select components to plot.
 #' @param style plot style, one of 'default' and 'cosmic', works when
 #' parameter `set_gradient_color` is `FALSE`.
+#' @param palette palette used to plot when `set_gradient_color` is `FALSE`,
+#' default use a built-in palette according to parameter `style`.
 #' @param set_gradient_color default is `FALSE`, if `TRUE`, use gradient colors
 #' to fill bars.
 #' **This is very useful when signatures are extracted from "Macintyre" method and `normalize` is 'column'.**
@@ -67,8 +70,10 @@
 show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
                              method = "Macintyre",
                              normalize = c("row", "column", "raw", "feature"),
+                             filters = NULL,
                              feature_setting = sigminer::CN.features,
                              style = c("default", "cosmic"),
+                             palette = use_color_style(style),
                              set_gradient_color = FALSE,
                              rm_grid_line = FALSE,
                              x_label_angle = 60,
@@ -98,12 +103,18 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
   normalize <- match.arg(normalize)
   style <- match.arg(style)
 
-  palette <- use_color_style(style)
-
   if (normalize == "row") {
     Sig <- apply(Sig, 2, function(x) x / sum(x))
   } else if (normalize == "column") {
     Sig <- t(apply(Sig, 1, function(x) x / sum(x)))
+  }
+
+  if (!is.null(filters)) {
+    Sig <- Sig[sapply(rownames(Sig), function(x) {
+      any(sapply(filters, function(y) {
+        grepl(y, x)
+      }))
+    }), ]
   }
 
   # >>>>>>>>>>>>>>>>> Setting theme

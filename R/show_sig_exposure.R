@@ -7,6 +7,8 @@
 #' representing signatures (row names must start with 'Sig').
 #' @param sig_names set name of signatures, can be a character vector.
 #' @param cutoff a cutoff value to remove hyper-mutated samples.
+#' @param palette palette used to plot, default use a built-in palette
+#' according to parameter `style`.
 #' @param rm_space default is `FALSE`. If `TRUE`, it will remove border color
 #' and expand the bar width to 1. This is useful when the sample size is big.
 #' @param hide_samps if `TRUE`, hide sample names.
@@ -33,6 +35,7 @@ show_sig_exposure <- function(Signature,
                               sig_names = NULL,
                               cutoff = NULL,
                               style = c("default", "cosmic"),
+                              palette = use_color_style(style),
                               base_size = 12,
                               font_scale = 1,
                               rm_space = FALSE,
@@ -54,7 +57,6 @@ show_sig_exposure <- function(Signature,
   }
 
   style <- match.arg(style)
-  palette <- use_color_style(style)
 
   h.norm <- apply(h, 2, function(x) x / sum(x))
   h <- as.data.frame(h)

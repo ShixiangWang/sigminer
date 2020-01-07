@@ -21,16 +21,18 @@ helper_sort_signature <- function(sig) {
 }
 
 # Matrix: feature-by-signature
-get_segsize_order = function(mat) {
-  index = apply(mat, 2, which.max)
-  is_unique = length(index) == length(unique(index))
+get_segsize_order <- function(mat) {
+  index <- apply(mat, 2, which.max)
+  is_unique <- length(index) == length(unique(index))
   if (!is_unique) {
     # Compare value with same index
     mat %>%
       t() %>%
       dplyr::as_tibble() %>%
-      dplyr::mutate(N = dplyr::row_number(),
-                    index = index) %>%
+      dplyr::mutate(
+        N = dplyr::row_number(),
+        index = index
+      ) %>%
       dplyr::arrange(.data$index) %>%
       dplyr::group_by(.data$index) %>%
       tidyr::nest() %>%
@@ -38,7 +40,7 @@ get_segsize_order = function(mat) {
         if (nrow(x) == 1) {
           return(x$N)
         } else {
-          N = x$N[order(x[[y]])]
+          N <- x$N[order(x[[y]])]
           return(N)
         }
       })) %>%
