@@ -82,8 +82,13 @@ sig <- sig_extract(cn_prepare$nmf_matrix, 5, nrun = 10)
 
 # Methods 'consensus' and 'samples' are from NMF::predict()
 get_groups(sig)
+get_groups(sig, method = "exposure")
+get_groups(sig, method = "consensus")
+get_groups(sig, method = "consensus", match_consensus = TRUE)
+get_groups(sig, method = "samples")
 
-
+debug(get_groups)
+undebug(get_groups)
 ## Test BoChr
 
 # Load copy number object

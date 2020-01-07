@@ -22,8 +22,7 @@
 #' - 'consensus' - returns the cluster membership based on the hierarchical clustering of the consensus matrix,
 #' it can only be used for the result obtained by [sig_extract()] with multiple runs using **NMF** package.
 #' - 'samples' - returns the cluster membership based on the contribution of signature to each sample,
-#' it can only be used for the result obtained by [sig_extract()] using **NMF** package. The
-#' result is basically same as 'k-means' but raw NMF object is required for this method.
+#' it can only be used for the result obtained by [sig_extract()] using **NMF** package.
 #' @param n_cluster only used when the `method` is 'k-means'.
 #' @param match_consensus only used when the `method` is 'consensus'.
 #' If `TRUE`, the result will match order as shown in consensus map.
@@ -66,7 +65,7 @@ get_groups <- function(Signature,
 
     data <- data.frame(
       sample = sampleNames(nmfObj),
-      nmf_submethods = predict.consensus,
+      nmf_subgroup = predict.consensus,
       sil_width = signif(silhouette.consensus[, "sil_width"], 3),
       stringsAsFactors = FALSE
     )
@@ -79,10 +78,10 @@ get_groups <- function(Signature,
     }
 
     data$group <- as.character(data$group)
-    message("Assigning samples to clusters by the dominant signature...")
+    message("=> Finding the dominant signature of each group...")
     data <- find_enriched_signature(data, Signature)
   } else if (method == "samples") {
-    message("Obtaining clusters by the contribution of signature to each sample...")
+    message("=> Obtaining clusters by the contribution of signature to each sample...")
 
     if (!"nmf_obj" %in% names(Signature$Raw)) {
       stop("Input Signature object does not contain NMF object, please select other methods")
@@ -99,10 +98,10 @@ get_groups <- function(Signature,
     )
 
     data$group <- as.character(data$group)
-    message("Assigning samples to clusters by the dominant signature...")
+    message("=> Finding the dominant signature of each group...")
     data <- find_enriched_signature(data, Signature)
   } else if (method == "exposure") {
-    message("Creating clusters by the dominant signature (fraction is returned as weight)...")
+    message("=> Creating clusters by the dominant signature (fraction is returned as weight)...")
     expo_df <- get_sig_exposure(Signature, type = "relative")
     data <- expo_df %>%
       tidyr::gather(key = "Signature", value = "Exposure", dplyr::starts_with("Sig")) %>%
@@ -116,7 +115,10 @@ get_groups <- function(Signature,
         group = .data$Signature,
         weight = .data$Exposure
       ) %>%
-      dplyr::mutate(group = sub("Sig", "", .data$group))
+      dplyr::mutate(group = as.integer(sub("Sig", "", .data$group))) %>%
+      dplyr::arrange(.data$group)
+
+    data$group <- as.character(as.integer(factor(data$group)))
   } else if (method == "k-means") {
     set.seed(seed = 1024)
     expo_df <- get_sig_exposure(Signature, type = "relative")
@@ -124,9 +126,9 @@ get_groups <- function(Signature,
       as.data.frame() %>%
       tibble::column_to_rownames("sample")
     n_cluster <- ifelse(is.null(n_cluster), ncol(contrib), n_cluster)
-    message("=> Running k-means with ", n_cluster, " clusters for signature assignment..")
-
+    message("=> Running k-means with ", n_cluster, " clusters...")
     contrib.km <- kmeans(x = contrib, centers = n_cluster)
+    message("=> Finding the dominant signature of each group...")
     cluster_df <- as.data.frame(apply(t(contrib.km$centers), 2, function(x) which(x == max(x))))
     colnames(cluster_df)[1] <- "enrich_sig"
     cluster_df$enrich_sig <- colnames(contrib)[cluster_df$enrich_sig]
@@ -150,6 +152,11 @@ get_groups <- function(Signature,
   }
   message("=> Summarizing...")
   sum_tb <- table(data$group)
-  message(paste(paste0("\tgroup #", names(sum_tb), ": ", sum_tb), collapse = "\n"))
+  map_dt <- unique(data[, c("group", "enrich_sig"), with = FALSE])
+  map_dic <- map_dt$enrich_sig
+  names(map_dic) <- map_dt$group
+  message(paste(paste0("\tgroup #", names(sum_tb), ": ",
+                       sum_tb, " samples with ",
+                       map_dic[names(sum_tb)], " enriched."), collapse = "\n"))
   return(data)
 }

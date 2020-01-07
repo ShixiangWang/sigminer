@@ -36,10 +36,9 @@ find_enriched_signature <- function(group_df, Signature) {
     }
 
   res <- dplyr::tibble()
-  for (i in seq_len(ncol(ztable))) {
-    group <- names(which.max(ztable[, i]))
-    sig <- colnames(ztable)[i]
-    res <- dplyr::bind_rows(res, dplyr::tibble(group = group, enrich_sig = sig))
+  for (i in seq_len(nrow(ztable))) {
+    sig <- names(which.max(ztable[i, ]))
+    res <- dplyr::bind_rows(res, dplyr::tibble(group = rownames(ztable)[i], enrich_sig = sig))
   }
 
   merge_df %>%
