@@ -177,13 +177,14 @@ getCN <- function(abs_profiles) {
 # Number of Chromosome with CNV
 getNChrV <- function(abs_profiles, genome_build = "hg38") {
   genome_build <- match.arg(genome_build, choices = c("hg19", "hg38"))
+  abs_profiles <- handle_sex(abs_profiles)
 
   if (genome_build %in% c("hg19", "hg38")) {
-    autosome <- paste0("chr", 1:22)
+    chrs <- c(paste0("chr", 1:22), "chrX")
   }
 
   cn <- purrr::map_df(abs_profiles, function(x) {
-    x <- x[x$chromosome %in% autosome, c("sample", "chromosome", "segVal"), with = FALSE]
+    x <- x[x$chromosome %in% chrs, c("sample", "chromosome", "segVal"), with = FALSE]
     x_cnv <- x[x$segVal != 2]
     value <- ifelse(nrow(x_cnv) == 0, 0L, length(unique(x_cnv$chromosome)))
     data.table::data.table(
@@ -274,7 +275,7 @@ count_components_wrapper <- function(feature_df, f_name, feature_setting) {
 }
 
 handle_sex <- function(abs_profiles) {
-  # only works for feature 'CNCP' and 'CN' and "BoChr"
+  # only works for feature 'CNCP' and 'CN' and "NChrV" and "BoChr"
   sex <- getOption("sigminer.sex", default = "female")
   cn_max <- getOption("sigminer.copynumber.max", default = NA_integer_)
   stopifnot(is.character(sex) | is.data.frame(sex), is.na(cn_max) | is.numeric(cn_max))
