@@ -102,3 +102,13 @@ debug(sig_derive)
 library(NMF)
 sigs <- sig_extract(cn_prepare$nmf_matrix, n_sig = 3, pConstant = 1e-9)
 show_sig_profile(sigs, method = "W", normalize = "feature", style = "cosmic")
+
+
+# Load copy number prepare object
+load(system.file("extdata", "toy_copynumber_prepare.RData",
+                 package = "sigminer", mustWork = TRUE
+))
+# Extract copy number signatures
+library(NMF)
+res <- sig_extract(cn_prepare$nmf_matrix, 5, nrun = 2)
+show_sig_profile(res, normalize = "feature", style = "cosmic")
