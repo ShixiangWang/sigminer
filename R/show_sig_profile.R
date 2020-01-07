@@ -21,6 +21,11 @@
 #' @param set_gradient_color default is `FALSE`, if `TRUE`, use gradient colors
 #' to fill bars.
 #' **This is very useful when signatures are extracted from "Macintyre" method and `normalize` is 'column'.**
+#' @param free_space default is 'free_x'. If "fixed", all panels have the same size.
+#' If "free_y" their height will be proportional to the length of the y scale;
+#' if "free_x" their width will be proportional to the length of the x scale;
+#' or if "free" both height and width will vary.
+#' This setting has no effect unless the appropriate scales also vary.
 #' @param rm_grid_line default is `FALSE`, if `TRUE`, remove grid lines of plot.
 #' @param x_label_angle font angle for x label.
 #' @param x_label_vjust font vjust for x label.
@@ -75,6 +80,7 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
                              style = c("default", "cosmic"),
                              palette = use_color_style(style),
                              set_gradient_color = FALSE,
+                             free_space = "free_x",
                              rm_grid_line = FALSE,
                              x_label_angle = 60,
                              x_label_vjust = 1,
@@ -312,9 +318,9 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
       ) +
         coord_cartesian(clip = "off")
     }
-    p <- p + facet_grid(class ~ ., scales = "free", space = "free_x")
+    p <- p + facet_grid(class ~ ., scales = "free", space = free_space)
   } else {
-    p <- p + facet_grid(class ~ base, scales = "free", space = "free_x")
+    p <- p + facet_grid(class ~ base, scales = "free", space = free_space)
   }
 
   # Remove prefix to keep space

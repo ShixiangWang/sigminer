@@ -53,7 +53,7 @@ corresponding class (e.g. \code{CopyNumber}).}
 \item{feature_setting}{a \code{data.frame} used for classification.
 Only used when method is "Wang" ("W").
 Default is \link{CN.features}. Users can also set custom input with "feature",
-"min" and "max" columns avaiable. Valid features can be printed by
+"min" and "max" columns available. Valid features can be printed by
 \code{unique(CN.features$feature)}.}
 
 \item{type}{one of "probability", "count". Default is "probability", return a matrix
