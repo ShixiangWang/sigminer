@@ -130,8 +130,12 @@ get_sig_similarity <- function(Signature, Ref = NULL, sig_db = "legacy",
     # Other methods
   }
 
+  if (!exists("aetiology")) {
+    aetiology <- NULL
+  }
+
   best_matches <- lapply(1:nrow(corMat), function(i) {
-    if (exists("aetiology", envir = parent.frame())) {
+    if (!is.null(aetiology)) {
       ae <- aetiology[names(which(corMat[i, ] == max(corMat[i, ]))), ]
     } else {
       ae <- NA
@@ -176,9 +180,12 @@ get_sig_similarity <- function(Signature, Ref = NULL, sig_db = "legacy",
     message("Return result invisiblely.")
   }
 
-  invisible(list(
+  res <- list(
     similarity = corMat,
-    aetiology_db = ifelse(exists("aetiology"), aetiology, NA),
+    aetiology_db = ifelse(!is.null(aetiology), aetiology, NA),
     best_match = best_matches
-  ))
+  )
+  class(res) <- c("similarity", class(res))
+
+  invisible(res)
 }

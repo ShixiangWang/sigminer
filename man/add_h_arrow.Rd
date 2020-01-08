@@ -2,7 +2,7 @@
 % Please edit documentation in R/add_h_arrow.R
 \name{add_h_arrow}
 \alias{add_h_arrow}
-\title{Add Horizontal Arrow with Text Label to ggplot}
+\title{Add Horizontal Arrow with Text Label to a ggplot}
 \usage{
 add_h_arrow(
   p,
@@ -49,5 +49,5 @@ add_h_arrow(
 a \code{ggplot} object.
 }
 \description{
-Add Horizontal Arrow with Text Label to ggplot
+Add Horizontal Arrow with Text Label to a ggplot
 }

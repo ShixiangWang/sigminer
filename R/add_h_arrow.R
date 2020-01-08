@@ -1,4 +1,4 @@
-#' Add Horizontal Arrow with Text Label to ggplot
+#' Add Horizontal Arrow with Text Label to a ggplot
 #'
 #' @param p a `ggplot`.
 #' @param x position at x axis.
