@@ -13,3 +13,4 @@ inst/test
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
+.vscode/

@@ -3,3 +3,4 @@ inst/doc
 .DS_Store
 .Rhistory
 NMF_*
+.vscode/
