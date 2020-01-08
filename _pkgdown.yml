@@ -17,7 +17,7 @@ reference:
   - title: Signature identification
     desc: Identify signatures from genomic variation profile. After reading data, the following functions construct the standard pipeline for most users.
     contents:
-    - sig_feed
+    - sig_tally
     - handle_hyper_mutation
     - sig_estimate
     - show_sig_number_survey

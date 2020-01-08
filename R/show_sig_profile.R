@@ -36,7 +36,7 @@
 #' @param x_label_angle font angle for x label.
 #' @param x_label_vjust font vjust for x label.
 #' @param x_label_hjust font hjust for x label.
-#' @param params params `data.frame` of components, obtained from [sig_feed].
+#' @param params params `data.frame` of components, obtained from [sig_tally].
 #' @param show_cv default is `FALSE`, if `TRUE`, show coefficient of variation when
 #' `params` is not `NULL`.
 #' @param params_label_size font size for params label.
@@ -51,7 +51,7 @@
 #' @param check_sig_names if `TRUE`, check signature names when input is
 #' a matrix, i.e., all signatures (colnames) must start with 'Sig'.
 #' @author Shixiang Wang
-#' @inheritParams sig_feed
+#' @inheritParams sig_tally
 #' @return a `ggplot` object
 #' @export
 #' @examples

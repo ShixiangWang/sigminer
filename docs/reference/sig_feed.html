@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Feed a Variation Object — sig_feed • sigminer</title>
+<title>Feed a Variation Object — sig_tally • sigminer</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,7 +42,7 @@
 
 
 
-<meta property="og:title" content="Feed a Variation Object — sig_feed" />
+<meta property="og:title" content="Feed a Variation Object — sig_tally" />
 <meta property="og:description" content="Feed a variation object like MAF and return a matrix for NMF de-composition and more.
 This is a generic function,
 so it can be further extended to other mutation cases. Please read details
@@ -120,8 +120,8 @@ about how to set sex for identifying copy number signatures." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Feed a Variation Object</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ShixiangWang/sigminer/blob/master/R/sig_feed.R'><code>R/sig_feed.R</code></a></small>
-    <div class="hidden name"><code>sig_feed.Rd</code></div>
+    <small class="dont-index">Source: <a href='https://github.com/ShixiangWang/sigminer/blob/master/R/sig_tally.R'><code>R/sig_tally.R</code></a></small>
+    <div class="hidden name"><code>sig_tally.Rd</code></div>
     </div>
 
     <div class="ref-description">
@@ -131,10 +131,10 @@ so it can be further extended to other mutation cases. Please read details
 about how to set sex for identifying copy number signatures.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>sig_feed</span>(<span class='no'>object</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>sig_tally</span>(<span class='no'>object</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for CopyNumber</span>
-<span class='fu'>sig_feed</span>(
+<span class='fu'>sig_tally</span>(
   <span class='no'>object</span>,
   <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"Macintyre"</span>,
   <span class='kw'>ignore_chrs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -155,7 +155,7 @@ about how to set sex for identifying copy number signatures.</p>
 )
 
 <span class='co'># S3 method for MAF</span>
-<span class='fu'>sig_feed</span>(
+<span class='fu'>sig_tally</span>(
   <span class='no'>object</span>,
   <span class='kw'>ref_genome</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>prefix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -329,7 +329,7 @@ processes in ovarian carcinoma." Nature genetics 50.9 (2018): 1262.</p>
 ))
 <span class='co'># \donttest{</span>
 <span class='co'># Prepare copy number signature analysis</span>
-<span class='no'>cn_prepare</span> <span class='kw'>&lt;-</span> <span class='fu'>sig_feed</span>(<span class='no'>cn</span>)</div><div class='output co'>#&gt; <span class='message'>=&gt; Step: getting copy number features</span></div><div class='output co'>#&gt; <span class='message'>Getting segment size...</span></div><div class='output co'>#&gt; <span class='message'>Getting breakpoint count per 10 Mb...</span></div><div class='output co'>#&gt; <span class='message'>Getting length of chains of oscillating copy number...</span></div><div class='output co'>#&gt; <span class='message'>Getting breakpoint count per chromosome arm...</span></div><div class='output co'>#&gt; <span class='message'>Getting change-point copy number change...</span></div><div class='output co'>#&gt; <span class='message'>Getting copy number...</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Step: fitting copy number components</span></div><div class='output co'>#&gt; <span class='message'>Fitting feature: segsize</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: globals</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: future</span></div><div class='output co'>#&gt; <span class='message'></span>
+<span class='no'>cn_prepare</span> <span class='kw'>&lt;-</span> <span class='fu'>sig_tally</span>(<span class='no'>cn</span>)</div><div class='output co'>#&gt; <span class='message'>=&gt; Step: getting copy number features</span></div><div class='output co'>#&gt; <span class='message'>Getting segment size...</span></div><div class='output co'>#&gt; <span class='message'>Getting breakpoint count per 10 Mb...</span></div><div class='output co'>#&gt; <span class='message'>Getting length of chains of oscillating copy number...</span></div><div class='output co'>#&gt; <span class='message'>Getting breakpoint count per chromosome arm...</span></div><div class='output co'>#&gt; <span class='message'>Getting change-point copy number change...</span></div><div class='output co'>#&gt; <span class='message'>Getting copy number...</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Step: fitting copy number components</span></div><div class='output co'>#&gt; <span class='message'>Fitting feature: segsize</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: globals</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: future</span></div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Attaching package: ‘future’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:NMF’:</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    run</span></div><div class='output co'>#&gt; 2 : *
@@ -464,7 +464,7 @@ processes in ovarian carcinoma." Nature genetics 50.9 (2018): 1262.</p>
 #&gt; 14 : *
 #&gt; 15 : *</div><div class='output co'>#&gt; <span class='message'>=&gt; Step: calculating the sum of posterior probabilities</span></div><div class='output co'>#&gt; <span class='message'>Calculating the sum of posterior probabilities for bp10MB</span></div><div class='output co'>#&gt; <span class='message'>Calculating the sum of posterior probabilities for copynumber</span></div><div class='output co'>#&gt; <span class='message'>Calculating the sum of posterior probabilities for changepoint</span></div><div class='output co'>#&gt; <span class='message'>Calculating the sum of posterior probabilities for bpchrarm</span></div><div class='output co'>#&gt; <span class='message'>Calculating the sum of posterior probabilities for osCN</span></div><div class='output co'>#&gt; <span class='message'>Calculating the sum of posterior probabilities for segsize</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Done.</span></div><div class='input'><span class='co'># }</span>
 <span class='co'># Use method designed by Wang, Shixiang et al.</span>
-<span class='no'>cn_prepare</span> <span class='kw'>&lt;-</span> <span class='fu'>sig_feed</span>(<span class='no'>cn</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"W"</span>)</div><div class='output co'>#&gt; <span class='message'>=&gt; Step: getting copy number features</span></div><div class='output co'>#&gt; <span class='message'>Getting breakpoint count per 10 Mb...</span></div><div class='output co'>#&gt; <span class='message'>Getting breakpoint count per chromosome arm...</span></div><div class='output co'>#&gt; <span class='message'>Getting copy number...</span></div><div class='output co'>#&gt; <span class='message'>Getting change-point copy number change...</span></div><div class='output co'>#&gt; <span class='message'>Getting length of chains of oscillating copy number...</span></div><div class='output co'>#&gt; <span class='message'>Getting (log10 based) segment size...</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Step: generating copy number components</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Step: generating components by sample matrix</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Done.</span></div><div class='input'><span class='co'># \donttest{</span>
+<span class='no'>cn_prepare</span> <span class='kw'>&lt;-</span> <span class='fu'>sig_tally</span>(<span class='no'>cn</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"W"</span>)</div><div class='output co'>#&gt; <span class='message'>=&gt; Step: getting copy number features</span></div><div class='output co'>#&gt; <span class='message'>Getting breakpoint count per 10 Mb...</span></div><div class='output co'>#&gt; <span class='message'>Getting breakpoint count per chromosome arm...</span></div><div class='output co'>#&gt; <span class='message'>Getting copy number...</span></div><div class='output co'>#&gt; <span class='message'>Getting change-point copy number change...</span></div><div class='output co'>#&gt; <span class='message'>Getting length of chains of oscillating copy number...</span></div><div class='output co'>#&gt; <span class='message'>Getting (log10 based) segment size...</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Step: generating copy number components</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Step: generating components by sample matrix</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Done.</span></div><div class='input'><span class='co'># \donttest{</span>
 <span class='co'># Prepare mutational signature analysis</span>
 <span class='no'>laml.maf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"tcga_laml.maf.gz"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"maftools"</span>)
 <span class='no'>laml</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='read_maf.html'>read_maf</a></span>(<span class='kw'>maf</span> <span class='kw'>=</span> <span class='no'>laml.maf</span>)</div><div class='output co'>#&gt; -Reading
@@ -493,7 +493,7 @@ processes in ovarian carcinoma." Nature genetics 50.9 (2018): 1262.</p>
 #&gt; <span class='message'>    compact</span></div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Attaching package: ‘Biostrings’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:base’:</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    strsplit</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: rtracklayer</span></div><div class='input'><span class='no'>mt_prepare</span> <span class='kw'>&lt;-</span> <span class='fu'>sig_feed</span>(
+#&gt; <span class='message'>    strsplit</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: rtracklayer</span></div><div class='input'><span class='no'>mt_prepare</span> <span class='kw'>&lt;-</span> <span class='fu'>sig_tally</span>(
   <span class='no'>laml</span>,
   <span class='kw'>ref_genome</span> <span class='kw'>=</span> <span class='st'>"BSgenome.Hsapiens.UCSC.hg19"</span>,
   <span class='kw'>prefix</span> <span class='kw'>=</span> <span class='st'>"chr"</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>useSyn</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>

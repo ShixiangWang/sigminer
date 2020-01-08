@@ -1,6 +1,6 @@
-#' Feed a Variation Object
+#' Tally a Variation Object
 #'
-#' Feed a variation object like [MAF] and return a matrix for NMF de-composition and more.
+#' Tally a variation object like [MAF] and return a matrix for NMF de-composition and more.
 #' This is a generic function,
 #' so it can be further extended to other mutation cases. Please read details
 #' about how to set sex for identifying copy number signatures.
@@ -39,15 +39,15 @@
 #' ))
 #' \donttest{
 #' # Prepare copy number signature analysis
-#' cn_prepare <- sig_feed(cn)
+#' cn_prepare <- sig_tally(cn)
 #' }
 #' # Use method designed by Wang, Shixiang et al.
-#' cn_prepare <- sig_feed(cn, method = "W")
-sig_feed <- function(object, ...) {
-  UseMethod("sig_feed")
+#' cn_prepare <- sig_tally(cn, method = "W")
+sig_tally <- function(object, ...) {
+  UseMethod("sig_tally")
 }
 
-#' @describeIn sig_feed Returns copy number features, components and component-by-sample matrix
+#' @describeIn sig_tally Returns copy number features, components and component-by-sample matrix
 #' @param method method for feature classfication, can be one of "Macintyre" ("M") and
 #' "Wang" ("W").
 #' @param feature_setting a `data.frame` used for classification.
@@ -91,7 +91,7 @@ sig_feed <- function(object, ...) {
 #' @references Macintyre, Geoff, et al. "Copy number signatures and mutational
 #' processes in ovarian carcinoma." Nature genetics 50.9 (2018): 1262.
 #' @export
-sig_feed.CopyNumber <- function(object,
+sig_tally.CopyNumber <- function(object,
                                   method = "Macintyre",
                                   ignore_chrs = NULL,
                                   feature_setting = sigminer::CN.features[1:50],
@@ -207,7 +207,7 @@ sig_feed.CopyNumber <- function(object,
   }
 }
 
-#' @describeIn sig_feed Returns SBS mutation component-by-sample matrix and APOBEC enrichment
+#' @describeIn sig_tally Returns SBS mutation component-by-sample matrix and APOBEC enrichment
 #' @inheritParams maftools::trinucleotideMatrix
 #' @param ignore_chrs Chromsomes to ignore from analysis. e.g. chrX and chrY.
 #' @param use_syn Logical. Whether to include synonymous variants in analysis. Defaults to TRUE
@@ -218,19 +218,19 @@ sig_feed.CopyNumber <- function(object,
 #' laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
 #' laml <- read_maf(maf = laml.maf)
 #' library(BSgenome.Hsapiens.UCSC.hg19)
-#' mt_prepare <- sig_feed(
+#' mt_prepare <- sig_tally(
 #'   laml,
 #'   ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
 #'   prefix = "chr", add = TRUE, useSyn = TRUE
 #' )
 #' }
 #' @export
-sig_feed.MAF <- function(object, ref_genome = NULL, prefix = NULL,
+sig_tally.MAF <- function(object, ref_genome = NULL, prefix = NULL,
                            add = TRUE, ignore_chrs = NULL, use_syn = TRUE,
                            keep_only_matrix = FALSE,
                            ...) {
   # // TODO: Rewrite this function instead of using maftools
-  # // Make result consistent with result from sig_feed.CopyNumber
+  # // Make result consistent with result from sig_tally.CopyNumber
   res <- maftools::trinucleotideMatrix(
     object,
     ref_genome = ref_genome, prefix = prefix,

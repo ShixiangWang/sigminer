@@ -95,16 +95,16 @@ Alexandrov, Ludmil, et al. "The repertoire of mutational signatures in human can
 
 ## LICENSE
 
+The software is made available for non commercial research purposes only under the [MIT](LICENSE.md).
+However, notwithstanding any provision of the MIT License, the software currently may not be used for commercial purposes
+without explicit written permission after contacting Shixiang Wang <wangshx@shanghaitech.edu.cn> or 
+Xue-Song Liu <liuxs@shanghaitech.edu.cn>.
+
 MIT &copy; 2019-2020 Shixiang Wang, Xue-Song Liu
 
 MIT &copy; 2018 Geoffrey Macintyre
 
 MIT &copy; 2018 Anand Mayakonda
-
-The software is made available for non commercial research purposes only under the [MIT](LICENSE.md).
-However, notwithstanding any provision of the MIT License, the software currently may not be used for commercial purposes
-without explicit written permission after contacting Shixiang Wang <wangshx@shanghaitech.edu.cn> or 
-Xue-Song Liu <liuxs@shanghaitech.edu.cn>.
 
 
 ***

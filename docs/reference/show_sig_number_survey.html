@@ -209,40 +209,40 @@ one measure.</p></td>
 #&gt; Compute NMF rank= 3  ... + measures ... OK
 #&gt; Compute NMF rank= 4  ... + measures ... OK
 #&gt; Compute NMF rank= 5  ... + measures ... OK</div><div class='output co'>#&gt; <span class='message'>Estimation of rank based on observed data.</span></div><div class='output co'>#&gt;   method   seed rng metric rank sparseness.basis sparseness.coef       rss
-#&gt; 2 brunet random   2     KL    2        0.7868164       0.4341062 1144.8714
-#&gt; 3 brunet random   1     KL    3        0.7944475       0.4388444  813.1814
-#&gt; 4 brunet random   2     KL    4        0.7944389       0.4887652  586.2708
-#&gt; 5 brunet random   2     KL    5        0.7901255       0.4419127  368.2307
-#&gt;        evar silhouette.coef silhouette.basis residuals niter cpu cpu.all nrun
-#&gt; 2 0.9985533       1.0000000        1.0000000  41.97589   570  NA      NA    5
-#&gt; 3 0.9989724       0.7286187        0.5627588  31.71708   630  NA      NA    5
-#&gt; 4 0.9992592       0.5586978        0.5559367  22.86119  1400  NA      NA    5
-#&gt; 5 0.9995347       0.0273156        0.2546472  15.37598  1380  NA      NA    5
+#&gt; 2 brunet random   2     KL    2        0.7839578       0.4736241 1126.9257
+#&gt; 3 brunet random   3     KL    3        0.7897303       0.3731868  718.3352
+#&gt; 4 brunet random   2     KL    4        0.7844243       0.4085115  577.7867
+#&gt; 5 brunet random   1     KL    5        0.7514582       0.4274734  358.1283
+#&gt;        evar silhouette.coef silhouette.basis residuals niter   cpu cpu.all nrun
+#&gt; 2 0.9985760       1.0000000        1.0000000  41.95157   760 0.061   2.578    5
+#&gt; 3 0.9990923       0.5189828        0.5855884  31.80088   510 0.037   2.339    5
+#&gt; 4 0.9992699       0.3301537        0.4784382  23.57932  1300 0.066   2.325    5
+#&gt; 5 0.9995475       0.3075000        0.4856586  16.20087  1130 0.093   2.323    5
 #&gt;   cophenetic dispersion silhouette.consensus
-#&gt; 2  0.9545457     0.7312            0.8794444
-#&gt; 3  0.8491389     0.5008            0.4788515
-#&gt; 4  0.8595682     0.4112            0.2998276
-#&gt; 5  0.7723529     0.6032            0.1758547</div><div class='input'>
+#&gt; 2  0.9884538     0.7312            0.9550000
+#&gt; 3  0.8949770     0.5520            0.6665284
+#&gt; 4  0.8506596     0.4624            0.4489177
+#&gt; 5  0.9069709     0.5904            0.2640657</div><div class='input'>
 <span class='co'># Show two measures</span>
 <span class='fu'>show_sig_number_survey</span>(<span class='no'>cn_estimate</span>)</div><div class='img'><img src='show_sig_number_survey-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># Show one measure</span>
 <span class='fu'>show_sig_number_survey</span>(<span class='no'>cn_estimate</span>, <span class='kw'>right_y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</div><div class='img'><img src='show_sig_number_survey-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Show data from a data.frame</span>
 <span class='fu'>show_sig_number_survey</span>(<span class='no'>cn_estimate</span>$<span class='no'>survey</span>)</div><div class='img'><img src='show_sig_number_survey-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># Show other measures</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>cn_estimate</span>$<span class='no'>survey</span>)</div><div class='output co'>#&gt;   method   seed rng metric rank sparseness.basis sparseness.coef       rss
-#&gt; 2 brunet random   2     KL    2        0.7868164       0.4341062 1144.8714
-#&gt; 3 brunet random   1     KL    3        0.7944475       0.4388444  813.1814
-#&gt; 4 brunet random   2     KL    4        0.7944389       0.4887652  586.2708
-#&gt; 5 brunet random   2     KL    5        0.7901255       0.4419127  368.2307
-#&gt;        evar silhouette.coef silhouette.basis residuals niter cpu cpu.all nrun
-#&gt; 2 0.9985533       1.0000000        1.0000000  41.97589   570  NA      NA    5
-#&gt; 3 0.9989724       0.7286187        0.5627588  31.71708   630  NA      NA    5
-#&gt; 4 0.9992592       0.5586978        0.5559367  22.86119  1400  NA      NA    5
-#&gt; 5 0.9995347       0.0273156        0.2546472  15.37598  1380  NA      NA    5
+#&gt; 2 brunet random   2     KL    2        0.7839578       0.4736241 1126.9257
+#&gt; 3 brunet random   3     KL    3        0.7897303       0.3731868  718.3352
+#&gt; 4 brunet random   2     KL    4        0.7844243       0.4085115  577.7867
+#&gt; 5 brunet random   1     KL    5        0.7514582       0.4274734  358.1283
+#&gt;        evar silhouette.coef silhouette.basis residuals niter   cpu cpu.all nrun
+#&gt; 2 0.9985760       1.0000000        1.0000000  41.95157   760 0.061   2.578    5
+#&gt; 3 0.9990923       0.5189828        0.5855884  31.80088   510 0.037   2.339    5
+#&gt; 4 0.9992699       0.3301537        0.4784382  23.57932  1300 0.066   2.325    5
+#&gt; 5 0.9995475       0.3075000        0.4856586  16.20087  1130 0.093   2.323    5
 #&gt;   cophenetic dispersion silhouette.consensus
-#&gt; 2  0.9545457     0.7312            0.8794444
-#&gt; 3  0.8491389     0.5008            0.4788515
-#&gt; 4  0.8595682     0.4112            0.2998276
-#&gt; 5  0.7723529     0.6032            0.1758547</div><div class='input'><span class='fu'>show_sig_number_survey</span>(<span class='no'>cn_estimate</span>$<span class='no'>survey</span>,
+#&gt; 2  0.9884538     0.7312            0.9550000
+#&gt; 3  0.8949770     0.5520            0.6665284
+#&gt; 4  0.8506596     0.4624            0.4489177
+#&gt; 5  0.9069709     0.5904            0.2640657</div><div class='input'><span class='fu'>show_sig_number_survey</span>(<span class='no'>cn_estimate</span>$<span class='no'>survey</span>,
   <span class='kw'>right_y</span> <span class='kw'>=</span> <span class='st'>"dispersion"</span>,
   <span class='kw'>right_name</span> <span class='kw'>=</span> <span class='st'>"dispersion"</span>
 )</div><div class='img'><img src='show_sig_number_survey-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>show_sig_number_survey</span>(<span class='no'>cn_estimate</span>$<span class='no'>survey</span>,

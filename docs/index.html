@@ -84,9 +84,9 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="sigminer-" class="section level1">
+<div id="sigminer" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#sigminer-" class="anchor"></a>sigminer <img src="reference/figures/logo.png" align="right" height="140" width="120" alt="logo">
+<a href="#sigminer" class="anchor"></a>sigminer <img src="reference/figures/logo.png" align="right" height="140" width="120" alt="logo">
 </h1></div>
 
 <div id="overview" class="section level2">
@@ -98,43 +98,43 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You can install the stable release of <strong>sigminer</strong> from CRAN with:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"sigminer"</span>)</span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="co"># Or</span></span>
-<span id="cb1-3"><a href="#cb1-3"></a>BiocManager<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span>(<span class="st">"sigminer"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"sigminer"</span>)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co"># Or</span></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">BiocManager<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span>(<span class="st">"sigminer"</span>)</a></code></pre></div>
 <p>You can install the development version of <strong>sigminer</strong> from Github with:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>remotes<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/remotes/man/install_github.html">install_github</a></span>(<span class="st">"ShixiangWang/sigminer"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">remotes<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/remotes/man/install_github.html">install_github</a></span>(<span class="st">"ShixiangWang/sigminer"</span>)</a></code></pre></div>
 </div>
 <div id="citation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#citation" class="anchor"></a>Citation</h2>
 <p><strong>sigminer</strong> has not been published. If you use <strong>sigminer</strong> in academic field, please cite our recent work:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>Wang, Shixiang, et al. <span class="st">"The predictive power of tumor mutational burden </span></span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="st">    in lung cancer immunotherapy response is influenced by patients' sex."</span></span>
-<span id="cb3-3"><a href="#cb3-3"></a>    International journal of <span class="kw">cancer</span> (<span class="dv">2019</span>).</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">Wang, Shixiang, et al. <span class="st">"The predictive power of tumor mutational burden </span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="st">    in lung cancer immunotherapy response is influenced by patients' sex."</span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">    International journal of <span class="kw">cancer</span> (<span class="dv">2019</span>).</a></code></pre></div>
 <p>and</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>Gaujoux, Renaud, and Cathal Seoighe. <span class="st">"A Flexible R Package for </span></span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="st">    Nonnegative Matrix Factorization."" BMC Bioinformatics 11, no. 1 (December 2010).</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">Gaujoux, Renaud, and Cathal Seoighe. <span class="st">"A Flexible R Package for </span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">    Nonnegative Matrix Factorization."" BMC Bioinformatics 11, no. 1 (December 2010).</span></a></code></pre></div>
 </div>
 <div id="acknowledgments" class="section level2">
 <h2 class="hasAnchor">
 <a href="#acknowledgments" class="anchor"></a>Acknowledgments</h2>
 <p>The code for extracting copy number signatures was based in part on the source code from paper <em>Copy number signatures and mutational processes in ovarian carcinoma</em>, if you use this feature, please also cite:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>Macintyre, Geoff, et al. <span class="st">"Copy number signatures and mutational</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="st">    processes in ovarian carcinoma."</span> Nature genetics <span class="fl">50.9</span> (<span class="dv">2018</span>)<span class="op">:</span><span class="st"> </span><span class="fl">1262.</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">Macintyre, Geoff, et al. <span class="st">"Copy number signatures and mutational</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">    processes in ovarian carcinoma."</span> Nature genetics <span class="fl">50.9</span> (<span class="dv">2018</span>)<span class="op">:</span><span class="st"> </span><span class="fl">1262.</span></a></code></pre></div>
 <p>The code for extracting mutational signatures was based in part on the source code of the <strong>maftools</strong> package, if you use this feature, please also cite:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>Mayakonda, Anand, et al. <span class="st">"Maftools: efficient and comprehensive analysis</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="st">    of somatic variants in cancer."</span> Genome research <span class="fl">28.11</span> (<span class="dv">2018</span>)<span class="op">:</span><span class="st"> </span><span class="dv">1747</span><span class="fl">-1756.</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">Mayakonda, Anand, et al. <span class="st">"Maftools: efficient and comprehensive analysis</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">    of somatic variants in cancer."</span> Genome research <span class="fl">28.11</span> (<span class="dv">2018</span>)<span class="op">:</span><span class="st"> </span><span class="dv">1747</span><span class="fl">-1756.</span></a></code></pre></div>
 <p>The code for extracting mutational signatures was based in part on the source code of the <strong>SignatureAnalyzer</strong> package, if you use this feature, please also cite:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>Alexandrov, Ludmil, et al. <span class="st">"The repertoire of mutational signatures in human cancer."</span> <span class="kw">BioRxiv</span> (<span class="dv">2018</span>)<span class="op">:</span><span class="st"> </span><span class="fl">322859.</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">Alexandrov, Ludmil, et al. <span class="st">"The repertoire of mutational signatures in human cancer."</span> <span class="kw">BioRxiv</span> (<span class="dv">2018</span>)<span class="op">:</span><span class="st"> </span><span class="fl">322859.</span></a></code></pre></div>
 <p><strong>sigminer</strong> is powered by data.table, <a href="https://github.com/renozao/NMF">NMF</a> package and <a href="https://github.com/PoisonAlien/maftools">maftools</a> package.</p>
 </div>
 <div id="license" class="section level2">
 <h2 class="hasAnchor">
 <a href="#license" class="anchor"></a>LICENSE</h2>
+<p>The software is made available for non commercial research purposes only under the <a href="LICENSE.html">MIT</a>. However, notwithstanding any provision of the MIT License, the software currently may not be used for commercial purposes without explicit written permission after contacting Shixiang Wang <a href="mailto:wangshx@shanghaitech.edu.cn" class="email">wangshx@shanghaitech.edu.cn</a> or Xue-Song Liu <a href="mailto:liuxs@shanghaitech.edu.cn" class="email">liuxs@shanghaitech.edu.cn</a>.</p>
 <p>MIT © 2019-2020 Shixiang Wang, Xue-Song Liu</p>
 <p>MIT © 2018 Geoffrey Macintyre</p>
 <p>MIT © 2018 Anand Mayakonda</p>
-<p>The software is made available for non commercial research purposes only under the <a href="LICENSE.html">MIT</a>. However, notwithstanding any provision of the MIT License, the software currently may not be used for commercial purposes without explicit written permission after contacting Shixiang Wang <a href="mailto:wangshx@shanghaitech.edu.cn" class="email">wangshx@shanghaitech.edu.cn</a> or Xue-Song Liu <a href="mailto:liuxs@shanghaitech.edu.cn" class="email">liuxs@shanghaitech.edu.cn</a>.</p>
 <hr>
 <p><strong><a href="https://github.com/XSLiuLab">Cancer Biology Group</a> @ShanghaiTech</strong></p>
 <p><strong>Research group led by Xue-Song Liu in ShanghaiTech University</strong></p>

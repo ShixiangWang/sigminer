@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Derive Variation Matrix from Mutation Profile — sig_tally • sigminer</title>
+<title>Tally a Variation Object — sig_tally • sigminer</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,8 +42,9 @@
 
 
 
-<meta property="og:title" content="Derive Variation Matrix from Mutation Profile — sig_tally" />
-<meta property="og:description" content="Generate a matrix for NMF de-composition and more. This is a generic function,
+<meta property="og:title" content="Tally a Variation Object — sig_tally" />
+<meta property="og:description" content="Tally a variation object like MAF and return a matrix for NMF de-composition and more.
+This is a generic function,
 so it can be further extended to other mutation cases. Please read details
 about how to set sex for identifying copy number signatures." />
 <meta property="og:image" content="/logo.png" />
@@ -118,13 +119,14 @@ about how to set sex for identifying copy number signatures." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Derive Variation Matrix from Mutation Profile</h1>
+    <h1>Tally a Variation Object</h1>
     <small class="dont-index">Source: <a href='https://github.com/ShixiangWang/sigminer/blob/master/R/sig_tally.R'><code>R/sig_tally.R</code></a></small>
     <div class="hidden name"><code>sig_tally.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Generate a matrix for NMF de-composition and more. This is a generic function,
+    <p>Tally a variation object like <a href='MAF-class.html'>MAF</a> and return a matrix for NMF de-composition and more.
+This is a generic function,
 so it can be further extended to other mutation cases. Please read details
 about how to set sex for identifying copy number signatures.</p>
     </div>
@@ -190,7 +192,7 @@ corresponding class (e.g. <code>CopyNumber</code>).</p></td>
       <td><p>a <code>data.frame</code> used for classification.
 Only used when method is "Wang" ("W").
 Default is <a href='CN.features.html'>CN.features</a>. Users can also set custom input with "feature",
-"min" and "max" columns avaiable. Valid features can be printed by
+"min" and "max" columns available. Valid features can be printed by
 <code><a href='https://rdrr.io/r/base/unique.html'>unique(CN.features$feature)</a></code>.</p></td>
     </tr>
     <tr>
@@ -307,8 +309,8 @@ with <a href='read_copynumber.html'>read_copynumber</a>).</p></li>
 
     
 <ul>
-<li><p><code>CopyNumber</code>: Derive copy number features, components and component-by-sample matrix</p></li>
-<li><p><code>MAF</code>: Derive SBS mutation component-by-sample matrix and APOBEC enrichment</p></li>
+<li><p><code>CopyNumber</code>: Returns copy number features, components and component-by-sample matrix</p></li>
+<li><p><code>MAF</code>: Returns SBS mutation component-by-sample matrix and APOBEC enrichment</p></li>
 </ul>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
@@ -317,9 +319,8 @@ processes in ovarian carcinoma." Nature genetics 50.9 (2018): 1262.</p>
 <p>Mayakonda, Anand, et al. "Maftools: efficient and comprehensive analysis of somatic variants in cancer." Genome research 28.11 (2018): 1747-1756.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>sig_tally for getting variation matrix,
-<a href='sig_estimate.html'>sig_estimate</a> for estimating signature number for <a href='sig_extract.html'>sig_extract</a>, <a href='sig_auto_extract.html'>sig_auto_extract</a> for
-extracting signatures using automatic relevance determination technique.</p></div>
+    <div class='dont-index'><p><a href='sig_estimate.html'>sig_estimate</a> for estimating signature number for <a href='sig_extract.html'>sig_extract</a>,
+<a href='sig_auto_extract.html'>sig_auto_extract</a> for extracting signatures using automatic relevance determination technique.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Load copy number object</span>
@@ -472,7 +473,7 @@ extracting signatures using automatic relevance determination technique.</p></di
 #&gt; -Summarizing
 #&gt; -Processing clinical data
 #&gt; --Missing clinical data
-#&gt; -Finished in 0.171s elapsed (0.652s cpu) </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>BSgenome.Hsapiens.UCSC.hg19</span>)</div><div class='output co'>#&gt; <span class='message'>载入需要的程辑包：BSgenome</span></div><div class='output co'>#&gt; <span class='message'>载入需要的程辑包：S4Vectors</span></div><div class='output co'>#&gt; <span class='message'>载入需要的程辑包：stats4</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; -Finished in 0.233s elapsed (0.845s cpu) </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>BSgenome.Hsapiens.UCSC.hg19</span>)</div><div class='output co'>#&gt; <span class='message'>载入需要的程辑包：BSgenome</span></div><div class='output co'>#&gt; <span class='message'>载入需要的程辑包：S4Vectors</span></div><div class='output co'>#&gt; <span class='message'>载入需要的程辑包：stats4</span></div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>载入程辑包：‘S4Vectors’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:future’:</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    values</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:NMF’:</span>

@@ -25,7 +25,7 @@ Read data into R objects:
 
 Signature analysis for genomic variations:
 \itemize{
-\item \code{\link[=sig_feed]{sig_feed()}} - generate variation matrix for signature extraction.
+\item \code{\link[=sig_tally]{sig_tally()}} - generate variation matrix for signature extraction.
 \item \code{\link[=sig_estimate]{sig_estimate()}} - estimate signature number, work with \code{\link[=sig_extract]{sig_extract()}}.
 \item \code{\link[=sig_extract]{sig_extract()}} - extract signatures throught NMF, a proper signature
 number can be estimated by \code{\link[=sig_estimate]{sig_estimate()}}.

@@ -5,14 +5,14 @@
 #'
 #' @inheritParams show_cn_features
 #' @param parameters a `data.frame` contain parameter components, obtain this
-#' from [sig_feed] function.
+#' from [sig_tally] function.
 #' @param auto_transform default is `TRUE`, it will auto increase the `SD` for components
 #' for showing them better in the plot. Only used when method is "Macintyre".
 #' @param show_weights default is `TRUE`, show weights for each component.
 #' Only used when method is "Macintyre".
 #' @param ... other options pass to \code{\link[cowplot]{plot_grid}} function of **cowplot** package.
 #' @inheritParams show_cn_distribution
-#' @inheritParams sig_feed
+#' @inheritParams sig_tally
 #' @author Shixiang Wang <w_shixiang@163.com>
 #' @return a `ggplot` object
 #' @export
