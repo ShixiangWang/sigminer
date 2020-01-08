@@ -118,7 +118,7 @@ show_group_comparison <- function(group_comparison,
   if (length(ca_index) > 0) {
     # plot categorical data
     ca_res <- lapply(ca_list, function(df) {
-      data <- df[["data"]]
+      data <- df[["data"]] %>% dplyr::as_tibble()
       if (set_ca_sig_yaxis) {
         if (!isTRUE(df[["extra"]])) {
           df[["xlab"]] <- colnames(data)[2]
@@ -168,7 +168,7 @@ show_group_comparison <- function(group_comparison,
   if (length(co_index) > 0) {
     # plot continuous data
     co_res <- lapply(co_list, function(df, ...) {
-      data <- df[["data"]]
+      data <- df[["data"]] %>% dplyr::as_tibble()
       data_sum <- data %>% dplyr::count_("group")
       data_sum[["labels"]] <- paste(data_sum[["group"]], paste0("(n=", data_sum[["n"]], ")"), sep = "\n")
       my_comparisons <- combn(unique(as.character(data[["group"]])),
