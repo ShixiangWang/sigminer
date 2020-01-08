@@ -125,6 +125,10 @@ show_sig_profile(res, normalize = "feature", style = "cosmic", filters = c("bp10
 show_sig_profile(laml.sig$signatures, mode = "mutation", style = "default",rm_panel_border = F)
 show_sig_profile(laml.sig$signatures, mode = "mutation", style = "cosmic")
 
+p = ggplot(mtcars, aes(x = wt, y = mpg)) + geom_point()
+add_h_arrow(p, x = 3, y = 30)
+
+
 
 # Change name of function
 #sed -i "" "s/sig_feed/sig_tally/g" `grep "sig_feed" -rl R/*`
