@@ -37,12 +37,10 @@ a \code{list} contains data, summary, p value etc..
 Compare genotypes/phenotypes based on signature groups (samples are assigned to
 several groups). For categorical
 type, calculate fisher p value (using \link[stats:fisher.test]{stats::fisher.test}) and count table.
+In larger than 2 by 2 tables, compute p-values by Monte Carlo simulation.
 For continuous type, calculate anova p value (using \link[stats:aov]{stats::aov}),
 summary table and Tukey Honest significant difference (using \link[stats:TukeyHSD]{stats::TukeyHSD}).
 The result of this function can be plotted by \code{\link[=show_group_comparison]{show_group_comparison()}}.
-}
-\details{
-Compute p-values by Monte Carlo simulation, in larger than 2 by 2 tables.
 }
 \examples{
 \donttest{

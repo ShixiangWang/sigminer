@@ -3,11 +3,10 @@
 #' Compare genotypes/phenotypes based on signature groups (samples are assigned to
 #' several groups). For categorical
 #' type, calculate fisher p value (using [stats::fisher.test]) and count table.
+#' In larger than 2 by 2 tables, compute p-values by Monte Carlo simulation.
 #' For continuous type, calculate anova p value (using [stats::aov]),
 #' summary table and Tukey Honest significant difference (using [stats::TukeyHSD]).
 #' The result of this function can be plotted by [show_group_comparison()].
-#'
-#' Compute p-values by Monte Carlo simulation, in larger than 2 by 2 tables.
 #'
 #' @param data a `data.frame` containing signature groups and genotypes/phenotypes
 #' (including categorical and continuous type data) want to analyze. User need to
