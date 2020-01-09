@@ -7,7 +7,7 @@
 #' @param Signature a `Signature` object obtained either from [sig_extract] or [sig_auto_extract],
 #' or just a raw signature matrix with row representing components (motifs) and column
 #' representing signatures (column names must start with 'Sig').
-#' @param mode signature type for plotting, now supports 'copynumber' or 'mutation'.
+#' @param mode signature type for plotting, now supports 'copynumber' or 'SBS'.
 #' @param method method for copy number feature classfication, can be one of "Macintyre" ("M") and
 #' "Wang" ("W").
 #' @param normalize one of 'row', 'column', 'raw' and "feature", for row normalization (signature),
@@ -60,7 +60,7 @@
 #'   package = "sigminer", mustWork = TRUE
 #' ))
 #' # Show signature profile
-#' show_sig_profile(sig2, mode = "mutation")
+#' show_sig_profile(sig2, mode = "SBS")
 #'
 #'
 #' # Load copy number signature
@@ -78,7 +78,7 @@
 #' ))
 #' params <- get_tidy_parameter(cn_prepare$components)
 #' show_sig_profile(sig, params = params, y_expand = 2)
-show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
+show_sig_profile <- function(Signature, mode = c("copynumber", "SBS"),
                              method = "Macintyre",
                              normalize = c("row", "column", "raw", "feature"),
                              filters = NULL,
@@ -230,7 +230,7 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "mutation"),
   # >>>>>>>>>>>>>>>>>>>>>>> Plot
 
   if (set_gradient_color) {
-    if (mode == "mutation") {
+    if (mode == "SBS") {
       message("Gradient colors are not supported for mutational signatures!")
       message("Please set it to FALSE and re-run.")
       return(invisible())

@@ -20,7 +20,7 @@
 #'   package = "sigminer", mustWork = TRUE
 #' ))
 #' # Show signature profile
-#' p <- show_sig_profile(sig2, mode = "mutation")
+#' p <- show_sig_profile(sig2, mode = "SBS")
 #'
 #' # Method 1
 #' add_labels(p,

@@ -70,7 +70,7 @@ show_cosmic_sig_profile <- function(sig_index = NULL, show_index = TRUE, sig_db 
   sig_mat <- as.matrix(sigs[, index, drop = FALSE])
   gg <- show_sig_profile(sig_mat,
     check_sig_names = FALSE,
-    mode = "mutation",
+    mode = "SBS",
     normalize = "raw",
     sig_orders = index,
     ...

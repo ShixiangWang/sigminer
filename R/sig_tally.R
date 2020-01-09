@@ -214,7 +214,7 @@ sig_tally.CopyNumber <- function(object,
 #' @references Mayakonda, Anand, et al. "Maftools: efficient and comprehensive analysis of somatic variants in cancer." Genome research 28.11 (2018): 1747-1756.
 #' @examples
 #' \donttest{
-#' # Prepare mutational signature analysis
+#' # Prepare SBS signature analysis
 #' laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
 #' laml <- read_maf(maf = laml.maf)
 #' library(BSgenome.Hsapiens.UCSC.hg19)

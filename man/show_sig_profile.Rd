@@ -6,7 +6,7 @@
 \usage{
 show_sig_profile(
   Signature,
-  mode = c("copynumber", "mutation"),
+  mode = c("copynumber", "SBS"),
   method = "Macintyre",
   normalize = c("row", "column", "raw", "feature"),
   filters = NULL,
@@ -41,7 +41,7 @@ show_sig_profile(
 or just a raw signature matrix with row representing components (motifs) and column
 representing signatures (column names must start with 'Sig').}
 
-\item{mode}{signature type for plotting, now supports 'copynumber' or 'mutation'.}
+\item{mode}{signature type for plotting, now supports 'copynumber' or 'SBS'.}
 
 \item{method}{method for copy number feature classfication, can be one of "Macintyre" ("M") and
 "Wang" ("W").}
@@ -130,7 +130,7 @@ load(system.file("extdata", "toy_mutational_signature.RData",
   package = "sigminer", mustWork = TRUE
 ))
 # Show signature profile
-show_sig_profile(sig2, mode = "mutation")
+show_sig_profile(sig2, mode = "SBS")
 
 
 # Load copy number signature

@@ -159,7 +159,7 @@ cn_prepare <- sig_tally(cn)
 # Use method designed by Wang, Shixiang et al.
 cn_prepare <- sig_tally(cn, method = "W")
 \donttest{
-# Prepare mutational signature analysis
+# Prepare SBS signature analysis
 laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
 laml <- read_maf(maf = laml.maf)
 library(BSgenome.Hsapiens.UCSC.hg19)
