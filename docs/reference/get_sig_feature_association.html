@@ -43,7 +43,11 @@
 
 
 <meta property="og:title" content="Calculate Association between Signature Exposures and Other Features — get_sig_feature_association" />
-<meta property="og:description" content="See get_tidy_association for cleaning association result." />
+<meta property="og:description" content="Association of signature exposures with other features will be performed using one of two procedures:
+for a continuous association variable (including ordinal variable), correaltion is performed;
+for a binary association variable, samples will be divided into two groups and Mann-Whitney U-test
+is performed to test for differences in signature exposure medians between the two groups.
+See get_tidy_association for cleaning association result." />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -122,7 +126,11 @@
     </div>
 
     <div class="ref-description">
-    <p>See <a href='get_tidy_association.html'>get_tidy_association</a> for cleaning association result.</p>
+    <p>Association of signature exposures with other features will be performed using one of two procedures:
+for a continuous association variable (including ordinal variable), correaltion is performed;
+for a binary association variable, samples will be divided into two groups and Mann-Whitney U-test
+is performed to test for differences in signature exposure medians between the two groups.
+See <a href='get_tidy_association.html'>get_tidy_association</a> for cleaning association result.</p>
     </div>
 
     <pre class="usage"><span class='fu'>get_sig_feature_association</span>(
@@ -184,6 +192,10 @@ Default is 0.01.</p></td>
 
     <p>a <code>list</code>. For 'co' features, 'measure' means correlation coefficient.
 For 'ca' features, 'measure' means difference in means of signature exposure.</p>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Macintyre, Geoff, et al. "Copy number signatures and mutational processes in ovarian carcinoma."
+Nature genetics 50.9 (2018): 1262.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='get_tidy_association.html'>get_tidy_association</a></p></div>
@@ -194,6 +206,7 @@ For 'ca' features, 'measure' means difference in means of signature exposure.</p
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
+      <li><a href="#references">References</a></li>
       <li><a href="#see-also">See also</a></li>
     </ul>
 

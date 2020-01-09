@@ -127,7 +127,7 @@
 
     <pre class="usage"><span class='fu'>show_sig_profile</span>(
   <span class='no'>Signature</span>,
-  <span class='kw'>mode</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"copynumber"</span>, <span class='st'>"mutation"</span>),
+  <span class='kw'>mode</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"copynumber"</span>, <span class='st'>"SBS"</span>),
   <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"Macintyre"</span>,
   <span class='kw'>normalize</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"row"</span>, <span class='st'>"column"</span>, <span class='st'>"raw"</span>, <span class='st'>"feature"</span>),
   <span class='kw'>filters</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -168,7 +168,7 @@ representing signatures (column names must start with 'Sig').</p></td>
     </tr>
     <tr>
       <th>mode</th>
-      <td><p>signature type for plotting, now supports 'copynumber' or 'mutation'.</p></td>
+      <td><p>signature type for plotting, now supports 'copynumber' or 'SBS'.</p></td>
     </tr>
     <tr>
       <th>method</th>
@@ -311,7 +311,7 @@ a matrix, i.e., all signatures (colnames) must start with 'Sig'.</p></td>
   <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 ))
 <span class='co'># Show signature profile</span>
-<span class='fu'>show_sig_profile</span>(<span class='no'>sig2</span>, <span class='kw'>mode</span> <span class='kw'>=</span> <span class='st'>"mutation"</span>)</div><div class='img'><img src='show_sig_profile-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>show_sig_profile</span>(<span class='no'>sig2</span>, <span class='kw'>mode</span> <span class='kw'>=</span> <span class='st'>"SBS"</span>)</div><div class='img'><img src='show_sig_profile-1.png' alt='' width='700' height='433' /></div><div class='input'>
 
 <span class='co'># Load copy number signature</span>
 <span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_signature.RData"</span>,

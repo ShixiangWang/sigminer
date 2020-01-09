@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Tidy eval helpers — tidyeval • sigminer</title>
+<title>Add Horizontal Arrow with Text Label to a ggplot — add_h_arrow • sigminer</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,40 +42,8 @@
 
 
 
-<meta property="og:title" content="Tidy eval helpers — tidyeval" />
-<meta property="og:description" content="
-
-sym() creates a symbol from a string and
-syms() creates a list of symbols from a
-character vector.
-enquo() and
-enquos() delay the execution of one or
-several function arguments. enquo() returns a single quoted
-expression, which is like a blueprint for the delayed computation.
-enquos() returns a list of such quoted expressions.
-expr() quotes a new expression locally. It
-is mostly useful to build new expressions around arguments
-captured with enquo() or enquos():
-expr(mean(!!enquo(arg), na.rm = TRUE)).
-as_name() transforms a quoted variable name
-into a string. Supplying something else than a quoted variable
-name is an error.
-That's unlike as_label() which also returns
-a single string but supports any kind of R object as input,
-including quoted function calls and vectors. Its purpose is to
-summarise that object into a single label. That label is often
-suitable as a default name.
-If you don't know what a quoted expression contains (for instance
-expressions captured with enquo() could be a variable
-name, a call to a function, or an unquoted constant), then use
-as_label(). If you know you have quoted a simple variable
-name, or would like to enforce this, use as_name().
-
-
-To learn more about tidy eval and how to use these tools, visit
-https://tidyeval.tidyverse.org and the
-Metaprogramming
-section of Advanced R." />
+<meta property="og:title" content="Add Horizontal Arrow with Text Label to a ggplot — add_h_arrow" />
+<meta property="og:description" content="Add Horizontal Arrow with Text Label to a ggplot" />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -148,54 +116,94 @@ section of Advanced R." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Tidy eval helpers</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ShixiangWang/sigminer/blob/master/R/utils-tidy-eval.R'><code>R/utils-tidy-eval.R</code></a></small>
-    <div class="hidden name"><code>tidyeval.Rd</code></div>
+    <h1>Add Horizontal Arrow with Text Label to a ggplot</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ShixiangWang/sigminer/blob/master/R/add_h_arrow.R'><code>R/add_h_arrow.R</code></a></small>
+    <div class="hidden name"><code>add_h_arrow.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
-<ul>
-<li><p><code><a href='https://rlang.r-lib.org/reference/nse-defuse.html'>sym</a>()</code> creates a symbol from a string and
-<code><a href='https://rlang.r-lib.org/reference/nse-defuse.html'>syms</a>()</code> creates a list of symbols from a
-character vector.</p></li>
-<li><p><code><a href='https://rlang.r-lib.org/reference/nse-defuse.html'>enquo</a>()</code> and
-<code><a href='https://rlang.r-lib.org/reference/nse-defuse.html'>enquos</a>()</code> delay the execution of one or
-several function arguments. <code>enquo()</code> returns a single quoted
-expression, which is like a blueprint for the delayed computation.
-<code>enquos()</code> returns a list of such quoted expressions.</p></li>
-<li><p><code><a href='https://rlang.r-lib.org/reference/nse-defuse.html'>expr</a>()</code> quotes a new expression <em>locally</em>. It
-is mostly useful to build new expressions around arguments
-captured with <code>enquo()</code> or <code>enquos()</code>:
-<code>expr(mean(!!enquo(arg), na.rm = TRUE))</code>.</p></li>
-<li><p><code><a href='https://rlang.r-lib.org/reference/as_name.html'>as_name</a>()</code> transforms a quoted variable name
-into a string. Supplying something else than a quoted variable
-name is an error.</p>
-<p>That's unlike <code><a href='https://rlang.r-lib.org/reference/as_label.html'>as_label</a>()</code> which also returns
-a single string but supports any kind of R object as input,
-including quoted function calls and vectors. Its purpose is to
-summarise that object into a single label. That label is often
-suitable as a default name.</p>
-<p>If you don't know what a quoted expression contains (for instance
-expressions captured with <code>enquo()</code> could be a variable
-name, a call to a function, or an unquoted constant), then use
-<code>as_label()</code>. If you know you have quoted a simple variable
-name, or would like to enforce this, use <code>as_name()</code>.</p></li>
-</ul>
-
-<p>To learn more about tidy eval and how to use these tools, visit
-<a href='https://tidyeval.tidyverse.org'>https://tidyeval.tidyverse.org</a> and the
-<a href='https://adv-r.hadley.nz/metaprogramming.html'>Metaprogramming
-section</a> of <a href='https://adv-r.hadley.nz'>Advanced R</a>.</p>
+    <p>Add Horizontal Arrow with Text Label to a ggplot</p>
     </div>
 
+    <pre class="usage"><span class='fu'>add_h_arrow</span>(
+  <span class='no'>p</span>,
+  <span class='no'>x</span>,
+  <span class='no'>y</span>,
+  <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"optimal number"</span>,
+  <span class='kw'>space</span> <span class='kw'>=</span> <span class='fl'>0.01</span>,
+  <span class='kw'>vjust</span> <span class='kw'>=</span> <span class='fl'>0.3</span>,
+  <span class='kw'>seg_len</span> <span class='kw'>=</span> <span class='fl'>0.1</span>,
+  <span class='kw'>arrow_len</span> <span class='kw'>=</span> <span class='fu'>unit</span>(<span class='fl'>2</span>, <span class='st'>"mm"</span>),
+  <span class='kw'>arrow_type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"closed"</span>, <span class='st'>"open"</span>),
+  <span class='kw'>font_size</span> <span class='kw'>=</span> <span class='fl'>5</span>,
+  <span class='kw'>font_family</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"serif"</span>, <span class='st'>"sans"</span>, <span class='st'>"mono"</span>),
+  <span class='kw'>font_face</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"plain"</span>, <span class='st'>"bold"</span>, <span class='st'>"italic"</span>)
+)</pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>p</th>
+      <td><p>a <code>ggplot</code>.</p></td>
+    </tr>
+    <tr>
+      <th>x</th>
+      <td><p>position at x axis.</p></td>
+    </tr>
+    <tr>
+      <th>y</th>
+      <td><p>position at y axis.</p></td>
+    </tr>
+    <tr>
+      <th>label</th>
+      <td><p>text label.</p></td>
+    </tr>
+    <tr>
+      <th>space</th>
+      <td><p>a small space between arrow and text.</p></td>
+    </tr>
+    <tr>
+      <th>vjust</th>
+      <td><p>vertical adjustment, set to 0 to align with the bottom,
+0.5 for the middle, and 1 (the default) for the top.</p></td>
+    </tr>
+    <tr>
+      <th>seg_len</th>
+      <td><p>length of the arrow segment.</p></td>
+    </tr>
+    <tr>
+      <th>arrow_len</th>
+      <td><p>length of the arrow.</p></td>
+    </tr>
+    <tr>
+      <th>arrow_type</th>
+      <td><p>type of the arrow.</p></td>
+    </tr>
+    <tr>
+      <th>font_size</th>
+      <td><p>font size.</p></td>
+    </tr>
+    <tr>
+      <th>font_family</th>
+      <td><p>font family.</p></td>
+    </tr>
+    <tr>
+      <th>font_face</th>
+      <td><p>font face.</p></td>
+    </tr>
+    </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>a <code>ggplot</code> object.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#value">Value</a></li>
     </ul>
 
   </div>

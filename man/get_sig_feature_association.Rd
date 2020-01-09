@@ -42,7 +42,15 @@ a \code{list}. For 'co' features, 'measure' means correlation coefficient.
 For 'ca' features, 'measure' means difference in means of signature exposure.
 }
 \description{
+Association of signature exposures with other features will be performed using one of two procedures:
+for a continuous association variable (including ordinal variable), correaltion is performed;
+for a binary association variable, samples will be divided into two groups and Mann-Whitney U-test
+is performed to test for differences in signature exposure medians between the two groups.
 See \link{get_tidy_association} for cleaning association result.
+}
+\references{
+Macintyre, Geoff, et al. "Copy number signatures and mutational processes in ovarian carcinoma."
+Nature genetics 50.9 (2018): 1262.
 }
 \seealso{
 \link{get_tidy_association}

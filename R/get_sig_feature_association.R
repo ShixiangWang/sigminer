@@ -1,6 +1,11 @@
 #' Calculate Association between Signature Exposures and Other Features
 #'
+#' Association of signature exposures with other features will be performed using one of two procedures:
+#' for a continuous association variable (including ordinal variable), correaltion is performed;
+#' for a binary association variable, samples will be divided into two groups and Mann-Whitney U-test
+#' is performed to test for differences in signature exposure medians between the two groups.
 #' See [get_tidy_association] for cleaning association result.
+#'
 #' @param data a `data.frame` contains signature exposures and other features
 #' @param cols_to_sigs colnames for signature exposure
 #' @param cols_to_features colnames for other features
@@ -16,6 +21,8 @@
 #' @return a `list`. For 'co' features, 'measure' means correlation coefficient.
 #' For 'ca' features, 'measure' means difference in means of signature exposure.
 #' @export
+#' @references Macintyre, Geoff, et al. "Copy number signatures and mutational processes in ovarian carcinoma."
+#' Nature genetics 50.9 (2018): 1262.
 #' @seealso [get_tidy_association]
 get_sig_feature_association <- function(data, cols_to_sigs, cols_to_features, type = "ca",
                                         method_co = c("spearman", "pearson", "kendall"), method_ca = stats::wilcox.test,
