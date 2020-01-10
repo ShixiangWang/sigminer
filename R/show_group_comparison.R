@@ -25,7 +25,7 @@
 #' @param show_pvalue if `TRUE`, show p values.
 #' @param font_size_x font size for x.
 #' @param text_angle_x text angle for x.
-#' @param hjust adjust x axis text
+#' @param text_hjust_x adjust x axis text
 #' @param ... other paramters pass to [ggpubr::compare_means()] or [ggpubr::stat_compare_means()]
 #' according to the specified `method`.
 #' @author Shixiang Wang <w_shixiang@163.com>
@@ -81,7 +81,7 @@ show_group_comparison <- function(group_comparison,
                                   base_size = 12,
                                   font_size_x = 12,
                                   text_angle_x = 30,
-                                  hjust = 0.2,
+                                  text_hjust_x = 0.2,
                                   ...) {
   # parameter with ca/co in the end need fill values
 
@@ -157,7 +157,7 @@ show_group_comparison <- function(group_comparison,
 
       p + theme(
         legend.position = df[["legend_position"]],
-        axis.text.x = element_text(size = font_size_x, angle = text_angle_x, hjust = hjust)
+        axis.text.x = element_text(size = font_size_x, angle = text_angle_x, hjust = text_hjust_x)
       )
     })
     names(ca_res) <- names(ca_list)
@@ -216,7 +216,7 @@ show_group_comparison <- function(group_comparison,
           p <- p + ggpubr::stat_pvalue_manual(p_df, label = "p.adj")
         }
       }
-      p + theme(axis.text.x = element_text(size = font_size_x, angle = text_angle_x, hjust = hjust))
+      p + theme(axis.text.x = element_text(size = font_size_x, angle = text_angle_x, hjust = text_hjust_x))
     }, ...)
     names(co_res) <- names(co_list)
   } else {

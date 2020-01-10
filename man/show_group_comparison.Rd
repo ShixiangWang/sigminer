@@ -18,7 +18,7 @@ show_group_comparison(
   base_size = 12,
   font_size_x = 12,
   text_angle_x = 30,
-  hjust = 0.2,
+  text_hjust_x = 0.2,
   ...
 )
 }
@@ -58,7 +58,7 @@ see all available options.}
 
 \item{text_angle_x}{text angle for x.}
 
-\item{hjust}{adjust x axis text}
+\item{text_hjust_x}{adjust x axis text}
 
 \item{...}{other paramters pass to \code{\link[ggpubr:compare_means]{ggpubr::compare_means()}} or \code{\link[ggpubr:stat_compare_means]{ggpubr::stat_compare_means()}}
 according to the specified \code{method}.}
