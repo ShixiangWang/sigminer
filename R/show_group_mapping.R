@@ -4,8 +4,8 @@
 #' it in other similar situations.
 #'
 #' @param data a `data.frame` containing signature group and other categorical groups.
-#' @param sig_col length-1 character showing the colname of signature group.
-#' @param map_cols character vector showing colnames of other groups.
+#' @param col_to_flow length-1 character showing the column to flow, typically a signature group.
+#' @param cols_to_map character vector showing colnames of other groups.
 #' @param include_sig default if `FALSE`, if `TRUE`, showing signature group.
 #' @param fill_na length-1 string to fill NA, default is `FALSE`.
 #' @param title the title.
@@ -23,14 +23,14 @@
 #'   zzzz = c(rep("xx", 20), rep("yy", 20), rep(NA, 10))
 #' )
 #' \donttest{
-#' show_group_mapping(data, sig_col = "Group1", map_cols = colnames(data)[-1])
-#' show_group_mapping(data, sig_col = "Group1", map_cols = colnames(data)[-1], include_sig = TRUE)
+#' show_group_mapping(data, col_to_flow = "Group1", cols_to_map = colnames(data)[-1])
+#' show_group_mapping(data, col_to_flow = "Group1", cols_to_map = colnames(data)[-1], include_sig = TRUE)
 #' }
-show_group_mapping <- function(data, sig_col, map_cols, include_sig = FALSE,
+show_group_mapping <- function(data, col_to_flow, cols_to_map, include_sig = FALSE,
                                fill_na = FALSE,
                                title = NULL, xlab = NULL, ylab = NULL,
                                custom_theme = cowplot::theme_minimal_hgrid()) {
-  stopifnot(is.data.frame(data), length(sig_col) == 1)
+  stopifnot(is.data.frame(data), length(col_to_flow) == 1)
 
   if (!requireNamespace("ggfittext", quietly = TRUE)) {
     stop("Please install package 'ggfittext' before using this feature!")
@@ -38,26 +38,26 @@ show_group_mapping <- function(data, sig_col, map_cols, include_sig = FALSE,
 
   if (include_sig) {
     data <- data %>%
-      dplyr::mutate(class_ = .data[[sig_col]]) %>%
-      dplyr::select(c(sig_col, map_cols, "class_"))
+      dplyr::mutate(class_ = .data[[col_to_flow]]) %>%
+      dplyr::select(c(col_to_flow, cols_to_map, "class_"))
 
     if (!isFALSE(fill_na)) {
       data <- data %>%
         dplyr::mutate_all(dplyr::funs(ifelse(is.na(.), tidyr::replace_na(., fill_na), .)))
     }
 
-    data_long <- ggalluvial::to_lodes_form(data, c(sig_col, map_cols))
+    data_long <- ggalluvial::to_lodes_form(data, c(col_to_flow, cols_to_map))
   } else {
     data <- data %>%
-      dplyr::mutate(class_ = .data[[sig_col]]) %>%
-      dplyr::select(c(map_cols, "class_"))
+      dplyr::mutate(class_ = .data[[col_to_flow]]) %>%
+      dplyr::select(c(cols_to_map, "class_"))
 
     if (!isFALSE(fill_na)) {
       data <- data %>%
         dplyr::mutate_all(dplyr::funs(ifelse(is.na(.), tidyr::replace_na(., fill_na), .)))
     }
 
-    data_long <- ggalluvial::to_lodes_form(data, map_cols)
+    data_long <- ggalluvial::to_lodes_form(data, cols_to_map)
   }
 
 

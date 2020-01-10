@@ -6,8 +6,8 @@
 \usage{
 show_group_mapping(
   data,
-  sig_col,
-  map_cols,
+  col_to_flow,
+  cols_to_map,
   include_sig = FALSE,
   fill_na = FALSE,
   title = NULL,
@@ -19,9 +19,9 @@ show_group_mapping(
 \arguments{
 \item{data}{a \code{data.frame} containing signature group and other categorical groups.}
 
-\item{sig_col}{length-1 character showing the colname of signature group.}
+\item{col_to_flow}{length-1 character showing the column to flow, typically a signature group.}
 
-\item{map_cols}{character vector showing colnames of other groups.}
+\item{cols_to_map}{character vector showing colnames of other groups.}
 
 \item{include_sig}{default if \code{FALSE}, if \code{TRUE}, showing signature group.}
 
@@ -49,7 +49,7 @@ data <- dplyr::tibble(
   zzzz = c(rep("xx", 20), rep("yy", 20), rep(NA, 10))
 )
 \donttest{
-show_group_mapping(data, sig_col = "Group1", map_cols = colnames(data)[-1])
-show_group_mapping(data, sig_col = "Group1", map_cols = colnames(data)[-1], include_sig = TRUE)
+show_group_mapping(data, col_to_flow = "Group1", cols_to_map = colnames(data)[-1])
+show_group_mapping(data, col_to_flow = "Group1", cols_to_map = colnames(data)[-1], include_sig = TRUE)
 }
 }
