@@ -136,3 +136,27 @@ add_h_arrow(p, x = 3, y = 30)
 #sed -i "" "s/sig_feed/sig_tally/g" `grep "sig_feed" -rl man/*`
 #sed -i "" "s/sig_feed/sig_tally/g" `grep "sig_feed" -rl tests/*`
 #sed -i "" "s/sig_feed/sig_tally/g" `grep "sig_feed" -rl _pkgdown.yml`
+
+
+## Test copy number exposure
+# Load toy dataset of absolute copynumber profile
+load(system.file("extdata", "toy_segTab.RData",
+                 package = "sigminer", mustWork = TRUE
+))
+cn <- read_copynumber(segTabs,
+                      seg_cols = c("chromosome", "start", "end", "segVal"),
+                      genome_build = "hg19", complement = FALSE, verbose = TRUE
+)
+cn.tally <- sig_tally(cn, method = "W", feature_setting = CN.features)
+library(NMF)
+cn.sig <- sig_extract(cn.tally$nmf_matrix, n_sig = 2, pConstant = 1e-9)
+sig.expo <- get_sig_exposure(cn.sig)
+
+sig.expo[, Total := Sig1 + Sig2]
+
+sig.expo
+cn_dt = cn@data[, .(total = .N), by = sample]
+dt = merge(cn_dt, sig.expo, by = "sample")
+
+cor(dt$total, dt$Total, method = "spearman")
+plot(dt$total, dt$Total, xlim = c(25, 55), ylim = c(25, 55))

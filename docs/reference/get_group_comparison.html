@@ -46,6 +46,7 @@
 <meta property="og:description" content="Compare genotypes/phenotypes based on signature groups (samples are assigned to
 several groups). For categorical
 type, calculate fisher p value (using stats::fisher.test) and count table.
+In larger than 2 by 2 tables, compute p-values by Monte Carlo simulation.
 For continuous type, calculate anova p value (using stats::aov),
 summary table and Tukey Honest significant difference (using stats::TukeyHSD).
 The result of this function can be plotted by show_group_comparison()." />
@@ -130,6 +131,7 @@ The result of this function can be plotted by show_group_comparison()." />
     <p>Compare genotypes/phenotypes based on signature groups (samples are assigned to
 several groups). For categorical
 type, calculate fisher p value (using <a href='https://rdrr.io/r/stats/fisher.test.html'>stats::fisher.test</a>) and count table.
+In larger than 2 by 2 tables, compute p-values by Monte Carlo simulation.
 For continuous type, calculate anova p value (using <a href='https://rdrr.io/r/stats/aov.html'>stats::aov</a>),
 summary table and Tukey Honest significant difference (using <a href='https://rdrr.io/r/stats/TukeyHSD.html'>stats::TukeyHSD</a>).
 The result of this function can be plotted by <code><a href='show_group_comparison.html'>show_group_comparison()</a></code>.</p>
@@ -180,9 +182,6 @@ Otherwise a value (either length 1 or length same as <code>cols_to_compare</code
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>a <code>list</code> contains data, summary, p value etc..</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>Compute p-values by Monte Carlo simulation, in larger than 2 by 2 tables.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
@@ -191,12 +190,8 @@ Otherwise a value (either length 1 or length same as <code>cols_to_compare</code
   <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 ))
 <span class='co'># Extract copy number signatures</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>NMF</span>)</div><div class='output co'>#&gt; <span class='message'>载入需要的程辑包：pkgmaker</span></div><div class='output co'>#&gt; <span class='message'>载入需要的程辑包：registry</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>载入程辑包：‘pkgmaker’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:base’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    isFALSE</span></div><div class='output co'>#&gt; <span class='message'>载入需要的程辑包：rngtools</span></div><div class='output co'>#&gt; <span class='message'>载入需要的程辑包：cluster</span></div><div class='output co'>#&gt; <span class='message'>NMF - BioConductor layer [OK] | Shared memory capabilities [NO: bigmemory] | Cores 7/8</span></div><div class='output co'>#&gt; <span class='message'>  To enable shared memory capabilities, try: install.extras('</span>
-#&gt; <span class='message'>NMF</span>
-#&gt; <span class='message'>')</span></div><div class='input'><span class='no'>sig</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sig_extract.html'>sig_extract</a></span>(<span class='no'>cn_prepare</span>$<span class='no'>nmf_matrix</span>, <span class='fl'>2</span>, <span class='kw'>nrun</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>NMF</span>)
+<span class='no'>sig</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sig_extract.html'>sig_extract</a></span>(<span class='no'>cn_prepare</span>$<span class='no'>nmf_matrix</span>, <span class='fl'>2</span>, <span class='kw'>nrun</span> <span class='kw'>=</span> <span class='fl'>10</span>)
 
 <span class='co'># Assign samples to clusters</span>
 <span class='no'>groups</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_groups.html'>get_groups</a></span>(<span class='no'>sig</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"samples"</span>)</div><div class='output co'>#&gt; <span class='message'>=&gt; Obtaining clusters by the contribution of signature to each sample...</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Finding the dominant signature of each group...</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Summarizing...</span></div><div class='output co'>#&gt; <span class='message'>	group #1: 6 samples with Sig2 enriched.</span>
@@ -210,13 +205,13 @@ Otherwise a value (either length 1 or length same as <code>cols_to_compare</code
   <span class='kw'>col_group</span> <span class='kw'>=</span> <span class='st'>"group"</span>,
   <span class='kw'>cols_to_compare</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>groups</span>[, -<span class='fl'>1</span>])[<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>1</span>, -<span class='fl'>2</span>)],
   <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"co"</span>, <span class='st'>"ca"</span>), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)</div><div class='output co'>#&gt; <span class='message'>Treat prob as continuous variable.</span></div><div class='output co'>#&gt; <span class='message'>Treat enrich_sig as categorical variable.</span></div><div class='output co'>#&gt; <span class='message'>Treat new_group as continuous variable.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 长参数的长度不是短参数的长度的整倍数</span></div><div class='input'>
+)</div><div class='output co'>#&gt; <span class='message'>Treat prob as continuous variable.</span></div><div class='output co'>#&gt; <span class='message'>Treat enrich_sig as categorical variable.</span></div><div class='output co'>#&gt; <span class='message'>Treat new_group as continuous variable.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: longer argument not a multiple of length of shorter</span></div><div class='input'>
 <span class='co'># Compare groups (Set NAs of categorical columns to 'Rest')</span>
 <span class='no'>groups.cmp2</span> <span class='kw'>&lt;-</span> <span class='fu'>get_group_comparison</span>(<span class='no'>groups</span>[, -<span class='fl'>1</span>],
   <span class='kw'>col_group</span> <span class='kw'>=</span> <span class='st'>"group"</span>,
   <span class='kw'>cols_to_compare</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>groups</span>[, -<span class='fl'>1</span>])[<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>1</span>, -<span class='fl'>2</span>)],
   <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"co"</span>, <span class='st'>"ca"</span>), <span class='kw'>NAs</span> <span class='kw'>=</span> <span class='st'>"Rest"</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)</div><div class='output co'>#&gt; <span class='message'>Treat prob as continuous variable.</span></div><div class='output co'>#&gt; <span class='message'>Treat enrich_sig as categorical variable.</span></div><div class='output co'>#&gt; <span class='message'>Treat new_group as continuous variable.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 长参数的长度不是短参数的长度的整倍数</span></div><div class='input'># }
+)</div><div class='output co'>#&gt; <span class='message'>Treat prob as continuous variable.</span></div><div class='output co'>#&gt; <span class='message'>Treat enrich_sig as categorical variable.</span></div><div class='output co'>#&gt; <span class='message'>Treat new_group as continuous variable.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: longer argument not a multiple of length of shorter</span></div><div class='input'># }
 
 </div></pre>
   </div>
@@ -225,7 +220,6 @@ Otherwise a value (either length 1 or length same as <code>cols_to_compare</code
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
-      <li><a href="#details">Details</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

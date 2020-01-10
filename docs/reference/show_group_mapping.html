@@ -129,8 +129,8 @@ it in other similar situations.</p>
 
     <pre class="usage"><span class='fu'>show_group_mapping</span>(
   <span class='no'>data</span>,
-  <span class='no'>sig_col</span>,
-  <span class='no'>map_cols</span>,
+  <span class='no'>col_to_flow</span>,
+  <span class='no'>cols_to_map</span>,
   <span class='kw'>include_sig</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>fill_na</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -147,11 +147,11 @@ it in other similar situations.</p>
       <td><p>a <code>data.frame</code> containing signature group and other categorical groups.</p></td>
     </tr>
     <tr>
-      <th>sig_col</th>
-      <td><p>length-1 character showing the colname of signature group.</p></td>
+      <th>col_to_flow</th>
+      <td><p>length-1 character showing the column to flow, typically a signature group.</p></td>
     </tr>
     <tr>
-      <th>map_cols</th>
+      <th>cols_to_map</th>
       <td><p>character vector showing colnames of other groups.</p></td>
     </tr>
     <tr>
@@ -185,13 +185,14 @@ it in other similar situations.</p>
     <p>a <code>ggplot</code> object</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/dplyr/man/reexports.html'>tibble</a></span>(
+    <pre class="examples"><div class='input'><span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/reexports.html'>tibble</a></span>(
   <span class='kw'>Group1</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='no'>LETTERS</span>[<span class='fl'>1</span>:<span class='fl'>5</span>], <span class='kw'>each</span> <span class='kw'>=</span> <span class='fl'>10</span>),
   <span class='kw'>Group2</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='no'>LETTERS</span>[<span class='fl'>6</span>:<span class='fl'>15</span>], <span class='kw'>each</span> <span class='kw'>=</span> <span class='fl'>5</span>),
   <span class='kw'>zzzz</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>"xx"</span>, <span class='fl'>20</span>), <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>"yy"</span>, <span class='fl'>20</span>), <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>NA</span>, <span class='fl'>10</span>))
 )
 <span class='co'># \donttest{</span>
-<span class='fu'>show_group_mapping</span>(<span class='no'>data</span>, <span class='kw'>sig_col</span> <span class='kw'>=</span> <span class='st'>"Group1"</span>, <span class='kw'>map_cols</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>data</span>)[-<span class='fl'>1</span>])</div><div class='output co'>#&gt; <span class='warning'>Warning: Factor `stratum` contains implicit NA, consider using `forcats::fct_explicit_na`</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Factor `label` contains implicit NA, consider using `forcats::fct_explicit_na`</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Factor `stratum` contains implicit NA, consider using `forcats::fct_explicit_na`</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Factor `label` contains implicit NA, consider using `forcats::fct_explicit_na`</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 1 rows containing missing values (geom_fit_text).</span></div><div class='img'><img src='show_group_mapping-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>show_group_mapping</span>(<span class='no'>data</span>, <span class='kw'>sig_col</span> <span class='kw'>=</span> <span class='st'>"Group1"</span>, <span class='kw'>map_cols</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>data</span>)[-<span class='fl'>1</span>], <span class='kw'>include_sig</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Factor `stratum` contains implicit NA, consider using `forcats::fct_explicit_na`</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Factor `label` contains implicit NA, consider using `forcats::fct_explicit_na`</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Factor `stratum` contains implicit NA, consider using `forcats::fct_explicit_na`</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Factor `label` contains implicit NA, consider using `forcats::fct_explicit_na`</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 1 rows containing missing values (geom_fit_text).</span></div><div class='img'><img src='show_group_mapping-2.png' alt='' width='700' height='433' /></div><div class='input'># }
+<span class='fu'>show_group_mapping</span>(<span class='no'>data</span>, <span class='kw'>col_to_flow</span> <span class='kw'>=</span> <span class='st'>"Group1"</span>, <span class='kw'>cols_to_map</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>data</span>)[-<span class='fl'>1</span>])</div><div class='output co'>#&gt; <span class='warning'>Warning: Factor `stratum` contains implicit NA, consider using `forcats::fct_explicit_na`</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Factor `label` contains implicit NA, consider using `forcats::fct_explicit_na`</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Factor `stratum` contains implicit NA, consider using `forcats::fct_explicit_na`</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Factor `label` contains implicit NA, consider using `forcats::fct_explicit_na`</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 1 rows containing missing values (geom_fit_text).</span></div><div class='img'><img src='show_group_mapping-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>show_group_mapping</span>(<span class='no'>data</span>, <span class='kw'>col_to_flow</span> <span class='kw'>=</span> <span class='st'>"Group1"</span>, <span class='kw'>cols_to_map</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>data</span>)[-<span class='fl'>1</span>],
+                         <span class='kw'>include_sig</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Factor `stratum` contains implicit NA, consider using `forcats::fct_explicit_na`</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Factor `label` contains implicit NA, consider using `forcats::fct_explicit_na`</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Factor `stratum` contains implicit NA, consider using `forcats::fct_explicit_na`</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Factor `label` contains implicit NA, consider using `forcats::fct_explicit_na`</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 1 rows containing missing values (geom_fit_text).</span></div><div class='img'><img src='show_group_mapping-2.png' alt='' width='700' height='433' /></div><div class='input'># }
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

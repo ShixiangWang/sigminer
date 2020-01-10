@@ -373,7 +373,6 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "SBS"),
   }
 
   if (style != "default" | paint_axis_text) {
-
     g <- ggplot_gtable(ggplot_build(p))
 
     if (style != "default") {

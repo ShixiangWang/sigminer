@@ -92,19 +92,19 @@ sig_tally <- function(object, ...) {
 #' processes in ovarian carcinoma." Nature genetics 50.9 (2018): 1262.
 #' @export
 sig_tally.CopyNumber <- function(object,
-                                  method = "Macintyre",
-                                  ignore_chrs = NULL,
-                                  feature_setting = sigminer::CN.features[1:50],
-                                  type = c("probability", "count"),
-                                  reference_components = FALSE,
-                                  cores = 1, seed = 123456,
-                                  min_comp = 2, max_comp = 15,
-                                  min_prior = 0.001,
-                                  model_selection = "BIC",
-                                  threshold = 0.1,
-                                  nrep = 1, niter = 1000,
-                                  keep_only_matrix = FALSE,
-                                  ...) {
+                                 method = "Macintyre",
+                                 ignore_chrs = NULL,
+                                 feature_setting = sigminer::CN.features[1:50],
+                                 type = c("probability", "count"),
+                                 reference_components = FALSE,
+                                 cores = 1, seed = 123456,
+                                 min_comp = 2, max_comp = 15,
+                                 min_prior = 0.001,
+                                 model_selection = "BIC",
+                                 threshold = 0.1,
+                                 nrep = 1, niter = 1000,
+                                 keep_only_matrix = FALSE,
+                                 ...) {
   stopifnot(is.logical(reference_components) | is.list(reference_components) | is.null(reference_components))
   method <- match.arg(method, choices = c("Macintyre", "M", "Wang", "W"))
 
@@ -226,9 +226,9 @@ sig_tally.CopyNumber <- function(object,
 #' }
 #' @export
 sig_tally.MAF <- function(object, ref_genome = NULL, prefix = NULL,
-                           add = TRUE, ignore_chrs = NULL, use_syn = TRUE,
-                           keep_only_matrix = FALSE,
-                           ...) {
+                          add = TRUE, ignore_chrs = NULL, use_syn = TRUE,
+                          keep_only_matrix = FALSE,
+                          ...) {
   # // TODO: Rewrite this function instead of using maftools
   # // Make result consistent with result from sig_tally.CopyNumber
   res <- maftools::trinucleotideMatrix(

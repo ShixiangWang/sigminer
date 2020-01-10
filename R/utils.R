@@ -53,7 +53,7 @@ col2hex <- function(col, alpha) grDevices::rgb(t(grDevices::col2rgb(col)), alpha
 #' use_color_style("default")
 #' use_color_style("cosmic")
 use_color_style <- function(style) {
-  #c("red", "cyan", "yellow", "blue", "magenta", "gray50", "orange", "darkgreen", "brown", "black", rainbow(10)[4:10])
+  # c("red", "cyan", "yellow", "blue", "magenta", "gray50", "orange", "darkgreen", "brown", "black", rainbow(10)[4:10])
   if (style == "default") {
     palette <- c(
       "cyan", "red", "brown", "purple",

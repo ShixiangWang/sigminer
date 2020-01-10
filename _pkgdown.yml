@@ -58,6 +58,8 @@ reference:
     - get_tidy_parameter
     - get_adj_p
     - use_color_style
+    - add_h_arrow
+    - add_labels
   - title: Copy number analysis and visualization
     desc: Functions for analyzing copy number data and visualization.
     contents:

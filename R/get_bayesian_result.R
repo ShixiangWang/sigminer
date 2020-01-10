@@ -33,16 +33,9 @@ get_bayesian_result <- function(run_info) {
   H <- H[index, , drop = FALSE]
   K <- sum(index)
 
-  Signature <- W
-  Exposure <- H
-
-  # By scaling the signature loading matrix has all mutation burdens
-  # - each signture (column in W) now represents a number of mutations
-  # assigned to each signature.
-  for (j in seq_len(K)) {
-    Signature[, j] <- Signature[, j] * rowSums(H)[j]
-    Exposure[j, ] <- Exposure[j, ] * colSums(W)[j]
-  }
+  scal_res <- helper_scale_nmf_matrix(W, H, K)
+  Signature <- scal_res$Signature
+  Exposure <- scal_res$Exposure
 
   # Handle hyper mutant samples
   hyper_index <- grepl("_\\[hyper\\]_", colnames(Exposure))

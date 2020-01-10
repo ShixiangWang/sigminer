@@ -198,8 +198,13 @@ extracting signatures using automatic relevance determination technique.</p></di
   <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 ))
 <span class='co'># Extract copy number signatures</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>NMF</span>)
-<span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>sig_extract</span>(<span class='no'>cn_prepare</span>$<span class='no'>nmf_matrix</span>, <span class='fl'>2</span>, <span class='kw'>nrun</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>NMF</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required package: pkgmaker</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: registry</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: ‘pkgmaker’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:base’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    isFALSE</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: rngtools</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: cluster</span></div><div class='output co'>#&gt; <span class='message'>NMF - BioConductor layer [OK] | Shared memory capabilities [NO: windows] | Cores 7/8</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: ‘NMF’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:testthat’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    compare</span></div><div class='input'><span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>sig_extract</span>(<span class='no'>cn_prepare</span>$<span class='no'>nmf_matrix</span>, <span class='fl'>2</span>, <span class='kw'>nrun</span> <span class='kw'>=</span> <span class='fl'>1</span>)
 <span class='co'># }</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
