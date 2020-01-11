@@ -28,16 +28,21 @@ variation records, thus providing new insight into cancer study.
 
   - supports a standard pipeline for identification of two types of
     signatures: SBS signature and copy number signature
+  - supports two methods for calling copy number signatures: one is from
+    Macintyre et al. 2018 and the other is created by us
   - supports association and group analysis and visualization for
     signatures
+  - supports a bayesian variant of NMF algorithm to enable optimal
+    inferences for the number of signatures through the automatic
+    relevance determination technique from **SignatureAnalyzer** package
   - supports two plot styles for signature profile: ‘default’ (like
     **SignatureAnalyzer** package) and ‘cosmic’ (like **COSMIC**
     database)
   - supports two types of signatrue exposures: relative exposure
     (relative contribution of signatures in each sample) and absolute
     exposure (estimated variation records of signatures in each sample)
-  - supports basic summary and visualization for profile of mutation and
-    copy number data
+  - supports basic summary and visualization for profile of mutation
+    (powered by **maftools**) and copy number data
   - supports parallel computation by R packages **foreach**, **future**
     and **NMF**
   - efficient code powered by R packages **data.table**, **dtplyr** and
@@ -100,6 +105,28 @@ source code of the **SignatureAnalyzer** package, if you use this
 feature, please also cite:
 
     Alexandrov, Ludmil, et al. "The repertoire of mutational signatures in human cancer." BioRxiv (2018): 322859.
+
+## References
+
+1.  Alexandrov, Ludmil, et al. “The repertoire of mutational signatures
+    in human cancer.” BioRxiv (2018): 322859.
+2.  Macintyre, Geoff, et al. “Copy number signatures and mutational
+    processes in ovarian carcinoma.” Nature genetics 50.9 (2018): 1262.
+3.  Mayakonda, Anand, et al. “Maftools: efficient and comprehensive
+    analysis of somatic variants in cancer.” Genome research 28.11
+    (2018): 1747-1756.
+4.  Gaujoux, Renaud, and Cathal Seoighe. “A Flexible R Package for
+    Nonnegative Matrix Factorization.”" BMC Bioinformatics 11, no. 1
+    (December 2010).
+5.  H. Wickham. ggplot2: Elegant Graphics for Data Analysis.
+    Springer-Verlag New York, 2016.
+6.  Tan, Vincent YF, and Cédric Févotte. “Automatic relevance
+    determination in nonnegative matrix factorization with the/spl
+    beta/-divergence.” IEEE Transactions on Pattern Analysis and Machine
+    Intelligence 35.7 (2012): 1592-1605.
+7.  Kim, Jaegil, et al. “Somatic ERCC2 mutations are associated with a
+    distinct genomic signature in urothelial tumors.” Nature genetics
+    48.6 (2016): 600.
 
 ## LICENSE
 
