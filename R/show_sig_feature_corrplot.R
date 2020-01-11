@@ -1,12 +1,20 @@
 #' Draw Corrplot for Signature Exposures and Other Features
 #'
+#' This function is for association visualization. Of note,
+#' the parameters `p_val` and `drop` will affect the visualization
+#' of association results under p value threshold.
+#'
 #' @param tidy_cor data returned by [get_tidy_association].
 #' @param feature_list a character vector contains features want to be plotted.
 #' If missing, all features will be used.
 #' @param sort_features default is `FALSE`, use feature order obtained from the previous
 #' step. If `TRUE`, sort features as `feature_list`.
 #' @param return_plotlist if `TRUE`, return as a list of `ggplot` objects.
-#' @param p_val p value threshold.
+#' @param p_val p value threshold. If p value larger than this threshold,
+#' the result becomes blank white.
+#' @param drop if `TRUE`, when a feature has no association with all signatures
+#' (p value larger than threshold set by `p_val`), this feature will be removed
+#' from the plot. Otherwise, this feature (a row) will keep with all blank white.
 #' @param xlab label for x axis.
 #' @param ylab label for y axis.
 #' @param gradient_colors a Scale object representing gradient colors used to plot.
@@ -16,11 +24,19 @@
 #' @return a `ggplot2` object
 #' @export
 #' @seealso [get_tidy_association] and [get_sig_feature_association]
-show_sig_feature_corrplot <- function(tidy_cor, feature_list, sort_features = FALSE, return_plotlist = FALSE,
-                                      p_val = 0.05, xlab = "Signatures", ylab = "Features", gradient_colors = scale_color_gradient2(
+show_sig_feature_corrplot <- function(tidy_cor, feature_list,
+                                      sort_features = FALSE,
+                                      drop = TRUE,
+                                      return_plotlist = FALSE,
+                                      p_val = 0.05,
+                                      xlab = "Signatures",
+                                      ylab = "Features",
+                                      gradient_colors = scale_color_gradient2(
                                         low = "blue",
                                         mid = "white", high = "red", midpoint = 0
-                                      ), plot_ratio = "auto", breaks_count = c(
+                                      ),
+                                      plot_ratio = "auto",
+                                      breaks_count = c(
                                         0L,
                                         200L, 400L, 600L, 800L, 1020L
                                       )) {
@@ -39,8 +55,19 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list, sort_features = FA
       ),
       signature = factor(.data$signature)
     ) %>%
-    dplyr::filter(.data$feature %in%
-      feature_list, .data$p <= p_val)
+    dplyr::filter(.data$feature %in% feature_list)
+
+  if (drop) {
+    data <- data %>%
+      dplyr::filter(.data$p <= p_val)
+  } else {
+    # Fill measure with 0, so the feature is kept with blank
+    data <- data %>%
+      dplyr::mutate(
+        measure = ifelse(.data$p <= p_val, .data$measure, 0)
+      )
+  }
+
   .plot_cor <- function(data) {
     if (sort_features) {
       p <- ggplot2::ggplot(data, ggplot2::aes(

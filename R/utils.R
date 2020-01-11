@@ -82,3 +82,12 @@ use_color_style <- function(style) {
   }
   palette
 }
+
+
+# https://stackoverflow.com/questions/34096162/dplyr-mutate-replace-several-columns-on-a-subset-of-rows
+mutate_cond <- function(.data, condition, ..., envir = parent.frame()) {
+  condition <- eval(substitute(condition), .data, envir)
+  .data[condition, ] <- .data[condition, ] %>%
+    dplyr::mutate(...)
+  .data
+}

@@ -8,6 +8,7 @@ show_sig_feature_corrplot(
   tidy_cor,
   feature_list,
   sort_features = FALSE,
+  drop = TRUE,
   return_plotlist = FALSE,
   p_val = 0.05,
   xlab = "Signatures",
@@ -27,9 +28,14 @@ If missing, all features will be used.}
 \item{sort_features}{default is \code{FALSE}, use feature order obtained from the previous
 step. If \code{TRUE}, sort features as \code{feature_list}.}
 
+\item{drop}{if \code{TRUE}, when a feature has no association with all signatures
+(p value larger than threshold set by \code{p_val}), this feature will be removed
+from the plot. Otherwise, this feature (a row) will keep with all blank white.}
+
 \item{return_plotlist}{if \code{TRUE}, return as a list of \code{ggplot} objects.}
 
-\item{p_val}{p value threshold.}
+\item{p_val}{p value threshold. If p value larger than this threshold,
+the result becomes blank white.}
 
 \item{xlab}{label for x axis.}
 
@@ -45,7 +51,9 @@ step. If \code{TRUE}, sort features as \code{feature_list}.}
 a \code{ggplot2} object
 }
 \description{
-Draw Corrplot for Signature Exposures and Other Features
+This function is for association visualization. Of note,
+the parameters \code{p_val} and \code{drop} will affect the visualization
+of association results under p value threshold.
 }
 \seealso{
 \link{get_tidy_association} and \link{get_sig_feature_association}
