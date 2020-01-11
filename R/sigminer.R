@@ -67,7 +67,6 @@
 #' @importFrom future plan
 #' @importFrom furrr future_pmap
 #' @importFrom foreach foreach %dopar%
-#' @importFrom doParallel registerDoParallel
 #' @importFrom graphics hist
 #' @importFrom grDevices colorRampPalette
 #' @importFrom stats as.formula fisher.test pairwise.table quantile setNames

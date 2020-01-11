@@ -16,12 +16,37 @@ issues](https://img.shields.io/github/issues-closed/ShixiangWang/sigminer.svg)](
 
 ## Overview
 
-Genomic variations including somatic mutations, copy number variations,
-etc. are the major force for cancer initialization and development. Due
-to the specificity of molecular lesions caused by genomic variations, we
-can generate characteristic variation spectra, called ‘**signature**’.
-**sigminer** helps users to extract, analyze and visualize signatures
-from genomic variations, thus providing new insight into cancer study.
+Genomic variations including single nucleotide substitution (SBS)
+mutations, copy number variations, etc. are the major force for cancer
+initialization and development. Due to the specificity of molecular
+lesions caused by genomic variations, we can generate characteristic
+variation (feature) spectra, called ‘**signature**’. **sigminer** helps
+users to extract, analyze and visualize signatures from genomic
+variation records, thus providing new insight into cancer study.
+
+### Feature
+
+  - supports a standard pipeline for identification of two types of
+    signatures: SBS signature and copy number signature
+  - supports association and group analysis and visualization for
+    signatures
+  - supports two plot styles for signature profile: ‘default’ (like
+    **SignatureAnalyzer** package) and ‘cosmic’ (like **COSMIC**
+    database)
+  - supports two types of signatrue exposures: relative exposure
+    (relative contribution of signatures in each sample) and absolute
+    exposure (estimated variation records of signatures in each sample)
+  - supports basic summary and visualization for profile of mutation and
+    copy number data
+  - supports parallel computation by R packages **foreach**, **future**
+    and **NMF**
+  - efficient code powered by R packages **data.table**, **dtplyr** and
+    **tidyverse**
+  - elegant plots powered by R packages **ggplot2**, **ggpubr**
+    **cowplot** and **patchwork**
+  - well tested by R package **testthat** and documented by R package
+    **roxygen2**, **pkgdown**, and etc. for both reliable and
+    reproducible research
 
 ## Installation
 
@@ -43,8 +68,7 @@ remotes::install_github("ShixiangWang/sigminer")
 ## Citation
 
 **sigminer** has not been published. If you use **sigminer** in academic
-field, please cite our recent
-    work:
+field, please cite our recent work:
 
     Wang, Shixiang, et al. "The predictive power of tumor mutational burden 
         in lung cancer immunotherapy response is influenced by patients' sex."
@@ -66,22 +90,16 @@ in ovarian carcinoma*, if you use this feature, please also cite:
 
 The code for extracting mutational signatures was based in part on the
 source code of the **maftools** package, if you use this feature, please
-also
-    cite:
+also cite:
 
     Mayakonda, Anand, et al. "Maftools: efficient and comprehensive analysis
         of somatic variants in cancer." Genome research 28.11 (2018): 1747-1756.
 
 The code for extracting mutational signatures was based in part on the
 source code of the **SignatureAnalyzer** package, if you use this
-feature, please also
-    cite:
+feature, please also cite:
 
     Alexandrov, Ludmil, et al. "The repertoire of mutational signatures in human cancer." BioRxiv (2018): 322859.
-
-**sigminer** is powered by data.table,
-[NMF](https://github.com/renozao/NMF) package and
-[maftools](https://github.com/PoisonAlien/maftools) package.
 
 ## LICENSE
 
