@@ -365,11 +365,7 @@ show_sig_profile <- function(Signature, mode = c("copynumber", "SBS"),
   } else if (normalize == "row" | normalize == "feature") {
     p <- p + ylab("Contributions")
   } else {
-    if (mode == "copynumber") {
-      p <- p + ylab("Estimated number of events")
-    } else {
-      p <- p + ylab("Estimated mutation counts")
-    }
+    p <- p + ylab("Estimated counts")
   }
 
   if (style != "default" | paint_axis_text) {

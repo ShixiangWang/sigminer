@@ -17,7 +17,8 @@
 #' from the plot. Otherwise, this feature (a row) will keep with all blank white.
 #' @param xlab label for x axis.
 #' @param ylab label for y axis.
-#' @param gradient_colors a Scale object representing gradient colors used to plot.
+#' @param co_gradient_colors a Scale object representing gradient colors used to plot for continuous features.
+#' @param ca_gradient_colors a Scale object representing gradient colors used to plot for categorical features.
 #' @param plot_ratio a length-2 numeric vector to set the height/width ratio.
 #' @param breaks_count breaks for sample count.
 #'
@@ -31,10 +32,11 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
                                       p_val = 0.05,
                                       xlab = "Signatures",
                                       ylab = "Features",
-                                      gradient_colors = scale_color_gradient2(
+                                      co_gradient_colors = scale_color_gradient2(
                                         low = "blue",
                                         mid = "white", high = "red", midpoint = 0
                                       ),
+                                      ca_gradient_colors = co_gradient_colors,
                                       plot_ratio = "auto",
                                       breaks_count = c(
                                         0L,
@@ -61,14 +63,17 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
     data <- data %>%
       dplyr::filter(.data$p <= p_val)
   } else {
+    size_levels = levels(data$Samples)
     # Fill measure with 0, so the feature is kept with blank
     data <- data %>%
       dplyr::mutate(
-        measure = ifelse(.data$p <= p_val, .data$measure, 0)
-      )
+        measure = ifelse(.data$p > p_val | is.na(.data$p), 0, .data$measure),
+        Samples = ifelse(is.na(.data$Samples),
+                         size_levels[1], .data$Samples %>% as.character()),
+        Samples = factor(.data$Samples, levels = size_levels))
   }
 
-  .plot_cor <- function(data) {
+  .plot_cor <- function(data, type = "co") {
     if (sort_features) {
       p <- ggplot2::ggplot(data, ggplot2::aes(
         x = signature,
@@ -81,10 +86,18 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
         y = .data$feature
       ))
     }
-    p + ggplot2::geom_point(ggplot2::aes_string(
-      colour = "measure",
+    p <- p + ggplot2::geom_point(ggplot2::aes_string(
+      color = "measure",
       size = "Samples"
-    )) + gradient_colors +
+    ))
+
+    if (type == "co") {
+      p <- p + co_gradient_colors
+    } else {
+      p <- p + ca_gradient_colors
+    }
+
+    p +
       ggplot2::scale_size_discrete(drop = FALSE) +
       ggplot2::scale_x_discrete(drop = FALSE)
   }
@@ -92,7 +105,7 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
   data <- data %>%
     dplyr::group_by(.data$type) %>%
     tidyr::nest() %>%
-    dplyr::mutate(gg = purrr::map(.data$data, .plot_cor)) %>%
+    dplyr::mutate(gg = purrr::map2(.data$data, .data$type, .plot_cor)) %>%
     dplyr::ungroup()
   gglist <- data$gg
   names(gglist) <- data$type

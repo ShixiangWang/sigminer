@@ -108,11 +108,11 @@ show_sig_exposure <- function(Signature,
     x2$Signature <- factor(x2$Signature, levels = sig_names)
   }
 
-  x1$class0 <- "Contribution"
+  x1$class0 <- "Est_Counts"
   x2$class0 <- "Fraction"
   df <- rbind(x1, x2)
 
-  df$class0 <- factor(df$class0, c("Contribution", "Fraction"))
+  df$class0 <- factor(df$class0, c("Est_Counts", "Fraction"))
   df$Sample <- factor(df$Sample, sample.ordering)
 
   p <- ggplot(df, aes_string(x = "Sample", y = "Exposure", fill = "Signature"))

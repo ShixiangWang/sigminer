@@ -13,8 +13,9 @@ show_sig_feature_corrplot(
   p_val = 0.05,
   xlab = "Signatures",
   ylab = "Features",
-  gradient_colors = scale_color_gradient2(low = "blue", mid = "white", high = "red",
+  co_gradient_colors = scale_color_gradient2(low = "blue", mid = "white", high = "red",
     midpoint = 0),
+  ca_gradient_colors = co_gradient_colors,
   plot_ratio = "auto",
   breaks_count = c(0L, 200L, 400L, 600L, 800L, 1020L)
 )
@@ -41,7 +42,9 @@ the result becomes blank white.}
 
 \item{ylab}{label for y axis.}
 
-\item{gradient_colors}{a Scale object representing gradient colors used to plot.}
+\item{co_gradient_colors}{a Scale object representing gradient colors used to plot for continuous features.}
+
+\item{ca_gradient_colors}{a Scale object representing gradient colors used to plot for categorical features.}
 
 \item{plot_ratio}{a length-2 numeric vector to set the height/width ratio.}
 
