@@ -71,7 +71,7 @@ show_cosmic_sig_profile <- function(sig_index = NULL, show_index = TRUE, sig_db 
   gg <- show_sig_profile(sig_mat,
     check_sig_names = FALSE,
     mode = "SBS",
-    normalize = "raw",
+    normalize = "row",
     sig_orders = index,
     ...
   )
