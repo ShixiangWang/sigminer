@@ -53,6 +53,7 @@ show_cn_profile <- function(data, samples = NULL, show_n = NULL, show_title = FA
   # Filter data
   if (!is.null(samples)) {
     data <- data[data$sample %in% samples]
+    data$sample <- factor(data$sample, levels = samples)
   }
   data <- data[data$chromosome %in% chrs]
 
@@ -141,6 +142,14 @@ show_cn_profile <- function(data, samples = NULL, show_n = NULL, show_title = FA
         plot_cn_profile,
         coord_df = coord_df
       ))
+
+    ## group_by does not maintain sample order
+    ## https://github.com/tidyverse/dplyr/issues/3279
+    if (!is.null(samples)) {
+      gg_df <- gg_df %>%
+        dplyr::arrange(.data$sample)
+    }
+
     if (!is.null(show_n)) {
       gg_df <- gg_df %>%
         dplyr::slice(1:show_n)
