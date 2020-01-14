@@ -227,7 +227,7 @@ show_group_comparison <- function(group_comparison,
     if (length(ca_res) <= 3) {
       ca_comb <- cowplot::plot_grid(plotlist = ca_res, align = "h")
     } else if (length(ca_res) == 4) {
-      ca_comb <- cowplot::plot_grid(plotlist = ca_res, align = "h", ncol = 2)
+      ca_comb <- cowplot::plot_grid(plotlist = ca_res, align = "hv", ncol = 2)
     } else if (length(ca_res) <= 9) {
       ca_comb <- cowplot::plot_grid(plotlist = ca_res, align = "hv", ncol = 3)
     } else {
