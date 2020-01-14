@@ -55,7 +55,7 @@ get_groups <- function(Signature,
   method <- match.arg(method)
 
   if (method == "consensus") {
-    message("Obtaining clusters from the hierarchical clustering of the consensus matrix...")
+    message("=> Obtaining clusters from the hierarchical clustering of the consensus matrix...")
     if (!"nmf_obj" %in% names(Signature$Raw)) {
       stop("Input Signature object does not contain NMF object, please select other methods")
     }
@@ -80,6 +80,8 @@ get_groups <- function(Signature,
     data$group <- as.character(data$group)
     message("=> Finding the dominant signature of each group...")
     data <- find_enriched_signature(data, Signature)
+    ztable <- data$table
+    data <- data$data
   } else if (method == "samples") {
     message("=> Obtaining clusters by the contribution of signature to each sample...")
 
@@ -100,6 +102,8 @@ get_groups <- function(Signature,
     data$group <- as.character(data$group)
     message("=> Finding the dominant signature of each group...")
     data <- find_enriched_signature(data, Signature)
+    ztable <- data$table
+    data <- data$data
   } else if (method == "exposure") {
     message("=> Creating clusters by the dominant signature (fraction is returned as weight)...")
     expo_df <- get_sig_exposure(Signature, type = "relative")
@@ -119,6 +123,7 @@ get_groups <- function(Signature,
       dplyr::arrange(.data$group)
 
     data$group <- as.character(as.integer(factor(data$group)))
+    ztable <- table(data$group, data$enrich_sig)
   } else if (method == "k-means") {
     set.seed(seed = 1024)
     expo_df <- get_sig_exposure(Signature, type = "relative")
@@ -128,8 +133,11 @@ get_groups <- function(Signature,
     n_cluster <- ifelse(is.null(n_cluster), ncol(contrib), n_cluster)
     message("=> Running k-means with ", n_cluster, " clusters...")
     contrib.km <- kmeans(x = contrib, centers = n_cluster)
-    message("=> Finding the dominant signature of each group...")
-    cluster_df <- as.data.frame(apply(t(contrib.km$centers), 2, function(x) which(x == max(x))))
+    message("=> Generating a table of group and signature contribution (stored in 'map_table' attr):")
+    ztable <- contrib.km$centers
+    print(ztable)
+    message("=> Assigning a group to a signature with the maxium fraction...")
+    cluster_df <- as.data.frame(apply(t(ztable), 2, function(x) which(x == max(x))))
     colnames(cluster_df)[1] <- "enrich_sig"
     cluster_df$enrich_sig <- colnames(contrib)[cluster_df$enrich_sig]
     data.table::setDT(x = cluster_df, keep.rownames = TRUE)
@@ -160,5 +168,10 @@ get_groups <- function(Signature,
     sum_tb, " samples with ",
     map_dic[names(sum_tb)], " enriched."
   ), collapse = "\n"))
+
+  if (exists("ztable")) {
+    attr(data, "map_table") <- ztable
+  }
+
   return(data)
 }

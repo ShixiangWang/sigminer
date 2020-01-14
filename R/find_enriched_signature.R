@@ -35,13 +35,19 @@ find_enriched_signature <- function(group_df, Signature) {
       table(.$group, .$Signature)
     }
 
+  message("=> Generating a table of group and dominant signature:")
+  print(ztable)
+  message("=> Assigning a group to a signature with the maxium fraction (stored in 'map_table' attr)...")
+
   res <- dplyr::tibble()
   for (i in seq_len(nrow(ztable))) {
     sig <- names(which.max(ztable[i, ]))
     res <- dplyr::bind_rows(res, dplyr::tibble(group = rownames(ztable)[i], enrich_sig = sig))
   }
 
-  merge_df %>%
+  df <- merge_df %>%
     dplyr::select(-dplyr::starts_with("Sig")) %>%
     dplyr::left_join(res, by = c("group"))
+
+  list(data = df, table = ztable)
 }
