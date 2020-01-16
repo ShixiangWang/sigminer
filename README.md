@@ -6,11 +6,10 @@
 [![CRAN
 status](https://www.r-pkg.org/badges/version/sigminer)](https://cran.r-project.org/package=sigminer)
 [![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
-[![R build
-status](https://github.com/ShixiangWang/sigminer/workflows/R-CMD-check/badge.svg)](https://github.com/ShixiangWang/sigminer/actions?workflow=R-CMD-check)
 [![Coverage
 status](https://codecov.io/gh/ShixiangWang/sigminer/branch/master/graph/badge.svg)](https://codecov.io/github/ShixiangWang/sigminer?branch=master)
 [![](http://cranlogs.r-pkg.org/badges/grand-total/sigminer?color=orange)](https://cran.r-project.org/package=sigminer)
+[![HitCount](http://hits.dwyl.io/ShixiangWang/sigminer.svg)](http://hits.dwyl.io/ShixiangWang/sigminer)
 [![Closed
 issues](https://img.shields.io/github/issues-closed/ShixiangWang/sigminer.svg)](https://github.com/ShixiangWang/sigminer/issues?q=is%3Aissue+is%3Aclosed)
 
@@ -73,7 +72,8 @@ remotes::install_github("ShixiangWang/sigminer")
 ## Citation
 
 **sigminer** has not been published. If you use **sigminer** in academic
-field, please cite our recent work:
+field, please cite our recent
+    work:
 
     Wang, Shixiang, et al. "The predictive power of tumor mutational burden 
         in lung cancer immunotherapy response is influenced by patients' sex."
@@ -95,24 +95,26 @@ in ovarian carcinoma*, if you use this feature, please also cite:
 
 The code for extracting mutational signatures was based in part on the
 source code of the **maftools** package, if you use this feature, please
-also cite:
+also
+    cite:
 
     Mayakonda, Anand, et al. "Maftools: efficient and comprehensive analysis
         of somatic variants in cancer." Genome research 28.11 (2018): 1747-1756.
 
 The code for extracting mutational signatures was based in part on the
 source code of the **SignatureAnalyzer** package, if you use this
-feature, please also cite:
+feature, please also
+    cite:
 
     Alexandrov, Ludmil, et al. "The repertoire of mutational signatures in human cancer." BioRxiv (2018): 322859.
 
 ## References
 
-1.  Alexandrov, Ludmil, et al. “The repertoire of mutational signatures
+1.  Alexandrov, Ludmil, et al. “The repertoire of mutational signatures
     in human cancer.” BioRxiv (2018): 322859.
-2.  Macintyre, Geoff, et al. “Copy number signatures and mutational
+2.  Macintyre, Geoff, et al. “Copy number signatures and mutational
     processes in ovarian carcinoma.” Nature genetics 50.9 (2018): 1262.
-3.  Mayakonda, Anand, et al. “Maftools: efficient and comprehensive
+3.  Mayakonda, Anand, et al. “Maftools: efficient and comprehensive
     analysis of somatic variants in cancer.” Genome research 28.11
     (2018): 1747-1756.
 4.  Gaujoux, Renaud, and Cathal Seoighe. “A Flexible R Package for
@@ -124,7 +126,7 @@ feature, please also cite:
     determination in nonnegative matrix factorization with the/spl
     beta/-divergence.” IEEE Transactions on Pattern Analysis and Machine
     Intelligence 35.7 (2012): 1592-1605.
-7.  Kim, Jaegil, et al. “Somatic ERCC2 mutations are associated with a
+7.  Kim, Jaegil, et al. “Somatic ERCC2 mutations are associated with a
     distinct genomic signature in urothelial tumors.” Nature genetics
     48.6 (2016): 600.
 

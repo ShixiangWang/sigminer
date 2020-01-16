@@ -17,10 +17,11 @@ knitr::opts_chunk$set(
 # sigminer <img src="man/figures/logo.png" align="right"  height="140" width="120" alt="logo"/>
 
 [![CRAN status](https://www.r-pkg.org/badges/version/sigminer)](https://cran.r-project.org/package=sigminer) [![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing) 
-[![R build status](https://github.com/ShixiangWang/sigminer/workflows/R-CMD-check/badge.svg)](https://github.com/ShixiangWang/sigminer/actions?workflow=R-CMD-check)
 [![Coverage status](https://codecov.io/gh/ShixiangWang/sigminer/branch/master/graph/badge.svg)](https://codecov.io/github/ShixiangWang/sigminer?branch=master) 
 [![](http://cranlogs.r-pkg.org/badges/grand-total/sigminer?color=orange)](https://cran.r-project.org/package=sigminer)
+[![HitCount](http://hits.dwyl.io/ShixiangWang/sigminer.svg)](http://hits.dwyl.io/ShixiangWang/sigminer)
 [![Closed issues](https://img.shields.io/github/issues-closed/ShixiangWang/sigminer.svg)](https://github.com/ShixiangWang/sigminer/issues?q=is%3Aissue+is%3Aclosed)
+
 
 ## Overview
 
