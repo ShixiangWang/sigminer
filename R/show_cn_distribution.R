@@ -70,7 +70,7 @@ show_cn_distribution <- function(data,
       data <- subset(data, chromosome %in% c(1:22, "X"))
     }
 
-    # // TODO: Find a better way to generate chromosome distribution.
+    # TODO: Find a better way to generate chromosome distribution.
 
     # only keep chr 1 to 22, X
     data$chromosome <- factor(as.character(data$chromosome),

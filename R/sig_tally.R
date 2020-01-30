@@ -229,8 +229,8 @@ sig_tally.MAF <- function(object, ref_genome = NULL, prefix = NULL,
                           add = TRUE, ignore_chrs = NULL, use_syn = TRUE,
                           keep_only_matrix = FALSE,
                           ...) {
-  # // TODO: Rewrite this function instead of using maftools
-  # // Make result consistent with result from sig_tally.CopyNumber
+  # TODO: Rewrite this function instead of using maftools
+  # Make result consistent with result from sig_tally.CopyNumber
   res <- maftools::trinucleotideMatrix(
     object,
     ref_genome = ref_genome, prefix = prefix,

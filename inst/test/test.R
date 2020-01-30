@@ -160,3 +160,20 @@ dt = merge(cn_dt, sig.expo, by = "sample")
 
 cor(dt$total, dt$Total, method = "spearman")
 plot(dt$total, dt$Total, xlim = c(25, 55), ylim = c(25, 55))
+
+
+## An sample for mutational signature
+library(maftools)
+laml.maf = system.file('extdata', 'tcga_laml.maf.gz', package = 'maftools')
+laml = read.maf(maf = laml.maf)
+
+library(BSgenome.Hsapiens.UCSC.hg19, quietly = TRUE)
+laml.tnm = trinucleotideMatrix(maf = laml, prefix = 'chr', add = TRUE, ref_genome = "BSgenome.Hsapiens.UCSC.hg19")
+dim(laml.tnm$nmf_matrix)
+
+library(NMF)
+library(sigminer)
+
+laml.sig = sig_extract(laml.tnm$nmf_matrix, n_sig = 3, pConstant = 1e-9)
+get_sig_exposure(laml.sig)
+get_sig_exposure(laml.sig, type = "relative")
