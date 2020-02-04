@@ -63,14 +63,16 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
     data <- data %>%
       dplyr::filter(.data$p <= p_val)
   } else {
-    size_levels = levels(data$Samples)
+    size_levels <- levels(data$Samples)
     # Fill measure with 0, so the feature is kept with blank
     data <- data %>%
       dplyr::mutate(
         measure = ifelse(.data$p > p_val | is.na(.data$p), 0, .data$measure),
         Samples = ifelse(is.na(.data$Samples),
-                         size_levels[1], .data$Samples %>% as.character()),
-        Samples = factor(.data$Samples, levels = size_levels))
+          size_levels[1], .data$Samples %>% as.character()
+        ),
+        Samples = factor(.data$Samples, levels = size_levels)
+      )
   }
 
   .plot_cor <- function(data, type = "co") {

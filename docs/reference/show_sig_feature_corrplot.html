@@ -43,7 +43,9 @@
 
 
 <meta property="og:title" content="Draw Corrplot for Signature Exposures and Other Features — show_sig_feature_corrplot" />
-<meta property="og:description" content="Draw Corrplot for Signature Exposures and Other Features" />
+<meta property="og:description" content="This function is for association visualization. Of note,
+the parameters p_val and drop will affect the visualization
+of association results under p value threshold." />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -122,19 +124,23 @@
     </div>
 
     <div class="ref-description">
-    <p>Draw Corrplot for Signature Exposures and Other Features</p>
+    <p>This function is for association visualization. Of note,
+the parameters <code>p_val</code> and <code>drop</code> will affect the visualization
+of association results under p value threshold.</p>
     </div>
 
     <pre class="usage"><span class='fu'>show_sig_feature_corrplot</span>(
   <span class='no'>tidy_cor</span>,
   <span class='no'>feature_list</span>,
   <span class='kw'>sort_features</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>drop</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>return_plotlist</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>p_val</span> <span class='kw'>=</span> <span class='fl'>0.05</span>,
   <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Signatures"</span>,
   <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"Features"</span>,
-  <span class='kw'>gradient_colors</span> <span class='kw'>=</span> <span class='fu'>scale_color_gradient2</span>(<span class='kw'>low</span> <span class='kw'>=</span> <span class='st'>"blue"</span>, <span class='kw'>mid</span> <span class='kw'>=</span> <span class='st'>"white"</span>, <span class='kw'>high</span> <span class='kw'>=</span> <span class='st'>"red"</span>,
+  <span class='kw'>co_gradient_colors</span> <span class='kw'>=</span> <span class='fu'>scale_color_gradient2</span>(<span class='kw'>low</span> <span class='kw'>=</span> <span class='st'>"blue"</span>, <span class='kw'>mid</span> <span class='kw'>=</span> <span class='st'>"white"</span>, <span class='kw'>high</span> <span class='kw'>=</span> <span class='st'>"red"</span>,
     <span class='kw'>midpoint</span> <span class='kw'>=</span> <span class='fl'>0</span>),
+  <span class='kw'>ca_gradient_colors</span> <span class='kw'>=</span> <span class='no'>co_gradient_colors</span>,
   <span class='kw'>plot_ratio</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
   <span class='kw'>breaks_count</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0L</span>, <span class='fl'>200L</span>, <span class='fl'>400L</span>, <span class='fl'>600L</span>, <span class='fl'>800L</span>, <span class='fl'>1020L</span>)
 )</pre>
@@ -157,12 +163,19 @@ If missing, all features will be used.</p></td>
 step. If <code>TRUE</code>, sort features as <code>feature_list</code>.</p></td>
     </tr>
     <tr>
+      <th>drop</th>
+      <td><p>if <code>TRUE</code>, when a feature has no association with all signatures
+(p value larger than threshold set by <code>p_val</code>), this feature will be removed
+from the plot. Otherwise, this feature (a row) will keep with all blank white.</p></td>
+    </tr>
+    <tr>
       <th>return_plotlist</th>
       <td><p>if <code>TRUE</code>, return as a list of <code>ggplot</code> objects.</p></td>
     </tr>
     <tr>
       <th>p_val</th>
-      <td><p>p value threshold.</p></td>
+      <td><p>p value threshold. If p value larger than this threshold,
+the result becomes blank white.</p></td>
     </tr>
     <tr>
       <th>xlab</th>
@@ -173,8 +186,12 @@ step. If <code>TRUE</code>, sort features as <code>feature_list</code>.</p></td>
       <td><p>label for y axis.</p></td>
     </tr>
     <tr>
-      <th>gradient_colors</th>
-      <td><p>a Scale object representing gradient colors used to plot.</p></td>
+      <th>co_gradient_colors</th>
+      <td><p>a Scale object representing gradient colors used to plot for continuous features.</p></td>
+    </tr>
+    <tr>
+      <th>ca_gradient_colors</th>
+      <td><p>a Scale object representing gradient colors used to plot for categorical features.</p></td>
     </tr>
     <tr>
       <th>plot_ratio</th>

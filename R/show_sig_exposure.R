@@ -6,6 +6,8 @@
 #' or just a raw exposure matrix with column representing samples (patients) and row
 #' representing signatures (row names must start with 'Sig').
 #' @param sig_names set name of signatures, can be a character vector.
+#' @param groups sample groups, default is `NULL`.
+#' @param grp_order order of groups, default is `NULL`.
 #' @param cutoff a cutoff value to remove hyper-mutated samples.
 #' @param palette palette used to plot, default use a built-in palette
 #' according to parameter `style`.
@@ -33,6 +35,8 @@
 #' show_sig_exposure(sig)
 show_sig_exposure <- function(Signature,
                               sig_names = NULL,
+                              groups = NULL,
+                              grp_order = NULL,
                               cutoff = NULL,
                               style = c("default", "cosmic"),
                               palette = use_color_style(style),
@@ -40,6 +44,8 @@ show_sig_exposure <- function(Signature,
                               font_scale = 1,
                               rm_space = FALSE,
                               hide_samps = TRUE) {
+
+  # TODO: add group (#108)
   if (class(Signature) == "Signature") {
     h <- Signature$Exposure
   } else if (is.matrix(Signature)) {
@@ -84,6 +90,17 @@ show_sig_exposure <- function(Signature,
       strip.text.y = element_text(face = "bold")
     )
 
+  if (style == "cosmic") {
+    .theme_ss <- .theme_ss + theme(
+      panel.spacing.x = unit(0, "line"),
+      strip.background.x = element_rect(color = "white"),
+      strip.text.x = element_text(
+        color = "white",
+        face = "bold"
+      )
+    )
+  }
+
   if (is.null(sig_names)) {
     # chop Signature off
     rownames(h.norm) <- rownames(h) <- sub(".*[^\\d+](\\d+)$", "\\1", rownames(h))
@@ -115,6 +132,33 @@ show_sig_exposure <- function(Signature,
   df$class0 <- factor(df$class0, c("Est_Counts", "Fraction"))
   df$Sample <- factor(df$Sample, sample.ordering)
 
+  if (!is.null(groups)) {
+    if (is.character(groups)) {
+      if (is.null(names(groups))) {
+        names(groups) <- sample.ordering
+      }
+      group_df <- data.frame(
+        Sample = names(groups),
+        groups = as.character(groups)
+      )
+
+      df <- merge(df, group_df, by = "Sample")
+
+      if (!is.null(grp_order)) {
+        df$groups <- factor(df$groups, levels = grp_order)
+        df <- df %>%
+          dplyr::mutate(
+            groups = factor(.data$groups, levels = grp_order)
+          )
+        # Order by groups
+        df <- df %>%
+          dplyr::group_by(.data$groups)
+      }
+    } else {
+      stop("groups can only be a character vector!", call. = FALSE)
+    }
+  }
+
   p <- ggplot(df, aes_string(x = "Sample", y = "Exposure", fill = "Signature"))
   if (rm_space) {
     p <- p + geom_bar(stat = "identity", position = "stack", alpha = 0.9, width = 1)
@@ -123,7 +167,11 @@ show_sig_exposure <- function(Signature,
   }
 
   p <- p + scale_fill_manual(values = palette)
-  p <- p + facet_grid(class0 ~ ., scales = "free_y")
+  if (!is.null(groups)) {
+    p <- p + facet_grid(class0 ~ groups, scales = "free", space = "free_x")
+  } else {
+    p <- p + facet_grid(class0 ~ ., scales = "free_y")
+  }
   p <- p + xlab("Samples") + ylab("Exposure")
   p <- p + .theme_ss
   p <- p + theme(legend.position = "top")
@@ -134,5 +182,19 @@ show_sig_exposure <- function(Signature,
       axis.ticks.x = element_blank()
     )
   }
+
+  if (style == "cosmic") {
+    g <- ggplot_gtable(ggplot_build(p))
+
+    strip_t <- which(grepl("strip-t", g$layout$name))
+    k <- 1
+    for (i in strip_t) {
+      j <- which(grepl("rect", g$grobs[[i]]$grobs[[1]]$childrenOrder))
+      g$grobs[[i]]$grobs[[1]]$children[[j]]$gp$fill <- palette[k]
+      k <- k + 1
+    }
+    p <- ggplotify::as.ggplot(g)
+  }
+
   p
 }

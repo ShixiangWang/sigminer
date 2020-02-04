@@ -50,7 +50,9 @@ data <- dplyr::tibble(
 )
 \donttest{
 show_group_mapping(data, col_to_flow = "Group1", cols_to_map = colnames(data)[-1])
-show_group_mapping(data, col_to_flow = "Group1", cols_to_map = colnames(data)[-1],
-                         include_sig = TRUE)
+show_group_mapping(data,
+  col_to_flow = "Group1", cols_to_map = colnames(data)[-1],
+  include_sig = TRUE
+)
 }
 }

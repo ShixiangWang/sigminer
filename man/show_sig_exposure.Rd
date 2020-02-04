@@ -7,6 +7,8 @@
 show_sig_exposure(
   Signature,
   sig_names = NULL,
+  groups = NULL,
+  grp_order = NULL,
   cutoff = NULL,
   style = c("default", "cosmic"),
   palette = use_color_style(style),
@@ -22,6 +24,10 @@ or just a raw exposure matrix with column representing samples (patients) and ro
 representing signatures (row names must start with 'Sig').}
 
 \item{sig_names}{set name of signatures, can be a character vector.}
+
+\item{groups}{sample groups, default is \code{NULL}.}
+
+\item{grp_order}{order of groups, default is \code{NULL}.}
 
 \item{cutoff}{a cutoff value to remove hyper-mutated samples.}
 

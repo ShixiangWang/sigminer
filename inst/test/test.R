@@ -177,3 +177,15 @@ library(sigminer)
 laml.sig = sig_extract(laml.tnm$nmf_matrix, n_sig = 3, pConstant = 1e-9)
 get_sig_exposure(laml.sig)
 get_sig_exposure(laml.sig, type = "relative")
+
+
+## Group exposure
+# Load copy number signature
+load(system.file("extdata", "toy_copynumber_signature.RData",
+                 package = "sigminer", mustWork = TRUE
+))
+# Show signature exposure
+show_sig_exposure(sig, groups = c(rep("grp1", 5), rep("grp2", 5)))
+show_sig_exposure(sig, groups = c(rep("grp1", 5), rep("grp2", 5)), style = "cosmic")
+show_sig_exposure(sig, groups = c(rep("grp1", 5), rep("grp2", 5)), grp_order = c("grp1", "grp2"))
+show_sig_exposure(sig, groups = c(rep("grp1", 5), rep("grp2", 5)), grp_order = c("grp2", "grp1"), style = "cosmic")
