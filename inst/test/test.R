@@ -189,3 +189,5 @@ show_sig_exposure(sig, groups = c(rep("grp1", 5), rep("grp2", 5)))
 show_sig_exposure(sig, groups = c(rep("grp1", 5), rep("grp2", 5)), style = "cosmic")
 show_sig_exposure(sig, groups = c(rep("grp1", 5), rep("grp2", 5)), grp_order = c("grp1", "grp2"))
 show_sig_exposure(sig, groups = c(rep("grp1", 5), rep("grp2", 5)), grp_order = c("grp2", "grp1"), style = "cosmic")
+show_sig_exposure(sig, groups = c(rep("grp1", 5), rep("grp2", 5)), grp_order = c("grp2", "grp1"), style = "cosmic",
+                  legend_position = "none")

@@ -15,6 +15,7 @@
 #' @param rm_space default is `FALSE`. If `TRUE`, it will remove border color
 #' and expand the bar width to 1. This is useful when the sample size is big.
 #' @param hide_samps if `TRUE`, hide sample names.
+#' @param legend_position position of legend, default is 'top'.
 #' @author Shixiang Wang
 #' @return a `ggplot` object
 #' @import ggplot2
@@ -45,7 +46,8 @@ show_sig_exposure <- function(Signature,
                               base_size = 12,
                               font_scale = 1,
                               rm_space = FALSE,
-                              hide_samps = TRUE) {
+                              hide_samps = TRUE,
+                              legend_position = "top") {
 
   # TODO: add group (#108)
   if (class(Signature) == "Signature") {
@@ -178,7 +180,7 @@ show_sig_exposure <- function(Signature,
   }
   p <- p + xlab("Samples") + ylab("Exposure")
   p <- p + .theme_ss
-  p <- p + theme(legend.position = "top")
+  p <- p + theme(legend.position = legend_position)
 
   if (hide_samps) {
     p <- p + theme(

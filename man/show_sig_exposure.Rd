@@ -16,7 +16,8 @@ show_sig_exposure(
   base_size = 12,
   font_scale = 1,
   rm_space = FALSE,
-  hide_samps = TRUE
+  hide_samps = TRUE,
+  legend_position = "top"
 )
 }
 \arguments{
@@ -48,6 +49,8 @@ according to parameter \code{style}.}
 and expand the bar width to 1. This is useful when the sample size is big.}
 
 \item{hide_samps}{if \code{TRUE}, hide sample names.}
+
+\item{legend_position}{position of legend, default is 'top'.}
 }
 \value{
 a \code{ggplot} object
