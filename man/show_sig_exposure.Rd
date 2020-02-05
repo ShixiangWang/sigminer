@@ -9,6 +9,7 @@ show_sig_exposure(
   sig_names = NULL,
   groups = NULL,
   grp_order = NULL,
+  grp_size = NULL,
   cutoff = NULL,
   style = c("default", "cosmic"),
   palette = use_color_style(style),
@@ -28,6 +29,8 @@ representing signatures (row names must start with 'Sig').}
 \item{groups}{sample groups, default is \code{NULL}.}
 
 \item{grp_order}{order of groups, default is \code{NULL}.}
+
+\item{grp_size}{font size of groups.}
 
 \item{cutoff}{a cutoff value to remove hyper-mutated samples.}
 

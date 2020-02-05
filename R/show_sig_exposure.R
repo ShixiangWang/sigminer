@@ -8,6 +8,7 @@
 #' @param sig_names set name of signatures, can be a character vector.
 #' @param groups sample groups, default is `NULL`.
 #' @param grp_order order of groups, default is `NULL`.
+#' @param grp_size font size of groups.
 #' @param cutoff a cutoff value to remove hyper-mutated samples.
 #' @param palette palette used to plot, default use a built-in palette
 #' according to parameter `style`.
@@ -37,6 +38,7 @@ show_sig_exposure <- function(Signature,
                               sig_names = NULL,
                               groups = NULL,
                               grp_order = NULL,
+                              grp_size = NULL,
                               cutoff = NULL,
                               style = c("default", "cosmic"),
                               palette = use_color_style(style),
@@ -87,7 +89,8 @@ show_sig_exposure <- function(Signature,
       ),
       panel.grid.major = element_blank(),
       panel.grid.minor = element_blank(),
-      strip.text.y = element_text(face = "bold")
+      strip.text.y = element_text(face = "bold"),
+      strip.text.x = element_text(size = grp_size)
     )
 
   if (style == "cosmic") {
@@ -96,6 +99,7 @@ show_sig_exposure <- function(Signature,
       strip.background.x = element_rect(color = "white"),
       strip.text.x = element_text(
         color = "white",
+        size = grp_size,
         face = "bold"
       )
     )
