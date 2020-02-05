@@ -46,6 +46,8 @@ show_sig_exposure <- function(Signature,
                               base_size = 12,
                               font_scale = 1,
                               rm_space = FALSE,
+                              rm_grid_line = TRUE,
+                              rm_panel_border = FALSE,
                               hide_samps = TRUE,
                               legend_position = "top") {
 
@@ -89,8 +91,6 @@ show_sig_exposure <- function(Signature,
         size = base_size * scale,
         color = "black"
       ),
-      panel.grid.major = element_blank(),
-      panel.grid.minor = element_blank(),
       strip.text.y = element_text(face = "bold"),
       strip.text.x = element_text(size = grp_size)
     )
@@ -104,6 +104,19 @@ show_sig_exposure <- function(Signature,
         size = grp_size,
         face = "bold"
       )
+    )
+  }
+
+  if (rm_panel_border) {
+    .theme_ss <- .theme_ss + theme(
+      panel.border = element_blank()
+    )
+  }
+
+  if (rm_grid_line) {
+    .theme_ss <- .theme_ss + theme(
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank()
     )
   }
 
@@ -148,7 +161,11 @@ show_sig_exposure <- function(Signature,
         groups = as.character(groups)
       )
 
-      df <- merge(df, group_df, by = "Sample")
+      if (!all(df$Sample %in% group_df$Sample)) {
+        warning("Not all samples can be found in 'groups'!")
+      }
+
+      df <- merge(df, group_df, by = "Sample", all.x = TRUE)
 
       if (!is.null(grp_order)) {
         df$groups <- factor(df$groups, levels = grp_order)

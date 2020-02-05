@@ -191,3 +191,5 @@ show_sig_exposure(sig, groups = c(rep("grp1", 5), rep("grp2", 5)), grp_order = c
 show_sig_exposure(sig, groups = c(rep("grp1", 5), rep("grp2", 5)), grp_order = c("grp2", "grp1"), style = "cosmic")
 show_sig_exposure(sig, groups = c(rep("grp1", 5), rep("grp2", 5)), grp_order = c("grp2", "grp1"), style = "cosmic",
                   legend_position = "none")
+show_sig_exposure(sig, groups = c(rep("grp1", 5), rep("grp2", 5)), grp_order = c("grp2", "grp1"), style = "cosmic",
+                  legend_position = "none", rm_space = TRUE, rm_grid_line = FALSE, rm_panel_border = T)

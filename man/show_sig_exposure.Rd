@@ -16,6 +16,8 @@ show_sig_exposure(
   base_size = 12,
   font_scale = 1,
   rm_space = FALSE,
+  rm_grid_line = TRUE,
+  rm_panel_border = FALSE,
   hide_samps = TRUE,
   legend_position = "top"
 )
@@ -47,6 +49,11 @@ according to parameter \code{style}.}
 
 \item{rm_space}{default is \code{FALSE}. If \code{TRUE}, it will remove border color
 and expand the bar width to 1. This is useful when the sample size is big.}
+
+\item{rm_grid_line}{default is \code{FALSE}, if \code{TRUE}, remove grid lines of plot.}
+
+\item{rm_panel_border}{default is \code{TRUE} for style 'cosmic',
+remove panel border to keep plot tight.}
 
 \item{hide_samps}{if \code{TRUE}, hide sample names.}
 
