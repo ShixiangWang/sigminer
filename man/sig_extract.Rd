@@ -29,7 +29,10 @@ enough to achieve robust result.}
 \item{method}{specification of the NMF algorithm. Use 'brunet' as default.
 Available methods for nmf decompositions are 'brunet', 'lee', 'ls-nmf', 'nsNMF', 'offset'.}
 
-\item{optimize}{logical, used for optimizing copy number exposure.}
+\item{optimize}{logical, used for optimizing copy number exposure.
+NOTE: it can be only used when the \code{CN} feature is highly variable
+across signatures and you should also check it by comparing to the result
+from \code{optimize=FALSE}.}
 
 \item{pConstant}{A small positive value (like 1e-9) to add to the matrix.
 Use it ONLY if the functions throws

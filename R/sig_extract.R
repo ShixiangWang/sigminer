@@ -5,6 +5,9 @@
 #' @inheritParams sig_estimate
 #' @param n_sig number of signature. Please run [sig_estimate] to select a suitable value.
 #' @param optimize logical, used for optimizing copy number exposure.
+#' NOTE: it can be only used when the `CN` feature is highly variable
+#' across signatures and you should also check it by comparing to the result
+#' from `optimize=FALSE`.
 #' @param ... other arguments passed to [NMF::nmf()].
 #' @author Shixiang Wang
 #' @references Gaujoux, Renaud, and Cathal Seoighe. "A flexible R package for nonnegative matrix factorization." BMC bioinformatics 11.1 (2010): 367.
