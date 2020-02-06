@@ -10,6 +10,7 @@ sig_extract(
   nrun = 10,
   cores = 1,
   method = "brunet",
+  optimize = FALSE,
   pConstant = NULL,
   seed = 123456,
   ...
@@ -27,6 +28,8 @@ enough to achieve robust result.}
 
 \item{method}{specification of the NMF algorithm. Use 'brunet' as default.
 Available methods for nmf decompositions are 'brunet', 'lee', 'ls-nmf', 'nsNMF', 'offset'.}
+
+\item{optimize}{logical, used for optimizing copy number exposure.}
 
 \item{pConstant}{A small positive value (like 1e-9) to add to the matrix.
 Use it ONLY if the functions throws

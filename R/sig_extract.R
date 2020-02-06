@@ -4,6 +4,7 @@
 #'
 #' @inheritParams sig_estimate
 #' @param n_sig number of signature. Please run [sig_estimate] to select a suitable value.
+#' @param optimize logical, used for optimizing copy number exposure.
 #' @param ... other arguments passed to [NMF::nmf()].
 #' @author Shixiang Wang
 #' @references Gaujoux, Renaud, and Cathal Seoighe. "A flexible R package for nonnegative matrix factorization." BMC bioinformatics 11.1 (2010): 367.
@@ -29,6 +30,7 @@ sig_extract <- function(nmf_matrix,
                         nrun = 10,
                         cores = 1,
                         method = "brunet",
+                        optimize = FALSE,
                         pConstant = NULL,
                         seed = 123456, ...) {
   # transpose matrix
@@ -60,9 +62,52 @@ sig_extract <- function(nmf_matrix,
   # Signature number
   K <- ncol(W)
 
-  scal_res <- helper_scale_nmf_matrix(W, H, K)
+  has_cn <- grepl("^CN[^C]", rownames(W)) | startsWith(rownames(W), "copynumber")
+  scal_res <- helper_scale_nmf_matrix(W, H, K, handle_cn = ifelse(!optimize & any(has_cn), TRUE, FALSE))
   Signature <- scal_res$Signature
   Exposure <- scal_res$Exposure
+
+  if (optimize) {
+    ## Handle copy number signature exposure quantification
+    ##  https://github.com/ShixiangWang/sigminer/issues/43#issuecomment-574039689
+    if (any(has_cn)) {
+      mat_cn <- mat[has_cn, ]
+      nmf.res_cn <- NMF::nmf(
+        mat_cn,
+        K,
+        seed = seed,
+        nrun = nrun,
+        method = method,
+        .opt = paste0("p", cores),
+        ...
+      )
+      ## Signature loading
+      W_cn <- NMF::basis(nmf.res_cn)
+      ## Exposure loading
+      H_cn <- NMF::coef(nmf.res_cn)
+
+      ## Match the signatures
+      ## and assign the exposure
+      scal_res_cn <- helper_scale_nmf_matrix(W_cn, H_cn, K, handle_cn = FALSE)
+
+      to_sig <- apply(scal_res_cn$Signature, 2, function(x) x / sum(x, na.rm = TRUE))
+      to_ref <- apply(Signature[has_cn,, drop=FALSE], 2, function(x) x / sum(x, na.rm = TRUE))
+      #colnames(to_sig) <- colnames(to_ref) <- as.character(seq_len(ncol(to_sig)))
+      to_match <- suppressMessages(get_sig_similarity(to_sig, to_ref))
+      to_index <- apply(to_match$similarity, 1, which.max) %>% as.integer()
+
+      ## Take a check
+      if (all(sort(to_index) == seq_len(ncol(to_sig)))) {
+        Exposure <- scal_res_cn$Exposure[to_index, , drop = FALSE]
+      } else {
+        message("=> Copy number signature exposure optimized failedly!")
+        message("=> Switch to the old way.")
+        scal_res <- helper_scale_nmf_matrix(W, H, K, handle_cn = TRUE)
+        Signature <- scal_res$Signature
+        Exposure <- scal_res$Exposure
+      }
+    }
+  }
 
   # Handle hyper mutant samples
   hyper_index <- grepl("_\\[hyper\\]_", colnames(Exposure))
