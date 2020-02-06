@@ -63,7 +63,7 @@ sig_extract <- function(nmf_matrix,
   K <- ncol(W)
 
   has_cn <- grepl("^CN[^C]", rownames(W)) | startsWith(rownames(W), "copynumber")
-  scal_res <- helper_scale_nmf_matrix(W, H, K, handle_cn = ifelse(!optimize & any(has_cn), TRUE, FALSE))
+  scal_res <- helper_scale_nmf_matrix(W, H, K, handle_cn = !optimize & any(has_cn))
   Signature <- scal_res$Signature
   Exposure <- scal_res$Exposure
 

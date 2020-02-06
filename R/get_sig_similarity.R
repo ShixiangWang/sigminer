@@ -41,7 +41,7 @@ get_sig_similarity <- function(Signature, Ref = NULL, sig_db = "legacy",
     w <- Signature$Signature.norm
   } else if (is.matrix(Signature)) {
     w <- Signature
-    if (!all(colSums(w) == 1)) {
+    if (!all(round(colSums(w)) == 1)) {
       stop("If Signature is a matrix, sum of each column is 1!", call. = FALSE)
     }
   } else {
@@ -85,7 +85,7 @@ get_sig_similarity <- function(Signature, Ref = NULL, sig_db = "legacy",
       sigs <- Ref$Signature.norm
     } else if (is.matrix(Ref)) {
       sigs <- Ref
-      if (!all(colSums(sigs) == 1)) {
+      if (!all(round(colSums(sigs)) == 1)) {
         stop("If Ref is a matrix, sum of each column is 1!", call. = FALSE)
       }
     } else {
