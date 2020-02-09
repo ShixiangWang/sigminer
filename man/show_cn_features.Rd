@@ -10,8 +10,11 @@ show_cn_features(
   rm_outlier = FALSE,
   ylab = NULL,
   log_segsize = TRUE,
+  log_y = FALSE,
   return_plotlist = FALSE,
   base_size = 12,
+  nrow = 2,
+  align = "hv",
   ...
 )
 }
@@ -29,9 +32,17 @@ works when method is "Wang" ("W").}
 \item{log_segsize}{default is \code{TRUE}, show \code{log10} based segsize, only
 works for input from "Macintyre" ("M") method.}
 
+\item{log_y}{logical, if \code{TRUE}, show \code{log10} based y axis, only
+works for input from "Wang" ("W") method.}
+
 \item{return_plotlist}{if \code{TRUE}, return a list of ggplot objects but a combined plot.}
 
 \item{base_size}{overall font size.}
+
+\item{nrow}{(optional) Number of rows in the plot grid.}
+
+\item{align}{(optional) Specifies whether graphs in the grid should be horizontally ("h") or
+vertically ("v") aligned. Options are "none" (default), "hv" (align in both directions), "h", and "v".}
 
 \item{...}{other options pass to \code{\link[cowplot]{plot_grid}} function of \code{cowplot} package.}
 }

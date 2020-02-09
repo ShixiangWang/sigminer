@@ -27,9 +27,13 @@ show_cn_components <- function(parameters,
                                method = "Macintyre",
                                show_weights = TRUE,
                                log_segsize = TRUE,
+                               log_y = FALSE,
                                auto_transform = TRUE,
                                return_plotlist = FALSE,
-                               base_size = 12, ...) {
+                               base_size = 12,
+                               nrow = 2,
+                               align = "hv",
+                               ...) {
   stopifnot(is.logical(return_plotlist))
 
   method <- match.arg(method, choices = c("Macintyre", "M", "Wang", "W"))
@@ -165,8 +169,8 @@ show_cn_components <- function(parameters,
     } else {
       p <- cowplot::plot_grid(
         plotlist = plotlist,
-        nrow = 2,
-        align = "hv",
+        nrow = nrow,
+        align = align,
         ...
       )
       p
@@ -174,7 +178,7 @@ show_cn_components <- function(parameters,
   } else {
     plot_fun2 <- function(df, f_name, base_size) {
       df$component <- factor(df$component, levels = df$component)
-      ggplot(data = df, aes_string(x = "component", y = "n_obs")) +
+      p <- ggplot(data = df, aes_string(x = "component", y = "n_obs")) +
         geom_bar(stat = "identity", color = "white") +
         labs(x = NULL, y = NULL) +
         theme(plot.margin = unit(c(0.05, 0.05, 0.05, 0.05), "cm")) +
@@ -186,6 +190,12 @@ show_cn_components <- function(parameters,
             color = "black"
           )
         )
+
+      if (log_y) {
+        p <- p + scale_y_continuous(trans='log10')
+      }
+
+      p
     }
 
     p_df <- parameters %>%
@@ -199,12 +209,12 @@ show_cn_components <- function(parameters,
     if (return_plotlist) {
       return(p_list)
     } else {
-      if (length(p_list) != 7) {
-        p <- cowplot::plot_grid(plotlist = p_list, nrow = 2, align = "hv", ...)
+      if (length(p_list) != 8) {
+        p <- cowplot::plot_grid(plotlist = p_list, nrow = nrow, align = align, ...)
       } else {
-        top_row <- cowplot::plot_grid(plotlist = p_list[1:4], nrow = 1, align = "h", ...)
-        bot_row <- cowplot::plot_grid(plotlist = p_list[-(1:4)], nrow = 1, align = "h", rel_widths = c(1, 1, 2), ...)
-        p <- cowplot::plot_grid(top_row, bot_row, nrow = 2)
+        top_2_row <- cowplot::plot_grid(plotlist = p_list[1:6], nrow = 2, align = align)
+        bot_row <- cowplot::plot_grid(plotlist = p_list[-(1:6)], nrow = 1, align = align, rel_widths = c(1, 2))
+        p <- cowplot::plot_grid(top_2_row, bot_row, nrow = 2, align = align, rel_heights = c(2, 1), ...)
       }
       p
     }
