@@ -23,6 +23,8 @@
 #' @param set_ca_custom_xlab only works when `set_ca_sig_yaxis` is `TRUE`. If
 #' `TRUE`, set x labels using input `xlab`, otherwise variable names will be used.
 #' @param show_pvalue if `TRUE`, show p values.
+#' @param ca_p_threshold a p threshold for categorical variables, default is 0.01.
+#' A p value less than 0.01 will be shown as `P < 0.01`.
 #' @param font_size_x font size for x.
 #' @param text_angle_x text angle for x.
 #' @param text_hjust_x adjust x axis text
@@ -76,6 +78,7 @@ show_group_comparison <- function(group_comparison,
                                   set_ca_sig_yaxis = FALSE,
                                   set_ca_custom_xlab = FALSE,
                                   show_pvalue = TRUE,
+                                  ca_p_threshold = 0.01,
                                   method = "wilcox.test",
                                   p.adjust.method = "fdr",
                                   base_size = 12,
@@ -151,7 +154,9 @@ show_group_comparison <- function(group_comparison,
 
       if (show_pvalue) {
         if (!is.na(df[["p_value"]])) {
-          p <- p + labs(title = paste0("P=", signif(df[["p_value"]], 3)))
+          p <- p + labs(title = ifelse(df$p_value < ca_p_threshold,
+                        paste("P <", signif(ca_p_threshold, 3)),
+                        paste("P =", signif(df$p_value, 3))))
         }
       }
 

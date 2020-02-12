@@ -13,6 +13,7 @@ show_group_comparison(
   set_ca_sig_yaxis = FALSE,
   set_ca_custom_xlab = FALSE,
   show_pvalue = TRUE,
+  ca_p_threshold = 0.01,
   method = "wilcox.test",
   p.adjust.method = "fdr",
   base_size = 12,
@@ -45,6 +46,9 @@ variable proportion.}
 \code{TRUE}, set x labels using input \code{xlab}, otherwise variable names will be used.}
 
 \item{show_pvalue}{if \code{TRUE}, show p values.}
+
+\item{ca_p_threshold}{a p threshold for categorical variables, default is 0.01.
+A p value less than 0.01 will be shown as \code{P < 0.01}.}
 
 \item{method}{a character string indicating which method to be used for comparing means.
 It can be 't.test', 'wilcox.test' etc..}
