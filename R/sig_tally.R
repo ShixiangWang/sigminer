@@ -171,6 +171,11 @@ sig_tally.CopyNumber <- function(object,
       feature_setting = feature_setting
     )
 
+    ## Remove BoChr value is 0 in features
+    if ("BoChr" %in% names(cn_features)) {
+      cn_features$BoChr <- cn_features$BoChr[cn_features$BoChr$value != 0]
+    }
+
     message("=> Step: generating components by sample matrix")
     cn_matrix <- data.table::rbindlist(cn_components, fill = TRUE, use.names = TRUE) %>%
       dplyr::as_tibble() %>%
