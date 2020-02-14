@@ -221,7 +221,8 @@ getBoChr <- function(abs_profiles, genome_build = "hg38") {
       value = value
     )
   })
-  cn
+  ## Filter out value is 0
+  cn[cn$value != 0]
 }
 
 # The minimal number of chromosome with 50% CNV
