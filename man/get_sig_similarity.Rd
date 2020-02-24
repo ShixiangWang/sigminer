@@ -11,6 +11,7 @@ get_sig_similarity(
   method = "cosine",
   normalize = c("row", "feature"),
   feature_setting = sigminer::CN.features,
+  pattern_to_rm = NULL,
   verbose = TRUE
 )
 }
@@ -33,6 +34,10 @@ Only used when method is "Wang" ("W").
 Default is \link{CN.features}. Users can also set custom input with "feature",
 "min" and "max" columns available. Valid features can be printed by
 \code{unique(CN.features$feature)}.}
+
+\item{pattern_to_rm}{patterns for removing some features/components in similarity
+calculation. A vector of component name is also accepted.
+The remove operation will be done after normalization. Default is \code{NULL}.}
 
 \item{verbose}{if \code{TRUE}, print extra info.}
 }

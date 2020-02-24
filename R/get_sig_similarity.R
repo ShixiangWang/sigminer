@@ -14,6 +14,9 @@
 #' @param normalize one of "row" and "feature". "row" is typically used
 #' for mutational signatures. "feature" is designed by me to use when input
 #' are copy number signatures.
+#' @param pattern_to_rm patterns for removing some features/components in similarity
+#' calculation. A vector of component name is also accepted.
+#' The remove operation will be done after normalization. Default is `NULL`.
 #' @param verbose if `TRUE`, print extra info.
 #' @inheritParams sig_tally
 #' @author Shixiang Wang <w_shixiang@163.com>
@@ -32,10 +35,18 @@
 #' get_sig_similarity(sig2)
 #' get_sig_similarity(sig2, sig_db = "SBS")
 #' }
+#'
+#' ## Remove some components
+#' ## in similarity calculation
+#' get_sig_similarity(sig2,
+#'   Ref = sig2,
+#'   pattern_to_rm = c("T[T>G]C", "T[T>G]G", "T[T>G]T")
+#' )
 get_sig_similarity <- function(Signature, Ref = NULL, sig_db = "legacy",
                                method = "cosine",
                                normalize = c("row", "feature"),
                                feature_setting = sigminer::CN.features,
+                               pattern_to_rm = NULL,
                                verbose = TRUE) {
   if (class(Signature) == "Signature") {
     w <- Signature$Signature.norm
@@ -114,6 +125,22 @@ get_sig_similarity <- function(Signature, Ref = NULL, sig_db = "legacy",
 
   # Match the components
   sigs <- sigs[rownames(w), ]
+
+  # Remove if pattern is set
+  if (!is.null(pattern_to_rm)) {
+    index2rm <- sapply(pattern_to_rm, grepl, x = rownames(w), fixed = TRUE)
+
+    if (is.matrix(index2rm)) {
+      index2rm <- apply(index2rm, 1, any)
+    }
+
+    if (!any(index2rm)) {
+      warning("Pattern to remove set, but no component found to remove.")
+    } else {
+      sigs <- sigs[!index2rm, ]
+      w <- w[!index2rm, ]
+    }
+  }
 
   if (method == "cosine") {
     corMat <- c()
