@@ -62,6 +62,13 @@ get_sig_similarity(sig2, Ref = sig2)
 get_sig_similarity(sig2)
 get_sig_similarity(sig2, sig_db = "SBS")
 }
+
+## Remove some components
+## in similarity calculation
+get_sig_similarity(sig2,
+  Ref = sig2,
+  pattern_to_rm = c("T[T>G]C", "T[T>G]G", "T[T>G]T")
+)
 }
 \author{
 Shixiang Wang \href{mailto:w_shixiang@163.com}{w_shixiang@163.com}
