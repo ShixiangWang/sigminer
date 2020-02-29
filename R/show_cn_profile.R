@@ -28,7 +28,7 @@
 #'
 #' show_cn_profile(cn, nrow = 2, ncol = 1)
 show_cn_profile <- function(data, samples = NULL, show_n = NULL, show_title = FALSE,
-                            chrs = paste0("chr", c(1:22, "X")),
+                            chrs = paste0("chr", 1:22),
                             genome_build = c("hg19", "hg38"),
                             nrow = NULL, ncol = NULL, return_plotlist = FALSE, .call = FALSE) {
   stopifnot(is.data.frame(data) | inherits(data, "CopyNumber"))

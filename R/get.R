@@ -520,6 +520,7 @@ get_cnsummary_sample <- function(segTab, genome_build = c("hg19", "hg38"),
       dtplyr::lazy_dt() %>%
       dplyr::group_by(sample) %>%
       dplyr::summarise(
+        n_of_seg = sum(!is.na(segVal)),
         n_of_cnv = sum(segVal != 2),
         n_of_amp = sum(segVal > 2),
         n_of_del = sum(segVal < 2),
@@ -536,6 +537,7 @@ get_cnsummary_sample <- function(segTab, genome_build = c("hg19", "hg38"),
       dtplyr::lazy_dt() %>%
       dplyr::group_by(sample) %>%
       dplyr::summarise(
+        n_of_seg = sum(!is.na(segVal)),
         n_of_cnv = sum(segVal != 2),
         n_of_amp = sum(segVal > 2),
         n_of_del = sum(segVal < 2),

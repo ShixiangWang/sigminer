@@ -237,3 +237,10 @@ circos.initializeWithIdeogram(species = "hg19")
 col_fun = colorRamp2(c(1, 2, 4), c("blue", "black", "red"))
 circos.genomicHeatmap(segTabs, col = col_fun, side = "inside", border = "white", border_lwd = 0)
 circos.clear()
+
+
+## Scoring
+# Load copy number object
+load(system.file("extdata", "toy_copynumber.RData",
+                 package = "sigminer", mustWork = TRUE
+))
