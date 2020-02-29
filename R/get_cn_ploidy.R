@@ -29,6 +29,7 @@ get_cn_ploidy <- function(data) {
 
   if (has_sample) {
     ploidy <- data %>%
+      dplyr::as_tibble() %>%
       dplyr::group_by(.data$sample) %>%
       dplyr::summarise(
         ploidy = sum((.data$segLen / sum(.data$segLen)) * .data$segVal)
