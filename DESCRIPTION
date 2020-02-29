@@ -58,7 +58,8 @@ Imports:
     tibble,
     tidyr,
     patchwork,
-    ggplotify
+    ggplotify,
+    circlize
 Suggests: 
     BSgenome,
     BSgenome.Hsapiens.UCSC.hg19,

@@ -193,3 +193,47 @@ show_sig_exposure(sig, groups = c(rep("grp1", 5), rep("grp2", 5)), grp_order = c
                   legend_position = "none")
 show_sig_exposure(sig, groups = c(rep("grp1", 5), rep("grp2", 5)), grp_order = c("grp2", "grp1"), style = "cosmic",
                   legend_position = "none", rm_space = TRUE, rm_grid_line = FALSE, rm_panel_border = T)
+
+
+## Circos for copy number profile
+library(circlize)
+
+load(system.file("extdata", "toy_segTab.RData",
+                 package = "sigminer", mustWork = TRUE
+))
+cn <- read_copynumber(segTabs,
+                      seg_cols = c("chromosome", "start", "end", "segVal"),
+                      genome_build = "hg19", complement = FALSE, verbose = TRUE
+)
+
+
+# set.seed(999)
+# bed = generateRandomBed(nr = 100)
+#
+# circos.initializeWithIdeogram()
+# circos.genomicTrack(bed, panel.fun = function(region, value, ...) {
+#   print(region)
+#   print(value)
+#   circos.genomicPoints(value, col = ifelse(value[[1]] > 0, "red", "green"))
+# })
+#
+#
+# set.seed(123)
+# bed1 = generateRandomBed(nr = 100)
+# bed1 = bed1[sample(nrow(bed1), 20), ]
+# bed2 = generateRandomBed(nr = 100)
+# bed2 = bed2[sample(nrow(bed2), 20), ]
+#
+# circos.initializeWithIdeogram()
+# circos.genomicLink(bed1, bed2, col = rand_color(nrow(bed1), transparency = 0.5),
+#                    border = NA)
+
+segTabs$sample = NULL
+segTabs$chr = paste0("chr", segTabs$chr)
+colnames(segTabs)[1] = "chr"
+circos.initializeWithIdeogram(species = "hg19", chromosome.index = paste0("chr", c(3,5,2,8)))
+circos.initializeWithIdeogram(species = "hg19")
+# bed = generateRandomBed(nr = 100, nc = 1)
+col_fun = colorRamp2(c(1, 2, 4), c("blue", "black", "red"))
+circos.genomicHeatmap(segTabs, col = col_fun, side = "inside", border = "white", border_lwd = 0)
+circos.clear()

@@ -55,6 +55,11 @@ show_cn_profile <- function(data, samples = NULL, show_n = NULL, show_title = FA
     data <- data[data$sample %in% samples]
     data$sample <- factor(data$sample, levels = samples)
   }
+
+  data$chromosome <- ifelse(startsWith(data$chromosome, prefix = "chr"),
+                            data$chromosome,
+                            paste0("chr", data$chromosome))
+
   data <- data[data$chromosome %in% chrs]
 
   # Get plot data
