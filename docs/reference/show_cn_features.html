@@ -131,8 +131,11 @@
   <span class='kw'>rm_outlier</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>log_segsize</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>log_y</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>return_plotlist</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>base_size</span> <span class='kw'>=</span> <span class='fl'>12</span>,
+  <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>align</span> <span class='kw'>=</span> <span class='st'>"hv"</span>,
   <span class='no'>...</span>
 )</pre>
 
@@ -163,12 +166,26 @@ works when method is "Wang" ("W").</p></td>
 works for input from "Macintyre" ("M") method.</p></td>
     </tr>
     <tr>
+      <th>log_y</th>
+      <td><p>logical, if <code>TRUE</code>, show <code>log10</code> based y axis, only
+works for input from "Wang" ("W") method.</p></td>
+    </tr>
+    <tr>
       <th>return_plotlist</th>
       <td><p>if <code>TRUE</code>, return a list of ggplot objects but a combined plot.</p></td>
     </tr>
     <tr>
       <th>base_size</th>
       <td><p>overall font size.</p></td>
+    </tr>
+    <tr>
+      <th>nrow</th>
+      <td><p>(optional) Number of rows in the plot grid.</p></td>
+    </tr>
+    <tr>
+      <th>align</th>
+      <td><p>(optional) Specifies whether graphs in the grid should be horizontally ("h") or
+vertically ("v") aligned. Options are "none" (default), "hv" (align in both directions), "h", and "v".</p></td>
     </tr>
     <tr>
       <th>...</th>

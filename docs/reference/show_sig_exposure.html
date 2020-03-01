@@ -130,13 +130,17 @@
   <span class='kw'>sig_names</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>groups</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>grp_order</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>grp_size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>cutoff</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>style</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"default"</span>, <span class='st'>"cosmic"</span>),
   <span class='kw'>palette</span> <span class='kw'>=</span> <span class='fu'><a href='use_color_style.html'>use_color_style</a></span>(<span class='no'>style</span>),
   <span class='kw'>base_size</span> <span class='kw'>=</span> <span class='fl'>12</span>,
   <span class='kw'>font_scale</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>rm_space</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>hide_samps</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  <span class='kw'>rm_grid_line</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>rm_panel_border</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>hide_samps</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>legend_position</span> <span class='kw'>=</span> <span class='st'>"top"</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -159,6 +163,10 @@ representing signatures (row names must start with 'Sig').</p></td>
     <tr>
       <th>grp_order</th>
       <td><p>order of groups, default is <code>NULL</code>.</p></td>
+    </tr>
+    <tr>
+      <th>grp_size</th>
+      <td><p>font size of groups.</p></td>
     </tr>
     <tr>
       <th>cutoff</th>
@@ -188,8 +196,21 @@ according to parameter <code>style</code>.</p></td>
 and expand the bar width to 1. This is useful when the sample size is big.</p></td>
     </tr>
     <tr>
+      <th>rm_grid_line</th>
+      <td><p>default is <code>FALSE</code>, if <code>TRUE</code>, remove grid lines of plot.</p></td>
+    </tr>
+    <tr>
+      <th>rm_panel_border</th>
+      <td><p>default is <code>TRUE</code> for style 'cosmic',
+remove panel border to keep plot tight.</p></td>
+    </tr>
+    <tr>
       <th>hide_samps</th>
       <td><p>if <code>TRUE</code>, hide sample names.</p></td>
+    </tr>
+    <tr>
+      <th>legend_position</th>
+      <td><p>position of legend, default is 'top'.</p></td>
     </tr>
     </table>
 

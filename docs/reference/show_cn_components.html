@@ -132,9 +132,12 @@ standard classified components ("Wang" ("W") method) for copy number data.</p>
   <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"Macintyre"</span>,
   <span class='kw'>show_weights</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>log_segsize</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>log_y</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>auto_transform</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>return_plotlist</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>base_size</span> <span class='kw'>=</span> <span class='fl'>12</span>,
+  <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>align</span> <span class='kw'>=</span> <span class='st'>"hv"</span>,
   <span class='no'>...</span>
 )</pre>
 
@@ -162,6 +165,11 @@ Only used when method is "Macintyre".</p></td>
 works for input from "Macintyre" ("M") method.</p></td>
     </tr>
     <tr>
+      <th>log_y</th>
+      <td><p>logical, if <code>TRUE</code>, show <code>log10</code> based y axis, only
+works for input from "Wang" ("W") method.</p></td>
+    </tr>
+    <tr>
       <th>auto_transform</th>
       <td><p>default is <code>TRUE</code>, it will auto increase the <code>SD</code> for components
 for showing them better in the plot. Only used when method is "Macintyre".</p></td>
@@ -173,6 +181,15 @@ for showing them better in the plot. Only used when method is "Macintyre".</p></
     <tr>
       <th>base_size</th>
       <td><p>overall font size.</p></td>
+    </tr>
+    <tr>
+      <th>nrow</th>
+      <td><p>(optional) Number of rows in the plot grid.</p></td>
+    </tr>
+    <tr>
+      <th>align</th>
+      <td><p>(optional) Specifies whether graphs in the grid should be horizontally ("h") or
+vertically ("v") aligned. Options are "none" (default), "hv" (align in both directions), "h", and "v".</p></td>
     </tr>
     <tr>
       <th>...</th>

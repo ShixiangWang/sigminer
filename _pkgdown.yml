@@ -64,7 +64,9 @@ reference:
     desc: Functions for analyzing copy number data and visualization.
     contents:
     - get_cn_ploidy
+    - scoring
     - show_cn_profile
+    - show_cn_circos
     - show_cn_distribution
     - show_cn_features
     - show_cn_components

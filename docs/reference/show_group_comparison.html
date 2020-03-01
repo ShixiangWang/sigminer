@@ -144,6 +144,7 @@ continuous data.</p>
   <span class='kw'>set_ca_sig_yaxis</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>set_ca_custom_xlab</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>show_pvalue</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>ca_p_threshold</span> <span class='kw'>=</span> <span class='fl'>0.01</span>,
   <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"wilcox.test"</span>,
   <span class='kw'>p.adjust.method</span> <span class='kw'>=</span> <span class='st'>"fdr"</span>,
   <span class='kw'>base_size</span> <span class='kw'>=</span> <span class='fl'>12</span>,
@@ -196,6 +197,11 @@ variable proportion.</p></td>
       <td><p>if <code>TRUE</code>, show p values.</p></td>
     </tr>
     <tr>
+      <th>ca_p_threshold</th>
+      <td><p>a p threshold for categorical variables, default is 0.01.
+A p value less than 0.01 will be shown as <code>P &lt; 0.01</code>.</p></td>
+    </tr>
+    <tr>
       <th>method</th>
       <td><p>a character string indicating which method to be used for comparing means.
 It can be 't.test', 'wilcox.test' etc..</p></td>
@@ -239,11 +245,19 @@ according to the specified <code>method</code>.</p></td>
   <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 ))
 <span class='co'># Extract copy number signatures</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>NMF</span>)
-<span class='no'>sig</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sig_extract.html'>sig_extract</a></span>(<span class='no'>cn_prepare</span>$<span class='no'>nmf_matrix</span>, <span class='fl'>2</span>, <span class='kw'>nrun</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>NMF</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required package: pkgmaker</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: registry</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: ‘pkgmaker’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:base’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    isFALSE</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: rngtools</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: cluster</span></div><div class='output co'>#&gt; <span class='message'>NMF - BioConductor layer [OK] | Shared memory capabilities [NO: windows] | Cores 7/8</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: ‘NMF’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:testthat’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    compare</span></div><div class='input'><span class='no'>sig</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sig_extract.html'>sig_extract</a></span>(<span class='no'>cn_prepare</span>$<span class='no'>nmf_matrix</span>, <span class='fl'>2</span>, <span class='kw'>nrun</span> <span class='kw'>=</span> <span class='fl'>10</span>)
 
 <span class='co'># Assign samples to clusters</span>
-<span class='no'>groups</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_groups.html'>get_groups</a></span>(<span class='no'>sig</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"samples"</span>)</div><div class='output co'>#&gt; <span class='message'>=&gt; Obtaining clusters by the contribution of signature to each sample...</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Finding the dominant signature of each group...</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Summarizing...</span></div><div class='output co'>#&gt; <span class='message'>	group #1: 6 samples with Sig2 enriched.</span>
+<span class='no'>groups</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_groups.html'>get_groups</a></span>(<span class='no'>sig</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"samples"</span>)</div><div class='output co'>#&gt; <span class='message'>=&gt; Obtaining clusters by the contribution of signature to each sample...</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Finding the dominant signature of each group...</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Generating a table of group and dominant signature:</span></div><div class='output co'>#&gt;    
+#&gt;     Sig1 Sig2
+#&gt;   1    0    6
+#&gt;   2    1    3</div><div class='output co'>#&gt; <span class='message'>=&gt; Assigning a group to a signature with the maxium fraction (stored in 'map_table' attr)...</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Summarizing...</span></div><div class='output co'>#&gt; <span class='message'>	group #1: 6 samples with Sig2 enriched.</span>
 #&gt; <span class='message'>	group #2: 4 samples with Sig2 enriched.</span></div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>1234</span>)
 <span class='co'># Add custom groups</span>

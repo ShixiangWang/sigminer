@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Show Sample Copy Number Profile — show_cn_profile • sigminer</title>
+<title>Score Copy Number Profile — scoring • sigminer</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,10 +42,13 @@
 
 
 
-<meta property="og:title" content="Show Sample Copy Number Profile — show_cn_profile" />
-<meta property="og:description" content="Sometimes it is very useful to check details about copy number profile for one or multiple
-samples. This function is designed to do this job and can be further modified by ggplot2
-related packages." />
+<meta property="og:title" content="Score Copy Number Profile — scoring" />
+<meta property="og:description" content="Returns quantification of copy number profile and events including
+tandem duplication and Chromothripisis etc.
+Only copy number data from autosome is used here.
+Some of the quantification methods are rough,
+you use at your risk. You should do some extra work to check the
+result scores." />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -118,80 +121,65 @@ related packages." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Show Sample Copy Number Profile</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ShixiangWang/sigminer/blob/master/R/show_cn_profile.R'><code>R/show_cn_profile.R</code></a></small>
-    <div class="hidden name"><code>show_cn_profile.Rd</code></div>
+    <h1>Score Copy Number Profile</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ShixiangWang/sigminer/blob/master/R/scoring.R'><code>R/scoring.R</code></a></small>
+    <div class="hidden name"><code>scoring.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Sometimes it is very useful to check details about copy number profile for one or multiple
-samples. This function is designed to do this job and can be further modified by <strong>ggplot2</strong>
-related packages.</p>
+    <p>Returns quantification of copy number profile and events including
+tandem duplication and Chromothripisis etc.
+Only copy number data from autosome is used here.
+<strong>Some of the quantification methods are rough,
+you use at your risk</strong>. You should do some extra work to check the
+result scores.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>show_cn_profile</span>(
-  <span class='no'>data</span>,
-  <span class='kw'>samples</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>show_n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>show_title</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>chrs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"chr"</span>, <span class='fl'>1</span>:<span class='fl'>22</span>),
-  <span class='kw'>genome_build</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"hg19"</span>, <span class='st'>"hg38"</span>),
-  <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>return_plotlist</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>.call</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>scoring</span>(<span class='no'>object</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>data</th>
-      <td><p>a <a href='CopyNumber-class.html'>CopyNumber</a> object or a <code>data.frame</code> containing at least 'chromosome', 'start',
-'end', 'segVal' these columns.</p></td>
-    </tr>
-    <tr>
-      <th>samples</th>
-      <td><p>default is NULL, can be a chracter vector representing multiple samples. If <code>data</code> argument
-is a <code>data.frame</code>, a column called <code>sample</code> must exist.</p></td>
-    </tr>
-    <tr>
-      <th>show_n</th>
-      <td><p>number of samples to show, this is used for checking.</p></td>
-    </tr>
-    <tr>
-      <th>show_title</th>
-      <td><p>if <code>TRUE</code>, show title for multiple samples.</p></td>
-    </tr>
-    <tr>
-      <th>chrs</th>
-      <td><p>chromosomes start with 'chr'.</p></td>
-    </tr>
-    <tr>
-      <th>genome_build</th>
-      <td><p>genome build version, used when <code>data</code> is a <code>data.frame</code>, should be 'hg19' or 'hg38'.</p></td>
-    </tr>
-    <tr>
-      <th>nrow</th>
-      <td><p>number of rows in the plot grid when multiple samples are selected.</p></td>
-    </tr>
-    <tr>
-      <th>ncol</th>
-      <td><p>number of columns in the plot grid when multiple samples are selected.</p></td>
-    </tr>
-    <tr>
-      <th>return_plotlist</th>
-      <td><p>default is <code>FALSE</code>, if <code>TRUE</code>, return a plot list instead of a combined plot.</p></td>
-    </tr>
-    <tr>
-      <th>.call</th>
-      <td><p>User should not use it.</p></td>
+      <th>object</th>
+      <td><p>a object of <a href='CopyNumber-class.html'>CopyNumber</a>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a <code>ggplot</code> object or a <code>list</code></p>
+    <p>a <code>data.table</code> with following scores:</p><ul>
+<li><p>cnaBurden: CNA burden representing the altered genomic fraction as previously reported.</p></li>
+<li><p>cnaLoad: CNA load representing the quantity of copy number alteration.</p></li>
+<li><p>MACN: mean altered copy number (MACN) reflecting the property of altered copy number segments,
+calculated as
+$$MACN = \frac{\sum_{i} CN_i}{N_{cnv}}$$
+where \(CN_i\) is the copy number of altered segment \(i\), \(N_{cnv}\) is
+the number of CNV.</p></li>
+<li><p>weightedMACN: same as MACN but weighted with segment length.
+$$MACN_{weighted} = \frac{\sum_{i} (CN_i \times L_{i})}{ \sum_{i} L_{i} }$$
+where \(L_{i}\) is the length of altered copy number segment \(i\).</p></li>
+<li><p>Ploidy: ploidy, the formula is same as <code>weightedMACN</code> but using all copy number segments instead of
+altered copy number segments.</p></li>
+<li><p>TDP: tandem duplication phenotype score from <a href='https://www.pnas.org/content/113/17/E2373'>https://www.pnas.org/content/113/17/E2373</a>,
+the threshold <code>k</code> in reference is omitted.
+$$TDP = - \frac{\sum_{chr} |TD_{obs}-TD_{exp}|}{TD_{total}}$$
+where \(TD_{total}\) is the number of TD, \(TD_{obs}\) and
+\(TD_exp\) are observed number of TD and expected number of TD for each chromosome.</p></li>
+<li><p>TD: tandem duplication score, TD represents segment with copy number greater than 2.
+$$TD = \frac{TD_{total}}{\sum_{chr} |TD_{obs}-TD_{exp}|+1}$$</p></li>
+<li><p>sTD: short tandem duplication score, same formula as <code>TD</code> but focus on segments with length less than or equal to 2Mb.</p></li>
+<li><p>lTD: long tandem duplication score, same formula as <code>TD</code> but focus on segments with length greater than 2Mb.</p></li>
+<li><p>Chromothripisis: according to reference <a href='http://dx.doi.org/10.1016/j.cell.2013.02.023'>http://dx.doi.org/10.1016/j.cell.2013.02.023</a>,
+Chromothripsis frequently leads to massive loss of segments on
+the affected chromosome with segmental losses being interspersed with regions displaying
+normal (disomic) copy-number (e.g., copy-number states oscillating between
+copy-number = 1 and copy-number = 2), form tens to hundreds of locally clustered DNA rearrangements.
+Most of methods use both SV and CNV to infer chromothripsis, here we roughly quantify it with
+$$\sum_{chr}{N_{OsCN}^2}$$
+where \(N_{OsCN}\) is the number of oscillating copy number pattern "2-1-2" for each chromosome.</p></li>
+</ul>
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Load copy number object</span>
@@ -199,7 +187,28 @@ is a <code>data.frame</code>, a column called <code>sample</code> must exist.</p
   <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 ))
 
-<span class='fu'>show_cn_profile</span>(<span class='no'>cn</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='img'><img src='show_cn_profile-1.png' alt='' width='700' height='433' /></div></pre>
+<span class='fu'>scoring</span>(<span class='no'>cn</span>)</div><div class='output co'>#&gt;                           sample    cnaBurden cnaLoad MACN weightedMACN Ploidy
+#&gt;  1: TCGA-05-4417-01A-22D-1854-01 0.6535735305    5.36 3.85         3.53   3.00
+#&gt;  2: TCGA-06-0644-01A-02D-0310-01 0.1651843925    4.32 1.47         2.10   2.02
+#&gt;  3: TCGA-19-2621-01B-01D-0911-01 0.0991005307    3.91 3.07         1.10   1.91
+#&gt;  4: TCGA-26-6174-01A-21D-1842-01 0.1186037707    3.81 2.08         2.60   2.07
+#&gt;  5: TCGA-99-7458-01A-11D-2035-01 0.3180319443    4.75 2.27         1.63   1.88
+#&gt;  6: TCGA-A5-A0G2-01A-11D-A042-01 0.3931655541    4.86 1.29         1.62   1.85
+#&gt;  7: TCGA-A8-A07S-01A-11D-A036-01 0.1123575193    3.58 1.45         2.17   2.02
+#&gt;  8: TCGA-B6-A0X5-01A-21D-A107-01 0.0872390204    3.32 1.89         1.94   1.99
+#&gt;  9: TCGA-CV-7432-01A-11D-2128-01 0.1976249853    4.25 2.39         2.02   2.00
+#&gt; 10: TCGA-DF-A2KN-01A-11D-A17U-01 0.0003297153    2.81 2.83         2.98   2.00
+#&gt;            TDP        TD       sTD       lTD Chromothripisis
+#&gt;  1: -0.7020202 1.3702422 0.4313725 1.3501805               0
+#&gt;  2: -1.7272727 0.5188679 0.3437500 0.4835165              13
+#&gt;  3: -1.8181818 0.4954955 0.4954955 0.0000000               0
+#&gt;  4: -1.3636364 0.6717557 0.5840708 0.4313725               9
+#&gt;  5: -1.3636364 0.6832298 0.5840708 0.5057471              10
+#&gt;  6: -1.5454545 0.5840708 0.3437500 0.5445545               6
+#&gt;  7: -1.8181818 0.4313725 0.0000000 0.4313725              34
+#&gt;  8: -1.8181818 0.4835165 0.4459459 0.3437500               0
+#&gt;  9: -1.7272727 0.5347222 0.3437500 0.5280000               7
+#&gt; 10: -1.7272727 0.5188679 0.5188679 0.0000000               1</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
