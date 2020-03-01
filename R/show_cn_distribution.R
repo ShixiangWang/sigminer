@@ -93,7 +93,8 @@ show_cn_distribution <- function(data,
       )
 
       p <- ggplot(data, aes(x = chromosome, fill = location)) +
-        geom_bar() + xlab("Chromosome")
+        geom_bar() +
+        xlab("Chromosome")
 
 
       q <- ggplot_build(p)$data[[1]][, c("x", "count", "fill")]
@@ -130,10 +131,13 @@ show_cn_distribution <- function(data,
       # plot
       if (!fill) {
         ggplot(data, aes(x = chromosome, fill = location)) +
-          geom_bar() + xlab("Chromosome")
+          geom_bar() +
+          xlab("Chromosome")
       } else {
         ggplot(data, aes(x = chromosome, fill = location)) +
-          geom_bar(position = "fill") + ylab("Percentage") + xlab("Chromosome")
+          geom_bar(position = "fill") +
+          ylab("Percentage") +
+          xlab("Chromosome")
       }
     }
   }

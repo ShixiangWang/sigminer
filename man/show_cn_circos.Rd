@@ -8,7 +8,7 @@ show_cn_circos(
   data,
   samples = NULL,
   show_title = TRUE,
-  chrs = paste0("chr", c(1:22, "X")),
+  chrs = paste0("chr", 1:22),
   genome_build = c("hg19", "hg38"),
   col = circlize::colorRamp2(c(1, 2, 4), c("blue", "black", "red")),
   side = "inside",
@@ -49,7 +49,6 @@ load(system.file("extdata", "toy_copynumber.RData",
 
 show_cn_circos(cn, samples = 1)
 show_cn_circos(cn, samples = "TCGA-99-7458-01A-11D-2035-01")
-
 \donttest{
 ## Remove title
 show_cn_circos(cn, samples = 1, show_title = FALSE)
@@ -63,4 +62,5 @@ show_cn_circos(cn, samples = 4)
 
 layout(1) # reset layout
 }
+
 }

@@ -57,8 +57,9 @@ show_cn_profile <- function(data, samples = NULL, show_n = NULL, show_title = FA
   }
 
   data$chromosome <- ifelse(startsWith(data$chromosome, prefix = "chr"),
-                            data$chromosome,
-                            paste0("chr", data$chromosome))
+    data$chromosome,
+    paste0("chr", data$chromosome)
+  )
 
   data <- data[data$chromosome %in% chrs]
 

@@ -22,7 +22,6 @@
 #'
 #' show_cn_circos(cn, samples = 1)
 #' show_cn_circos(cn, samples = "TCGA-99-7458-01A-11D-2035-01")
-#'
 #' \donttest{
 #' ## Remove title
 #' show_cn_circos(cn, samples = 1, show_title = FALSE)
@@ -36,14 +35,14 @@
 #'
 #' layout(1) # reset layout
 #' }
-
-show_cn_circos = function(data, samples = NULL,
-                          show_title = TRUE,
-                          chrs = paste0("chr", 1:22),
-                          genome_build = c("hg19", "hg38"),
-                          col = circlize::colorRamp2(c(1, 2, 4), c("blue", "black", "red")),
-                          side = "inside",
-                          ...) {
+#'
+show_cn_circos <- function(data, samples = NULL,
+                           show_title = TRUE,
+                           chrs = paste0("chr", 1:22),
+                           genome_build = c("hg19", "hg38"),
+                           col = circlize::colorRamp2(c(1, 2, 4), c("blue", "black", "red")),
+                           side = "inside",
+                           ...) {
 
   ## Copy from show_cn_profile: start
   stopifnot(is.data.frame(data) | inherits(data, "CopyNumber"))
@@ -72,53 +71,61 @@ show_cn_circos = function(data, samples = NULL,
       data$sample <- factor(data$sample, levels = samples)
     } else {
       # Assume it is integer
-      samples = unique(data$sample)[1:samples]
+      samples <- unique(data$sample)[1:samples]
       data <- data[data$sample %in% samples]
       data$sample <- factor(data$sample, levels = samples)
     }
   }
 
   data$chromosome <- ifelse(startsWith(data$chromosome, prefix = "chr"),
-                            data$chromosome,
-                            paste0("chr", data$chromosome))
+    data$chromosome,
+    paste0("chr", data$chromosome)
+  )
 
   data <- data[data$chromosome %in% chrs]
   ## Copy from show_cn_profile: end
 
-  colnames(data)[1] = "chr"
+  colnames(data)[1] <- "chr"
 
   if (ncol(data) == 5L) {
-    data_bed = split(data, data$sample)
-    data_bed = lapply(data_bed, function(x) {
+    data_bed <- split(data, data$sample)
+    data_bed <- lapply(data_bed, function(x) {
       x$sample <- NULL
       return(x)
     })
     for (i in seq_along(data_bed)) {
       plot_cn_circos(data_bed[[i]],
-                     species = genome_build, chrs = chrs,
-                     col = col, side = side,
-                     title = ifelse(show_title,
-                                    names(data_bed)[i],
-                                    NA),
-                     ...)
+        species = genome_build, chrs = chrs,
+        col = col, side = side,
+        title = ifelse(show_title,
+          names(data_bed)[i],
+          NA
+        ),
+        ...
+      )
     }
   } else {
-    plot_cn_circos(data, species = genome_build, chrs = chrs,
-                   col = col, side = side, ...)
+    plot_cn_circos(data,
+      species = genome_build, chrs = chrs,
+      col = col, side = side, ...
+    )
   }
 }
 
 
 # Plot one sample
-plot_cn_circos = function(data_bed, species, chrs,
-                          col, side, title = NA_character_, ...) {
-  circlize::circos.initializeWithIdeogram(species = species,
-                                          chromosome.index = chrs)
+plot_cn_circos <- function(data_bed, species, chrs,
+                           col, side, title = NA_character_, ...) {
+  circlize::circos.initializeWithIdeogram(
+    species = species,
+    chromosome.index = chrs
+  )
 
   circlize::circos.genomicHeatmap(data_bed,
-                                  col = col,
-                                  side = side,
-                                  ...)
+    col = col,
+    side = side,
+    ...
+  )
   if (!is.na(title)) {
     title(title)
   }

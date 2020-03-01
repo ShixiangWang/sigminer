@@ -1,11 +1,11 @@
-sig_names = function(sig) {
+sig_names <- function(sig) {
 
 }
 
-sig_modify_names = function(sig, names) {
+sig_modify_names <- function(sig, names) {
 
 }
 
-sig_summary = function(sig) {
+sig_summary <- function(sig) {
 
 }

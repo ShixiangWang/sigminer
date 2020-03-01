@@ -155,8 +155,9 @@ show_group_comparison <- function(group_comparison,
       if (show_pvalue) {
         if (!is.na(df[["p_value"]])) {
           p <- p + labs(title = ifelse(df$p_value < ca_p_threshold,
-                        paste("P <", signif(ca_p_threshold, 3)),
-                        paste("P =", signif(df$p_value, 3))))
+            paste("P <", signif(ca_p_threshold, 3)),
+            paste("P =", signif(df$p_value, 3))
+          ))
         }
       }
 
@@ -185,7 +186,8 @@ show_group_comparison <- function(group_comparison,
       var_name2 <- ifelse(isValidAndUnreserved(var_name), var_name, paste0("`", var_name, "`"))
 
       p <- ggplot(data, aes_string(x = "group", y = var_name2)) +
-        geom_boxplot() + cowplot::theme_cowplot(font_size = base_size) +
+        geom_boxplot() +
+        cowplot::theme_cowplot(font_size = base_size) +
         scale_x_discrete(
           breaks = data_sum[["group"]],
           labels = data_sum[["labels"]]

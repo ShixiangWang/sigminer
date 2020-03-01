@@ -117,7 +117,8 @@ show_cn_components <- function(parameters,
         rdata <- purrr::map(df$mean, function(x) stats::rpois(1000, lambda = x)) %>%
           Reduce(c, .) %>%
           range(na.rm = TRUE)
-        p <- ggplot(data.frame(x = rdata), aes(.data$x)) + ylab(NULL)
+        p <- ggplot(data.frame(x = rdata), aes(.data$x)) +
+          ylab(NULL)
         for (i in row_index) {
           p <- p + stat_function(
             geom = "line",
@@ -135,7 +136,8 @@ show_cn_components <- function(parameters,
         rdata <- purrr::map2(df$mean, df$sd, function(x, y) stats::rnorm(1000, mean = x, sd = y)) %>%
           Reduce(c, .) %>%
           range(na.rm = TRUE)
-        p <- ggplot(data.frame(x = rdata), aes(.data$x)) + ylab(NULL)
+        p <- ggplot(data.frame(x = rdata), aes(.data$x)) +
+          ylab(NULL)
         for (i in row_index) {
           p <- p + stat_function(
             geom = "line",
@@ -192,7 +194,7 @@ show_cn_components <- function(parameters,
         )
 
       if (log_y) {
-        p <- p + scale_y_continuous(trans='log10')
+        p <- p + scale_y_continuous(trans = "log10")
       }
 
       p

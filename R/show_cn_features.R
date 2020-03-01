@@ -43,32 +43,46 @@ show_cn_features <- function(features,
 
     if (log_segsize) {
       p_1 <- ggplot(data = features$segsize, aes(x = log10(value))) +
-        geom_line(stat = "density") + labs(x = "Segment size (log10 based)", y = ylab) +
-        theme(plot.margin = unit(c(0.05, 0.05, 0.05, 0.05), "cm")) + cowplot::theme_cowplot(font_size = base_size)
+        geom_line(stat = "density") +
+        labs(x = "Segment size (log10 based)", y = ylab) +
+        theme(plot.margin = unit(c(0.05, 0.05, 0.05, 0.05), "cm")) +
+        cowplot::theme_cowplot(font_size = base_size)
     } else {
       p_1 <- ggplot(data = features$segsize, aes(x = value)) +
-        geom_line(stat = "density") + labs(x = "Segment size", y = ylab) +
-        theme(plot.margin = unit(c(0.05, 0.05, 0.05, 0.05), "cm")) + cowplot::theme_cowplot(font_size = base_size)
+        geom_line(stat = "density") +
+        labs(x = "Segment size", y = ylab) +
+        theme(plot.margin = unit(c(0.05, 0.05, 0.05, 0.05), "cm")) +
+        cowplot::theme_cowplot(font_size = base_size)
     }
 
     p_2 <- ggplot(data = features$copynumber, aes(x = value)) +
-      geom_line(stat = "density") + labs(x = "Copy number", y = ylab) +
-      theme(plot.margin = unit(c(0.05, 0.05, 0.05, 0.05), "cm")) + cowplot::theme_cowplot(font_size = base_size)
+      geom_line(stat = "density") +
+      labs(x = "Copy number", y = ylab) +
+      theme(plot.margin = unit(c(0.05, 0.05, 0.05, 0.05), "cm")) +
+      cowplot::theme_cowplot(font_size = base_size)
 
     p_3 <- ggplot(data = features$changepoint, aes(x = value)) +
-      geom_line(stat = "density") + labs(x = "Copy number changepoint", y = ylab) +
-      theme(plot.margin = unit(c(0.05, 0.05, 0.05, 0.05), "cm")) + cowplot::theme_cowplot(font_size = base_size)
+      geom_line(stat = "density") +
+      labs(x = "Copy number changepoint", y = ylab) +
+      theme(plot.margin = unit(c(0.05, 0.05, 0.05, 0.05), "cm")) +
+      cowplot::theme_cowplot(font_size = base_size)
 
     p_4 <- ggplot(data = features$bp10MB, aes(x = value)) +
-      geom_bar(stat = "count") + labs(x = "Breakpoint count per 10MB", y = ylab) +
-      theme(plot.margin = unit(c(0.05, 0.05, 0.05, 0.05), "cm")) + cowplot::theme_cowplot(font_size = base_size)
+      geom_bar(stat = "count") +
+      labs(x = "Breakpoint count per 10MB", y = ylab) +
+      theme(plot.margin = unit(c(0.05, 0.05, 0.05, 0.05), "cm")) +
+      cowplot::theme_cowplot(font_size = base_size)
     p_5 <- ggplot(data = features$bpchrarm, aes(x = value)) +
-      geom_bar(stat = "count") + labs(x = "Breakpoint count per chr arm", y = ylab) +
-      theme(plot.margin = unit(c(0.05, 0.05, 0.05, 0.05), "cm")) + cowplot::theme_cowplot(font_size = base_size)
+      geom_bar(stat = "count") +
+      labs(x = "Breakpoint count per chr arm", y = ylab) +
+      theme(plot.margin = unit(c(0.05, 0.05, 0.05, 0.05), "cm")) +
+      cowplot::theme_cowplot(font_size = base_size)
 
     p_6 <- ggplot(data = features$osCN, aes(x = value)) +
-      geom_bar(stat = "count") + labs(x = "Oscilating CN chain length", y = ylab) +
-      theme(plot.margin = unit(c(0.05, 0.05, 0.05, 0.05), "cm")) + cowplot::theme_cowplot(font_size = base_size)
+      geom_bar(stat = "count") +
+      labs(x = "Oscilating CN chain length", y = ylab) +
+      theme(plot.margin = unit(c(0.05, 0.05, 0.05, 0.05), "cm")) +
+      cowplot::theme_cowplot(font_size = base_size)
 
     if (return_plotlist) {
       return(list(
@@ -102,7 +116,7 @@ show_cn_features <- function(features,
         cowplot::theme_cowplot(font_size = base_size)
 
       if (log_y) {
-        p <- p + scale_y_continuous(trans='log10')
+        p <- p + scale_y_continuous(trans = "log10")
       }
 
       p

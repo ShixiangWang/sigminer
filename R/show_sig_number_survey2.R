@@ -111,8 +111,10 @@ show_sig_number_survey2 <- function(x, y = NULL, what = c(
   p <- ggplot(pdata, aes_string(x = "rank", y = "value")) +
     geom_line(aes_string(linetype = "Data", colour = "Type")) +
     geom_point(size = 2, aes_string(shape = "Data", colour = "Type")) +
-    theme_bw() + scale_x_continuous(xlab, breaks = unique(pdata$rank)) +
-    scale_y_continuous(ylab) + ggtitle(main)
+    theme_bw() +
+    scale_x_continuous(xlab, breaks = unique(pdata$rank)) +
+    scale_y_continuous(ylab) +
+    ggtitle(main)
   if (!is(y, "NMF.rank")) {
     p <- p + scale_shape(guide = "none") + scale_linetype(guide = "none")
   }

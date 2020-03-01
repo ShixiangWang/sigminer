@@ -94,10 +94,12 @@ sig_extract <- function(nmf_matrix,
       scal_res_cn <- helper_scale_nmf_matrix(W_cn, H_cn, K, handle_cn = FALSE)
 
       to_sig <- apply(scal_res_cn$Signature, 2, function(x) x / sum(x, na.rm = TRUE))
-      to_ref <- apply(Signature[has_cn,, drop=FALSE], 2, function(x) x / sum(x, na.rm = TRUE))
-      #colnames(to_sig) <- colnames(to_ref) <- as.character(seq_len(ncol(to_sig)))
+      to_ref <- apply(Signature[has_cn, , drop = FALSE], 2, function(x) x / sum(x, na.rm = TRUE))
+      # colnames(to_sig) <- colnames(to_ref) <- as.character(seq_len(ncol(to_sig)))
       to_match <- suppressMessages(get_sig_similarity(to_sig, to_ref))
-      to_index <- apply(to_match$similarity, 1, which.max) %>% as.integer() %>% order()
+      to_index <- apply(to_match$similarity, 1, which.max) %>%
+        as.integer() %>%
+        order()
 
       ## Take a check
       if (all(sort(to_index) == seq_len(ncol(to_sig)))) {
