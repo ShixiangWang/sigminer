@@ -30,7 +30,7 @@
 #' - TD: tandem duplication score, TD represents segment with copy number greater than 2.
 #' \deqn{TD = \frac{TD_{total}}{\sum_{chr} |TD_{obs}-TD_{exp}|+1}}
 #' - sTD: short tandem duplication score, same formula as `TD` but focus on segments with length less than or equal to 2Mb.
-#' - lTD: short tandem duplication score, same formula as `TD` but focus on segments with length greater than 2Mb.
+#' - lTD: long tandem duplication score, same formula as `TD` but focus on segments with length greater than 2Mb.
 #' - Chromothripisis: according to reference <http://dx.doi.org/10.1016/j.cell.2013.02.023>,
 #' Chromothripsis frequently leads to massive loss of segments on
 #' the affected chromosome with segmental losses being interspersed with regions displaying
