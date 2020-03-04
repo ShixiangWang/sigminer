@@ -29,10 +29,12 @@ the threshold \code{k} in reference is omitted.
 \deqn{TDP = - \frac{\sum_{chr} |TD_{obs}-TD_{exp}|}{TD_{total}}}
 where \eqn{TD_{total}} is the number of TD, \eqn{TD_{obs}} and
 \eqn{TD_exp} are observed number of TD and expected number of TD for each chromosome.
-\item TD: tandem duplication score, TD represents segment with copy number greater than 2 and
-length less than or equal to 2Mbp & greater than or equal to 1Kbp. TD score is similar
-to TDP score, they should be highly correlated.
+\item TD: tandem duplication score, TD represents segment with copy number greater than 2.
 \deqn{TD = \frac{TD_{total}}{\sum_{chr} |TD_{obs}-TD_{exp}|+1}}
+\item sTD: short tandem duplication score, same formula as \code{TD} but focus on segments with length
+less than or equal to 2Mbp & greater than or equal to 1Kbp.
+\item lTD: long tandem duplication score, same formula as \code{TD} but focus on segments with length
+greater than 2Mbp & less than or equal to 10Mbp.
 \item Chromothripisis: according to reference \url{http://dx.doi.org/10.1016/j.cell.2013.02.023},
 Chromothripsis frequently leads to massive loss of segments on
 the affected chromosome with segmental losses being interspersed with regions displaying
