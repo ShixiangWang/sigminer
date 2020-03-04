@@ -27,12 +27,10 @@
 #' \deqn{TDP = - \frac{\sum_{chr} |TD_{obs}-TD_{exp}|}{TD_{total}}}
 #' where \eqn{TD_{total}} is the number of TD, \eqn{TD_{obs}} and
 #' \eqn{TD_exp} are observed number of TD and expected number of TD for each chromosome.
-#' - TD: tandem duplication score, TD represents segment with copy number greater than 2.
+#' - TD: tandem duplication score, TD represents segment with copy number greater than 2 and
+#' length less than or equal to 2Mbp & greater than or equal to 1Kbp. TD score is similar
+#' to TDP score, they should be highly correlated.
 #' \deqn{TD = \frac{TD_{total}}{\sum_{chr} |TD_{obs}-TD_{exp}|+1}}
-#' - sTD: short tandem duplication score, same formula as `TD` but focus on segments with length
-#' less than or equal to 2Mbp & greater than or equal to 1Kbp.
-#' - lTD: long tandem duplication score, same formula as `TD` but focus on segments with length
-#' greater than 2Mbp & less than or equal to 10Mbp.
 #' - Chromothripisis: according to reference <http://dx.doi.org/10.1016/j.cell.2013.02.023>,
 #' Chromothripsis frequently leads to massive loss of segments on
 #' the affected chromosome with segmental losses being interspersed with regions displaying
@@ -132,10 +130,8 @@ scoring_TD <- function(data) {
     data.table::as.data.table()
 
   data_chr <- data_full[, list(
-    chr_TD = sum(segVal > 2 & segLen >= 1e3 & segLen <= 1e7),
-    chr_sTD = sum(segVal > 2 & segLen >= 1e3 & segLen <= 2e6)
+    chr_TD = sum(segVal > 2 & segLen >= 1e3 & segLen <= 2e6)
   ), by = list(sample, chromosome)]
-  data_chr$chr_lTD <- data_chr$chr_TD - data_chr$chr_sTD
 
   calcTD <- function(x) {
     sum(x) / (sum(abs(x - sum(x) / 22)) + 1)
@@ -147,22 +143,9 @@ scoring_TD <- function(data) {
     -sum(abs(x - sum(x) / 22)) / sum(x)
   }
 
-  ## Calculate scores
-  # data_chr %>%
-  #   dplyr::as_tibble() %>%
-  #   dplyr::group_by(.data$sample) %>%
-  #   dplyr::summarise(
-  #     TDP = calcTDP(.data$chr_TD),
-  #     TD = calcTD(.data$chr_TD),
-  #     sTD = calcTD(.data$chr_sTD),
-  #     lTD = calcTD(.data$chr_lTD)
-  #   )
-
   data_chr[, list(
     TDP = calcTDP(chr_TD),
-    TD = calcTD(chr_TD),
-    sTD = calcTD(chr_sTD),
-    lTD = calcTD(chr_lTD)
+     TD = calcTD(chr_TD)
   ), by = list(sample)]
 }
 
