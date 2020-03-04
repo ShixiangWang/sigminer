@@ -133,7 +133,7 @@ scoring_TD <- function(data) {
 
   data_chr <- data_full[, list(
     chr_TD = sum(segVal > 2 & segLen >= 1e3 & segLen <= 1e7),
-    chr_sTD = sum(segVal > 2 & segLen <= 2e6)
+    chr_sTD = sum(segVal > 2 & segLen >= 1e3 & segLen <= 2e6)
   ), by = list(sample, chromosome)]
   data_chr$chr_lTD <- data_chr$chr_TD - data_chr$chr_sTD
 
