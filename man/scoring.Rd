@@ -4,10 +4,15 @@
 \alias{scoring}
 \title{Score Copy Number Profile}
 \usage{
-scoring(object)
+scoring(object, TD_size_cutoff = c(1000, 1e+05, 2e+06))
 }
 \arguments{
 \item{object}{a object of \link{CopyNumber}.}
+
+\item{TD_size_cutoff}{a length-3 numeric vector used to specify the start, midpoint, end
+segment size for determining tandem duplication size range, midpoint is used to split
+TD into short TD and long TD. Default is 1Kb to 100Kb for short TD, 100Kb to 2Mb for long
+TD.}
 }
 \value{
 a \code{data.table} with following scores:
@@ -29,12 +34,12 @@ the threshold \code{k} in reference is omitted.
 \deqn{TDP = - \frac{\sum_{chr} |TD_{obs}-TD_{exp}|}{TD_{total}}}
 where \eqn{TD_{total}} is the number of TD, \eqn{TD_{obs}} and
 \eqn{TD_exp} are observed number of TD and expected number of TD for each chromosome.
+\item sTDP: TDP score for short TD.
+\item lTDP: TDP score for long TD.
 \item TD: tandem duplication score, TD represents segment with copy number greater than 2.
 \deqn{TD = \frac{TD_{total}}{\sum_{chr} |TD_{obs}-TD_{exp}|+1}}
-\item sTD: short tandem duplication score, same formula as \code{TD} but focus on segments with length
-less than or equal to 2Mbp & greater than or equal to 1Kbp.
-\item lTD: long tandem duplication score, same formula as \code{TD} but focus on segments with length
-greater than 2Mbp & less than or equal to 10Mbp.
+\item sTD: TD score for short TD.
+\item lTD: TD score for long TD.
 \item Chromothripisis: according to reference \url{http://dx.doi.org/10.1016/j.cell.2013.02.023},
 Chromothripsis frequently leads to massive loss of segments on
 the affected chromosome with segmental losses being interspersed with regions displaying

@@ -8,6 +8,10 @@
 #' result scores.
 #'
 #' @param object a object of [CopyNumber].
+#' @param TD_size_cutoff a length-3 numeric vector used to specify the start, midpoint, end
+#' segment size for determining tandem duplication size range, midpoint is used to split
+#' TD into short TD and long TD. Default is 1Kb to 100Kb for short TD, 100Kb to 2Mb for long
+#' TD.
 #'
 #' @return a `data.table` with following scores:
 #' - cnaBurden: CNA burden representing the altered genomic fraction as previously reported.
@@ -27,12 +31,12 @@
 #' \deqn{TDP = - \frac{\sum_{chr} |TD_{obs}-TD_{exp}|}{TD_{total}}}
 #' where \eqn{TD_{total}} is the number of TD, \eqn{TD_{obs}} and
 #' \eqn{TD_exp} are observed number of TD and expected number of TD for each chromosome.
+#' - sTDP: TDP score for short TD.
+#' - lTDP: TDP score for long TD.
 #' - TD: tandem duplication score, TD represents segment with copy number greater than 2.
 #' \deqn{TD = \frac{TD_{total}}{\sum_{chr} |TD_{obs}-TD_{exp}|+1}}
-#' - sTD: short tandem duplication score, same formula as `TD` but focus on segments with length
-#' less than or equal to 2Mbp & greater than or equal to 1Kbp.
-#' - lTD: long tandem duplication score, same formula as `TD` but focus on segments with length
-#' greater than 2Mbp & less than or equal to 10Mbp.
+#' - sTD: TD score for short TD.
+#' - lTD: TD score for long TD.
 #' - Chromothripisis: according to reference <http://dx.doi.org/10.1016/j.cell.2013.02.023>,
 #' Chromothripsis frequently leads to massive loss of segments on
 #' the affected chromosome with segmental losses being interspersed with regions displaying
@@ -50,8 +54,8 @@
 #' ))
 #'
 #' scoring(cn)
-scoring <- function(object) {
-  stopifnot(inherits(object, "CopyNumber"))
+scoring <- function(object, TD_size_cutoff = c(1e3, 1e5, 2e6)) {
+  stopifnot(inherits(object, "CopyNumber"), length(TD_size_cutoff) == 3, is.numeric(TD_size_cutoff))
 
   ## The data all from autosomes
   data <- object@data
@@ -80,8 +84,7 @@ scoring <- function(object) {
   ## Get TD scores
   ## TDP for tandem duplication phenotype from https://www.pnas.org/content/113/17/E2373
   ## shortTD and longTD self defined tandem duplication score
-  ## 1 Kbp and 2 Mbp, or 2 Mbp and 10 Mbp
-  dat_TD <- scoring_TD(data)
+  dat_TD <- scoring_TD(data, TD_size_cutoff)
 
   ## Get Chromothripisis score
   dat_Chromoth <- scoring_Chromoth(data)
@@ -100,7 +103,7 @@ scoring <- function(object) {
   dat
 }
 
-scoring_TD <- function(data) {
+scoring_TD <- function(data, TD_size_cutoff) {
   autosomes <- paste0("chr", 1:22)
   ## Fill autosomes
   data_full <-
@@ -132,8 +135,8 @@ scoring_TD <- function(data) {
     data.table::as.data.table()
 
   data_chr <- data_full[, list(
-    chr_TD = sum(segVal > 2 & segLen >= 1e3 & segLen <= 1e7),
-    chr_sTD = sum(segVal > 2 & segLen >= 1e3 & segLen <= 2e6)
+    chr_TD = sum(segVal > 2 & segLen >= TD_size_cutoff[1] & segLen <= TD_size_cutoff[3]),
+    chr_sTD = sum(segVal > 2 & segLen >= TD_size_cutoff[1] & segLen <= TD_size_cutoff[2])
   ), by = list(sample, chromosome)]
   data_chr$chr_lTD <- data_chr$chr_TD - data_chr$chr_sTD
 
@@ -147,19 +150,10 @@ scoring_TD <- function(data) {
     -sum(abs(x - sum(x) / 22)) / sum(x)
   }
 
-  ## Calculate scores
-  # data_chr %>%
-  #   dplyr::as_tibble() %>%
-  #   dplyr::group_by(.data$sample) %>%
-  #   dplyr::summarise(
-  #     TDP = calcTDP(.data$chr_TD),
-  #     TD = calcTD(.data$chr_TD),
-  #     sTD = calcTD(.data$chr_sTD),
-  #     lTD = calcTD(.data$chr_lTD)
-  #   )
-
   data_chr[, list(
     TDP = calcTDP(chr_TD),
+    sTDP = calcTDP(chr_sTD),
+    lTDP = calcTDP(chr_lTD),
     TD = calcTD(chr_TD),
     sTD = calcTD(chr_sTD),
     lTD = calcTD(chr_lTD)
