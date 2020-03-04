@@ -29,8 +29,10 @@
 #' \eqn{TD_exp} are observed number of TD and expected number of TD for each chromosome.
 #' - TD: tandem duplication score, TD represents segment with copy number greater than 2.
 #' \deqn{TD = \frac{TD_{total}}{\sum_{chr} |TD_{obs}-TD_{exp}|+1}}
-#' - sTD: short tandem duplication score, same formula as `TD` but focus on segments with length less than or equal to 2Mb.
-#' - lTD: long tandem duplication score, same formula as `TD` but focus on segments with length greater than 2Mb.
+#' - sTD: short tandem duplication score, same formula as `TD` but focus on segments with length
+#' less than or equal to 2Mbp & greater than or equal to 1Kbp.
+#' - lTD: long tandem duplication score, same formula as `TD` but focus on segments with length
+#' greater than 2Mbp & less than or equal to 10Mbp.
 #' - Chromothripisis: according to reference <http://dx.doi.org/10.1016/j.cell.2013.02.023>,
 #' Chromothripsis frequently leads to massive loss of segments on
 #' the affected chromosome with segmental losses being interspersed with regions displaying
@@ -77,7 +79,8 @@ scoring <- function(object) {
 
   ## Get TD scores
   ## TDP for tandem duplication phenotype from https://www.pnas.org/content/113/17/E2373
-  ## shortTD and longTD self defined tandem duplication score, 2Mb as cutoff
+  ## shortTD and longTD self defined tandem duplication score
+  ## 1 Kbp and 2 Mbp, or 2 Mbp and 10 Mbp
   dat_TD <- scoring_TD(data)
 
   ## Get Chromothripisis score
@@ -129,7 +132,7 @@ scoring_TD <- function(data) {
     data.table::as.data.table()
 
   data_chr <- data_full[, list(
-    chr_TD = sum(segVal > 2),
+    chr_TD = sum(segVal > 2 & segLen >= 1e3 & segLen <= 1e7),
     chr_sTD = sum(segVal > 2 & segLen <= 2e6)
   ), by = list(sample, chromosome)]
   data_chr$chr_lTD <- data_chr$chr_TD - data_chr$chr_sTD
