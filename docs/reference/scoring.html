@@ -135,7 +135,7 @@ you use at your risk</strong>. You should do some extra work to check the
 result scores.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>scoring</span>(<span class='no'>object</span>)</pre>
+    <pre class="usage"><span class='fu'>scoring</span>(<span class='no'>object</span>, <span class='kw'>TD_size_cutoff</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1000</span>, <span class='fl'>1e+05</span>, <span class='fl'>2e+06</span>))</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -143,6 +143,13 @@ result scores.</p>
     <tr>
       <th>object</th>
       <td><p>a object of <a href='CopyNumber-class.html'>CopyNumber</a>.</p></td>
+    </tr>
+    <tr>
+      <th>TD_size_cutoff</th>
+      <td><p>a length-3 numeric vector used to specify the start, midpoint, end
+segment size for determining tandem duplication size range, midpoint is used to split
+TD into short TD and long TD. Default is 1Kb to 100Kb for short TD, 100Kb to 2Mb for long
+TD.</p></td>
     </tr>
     </table>
 
@@ -166,10 +173,12 @@ the threshold <code>k</code> in reference is omitted.
 $$TDP = - \frac{\sum_{chr} |TD_{obs}-TD_{exp}|}{TD_{total}}$$
 where \(TD_{total}\) is the number of TD, \(TD_{obs}\) and
 \(TD_exp\) are observed number of TD and expected number of TD for each chromosome.</p></li>
+<li><p>sTDP: TDP score for short TD.</p></li>
+<li><p>lTDP: TDP score for long TD.</p></li>
 <li><p>TD: tandem duplication score, TD represents segment with copy number greater than 2.
 $$TD = \frac{TD_{total}}{\sum_{chr} |TD_{obs}-TD_{exp}|+1}$$</p></li>
-<li><p>sTD: short tandem duplication score, same formula as <code>TD</code> but focus on segments with length less than or equal to 2Mb.</p></li>
-<li><p>lTD: long tandem duplication score, same formula as <code>TD</code> but focus on segments with length greater than 2Mb.</p></li>
+<li><p>sTD: TD score for short TD.</p></li>
+<li><p>lTD: TD score for long TD.</p></li>
 <li><p>Chromothripisis: according to reference <a href='http://dx.doi.org/10.1016/j.cell.2013.02.023'>http://dx.doi.org/10.1016/j.cell.2013.02.023</a>,
 Chromothripsis frequently leads to massive loss of segments on
 the affected chromosome with segmental losses being interspersed with regions displaying
@@ -198,17 +207,17 @@ where \(N_{OsCN}\) is the number of oscillating copy number pattern "2-1-2" for 
 #&gt;  8: TCGA-B6-A0X5-01A-21D-A107-01 0.0872390204    3.32 1.89         1.94   1.99
 #&gt;  9: TCGA-CV-7432-01A-11D-2128-01 0.1976249853    4.25 2.39         2.02   2.00
 #&gt; 10: TCGA-DF-A2KN-01A-11D-A17U-01 0.0003297153    2.81 2.83         2.98   2.00
-#&gt;            TDP        TD       sTD       lTD Chromothripisis
-#&gt;  1: -0.7020202 1.3702422 0.4313725 1.3501805               0
-#&gt;  2: -1.7272727 0.5188679 0.3437500 0.4835165              13
-#&gt;  3: -1.8181818 0.4954955 0.4954955 0.0000000               0
-#&gt;  4: -1.3636364 0.6717557 0.5840708 0.4313725               9
-#&gt;  5: -1.3636364 0.6832298 0.5840708 0.5057471              10
-#&gt;  6: -1.5454545 0.5840708 0.3437500 0.5445545               6
-#&gt;  7: -1.8181818 0.4313725 0.0000000 0.4313725              34
-#&gt;  8: -1.8181818 0.4835165 0.4459459 0.3437500               0
-#&gt;  9: -1.7272727 0.5347222 0.3437500 0.5280000               7
-#&gt; 10: -1.7272727 0.5188679 0.5188679 0.0000000               1</div></pre>
+#&gt;           TDP      sTDP      lTDP        TD       sTD       lTD Chromothripisis
+#&gt;  1: -1.818182       NaN -1.818182 0.4313725 0.0000000 0.4313725               0
+#&gt;  2: -1.909091       NaN -1.909091 0.3437500 0.0000000 0.3437500              13
+#&gt;  3: -1.818182       NaN -1.818182 0.4954955 0.0000000 0.4954955               0
+#&gt;  4: -1.545455 -1.909091 -1.636364 0.5840708 0.3437500 0.5445545               9
+#&gt;  5: -1.545455       NaN -1.545455 0.5840708 0.0000000 0.5840708              10
+#&gt;  6: -1.909091 -1.909091       NaN 0.3437500 0.3437500 0.0000000               6
+#&gt;  7:       NaN       NaN       NaN 0.0000000 0.0000000 0.0000000              34
+#&gt;  8: -1.909091       NaN -1.909091 0.4459459 0.0000000 0.4459459               0
+#&gt;  9: -1.909091       NaN -1.909091 0.3437500 0.0000000 0.3437500               7
+#&gt; 10: -1.727273 -1.818182 -1.818182 0.5188679 0.4313725 0.4647887               1</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

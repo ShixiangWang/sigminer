@@ -197,3 +197,8 @@ scoring_MACN <- function(data) {
     ) %>%
     data.table::as.data.table()
 }
+
+
+utils::globalVariables(
+  c("chr_TD", "chr_lTD", "chr_sTD", "segLen")
+)

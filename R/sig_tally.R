@@ -222,12 +222,15 @@ sig_tally.CopyNumber <- function(object,
 #' # Prepare SBS signature analysis
 #' laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
 #' laml <- read_maf(maf = laml.maf)
-#' library(BSgenome.Hsapiens.UCSC.hg19)
-#' mt_prepare <- sig_tally(
-#'   laml,
-#'   ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
-#'   prefix = "chr", add = TRUE, useSyn = TRUE
-#' )
+#' if (require("BSgenome.Hsapiens.UCSC.hg19")) {
+#'   mt_prepare <- sig_tally(
+#'     laml,
+#'     ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
+#'     prefix = "chr", add = TRUE, useSyn = TRUE
+#'   )
+#' } else {
+#'   message("Please install package 'BSgenome.Hsapiens.UCSC.hg19' firstly!")
+#' }
 #' }
 #' @export
 sig_tally.MAF <- function(object, ref_genome = NULL, prefix = NULL,

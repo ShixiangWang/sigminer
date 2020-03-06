@@ -30,6 +30,15 @@ reference:
     - show_sig_profile
     - show_sig_exposure
     - show_cosmic_sig_profile
+  - title: Signature object operation
+    desc: Obtain or modify `Signature` object information.
+    contents:
+    - sig_names
+    - sig_modify_names
+    - sig_number
+    - sig_attrs
+    - sig_signature
+    - sig_exposure
   - title: Signature analysis and corresponding visualization
     desc: Analyze signatures and output the result to visualization.
     contents:

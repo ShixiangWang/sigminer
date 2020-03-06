@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Show Copy Number Profile in Circos — show_cn_circos • sigminer</title>
+<title>Obtain or Modify Signature Information — sig_names • sigminer</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,8 +42,8 @@
 
 
 
-<meta property="og:title" content="Show Copy Number Profile in Circos — show_cn_circos" />
-<meta property="og:description" content="Another visualization method for copy number profile like show_cn_profile." />
+<meta property="og:title" content="Obtain or Modify Signature Information — sig_names" />
+<meta property="og:description" content="Obtain or Modify Signature Information" />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -116,87 +116,71 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Show Copy Number Profile in Circos</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ShixiangWang/sigminer/blob/master/R/show_cn_circos.R'><code>R/show_cn_circos.R</code></a></small>
-    <div class="hidden name"><code>show_cn_circos.Rd</code></div>
+    <h1>Obtain or Modify Signature Information</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ShixiangWang/sigminer/blob/master/R/signature_obj_operation.R'><code>R/signature_obj_operation.R</code></a></small>
+    <div class="hidden name"><code>sig_operation.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Another visualization method for copy number profile like <a href='show_cn_profile.html'>show_cn_profile</a>.</p>
+    <p>Obtain or Modify Signature Information</p>
     </div>
 
-    <pre class="usage"><span class='fu'>show_cn_circos</span>(
-  <span class='no'>data</span>,
-  <span class='kw'>samples</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>show_title</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>chrs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"chr"</span>, <span class='fl'>1</span>:<span class='fl'>22</span>),
-  <span class='kw'>genome_build</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"hg19"</span>, <span class='st'>"hg38"</span>),
-  <span class='kw'>col</span> <span class='kw'>=</span> <span class='kw pkg'>circlize</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/circlize/man/colorRamp2.html'>colorRamp2</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>4</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"blue"</span>, <span class='st'>"black"</span>, <span class='st'>"red"</span>)),
-  <span class='kw'>side</span> <span class='kw'>=</span> <span class='st'>"inside"</span>,
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>sig_names</span>(<span class='no'>sig</span>)
+
+<span class='fu'>sig_modify_names</span>(<span class='no'>sig</span>, <span class='no'>new_names</span>)
+
+<span class='fu'>sig_number</span>(<span class='no'>sig</span>)
+
+<span class='fu'>sig_attrs</span>(<span class='no'>sig</span>)
+
+<span class='fu'>sig_signature</span>(<span class='no'>sig</span>, <span class='kw'>normalize</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"row"</span>, <span class='st'>"column"</span>, <span class='st'>"raw"</span>, <span class='st'>"feature"</span>))
+
+<span class='fu'>sig_exposure</span>(<span class='no'>sig</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"absolute"</span>, <span class='st'>"relative"</span>))</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>data</th>
-      <td><p>a <a href='CopyNumber-class.html'>CopyNumber</a> object or a <code>data.frame</code> containing at least 'chromosome', 'start',
-'end', 'segVal' these columns.</p></td>
+      <th>sig</th>
+      <td><p>a <code>Signature</code> object obtained either from <a href='sig_extract.html'>sig_extract</a> or <a href='sig_auto_extract.html'>sig_auto_extract</a>.</p></td>
     </tr>
     <tr>
-      <th>samples</th>
-      <td><p>default is <code>NULL</code>, can be a chracter vector representing multiple samples or
-number of samples to show.
-If data argument is a <code>data.frame</code>, a column called sample must exist.</p></td>
+      <th>new_names</th>
+      <td><p>new signature names.</p></td>
     </tr>
     <tr>
-      <th>show_title</th>
-      <td><p>if <code>TRUE</code> (default), show title with sample ID.</p></td>
+      <th>normalize</th>
+      <td><p>one of 'row', 'column', 'raw' and "feature", for row normalization (signature),
+column normalization (component), raw data, row normalization by feature, respectively.</p></td>
     </tr>
     <tr>
-      <th>chrs</th>
-      <td><p>chromosomes start with 'chr'.</p></td>
-    </tr>
-    <tr>
-      <th>genome_build</th>
-      <td><p>genome build version, used when <code>data</code> is a <code>data.frame</code>, should be 'hg19' or 'hg38'.</p></td>
-    </tr>
-    <tr>
-      <th>col</th>
-      <td><p>colors for the heatmaps. The value can be a matrix or a color mapping function
-generated by <a href='https://rdrr.io/pkg/circlize/man/colorRamp2.html'>circlize::colorRamp2</a>.</p></td>
-    </tr>
-    <tr>
-      <th>side</th>
-      <td><p>side of the heatmaps.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>other parameters passing to <a href='https://rdrr.io/pkg/circlize/man/circos.genomicHeatmap.html'>circlize::circos.genomicHeatmap</a>.</p></td>
+      <th>type</th>
+      <td><p>one of 'absolute' and 'relative'.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a circos plot</p>
+    <p>a <code>Signature</code> object or data.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber.RData"</span>,
+    <pre class="examples"><div class='input'><span class='co'>## Operate signature names</span>
+<span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_mutational_signature.RData"</span>,
   <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 ))
-
-<span class='fu'>show_cn_circos</span>(<span class='no'>cn</span>, <span class='kw'>samples</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='img'><img src='show_cn_circos-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># \donttest{</span>
-<span class='fu'>show_cn_circos</span>(<span class='no'>cn</span>, <span class='kw'>samples</span> <span class='kw'>=</span> <span class='st'>"TCGA-99-7458-01A-11D-2035-01"</span>)</div><div class='img'><img src='show_cn_circos-2.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'>## Remove title</span>
-<span class='fu'>show_cn_circos</span>(<span class='no'>cn</span>, <span class='kw'>samples</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>show_title</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='img'><img src='show_cn_circos-3.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'>## Subset chromosomes</span>
-<span class='fu'>show_cn_circos</span>(<span class='no'>cn</span>, <span class='kw'>samples</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>chrs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"chr1"</span>, <span class='st'>"chr2"</span>, <span class='st'>"chr3"</span>))</div><div class='img'><img src='show_cn_circos-4.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'>## Arrange plots</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/layout.html'>layout</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fl'>1</span>:<span class='fl'>4</span>, <span class='fl'>2</span>, <span class='fl'>2</span>))
-<span class='fu'>show_cn_circos</span>(<span class='no'>cn</span>, <span class='kw'>samples</span> <span class='kw'>=</span> <span class='fl'>4</span>)</div><div class='img'><img src='show_cn_circos-5.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/graphics/layout.html'>layout</a></span>(<span class='fl'>1</span>) <span class='co'># reset layout</span>
-<span class='co'># }</span></div></pre>
+<span class='fu'>sig_names</span>(<span class='no'>sig2</span>)</div><div class='output co'>#&gt; [1] "Sig1" "Sig2" "Sig3"</div><div class='input'><span class='no'>cc</span> <span class='kw'>&lt;-</span> <span class='fu'>sig_modify_names</span>(<span class='no'>sig2</span>, <span class='kw'>new_names</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Sig2"</span>, <span class='st'>"Sig1"</span>, <span class='st'>"Sig3"</span>))
+<span class='fu'>sig_names</span>(<span class='no'>cc</span>)</div><div class='output co'>#&gt; [1] "Sig2" "Sig1" "Sig3"</div><div class='input'>
+<span class='co'># The older names are stored in tags.</span>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span>(<span class='no'>cc</span>, <span class='st'>"tag"</span>))</div><div class='output co'>#&gt; [1] "Older names:Sig1,Sig2,Sig3;"</div><div class='input'><span class='co'>## Get signature number</span>
+<span class='fu'>sig_number</span>(<span class='no'>sig2</span>)</div><div class='output co'>#&gt; [1] 3</div><div class='input'><span class='co'>## Get signature attributes</span>
+<span class='fu'>sig_number</span>(<span class='no'>sig2</span>)</div><div class='output co'>#&gt; [1] 3</div><div class='input'><span class='co'>## Get signature matrix</span>
+<span class='no'>z</span> <span class='kw'>&lt;-</span> <span class='fu'>sig_signature</span>(<span class='no'>sig2</span>)
+<span class='no'>z</span> <span class='kw'>&lt;-</span> <span class='fu'>sig_signature</span>(<span class='no'>sig2</span>, <span class='kw'>normalize</span> <span class='kw'>=</span> <span class='st'>"raw"</span>)
+<span class='co'>## Get exposure matrix</span>
+<span class='co'>## Of note, this is different from get_sig_exposure()</span>
+<span class='co'>## it returns a matrix instead of data table.</span>
+<span class='no'>z</span> <span class='kw'>&lt;-</span> <span class='fu'>sig_exposure</span>(<span class='no'>sig2</span>) <span class='co'># it is same as sig$Exposure</span>
+<span class='no'>z</span> <span class='kw'>&lt;-</span> <span class='fu'>sig_exposure</span>(<span class='no'>sig2</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"relative"</span>) <span class='co'># it is same as sig2$Exposure.norm</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
