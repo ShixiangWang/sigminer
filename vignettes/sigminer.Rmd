@@ -1,0 +1,6 @@
+<!--
+%\VignetteEngine{knitr}
+%\VignetteIndexEntry{sigminer vignette}
+-->
+
+Please go to https://shixiangwang.github.io/sigminer-doc/ for full vignette.

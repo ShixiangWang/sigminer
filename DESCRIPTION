@@ -18,12 +18,12 @@ Authors@R:
       person(given = "Anand",
              family = "Mayakonda",
              role = "ctb"))
-Description: Genomic variations including single nucleotide substitution (SBS) mutations,
-    copy number variations, etc. are the major force for cancer
+Description: Genomic alterations including single nucleotide substitution,
+    copy number variation, etc. are the major force for cancer
     initialization and development.  Due to the specificity of molecular
     lesions caused by genomic variations, we can generate characteristic
     variation spectra, called 'signature'. This package helps users to
-    extract, analyze and visualize signatures from genomic variations,
+    extract, analyze and visualize signatures from genomic variation records,
     thus providing new insight into cancer study.
 License: MIT + file LICENSE
 URL: https://github.com/ShixiangWang/sigminer
