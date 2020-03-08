@@ -64,12 +64,10 @@ Suggests:
     BSgenome,
     BSgenome.Hsapiens.UCSC.hg19,
     covr,
-    cowsay,
     fuzzyjoin,
     ggfittext,
     knitr,
     pheatmap,
-    prettydoc,
     rmarkdown,
     roxygen2,
     testthat

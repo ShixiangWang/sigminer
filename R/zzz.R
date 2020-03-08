@@ -1,14 +1,7 @@
 .onAttach <- function(libname, pkgname) {
   version <- packageDescription(pkgname, fields = "Version")
 
-  msg <- paste0("Welcome to 'sigminer' package!
-======================================================
-", pkgname, " version ", version, "
-Github page: https://github.com/ShixiangWang/sigminer
-
-More info please call 'hello()' in console.
-======================================================
-                 ")
+  msg <- paste0(pkgname, " version ", version, ", run hello() to see more.")
   packageStartupMessage(msg)
 }
 

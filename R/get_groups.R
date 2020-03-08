@@ -16,11 +16,11 @@
 #'
 #' @param Signature a `Signature` object obtained either from [sig_extract] or [sig_auto_extract].
 #' @param method grouping method, more see details, could be one of the following:
-#' - 'k-means' -  the default method, returns the clusters by k-means.
-#' - 'exposure' - assigns a sample into a group whose signature exposure
-#' is dominant.
 #' - 'consensus' - returns the cluster membership based on the hierarchical clustering of the consensus matrix,
 #' it can only be used for the result obtained by [sig_extract()] with multiple runs using **NMF** package.
+#' - 'k-means' -  returns the clusters by k-means.
+#' - 'exposure' - assigns a sample into a group whose signature exposure
+#' is dominant.
 #' - 'samples' - returns the cluster membership based on the contribution of signature to each sample,
 #' it can only be used for the result obtained by [sig_extract()] using **NMF** package.
 #' @param n_cluster only used when the `method` is 'k-means'.
@@ -40,11 +40,12 @@
 #' library(NMF)
 #' sig <- sig_extract(cn_prepare$nmf_matrix, 2, nrun = 10)
 #'
-#' # Default k-means clustering is used
-#' get_groups(sig)
 #' # Methods 'consensus' and 'samples' are from NMF::predict()
 #' get_groups(sig, method = "consensus", match_consensus = TRUE)
 #' get_groups(sig, method = "samples")
+#'
+#' # Use k-means clustering
+#' get_groups(sig, method = "k-means")
 #' }
 #' @seealso [NMF::predict()]
 get_groups <- function(Signature,

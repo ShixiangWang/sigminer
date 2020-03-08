@@ -16,11 +16,11 @@ get_groups(
 
 \item{method}{grouping method, more see details, could be one of the following:
 \itemize{
-\item 'k-means' -  the default method, returns the clusters by k-means.
-\item 'exposure' - assigns a sample into a group whose signature exposure
-is dominant.
 \item 'consensus' - returns the cluster membership based on the hierarchical clustering of the consensus matrix,
 it can only be used for the result obtained by \code{\link[=sig_extract]{sig_extract()}} with multiple runs using \strong{NMF} package.
+\item 'k-means' -  returns the clusters by k-means.
+\item 'exposure' - assigns a sample into a group whose signature exposure
+is dominant.
 \item 'samples' - returns the cluster membership based on the contribution of signature to each sample,
 it can only be used for the result obtained by \code{\link[=sig_extract]{sig_extract()}} using \strong{NMF} package.
 }}
@@ -58,11 +58,12 @@ load(system.file("extdata", "toy_copynumber_prepare.RData",
 library(NMF)
 sig <- sig_extract(cn_prepare$nmf_matrix, 2, nrun = 10)
 
-# Default k-means clustering is used
-get_groups(sig)
 # Methods 'consensus' and 'samples' are from NMF::predict()
 get_groups(sig, method = "consensus", match_consensus = TRUE)
 get_groups(sig, method = "samples")
+
+# Use k-means clustering
+get_groups(sig, method = "k-means")
 }
 }
 \seealso{
