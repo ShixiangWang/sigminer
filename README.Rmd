@@ -25,7 +25,7 @@ knitr::opts_chunk$set(
 
 ## Overview
 
-Genomic variations including single nucleotide substitution (SBS) mutations, copy number variations, etc.
+Genomic variations including single nucleotide substitution (SBS) mutations, copy number variations (CNV), etc.
 are the major force for cancer initialization and development. Due to the specificity of molecular
 lesions caused by genomic variations, we can generate characteristic
 variation (feature) spectra, called '**signature**'. **sigminer** helps users to
@@ -41,10 +41,10 @@ us
 - supports a bayesian variant of NMF algorithm to enable optimal inferences for the number of signatures through the automatic relevance determination technique from **SignatureAnalyzer** package
 - supports two plot styles for signature profile: 'default' (like **SignatureAnalyzer** package) and 'cosmic' (like **COSMIC** database)
 - supports two types of signatrue exposures: relative exposure (relative contribution of signatures in each sample) and absolute exposure (estimated variation records of signatures in each sample)
-- supports basic summary and visualization for profile of mutation (powered by **maftools**) and copy number data
+- supports basic summary and visualization for profile of mutation (powered by **maftools**) and copy number
 - supports parallel computation by R packages **foreach**, **future** and **NMF**
 - efficient code powered by R packages **data.table**, **dtplyr** and **tidyverse**
-- elegant plots powered by R packages **ggplot2**, **ggpubr** **cowplot** and **patchwork**
+- elegant plots powered by R packages **ggplot2**, **ggpubr**, **cowplot** and **patchwork**
 - well tested by R package **testthat** and documented by R package **roxygen2**, **pkgdown**, and etc.
 for both reliable and reproducible research
 
@@ -64,10 +64,22 @@ You can install the development version of **sigminer** from Github with:
 remotes::install_github("ShixiangWang/sigminer")
 ```
 
+## Usage
+
+A complete documentation of **sigminer** can be read online at <https://shixiangwang.github.io/sigminer-doc/>.
+All functions are well organized and documented at <https://shixiangwang.github.io/sigminer/reference/index.html>.
+For usage of a specific function `fun`, run `?fun` in your R console to see its documentation.
+
 
 ## Citation
 
-**sigminer** has not been published. If you use **sigminer** in academic field, please cite our recent work:
+***
+
+***Copy number signature analyses in prostate cancer reveal distinct etiologies and clinical outcomes, under submission***
+
+***
+
+Currently, **sigminer** has not been published. If you use **sigminer** in academic field, please cite our recent work:
 
 ```
 Wang, Shixiang, et al. "The predictive power of tumor mutational burden 
@@ -75,7 +87,7 @@ Wang, Shixiang, et al. "The predictive power of tumor mutational burden
     International journal of cancer (2019).
 ```
 
-and
+and the paper implementing NMF in R:
 
 ```
 Gaujoux, Renaud, and Cathal Seoighe. "A Flexible R Package for 
@@ -110,7 +122,7 @@ Alexandrov, Ludmil, et al. "The repertoire of mutational signatures in human can
 
 ## References
 
-1. Alexandrov, Ludmil, et al. "The repertoire of mutational signatures in human cancer." BioRxiv (2018): 322859.
+1. Alexandrov, Ludmil B., et al. "The repertoire of mutational signatures in human cancer." Nature 578.7793 (2020): 94-101.
 2. Macintyre, Geoff, et al. "Copy number signatures and mutational processes in ovarian carcinoma." Nature genetics 50.9 (2018): 1262.
 3. Mayakonda, Anand, et al. "Maftools: efficient and comprehensive analysis of somatic variants in cancer." Genome research 28.11 (2018): 1747-1756.
 4. Gaujoux, Renaud, and Cathal Seoighe. "A Flexible R Package for Nonnegative Matrix Factorization."" BMC Bioinformatics 11, no. 1 (December 2010).
