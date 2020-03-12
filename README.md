@@ -16,12 +16,13 @@ issues](https://img.shields.io/github/issues-closed/ShixiangWang/sigminer.svg)](
 ## Overview
 
 Genomic variations including single nucleotide substitution (SBS)
-mutations, copy number variations, etc. are the major force for cancer
-initialization and development. Due to the specificity of molecular
-lesions caused by genomic variations, we can generate characteristic
-variation (feature) spectra, called ‘**signature**’. **sigminer** helps
-users to extract, analyze and visualize signatures from genomic
-variation records, thus providing new insight into cancer study.
+mutations, copy number variations (CNV), etc. are the major force for
+cancer initialization and development. Due to the specificity of
+molecular lesions caused by genomic variations, we can generate
+characteristic variation (feature) spectra, called ‘**signature**’.
+**sigminer** helps users to extract, analyze and visualize signatures
+from genomic variation records, thus providing new insight into cancer
+study.
 
 ### Feature
 
@@ -41,12 +42,12 @@ variation records, thus providing new insight into cancer study.
     (relative contribution of signatures in each sample) and absolute
     exposure (estimated variation records of signatures in each sample)
   - supports basic summary and visualization for profile of mutation
-    (powered by **maftools**) and copy number data
+    (powered by **maftools**) and copy number
   - supports parallel computation by R packages **foreach**, **future**
     and **NMF**
   - efficient code powered by R packages **data.table**, **dtplyr** and
     **tidyverse**
-  - elegant plots powered by R packages **ggplot2**, **ggpubr**
+  - elegant plots powered by R packages **ggplot2**, **ggpubr**,
     **cowplot** and **patchwork**
   - well tested by R package **testthat** and documented by R package
     **roxygen2**, **pkgdown**, and etc. for both reliable and
@@ -69,17 +70,32 @@ with:
 remotes::install_github("ShixiangWang/sigminer")
 ```
 
+## Usage
+
+A complete documentation of **sigminer** can be read online at
+<https://shixiangwang.github.io/sigminer-doc/>. All functions are well
+organized and documented at
+<https://shixiangwang.github.io/sigminer/reference/index.html>. For
+usage of a specific function `fun`, run `?fun` in your R console to see
+its documentation.
+
 ## Citation
 
-**sigminer** has not been published. If you use **sigminer** in academic
-field, please cite our recent
-    work:
+-----
+
+***Copy number signature analyses in prostate cancer reveal distinct
+etiologies and clinical outcomes, under submission***
+
+-----
+
+Currently, **sigminer** has not been published. If you use **sigminer**
+in academic field, please cite our recent work:
 
     Wang, Shixiang, et al. "The predictive power of tumor mutational burden 
         in lung cancer immunotherapy response is influenced by patients' sex."
         International journal of cancer (2019).
 
-and
+and the paper implementing NMF in R:
 
     Gaujoux, Renaud, and Cathal Seoighe. "A Flexible R Package for 
         Nonnegative Matrix Factorization."" BMC Bioinformatics 11, no. 1 (December 2010).
@@ -95,26 +111,24 @@ in ovarian carcinoma*, if you use this feature, please also cite:
 
 The code for extracting mutational signatures was based in part on the
 source code of the **maftools** package, if you use this feature, please
-also
-    cite:
+also cite:
 
     Mayakonda, Anand, et al. "Maftools: efficient and comprehensive analysis
         of somatic variants in cancer." Genome research 28.11 (2018): 1747-1756.
 
 The code for extracting mutational signatures was based in part on the
 source code of the **SignatureAnalyzer** package, if you use this
-feature, please also
-    cite:
+feature, please also cite:
 
     Alexandrov, Ludmil, et al. "The repertoire of mutational signatures in human cancer." BioRxiv (2018): 322859.
 
 ## References
 
-1.  Alexandrov, Ludmil, et al. “The repertoire of mutational signatures
-    in human cancer.” BioRxiv (2018): 322859.
-2.  Macintyre, Geoff, et al. “Copy number signatures and mutational
+1.  Alexandrov, Ludmil B., et al. “The repertoire of mutational
+    signatures in human cancer.” Nature 578.7793 (2020): 94-101.
+2.  Macintyre, Geoff, et al. “Copy number signatures and mutational
     processes in ovarian carcinoma.” Nature genetics 50.9 (2018): 1262.
-3.  Mayakonda, Anand, et al. “Maftools: efficient and comprehensive
+3.  Mayakonda, Anand, et al. “Maftools: efficient and comprehensive
     analysis of somatic variants in cancer.” Genome research 28.11
     (2018): 1747-1756.
 4.  Gaujoux, Renaud, and Cathal Seoighe. “A Flexible R Package for
@@ -126,7 +140,7 @@ feature, please also
     determination in nonnegative matrix factorization with the/spl
     beta/-divergence.” IEEE Transactions on Pattern Analysis and Machine
     Intelligence 35.7 (2012): 1592-1605.
-7.  Kim, Jaegil, et al. “Somatic ERCC2 mutations are associated with a
+7.  Kim, Jaegil, et al. “Somatic ERCC2 mutations are associated with a
     distinct genomic signature in urothelial tumors.” Nature genetics
     48.6 (2016): 600.
 
