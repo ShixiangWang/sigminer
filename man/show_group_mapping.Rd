@@ -48,11 +48,12 @@ data <- dplyr::tibble(
   Group2 = rep(LETTERS[6:15], each = 5),
   zzzz = c(rep("xx", 20), rep("yy", 20), rep(NA, 10))
 )
-\donttest{
-show_group_mapping(data, col_to_flow = "Group1", cols_to_map = colnames(data)[-1])
-show_group_mapping(data,
+p1 <- show_group_mapping(data, col_to_flow = "Group1", cols_to_map = colnames(data)[-1])
+p1
+
+p2 <- show_group_mapping(data,
   col_to_flow = "Group1", cols_to_map = colnames(data)[-1],
   include_sig = TRUE
 )
-}
+p2
 }

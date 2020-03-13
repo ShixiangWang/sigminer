@@ -54,5 +54,6 @@ load(system.file("extdata", "toy_copynumber.RData",
   package = "sigminer", mustWork = TRUE
 ))
 
-show_cn_profile(cn, nrow = 2, ncol = 1)
+p <- show_cn_profile(cn, nrow = 2, ncol = 1)
+p
 }

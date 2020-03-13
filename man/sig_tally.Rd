@@ -153,11 +153,11 @@ load(system.file("extdata", "toy_copynumber.RData",
   package = "sigminer", mustWork = TRUE
 ))
 \donttest{
-# Prepare copy number signature analysis
-cn_tally <- sig_tally(cn)
+# Use method designed by Macintyre et al.
+cn_tally_M <- sig_tally(cn)
 }
 # Use method designed by Wang, Shixiang et al.
-cn_tally <- sig_tally(cn, method = "W")
+cn_tally_W <- sig_tally(cn, method = "W")
 \donttest{
 # Prepare SBS signature analysis
 laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools")

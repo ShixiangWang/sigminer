@@ -38,11 +38,39 @@
 #'   package = "sigminer", mustWork = TRUE
 #' ))
 #' \donttest{
-#' # Prepare copy number signature analysis
-#' cn_tally <- sig_tally(cn)
+#' # Use method designed by Macintyre et al.
+#' cn_tally_M <- sig_tally(cn)
 #' }
 #' # Use method designed by Wang, Shixiang et al.
-#' cn_tally <- sig_tally(cn, method = "W")
+#' cn_tally_W <- sig_tally(cn, method = "W")
+#' @tests
+#' ## Load copy number object
+#' load(system.file("extdata", "toy_copynumber.RData",
+#'   package = "sigminer", mustWork = TRUE
+#' ))
+#' # Use method designed by Macintyre et al.
+#' cn_tally_M <- sig_tally(cn)
+#' # Use method designed by Wang, Shixiang et al.
+#' cn_tally_W <- sig_tally(cn, method = "W")
+#'
+#' expect_equal(length(cn_tally_M), length(cn_tally_W))
+#'
+#' ## for SBS
+#'
+#' laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
+#' laml <- read_maf(maf = laml.maf)
+#' if (require("BSgenome.Hsapiens.UCSC.hg19")) {
+#'   mt_tally <- sig_tally(
+#'     laml,
+#'     ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
+#'     prefix = "chr", add = TRUE, useSyn = TRUE
+#'   )
+#'
+#'   expect_equal(length(mt_tally), 2L)
+#' } else {
+#'   message("Please install package 'BSgenome.Hsapiens.UCSC.hg19' firstly!")
+#' }
+#'
 sig_tally <- function(object, ...) {
   UseMethod("sig_tally")
 }

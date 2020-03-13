@@ -30,18 +30,26 @@
 #'   package = "sigminer", mustWork = TRUE
 #' ))
 #'
-#' get_sig_similarity(sig2, Ref = sig2)
-#' \donttest{
-#' get_sig_similarity(sig2)
-#' get_sig_similarity(sig2, sig_db = "SBS")
-#' }
+#' s1 <- get_sig_similarity(sig2, Ref = sig2)
+#' s1
+#'
+#' s2 <- get_sig_similarity(sig2)
+#' s2
+#' s3 <- get_sig_similarity(sig2, sig_db = "SBS")
+#' s3
 #'
 #' ## Remove some components
 #' ## in similarity calculation
-#' get_sig_similarity(sig2,
+#' s4 <- get_sig_similarity(sig2,
 #'   Ref = sig2,
 #'   pattern_to_rm = c("T[T>G]C", "T[T>G]G", "T[T>G]T")
 #' )
+#' s4
+#' @testexamples
+#' expect_equal(length(s1), 3L)
+#' expect_equal(length(s2), 3L)
+#' expect_equal(length(s3), 3L)
+#' expect_equal(length(s4), 3L)
 get_sig_similarity <- function(Signature, Ref = NULL, sig_db = "legacy",
                                method = "cosine",
                                normalize = c("row", "feature"),

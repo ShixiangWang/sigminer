@@ -39,11 +39,16 @@
 #'   seg_cols = c("chromosome", "start", "end", "segVal"),
 #'   genome_build = "hg19", complement = FALSE, verbose = TRUE
 #' )
+#' cn
 #'
 #' tab_file <- system.file("extdata", "metastatic_tumor.segtab.txt",
 #'   package = "sigminer", mustWork = TRUE
 #' )
-#' read_copynumber(tab_file)
+#' cn2 <- read_copynumber(tab_file)
+#' cn2
+#' @testexamples
+#' expect_s4_class(cn, "CopyNumber")
+#' expect_s4_class(cn2, "CopyNumber")
 #' @seealso [read_maf] for reading mutation data to [MAF] object.
 read_copynumber <- function(input,
                             pattern = NULL,

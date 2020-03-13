@@ -11,7 +11,10 @@
 #'   package = "sigminer", mustWork = TRUE
 #' ))
 #'
-#' get_cn_ploidy(cn)
+#' df <- get_cn_ploidy(cn)
+#' df
+#' @testexamples
+#' expect_equal(nrow(df), 10L)
 get_cn_ploidy <- function(data) {
   stopifnot(is.data.frame(data) | inherits(data, "CopyNumber"))
   if (is.data.frame(data)) {

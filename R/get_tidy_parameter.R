@@ -15,9 +15,14 @@
 #'   package = "sigminer", mustWork = TRUE
 #' ))
 #' # Get all parameters
-#' get_tidy_parameter(cn_tally_M$components)
+#' d1 <- get_tidy_parameter(cn_tally_M$components)
+#' d1
 #' # Get parameters for segsize feature
-#' get_tidy_parameter(cn_tally_M$components$segsize)
+#' d2 <- get_tidy_parameter(cn_tally_M$components$segsize)
+#' d2
+#' @testexamples
+#' expect_equal(nrow(d1), 20L)
+#' expect_equal(nrow(d2), 10L)
 get_tidy_parameter <- function(x) {
   if (is.list(x)) {
     purrr::map_df(x, .get_parameter, .id = "feature") %>%

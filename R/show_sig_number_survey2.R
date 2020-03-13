@@ -17,7 +17,7 @@
 #'   package = "sigminer", mustWork = TRUE
 #' ))
 #' library(NMF)
-#' cn_estimate <- sig_estimate(cn_tally_W$nmf_matrix,
+#' cn_estimate <- sig_estimate(cn_tally_M$nmf_matrix,
 #'   cores = 1, nrun = 5,
 #'   verbose = TRUE,
 #'   keep_nmfObj = TRUE

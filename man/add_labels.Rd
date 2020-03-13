@@ -56,21 +56,24 @@ load(system.file("extdata", "toy_mutational_signature.RData",
 p <- show_sig_profile(sig2, mode = "SBS")
 
 # Method 1
-add_labels(p,
+p1 <- add_labels(p,
   x = 0.75, y = 0.3, y_end = 0.9, n_label = 3,
   labels = paste0("text", 1:3)
 )
+p1
 
 # Method 2
-add_labels(p,
+p2 <- add_labels(p,
   x = c(0.15, 0.6, 0.75), y = c(0.3, 0.6, 0.9),
   labels = paste0("text", 1:3)
 )
+p2
 
 # Method 3
 sim <- get_sig_similarity(sig2)
-add_labels(p,
+p3 <- add_labels(p,
   x = c(0.15, 0.6, 0.75), y = c(0.3, 0.6, 0.9),
   labels = sim, font_size = 2
 )
+p3
 }

@@ -53,7 +53,10 @@
 #'   package = "sigminer", mustWork = TRUE
 #' ))
 #'
-#' scoring(cn)
+#' d <- scoring(cn)
+#' d
+#' @testexamples
+#' expect_s3_class(d, "data.frame")
 scoring <- function(object, TD_size_cutoff = c(1e3, 1e5, 2e6)) {
   stopifnot(inherits(object, "CopyNumber"), length(TD_size_cutoff) == 3, is.numeric(TD_size_cutoff))
 

@@ -59,13 +59,16 @@ standard classified components ("Wang" ("W") method) for copy number data.
 load(system.file("extdata", "toy_copynumber_tally_M.RData",
   package = "sigminer", mustWork = TRUE
 ))
-show_cn_components(cn_tally_M$parameters)
-show_cn_components(cn_tally_M$parameters, show_weights = FALSE)
+p1 <- show_cn_components(cn_tally_M$parameters)
+p1
+p2 <- show_cn_components(cn_tally_M$parameters, show_weights = FALSE)
+p2
 
 load(system.file("extdata", "toy_copynumber_tally_W.RData",
   package = "sigminer", mustWork = TRUE
 ))
-show_cn_components(cn_tally_W$parameters, method = "W")
+p3 <- show_cn_components(cn_tally_W$parameters, method = "W")
+p3
 }
 \author{
 Shixiang Wang \href{mailto:w_shixiang@163.com}{w_shixiang@163.com}

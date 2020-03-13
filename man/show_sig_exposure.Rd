@@ -71,14 +71,16 @@ load(system.file("extdata", "toy_mutational_signature.RData",
   package = "sigminer", mustWork = TRUE
 ))
 # Show signature exposure
-show_sig_exposure(sig2)
+p1 <- show_sig_exposure(sig2)
+p1
 
 # Load copy number signature
 load(system.file("extdata", "toy_copynumber_signature_by_M.RData",
   package = "sigminer", mustWork = TRUE
 ))
 # Show signature exposure
-show_sig_exposure(sig)
+p2 <- show_sig_exposure(sig)
+p2
 }
 \author{
 Shixiang Wang

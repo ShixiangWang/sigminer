@@ -17,7 +17,6 @@ Sometimes, we may want to use or inspect specified run result from \link{sig_aut
 This function is designed for this purpose.
 }
 \examples{
-# Load copy number prepare object
 load(system.file("extdata", "toy_copynumber_tally_W.RData",
   package = "sigminer", mustWork = TRUE
 ))

@@ -64,5 +64,6 @@ load(system.file("extdata", "toy_copynumber.RData",
   package = "sigminer", mustWork = TRUE
 ))
 
-scoring(cn)
+d <- scoring(cn)
+d
 }

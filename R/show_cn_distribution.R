@@ -19,9 +19,16 @@
 #'   package = "sigminer", mustWork = TRUE
 #' ))
 #' # Plot distribution
-#' show_cn_distribution(cn)
-#' show_cn_distribution(cn, mode = "cd")
-#' show_cn_distribution(cn, mode = "cd", fill = TRUE)
+#' p1 <- show_cn_distribution(cn)
+#' p1
+#' p2 <- show_cn_distribution(cn, mode = "cd")
+#' p2
+#' p3 <- show_cn_distribution(cn, mode = "cd", fill = TRUE)
+#' p3
+#' @testexamples
+#' expect_s3_class(p1, "ggplot")
+#' expect_s3_class(p2, "ggplot")
+#' expect_s3_class(p3, "ggplot")
 show_cn_distribution <- function(data,
                                  rm_normal = TRUE,
                                  mode = c("ld", "cd"),

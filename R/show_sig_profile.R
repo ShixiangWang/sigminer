@@ -60,15 +60,24 @@
 #'   package = "sigminer", mustWork = TRUE
 #' ))
 #' # Show signature profile
-#' show_sig_profile(sig2, mode = "SBS")
+#' p1 <- show_sig_profile(sig2, mode = "SBS")
+#' p1
 #'
+#' # Load copy number signature from method "M"
+#' load(system.file("extdata", "toy_copynumber_signature_by_W.RData",
+#'   package = "sigminer", mustWork = TRUE
+#' ))
+#' # Show signature profile
+#' p2 <- show_sig_profile(sig, style = "cosmic", method = "W")
+#' p2
 #'
-#' # Load copy number signature
+#' # Load copy number signature from method "M"
 #' load(system.file("extdata", "toy_copynumber_signature_by_M.RData",
 #'   package = "sigminer", mustWork = TRUE
 #' ))
 #' # Show signature profile
-#' show_sig_profile(sig)
+#' p3 <- show_sig_profile(sig, paint_axis_text = FALSE)
+#' p3
 #'
 #' # Add params label
 #' # =================
@@ -77,7 +86,13 @@
 #'   package = "sigminer", mustWork = TRUE
 #' ))
 #' params <- get_tidy_parameter(cn_tally_M$components)
-#' show_sig_profile(sig, params = params, y_expand = 2)
+#' p4 <- show_sig_profile(sig, params = params, y_expand = 2)
+#' p4
+#' @testexamples
+#' expect_s3_class(p1, "ggplot")
+#' expect_s3_class(p2, "ggplot")
+#' expect_s3_class(p3, "ggplot")
+#' expect_s3_class(p4, "ggplot")
 show_sig_profile <- function(Signature, mode = c("copynumber", "SBS"),
                              method = "Macintyre",
                              normalize = c("row", "column", "raw", "feature"),

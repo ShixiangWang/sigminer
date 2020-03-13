@@ -63,6 +63,9 @@
 #'   comparisons = list(c("0.5", "1"), c("1", "2"))
 #' )
 #' p + stat_pvalue_manual(p_adj, label = "p.adj")
+#' @testexamples
+#' expect_s3_class(p, "ggplot")
+#' expect_s3_class(p_adj, "tbl")
 get_adj_p <- function(data, .col, .grp = "Sample", comparisons = NULL,
                       method = "wilcox.test", p.adjust.method = "fdr", p.digits = 3L, ...) {
   # Compute p-values

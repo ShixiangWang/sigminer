@@ -66,6 +66,9 @@
 #' ggcomp <- show_group_comparison(groups.cmp2)
 #' ggcomp$co_comb
 #' ggcomp$ca_comb
+#' @testexamples
+#' expect_equal(length(groups.cmp) + 1L, length(groups.cmp) + 1)
+#' expect_s3_class(ggcomp$ca$new_group, "ggplot")
 show_group_comparison <- function(group_comparison,
                                   xlab = "group", ylab_co = NA,
                                   legend_title_ca = NA,
@@ -123,7 +126,7 @@ show_group_comparison <- function(group_comparison,
         }
         colnames(data) <- c("Dominant Signature", "group")
       }
-      data_sum <- data %>% dplyr::count_("group")
+      data_sum <- data %>% dplyr::count(.data$group)
       data_sum[["labels"]] <- paste(data_sum[["group"]], paste0("(n=", data_sum[["n"]], ")"), sep = "\n")
 
       var_name <- setdiff(colnames(data), "group")
@@ -170,7 +173,7 @@ show_group_comparison <- function(group_comparison,
     # plot continuous data
     co_res <- lapply(co_list, function(df, ...) {
       data <- df[["data"]] %>% dplyr::as_tibble()
-      data_sum <- data %>% dplyr::count_("group")
+      data_sum <- data %>% dplyr::count(.data$group)
       data_sum[["labels"]] <- paste(data_sum[["group"]], paste0("(n=", data_sum[["n"]], ")"), sep = "\n")
       my_comparisons <- combn(unique(as.character(data[["group"]])),
         2,

@@ -40,9 +40,12 @@ load(system.file("extdata", "toy_copynumber.RData",
   package = "sigminer", mustWork = TRUE
 ))
 # Plot distribution
-show_cn_distribution(cn)
-show_cn_distribution(cn, mode = "cd")
-show_cn_distribution(cn, mode = "cd", fill = TRUE)
+p1 <- show_cn_distribution(cn)
+p1
+p2 <- show_cn_distribution(cn, mode = "cd")
+p2
+p3 <- show_cn_distribution(cn, mode = "cd", fill = TRUE)
+p3
 }
 \author{
 Shixiang Wang \href{mailto:w_shixiang@163.com}{w_shixiang@163.com}

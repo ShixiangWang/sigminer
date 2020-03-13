@@ -27,14 +27,19 @@
 #'   package = "sigminer", mustWork = TRUE
 #' ))
 #' # Show signature exposure
-#' show_sig_exposure(sig2)
+#' p1 <- show_sig_exposure(sig2)
+#' p1
 #'
 #' # Load copy number signature
 #' load(system.file("extdata", "toy_copynumber_signature_by_M.RData",
 #'   package = "sigminer", mustWork = TRUE
 #' ))
 #' # Show signature exposure
-#' show_sig_exposure(sig)
+#' p2 <- show_sig_exposure(sig)
+#' p2
+#' @testexamples
+#' expect_s3_class(p1, "ggplot")
+#' expect_s3_class(p2, "ggplot")
 show_sig_exposure <- function(Signature,
                               sig_names = NULL,
                               groups = NULL,

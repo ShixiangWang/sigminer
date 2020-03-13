@@ -59,6 +59,8 @@
 #' res <- sig_auto_extract(cn_tally_M$nmf_matrix, result_prefix = "Test_copynumber", nrun = 1)
 #' # At default, all run files are stored in tempdir()
 #' dir(tempdir(), pattern = "Test_copynumber")
+#' @testexamples
+#' expect_s3_class(res, "Signature")
 #' @seealso [sig_tally] for getting variation matrix,
 #' [sig_extract] for extracting signatures using **NMF** package, [sig_estimate] for
 #' estimating signature number for [sig_extract].

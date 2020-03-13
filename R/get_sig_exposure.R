@@ -17,8 +17,13 @@
 #'   package = "sigminer", mustWork = TRUE
 #' ))
 #' # Get signature exposure
-#' get_sig_exposure(sig2)
-#' get_sig_exposure(sig2, type = "relative")
+#' expo1 <- get_sig_exposure(sig2)
+#' expo1
+#' expo2 <- get_sig_exposure(sig2, type = "relative")
+#' expo2
+#' @testexamples
+#' expect_equal(nrow(expo1), 188L)
+#' expect_equal(nrow(expo2), 186L)
 get_sig_exposure <- function(Signature,
                              type = c("absolute", "relative"),
                              rel_threshold = 0.01) {

@@ -22,13 +22,17 @@
 #'   Group2 = rep(LETTERS[6:15], each = 5),
 #'   zzzz = c(rep("xx", 20), rep("yy", 20), rep(NA, 10))
 #' )
-#' \donttest{
-#' show_group_mapping(data, col_to_flow = "Group1", cols_to_map = colnames(data)[-1])
-#' show_group_mapping(data,
+#' p1 <- show_group_mapping(data, col_to_flow = "Group1", cols_to_map = colnames(data)[-1])
+#' p1
+#'
+#' p2 <- show_group_mapping(data,
 #'   col_to_flow = "Group1", cols_to_map = colnames(data)[-1],
 #'   include_sig = TRUE
 #' )
-#' }
+#' p2
+#' @testexamples
+#' expect_s3_class(p1, "ggplot")
+#' expect_s3_class(p2, "ggplot")
 show_group_mapping <- function(data, col_to_flow, cols_to_map, include_sig = FALSE,
                                fill_na = FALSE,
                                title = NULL, xlab = NULL, ylab = NULL,

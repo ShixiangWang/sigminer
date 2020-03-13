@@ -11,6 +11,9 @@
 #' @examples
 #' laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools", mustWork = TRUE)
 #' laml <- read_maf(maf = laml.maf)
+#' laml
+#' @testexamples
+#' expect_s4_class(laml, "MAF")
 #' @export
 #' @seealso [read_copynumber] for reading copy number data to [CopyNumber] object.
 

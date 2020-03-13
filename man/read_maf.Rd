@@ -56,6 +56,7 @@ You can also use \link[maftools:read.maf]{maftools::read.maf} to read the data.
 \examples{
 laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools", mustWork = TRUE)
 laml <- read_maf(maf = laml.maf)
+laml
 }
 \seealso{
 \link{read_copynumber} for reading copy number data to \link{CopyNumber} object.

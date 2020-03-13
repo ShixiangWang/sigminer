@@ -33,8 +33,10 @@ load(system.file("extdata", "toy_mutational_signature.RData",
   package = "sigminer", mustWork = TRUE
 ))
 # Get signature exposure
-get_sig_exposure(sig2)
-get_sig_exposure(sig2, type = "relative")
+expo1 <- get_sig_exposure(sig2)
+expo1
+expo2 <- get_sig_exposure(sig2, type = "relative")
+expo2
 }
 \author{
 Shixiang Wang \href{mailto:w_shixiang@163.com}{w_shixiang@163.com}

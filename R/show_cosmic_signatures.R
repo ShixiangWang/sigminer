@@ -16,6 +16,8 @@
 #'
 #' gg <- show_cosmic_sig_profile(sig_index = 1:5)
 #' gg$aetiology
+#' @testexamples
+#' expect_s3_class(gg, "ggplot")
 show_cosmic_sig_profile <- function(sig_index = NULL, show_index = TRUE, sig_db = "legacy", ...) {
   sig_db <- match.arg(arg = sig_db, choices = c("legacy", "SBS"))
 

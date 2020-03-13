@@ -48,12 +48,11 @@ Users can also set custom measures to show.
 }
 \examples{
 \donttest{
-# Load copy number prepare object
-load(system.file("extdata", "toy_copynumber_tally_W.RData",
+load(system.file("extdata", "toy_copynumber_tally_M.RData",
   package = "sigminer", mustWork = TRUE
 ))
 library(NMF)
-cn_estimate <- sig_estimate(cn_tally_W$nmf_matrix,
+cn_estimate <- sig_estimate(cn_tally_M$nmf_matrix,
   cores = 1, nrun = 5,
   verbose = TRUE
 )
@@ -61,7 +60,10 @@ cn_estimate <- sig_estimate(cn_tally_W$nmf_matrix,
 # Show two measures
 show_sig_number_survey(cn_estimate)
 # Show one measure
-show_sig_number_survey(cn_estimate, right_y = NULL)
+p <- show_sig_number_survey(cn_estimate, right_y = NULL)
+p
+p <- add_h_arrow(p, x = 4.1, y = 0.953, label = "selected number")
+p
 
 # Show data from a data.frame
 show_sig_number_survey(cn_estimate$survey)

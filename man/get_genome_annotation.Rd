@@ -25,5 +25,9 @@ a \code{data.frame} containing annotation data
 Get Genome Annotation
 }
 \examples{
-get_genome_annotation()
+df1 <- get_genome_annotation()
+df1
+
+df2 <- get_genome_annotation(genome_build = "hg38")
+df2
 }

@@ -22,5 +22,6 @@ load(system.file("extdata", "toy_copynumber.RData",
   package = "sigminer", mustWork = TRUE
 ))
 
-get_cn_ploidy(cn)
+df <- get_cn_ploidy(cn)
+df
 }

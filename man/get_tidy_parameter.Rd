@@ -23,7 +23,9 @@ load(system.file("extdata", "toy_copynumber_tally_M.RData",
   package = "sigminer", mustWork = TRUE
 ))
 # Get all parameters
-get_tidy_parameter(cn_tally_M$components)
+d1 <- get_tidy_parameter(cn_tally_M$components)
+d1
 # Get parameters for segsize feature
-get_tidy_parameter(cn_tally_M$components$segsize)
+d2 <- get_tidy_parameter(cn_tally_M$components$segsize)
+d2
 }

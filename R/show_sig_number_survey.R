@@ -24,12 +24,11 @@
 #'
 #' @examples
 #' \donttest{
-#' # Load copy number prepare object
-#' load(system.file("extdata", "toy_copynumber_tally_W.RData",
+#' load(system.file("extdata", "toy_copynumber_tally_M.RData",
 #'   package = "sigminer", mustWork = TRUE
 #' ))
 #' library(NMF)
-#' cn_estimate <- sig_estimate(cn_tally_W$nmf_matrix,
+#' cn_estimate <- sig_estimate(cn_tally_M$nmf_matrix,
 #'   cores = 1, nrun = 5,
 #'   verbose = TRUE
 #' )
@@ -37,7 +36,10 @@
 #' # Show two measures
 #' show_sig_number_survey(cn_estimate)
 #' # Show one measure
-#' show_sig_number_survey(cn_estimate, right_y = NULL)
+#' p <- show_sig_number_survey(cn_estimate, right_y = NULL)
+#' p
+#' p <- add_h_arrow(p, x = 4.1, y = 0.953, label = "selected number")
+#' p
 #'
 #' # Show data from a data.frame
 #' show_sig_number_survey(cn_estimate$survey)
@@ -52,6 +54,44 @@
 #'   right_name = "evar"
 #' )
 #' }
+#' @tests
+#' load(system.file("extdata", "toy_copynumber_tally_M.RData",
+#'   package = "sigminer", mustWork = TRUE
+#' ))
+#' library(NMF)
+#' cn_estimate <- sig_estimate(cn_tally_M$nmf_matrix,
+#'   cores = 1, nrun = 5,
+#'   verbose = TRUE
+#' )
+#' expect_equal(length(cn_estimate), 2)
+#'
+#' # Show two measures
+#' p = show_sig_number_survey(cn_estimate)
+#' expect_s3_class(p, "ggplot")
+#'
+#' # Show one measure
+#' p = show_sig_number_survey(cn_estimate, right_y = NULL)
+#' expect_s3_class(p, "ggplot")
+#' p = add_h_arrow(p, x = 4.1, y = 0.953, label = "selected number")
+#' expect_s3_class(p, "ggplot")
+#'
+#' # Show data from a data.frame
+#' p = show_sig_number_survey(cn_estimate$survey)
+#' expect_s3_class(p, "ggplot")
+#'
+#' # Show other measures
+#' head(cn_estimate$survey)
+#' p = show_sig_number_survey(cn_estimate$survey,
+#'   right_y = "dispersion",
+#'   right_name = "dispersion"
+#' )
+#' expect_s3_class(p, "ggplot")
+#' p = show_sig_number_survey(cn_estimate$survey,
+#'   right_y = "evar",
+#'   right_name = "evar"
+#' )
+#' expect_s3_class(p, "ggplot")
+#'
 #' @seealso [sig_estimate] for estimating signature number for [sig_extract],
 #' [show_sig_number_survey2] for more visualization method.
 show_sig_number_survey <- function(object, x = "rank",

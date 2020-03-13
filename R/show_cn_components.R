@@ -20,13 +20,20 @@
 #' load(system.file("extdata", "toy_copynumber_tally_M.RData",
 #'   package = "sigminer", mustWork = TRUE
 #' ))
-#' show_cn_components(cn_tally_M$parameters)
-#' show_cn_components(cn_tally_M$parameters, show_weights = FALSE)
+#' p1 <- show_cn_components(cn_tally_M$parameters)
+#' p1
+#' p2 <- show_cn_components(cn_tally_M$parameters, show_weights = FALSE)
+#' p2
 #'
 #' load(system.file("extdata", "toy_copynumber_tally_W.RData",
 #'   package = "sigminer", mustWork = TRUE
 #' ))
-#' show_cn_components(cn_tally_W$parameters, method = "W")
+#' p3 <- show_cn_components(cn_tally_W$parameters, method = "W")
+#' p3
+#' @testexamples
+#' expect_s3_class(p1, "ggplot")
+#' expect_s3_class(p2, "ggplot")
+#' expect_s3_class(p3, "ggplot")
 show_cn_components <- function(parameters,
                                method = "Macintyre",
                                show_weights = TRUE,

@@ -26,7 +26,10 @@
 #'   package = "sigminer", mustWork = TRUE
 #' ))
 #'
-#' show_cn_profile(cn, nrow = 2, ncol = 1)
+#' p <- show_cn_profile(cn, nrow = 2, ncol = 1)
+#' p
+#' @testexamples
+#' expect_s3_class(p, "ggplot")
 show_cn_profile <- function(data, samples = NULL, show_n = NULL, show_title = FALSE,
                             chrs = paste0("chr", 1:22),
                             genome_build = c("hg19", "hg38"),

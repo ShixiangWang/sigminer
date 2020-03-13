@@ -19,7 +19,10 @@
 #' load(system.file("extdata", "toy_copynumber_tally_M.RData",
 #'   package = "sigminer", mustWork = TRUE
 #' ))
-#' show_cn_features(cn_tally_M$features)
+#' p <- show_cn_features(cn_tally_M$features)
+#' p
+#' @testexamples
+#' expect_s3_class(p, "ggplot")
 #' @export
 #'
 show_cn_features <- function(features,
