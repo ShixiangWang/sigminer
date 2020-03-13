@@ -157,7 +157,8 @@
     <p>a <code>data.frame</code> containing annotation data</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>get_genome_annotation</span>()</div><div class='output co'>#&gt;    chrom      size
+    <pre class="examples"><div class='input'><span class='no'>df1</span> <span class='kw'>&lt;-</span> <span class='fu'>get_genome_annotation</span>()
+<span class='no'>df1</span></div><div class='output co'>#&gt;    chrom      size
 #&gt; 1   chr1 249250621
 #&gt; 2   chr2 243199373
 #&gt; 3   chr3 198022430
@@ -181,7 +182,33 @@
 #&gt; 21 chr21  48129895
 #&gt; 22 chr22  51304566
 #&gt; 23  chrX 155270560
-#&gt; 24  chrY  59373566</div></pre>
+#&gt; 24  chrY  59373566</div><div class='input'>
+<span class='no'>df2</span> <span class='kw'>&lt;-</span> <span class='fu'>get_genome_annotation</span>(<span class='kw'>genome_build</span> <span class='kw'>=</span> <span class='st'>"hg38"</span>)
+<span class='no'>df2</span></div><div class='output co'>#&gt;    chrom      size
+#&gt; 1   chr1 248956422
+#&gt; 2   chr2 242193529
+#&gt; 3   chr3 198295559
+#&gt; 4   chr4 190214555
+#&gt; 5   chr5 181538259
+#&gt; 6   chr6 170805979
+#&gt; 7   chr7 159345973
+#&gt; 8   chr8 145138636
+#&gt; 9   chr9 138394717
+#&gt; 10 chr10 133797422
+#&gt; 11 chr11 135086622
+#&gt; 12 chr12 133275309
+#&gt; 13 chr13 114364328
+#&gt; 14 chr14 107043718
+#&gt; 15 chr15 101991189
+#&gt; 16 chr16  90338345
+#&gt; 17 chr17  83257441
+#&gt; 18 chr18  80373285
+#&gt; 19 chr19  58617616
+#&gt; 20 chr20  64444167
+#&gt; 21 chr21  46709983
+#&gt; 22 chr22  50818468
+#&gt; 23  chrX 156040895
+#&gt; 24  chrY  57227415</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

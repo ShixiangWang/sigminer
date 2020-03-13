@@ -203,15 +203,293 @@ The remove operation will be done after normalization. Default is <code>NULL</co
   <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 ))
 
-<span class='fu'>get_sig_similarity</span>(<span class='no'>sig2</span>, <span class='kw'>Ref</span> <span class='kw'>=</span> <span class='no'>sig2</span>)</div><div class='output co'>#&gt; <span class='message'>-Comparing against Custom signatures</span></div><div class='output co'>#&gt; <span class='message'>------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>--Found Sig1 most similar to Sig1 [similarity: 1]</span></div><div class='output co'>#&gt; <span class='message'>--Found Sig2 most similar to Sig2 [similarity: 1]</span></div><div class='output co'>#&gt; <span class='message'>--Found Sig3 most similar to Sig3 [similarity: 1]</span></div><div class='output co'>#&gt; <span class='message'>------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>Return result invisiblely.</span></div><div class='input'><span class='co'># \donttest{</span>
-<span class='fu'>get_sig_similarity</span>(<span class='no'>sig2</span>)</div><div class='output co'>#&gt; <span class='message'>-Comparing against COSMIC signatures</span></div><div class='output co'>#&gt; <span class='message'>------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>--Found Sig1 most similar to COSMIC_28</span></div><div class='output co'>#&gt; <span class='message'>   Aetiology: Unknown [similarity: 0.393]</span></div><div class='output co'>#&gt; <span class='message'>--Found Sig2 most similar to COSMIC_1</span></div><div class='output co'>#&gt; <span class='message'>   Aetiology: spontaneous deamination of 5-methylcytosine [similarity: 0.913]</span></div><div class='output co'>#&gt; <span class='message'>--Found Sig3 most similar to COSMIC_10</span></div><div class='output co'>#&gt; <span class='message'>   Aetiology: defects in polymerase POLE [similarity: 0.531]</span></div><div class='output co'>#&gt; <span class='message'>------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>Return result invisiblely.</span></div><div class='input'><span class='fu'>get_sig_similarity</span>(<span class='no'>sig2</span>, <span class='kw'>sig_db</span> <span class='kw'>=</span> <span class='st'>"SBS"</span>)</div><div class='output co'>#&gt; <span class='message'>-Comparing against COSMIC signatures</span></div><div class='output co'>#&gt; <span class='message'>------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>--Found Sig1 most similar to SBS28</span></div><div class='output co'>#&gt; <span class='message'>   Aetiology: Unknown [similarity: 0.383]</span></div><div class='output co'>#&gt; <span class='message'>--Found Sig2 most similar to SBS1</span></div><div class='output co'>#&gt; <span class='message'>   Aetiology: spontaneous or enzymatic deamination of 5-methylcytosine [similarity: 0.868]</span></div><div class='output co'>#&gt; <span class='message'>--Found Sig3 most similar to SBS10b</span></div><div class='output co'>#&gt; <span class='message'>   Aetiology: Polymerase epsilon exonuclease domain mutations [similarity: 0.865]</span></div><div class='output co'>#&gt; <span class='message'>------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>Return result invisiblely.</span></div><div class='input'><span class='co'># }</span>
-
+<span class='no'>s1</span> <span class='kw'>&lt;-</span> <span class='fu'>get_sig_similarity</span>(<span class='no'>sig2</span>, <span class='kw'>Ref</span> <span class='kw'>=</span> <span class='no'>sig2</span>)</div><div class='output co'>#&gt; <span class='message'>-Comparing against Custom signatures</span></div><div class='output co'>#&gt; <span class='message'>------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>--Found Sig1 most similar to Sig1 [similarity: 1]</span></div><div class='output co'>#&gt; <span class='message'>--Found Sig2 most similar to Sig2 [similarity: 1]</span></div><div class='output co'>#&gt; <span class='message'>--Found Sig3 most similar to Sig3 [similarity: 1]</span></div><div class='output co'>#&gt; <span class='message'>------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>Return result invisiblely.</span></div><div class='input'><span class='no'>s1</span></div><div class='output co'>#&gt; $similarity
+#&gt;      Sig1 Sig2 Sig3
+#&gt; Sig1    1    0    0
+#&gt; Sig2    0    1    0
+#&gt; Sig3    0    0    1
+#&gt; 
+#&gt; $aetiology_db
+#&gt; [1] NA
+#&gt; 
+#&gt; $best_match
+#&gt; $best_match$Sig1
+#&gt; $best_match$Sig1$aetiology
+#&gt; [1] NA
+#&gt; 
+#&gt; $best_match$Sig1$best_match
+#&gt; [1] "Best match: Sig1 [similarity: 1]"
+#&gt; 
+#&gt; 
+#&gt; $best_match$Sig2
+#&gt; $best_match$Sig2$aetiology
+#&gt; [1] NA
+#&gt; 
+#&gt; $best_match$Sig2$best_match
+#&gt; [1] "Best match: Sig2 [similarity: 1]"
+#&gt; 
+#&gt; 
+#&gt; $best_match$Sig3
+#&gt; $best_match$Sig3$aetiology
+#&gt; [1] NA
+#&gt; 
+#&gt; $best_match$Sig3$best_match
+#&gt; [1] "Best match: Sig3 [similarity: 1]"
+#&gt; 
+#&gt; 
+#&gt; 
+#&gt; attr(,"class")
+#&gt; [1] "similarity" "list"      </div><div class='input'>
+<span class='no'>s2</span> <span class='kw'>&lt;-</span> <span class='fu'>get_sig_similarity</span>(<span class='no'>sig2</span>)</div><div class='output co'>#&gt; <span class='message'>-Comparing against COSMIC signatures</span></div><div class='output co'>#&gt; <span class='message'>------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>--Found Sig1 most similar to COSMIC_28</span></div><div class='output co'>#&gt; <span class='message'>   Aetiology: Unknown [similarity: 0.393]</span></div><div class='output co'>#&gt; <span class='message'>--Found Sig2 most similar to COSMIC_1</span></div><div class='output co'>#&gt; <span class='message'>   Aetiology: spontaneous deamination of 5-methylcytosine [similarity: 0.913]</span></div><div class='output co'>#&gt; <span class='message'>--Found Sig3 most similar to COSMIC_10</span></div><div class='output co'>#&gt; <span class='message'>   Aetiology: defects in polymerase POLE [similarity: 0.531]</span></div><div class='output co'>#&gt; <span class='message'>------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>Return result invisiblely.</span></div><div class='input'><span class='no'>s2</span></div><div class='output co'>#&gt; $similarity
+#&gt;      COSMIC_1 COSMIC_2 COSMIC_3 COSMIC_4 COSMIC_5 COSMIC_6 COSMIC_7 COSMIC_8
+#&gt; Sig1    0.018    0.001    0.221    0.097    0.146    0.029    0.004    0.113
+#&gt; Sig2    0.913    0.164    0.334    0.287    0.525    0.833    0.261    0.409
+#&gt; Sig3    0.327    0.097    0.094    0.060    0.168    0.243    0.252    0.093
+#&gt;      COSMIC_9 COSMIC_10 COSMIC_11 COSMIC_12 COSMIC_13 COSMIC_14 COSMIC_15
+#&gt; Sig1    0.333     0.070     0.002     0.035     0.008     0.015     0.021
+#&gt; Sig2    0.295     0.160     0.358     0.250     0.076     0.609     0.607
+#&gt; Sig3    0.099     0.531     0.045     0.113     0.025     0.103     0.109
+#&gt;      COSMIC_16 COSMIC_17 COSMIC_18 COSMIC_19 COSMIC_20 COSMIC_21 COSMIC_22
+#&gt; Sig1     0.131     0.342     0.041     0.019     0.015     0.012     0.020
+#&gt; Sig2     0.319     0.120     0.239     0.566     0.461     0.264     0.083
+#&gt; Sig3     0.107     0.078     0.081     0.095     0.250     0.117     0.040
+#&gt;      COSMIC_23 COSMIC_24 COSMIC_25 COSMIC_26 COSMIC_27 COSMIC_28 COSMIC_29
+#&gt; Sig1     0.001     0.105     0.107     0.027     0.004     0.393     0.042
+#&gt; Sig2     0.356     0.236     0.393     0.335     0.081     0.065     0.382
+#&gt; Sig3     0.045     0.079     0.159     0.146     0.031     0.042     0.121
+#&gt;      COSMIC_30
+#&gt; Sig1     0.050
+#&gt; Sig2     0.463
+#&gt; Sig3     0.135
+#&gt; 
+#&gt; $aetiology_db
+#&gt; $aetiology_db[[1]]
+#&gt;  [1] "spontaneous deamination of 5-methylcytosine"
+#&gt;  [2] "APOBEC Cytidine Deaminase (C&gt;T)"            
+#&gt;  [3] "defects in DNA-DSB repair by HR"            
+#&gt;  [4] "exposure to tobacco (smoking) mutagens"     
+#&gt;  [5] "Unknown"                                    
+#&gt;  [6] "defective DNA mismatch repair"              
+#&gt;  [7] "UV exposure"                                
+#&gt;  [8] "Unknown"                                    
+#&gt;  [9] "defects in polymerase-eta"                  
+#&gt; [10] "defects in polymerase POLE"                 
+#&gt; [11] "exposure to alkylating agents"              
+#&gt; [12] "Unknown"                                    
+#&gt; [13] "APOBEC Cytidine Deaminase (C&gt;G)"            
+#&gt; [14] "Unknown"                                    
+#&gt; [15] "defective DNA mismatch repair"              
+#&gt; [16] "Unknown"                                    
+#&gt; [17] "Unknown"                                    
+#&gt; [18] "Unknown"                                    
+#&gt; [19] "Unknown"                                    
+#&gt; [20] "defective DNA mismatch repair"              
+#&gt; [21] "unknown"                                    
+#&gt; [22] "exposure to aristolochic acid"              
+#&gt; [23] "Unknown"                                    
+#&gt; [24] "exposures to aflatoxin"                     
+#&gt; [25] "Unknown"                                    
+#&gt; [26] "defective DNA mismatch repair"              
+#&gt; [27] "Unknown"                                    
+#&gt; [28] "Unknown"                                    
+#&gt; [29] "exposure to tobacco (chewing) mutagens"     
+#&gt; [30] "Unknown"                                    
+#&gt; 
+#&gt; 
+#&gt; $best_match
+#&gt; $best_match$Sig1
+#&gt; $best_match$Sig1$aetiology
+#&gt; [1] "Unknown"
+#&gt; 
+#&gt; $best_match$Sig1$best_match
+#&gt; [1] "Best match: COSMIC_28 [similarity: 0.393]"
+#&gt; 
+#&gt; 
+#&gt; $best_match$Sig2
+#&gt; $best_match$Sig2$aetiology
+#&gt; [1] "spontaneous deamination of 5-methylcytosine"
+#&gt; 
+#&gt; $best_match$Sig2$best_match
+#&gt; [1] "Best match: COSMIC_1 [similarity: 0.913]"
+#&gt; 
+#&gt; 
+#&gt; $best_match$Sig3
+#&gt; $best_match$Sig3$aetiology
+#&gt; [1] "defects in polymerase POLE"
+#&gt; 
+#&gt; $best_match$Sig3$best_match
+#&gt; [1] "Best match: COSMIC_10 [similarity: 0.531]"
+#&gt; 
+#&gt; 
+#&gt; 
+#&gt; attr(,"class")
+#&gt; [1] "similarity" "list"      </div><div class='input'><span class='no'>s3</span> <span class='kw'>&lt;-</span> <span class='fu'>get_sig_similarity</span>(<span class='no'>sig2</span>, <span class='kw'>sig_db</span> <span class='kw'>=</span> <span class='st'>"SBS"</span>)</div><div class='output co'>#&gt; <span class='message'>-Comparing against COSMIC signatures</span></div><div class='output co'>#&gt; <span class='message'>------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>--Found Sig1 most similar to SBS28</span></div><div class='output co'>#&gt; <span class='message'>   Aetiology: Unknown [similarity: 0.383]</span></div><div class='output co'>#&gt; <span class='message'>--Found Sig2 most similar to SBS1</span></div><div class='output co'>#&gt; <span class='message'>   Aetiology: spontaneous or enzymatic deamination of 5-methylcytosine [similarity: 0.868]</span></div><div class='output co'>#&gt; <span class='message'>--Found Sig3 most similar to SBS10b</span></div><div class='output co'>#&gt; <span class='message'>   Aetiology: Polymerase epsilon exonuclease domain mutations [similarity: 0.865]</span></div><div class='output co'>#&gt; <span class='message'>------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>Return result invisiblely.</span></div><div class='input'><span class='no'>s3</span></div><div class='output co'>#&gt; $similarity
+#&gt;       SBS1  SBS2  SBS3  SBS4  SBS5  SBS6 SBS7a SBS7b SBS7c SBS7d  SBS8  SBS9
+#&gt; Sig1 0.001 0.000 0.198 0.062 0.117 0.003 0.001 0.004 0.070 0.011 0.094 0.350
+#&gt; Sig2 0.868 0.141 0.340 0.219 0.492 0.836 0.220 0.281 0.095 0.111 0.219 0.209
+#&gt; Sig3 0.218 0.067 0.090 0.042 0.208 0.232 0.159 0.158 0.011 0.016 0.043 0.079
+#&gt;      SBS10a SBS10b SBS11 SBS12 SBS13 SBS14 SBS15 SBS16 SBS17a SBS17b SBS18
+#&gt; Sig1  0.011  0.070 0.001 0.011 0.007 0.004 0.010 0.046  0.011  0.373 0.043
+#&gt; Sig2  0.096  0.080 0.316 0.154 0.048 0.187 0.674 0.176  0.061  0.008 0.273
+#&gt; Sig3  0.019  0.865 0.014 0.075 0.021 0.033 0.118 0.033  0.040  0.005 0.096
+#&gt;      SBS19 SBS20 SBS21 SBS22 SBS23 SBS24 SBS25 SBS26 SBS27 SBS28 SBS29 SBS30
+#&gt; Sig1 0.013 0.015 0.004 0.021 0.001 0.133 0.107 0.030 0.004 0.383 0.054 0.013
+#&gt; Sig2 0.317 0.255 0.103 0.054 0.355 0.260 0.393 0.178 0.081 0.023 0.282 0.389
+#&gt; Sig3 0.055 0.061 0.043 0.034 0.046 0.069 0.159 0.099 0.031 0.011 0.100 0.090
+#&gt;      SBS31 SBS32 SBS33 SBS34 SBS35 SBS36 SBS37 SBS38 SBS39 SBS40 SBS41 SBS42
+#&gt; Sig1 0.028 0.016 0.006 0.007 0.061 0.014 0.112 0.014 0.249 0.201 0.232 0.031
+#&gt; Sig2 0.304 0.429 0.108 0.049 0.228 0.171 0.199 0.115 0.260 0.347 0.192 0.338
+#&gt; Sig3 0.053 0.067 0.036 0.008 0.023 0.065 0.073 0.015 0.075 0.101 0.056 0.049
+#&gt;      SBS43 SBS44 SBS45 SBS46 SBS47 SBS48 SBS49 SBS50 SBS51 SBS52 SBS53 SBS54
+#&gt; Sig1 0.051 0.020 0.007 0.012 0.024 0.001 0.005 0.014 0.027 0.008 0.065 0.014
+#&gt; Sig2 0.059 0.417 0.127 0.219 0.100 0.027 0.068 0.237 0.184 0.051 0.135 0.170
+#&gt; Sig3 0.030 0.132 0.024 0.128 0.027 0.017 0.007 0.035 0.068 0.099 0.042 0.106
+#&gt;      SBS55 SBS56 SBS57 SBS58 SBS59 SBS60 SBS84 SBS85
+#&gt; Sig1 0.054 0.029 0.186 0.051 0.026 0.025 0.032 0.057
+#&gt; Sig2 0.076 0.098 0.237 0.265 0.056 0.031 0.297 0.114
+#&gt; Sig3 0.026 0.049 0.042 0.034 0.003 0.006 0.080 0.027
+#&gt; 
+#&gt; $aetiology_db
+#&gt; $aetiology_db[[1]]
+#&gt;  [1] "spontaneous or enzymatic deamination of 5-methylcytosine"                           
+#&gt;  [2] "APOBEC Cytidine Deaminase (C&gt;T)"                                                    
+#&gt;  [3] "Defects in DNA-DSB repair by HR"                                                    
+#&gt;  [4] "exposure to tobacco (smoking) mutagens"                                             
+#&gt;  [5] "Unknown"                                                                            
+#&gt;  [6] "defective DNA mismatch repair"                                                      
+#&gt;  [7] "UV exposure"                                                                        
+#&gt;  [8] "UV exposure"                                                                        
+#&gt;  [9] "UV exposure"                                                                        
+#&gt; [10] "UV exposure"                                                                        
+#&gt; [11] "Unknown"                                                                            
+#&gt; [12] "defects in polymerase-eta"                                                          
+#&gt; [13] "Polymerase epsilon exonuclease domain mutations"                                    
+#&gt; [14] "Polymerase epsilon exonuclease domain mutations"                                    
+#&gt; [15] "exposure to alkylating agents"                                                      
+#&gt; [16] "Unknown"                                                                            
+#&gt; [17] "APOBEC Cytidine Deaminase (C&gt;G)"                                                    
+#&gt; [18] "Concurrent polymerase epsilon mutation and defective DNA mismatch repair"           
+#&gt; [19] "Defective DNA mismatch repair"                                                      
+#&gt; [20] "Unknown"                                                                            
+#&gt; [21] "Unknown"                                                                            
+#&gt; [22] "Unknown"                                                                            
+#&gt; [23] "Possibly damage by reactive oxygen species"                                         
+#&gt; [24] "Unknown"                                                                            
+#&gt; [25] "Concurrent POLD1 mutations and defective DNA mismatch repair"                       
+#&gt; [26] "DNA mismatch repair deficiency"                                                     
+#&gt; [27] "exposure to aristolochic acid"                                                      
+#&gt; [28] "Unknown"                                                                            
+#&gt; [29] "exposures to aflatoxin"                                                             
+#&gt; [30] "Possible exposure to chemotherapy"                                                  
+#&gt; [31] "Defective DNA mismatch repair"                                                      
+#&gt; [32] "Unknown"                                                                            
+#&gt; [33] "exposure to tobacco (chewing) mutagens"                                             
+#&gt; [34] "deficiency in base excision repair due to inactivating mutations in NTHL1"          
+#&gt; [35] "Prior chemotherapy treatment with platinum drugs"                                   
+#&gt; [36] "Prior treatment with azathioprine to induce immunosuppression"                      
+#&gt; [37] "Unknown"                                                                            
+#&gt; [38] "Unknown"                                                                            
+#&gt; [39] "Prior chemotherapy treatment with platinum drugs."                                  
+#&gt; [40] "Defective base excision repair due to biallelic germline or somatic MUTYH mutations"
+#&gt; [41] "Unknown"                                                                            
+#&gt; [42] "Potential indirect damage from UV-light"                                            
+#&gt; [43] "Unknown"                                                                            
+#&gt; [44] "Unknown"                                                                            
+#&gt; [45] "Unknown"                                                                            
+#&gt; [46] "Occupational exposure to haloalkanes"                                               
+#&gt; [47] "Defective DNA mismatch repair"                                                      
+#&gt; [48] "Activity of activation-induced cytidine deaminase (AID)"                            
+#&gt; [49] "Indirect effects of activation-induced cytidine deaminase (AID)"                    
+#&gt; [50] "Possible sequencing artefact."                                                      
+#&gt; [51] "Possible sequencing artefact"                                                       
+#&gt; [52] "Possible sequencing artefact"                                                       
+#&gt; [53] "Possible sequencing artefact"                                                       
+#&gt; [54] "Possible sequencing artefact"                                                       
+#&gt; [55] "Possible sequencing artefact"                                                       
+#&gt; [56] "Possible sequencing artefact"                                                       
+#&gt; [57] "Possible sequencing artefact"                                                       
+#&gt; [58] "Possible sequencing artefact"                                                       
+#&gt; [59] "Possible sequencing artefact"                                                       
+#&gt; [60] "Possible sequencing artefact"                                                       
+#&gt; [61] "Possible sequencing artefact"                                                       
+#&gt; [62] "Possible sequencing artefact"                                                       
+#&gt; [63] "Possible sequencing artefact"                                                       
+#&gt; [64] "Possible sequencing artefact"                                                       
+#&gt; [65] "Possible sequencing artefact"                                                       
+#&gt; [66] "Possible sequencing artefact"                                                       
+#&gt; [67] "Possible sequencing artefact"                                                       
+#&gt; 
+#&gt; 
+#&gt; $best_match
+#&gt; $best_match$Sig1
+#&gt; $best_match$Sig1$aetiology
+#&gt; [1] "Unknown"
+#&gt; 
+#&gt; $best_match$Sig1$best_match
+#&gt; [1] "Best match: SBS28 [similarity: 0.383]"
+#&gt; 
+#&gt; 
+#&gt; $best_match$Sig2
+#&gt; $best_match$Sig2$aetiology
+#&gt; [1] "spontaneous or enzymatic deamination of 5-methylcytosine"
+#&gt; 
+#&gt; $best_match$Sig2$best_match
+#&gt; [1] "Best match: SBS1 [similarity: 0.868]"
+#&gt; 
+#&gt; 
+#&gt; $best_match$Sig3
+#&gt; $best_match$Sig3$aetiology
+#&gt; [1] "Polymerase epsilon exonuclease domain mutations"
+#&gt; 
+#&gt; $best_match$Sig3$best_match
+#&gt; [1] "Best match: SBS10b [similarity: 0.865]"
+#&gt; 
+#&gt; 
+#&gt; 
+#&gt; attr(,"class")
+#&gt; [1] "similarity" "list"      </div><div class='input'>
 <span class='co'>## Remove some components</span>
 <span class='co'>## in similarity calculation</span>
-<span class='fu'>get_sig_similarity</span>(<span class='no'>sig2</span>,
+<span class='no'>s4</span> <span class='kw'>&lt;-</span> <span class='fu'>get_sig_similarity</span>(<span class='no'>sig2</span>,
   <span class='kw'>Ref</span> <span class='kw'>=</span> <span class='no'>sig2</span>,
   <span class='kw'>pattern_to_rm</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"T[T&gt;G]C"</span>, <span class='st'>"T[T&gt;G]G"</span>, <span class='st'>"T[T&gt;G]T"</span>)
-)</div><div class='output co'>#&gt; <span class='message'>-Comparing against Custom signatures</span></div><div class='output co'>#&gt; <span class='message'>------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>--Found Sig1 most similar to Sig1 [similarity: 1]</span></div><div class='output co'>#&gt; <span class='message'>--Found Sig2 most similar to Sig2 [similarity: 1]</span></div><div class='output co'>#&gt; <span class='message'>--Found Sig3 most similar to Sig3 [similarity: 1]</span></div><div class='output co'>#&gt; <span class='message'>------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>Return result invisiblely.</span></div></pre>
+)</div><div class='output co'>#&gt; <span class='message'>-Comparing against Custom signatures</span></div><div class='output co'>#&gt; <span class='message'>------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>--Found Sig1 most similar to Sig1 [similarity: 1]</span></div><div class='output co'>#&gt; <span class='message'>--Found Sig2 most similar to Sig2 [similarity: 1]</span></div><div class='output co'>#&gt; <span class='message'>--Found Sig3 most similar to Sig3 [similarity: 1]</span></div><div class='output co'>#&gt; <span class='message'>------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>Return result invisiblely.</span></div><div class='input'><span class='no'>s4</span></div><div class='output co'>#&gt; $similarity
+#&gt;      Sig1 Sig2 Sig3
+#&gt; Sig1    1    0    0
+#&gt; Sig2    0    1    0
+#&gt; Sig3    0    0    1
+#&gt; 
+#&gt; $aetiology_db
+#&gt; [1] NA
+#&gt; 
+#&gt; $best_match
+#&gt; $best_match$Sig1
+#&gt; $best_match$Sig1$aetiology
+#&gt; [1] NA
+#&gt; 
+#&gt; $best_match$Sig1$best_match
+#&gt; [1] "Best match: Sig1 [similarity: 1]"
+#&gt; 
+#&gt; 
+#&gt; $best_match$Sig2
+#&gt; $best_match$Sig2$aetiology
+#&gt; [1] NA
+#&gt; 
+#&gt; $best_match$Sig2$best_match
+#&gt; [1] "Best match: Sig2 [similarity: 1]"
+#&gt; 
+#&gt; 
+#&gt; $best_match$Sig3
+#&gt; $best_match$Sig3$aetiology
+#&gt; [1] NA
+#&gt; 
+#&gt; $best_match$Sig3$best_match
+#&gt; [1] "Best match: Sig3 [similarity: 1]"
+#&gt; 
+#&gt; 
+#&gt; 
+#&gt; attr(,"class")
+#&gt; [1] "similarity" "list"      </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

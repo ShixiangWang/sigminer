@@ -186,7 +186,7 @@ according to <code>y</code> and <code>y_end</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>other parameters passing to <a href='https://ggplot2.tidyverse.org/reference/annotate.html'>ggplot2::annotate</a>.</p></td>
+      <td><p>other parameters passing to <a href='https://rdrr.io/pkg/ggplot2/man/annotate.html'>ggplot2::annotate</a>.</p></td>
     </tr>
     </table>
 
@@ -203,20 +203,23 @@ according to <code>y</code> and <code>y_end</code>.</p></td>
 <span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='show_sig_profile.html'>show_sig_profile</a></span>(<span class='no'>sig2</span>, <span class='kw'>mode</span> <span class='kw'>=</span> <span class='st'>"SBS"</span>)
 
 <span class='co'># Method 1</span>
-<span class='fu'>add_labels</span>(<span class='no'>p</span>,
+<span class='no'>p1</span> <span class='kw'>&lt;-</span> <span class='fu'>add_labels</span>(<span class='no'>p</span>,
   <span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>0.75</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='fl'>0.3</span>, <span class='kw'>y_end</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>n_label</span> <span class='kw'>=</span> <span class='fl'>3</span>,
   <span class='kw'>labels</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"text"</span>, <span class='fl'>1</span>:<span class='fl'>3</span>)
-)</div><div class='img'><img src='add_labels-1.png' alt='' width='700' height='433' /></div><div class='input'>
+)
+<span class='no'>p1</span></div><div class='img'><img src='add_labels-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Method 2</span>
-<span class='fu'>add_labels</span>(<span class='no'>p</span>,
+<span class='no'>p2</span> <span class='kw'>&lt;-</span> <span class='fu'>add_labels</span>(<span class='no'>p</span>,
   <span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.15</span>, <span class='fl'>0.6</span>, <span class='fl'>0.75</span>), <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.3</span>, <span class='fl'>0.6</span>, <span class='fl'>0.9</span>),
   <span class='kw'>labels</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"text"</span>, <span class='fl'>1</span>:<span class='fl'>3</span>)
-)</div><div class='img'><img src='add_labels-2.png' alt='' width='700' height='433' /></div><div class='input'>
+)
+<span class='no'>p2</span></div><div class='img'><img src='add_labels-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Method 3</span>
-<span class='no'>sim</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_sig_similarity.html'>get_sig_similarity</a></span>(<span class='no'>sig2</span>)</div><div class='output co'>#&gt; <span class='message'>-Comparing against COSMIC signatures</span></div><div class='output co'>#&gt; <span class='message'>------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>--Found Sig1 most similar to COSMIC_28</span></div><div class='output co'>#&gt; <span class='message'>   Aetiology: Unknown [similarity: 0.393]</span></div><div class='output co'>#&gt; <span class='message'>--Found Sig2 most similar to COSMIC_1</span></div><div class='output co'>#&gt; <span class='message'>   Aetiology: spontaneous deamination of 5-methylcytosine [similarity: 0.913]</span></div><div class='output co'>#&gt; <span class='message'>--Found Sig3 most similar to COSMIC_10</span></div><div class='output co'>#&gt; <span class='message'>   Aetiology: defects in polymerase POLE [similarity: 0.531]</span></div><div class='output co'>#&gt; <span class='message'>------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>Return result invisiblely.</span></div><div class='input'><span class='fu'>add_labels</span>(<span class='no'>p</span>,
+<span class='no'>sim</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_sig_similarity.html'>get_sig_similarity</a></span>(<span class='no'>sig2</span>)</div><div class='output co'>#&gt; <span class='message'>-Comparing against COSMIC signatures</span></div><div class='output co'>#&gt; <span class='message'>------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>--Found Sig1 most similar to COSMIC_28</span></div><div class='output co'>#&gt; <span class='message'>   Aetiology: Unknown [similarity: 0.393]</span></div><div class='output co'>#&gt; <span class='message'>--Found Sig2 most similar to COSMIC_1</span></div><div class='output co'>#&gt; <span class='message'>   Aetiology: spontaneous deamination of 5-methylcytosine [similarity: 0.913]</span></div><div class='output co'>#&gt; <span class='message'>--Found Sig3 most similar to COSMIC_10</span></div><div class='output co'>#&gt; <span class='message'>   Aetiology: defects in polymerase POLE [similarity: 0.531]</span></div><div class='output co'>#&gt; <span class='message'>------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>Return result invisiblely.</span></div><div class='input'><span class='no'>p3</span> <span class='kw'>&lt;-</span> <span class='fu'>add_labels</span>(<span class='no'>p</span>,
   <span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.15</span>, <span class='fl'>0.6</span>, <span class='fl'>0.75</span>), <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.3</span>, <span class='fl'>0.6</span>, <span class='fl'>0.9</span>),
   <span class='kw'>labels</span> <span class='kw'>=</span> <span class='no'>sim</span>, <span class='kw'>font_size</span> <span class='kw'>=</span> <span class='fl'>2</span>
-)</div><div class='img'><img src='add_labels-3.png' alt='' width='700' height='433' /></div></pre>
+)
+<span class='no'>p3</span></div><div class='img'><img src='add_labels-3.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

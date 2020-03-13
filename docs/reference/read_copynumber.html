@@ -214,7 +214,7 @@ with normal copy 2 and force <code>use_all</code> to <code>FALSE</code> (no matt
     </tr>
     <tr>
       <th>...</th>
-      <td><p>other parameters pass to <code><a href='https://Rdatatable.gitlab.io/data.table/reference/fread.html'>data.table::fread()</a></code></p></td>
+      <td><p>other parameters pass to <code><a href='https://rdrr.io/pkg/data.table/man/fread.html'>data.table::fread()</a></code></p></td>
     </tr>
     </table>
 
@@ -234,11 +234,35 @@ with normal copy 2 and force <code>use_all</code> to <code>FALSE</code> (no matt
   <span class='kw'>seg_cols</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"chromosome"</span>, <span class='st'>"start"</span>, <span class='st'>"end"</span>, <span class='st'>"segVal"</span>),
   <span class='kw'>genome_build</span> <span class='kw'>=</span> <span class='st'>"hg19"</span>, <span class='kw'>complement</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 )</div><div class='output co'>#&gt; <span class='message'>Treating input as a data frame...</span></div><div class='output co'>#&gt; <span class='message'>Checking chromosome names...</span></div><div class='output co'>#&gt; <span class='message'>Segments info:</span></div><div class='output co'>#&gt; <span class='message'>    Keep - 467</span></div><div class='output co'>#&gt; <span class='message'>  Filter - 0</span></div><div class='output co'>#&gt; <span class='message'>Joining adjacent segments with same copy number value...</span></div><div class='output co'>#&gt; <span class='message'>Anotating...</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Summarizing per sample...</span></div><div class='output co'>#&gt; <span class='message'>Done!</span></div><div class='input'>
+#&gt; <span class='message'>Summarizing per sample...</span></div><div class='output co'>#&gt; <span class='message'>Done!</span></div><div class='input'><span class='no'>cn</span></div><div class='output co'>#&gt; An object of class CopyNumber 
+#&gt; =============================
+#&gt;                           sample n_of_seg n_of_cnv n_of_amp n_of_del n_of_vchr
+#&gt;  1: TCGA-DF-A2KN-01A-11D-A17U-01       33        6        5        1         4
+#&gt;  2: TCGA-19-2621-01B-01D-0911-01       33        8        5        3         5
+#&gt;  3: TCGA-B6-A0X5-01A-21D-A107-01       28        8        4        4         2
+#&gt;  4: TCGA-A8-A07S-01A-11D-A036-01       38       11        2        9         4
+#&gt;  5: TCGA-26-6174-01A-21D-1842-01       43       13        8        5         8
+#&gt;  6: TCGA-CV-7432-01A-11D-2128-01       40       16        7        9         9
+#&gt;  7: TCGA-06-0644-01A-02D-0310-01       46       19        5       14         8
+#&gt;  8: TCGA-A5-A0G2-01A-11D-A042-01       39       21        5       16        10
+#&gt;  9: TCGA-99-7458-01A-11D-2035-01       48       26       10       16        13
+#&gt; 10: TCGA-05-4417-01A-22D-1854-01       52       37       33        4        17
+#&gt;     cna_burden
+#&gt;  1:      0.000
+#&gt;  2:      0.099
+#&gt;  3:      0.087
+#&gt;  4:      0.112
+#&gt;  5:      0.119
+#&gt;  6:      0.198
+#&gt;  7:      0.165
+#&gt;  8:      0.393
+#&gt;  9:      0.318
+#&gt; 10:      0.654</div><div class='input'>
 <span class='no'>tab_file</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"metastatic_tumor.segtab.txt"</span>,
   <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 )
-<span class='fu'>read_copynumber</span>(<span class='no'>tab_file</span>)</div><div class='output co'>#&gt; An object of class CopyNumber 
+<span class='no'>cn2</span> <span class='kw'>&lt;-</span> <span class='fu'>read_copynumber</span>(<span class='no'>tab_file</span>)
+<span class='no'>cn2</span></div><div class='output co'>#&gt; An object of class CopyNumber 
 #&gt; =============================
 #&gt;              sample n_of_seg n_of_cnv n_of_amp n_of_del n_of_vchr cna_burden
 #&gt; 1: metastatic_tumor      180      110       92       18        21      0.361</div></pre>

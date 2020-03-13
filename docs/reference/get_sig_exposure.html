@@ -165,7 +165,8 @@ to make sum as 1 accordingly.</p></td>
   <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 ))
 <span class='co'># Get signature exposure</span>
-<span class='fu'>get_sig_exposure</span>(<span class='no'>sig2</span>)</div><div class='output co'>#&gt;            sample      Sig1      Sig2      Sig3
+<span class='no'>expo1</span> <span class='kw'>&lt;-</span> <span class='fu'>get_sig_exposure</span>(<span class='no'>sig2</span>)
+<span class='no'>expo1</span></div><div class='output co'>#&gt;            sample      Sig1      Sig2      Sig3
 #&gt;   1: TCGA-AB-2802 0.0000000  7.602352 1.2566069
 #&gt;   2: TCGA-AB-2803 0.0000000 12.007936 0.7412961
 #&gt;   3: TCGA-AB-2804 0.0000000  4.838900 0.0000000
@@ -176,7 +177,7 @@ to make sum as 1 accordingly.</p></td>
 #&gt; 185: TCGA-AB-3008 0.2000784  2.940509 0.0000000
 #&gt; 186: TCGA-AB-3009 0.0000000 25.388449 2.4198934
 #&gt; 187: TCGA-AB-3011 0.0000000  4.838900 0.0000000
-#&gt; 188: TCGA-AB-3012 0.0000000  5.770868 0.0000000</div><div class='input'><span class='fu'>get_sig_exposure</span>(<span class='no'>sig2</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"relative"</span>)</div><div class='output co'>#&gt; <span class='message'>Filtering the samples with no signature exposure:</span></div><div class='output co'>#&gt; <span class='message'>TCGA-AB-2834 TCGA-AB-2883</span></div><div class='output co'>#&gt;            sample       Sig1      Sig2       Sig3
+#&gt; 188: TCGA-AB-3012 0.0000000  5.770868 0.0000000</div><div class='input'><span class='no'>expo2</span> <span class='kw'>&lt;-</span> <span class='fu'>get_sig_exposure</span>(<span class='no'>sig2</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"relative"</span>)</div><div class='output co'>#&gt; <span class='message'>Filtering the samples with no signature exposure:</span></div><div class='output co'>#&gt; <span class='message'>TCGA-AB-2834 TCGA-AB-2883</span></div><div class='input'><span class='no'>expo2</span></div><div class='output co'>#&gt;            sample       Sig1      Sig2       Sig3
 #&gt;   1: TCGA-AB-2802 0.00000000 0.8581541 0.14184589
 #&gt;   2: TCGA-AB-2803 0.00000000 0.9418556 0.05814437
 #&gt;   3: TCGA-AB-2804 0.00000000 1.0000000 0.00000000
