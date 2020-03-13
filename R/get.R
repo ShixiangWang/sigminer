@@ -517,7 +517,7 @@ get_cnsummary_sample <- function(segTab, genome_build = c("hg19", "hg38"),
     total_size <- sum(chrlen[["size"]])
 
     seg_summary <- segTab %>%
-      dtplyr::lazy_dt() %>%
+      dplyr::as_tibble() %>%
       dplyr::group_by(sample) %>%
       dplyr::summarise(
         n_of_seg = sum(!is.na(segVal)),
@@ -534,7 +534,7 @@ get_cnsummary_sample <- function(segTab, genome_build = c("hg19", "hg38"),
       data.table::as.data.table()
   } else {
     seg_summary <- segTab %>%
-      dtplyr::lazy_dt() %>%
+      dplyr::as_tibble() %>%
       dplyr::group_by(sample) %>%
       dplyr::summarise(
         n_of_seg = sum(!is.na(segVal)),
