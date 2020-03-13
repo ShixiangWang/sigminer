@@ -90,6 +90,9 @@
   </a>
 </li>
 <li>
+  <a href="../articles/sigminer.html">Get started</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li>
@@ -201,13 +204,12 @@ extracting signatures using automatic relevance determination technique.</p></di
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
-<span class='co'># Load copy number prepare object</span>
-<span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_prepare.RData"</span>,
+<span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_tally_M.RData"</span>,
   <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 ))
 <span class='co'># Extract copy number signatures</span>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>NMF</span>)
-<span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>sig_extract</span>(<span class='no'>cn_prepare</span>$<span class='no'>nmf_matrix</span>, <span class='fl'>2</span>, <span class='kw'>nrun</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+<span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>sig_extract</span>(<span class='no'>cn_tally_M</span>$<span class='no'>nmf_matrix</span>, <span class='fl'>2</span>, <span class='kw'>nrun</span> <span class='kw'>=</span> <span class='fl'>1</span>)
 <span class='co'># }</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

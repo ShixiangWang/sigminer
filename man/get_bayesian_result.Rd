@@ -18,10 +18,11 @@ This function is designed for this purpose.
 }
 \examples{
 # Load copy number prepare object
-load(system.file("extdata", "toy_copynumber_prepare.RData",
+load(system.file("extdata", "toy_copynumber_tally_W.RData",
   package = "sigminer", mustWork = TRUE
 ))
-res <- sig_auto_extract(cn_prepare$nmf_matrix, result_prefix = "Test_copynumber", nrun = 1)
+
+res <- sig_auto_extract(cn_tally_W$nmf_matrix, result_prefix = "Test_copynumber", nrun = 1)
 
 # All run info are stored in res$Raw$summary_run
 # Obtain result of run 1

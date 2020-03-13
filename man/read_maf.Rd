@@ -47,28 +47,15 @@ read_maf(
 
 \item{verbose}{TRUE logical. Default to be talkative and prints summary.}
 }
-\value{
-An object of class MAF.
-}
 \description{
-Takes tab delimited MAF (can be plain text or gz compressed) file as an input and summarizes it in various ways. Also creates oncomatrix - helpful for visualization.
-}
-\details{
-This function takes MAF file as input and summarizes them. If copy number data is available, e.g from GISTIC, it can be provided too via arguments gisticAllLesionsFile, gisticAmpGenesFile,
-and gisticDelGenesFile. Copy number data can also be provided as a custom table containing Gene name, Sample name and Copy Number status.
-
-Note that if input MAF file contains multiple affected transcripts of a variant, this function by default removes them as duplicates, while keeping single unique entry per variant per sample.
-If you wish to keep all of them, set removeDuplicatedVariants to FALSE.
-
-FLAGS - If you get a note on possible FLAGS while reading MAF, it means some of the top mutated genes are fishy. These genes are often non-pathogenic and passengers, but are frequently mutated in most of the public exome studies. Examples of such genes include TTN, MUC16, etc.
-This note can be ignored without any harm, it's only generated as to make user aware of such genes. See references for details on FLAGS.
+This function is a wrapper of \link[maftools:read.maf]{maftools::read.maf}.
+Currently, only mutation records used in signature identification and
+analysis.
+You can also use \link[maftools:read.maf]{maftools::read.maf} to read the data.
 }
 \examples{
-laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
+laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools", mustWork = TRUE)
 laml <- read_maf(maf = laml.maf)
-}
-\references{
-Shyr C, Tarailo-Graovac M, Gottlieb M, Lee JJ, van Karnebeek C, Wasserman WW. FLAGS, frequently mutated genes in public exomes. BMC Med Genomics 2014; 7: 64.
 }
 \seealso{
 \link{read_copynumber} for reading copy number data to \link{CopyNumber} object.

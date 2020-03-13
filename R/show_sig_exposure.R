@@ -30,7 +30,7 @@
 #' show_sig_exposure(sig2)
 #'
 #' # Load copy number signature
-#' load(system.file("extdata", "toy_copynumber_signature.RData",
+#' load(system.file("extdata", "toy_copynumber_signature_by_M.RData",
 #'   package = "sigminer", mustWork = TRUE
 #' ))
 #' # Show signature exposure

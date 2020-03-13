@@ -1,9 +1,15 @@
 # Read MAF data -----------------------------------------------------------
 
 #' @title Read MAF Files
-#' @inherit maftools::read.maf
+#'
+#' @description This function is a wrapper of [maftools::read.maf].
+#' Currently, only mutation records used in signature identification and
+#' analysis.
+#' You can also use [maftools::read.maf] to read the data.
+#'
+#' @inheritParams maftools::read.maf
 #' @examples
-#' laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
+#' laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools", mustWork = TRUE)
 #' laml <- read_maf(maf = laml.maf)
 #' @export
 #' @seealso [read_copynumber] for reading copy number data to [CopyNumber] object.

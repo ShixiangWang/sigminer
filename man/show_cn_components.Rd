@@ -56,12 +56,16 @@ Show mixture fit model components ("Macintyre" ("M") method) or
 standard classified components ("Wang" ("W") method) for copy number data.
 }
 \examples{
-# Load copy number prepare object
-load(system.file("extdata", "toy_copynumber_prepare.RData",
+load(system.file("extdata", "toy_copynumber_tally_M.RData",
   package = "sigminer", mustWork = TRUE
 ))
-show_cn_components(cn_prepare$parameters)
-show_cn_components(cn_prepare$parameters, show_weights = FALSE)
+show_cn_components(cn_tally_M$parameters)
+show_cn_components(cn_tally_M$parameters, show_weights = FALSE)
+
+load(system.file("extdata", "toy_copynumber_tally_W.RData",
+  package = "sigminer", mustWork = TRUE
+))
+show_cn_components(cn_tally_W$parameters, method = "W")
 }
 \author{
 Shixiang Wang \href{mailto:w_shixiang@163.com}{w_shixiang@163.com}

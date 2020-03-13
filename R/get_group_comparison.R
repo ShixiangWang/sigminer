@@ -23,36 +23,32 @@
 #' @export
 #' @examples
 #' \donttest{
-#' # Load copy number prepare object
-#' load(system.file("extdata", "toy_copynumber_prepare.RData",
+#' load(system.file("extdata", "toy_copynumber_signature_by_M.RData",
 #'   package = "sigminer", mustWork = TRUE
 #' ))
-#' # Extract copy number signatures
-#' library(NMF)
-#' sig <- sig_extract(cn_prepare$nmf_matrix, 2, nrun = 10)
 #'
 #' # Assign samples to clusters
-#' groups <- get_groups(sig, method = "samples")
+#' groups <- get_groups(sig, method = "k-means")
 #'
 #' set.seed(1234)
-#' # Add custom groups
+#'
+#' groups$prob <- rnorm(10)
 #' groups$new_group <- sample(c("1", "2", "3", "4", NA), size = nrow(groups), replace = TRUE)
 #'
 #' # Compare groups (filter NAs for categorical coloumns)
 #' groups.cmp <- get_group_comparison(groups[, -1],
 #'   col_group = "group",
-#'   cols_to_compare = colnames(groups[, -1])[c(-1, -2)],
+#'   cols_to_compare = c("prob", "new_group"),
 #'   type = c("co", "ca"), verbose = TRUE
 #' )
 #'
 #' # Compare groups (Set NAs of categorical columns to 'Rest')
 #' groups.cmp2 <- get_group_comparison(groups[, -1],
 #'   col_group = "group",
-#'   cols_to_compare = colnames(groups[, -1])[c(-1, -2)],
+#'   cols_to_compare = c("prob", "new_group"),
 #'   type = c("co", "ca"), NAs = "Rest", verbose = TRUE
 #' )
 #' }
-#'
 get_group_comparison <- function(data, col_group, cols_to_compare,
                                  type = "ca", NAs = NA, verbose = FALSE) {
   if (!all(type %in% c("ca", "co"))) {

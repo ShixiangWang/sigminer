@@ -96,6 +96,9 @@ Users can also set custom measures to show." />
   </a>
 </li>
 <li>
+  <a href="../articles/sigminer.html">Get started</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li>
@@ -198,57 +201,38 @@ one measure.</p></td>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
 <span class='co'># Load copy number prepare object</span>
-<span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_prepare.RData"</span>,
+<span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_tally_W.RData"</span>,
   <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 ))
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>NMF</span>)
-<span class='no'>cn_estimate</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sig_estimate.html'>sig_estimate</a></span>(<span class='no'>cn_prepare</span>$<span class='no'>nmf_matrix</span>,
+<span class='no'>cn_estimate</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sig_estimate.html'>sig_estimate</a></span>(<span class='no'>cn_tally_W</span>$<span class='no'>nmf_matrix</span>,
   <span class='kw'>cores</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>nrun</span> <span class='kw'>=</span> <span class='fl'>5</span>,
   <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)</div><div class='output co'>#&gt; Compute NMF rank= 2  ... + measures ... OK
-#&gt; Compute NMF rank= 3  ... + measures ... OK
-#&gt; Compute NMF rank= 4  ... + measures ... OK
-#&gt; Compute NMF rank= 5  ... + measures ... OK</div><div class='output co'>#&gt; <span class='message'>Estimation of rank based on observed data.</span></div><div class='output co'>#&gt;   method   seed rng metric rank sparseness.basis sparseness.coef       rss
-#&gt; 2 brunet random   2     KL    2        0.7839578       0.4736241 1126.9257
-#&gt; 3 brunet random   3     KL    3        0.7897303       0.3731868  718.3352
-#&gt; 4 brunet random   2     KL    4        0.7844243       0.4085115  577.7867
-#&gt; 5 brunet random   1     KL    5        0.7514582       0.4274734  358.1283
-#&gt;        evar silhouette.coef silhouette.basis residuals niter   cpu cpu.all nrun
-#&gt; 2 0.9985760       1.0000000        1.0000000  41.95157   760 0.046   2.252    5
-#&gt; 3 0.9990923       0.5189828        0.5855884  31.80088   510 0.064   2.220    5
-#&gt; 4 0.9992699       0.3301537        0.4784382  23.57932  1300 0.083   2.220    5
-#&gt; 5 0.9995475       0.3075000        0.4856586  16.20087  1130 0.070   2.187    5
-#&gt;   cophenetic dispersion silhouette.consensus
-#&gt; 2  0.9884538     0.7312            0.9550000
-#&gt; 3  0.8949770     0.5520            0.6665284
-#&gt; 4  0.8506596     0.4624            0.4489177
-#&gt; 5  0.9069709     0.5904            0.2640657</div><div class='input'>
+)</div><div class='output co'>#&gt; Compute NMF rank= 2  ... </div><div class='output co'>#&gt; <span class='message'>Timing stopped at: 2.54 0.02 2.63</span></div><div class='output co'>#&gt; <span class='message'>ERROR</span></div><div class='output co'>#&gt; Compute NMF rank= 3  ... </div><div class='output co'>#&gt; <span class='message'>Timing stopped at: 2.42 0.02 2.46</span></div><div class='output co'>#&gt; <span class='message'>ERROR</span></div><div class='output co'>#&gt; Compute NMF rank= 4  ... </div><div class='output co'>#&gt; <span class='message'>Timing stopped at: 2.59 0 2.66</span></div><div class='output co'>#&gt; <span class='message'>ERROR</span></div><div class='output co'>#&gt; Compute NMF rank= 5  ... </div><div class='output co'>#&gt; <span class='message'>Timing stopped at: 2.25 0 2.26</span></div><div class='output co'>#&gt; <span class='message'>ERROR</span></div><div class='output co'>#&gt; <span class='error'>Error in (function (...) {    measures &lt;- list(...)    err &lt;- which(sapply(measures, is.character))    if (length(err) == length(measures)) {        msg &lt;- paste(paste("#", seq_along(range), " ", measures,             sep = ""), collapse = "\n\t-")        stop("All the runs produced an error:\n\t-", msg)    }    else if (length(err) &gt; 0) {        measures.ok &lt;- sapply(measures[-err], function(x) x)        n &lt;- nrow(measures.ok)        tmp.res &lt;- matrix(as.numeric(NA), n, length(range))        rownames(tmp.res) &lt;- rownames(measures.ok)        tmp.res[, -err] &lt;- measures.ok        tmp.res["rank", err] &lt;- range[err]        msg &lt;- paste(paste("#", err, measures[err], " ", sep = ""),             collapse = "\n\t-")        warning("NAs were produced due to errors in some of the runs:\n\t-",             msg)        tmp.res    }    else sapply(measures, function(x) x)})("[r=2] -&gt; NMF::nmf - 5/5 fit(s) threw an error.\n# Error(s) thrown:\n  - run #1: NMF::nmf - Input matrix x contains at least one null or NA-filled row.",     "[r=3] -&gt; NMF::nmf - 5/5 fit(s) threw an error.\n# Error(s) thrown:\n  - run #1: NMF::nmf - Input matrix x contains at least one null or NA-filled row.",     "[r=4] -&gt; NMF::nmf - 5/5 fit(s) threw an error.\n# Error(s) thrown:\n  - run #1: NMF::nmf - Input matrix x contains at least one null or NA-filled row.",     "[r=5] -&gt; NMF::nmf - 5/5 fit(s) threw an error.\n# Error(s) thrown:\n  - run #1: NMF::nmf - Input matrix x contains at least one null or NA-filled row."): All the runs produced an error:</span>
+#&gt; <span class='error'>	-#1 [r=2] -&gt; NMF::nmf - 5/5 fit(s) threw an error.</span>
+#&gt; <span class='error'># Error(s) thrown:</span>
+#&gt; <span class='error'>  - run #1: NMF::nmf - Input matrix x contains at least one null or NA-filled row.</span>
+#&gt; <span class='error'>	-#2 [r=3] -&gt; NMF::nmf - 5/5 fit(s) threw an error.</span>
+#&gt; <span class='error'># Error(s) thrown:</span>
+#&gt; <span class='error'>  - run #1: NMF::nmf - Input matrix x contains at least one null or NA-filled row.</span>
+#&gt; <span class='error'>	-#3 [r=4] -&gt; NMF::nmf - 5/5 fit(s) threw an error.</span>
+#&gt; <span class='error'># Error(s) thrown:</span>
+#&gt; <span class='error'>  - run #1: NMF::nmf - Input matrix x contains at least one null or NA-filled row.</span>
+#&gt; <span class='error'>	-#4 [r=5] -&gt; NMF::nmf - 5/5 fit(s) threw an error.</span>
+#&gt; <span class='error'># Error(s) thrown:</span>
+#&gt; <span class='error'>  - run #1: NMF::nmf - Input matrix x contains at least one null or NA-filled row.</span></div><div class='input'>
 <span class='co'># Show two measures</span>
-<span class='fu'>show_sig_number_survey</span>(<span class='no'>cn_estimate</span>)</div><div class='img'><img src='show_sig_number_survey-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># Show one measure</span>
-<span class='fu'>show_sig_number_survey</span>(<span class='no'>cn_estimate</span>, <span class='kw'>right_y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</div><div class='img'><img src='show_sig_number_survey-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>show_sig_number_survey</span>(<span class='no'>cn_estimate</span>)</div><div class='output co'>#&gt; <span class='error'>Error: object 'cn_estimate' not found</span></div><div class='input'><span class='co'># Show one measure</span>
+<span class='fu'>show_sig_number_survey</span>(<span class='no'>cn_estimate</span>, <span class='kw'>right_y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</div><div class='output co'>#&gt; <span class='error'>Error: object 'cn_estimate' not found</span></div><div class='input'>
 <span class='co'># Show data from a data.frame</span>
-<span class='fu'>show_sig_number_survey</span>(<span class='no'>cn_estimate</span>$<span class='no'>survey</span>)</div><div class='img'><img src='show_sig_number_survey-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># Show other measures</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>cn_estimate</span>$<span class='no'>survey</span>)</div><div class='output co'>#&gt;   method   seed rng metric rank sparseness.basis sparseness.coef       rss
-#&gt; 2 brunet random   2     KL    2        0.7839578       0.4736241 1126.9257
-#&gt; 3 brunet random   3     KL    3        0.7897303       0.3731868  718.3352
-#&gt; 4 brunet random   2     KL    4        0.7844243       0.4085115  577.7867
-#&gt; 5 brunet random   1     KL    5        0.7514582       0.4274734  358.1283
-#&gt;        evar silhouette.coef silhouette.basis residuals niter   cpu cpu.all nrun
-#&gt; 2 0.9985760       1.0000000        1.0000000  41.95157   760 0.046   2.252    5
-#&gt; 3 0.9990923       0.5189828        0.5855884  31.80088   510 0.064   2.220    5
-#&gt; 4 0.9992699       0.3301537        0.4784382  23.57932  1300 0.083   2.220    5
-#&gt; 5 0.9995475       0.3075000        0.4856586  16.20087  1130 0.070   2.187    5
-#&gt;   cophenetic dispersion silhouette.consensus
-#&gt; 2  0.9884538     0.7312            0.9550000
-#&gt; 3  0.8949770     0.5520            0.6665284
-#&gt; 4  0.8506596     0.4624            0.4489177
-#&gt; 5  0.9069709     0.5904            0.2640657</div><div class='input'><span class='fu'>show_sig_number_survey</span>(<span class='no'>cn_estimate</span>$<span class='no'>survey</span>,
+<span class='fu'>show_sig_number_survey</span>(<span class='no'>cn_estimate</span>$<span class='no'>survey</span>)</div><div class='output co'>#&gt; <span class='error'>Error: object 'cn_estimate' not found</span></div><div class='input'><span class='co'># Show other measures</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>cn_estimate</span>$<span class='no'>survey</span>)</div><div class='output co'>#&gt; <span class='error'>Error in head(cn_estimate$survey): object 'cn_estimate' not found</span></div><div class='input'><span class='fu'>show_sig_number_survey</span>(<span class='no'>cn_estimate</span>$<span class='no'>survey</span>,
   <span class='kw'>right_y</span> <span class='kw'>=</span> <span class='st'>"dispersion"</span>,
   <span class='kw'>right_name</span> <span class='kw'>=</span> <span class='st'>"dispersion"</span>
-)</div><div class='img'><img src='show_sig_number_survey-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>show_sig_number_survey</span>(<span class='no'>cn_estimate</span>$<span class='no'>survey</span>,
+)</div><div class='output co'>#&gt; <span class='error'>Error: object 'cn_estimate' not found</span></div><div class='input'><span class='fu'>show_sig_number_survey</span>(<span class='no'>cn_estimate</span>$<span class='no'>survey</span>,
   <span class='kw'>right_y</span> <span class='kw'>=</span> <span class='st'>"evar"</span>,
   <span class='kw'>right_name</span> <span class='kw'>=</span> <span class='st'>"evar"</span>
-)</div><div class='img'><img src='show_sig_number_survey-5.png' alt='' width='700' height='433' /></div><div class='input'># }
+)</div><div class='output co'>#&gt; <span class='error'>Error: object 'cn_estimate' not found</span></div><div class='input'># }
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

@@ -49,11 +49,11 @@ Users can also set custom measures to show.
 \examples{
 \donttest{
 # Load copy number prepare object
-load(system.file("extdata", "toy_copynumber_prepare.RData",
+load(system.file("extdata", "toy_copynumber_tally_W.RData",
   package = "sigminer", mustWork = TRUE
 ))
 library(NMF)
-cn_estimate <- sig_estimate(cn_prepare$nmf_matrix,
+cn_estimate <- sig_estimate(cn_tally_W$nmf_matrix,
   cores = 1, nrun = 5,
   verbose = TRUE
 )

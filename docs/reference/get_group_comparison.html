@@ -96,6 +96,9 @@ The result of this function can be plotted by show_group_comparison()." />
   </a>
 </li>
 <li>
+  <a href="../articles/sigminer.html">Get started</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li>
@@ -185,34 +188,32 @@ Otherwise a value (either length 1 or length same as <code>cols_to_compare</code
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
-<span class='co'># Load copy number prepare object</span>
-<span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_prepare.RData"</span>,
+<span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_signature_by_M.RData"</span>,
   <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 ))
-<span class='co'># Extract copy number signatures</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>NMF</span>)
-<span class='no'>sig</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sig_extract.html'>sig_extract</a></span>(<span class='no'>cn_prepare</span>$<span class='no'>nmf_matrix</span>, <span class='fl'>2</span>, <span class='kw'>nrun</span> <span class='kw'>=</span> <span class='fl'>10</span>)
 
 <span class='co'># Assign samples to clusters</span>
-<span class='no'>groups</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_groups.html'>get_groups</a></span>(<span class='no'>sig</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"samples"</span>)</div><div class='output co'>#&gt; <span class='message'>=&gt; Obtaining clusters by the contribution of signature to each sample...</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Finding the dominant signature of each group...</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Summarizing...</span></div><div class='output co'>#&gt; <span class='message'>	group #1: 6 samples with Sig2 enriched.</span>
+<span class='no'>groups</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_groups.html'>get_groups</a></span>(<span class='no'>sig</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"k-means"</span>)</div><div class='output co'>#&gt; <span class='message'>=&gt; Running k-means with 2 clusters...</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Generating a table of group and signature contribution (stored in 'map_table' attr):</span></div><div class='output co'>#&gt;          Sig1      Sig2
+#&gt; 1 0.003428449 0.9965716
+#&gt; 2 0.031799383 0.9682006</div><div class='output co'>#&gt; <span class='message'>=&gt; Assigning a group to a signature with the maxium fraction...</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Summarizing...</span></div><div class='output co'>#&gt; <span class='message'>	group #1: 6 samples with Sig2 enriched.</span>
 #&gt; <span class='message'>	group #2: 4 samples with Sig2 enriched.</span></div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>1234</span>)
-<span class='co'># Add custom groups</span>
+
+<span class='no'>groups</span>$<span class='no'>prob</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>10</span>)
 <span class='no'>groups</span>$<span class='no'>new_group</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1"</span>, <span class='st'>"2"</span>, <span class='st'>"3"</span>, <span class='st'>"4"</span>, <span class='fl'>NA</span>), <span class='kw'>size</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>groups</span>), <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='co'># Compare groups (filter NAs for categorical coloumns)</span>
 <span class='no'>groups.cmp</span> <span class='kw'>&lt;-</span> <span class='fu'>get_group_comparison</span>(<span class='no'>groups</span>[, -<span class='fl'>1</span>],
   <span class='kw'>col_group</span> <span class='kw'>=</span> <span class='st'>"group"</span>,
-  <span class='kw'>cols_to_compare</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>groups</span>[, -<span class='fl'>1</span>])[<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>1</span>, -<span class='fl'>2</span>)],
+  <span class='kw'>cols_to_compare</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"prob"</span>, <span class='st'>"new_group"</span>),
   <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"co"</span>, <span class='st'>"ca"</span>), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)</div><div class='output co'>#&gt; <span class='message'>Treat prob as continuous variable.</span></div><div class='output co'>#&gt; <span class='message'>Treat enrich_sig as categorical variable.</span></div><div class='output co'>#&gt; <span class='message'>Treat new_group as continuous variable.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: longer argument not a multiple of length of shorter</span></div><div class='input'>
+)</div><div class='output co'>#&gt; <span class='message'>Treat prob as continuous variable.</span></div><div class='output co'>#&gt; <span class='message'>Treat new_group as categorical variable.</span></div><div class='input'>
 <span class='co'># Compare groups (Set NAs of categorical columns to 'Rest')</span>
 <span class='no'>groups.cmp2</span> <span class='kw'>&lt;-</span> <span class='fu'>get_group_comparison</span>(<span class='no'>groups</span>[, -<span class='fl'>1</span>],
   <span class='kw'>col_group</span> <span class='kw'>=</span> <span class='st'>"group"</span>,
-  <span class='kw'>cols_to_compare</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>groups</span>[, -<span class='fl'>1</span>])[<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>1</span>, -<span class='fl'>2</span>)],
+  <span class='kw'>cols_to_compare</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"prob"</span>, <span class='st'>"new_group"</span>),
   <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"co"</span>, <span class='st'>"ca"</span>), <span class='kw'>NAs</span> <span class='kw'>=</span> <span class='st'>"Rest"</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)</div><div class='output co'>#&gt; <span class='message'>Treat prob as continuous variable.</span></div><div class='output co'>#&gt; <span class='message'>Treat enrich_sig as categorical variable.</span></div><div class='output co'>#&gt; <span class='message'>Treat new_group as continuous variable.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: longer argument not a multiple of length of shorter</span></div><div class='input'># }
-
+)</div><div class='output co'>#&gt; <span class='message'>Treat prob as continuous variable.</span></div><div class='output co'>#&gt; <span class='message'>Treat new_group as categorical variable.</span></div><div class='input'># }
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

@@ -55,12 +55,11 @@ better help users to explore survey of signature number.
 }
 \examples{
 \donttest{
-# Load copy number prepare object
-load(system.file("extdata", "toy_copynumber_prepare.RData",
+load(system.file("extdata", "toy_copynumber_tally_M.RData",
   package = "sigminer", mustWork = TRUE
 ))
 library(NMF)
-cn_estimate <- sig_estimate(cn_prepare$nmf_matrix,
+cn_estimate <- sig_estimate(cn_tally_W$nmf_matrix,
   cores = 1, nrun = 5,
   verbose = TRUE,
   keep_nmfObj = TRUE

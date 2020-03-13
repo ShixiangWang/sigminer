@@ -11,14 +11,13 @@
 #' @export
 #'
 #' @examples
-#' # Load copy number prepare object
-#' load(system.file("extdata", "toy_copynumber_prepare.RData",
+#' load(system.file("extdata", "toy_copynumber_tally_M.RData",
 #'   package = "sigminer", mustWork = TRUE
 #' ))
 #' # Get all parameters
-#' get_tidy_parameter(cn_prepare$components)
+#' get_tidy_parameter(cn_tally_M$components)
 #' # Get parameters for segsize feature
-#' get_tidy_parameter(cn_prepare$components$segsize)
+#' get_tidy_parameter(cn_tally_M$components$segsize)
 get_tidy_parameter <- function(x) {
   if (is.list(x)) {
     purrr::map_df(x, .get_parameter, .id = "feature") %>%

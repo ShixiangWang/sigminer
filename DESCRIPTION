@@ -70,7 +70,8 @@ Suggests:
     pheatmap,
     rmarkdown,
     roxygen2,
-    testthat
+    testthat,
+    roxytest
 VignetteBuilder: 
     knitr
 biocViews:

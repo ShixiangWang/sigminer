@@ -95,6 +95,9 @@ result scores." />
   </a>
 </li>
 <li>
+  <a href="../articles/sigminer.html">Get started</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li>
@@ -196,21 +199,21 @@ where \(N_{OsCN}\) is the number of oscillating copy number pattern "2-1-2" for 
   <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 ))
 
-<span class='fu'>scoring</span>(<span class='no'>cn</span>)</div><div class='output co'>#&gt;                           sample    cnaBurden cnaLoad MACN weightedMACN Ploidy
-#&gt;  1: TCGA-05-4417-01A-22D-1854-01 0.6535735305    5.36 3.85         3.53   3.00
-#&gt;  2: TCGA-06-0644-01A-02D-0310-01 0.1651843925    4.32 1.47         2.10   2.02
-#&gt;  3: TCGA-19-2621-01B-01D-0911-01 0.0991005307    3.91 3.07         1.10   1.91
-#&gt;  4: TCGA-26-6174-01A-21D-1842-01 0.1186037707    3.81 2.08         2.60   2.07
-#&gt;  5: TCGA-99-7458-01A-11D-2035-01 0.3180319443    4.75 2.27         1.63   1.88
-#&gt;  6: TCGA-A5-A0G2-01A-11D-A042-01 0.3931655541    4.86 1.29         1.62   1.85
-#&gt;  7: TCGA-A8-A07S-01A-11D-A036-01 0.1123575193    3.58 1.45         2.17   2.02
-#&gt;  8: TCGA-B6-A0X5-01A-21D-A107-01 0.0872390204    3.32 1.89         1.94   1.99
-#&gt;  9: TCGA-CV-7432-01A-11D-2128-01 0.1976249853    4.25 2.39         2.02   2.00
-#&gt; 10: TCGA-DF-A2KN-01A-11D-A17U-01 0.0003297153    2.81 2.83         2.98   2.00
+<span class='fu'>scoring</span>(<span class='no'>cn</span>)</div><div class='output co'>#&gt;                           sample cnaBurden cnaLoad MACN weightedMACN Ploidy
+#&gt;  1: TCGA-05-4417-01A-22D-1854-01     0.654    5.25 3.89         3.53   3.00
+#&gt;  2: TCGA-06-0644-01A-02D-0310-01     0.165    4.32 1.47         2.10   2.02
+#&gt;  3: TCGA-19-2621-01B-01D-0911-01     0.099    3.17 4.62         1.10   1.91
+#&gt;  4: TCGA-26-6174-01A-21D-1842-01     0.119    3.81 2.08         2.60   2.07
+#&gt;  5: TCGA-99-7458-01A-11D-2035-01     0.318    4.75 2.27         1.63   1.88
+#&gt;  6: TCGA-A5-A0G2-01A-11D-A042-01     0.393    4.46 1.29         1.62   1.85
+#&gt;  7: TCGA-A8-A07S-01A-11D-A036-01     0.112    3.58 1.45         2.17   2.02
+#&gt;  8: TCGA-B6-A0X5-01A-21D-A107-01     0.087    3.17 2.00         1.94   1.99
+#&gt;  9: TCGA-CV-7432-01A-11D-2128-01     0.198    4.09 2.69         2.02   2.00
+#&gt; 10: TCGA-DF-A2KN-01A-11D-A17U-01     0.000    2.81 2.83         2.98   2.00
 #&gt;           TDP      sTDP      lTDP        TD       sTD       lTD Chromothripisis
 #&gt;  1: -1.818182       NaN -1.818182 0.4313725 0.0000000 0.4313725               0
 #&gt;  2: -1.909091       NaN -1.909091 0.3437500 0.0000000 0.3437500              13
-#&gt;  3: -1.818182       NaN -1.818182 0.4954955 0.0000000 0.4954955               0
+#&gt;  3: -1.818182       NaN -1.818182 0.4954955 0.0000000 0.4954955               3
 #&gt;  4: -1.545455 -1.909091 -1.636364 0.5840708 0.3437500 0.5445545               9
 #&gt;  5: -1.545455       NaN -1.545455 0.5840708 0.0000000 0.5840708              10
 #&gt;  6: -1.909091 -1.909091       NaN 0.3437500 0.3437500 0.0000000               6

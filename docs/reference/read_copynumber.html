@@ -91,6 +91,9 @@ analysis." />
   </a>
 </li>
 <li>
+  <a href="../articles/sigminer.html">Get started</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li>
@@ -231,7 +234,14 @@ with normal copy 2 and force <code>use_all</code> to <code>FALSE</code> (no matt
   <span class='kw'>seg_cols</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"chromosome"</span>, <span class='st'>"start"</span>, <span class='st'>"end"</span>, <span class='st'>"segVal"</span>),
   <span class='kw'>genome_build</span> <span class='kw'>=</span> <span class='st'>"hg19"</span>, <span class='kw'>complement</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 )</div><div class='output co'>#&gt; <span class='message'>Treating input as a data frame...</span></div><div class='output co'>#&gt; <span class='message'>Checking chromosome names...</span></div><div class='output co'>#&gt; <span class='message'>Segments info:</span></div><div class='output co'>#&gt; <span class='message'>    Keep - 467</span></div><div class='output co'>#&gt; <span class='message'>  Filter - 0</span></div><div class='output co'>#&gt; <span class='message'>Joining adjacent segments with same copy number value...</span></div><div class='output co'>#&gt; <span class='message'>Anotating...</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Summarizing per sample...</span></div><div class='output co'>#&gt; <span class='message'>Done!</span></div></pre>
+#&gt; <span class='message'>Summarizing per sample...</span></div><div class='output co'>#&gt; <span class='message'>Done!</span></div><div class='input'>
+<span class='no'>tab_file</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"metastatic_tumor.segtab.txt"</span>,
+  <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+)
+<span class='fu'>read_copynumber</span>(<span class='no'>tab_file</span>)</div><div class='output co'>#&gt; An object of class CopyNumber 
+#&gt; =============================
+#&gt;              sample n_of_seg n_of_cnv n_of_amp n_of_del n_of_vchr cna_burden
+#&gt; 1: metastatic_tumor      180      110       92       18        21      0.361</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

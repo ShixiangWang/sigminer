@@ -92,6 +92,9 @@ and return the membership in each cluster." />
   </a>
 </li>
 <li>
+  <a href="../articles/sigminer.html">Get started</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li>
@@ -146,11 +149,11 @@ and return the membership in each cluster.</p>
     <tr>
       <th>method</th>
       <td><p>grouping method, more see details, could be one of the following:</p><ul>
-<li><p>'k-means' -  the default method, returns the clusters by k-means.</p></li>
-<li><p>'exposure' - assigns a sample into a group whose signature exposure
-is dominant.</p></li>
 <li><p>'consensus' - returns the cluster membership based on the hierarchical clustering of the consensus matrix,
 it can only be used for the result obtained by <code><a href='sig_extract.html'>sig_extract()</a></code> with multiple runs using <strong>NMF</strong> package.</p></li>
+<li><p>'k-means' -  returns the clusters by k-means.</p></li>
+<li><p>'exposure' - assigns a sample into a group whose signature exposure
+is dominant.</p></li>
 <li><p>'samples' - returns the cluster membership based on the contribution of signature to each sample,
 it can only be used for the result obtained by <code><a href='sig_extract.html'>sig_extract()</a></code> using <strong>NMF</strong> package.</p></li>
 </ul></td>
@@ -185,49 +188,20 @@ about implementation please see source code of <code><a href='sig_extract.html'>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
 <span class='co'># Load copy number prepare object</span>
-<span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_prepare.RData"</span>,
+<span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_tally_W.RData"</span>,
   <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 ))
 <span class='co'># Extract copy number signatures</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>NMF</span>)
-<span class='no'>sig</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sig_extract.html'>sig_extract</a></span>(<span class='no'>cn_prepare</span>$<span class='no'>nmf_matrix</span>, <span class='fl'>2</span>, <span class='kw'>nrun</span> <span class='kw'>=</span> <span class='fl'>10</span>)
-
-<span class='co'># Default k-means clustering is used</span>
-<span class='fu'>get_groups</span>(<span class='no'>sig</span>)</div><div class='output co'>#&gt; <span class='message'>=&gt; Running k-means with 2 clusters...</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Finding the dominant signature of each group...</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Summarizing...</span></div><div class='output co'>#&gt; <span class='message'>	group #1: 6 samples with Sig2 enriched.</span>
-#&gt; <span class='message'>	group #2: 4 samples with Sig1 enriched.</span></div><div class='output co'>#&gt;                           sample group enrich_sig
-#&gt;  1: TCGA-A8-A07S-01A-11D-A036-01     1       Sig2
-#&gt;  2: TCGA-B6-A0X5-01A-21D-A107-01     1       Sig2
-#&gt;  3: TCGA-A5-A0G2-01A-11D-A042-01     1       Sig2
-#&gt;  4: TCGA-DF-A2KN-01A-11D-A17U-01     1       Sig2
-#&gt;  5: TCGA-06-0644-01A-02D-0310-01     1       Sig2
-#&gt;  6: TCGA-26-6174-01A-21D-1842-01     1       Sig2
-#&gt;  7: TCGA-19-2621-01B-01D-0911-01     2       Sig1
-#&gt;  8: TCGA-CV-7432-01A-11D-2128-01     2       Sig1
-#&gt;  9: TCGA-05-4417-01A-22D-1854-01     2       Sig1
-#&gt; 10: TCGA-99-7458-01A-11D-2035-01     2       Sig1</div><div class='input'><span class='co'># Methods 'consensus' and 'samples' are from NMF::predict()</span>
-<span class='fu'>get_groups</span>(<span class='no'>sig</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"consensus"</span>, <span class='kw'>match_consensus</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Obtaining clusters from the hierarchical clustering of the consensus matrix...</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Finding the dominant signature of each group...</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Summarizing...</span></div><div class='output co'>#&gt; <span class='message'>	group #1: 4 samples with Sig2 enriched.</span>
-#&gt; <span class='message'>	group #2: 6 samples with Sig2 enriched.</span></div><div class='output co'>#&gt;                           sample group silhouette_width enrich_sig
-#&gt;  1: TCGA-05-4417-01A-22D-1854-01     1            1.000       Sig2
-#&gt;  2: TCGA-99-7458-01A-11D-2035-01     1            1.000       Sig2
-#&gt;  3: TCGA-19-2621-01B-01D-0911-01     1            1.000       Sig2
-#&gt;  4: TCGA-CV-7432-01A-11D-2128-01     1            1.000       Sig2
-#&gt;  5: TCGA-26-6174-01A-21D-1842-01     2            1.000       Sig2
-#&gt;  6: TCGA-06-0644-01A-02D-0310-01     2            1.000       Sig2
-#&gt;  7: TCGA-DF-A2KN-01A-11D-A17U-01     2            0.810       Sig2
-#&gt;  8: TCGA-A5-A0G2-01A-11D-A042-01     2            0.810       Sig2
-#&gt;  9: TCGA-A8-A07S-01A-11D-A036-01     2            0.733       Sig2
-#&gt; 10: TCGA-B6-A0X5-01A-21D-A107-01     2            0.833       Sig2</div><div class='input'><span class='fu'>get_groups</span>(<span class='no'>sig</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"samples"</span>)</div><div class='output co'>#&gt; <span class='message'>=&gt; Obtaining clusters by the contribution of signature to each sample...</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Finding the dominant signature of each group...</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Summarizing...</span></div><div class='output co'>#&gt; <span class='message'>	group #1: 6 samples with Sig2 enriched.</span>
-#&gt; <span class='message'>	group #2: 4 samples with Sig2 enriched.</span></div><div class='output co'>#&gt;                           sample group silhouette_width  prob enrich_sig
-#&gt;  1: TCGA-A8-A07S-01A-11D-A036-01     1                1 0.946       Sig2
-#&gt;  2: TCGA-B6-A0X5-01A-21D-A107-01     1                1 0.976       Sig2
-#&gt;  3: TCGA-A5-A0G2-01A-11D-A042-01     1                1 0.659       Sig2
-#&gt;  4: TCGA-DF-A2KN-01A-11D-A17U-01     1                1 0.940       Sig2
-#&gt;  5: TCGA-06-0644-01A-02D-0310-01     1                1 0.724       Sig2
-#&gt;  6: TCGA-26-6174-01A-21D-1842-01     1                1 0.859       Sig2
-#&gt;  7: TCGA-19-2621-01B-01D-0911-01     2                1 0.514       Sig2
-#&gt;  8: TCGA-CV-7432-01A-11D-2128-01     2                1 0.541       Sig2
-#&gt;  9: TCGA-05-4417-01A-22D-1854-01     2                1 0.968       Sig2
-#&gt; 10: TCGA-99-7458-01A-11D-2035-01     2                1 0.582       Sig2</div><div class='input'># }
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>NMF</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required package: pkgmaker</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: registry</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: 'pkgmaker'</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from 'package:base':</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    isFALSE</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: rngtools</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: cluster</span></div><div class='output co'>#&gt; <span class='message'>NMF - BioConductor layer [OK] | Shared memory capabilities [NO: windows] | Cores 7/8</span></div><div class='input'><span class='no'>sig</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sig_extract.html'>sig_extract</a></span>(<span class='no'>cn_tally_W</span>$<span class='no'>nmf_matrix</span>, <span class='fl'>2</span>, <span class='kw'>nrun</span> <span class='kw'>=</span> <span class='fl'>10</span>)</div><div class='output co'>#&gt; <span class='error'>Error: NMF::nmf - 10/10 fit(s) threw an error.</span>
+#&gt; <span class='error'># Error(s) thrown:</span>
+#&gt; <span class='error'>  - run #1: NMF::nmf - Input matrix x contains at least one null or NA-filled row.</span></div><div class='output co'>#&gt; <span class='message'>Timing stopped at: 1.95 0 2.38</span></div><div class='input'>
+<span class='co'># Methods 'consensus' and 'samples' are from NMF::predict()</span>
+<span class='fu'>get_groups</span>(<span class='no'>sig</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"consensus"</span>, <span class='kw'>match_consensus</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='error'>Error: object 'sig' not found</span></div><div class='input'><span class='fu'>get_groups</span>(<span class='no'>sig</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"samples"</span>)</div><div class='output co'>#&gt; <span class='error'>Error: object 'sig' not found</span></div><div class='input'>
+<span class='co'># Use k-means clustering</span>
+<span class='fu'>get_groups</span>(<span class='no'>sig</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"k-means"</span>)</div><div class='output co'>#&gt; <span class='error'>Error: object 'sig' not found</span></div><div class='input'># }
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

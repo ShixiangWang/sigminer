@@ -19,12 +19,12 @@
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="Extract, Analyze and Visualize Signatures for Genomic
     Variations">
-<meta property="og:description" content="Genomic variations including somatic mutations,
-    copy number variations, etc. are the major force for cancer
+<meta property="og:description" content="Genomic alterations including single nucleotide substitution,
+    copy number variation, etc. are the major force for cancer
     initialization and development.  Due to the specificity of molecular
     lesions caused by genomic variations, we can generate characteristic
     variation spectra, called signature. This package helps users to
-    extract, analyze and visualize signatures from genomic variations,
+    extract, analyze and visualize signatures from genomic variation records,
     thus providing new insight into cancer study.">
 <meta property="og:image" content="/logo.png">
 <meta name="twitter:card" content="summary">
@@ -59,6 +59,9 @@
   </a>
 </li>
 <li>
+  <a href="articles/sigminer.html">Get started</a>
+</li>
+<li>
   <a href="reference/index.html">Reference</a>
 </li>
 <li>
@@ -84,49 +87,89 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="sigminer" class="section level1">
+<div id="sigminer-" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#sigminer" class="anchor"></a>sigminer <img src="reference/figures/logo.png" align="right" height="140" width="120" alt="logo">
+<a href="#sigminer-" class="anchor"></a>sigminer <img src="reference/figures/logo.png" align="right" height="140" width="120" alt="logo">
 </h1></div>
 
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
-<p>Genomic variations including somatic mutations, copy number variations, etc. are the major force for cancer initialization and development. Due to the specificity of molecular lesions caused by genomic variations, we can generate characteristic variation spectra, called ‘<strong>signature</strong>’. <strong>sigminer</strong> helps users to extract, analyze and visualize signatures from genomic variations, thus providing new insight into cancer study.</p>
+<p>Genomic variations including single nucleotide substitution (SBS) mutations, copy number variations (CNV), etc. are the major force for cancer initialization and development. Due to the specificity of molecular lesions caused by genomic variations, we can generate characteristic variation (feature) spectra, called ‘<strong>signature</strong>’. <strong>sigminer</strong> helps users to extract, analyze and visualize signatures from genomic variation records, thus providing new insight into cancer study.</p>
+<div id="feature" class="section level3">
+<h3 class="hasAnchor">
+<a href="#feature" class="anchor"></a>Feature</h3>
+<ul>
+<li>supports a standard pipeline for identification of two types of signatures: SBS signature and copy number signature</li>
+<li>supports two methods for calling copy number signatures: one is from Macintyre et al. 2018 and the other is created by us</li>
+<li>supports association and group analysis and visualization for signatures</li>
+<li>supports a bayesian variant of NMF algorithm to enable optimal inferences for the number of signatures through the automatic relevance determination technique from <strong>SignatureAnalyzer</strong> package</li>
+<li>supports two plot styles for signature profile: ‘default’ (like <strong>SignatureAnalyzer</strong> package) and ‘cosmic’ (like <strong>COSMIC</strong> database)</li>
+<li>supports two types of signatrue exposures: relative exposure (relative contribution of signatures in each sample) and absolute exposure (estimated variation records of signatures in each sample)</li>
+<li>supports basic summary and visualization for profile of mutation (powered by <strong>maftools</strong>) and copy number</li>
+<li>supports parallel computation by R packages <strong>foreach</strong>, <strong>future</strong> and <strong>NMF</strong>
+</li>
+<li>efficient code powered by R packages <strong>data.table</strong>, <strong>dtplyr</strong> and <strong>tidyverse</strong>
+</li>
+<li>elegant plots powered by R packages <strong>ggplot2</strong>, <strong>ggpubr</strong>, <strong>cowplot</strong> and <strong>patchwork</strong>
+</li>
+<li>well tested by R package <strong>testthat</strong> and documented by R package <strong>roxygen2</strong>, <strong>pkgdown</strong>, and etc. for both reliable and reproducible research</li>
+</ul>
+</div>
 </div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You can install the stable release of <strong>sigminer</strong> from CRAN with:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"sigminer"</span>)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co"># Or</span></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">BiocManager<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span>(<span class="st">"sigminer"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"sigminer"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="co"># Or</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a>BiocManager<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span>(<span class="st">"sigminer"</span>)</span></code></pre></div>
 <p>You can install the development version of <strong>sigminer</strong> from Github with:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">remotes<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/remotes/man/install_github.html">install_github</a></span>(<span class="st">"ShixiangWang/sigminer"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>remotes<span class="op">::</span><span class="kw"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"ShixiangWang/sigminer"</span>)</span></code></pre></div>
+</div>
+<div id="usage" class="section level2">
+<h2 class="hasAnchor">
+<a href="#usage" class="anchor"></a>Usage</h2>
+<p>A complete documentation of <strong>sigminer</strong> can be read online at <a href="https://shixiangwang.github.io/sigminer-doc/" class="uri">https://shixiangwang.github.io/sigminer-doc/</a>. All functions are well organized and documented at <a href="https://shixiangwang.github.io/sigminer/reference/index.html" class="uri">https://shixiangwang.github.io/sigminer/reference/index.html</a>. For usage of a specific function <code>fun</code>, run <code>?fun</code> in your R console to see its documentation.</p>
 </div>
 <div id="citation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#citation" class="anchor"></a>Citation</h2>
-<p><strong>sigminer</strong> has not been published. If you use <strong>sigminer</strong> in academic field, please cite our recent work:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">Wang, Shixiang, et al. <span class="st">"The predictive power of tumor mutational burden </span></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="st">    in lung cancer immunotherapy response is influenced by patients' sex."</span></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">    International journal of <span class="kw">cancer</span> (<span class="dv">2019</span>).</a></code></pre></div>
-<p>and</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">Gaujoux, Renaud, and Cathal Seoighe. <span class="st">"A Flexible R Package for </span></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">    Nonnegative Matrix Factorization."" BMC Bioinformatics 11, no. 1 (December 2010).</span></a></code></pre></div>
+<hr>
+<p><strong><em>Copy number signature analyses in prostate cancer reveal distinct etiologies and clinical outcomes, under submission</em></strong></p>
+<hr>
+<p>Currently, <strong>sigminer</strong> has not been published. If you use <strong>sigminer</strong> in academic field, please cite our recent work:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>Wang, Shixiang, et al. <span class="st">"The predictive power of tumor mutational burden </span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="st">    in lung cancer immunotherapy response is influenced by patients' sex."</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a>    International journal of <span class="kw">cancer</span> (<span class="dv">2019</span>).</span></code></pre></div>
+<p>and the paper implementing NMF in R:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>Gaujoux, Renaud, and Cathal Seoighe. <span class="st">"A Flexible R Package for </span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="st">    Nonnegative Matrix Factorization."" BMC Bioinformatics 11, no. 1 (December 2010).</span></span></code></pre></div>
 </div>
 <div id="acknowledgments" class="section level2">
 <h2 class="hasAnchor">
 <a href="#acknowledgments" class="anchor"></a>Acknowledgments</h2>
 <p>The code for extracting copy number signatures was based in part on the source code from paper <em>Copy number signatures and mutational processes in ovarian carcinoma</em>, if you use this feature, please also cite:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">Macintyre, Geoff, et al. <span class="st">"Copy number signatures and mutational</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">    processes in ovarian carcinoma."</span> Nature genetics <span class="fl">50.9</span> (<span class="dv">2018</span>)<span class="op">:</span><span class="st"> </span><span class="fl">1262.</span></a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>Macintyre, Geoff, et al. <span class="st">"Copy number signatures and mutational</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="st">    processes in ovarian carcinoma."</span> Nature genetics <span class="fl">50.9</span> (<span class="dv">2018</span>)<span class="op">:</span><span class="st"> </span><span class="fl">1262.</span></span></code></pre></div>
 <p>The code for extracting mutational signatures was based in part on the source code of the <strong>maftools</strong> package, if you use this feature, please also cite:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">Mayakonda, Anand, et al. <span class="st">"Maftools: efficient and comprehensive analysis</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">    of somatic variants in cancer."</span> Genome research <span class="fl">28.11</span> (<span class="dv">2018</span>)<span class="op">:</span><span class="st"> </span><span class="dv">1747</span><span class="fl">-1756.</span></a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>Mayakonda, Anand, et al. <span class="st">"Maftools: efficient and comprehensive analysis</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="st">    of somatic variants in cancer."</span> Genome research <span class="fl">28.11</span> (<span class="dv">2018</span>)<span class="op">:</span><span class="st"> </span><span class="dv">1747</span><span class="fl">-1756.</span></span></code></pre></div>
 <p>The code for extracting mutational signatures was based in part on the source code of the <strong>SignatureAnalyzer</strong> package, if you use this feature, please also cite:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">Alexandrov, Ludmil, et al. <span class="st">"The repertoire of mutational signatures in human cancer."</span> <span class="kw">BioRxiv</span> (<span class="dv">2018</span>)<span class="op">:</span><span class="st"> </span><span class="fl">322859.</span></a></code></pre></div>
-<p><strong>sigminer</strong> is powered by data.table, <a href="https://github.com/renozao/NMF">NMF</a> package and <a href="https://github.com/PoisonAlien/maftools">maftools</a> package.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>Alexandrov, Ludmil, et al. <span class="st">"The repertoire of mutational signatures in human cancer."</span> <span class="kw">BioRxiv</span> (<span class="dv">2018</span>)<span class="op">:</span><span class="st"> </span><span class="fl">322859.</span></span></code></pre></div>
+</div>
+<div id="references" class="section level2">
+<h2 class="hasAnchor">
+<a href="#references" class="anchor"></a>References</h2>
+<ol>
+<li>Alexandrov, Ludmil B., et al. “The repertoire of mutational signatures in human cancer.” Nature 578.7793 (2020): 94-101.</li>
+<li>Macintyre, Geoff, et al. “Copy number signatures and mutational processes in ovarian carcinoma.” Nature genetics 50.9 (2018): 1262.</li>
+<li>Mayakonda, Anand, et al. “Maftools: efficient and comprehensive analysis of somatic variants in cancer.” Genome research 28.11 (2018): 1747-1756.</li>
+<li>Gaujoux, Renaud, and Cathal Seoighe. “A Flexible R Package for Nonnegative Matrix Factorization.”" BMC Bioinformatics 11, no. 1 (December 2010).</li>
+<li>H. Wickham. ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New York, 2016.</li>
+<li>Tan, Vincent YF, and Cédric Févotte. “Automatic relevance determination in nonnegative matrix factorization with the/spl beta/-divergence.” IEEE Transactions on Pattern Analysis and Machine Intelligence 35.7 (2012): 1592-1605.</li>
+<li>Kim, Jaegil, et al. “Somatic ERCC2 mutations are associated with a distinct genomic signature in urothelial tumors.” Nature genetics 48.6 (2016): 600.</li>
+</ol>
 </div>
 <div id="license" class="section level2">
 <h2 class="hasAnchor">
@@ -177,9 +220,9 @@
 <ul class="list-unstyled">
 <li><a href="https://cran.r-project.org/package=sigminer"><img src="https://www.r-pkg.org/badges/version/sigminer" alt="CRAN status"></a></li>
 <li><a href="https://www.tidyverse.org/lifecycle/#maturing"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="lifecycle"></a></li>
-<li><a href="https://github.com/ShixiangWang/sigminer/actions?workflow=R-CMD-check"><img src="https://github.com/ShixiangWang/sigminer/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
 <li><a href="https://codecov.io/github/ShixiangWang/sigminer?branch=master"><img src="https://codecov.io/gh/ShixiangWang/sigminer/branch/master/graph/badge.svg" alt="Coverage status"></a></li>
 <li><a href="https://cran.r-project.org/package=sigminer"><img src="http://cranlogs.r-pkg.org/badges/grand-total/sigminer?color=orange"></a></li>
+<li><a href="http://hits.dwyl.io/ShixiangWang/sigminer"><img src="http://hits.dwyl.io/ShixiangWang/sigminer.svg" alt="HitCount"></a></li>
 <li><a href="https://github.com/ShixiangWang/sigminer/issues?q=is%3Aissue+is%3Aclosed"><img src="https://img.shields.io/github/issues-closed/ShixiangWang/sigminer.svg" alt="Closed issues"></a></li>
 </ul>
 </div>

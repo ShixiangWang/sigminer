@@ -79,11 +79,10 @@ in \strong{sigminer} package. Besides, I implemented parallel computation to spe
 the calculation process and a similar input and output structure like \code{\link[=sig_extract]{sig_extract()}}.
 }
 \examples{
-# Load copy number prepare object
-load(system.file("extdata", "toy_copynumber_prepare.RData",
+load(system.file("extdata", "toy_copynumber_tally_M.RData",
   package = "sigminer", mustWork = TRUE
 ))
-res <- sig_auto_extract(cn_prepare$nmf_matrix, result_prefix = "Test_copynumber", nrun = 1)
+res <- sig_auto_extract(cn_tally_M$nmf_matrix, result_prefix = "Test_copynumber", nrun = 1)
 # At default, all run files are stored in tempdir()
 dir(tempdir(), pattern = "Test_copynumber")
 }

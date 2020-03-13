@@ -24,3 +24,6 @@ a \code{data.frame} containing annotation data
 \description{
 Get Genome Annotation
 }
+\examples{
+get_genome_annotation()
+}

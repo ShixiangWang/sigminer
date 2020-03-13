@@ -43,7 +43,10 @@
 
 
 <meta property="og:title" content="Read MAF Files — read_maf" />
-<meta property="og:description" content="Takes tab delimited MAF (can be plain text or gz compressed) file as an input and summarizes it in various ways. Also creates oncomatrix - helpful for visualization." />
+<meta property="og:description" content="This function is a wrapper of maftools::read.maf.
+Currently, only mutation records used in signature identification and
+analysis.
+You can also use maftools::read.maf to read the data." />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -90,6 +93,9 @@
   </a>
 </li>
 <li>
+  <a href="../articles/sigminer.html">Get started</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li>
@@ -122,7 +128,10 @@
     </div>
 
     <div class="ref-description">
-    <p>Takes tab delimited MAF (can be plain text or gz compressed) file as an input and summarizes it in various ways. Also creates oncomatrix - helpful for visualization.</p>
+    <p>This function is a wrapper of <a href='https://rdrr.io/pkg/maftools/man/read.maf.html'>maftools::read.maf</a>.
+Currently, only mutation records used in signature identification and
+analysis.
+You can also use <a href='https://rdrr.io/pkg/maftools/man/read.maf.html'>maftools::read.maf</a> to read the data.</p>
     </div>
 
     <pre class="usage"><span class='fu'>read_maf</span>(
@@ -198,41 +207,24 @@
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>An object of class MAF.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>This function takes MAF file as input and summarizes them. If copy number data is available, e.g from GISTIC, it can be provided too via arguments gisticAllLesionsFile, gisticAmpGenesFile,
-and gisticDelGenesFile. Copy number data can also be provided as a custom table containing Gene name, Sample name and Copy Number status.</p>
-<p>Note that if input MAF file contains multiple affected transcripts of a variant, this function by default removes them as duplicates, while keeping single unique entry per variant per sample.
-If you wish to keep all of them, set removeDuplicatedVariants to FALSE.</p>
-<p>FLAGS - If you get a note on possible FLAGS while reading MAF, it means some of the top mutated genes are fishy. These genes are often non-pathogenic and passengers, but are frequently mutated in most of the public exome studies. Examples of such genes include TTN, MUC16, etc.
-This note can be ignored without any harm, it's only generated as to make user aware of such genes. See references for details on FLAGS.</p>
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
-
-    <p>Shyr C, Tarailo-Graovac M, Gottlieb M, Lee JJ, van Karnebeek C, Wasserman WW. FLAGS, frequently mutated genes in public exomes. BMC Med Genomics 2014; 7: 64.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='read_copynumber.html'>read_copynumber</a> for reading copy number data to <a href='CopyNumber-class.html'>CopyNumber</a> object.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>laml.maf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"tcga_laml.maf.gz"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"maftools"</span>)
+    <pre class="examples"><div class='input'><span class='no'>laml.maf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"tcga_laml.maf.gz"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"maftools"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='no'>laml</span> <span class='kw'>&lt;-</span> <span class='fu'>read_maf</span>(<span class='kw'>maf</span> <span class='kw'>=</span> <span class='no'>laml.maf</span>)</div><div class='output co'>#&gt; -Reading
 #&gt; -Validating
 #&gt; -Silent variants: 475 
 #&gt; -Summarizing
 #&gt; -Processing clinical data
 #&gt; --Missing clinical data
-#&gt; -Finished in 0.443s elapsed (1.490s cpu) </div></pre>
+#&gt; -Finished in 0.640s elapsed (0.560s cpu) </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#references">References</a></li>
       <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>

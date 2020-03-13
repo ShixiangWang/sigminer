@@ -17,12 +17,16 @@
 #' @return a `ggplot` object
 #' @export
 #' @examples
-#' # Load copy number prepare object
-#' load(system.file("extdata", "toy_copynumber_prepare.RData",
+#' load(system.file("extdata", "toy_copynumber_tally_M.RData",
 #'   package = "sigminer", mustWork = TRUE
 #' ))
-#' show_cn_components(cn_prepare$parameters)
-#' show_cn_components(cn_prepare$parameters, show_weights = FALSE)
+#' show_cn_components(cn_tally_M$parameters)
+#' show_cn_components(cn_tally_M$parameters, show_weights = FALSE)
+#'
+#' load(system.file("extdata", "toy_copynumber_tally_W.RData",
+#'   package = "sigminer", mustWork = TRUE
+#' ))
+#' show_cn_components(cn_tally_W$parameters, method = "W")
 show_cn_components <- function(parameters,
                                method = "Macintyre",
                                show_weights = TRUE,

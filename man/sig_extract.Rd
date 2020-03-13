@@ -51,13 +51,12 @@ Do NMF de-composition and then extract signatures.
 }
 \examples{
 \donttest{
-# Load copy number prepare object
-load(system.file("extdata", "toy_copynumber_prepare.RData",
+load(system.file("extdata", "toy_copynumber_tally_M.RData",
   package = "sigminer", mustWork = TRUE
 ))
 # Extract copy number signatures
 library(NMF)
-res <- sig_extract(cn_prepare$nmf_matrix, 2, nrun = 1)
+res <- sig_extract(cn_tally_M$nmf_matrix, 2, nrun = 1)
 }
 }
 \references{

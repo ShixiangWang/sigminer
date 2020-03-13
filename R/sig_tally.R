@@ -39,10 +39,10 @@
 #' ))
 #' \donttest{
 #' # Prepare copy number signature analysis
-#' cn_prepare <- sig_tally(cn)
+#' cn_tally <- sig_tally(cn)
 #' }
 #' # Use method designed by Wang, Shixiang et al.
-#' cn_prepare <- sig_tally(cn, method = "W")
+#' cn_tally <- sig_tally(cn, method = "W")
 sig_tally <- function(object, ...) {
   UseMethod("sig_tally")
 }
@@ -94,7 +94,7 @@ sig_tally <- function(object, ...) {
 sig_tally.CopyNumber <- function(object,
                                  method = "Macintyre",
                                  ignore_chrs = NULL,
-                                 feature_setting = sigminer::CN.features[1:50],
+                                 feature_setting = sigminer::CN.features,
                                  type = c("probability", "count"),
                                  reference_components = FALSE,
                                  cores = 1, seed = 123456,
@@ -223,7 +223,7 @@ sig_tally.CopyNumber <- function(object,
 #' laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
 #' laml <- read_maf(maf = laml.maf)
 #' if (require("BSgenome.Hsapiens.UCSC.hg19")) {
-#'   mt_prepare <- sig_tally(
+#'   mt_tally <- sig_tally(
 #'     laml,
 #'     ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
 #'     prefix = "chr", add = TRUE, useSyn = TRUE

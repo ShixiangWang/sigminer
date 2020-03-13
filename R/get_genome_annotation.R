@@ -5,6 +5,9 @@
 #' @param genome_build one of 'hg19', 'hg38'
 #' @param chrs chromosomes start with 'chr'
 #' @return a `data.frame` containing annotation data
+#' @examples
+#' get_genome_annotation()
+#' @export
 get_genome_annotation <- function(data_type = c("chr_size", "centro_loc"),
                                   chrs = paste0("chr", c(1:22, "X", "Y")),
                                   genome_build = c("hg19", "hg38")) {

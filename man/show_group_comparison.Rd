@@ -79,20 +79,16 @@ test p values are shown for categorical data and fdr values are shown for
 continuous data.
 }
 \examples{
-\donttest{
-# Load copy number prepare object
-load(system.file("extdata", "toy_copynumber_prepare.RData",
+load(system.file("extdata", "toy_copynumber_signature_by_M.RData",
   package = "sigminer", mustWork = TRUE
 ))
-# Extract copy number signatures
-library(NMF)
-sig <- sig_extract(cn_prepare$nmf_matrix, 2, nrun = 10)
 
 # Assign samples to clusters
-groups <- get_groups(sig, method = "samples")
+groups <- get_groups(sig, method = "k-means")
 
 set.seed(1234)
-# Add custom groups
+
+groups$prob <- rnorm(10)
 groups$new_group <- sample(c("1", "2", "3", "4", NA), size = nrow(groups), replace = TRUE)
 
 # Compare groups (filter NAs for categorical coloumns)
@@ -102,8 +98,6 @@ groups.cmp <- get_group_comparison(groups[, -1],
   type = c("co", "ca"), verbose = TRUE
 )
 
-show_group_comparison(groups.cmp)
-
 # Compare groups (Set NAs of categorical columns to 'Rest')
 groups.cmp2 <- get_group_comparison(groups[, -1],
   col_group = "group",
@@ -111,10 +105,11 @@ groups.cmp2 <- get_group_comparison(groups[, -1],
   type = c("co", "ca"), NAs = "Rest", verbose = TRUE
 )
 
+show_group_comparison(groups.cmp)
+
 ggcomp <- show_group_comparison(groups.cmp2)
 ggcomp$co_comb
 ggcomp$ca_comb
-}
 }
 \author{
 Shixiang Wang \href{mailto:w_shixiang@163.com}{w_shixiang@163.com}

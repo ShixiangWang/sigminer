@@ -64,7 +64,7 @@
 #'
 #'
 #' # Load copy number signature
-#' load(system.file("extdata", "toy_copynumber_signature.RData",
+#' load(system.file("extdata", "toy_copynumber_signature_by_M.RData",
 #'   package = "sigminer", mustWork = TRUE
 #' ))
 #' # Show signature profile
@@ -73,10 +73,10 @@
 #' # Add params label
 #' # =================
 #' # Load copy number prepare object
-#' load(system.file("extdata", "toy_copynumber_prepare.RData",
+#' load(system.file("extdata", "toy_copynumber_tally_M.RData",
 #'   package = "sigminer", mustWork = TRUE
 #' ))
-#' params <- get_tidy_parameter(cn_prepare$components)
+#' params <- get_tidy_parameter(cn_tally_M$components)
 #' show_sig_profile(sig, params = params, y_expand = 2)
 show_sig_profile <- function(Signature, mode = c("copynumber", "SBS"),
                              method = "Macintyre",

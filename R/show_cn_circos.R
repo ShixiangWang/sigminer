@@ -19,7 +19,6 @@
 #' load(system.file("extdata", "toy_copynumber.RData",
 #'   package = "sigminer", mustWork = TRUE
 #' ))
-#'
 #' \donttest{
 #' show_cn_circos(cn, samples = 1)
 #' show_cn_circos(cn, samples = "TCGA-99-7458-01A-11D-2035-01")

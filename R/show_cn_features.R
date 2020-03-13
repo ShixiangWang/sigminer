@@ -16,10 +16,10 @@
 #' @return a `ggplot` object
 #' @examples
 #' # Load copy number prepare object
-#' load(system.file("extdata", "toy_copynumber_prepare.RData",
+#' load(system.file("extdata", "toy_copynumber_tally_M.RData",
 #'   package = "sigminer", mustWork = TRUE
 #' ))
-#' show_cn_features(cn_prepare$features)
+#' show_cn_features(cn_tally_M$features)
 #' @export
 #'
 show_cn_features <- function(features,
