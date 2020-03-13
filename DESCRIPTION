@@ -32,7 +32,6 @@ Depends:
     R (>= 3.5)
 Imports: 
     cluster,
-    corrplot,
     cowplot,
     data.table,
     doFuture,

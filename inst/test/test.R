@@ -47,3 +47,11 @@ if (require("BSgenome.Hsapiens.UCSC.hg19")) {
 
 sig = sig_extract(mt_prepare$nmf_matrix, n_sig = 3, pConstant = 1e-13)
 get_sig_exposure(sig)
+
+
+# Change name of function
+# sed -i "" "s/sig_feed/sig_tally/g" `grep "sig_feed" -rl R/*`
+# sed -i "" "s/sig_feed/sig_tally/g" `grep "sig_feed" -rl docs/*`
+# sed -i "" "s/sig_feed/sig_tally/g" `grep "sig_feed" -rl man/*`
+# sed -i "" "s/sig_feed/sig_tally/g" `grep "sig_feed" -rl tests/*`
+# sed -i "" "s/sig_feed/sig_tally/g" `grep "sig_feed" -rl _pkgdown.yml`
