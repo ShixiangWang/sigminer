@@ -45,7 +45,7 @@ us
 - supports two types of signatrue exposures: relative exposure (relative contribution of signatures in each sample) and absolute exposure (estimated variation records of signatures in each sample)
 - supports basic summary and visualization for profile of mutation (powered by **maftools**) and copy number
 - supports parallel computation by R packages **foreach**, **future** and **NMF**
-- efficient code powered by R packages **data.table**, **dtplyr** and **tidyverse**
+- efficient code powered by R packages **data.table** and **tidyverse**
 - elegant plots powered by R packages **ggplot2**, **ggpubr**, **cowplot** and **patchwork**
 - well tested by R package **testthat** and documented by R package **roxygen2**, **pkgdown**, and etc.
 for both reliable and reproducible research

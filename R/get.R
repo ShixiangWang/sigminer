@@ -516,38 +516,48 @@ get_cnsummary_sample <- function(segTab, genome_build = c("hg19", "hg38"),
     )
     total_size <- sum(chrlen[["size"]])
 
-    seg_summary <- segTab %>%
+    seg_sum1 <- segTab %>%
       dplyr::as_tibble() %>%
-      dplyr::group_by(sample) %>%
+      dplyr::group_by(.data$sample) %>%
       dplyr::summarise(
         n_of_seg = sum(!is.na(segVal)),
         n_of_cnv = sum(segVal != 2),
         n_of_amp = sum(segVal > 2),
-        n_of_del = sum(segVal < 2),
-        n_of_vchr = . %>%
-          dplyr::as_tibble() %>%
-          dplyr::filter(chromosome %in% autosome, segVal != 2) %>%
-          dplyr::pull(chromosome) %>%
-          unique() %>% length(),
-        cna_burden = sum(end[(segVal != 2) & (chromosome %in% autosome)] - start[(segVal != 2) & (chromosome %in% autosome)] + 1) / total_size
-      ) %>%
+        n_of_del = sum(segVal < 2)
+      )
+
+    seg_sum2 <- segTab %>%
+      dplyr::as_tibble() %>%
+      dplyr::filter(chromosome %in% autosome) %>%
+      dplyr::group_by(.data$sample) %>%
+      dplyr::summarise(
+        n_of_vchr = length(unique(chromosome[segVal != 2])),
+        cna_burden = sum(end[segVal != 2] - start[segVal != 2] + 1) / total_size
+      )
+
+    seg_summary <- dplyr::full_join(seg_sum1, seg_sum2, by = "sample") %>%
       data.table::as.data.table()
   } else {
-    seg_summary <- segTab %>%
+    seg_sum1 <- segTab %>%
       dplyr::as_tibble() %>%
-      dplyr::group_by(sample) %>%
+      dplyr::group_by(.data$sample) %>%
       dplyr::summarise(
         n_of_seg = sum(!is.na(segVal)),
         n_of_cnv = sum(segVal != 2),
         n_of_amp = sum(segVal > 2),
-        n_of_del = sum(segVal < 2),
-        n_of_vchr = . %>%
-          dplyr::as_tibble() %>%
-          dplyr::filter(chromosome %in% autosome, segVal != 2) %>%
-          dplyr::pull(chromosome) %>%
-          unique() %>% length(),
-        cna_burden = sum(end[(segVal != 2) & (chromosome %in% autosome)] - start[(segVal != 2) & (chromosome %in% autosome)] + 1) / sum(end[chromosome %in% autosome] - start[chromosome %in% autosome] + 1)
-      ) %>%
+        n_of_del = sum(segVal < 2)
+      )
+
+    seg_sum2 <- segTab %>%
+      dplyr::as_tibble() %>%
+      dplyr::filter(chromosome %in% autosome) %>%
+      dplyr::group_by(.data$sample) %>%
+      dplyr::summarise(
+        n_of_vchr = length(unique(chromosome[segVal != 2])),
+        cna_burden = sum(end[segVal != 2] - start[segVal != 2] + 1) / sum(end - start + 1)
+      )
+
+    seg_summary <- dplyr::full_join(seg_sum1, seg_sum2, by = "sample") %>%
       data.table::as.data.table()
   }
 

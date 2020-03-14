@@ -46,7 +46,7 @@ study.
     (powered by **maftools**) and copy number
   - supports parallel computation by R packages **foreach**, **future**
     and **NMF**
-  - efficient code powered by R packages **data.table**, **dtplyr** and
+  - efficient code powered by R packages **data.table** and
     **tidyverse**
   - elegant plots powered by R packages **ggplot2**, **ggpubr**,
     **cowplot** and **patchwork**
