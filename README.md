@@ -56,7 +56,12 @@ study.
 
 ## Installation
 
-You can install the stable release of **sigminer** from CRAN with:
+> This is a new major release of **sigminer** v1.0.0, and it is conflict
+> with previous release. If you try to use this release, please don’t
+> install it from CRAN. I am preparing to submit it to CRAN, but it
+> takes some time.
+
+~~You can install the stable release of **sigminer** from CRAN with:~~
 
 ``` r
 install.packages("sigminer")
