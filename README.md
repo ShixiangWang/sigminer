@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# sigminer: an easy-to-use and scalable interface for genomic alteration signature analysis and visualization in R <img src="man/figures/logo.png" align="right"  height="140" width="120" alt="logo"/>
+# sigminer: an easy-to-use and scalable toolkit for genomic alteration signature analysis and visualization in R <img src="man/figures/logo.png" align="right"  height="140" width="120" alt="logo"/>
 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/sigminer)](https://cran.r-project.org/package=sigminer)
