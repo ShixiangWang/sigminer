@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# sigminer <img src="man/figures/logo.png" align="right"  height="140" width="120" alt="logo"/>
+# sigminer: an easy-to-use and scalable interface for genomic alteration signature analysis and visualization in R <img src="man/figures/logo.png" align="right"  height="140" width="120" alt="logo"/>
 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/sigminer)](https://cran.r-project.org/package=sigminer)
@@ -16,14 +16,13 @@ issues](https://img.shields.io/github/issues-closed/ShixiangWang/sigminer.svg)](
 
 ## Overview
 
-Genomic variations including single nucleotide substitution (SBS)
-mutations, copy number variations (CNV), etc. are the major force for
-cancer initialization and development. Due to the specificity of
-molecular lesions caused by genomic variations, we can generate
-characteristic variation (feature) spectra, called ‘**signature**’.
-**sigminer** helps users to extract, analyze and visualize signatures
-from genomic variation records, thus providing new insight into cancer
-study.
+Genomic alterations including single nucleotide substitution (SBS), copy
+number alteration (CNA), etc. are the major force for cancer
+initialization and development. Due to the specificity of molecular
+lesions caused by genomic alterations, we can generate characteristic
+alteration spectra, called ‘signature’. This package helps users to
+extract, analyze and visualize signatures from genomic alteration
+records, thus providing new insight into cancer study.
 
 ### Feature
 
