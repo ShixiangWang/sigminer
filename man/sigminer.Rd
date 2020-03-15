@@ -5,75 +5,9 @@
 \alias{sigminer}
 \title{sigminer: Extract, Analyze and Visualize Signatures for Genomic Variations}
 \description{
-Genomic variations including somatic mutations, copy number variations, etc. are the major
-force for cancer initialization and development. Due to the specificity of molecular lesions
-caused by genomic variations, we can generate characteristic variation spectra, called 'signature'.
-This package helps users to extract, analyze and visualize signatures from genomic variations,
-thus providing new insight into cancer study.
+Please go to \url{https://shixiangwang.github.io/sigminer-doc/} for full vignette.
 }
-\section{read data}{
-
-Read data into R objects:
-\itemize{
-\item \code{\link[=read_copynumber]{read_copynumber()}} - read \code{data.frame}/files into \link{CopyNumber} object.
-\item \code{\link[=read_maf]{read_maf()}} - read \code{data.frame}/file into \link{MAF} object. This is powered by
-\code{\link[maftools]{read.maf}} function in \strong{maftools} package.
-}
-}
-
-\section{sig_ functions}{
-
-Signature analysis for genomic variations:
-\itemize{
-\item \code{\link[=sig_tally]{sig_tally()}} - generate variation matrix for signature extraction.
-\item \code{\link[=sig_estimate]{sig_estimate()}} - estimate signature number, work with \code{\link[=sig_extract]{sig_extract()}}.
-\item \code{\link[=sig_extract]{sig_extract()}} - extract signatures throught NMF, a proper signature
-number can be estimated by \code{\link[=sig_estimate]{sig_estimate()}}.
-\item \code{\link[=sig_auto_extract]{sig_auto_extract()}} - extract signatures throught automatic relevance
-determination technique.
-}
-}
-
-\section{get_ functions}{
-
-Supplementary data clean and analysis functions:
-\itemize{
-\item \code{\link[=get_cn_ploidy]{get_cn_ploidy()}}
-\item \code{\link[=get_bayesian_result]{get_bayesian_result()}}
-\item \code{\link[=get_groups]{get_groups()}}
-\item \code{\link[=get_sig_exposure]{get_sig_exposure()}}
-\item \code{\link[=get_sig_similarity]{get_sig_similarity()}}
-\item \code{\link[=get_genome_annotation]{get_genome_annotation()}}
-\item \code{\link[=get_adj_p]{get_adj_p()}}
-\item \code{\link[=get_group_comparison]{get_group_comparison()}}
-\item \code{\link[=get_sig_feature_association]{get_sig_feature_association()}}
-\item \code{\link[=get_tidy_association]{get_tidy_association()}}
-\item \code{\link[=get_tidy_parameter]{get_tidy_parameter()}}
-\item \code{\link[=handle_hyper_mutation]{handle_hyper_mutation()}}
-}
-}
-
-\section{show_ functions}{
-
-
-Common visualization:
-\itemize{
-\item \code{\link[=show_sig_number_survey]{show_sig_number_survey()}}
-\item \code{\link[=show_sig_profile]{show_sig_profile()}}
-\item \code{\link[=show_sig_exposure]{show_sig_exposure()}}
-\item \code{\link[=show_group_mapping]{show_group_mapping()}}
-\item \code{\link[=show_group_comparison]{show_group_comparison()}}
-\item \code{\link[=show_sig_feature_corrplot]{show_sig_feature_corrplot()}}
-}
-
-Result visualization for copy number data:
-\itemize{
-\item \code{\link[=show_cn_distribution]{show_cn_distribution()}}
-\item \code{\link[=show_cn_features]{show_cn_features()}}
-\item \code{\link[=show_cn_components]{show_cn_components()}}
-}
-
+\details{
 Result visualization for \link{MAF} is provide by \strong{maftools} package,
 please read its \href{https://bioconductor.org/packages/release/bioc/vignettes/maftools/inst/doc/maftools.html}{vignette}.
 }
-
