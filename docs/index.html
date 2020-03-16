@@ -20,11 +20,11 @@
 <script src="pkgdown.js"></script><meta property="og:title" content="Extract, Analyze and Visualize Signatures for Genomic
     Variations">
 <meta property="og:description" content="Genomic alterations including single nucleotide substitution,
-    copy number variation, etc. are the major force for cancer
-    initialization and development.  Due to the specificity of molecular
-    lesions caused by genomic variations, we can generate characteristic
-    variation spectra, called signature. This package helps users to
-    extract, analyze and visualize signatures from genomic variation records,
+    copy number alteration, etc. are the major force for cancer
+    initialization and development. Due to the specificity of molecular
+    lesions caused by genomic alterations, we can generate characteristic
+    alteration spectra, called signature. This package helps users to
+    extract, analyze and visualize signatures from genomic alteration records,
     thus providing new insight into cancer study.">
 <meta property="og:image" content="/logo.png">
 <meta name="twitter:card" content="summary">
@@ -87,15 +87,15 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="sigminer-" class="section level1">
+<div id="sigminer-an-easy-to-use-and-scalable-toolkit-for-genomic-alteration-signature-analysis-and-visualization-in-r-" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#sigminer-" class="anchor"></a>sigminer <img src="reference/figures/logo.png" align="right" height="140" width="120" alt="logo">
+<a href="#sigminer-an-easy-to-use-and-scalable-toolkit-for-genomic-alteration-signature-analysis-and-visualization-in-r-" class="anchor"></a>sigminer: an easy-to-use and scalable toolkit for genomic alteration signature analysis and visualization in R <img src="reference/figures/logo.png" align="right" height="140" width="120" alt="logo">
 </h1></div>
-
+<p><a href="https://cran.r-project.org/package=sigminer"><img src="https://www.r-pkg.org/badges/version/sigminer" alt="CRAN status"></a> <a href="https://www.tidyverse.org/lifecycle/#maturing"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="lifecycle"></a> <img src="https://github.com/ShixiangWang/sigminer/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"><a href="https://codecov.io/github/ShixiangWang/sigminer?branch=master"><img src="https://codecov.io/gh/ShixiangWang/sigminer/branch/master/graph/badge.svg" alt="Coverage status"></a> <a href="https://cran.r-project.org/package=sigminer"><img src="http://cranlogs.r-pkg.org/badges/grand-total/sigminer?color=orange"></a> <a href="http://hits.dwyl.io/ShixiangWang/sigminer"><img src="http://hits.dwyl.io/ShixiangWang/sigminer.svg" alt="HitCount"></a> <a href="https://github.com/ShixiangWang/sigminer/issues?q=is%3Aissue+is%3Aclosed"><img src="https://img.shields.io/github/issues-closed/ShixiangWang/sigminer.svg" alt="Closed issues"></a></p>
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
-<p>Genomic variations including single nucleotide substitution (SBS) mutations, copy number variations (CNV), etc. are the major force for cancer initialization and development. Due to the specificity of molecular lesions caused by genomic variations, we can generate characteristic variation (feature) spectra, called ‘<strong>signature</strong>’. <strong>sigminer</strong> helps users to extract, analyze and visualize signatures from genomic variation records, thus providing new insight into cancer study.</p>
+<p>Genomic alterations including single nucleotide substitution (SBS), copy number alteration (CNA), etc. are the major force for cancer initialization and development. Due to the specificity of molecular lesions caused by genomic alterations, we can generate characteristic alteration spectra, called ‘signature’. This package helps users to extract, analyze and visualize signatures from genomic alteration records, thus providing new insight into cancer study.</p>
 <div id="feature" class="section level3">
 <h3 class="hasAnchor">
 <a href="#feature" class="anchor"></a>Feature</h3>
@@ -109,7 +109,7 @@
 <li>supports basic summary and visualization for profile of mutation (powered by <strong>maftools</strong>) and copy number</li>
 <li>supports parallel computation by R packages <strong>foreach</strong>, <strong>future</strong> and <strong>NMF</strong>
 </li>
-<li>efficient code powered by R packages <strong>data.table</strong>, <strong>dtplyr</strong> and <strong>tidyverse</strong>
+<li>efficient code powered by R packages <strong>data.table</strong> and <strong>tidyverse</strong>
 </li>
 <li>elegant plots powered by R packages <strong>ggplot2</strong>, <strong>ggpubr</strong>, <strong>cowplot</strong> and <strong>patchwork</strong>
 </li>
@@ -120,7 +120,10 @@
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>You can install the stable release of <strong>sigminer</strong> from CRAN with:</p>
+<blockquote>
+<p>This is a new major release of <strong>sigminer</strong> v1.0.0, and it is conflict with previous release. If you try to use this release, please don’t install it from CRAN. I am preparing to submit it to CRAN, but it takes some time.</p>
+</blockquote>
+<p><del>You can install the stable release of <strong>sigminer</strong> from CRAN with:</del></p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"sigminer"</span>)</span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="co"># Or</span></span>
 <span id="cb1-3"><a href="#cb1-3"></a>BiocManager<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span>(<span class="st">"sigminer"</span>)</span></code></pre></div>
@@ -215,18 +218,7 @@
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
-<ul class="list-unstyled">
-<li><a href="https://cran.r-project.org/package=sigminer"><img src="https://www.r-pkg.org/badges/version/sigminer" alt="CRAN status"></a></li>
-<li><a href="https://www.tidyverse.org/lifecycle/#maturing"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="lifecycle"></a></li>
-<li><a href="https://codecov.io/github/ShixiangWang/sigminer?branch=master"><img src="https://codecov.io/gh/ShixiangWang/sigminer/branch/master/graph/badge.svg" alt="Coverage status"></a></li>
-<li><a href="https://cran.r-project.org/package=sigminer"><img src="http://cranlogs.r-pkg.org/badges/grand-total/sigminer?color=orange"></a></li>
-<li><a href="http://hits.dwyl.io/ShixiangWang/sigminer"><img src="http://hits.dwyl.io/ShixiangWang/sigminer.svg" alt="HitCount"></a></li>
-<li><a href="https://github.com/ShixiangWang/sigminer/issues?q=is%3Aissue+is%3Aclosed"><img src="https://img.shields.io/github/issues-closed/ShixiangWang/sigminer.svg" alt="Closed issues"></a></li>
-</ul>
-</div>
-</div>
+  </div>
 </div>
 
 

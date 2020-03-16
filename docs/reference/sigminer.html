@@ -43,11 +43,7 @@
 
 
 <meta property="og:title" content="sigminer: Extract, Analyze and Visualize Signatures for Genomic Variations — sigminer" />
-<meta property="og:description" content="Genomic variations including somatic mutations, copy number variations, etc. are the major
-force for cancer initialization and development. Due to the specificity of molecular lesions
-caused by genomic variations, we can generate characteristic variation spectra, called 'signature'.
-This package helps users to extract, analyze and visualize signatures from genomic variations,
-thus providing new insight into cancer study." />
+<meta property="og:description" content="Please go to https://shixiangwang.github.io/sigminer-doc/ for full vignette." />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -129,88 +125,21 @@ thus providing new insight into cancer study." />
     </div>
 
     <div class="ref-description">
-    <p>Genomic variations including somatic mutations, copy number variations, etc. are the major
-force for cancer initialization and development. Due to the specificity of molecular lesions
-caused by genomic variations, we can generate characteristic variation spectra, called 'signature'.
-This package helps users to extract, analyze and visualize signatures from genomic variations,
-thus providing new insight into cancer study.</p>
+    <p>Please go to <a href='https://shixiangwang.github.io/sigminer-doc/'>https://shixiangwang.github.io/sigminer-doc/</a> for full vignette.</p>
     </div>
 
 
 
-    <h2 class="hasAnchor" id="read-data"><a class="anchor" href="#read-data"></a>read data</h2>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    
-
-<p>Read data into R objects:</p><ul>
-<li><p><code><a href='read_copynumber.html'>read_copynumber()</a></code> - read <code>data.frame</code>/files into <a href='CopyNumber-class.html'>CopyNumber</a> object.</p></li>
-<li><p><code><a href='read_maf.html'>read_maf()</a></code> - read <code>data.frame</code>/file into <a href='MAF-class.html'>MAF</a> object. This is powered by
-<code><a href='https://rdrr.io/pkg/maftools/man/read.maf.html'>read.maf</a></code> function in <strong>maftools</strong> package.</p></li>
-</ul>
-
-    <h2 class="hasAnchor" id="sig-functions"><a class="anchor" href="#sig-functions"></a>sig_ functions</h2>
-
-    
-
-<p>Signature analysis for genomic variations:</p><ul>
-<li><p><code><a href='sig_tally.html'>sig_tally()</a></code> - generate variation matrix for signature extraction.</p></li>
-<li><p><code><a href='sig_estimate.html'>sig_estimate()</a></code> - estimate signature number, work with <code><a href='sig_extract.html'>sig_extract()</a></code>.</p></li>
-<li><p><code><a href='sig_extract.html'>sig_extract()</a></code> - extract signatures throught NMF, a proper signature
-number can be estimated by <code><a href='sig_estimate.html'>sig_estimate()</a></code>.</p></li>
-<li><p><code><a href='sig_auto_extract.html'>sig_auto_extract()</a></code> - extract signatures throught automatic relevance
-determination technique.</p></li>
-</ul>
-
-    <h2 class="hasAnchor" id="get-functions"><a class="anchor" href="#get-functions"></a>get_ functions</h2>
-
-    
-
-<p>Supplementary data clean and analysis functions:</p><ul>
-<li><p><code><a href='get_cn_ploidy.html'>get_cn_ploidy()</a></code></p></li>
-<li><p><code><a href='get_bayesian_result.html'>get_bayesian_result()</a></code></p></li>
-<li><p><code><a href='get_groups.html'>get_groups()</a></code></p></li>
-<li><p><code><a href='get_sig_exposure.html'>get_sig_exposure()</a></code></p></li>
-<li><p><code><a href='get_sig_similarity.html'>get_sig_similarity()</a></code></p></li>
-<li><p><code><a href='get_genome_annotation.html'>get_genome_annotation()</a></code></p></li>
-<li><p><code><a href='get_adj_p.html'>get_adj_p()</a></code></p></li>
-<li><p><code><a href='get_group_comparison.html'>get_group_comparison()</a></code></p></li>
-<li><p><code><a href='get_sig_feature_association.html'>get_sig_feature_association()</a></code></p></li>
-<li><p><code><a href='get_tidy_association.html'>get_tidy_association()</a></code></p></li>
-<li><p><code><a href='get_tidy_parameter.html'>get_tidy_parameter()</a></code></p></li>
-<li><p><code><a href='handle_hyper_mutation.html'>handle_hyper_mutation()</a></code></p></li>
-</ul>
-
-    <h2 class="hasAnchor" id="show-functions"><a class="anchor" href="#show-functions"></a>show_ functions</h2>
-
-    
-
-
-<p>Common visualization:</p><ul>
-<li><p><code><a href='show_sig_number_survey.html'>show_sig_number_survey()</a></code></p></li>
-<li><p><code><a href='show_sig_profile.html'>show_sig_profile()</a></code></p></li>
-<li><p><code><a href='show_sig_exposure.html'>show_sig_exposure()</a></code></p></li>
-<li><p><code><a href='show_group_mapping.html'>show_group_mapping()</a></code></p></li>
-<li><p><code><a href='show_group_comparison.html'>show_group_comparison()</a></code></p></li>
-<li><p><code><a href='show_sig_feature_corrplot.html'>show_sig_feature_corrplot()</a></code></p></li>
-</ul>
-
-<p>Result visualization for copy number data:</p><ul>
-<li><p><code><a href='show_cn_distribution.html'>show_cn_distribution()</a></code></p></li>
-<li><p><code><a href='show_cn_features.html'>show_cn_features()</a></code></p></li>
-<li><p><code><a href='show_cn_components.html'>show_cn_components()</a></code></p></li>
-</ul>
-
-<p>Result visualization for <a href='MAF-class.html'>MAF</a> is provide by <strong>maftools</strong> package,
+    <p>Result visualization for <a href='MAF-class.html'>MAF</a> is provide by <strong>maftools</strong> package,
 please read its <a href='https://bioconductor.org/packages/release/bioc/vignettes/maftools/inst/doc/maftools.html'>vignette</a>.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#read-data">read data</a></li>
-      <li><a href="#sig-functions">sig_ functions</a></li>
-      <li><a href="#get-functions">get_ functions</a></li>
-      <li><a href="#show-functions">show_ functions</a></li>
+      <li><a href="#details">Details</a></li>
     </ul>
 
   </div>
