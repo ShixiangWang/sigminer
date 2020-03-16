@@ -3,13 +3,13 @@
 #' @examples
 #' hello()
 hello <- function() {
-  msg <- paste0("Welcome to 'sigminer' package!
+  msg <- paste0("Thanks for using 'sigminer' package!
 =========================================================================
-Quick overview please type ?sigminer
+Version: ", packageVersion("sigminer"), "
 
-Github page: https://github.com/ShixiangWang/sigminer
-Bug report: https://github.com/ShixiangWang/sigminer/issues
-Documentation: https://github.com/ShixiangWang/sigminer
+Project home : https://github.com/ShixiangWang/sigminer
+Bug report   : https://github.com/ShixiangWang/sigminer/issues
+Documentation: https://shixiangwang.github.io/sigminer-doc/
 =========================================================================
                  ")
   message(msg)
