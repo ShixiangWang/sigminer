@@ -37,6 +37,24 @@ NULL
 #' data(chromsize.hg38)
 NULL
 
+#' Location of Chromosome Cytobands at Genome Build hg19
+#' @docType data
+#' @name cytobands.hg19
+#' @format A data.frame
+#' @source from UCSC
+#' @examples
+#' data(cytobands.hg19)
+NULL
+
+#' Location of Chromosome Cytobands at Genome Build hg38
+#' @docType data
+#' @name cytobands.hg38
+#' @format A data.frame
+#' @source from UCSC
+#' @examples
+#' data(cytobands.hg38)
+NULL
+
 #' Classfication Table of Copy Number Features Devised by Wang et al.
 #' @docType data
 #' @name CN.features

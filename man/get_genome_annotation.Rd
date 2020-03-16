@@ -5,14 +5,15 @@
 \title{Get Genome Annotation}
 \usage{
 get_genome_annotation(
-  data_type = c("chr_size", "centro_loc"),
+  data_type = c("chr_size", "centro_loc", "cytobands"),
   chrs = paste0("chr", c(1:22, "X", "Y")),
   genome_build = c("hg19", "hg38")
 )
 }
 \arguments{
 \item{data_type}{'chr_size' for chromosome size,
-'centro_loc' for location of centromeres}
+'centro_loc' for location of centromeres and
+'cytobands' for location of chromosome cytobands.}
 
 \item{chrs}{chromosomes start with 'chr'}
 
@@ -30,4 +31,16 @@ df1
 
 df2 <- get_genome_annotation(genome_build = "hg38")
 df2
+
+df3 <- get_genome_annotation(data_type = "centro_loc")
+df3
+
+df4 <- get_genome_annotation(data_type = "centro_loc", genome_build = "hg38")
+df4
+
+df5 <- get_genome_annotation(data_type = "cytobands")
+df5
+
+df6 <- get_genome_annotation(data_type = "cytobands", genome_build = "hg38")
+df6
 }
