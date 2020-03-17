@@ -10,7 +10,7 @@ sig_tally(object, ...)
 
 \method{sig_tally}{CopyNumber}(
   object,
-  method = "Macintyre",
+  method = "Wang",
   ignore_chrs = NULL,
   feature_setting = sigminer::CN.features,
   type = c("probability", "count"),
@@ -153,11 +153,11 @@ load(system.file("extdata", "toy_copynumber.RData",
   package = "sigminer", mustWork = TRUE
 ))
 \donttest{
-# Use method designed by Macintyre et al.
-cn_tally_M <- sig_tally(cn)
-}
 # Use method designed by Wang, Shixiang et al.
 cn_tally_W <- sig_tally(cn, method = "W")
+# Use method designed by Macintyre et al.
+cn_tally_M <- sig_tally(cn, method = "M")
+}
 \donttest{
 # Prepare SBS signature analysis
 laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
