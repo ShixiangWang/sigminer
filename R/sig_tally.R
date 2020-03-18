@@ -38,18 +38,18 @@
 #'   package = "sigminer", mustWork = TRUE
 #' ))
 #' \donttest{
-#' # Use method designed by Macintyre et al.
-#' cn_tally_M <- sig_tally(cn)
-#' }
 #' # Use method designed by Wang, Shixiang et al.
 #' cn_tally_W <- sig_tally(cn, method = "W")
+#' # Use method designed by Macintyre et al.
+#' cn_tally_M <- sig_tally(cn, method = "M")
+#' }
 #' @tests
 #' ## Load copy number object
 #' load(system.file("extdata", "toy_copynumber.RData",
 #'   package = "sigminer", mustWork = TRUE
 #' ))
 #' # Use method designed by Macintyre et al.
-#' cn_tally_M <- sig_tally(cn)
+#' cn_tally_M <- sig_tally(cn, method = "M")
 #' # Use method designed by Wang, Shixiang et al.
 #' cn_tally_W <- sig_tally(cn, method = "W")
 #'
@@ -120,7 +120,7 @@ sig_tally <- function(object, ...) {
 #' processes in ovarian carcinoma." Nature genetics 50.9 (2018): 1262.
 #' @export
 sig_tally.CopyNumber <- function(object,
-                                 method = "Macintyre",
+                                 method = "Wang",
                                  ignore_chrs = NULL,
                                  feature_setting = sigminer::CN.features,
                                  type = c("probability", "count"),
