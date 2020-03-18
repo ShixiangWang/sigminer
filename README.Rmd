@@ -123,7 +123,7 @@ The code for extracting mutational signatures was based in part on the source
 code of the **SignatureAnalyzer** package, if you use this feature, please also cite:
 
 ```
-Alexandrov, Ludmil, et al. "The repertoire of mutational signatures in human cancer." BioRxiv (2018): 322859.
+Kim, Jaegil, et al. "Somatic ERCC2 mutations are associated with a distinct genomic signature in urothelial tumors." Nature genetics 48.6 (2016): 600.
 ```
 
 ## References
