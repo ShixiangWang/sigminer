@@ -138,8 +138,10 @@ load(system.file("extdata", "toy_copynumber_signature_by_W.RData",
   package = "sigminer", mustWork = TRUE
 ))
 # Show signature profile
-p2 <- show_sig_profile(sig, style = "cosmic", method = "W",
-                            normalize = "feature")
+p2 <- show_sig_profile(sig,
+  style = "cosmic", method = "W",
+  normalize = "feature"
+)
 p2
 
 # Load copy number signature from method "M"
@@ -149,8 +151,10 @@ load(system.file("extdata", "toy_copynumber_signature_by_M.RData",
 # Show signature profile
 # The 'column' normalization is consistent with
 # original paper
-p3 <- show_sig_profile(sig, paint_axis_text = FALSE,
-                            method = "M", normalize = "column")
+p3 <- show_sig_profile(sig,
+  paint_axis_text = FALSE,
+  method = "M", normalize = "column"
+)
 p3
 
 # Add params label
@@ -160,8 +164,10 @@ load(system.file("extdata", "toy_copynumber_tally_M.RData",
   package = "sigminer", mustWork = TRUE
 ))
 params <- get_tidy_parameter(cn_tally_M$components)
-p4 <- show_sig_profile(sig, method = "M", normalize = "column",
-                       params = params, y_expand = 2)
+p4 <- show_sig_profile(sig,
+  method = "M", normalize = "column",
+  params = params, y_expand = 2
+)
 p4
 }
 \author{

@@ -161,6 +161,7 @@ show_cn_profile <- function(data, samples = NULL, show_n = NULL, show_title = FA
 
     if (!is.null(show_n)) {
       gg_df <- gg_df %>%
+        dplyr::ungroup() %>%
         dplyr::slice(1:show_n)
     }
     gg_list <- gg_df$gg

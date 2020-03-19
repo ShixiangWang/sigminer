@@ -20,10 +20,20 @@
 #' @param co_gradient_colors a Scale object representing gradient colors used to plot for continuous features.
 #' @param ca_gradient_colors a Scale object representing gradient colors used to plot for categorical features.
 #' @param plot_ratio a length-2 numeric vector to set the height/width ratio.
-#' @param breaks_count breaks for sample count.
 #'
 #' @return a `ggplot2` object
 #' @export
+#' @examples
+#'
+#' # The data is generated from Wang, Shixiang et al.
+#' load(system.file("extdata", "asso_data.RData",
+#'   package = "sigminer", mustWork = TRUE
+#' ))
+#'
+#' p <- show_sig_feature_corrplot(tidy_data.seqz.feature, p_val = 0.05)
+#' p
+#' @testexamples
+#' expect_s3_class(p, "ggplot")
 #' @seealso [get_tidy_association] and [get_sig_feature_association]
 show_sig_feature_corrplot <- function(tidy_cor, feature_list,
                                       sort_features = FALSE,
@@ -37,11 +47,7 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
                                         mid = "white", high = "red", midpoint = 0
                                       ),
                                       ca_gradient_colors = co_gradient_colors,
-                                      plot_ratio = "auto",
-                                      breaks_count = c(
-                                        0L,
-                                        200L, 400L, 600L, 800L, 1020L
-                                      )) {
+                                      plot_ratio = "auto") {
   if (!is.character(plot_ratio)) {
     if (length(plot_ratio) != 2 | !is.numeric(plot_ratio)) {
       stop("plot_ratio must be a length-2 numeric vector!")
@@ -52,9 +58,7 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
   }
   data <- tidy_cor %>%
     dplyr::mutate(
-      Samples = cut(.data$count,
-        breaks = breaks_count
-      ),
+      Samples = .data$count,
       signature = factor(.data$signature)
     ) %>%
     dplyr::filter(.data$feature %in% feature_list)
@@ -63,15 +67,10 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
     data <- data %>%
       dplyr::filter(.data$p <= p_val)
   } else {
-    size_levels <- levels(data$Samples)
     # Fill measure with 0, so the feature is kept with blank
     data <- data %>%
       dplyr::mutate(
         measure = ifelse(.data$p > p_val | is.na(.data$p), 0, .data$measure),
-        Samples = ifelse(is.na(.data$Samples),
-          size_levels[1], .data$Samples %>% as.character()
-        ),
-        Samples = factor(.data$Samples, levels = size_levels)
       )
   }
 
@@ -91,7 +90,7 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
     p <- p + ggplot2::geom_point(ggplot2::aes_string(
       color = "measure",
       size = "Samples"
-    ))
+    )) + ggplot2::scale_size_binned(guide = ggplot2::guide_bins(show.limits = TRUE))
 
     if (type == "co") {
       p <- p + co_gradient_colors
@@ -100,7 +99,6 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
     }
 
     p +
-      ggplot2::scale_size_discrete(drop = FALSE) +
       ggplot2::scale_x_discrete(drop = FALSE)
   }
   data2 <- data
