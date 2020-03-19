@@ -55,3 +55,11 @@ get_sig_exposure(sig)
 # sed -i "" "s/sig_feed/sig_tally/g" `grep "sig_feed" -rl man/*`
 # sed -i "" "s/sig_feed/sig_tally/g" `grep "sig_feed" -rl tests/*`
 # sed -i "" "s/sig_feed/sig_tally/g" `grep "sig_feed" -rl _pkgdown.yml`
+
+
+load(system.file("extdata", "asso_data.RData",
+                 package = "sigminer", mustWork = TRUE
+))
+
+
+show_sig_feature_corrplot(tidy_data.seqz.feature, p_val = 0.05)

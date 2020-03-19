@@ -42,7 +42,7 @@ Imports:
     future,
     GenomicRanges,
     ggalluvial,
-    ggplot2,
+    ggplot2 (>= 3.3.0),
     ggpubr,
     IRanges,
     maftools,

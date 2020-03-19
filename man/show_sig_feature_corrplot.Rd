@@ -16,8 +16,7 @@ show_sig_feature_corrplot(
   co_gradient_colors = scale_color_gradient2(low = "blue", mid = "white", high = "red",
     midpoint = 0),
   ca_gradient_colors = co_gradient_colors,
-  plot_ratio = "auto",
-  breaks_count = c(0L, 200L, 400L, 600L, 800L, 1020L)
+  plot_ratio = "auto"
 )
 }
 \arguments{
@@ -47,8 +46,6 @@ the result becomes blank white.}
 \item{ca_gradient_colors}{a Scale object representing gradient colors used to plot for categorical features.}
 
 \item{plot_ratio}{a length-2 numeric vector to set the height/width ratio.}
-
-\item{breaks_count}{breaks for sample count.}
 }
 \value{
 a \code{ggplot2} object
@@ -57,6 +54,16 @@ a \code{ggplot2} object
 This function is for association visualization. Of note,
 the parameters \code{p_val} and \code{drop} will affect the visualization
 of association results under p value threshold.
+}
+\examples{
+
+# The data is generated from Wang, Shixiang et al.
+load(system.file("extdata", "asso_data.RData",
+  package = "sigminer", mustWork = TRUE
+))
+
+p <- show_sig_feature_corrplot(tidy_data.seqz.feature, p_val = 0.05)
+p
 }
 \seealso{
 \link{get_tidy_association} and \link{get_sig_feature_association}
