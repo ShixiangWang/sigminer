@@ -49,9 +49,9 @@
 #' }
 #' @seealso [NMF::predict()]
 get_groups <- function(Signature,
-                       method = c("k-means", "exposure", "consensus", "samples"),
+                       method = c("consensus", "k-means", "exposure", "samples"),
                        n_cluster = NULL,
-                       match_consensus = FALSE) {
+                       match_consensus = TRUE) {
   stopifnot(inherits(Signature, "Signature"), is.null(n_cluster) | n_cluster > 1)
   method <- match.arg(method)
 
@@ -137,7 +137,7 @@ get_groups <- function(Signature,
     message("=> Generating a table of group and signature contribution (stored in 'map_table' attr):")
     ztable <- contrib.km$centers
     print(ztable)
-    message("=> Assigning a group to a signature with the maxium fraction...")
+    message("=> Assigning a group to a signature with the maximum fraction...")
     cluster_df <- as.data.frame(apply(t(ztable), 2, function(x) which(x == max(x))))
     colnames(cluster_df)[1] <- "enrich_sig"
     cluster_df$enrich_sig <- colnames(contrib)[cluster_df$enrich_sig]

@@ -134,3 +134,4 @@ sig_exposure <- function(sig, type = c("absolute", "relative")) {
     return(sig$Exposure.norm)
   }
 }
+
