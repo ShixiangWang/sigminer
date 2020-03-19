@@ -134,9 +134,9 @@ and return the membership in each cluster.</p>
 
     <pre class="usage"><span class='fu'>get_groups</span>(
   <span class='no'>Signature</span>,
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"k-means"</span>, <span class='st'>"exposure"</span>, <span class='st'>"consensus"</span>, <span class='st'>"samples"</span>),
+  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"consensus"</span>, <span class='st'>"k-means"</span>, <span class='st'>"exposure"</span>, <span class='st'>"samples"</span>),
   <span class='kw'>n_cluster</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>match_consensus</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+  <span class='kw'>match_consensus</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -197,7 +197,7 @@ about implementation please see source code of <code><a href='sig_extract.html'>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    isFALSE</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: rngtools</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: cluster</span></div><div class='output co'>#&gt; <span class='message'>NMF - BioConductor layer [OK] | Shared memory capabilities [NO: windows] | Cores 7/8</span></div><div class='input'><span class='no'>sig</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sig_extract.html'>sig_extract</a></span>(<span class='no'>cn_tally_W</span>$<span class='no'>nmf_matrix</span>, <span class='fl'>2</span>, <span class='kw'>nrun</span> <span class='kw'>=</span> <span class='fl'>10</span>)</div><div class='output co'>#&gt; <span class='error'>Error: NMF::nmf - 10/10 fit(s) threw an error.</span>
 #&gt; <span class='error'># Error(s) thrown:</span>
-#&gt; <span class='error'>  - run #1: NMF::nmf - Input matrix x contains at least one null or NA-filled row.</span></div><div class='output co'>#&gt; <span class='message'>Timing stopped at: 3.23 0 3.87</span></div><div class='input'>
+#&gt; <span class='error'>  - run #1: NMF::nmf - Input matrix x contains at least one null or NA-filled row.</span></div><div class='output co'>#&gt; <span class='message'>Timing stopped at: 1.53 0 1.9</span></div><div class='input'>
 <span class='co'># Methods 'consensus' and 'samples' are from NMF::predict()</span>
 <span class='fu'>get_groups</span>(<span class='no'>sig</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"consensus"</span>, <span class='kw'>match_consensus</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='error'>Error: object 'sig' not found</span></div><div class='input'><span class='fu'>get_groups</span>(<span class='no'>sig</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"samples"</span>)</div><div class='output co'>#&gt; <span class='error'>Error: object 'sig' not found</span></div><div class='input'>
 <span class='co'># Use k-means clustering</span>

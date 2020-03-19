@@ -30,6 +30,7 @@ reference:
     - show_sig_profile
     - show_sig_exposure
     - show_cosmic_sig_profile
+    - show_sig_consensusmap
   - title: Signature object operation
     desc: Obtain or modify `Signature` object information.
     contents:

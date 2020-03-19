@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Tidy eval helpers — tidyeval • sigminer</title>
+<title>Show Signature Consensus Map — show_sig_consensusmap • sigminer</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,40 +42,8 @@
 
 
 
-<meta property="og:title" content="Tidy eval helpers — tidyeval" />
-<meta property="og:description" content="
-
-sym() creates a symbol from a string and
-syms() creates a list of symbols from a
-character vector.
-enquo() and
-enquos() delay the execution of one or
-several function arguments. enquo() returns a single quoted
-expression, which is like a blueprint for the delayed computation.
-enquos() returns a list of such quoted expressions.
-expr() quotes a new expression locally. It
-is mostly useful to build new expressions around arguments
-captured with enquo() or enquos():
-expr(mean(!!enquo(arg), na.rm = TRUE)).
-as_name() transforms a quoted variable name
-into a string. Supplying something else than a quoted variable
-name is an error.
-That's unlike as_label() which also returns
-a single string but supports any kind of R object as input,
-including quoted function calls and vectors. Its purpose is to
-summarise that object into a single label. That label is often
-suitable as a default name.
-If you don't know what a quoted expression contains (for instance
-expressions captured with enquo() could be a variable
-name, a call to a function, or an unquoted constant), then use
-as_label(). If you know you have quoted a simple variable
-name, or would like to enforce this, use as_name().
-
-
-To learn more about tidy eval and how to use these tools, visit
-https://tidyeval.tidyverse.org and the
-Metaprogramming
-section of Advanced R." />
+<meta property="og:title" content="Show Signature Consensus Map — show_sig_consensusmap" />
+<meta property="og:description" content="This function is a wrapper of NMF::consensusmap." />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -151,54 +119,74 @@ section of Advanced R." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Tidy eval helpers</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ShixiangWang/sigminer/blob/master/R/utils-tidy-eval.R'><code>R/utils-tidy-eval.R</code></a></small>
-    <div class="hidden name"><code>tidyeval.Rd</code></div>
+    <h1>Show Signature Consensus Map</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ShixiangWang/sigminer/blob/master/R/sig_consensusmap.R'><code>R/sig_consensusmap.R</code></a></small>
+    <div class="hidden name"><code>show_sig_consensusmap.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
-<ul>
-<li><p><code><a href='https://rdrr.io/pkg/rlang/man/nse-defuse.html'>sym</a>()</code> creates a symbol from a string and
-<code><a href='https://rdrr.io/pkg/rlang/man/nse-defuse.html'>syms</a>()</code> creates a list of symbols from a
-character vector.</p></li>
-<li><p><code><a href='https://rdrr.io/pkg/rlang/man/nse-defuse.html'>enquo</a>()</code> and
-<code><a href='https://rdrr.io/pkg/rlang/man/nse-defuse.html'>enquos</a>()</code> delay the execution of one or
-several function arguments. <code>enquo()</code> returns a single quoted
-expression, which is like a blueprint for the delayed computation.
-<code>enquos()</code> returns a list of such quoted expressions.</p></li>
-<li><p><code><a href='https://rdrr.io/pkg/rlang/man/nse-defuse.html'>expr</a>()</code> quotes a new expression <em>locally</em>. It
-is mostly useful to build new expressions around arguments
-captured with <code>enquo()</code> or <code>enquos()</code>:
-<code>expr(mean(!!enquo(arg), na.rm = TRUE))</code>.</p></li>
-<li><p><code><a href='https://rlang.r-lib.org/reference/as_name.html'>as_name</a>()</code> transforms a quoted variable name
-into a string. Supplying something else than a quoted variable
-name is an error.</p>
-<p>That's unlike <code><a href='https://rlang.r-lib.org/reference/as_label.html'>as_label</a>()</code> which also returns
-a single string but supports any kind of R object as input,
-including quoted function calls and vectors. Its purpose is to
-summarise that object into a single label. That label is often
-suitable as a default name.</p>
-<p>If you don't know what a quoted expression contains (for instance
-expressions captured with <code>enquo()</code> could be a variable
-name, a call to a function, or an unquoted constant), then use
-<code>as_label()</code>. If you know you have quoted a simple variable
-name, or would like to enforce this, use <code>as_name()</code>.</p></li>
-</ul>
-
-<p>To learn more about tidy eval and how to use these tools, visit
-<a href='https://tidyeval.tidyverse.org'>https://tidyeval.tidyverse.org</a> and the
-<a href='https://adv-r.hadley.nz/metaprogramming.html'>Metaprogramming
-section</a> of <a href='https://adv-r.hadley.nz'>Advanced R</a>.</p>
+    <p>This function is a wrapper of <a href='https://rdrr.io/pkg/NMF/man/heatmaps.html'>NMF::consensusmap</a>.</p>
     </div>
 
+    <pre class="usage"><span class='fu'>show_sig_consensusmap</span>(
+  <span class='no'>sig</span>,
+  <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Consensus matrix"</span>,
+  <span class='kw'>tracks</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"consensus:"</span>, <span class='st'>"silhouette:"</span>),
+  <span class='kw'>lab_row</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+  <span class='kw'>lab_col</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+  <span class='no'>...</span>
+)</pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>sig</th>
+      <td><p>a <code>Signature</code> object obtained from <a href='sig_extract.html'>sig_extract</a>.</p></td>
+    </tr>
+    <tr>
+      <th>main</th>
+      <td><p>Main title as a character string or a grob.</p></td>
+    </tr>
+    <tr>
+      <th>tracks</th>
+      <td><p>Special additional annotation tracks to
+  highlight associations between basis components and
+  sample clusters:</p><dl class='dl-horizontal'>
+<dt>basis</dt><dd><p>matches each row
+  (resp. column) to the most contributing basis component
+  in <code>basismap</code> (resp. <code>coefmap</code>). In
+  <code>basismap</code> (resp. <code>coefmap</code>), adding a track
+  <code>':basis'</code> to <code>annCol</code> (resp. <code>annRow</code>)
+  makes the column (resp. row) corresponding to the
+  component being also highlited using the mathcing
+  colours.</p></dd> 
+</dl></td>
+    </tr>
+    <tr>
+      <th>lab_row</th>
+      <td><p>labels for the rows.</p></td>
+    </tr>
+    <tr>
+      <th>lab_col</th>
+      <td><p>labels for the columns.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>other parameters passing to <a href='https://rdrr.io/pkg/NMF/man/heatmaps.html'>NMF::consensusmap</a></p></td>
+    </tr>
+    </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>nothing</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#value">Value</a></li>
     </ul>
 
   </div>

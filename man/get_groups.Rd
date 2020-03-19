@@ -6,9 +6,9 @@
 \usage{
 get_groups(
   Signature,
-  method = c("k-means", "exposure", "consensus", "samples"),
+  method = c("consensus", "k-means", "exposure", "samples"),
   n_cluster = NULL,
-  match_consensus = FALSE
+  match_consensus = TRUE
 )
 }
 \arguments{
