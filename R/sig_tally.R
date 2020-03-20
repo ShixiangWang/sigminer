@@ -1,4 +1,4 @@
-#' Tally a Variation Object
+#' Tally a Genomic Alteration Object
 #'
 #' Tally a variation object like [MAF] and return a matrix for NMF de-composition and more.
 #' This is a generic function,

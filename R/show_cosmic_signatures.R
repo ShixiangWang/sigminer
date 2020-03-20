@@ -42,12 +42,13 @@ show_cosmic_sig_profile <- function(sig_index = NULL, show_index = TRUE, sig_db 
     avail_index <- substring(colnames(sigs), 4)
   }
 
+  msg <- paste(
+    paste0("\nValid index for db '", sig_db, "':"),
+    paste0(avail_index, collapse = " "),
+    sep = "\n"
+  )
+
   if (show_index) {
-    msg <- paste(
-      paste0("\nValid index for db '", sig_db, "':"),
-      paste0(avail_index, collapse = " "),
-      sep = "\n"
-    )
     message(msg)
   }
 

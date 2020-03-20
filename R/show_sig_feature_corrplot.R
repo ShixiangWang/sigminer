@@ -95,7 +95,7 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
     )) + ggplot2::scale_size_binned(
       limits = size_limits,
       guide = ggplot2::guide_bins(show.limits = TRUE)
-      )
+    )
 
     if (type == "co") {
       p <- p + co_gradient_colors
