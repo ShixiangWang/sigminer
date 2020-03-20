@@ -12,6 +12,9 @@
 #' @inheritParams show_sig_profile
 #' @inheritParams show_cosmic_sig_profile
 #' @inheritParams get_sig_exposure
+#' @param sig a `Signature` object obtained either from [sig_extract] or [sig_auto_extract],
+#' or just a raw signature matrix with row representing components (motifs) and
+#' column representing signatures.
 #' @param return_class string, 'matrix' or 'data.table'.
 #' @param rel_threshold numeric vector, a relative exposure lower than this value will be set to 0.
 #'
