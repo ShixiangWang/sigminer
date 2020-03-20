@@ -117,3 +117,43 @@ cor(zz$Sig2, zz$COSMIC_1)
 
 zz[, -1] %>% as.matrix() %>% cor %>%
   pheatmap::pheatmap()
+
+
+## From SigsPack
+## Estimating signature exposures and bootstrapping samples
+library(SigsPack)
+data(cosmicSigs)
+
+## Tri-nucleotide contexts and normalization
+#create mutational catalogue:
+sim_data <- create_mut_catalogues(1, 500)[['catalogues']]
+# get trinucleotide frequencies for the genome:
+genome_context <- get_context_freq(BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19)
+# [,1]
+# ACA 116801425
+# ACC  67478084
+#get trinucleotide frequencies for a specific region:
+gr<-GenomicRanges::GRanges(seqnames=c("chr1"),
+                           ranges=IRanges::IRanges(start=c(100000),end=c(1000000)),
+                           strand=c("+"))
+region_context<-get_context_freq(BSgenome.Hsapiens.UCSC.hg19::BSgenome.Hsapiens.UCSC.hg19, gr)
+## Same str as genome_context
+#normalize data:
+normalized_mut_cat <- normalize(sim_data, region_context, genome_context)
+
+# > head(sim_data)
+# sample_1
+# A[C>A]A        5
+# A[C>A]C        5
+# A[C>A]G        4
+# A[C>A]T        6
+# C[C>A]A        7
+# C[C>A]C        2
+# > head(normalized_mut_cat)
+# sample_1
+# A[C>A]A 0.010810284
+# A[C>A]C 0.009301655
+# A[C>A]G 0.005168414
+# A[C>A]T 0.014750380
+# C[C>A]A 0.013053622
+# C[C>A]C 0.002685491

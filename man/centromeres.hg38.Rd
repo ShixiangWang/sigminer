@@ -4,7 +4,9 @@
 \name{centromeres.hg38}
 \alias{centromeres.hg38}
 \title{Location of Centromeres at Genome Build hg38}
-\format{A data.frame}
+\format{
+A data.frame
+}
 \source{
 Generate from Genome Reference Consortium
 }

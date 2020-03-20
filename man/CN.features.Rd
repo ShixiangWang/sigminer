@@ -4,7 +4,9 @@
 \name{CN.features}
 \alias{CN.features}
 \title{Classfication Table of Copy Number Features Devised by Wang et al.}
-\format{A \code{data.table} with "sigminer.features" class name}
+\format{
+A \code{data.table} with "sigminer.features" class name
+}
 \source{
 Generate from code under data_raw/
 }

@@ -4,7 +4,9 @@
 \name{cytobands.hg38}
 \alias{cytobands.hg38}
 \title{Location of Chromosome Cytobands at Genome Build hg38}
-\format{A data.frame}
+\format{
+A data.frame
+}
 \source{
 from UCSC
 }

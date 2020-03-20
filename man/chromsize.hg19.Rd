@@ -4,7 +4,9 @@
 \name{chromsize.hg19}
 \alias{chromsize.hg19}
 \title{Chromosome Size of Genome Build hg19}
-\format{A data.frame}
+\format{
+A data.frame
+}
 \source{
 Generate from UCSC gold path
 }

@@ -1,6 +1,6 @@
-#' Optimize Signature Exposure with Linear Combination Decomposition
+#' Fit Signature Exposure with Linear Combination Decomposition
 #'
-#' The function performs a mutational signatures decomposition of a given mutational
+#' The function performs a signatures decomposition of a given mutational
 #' catalogue `V` with known signatures `W` by solving the minimization problem
 #' `min(||W*H - V||)` with additional constraints of non-negativity on H where W and V are known.
 #'
@@ -29,24 +29,24 @@
 #' V <- W %*% H
 #' V
 #'
-#' H_infer <- optimize_sig_exposure(V, W)
+#' H_infer <- sig_fit(V, W)
 #' H_infer
 #' H
 #'
-#' H_dt <- optimize_sig_exposure(V, W, return_class = "data.table")
+#' H_dt <- sig_fit(V, W, return_class = "data.table")
 #' H_dt
 #' @testexamples
 #' expect_is(H_infer, "matrix")
 #' expect_is(H_dt, "data.table")
-optimize_sig_exposure <- function(catalogue_matrix,
-                                  sig,
-                                  sig_index = NULL,
-                                  sig_db = "legacy",
-                                  show_index = TRUE,
-                                  type = c("absolute", "relative"),
-                                  return_class = c("matrix", "data.table"),
-                                  rel_threshold = 0,
-                                  mode = c("SBS", "copynumber")) {
+sig_fit <- function(catalogue_matrix,
+                    sig,
+                    sig_index = NULL,
+                    sig_db = "legacy",
+                    show_index = TRUE,
+                    type = c("absolute", "relative"),
+                    return_class = c("matrix", "data.table"),
+                    rel_threshold = 0,
+                    mode = c("SBS", "copynumber")) {
   stopifnot(is.matrix(catalogue_matrix))
 
   if (is.null(sig_index)) {

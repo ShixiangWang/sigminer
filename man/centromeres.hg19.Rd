@@ -4,7 +4,9 @@
 \name{centromeres.hg19}
 \alias{centromeres.hg19}
 \title{Location of Centromeres at Genome Build hg19}
-\format{A data.frame}
+\format{
+A data.frame
+}
 \source{
 Generate from UCSC gold path
 }
