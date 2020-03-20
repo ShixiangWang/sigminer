@@ -21,6 +21,10 @@ sig_fit(
 columns representing samples, typically you can get \code{nmf_matrix} from \code{sig_tally()} and
 transpose it by \code{t()}.}
 
+\item{sig}{a \code{Signature} object obtained either from \link{sig_extract} or \link{sig_auto_extract},
+or just a raw signature matrix with row representing components (motifs) and
+column representing signatures.}
+
 \item{sig_index}{a vector for signature index.}
 
 \item{sig_db}{can be 'legacy' or 'SBS'. Default 'legacy'.}
