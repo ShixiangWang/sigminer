@@ -63,6 +63,8 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
     ) %>%
     dplyr::filter(.data$feature %in% feature_list)
 
+  size_limits <- range(data$Samples)
+
   if (drop) {
     data <- data %>%
       dplyr::filter(.data$p <= p_val)
@@ -90,7 +92,10 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
     p <- p + ggplot2::geom_point(ggplot2::aes_string(
       color = "measure",
       size = "Samples"
-    )) + ggplot2::scale_size_binned(guide = ggplot2::guide_bins(show.limits = TRUE))
+    )) + ggplot2::scale_size_binned(
+      limits = size_limits,
+      guide = ggplot2::guide_bins(show.limits = TRUE)
+      )
 
     if (type == "co") {
       p <- p + co_gradient_colors
@@ -137,7 +142,8 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
         axis.text.x = element_blank(),
         axis.ticks.x = element_blank()
       )
-      ca <- gglist$ca + guides(size = FALSE) + labs(y = NULL)
+      ca <- gglist$ca + guides(size = FALSE) +
+        labs(y = NULL)
       co + ca + plot_layout(
         byrow = TRUE, heights = heights,
         widths = widths

@@ -63,3 +63,27 @@ load(system.file("extdata", "asso_data.RData",
 
 
 show_sig_feature_corrplot(tidy_data.seqz.feature, p_val = 0.05)
+
+# > YAPSA::LCD
+function (in_mutation_catalogue_df, in_signatures_df, in_per_sample_cutoff = 0)
+{
+  signatures_matrix <- as.matrix(in_signatures_df)
+  out_exposures_df <- data.frame()
+  G <- diag(dim(signatures_matrix)[2])
+  H <- rep(0, dim(signatures_matrix)[2])
+  for (i in seq_len(ncol(in_mutation_catalogue_df))) {
+    temp_fractions <- lsei::lsei(a = signatures_matrix, b = in_mutation_catalogue_df[,
+                                                                                     i], e = G, f = H)
+    temp_exposures_vector <- round(temp_fractions, digits = 6)
+    names(temp_exposures_vector) <- names(in_signatures_df)
+    rel_exposures_vector <- temp_exposures_vector/sum(temp_exposures_vector)
+    deselect_ind <- which(rel_exposures_vector < in_per_sample_cutoff)
+    temp_exposures_vector[deselect_ind] <- 0
+    out_exposures_df[seq(1, dim(signatures_matrix)[2], 1),
+                     i] <- temp_exposures_vector
+    rm(temp_fractions)
+  }
+  colnames(out_exposures_df) <- colnames(in_mutation_catalogue_df)
+  rownames(out_exposures_df) <- colnames(in_signatures_df)
+  return(out_exposures_df)
+}
