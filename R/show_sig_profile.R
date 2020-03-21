@@ -69,7 +69,9 @@
 #' ))
 #' # Show signature profile
 #' p2 <- show_sig_profile(sig,
-#'   style = "cosmic", method = "W",
+#'   style = "cosmic",
+#'   mode = "copynumber",
+#'   method = "W",
 #'   normalize = "feature"
 #' )
 #' p2
@@ -83,6 +85,7 @@
 #' # original paper
 #' p3 <- show_sig_profile(sig,
 #'   paint_axis_text = FALSE,
+#'   mode = "copynumber",
 #'   method = "M", normalize = "column"
 #' )
 #' p3
@@ -95,6 +98,7 @@
 #' ))
 #' params <- get_tidy_parameter(cn_tally_M$components)
 #' p4 <- show_sig_profile(sig,
+#'   mode = "copynumber",
 #'   method = "M", normalize = "column",
 #'   params = params, y_expand = 2
 #' )
@@ -104,7 +108,7 @@
 #' expect_s3_class(p2, "ggplot")
 #' expect_s3_class(p3, "ggplot")
 #' expect_s3_class(p4, "ggplot")
-show_sig_profile <- function(Signature, mode = c("copynumber", "SBS"),
+show_sig_profile <- function(Signature, mode = c("SBS", "copynumber"),
                              method = "Wang",
                              normalize = c("row", "column", "raw", "feature"),
                              filters = NULL,

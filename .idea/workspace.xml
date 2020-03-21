@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="64cb91f3-ed2a-48c2-a3d7-9b658ca3e71d" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.Rbuildignore" beforeDir="false" afterPath="$PROJECT_DIR$/.Rbuildignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/R/show_sig_profile.R" beforeDir="false" afterPath="$PROJECT_DIR$/R/show_sig_profile.R" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/man/show_sig_profile.Rd" beforeDir="false" afterPath="$PROJECT_DIR$/man/show_sig_profile.Rd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-add_labels.R" beforeDir="false" afterPath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-add_labels.R" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-get_adj_p.R" beforeDir="false" afterPath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-get_adj_p.R" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-get_bayesian_result.R" beforeDir="false" afterPath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-get_bayesian_result.R" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-get_cn_ploidy.R" beforeDir="false" afterPath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-get_cn_ploidy.R" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-get_genome_annotation.R" beforeDir="false" afterPath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-get_genome_annotation.R" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-get_sig_exposure.R" beforeDir="false" afterPath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-get_sig_exposure.R" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-get_sig_similarity.R" beforeDir="false" afterPath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-get_sig_similarity.R" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-get_tidy_parameter.R" beforeDir="false" afterPath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-get_tidy_parameter.R" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-read_copynumber.R" beforeDir="false" afterPath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-read_copynumber.R" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-read_maf.R" beforeDir="false" afterPath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-read_maf.R" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-scoring.R" beforeDir="false" afterPath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-scoring.R" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-show_cn_components.R" beforeDir="false" afterPath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-show_cn_components.R" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-show_cn_distribution.R" beforeDir="false" afterPath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-show_cn_distribution.R" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-show_cn_features.R" beforeDir="false" afterPath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-show_cn_features.R" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-show_cn_profile.R" beforeDir="false" afterPath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-show_cn_profile.R" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-show_cosmic_signatures.R" beforeDir="false" afterPath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-show_cosmic_signatures.R" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-show_group_comparison.R" beforeDir="false" afterPath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-show_group_comparison.R" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-show_group_mapping.R" beforeDir="false" afterPath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-show_group_mapping.R" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-show_sig_exposure.R" beforeDir="false" afterPath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-show_sig_exposure.R" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-show_sig_feature_corrplot.R" beforeDir="false" afterPath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-show_sig_feature_corrplot.R" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-show_sig_profile.R" beforeDir="false" afterPath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-show_sig_profile.R" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-sig_auto_extract.R" beforeDir="false" afterPath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-sig_auto_extract.R" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-sig_fit.R" beforeDir="false" afterPath="$PROJECT_DIR$/tests/testthat/test-roxytest-testexamples-sig_fit.R" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/testthat/test-roxytest-tests-show_sig_number_survey.R" beforeDir="false" afterPath="$PROJECT_DIR$/tests/testthat/test-roxytest-tests-show_sig_number_survey.R" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/testthat/test-roxytest-tests-sig_extract.R" beforeDir="false" afterPath="$PROJECT_DIR$/tests/testthat/test-roxytest-tests-sig_extract.R" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/testthat/test-roxytest-tests-sig_tally.R" beforeDir="false" afterPath="$PROJECT_DIR$/tests/testthat/test-roxytest-tests-sig_tally.R" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1ZQTA1ae5j1hDdFehnvd7f0YSLE" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="go.import.settings.migrated" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="64cb91f3-ed2a-48c2-a3d7-9b658ca3e71d" name="Default Changelist" comment="" />
+      <created>1584770170229</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1584770170229</updated>
+      <workItem from="1584770172847" duration="966000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="361" y="94" key="#Plugins" timestamp="1584770236488">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="361" y="94" key="#Plugins/0.0.1536.864@0.0.1536.864" timestamp="1584770236488" />
+    <state x="223" y="90" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1584770419574">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="223" y="90" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.864@0.0.1536.864" timestamp="1584770419574" />
+    <state x="431" y="181" width="672" height="678" key="search.everywhere.popup" timestamp="1584770558195">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="431" y="181" width="672" height="678" key="search.everywhere.popup/0.0.1536.864@0.0.1536.864" timestamp="1584770558195" />
+  </component>
+</project>
