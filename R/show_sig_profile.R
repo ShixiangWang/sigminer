@@ -1,3 +1,5 @@
+## Other implementation: https://github.com/kgori/sigfit/blob/209776ee1d2193ad4b682b2e2472f848bd7c67a6/R/sigfit_plotting.R#L688-L949
+
 #' Show Signature Profile
 #'
 #' Who don't like to show a barplot for signature profile? This is for it.
@@ -36,6 +38,8 @@
 #' @param x_label_angle font angle for x label.
 #' @param x_label_vjust font vjust for x label.
 #' @param x_label_hjust font hjust for x label.
+#' @param x_lab x axis lab.
+#' @param y_lab y axis lab.
 #' @param params params `data.frame` of components, obtained from [sig_tally].
 #' @param show_cv default is `FALSE`, if `TRUE`, show coefficient of variation when
 #' `params` is not `NULL`.
@@ -125,12 +129,16 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber"),
                              x_label_angle = 60,
                              x_label_vjust = 1,
                              x_label_hjust = 1,
+                             x_lab = "Components",
+                             y_lab = "auto",
                              params = NULL, show_cv = FALSE,
                              params_label_size = 3,
                              params_label_angle = 60, y_expand = 1,
                              digits = 2, base_size = 12, font_scale = 1,
                              sig_names = NULL, sig_orders = NULL,
                              check_sig_names = TRUE) {
+  stopifnot(all(!is.na(sig_names)), is.character(x_lab), is.character(y_lab))
+
   if (class(Signature) == "Signature") {
     Sig <- Signature$Signature
   } else if (is.matrix(Signature)) {
@@ -388,14 +396,18 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber"),
     p <- p + theme(plot.margin = margin(30 * y_expand, 2, 2, 2, unit = "pt")) # Add regions
   }
 
-  p <- p + xlab("Components")
+  p <- p + xlab(x_lab)
 
-  if (normalize == "column") {
-    p <- p + ylab("Weights")
-  } else if (normalize == "row" | normalize == "feature") {
-    p <- p + ylab("Contributions")
+  if (y_lab == "auto") {
+    if (normalize == "column") {
+      p <- p + ylab("Weights")
+    } else if (normalize == "row" | normalize == "feature") {
+      p <- p + ylab("Contributions")
+    } else {
+      p <- p + ylab("Estimated counts")
+    }
   } else {
-    p <- p + ylab("Estimated counts")
+    p <- p + ylab(y_lab)
   }
 
   if (style != "default" | paint_axis_text) {

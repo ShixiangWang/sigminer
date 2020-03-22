@@ -23,6 +23,8 @@ show_sig_profile(
   x_label_angle = 60,
   x_label_vjust = 1,
   x_label_hjust = 1,
+  x_lab = "Components",
+  y_lab = "auto",
   params = NULL,
   show_cv = FALSE,
   params_label_size = 3,
@@ -91,6 +93,10 @@ data.}
 \item{x_label_vjust}{font vjust for x label.}
 
 \item{x_label_hjust}{font hjust for x label.}
+
+\item{x_lab}{x axis lab.}
+
+\item{y_lab}{y axis lab.}
 
 \item{params}{params \code{data.frame} of components, obtained from \link{sig_tally}.}
 
