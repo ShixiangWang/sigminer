@@ -52,7 +52,9 @@ Show Alteration Catalogue Profile
 load(system.file("extdata", "toy_copynumber_tally_M.RData",
   package = "sigminer", mustWork = TRUE
 ))
-p <- show_catalogue(cn_tally_M, mode = "copynumber", method = "M",
-                    style = "cosmic", paint_axis_text = FALSE)
+p <- show_catalogue(cn_tally_M,
+  mode = "copynumber", method = "M",
+  style = "cosmic", paint_axis_text = FALSE
+)
 p
 }
