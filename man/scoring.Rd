@@ -42,6 +42,9 @@ TD represents segment with copy number greater than 2.
 \deqn{TD = \frac{TD_{total}}{\sum_{chr} |TD_{obs}-TD_{exp}|+1}}
 \item sTDP: TDP score for short TD.
 \item lTDP: TDP score for long TD.
+\item TDP_size : TDP region size (Mb).
+\item sTDP_size: sTDP region size (Mb).
+\item lTDP_size: lTDP region size(Mb).
 \item Chromoth_state: chromothripsis state score,
 according to reference \url{http://dx.doi.org/10.1016/j.cell.2013.02.023},
 chromothripsis frequently leads to massive loss of segments on

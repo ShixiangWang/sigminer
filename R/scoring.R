@@ -38,6 +38,9 @@
 #' \deqn{TD = \frac{TD_{total}}{\sum_{chr} |TD_{obs}-TD_{exp}|+1}}
 #' - sTDP: TDP score for short TD.
 #' - lTDP: TDP score for long TD.
+#' - TDP_size : TDP region size (Mb).
+#' - sTDP_size: sTDP region size (Mb).
+#' - lTDP_size: lTDP region size(Mb).
 #' - Chromoth_state: chromothripsis state score,
 #' according to reference <http://dx.doi.org/10.1016/j.cell.2013.02.023>,
 #' chromothripsis frequently leads to massive loss of segments on
@@ -63,7 +66,8 @@
 #' @testexamples
 #' expect_s3_class(d, "data.frame")
 #' expect_s3_class(d2, "data.frame")
-scoring <- function(object, TD_size_cutoff = c(1e3, 1e5, 2e6), TD_cn_cutoff = Inf) {
+scoring <- function(object, TD_size_cutoff = c(1e3, 1e5, 2e6),
+                    TD_cn_cutoff = Inf) {
   stopifnot(
     inherits(object, "CopyNumber"), length(TD_size_cutoff) == 3,
     is.numeric(TD_size_cutoff), is.numeric(TD_cn_cutoff)
@@ -149,9 +153,12 @@ scoring_TD <- function(data, TD_size_cutoff, TD_cn_cutoff) {
 
   data_chr <- data_full[, list(
     chr_TD = sum(segVal > 2 & segLen >= TD_size_cutoff[1] & segLen <= TD_size_cutoff[3]),
-    chr_sTD = sum(segVal > 2 & segLen >= TD_size_cutoff[1] & segLen <= TD_size_cutoff[2])
+    chr_sTD = sum(segVal > 2 & segLen >= TD_size_cutoff[1] & segLen <= TD_size_cutoff[2]),
+    len_TD = sum(segLen[segVal > 2 & segLen >= TD_size_cutoff[1] & segLen <= TD_size_cutoff[3]]),
+    len_sTD = sum(segLen[segVal > 2 & segLen >= TD_size_cutoff[1] & segLen <= TD_size_cutoff[2]])
   ), by = list(sample, chromosome)]
   data_chr$chr_lTD <- data_chr$chr_TD - data_chr$chr_sTD
+  data_chr$len_lTD <- data_chr$len_TD - data_chr$len_sTD
 
   calc_TDP <- function(x) {
     sum(x) / (sum(abs(x - sum(x) / 22)) + 1)
@@ -164,11 +171,14 @@ scoring_TD <- function(data, TD_size_cutoff, TD_cn_cutoff) {
   }
 
   data_chr[, list(
-    TD_count = sum(chr_TD),
-    TDP = calc_TDP(chr_TD),
-    sTDP = calc_TDP(chr_sTD),
-    lTDP = calc_TDP(chr_lTD),
-    TDP_pnas = calc_TDP_pnas(chr_TD)
+    TD_count   = sum(chr_TD),
+    TDP        = calc_TDP(chr_TD),
+    sTDP       = calc_TDP(chr_sTD),
+    lTDP       = calc_TDP(chr_lTD),
+    TDP_size   = sum(len_TD)  / 1e6,
+    sTDP_size  = sum(len_sTD) / 1e6,
+    lTDP_size  = sum(len_lTD) / 1e6,
+    TDP_pnas   = calc_TDP_pnas(chr_TD)
   ), by = list(sample)]
 }
 
