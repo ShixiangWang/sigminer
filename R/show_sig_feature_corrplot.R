@@ -82,7 +82,7 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
     data <- tidy_cor %>%
       dplyr::mutate(
         Samples = cut(.data$count,
-                      breaks = breaks_count
+          breaks = breaks_count
         ),
         signature = factor(.data$signature)
       ) %>%
@@ -105,7 +105,7 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
       data <- data %>%
         dplyr::mutate(
           Samples = ifelse(is.na(.data$Samples),
-                           size_levels[1], .data$Samples %>% as.character()
+            size_levels[1], .data$Samples %>% as.character()
           ),
           Samples = factor(.data$Samples, levels = size_levels)
         )
@@ -144,7 +144,6 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
           )
       } else {
         p <- p + ggplot2::scale_size_discrete(drop = FALSE)
-
       }
     }
 

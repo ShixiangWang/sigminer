@@ -171,14 +171,14 @@ scoring_TD <- function(data, TD_size_cutoff, TD_cn_cutoff) {
   }
 
   data_chr[, list(
-    TD_count   = sum(chr_TD),
-    TDP        = calc_TDP(chr_TD),
-    sTDP       = calc_TDP(chr_sTD),
-    lTDP       = calc_TDP(chr_lTD),
-    TDP_size   = sum(len_TD)  / 1e6,
-    sTDP_size  = sum(len_sTD) / 1e6,
-    lTDP_size  = sum(len_lTD) / 1e6,
-    TDP_pnas   = calc_TDP_pnas(chr_TD)
+    TD_count = sum(chr_TD),
+    TDP = calc_TDP(chr_TD),
+    sTDP = calc_TDP(chr_sTD),
+    lTDP = calc_TDP(chr_lTD),
+    TDP_size = sum(len_TD) / 1e6,
+    sTDP_size = sum(len_sTD) / 1e6,
+    lTDP_size = sum(len_lTD) / 1e6,
+    TDP_pnas = calc_TDP_pnas(chr_TD)
   ), by = list(sample)]
 }
 

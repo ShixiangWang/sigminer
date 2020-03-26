@@ -24,10 +24,29 @@ cn_tally_W = sig_tally(cn, method = "W")
 save(cn_tally_M, file = "inst/extdata/toy_copynumber_tally_M.RData")
 save(cn_tally_W, file = "inst/extdata/toy_copynumber_tally_W.RData")
 
+
+load(file = "inst/extdata/toy_copynumber_tally_W.RData")
 library(NMF)
 sig = sig_extract(cn_tally_W$nmf_matrix, n_sig = 2, pConstant = 1e-13)
 save(sig, file = "inst/extdata/toy_copynumber_signature_by_W.RData")
 
+
+sig2 = sig_extract(cn_tally_W$nmf_matrix, n_sig = 2, pConstant = 1e-13, optimize = TRUE)
+
+identical(sig$Signature, sig2$Signature)
+identical(sig$Signature.norm, sig2$Signature.norm)
+
+sum((apply(sig$Signature[22:28,], 2, function(x) x/sum(x)) %*% sig$Exposure - t(cn_tally_W$nmf_matrix)[22:28, ])^2)
+sum((apply(sig2$Signature[22:28,], 2, function(x) x/sum(x)) %*% sig2$Exposure - t(cn_tally_W$nmf_matrix)[22:28, ])^2)
+
+expo1 = get_sig_exposure(sig)
+expo2 = get_sig_exposure(sig2)
+
+plot(expo1$Sig1, expo2$Sig1)
+plot(expo1$Sig2, expo2$Sig2)
+
+cor(expo1$Sig1, expo2$Sig1)
+cor(expo1$Sig2, expo2$Sig2)
 
 ## Signature identification for SBS
 library(sigminer)
@@ -48,6 +67,23 @@ if (require("BSgenome.Hsapiens.UCSC.hg19")) {
 sig = sig_extract(mt_tally$nmf_matrix, n_sig = 3, pConstant = 1e-13)
 get_sig_exposure(sig)
 
+
+sig2 = sig_extract(mt_tally$nmf_matrix, n_sig = 3, pConstant = 1e-13, optimize = TRUE)
+
+identical(sig$Signature, sig2$Signature)
+identical(sig$Signature.norm, sig2$Signature.norm)
+
+sum((apply(sig$Signature, 2, function(x) x/sum(x)) %*% sig$Exposure - t(mt_tally$nmf_matrix))^2)
+sum((apply(sig2$Signature, 2, function(x) x/sum(x)) %*% sig2$Exposure - t(mt_tally$nmf_matrix))^2)
+
+expo1 = get_sig_exposure(sig)
+expo2 = get_sig_exposure(sig2)
+
+plot(expo1$Sig1, expo2$Sig1)
+plot(expo1$Sig2, expo2$Sig2)
+
+cor(expo1$Sig1, expo2$Sig1)
+cor(expo1$Sig2, expo2$Sig2)
 
 show_sig_profile(mt_tally$nmf_matrix[1, , drop = FALSE] %>% t(), mode = "SBS",
                  style = "cosmic", normalize = "raw",
