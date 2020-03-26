@@ -20,6 +20,7 @@
 #'
 #' @inheritParams sig_estimate
 #' @inheritParams sig_tally
+#' @inheritParams sig_extract
 #' @param result_prefix prefix for result data files.
 #' @param destdir path to save data runs, default is `tempdir()`.
 #' @param method default is "L1W.L2H", which uses an exponential prior for W and
@@ -74,6 +75,7 @@ sig_auto_extract <- function(nmf_matrix = NULL,
                              niter = 2e5,
                              tol = 1e-07,
                              cores = 1,
+                             optimize = FALSE,
                              skip = FALSE,
                              recover = FALSE) {
   on.exit(invisible(gc())) # clean when exit
@@ -148,6 +150,25 @@ sig_auto_extract <- function(nmf_matrix = NULL,
 
   message("Select Run ", best_row$Run, ", which K = ", best_row$K, " as best solution.")
   best_solution <- get_bayesian_result(best_row)
+
+  has_cn <- grepl("^CN[^C]", rownames(best_solution$Signature)) | startsWith(rownames(best_solution$Signature), "copynumber")
+  mat <- nmf_matrix
+  if (optimize) {
+    ## Optimize signature exposure
+    if (any(has_cn)) {
+      mat_cn <- mat[has_cn, ]
+      W_cn <- best_solution$Signature[has_cn, ]
+      W_cn <- apply(W_cn, 2, function(x) x / sum(x))
+
+      ## Call LCD
+      best_solution$Exposure <- sig_fit(catalogue_matrix = mat_cn, sig = W_cn, mode = "copynumber")
+      best_solution$Exposure.norm <- apply(best_solution$Exposure, 2, function(x) x / sum(x, na.rm = TRUE))
+    } else {
+      ## Call LCD
+      best_solution$Exposure <- sig_fit(catalogue_matrix = mat, sig = apply(best_solution$Signature, 2, function(x) x / sum(x)))
+      best_solution$Exposure.norm <- apply(best_solution$Exposure, 2, function(x) x / sum(x, na.rm = TRUE))
+    }
+  }
 
   res <- list(
     Signature = best_solution$Signature,

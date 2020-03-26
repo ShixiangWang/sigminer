@@ -4,7 +4,7 @@
 \alias{scoring}
 \title{Score Copy Number Profile}
 \usage{
-scoring(object, TD_size_cutoff = c(1000, 1e+05, 2e+06))
+scoring(object, TD_size_cutoff = c(1000, 1e+05, 2e+06), TD_cn_cutoff = Inf)
 }
 \arguments{
 \item{object}{a object of \link{CopyNumber}.}
@@ -13,6 +13,9 @@ scoring(object, TD_size_cutoff = c(1000, 1e+05, 2e+06))
 segment size for determining tandem duplication size range, midpoint is used to split
 TD into short TD and long TD. Default is 1Kb to 100Kb for short TD, 100Kb to 2Mb for long
 TD.}
+
+\item{TD_cn_cutoff}{a number defining the maximum copy number of TD,
+default is \code{Inf}, i.e. no cutoff.}
 }
 \value{
 a \code{data.table} with following scores:
@@ -29,19 +32,22 @@ the number of CNV.
 where \eqn{L_{i}} is the length of altered copy number segment \eqn{i}.
 \item Ploidy: ploidy, the formula is same as \code{weightedMACN} but using all copy number segments instead of
 altered copy number segments.
-\item TDP: tandem duplication phenotype score from \url{https://www.pnas.org/content/113/17/E2373},
+\item TDP_pnas: tandem duplication phenotype score from \url{https://www.pnas.org/content/113/17/E2373},
 the threshold \code{k} in reference is omitted.
 \deqn{TDP = - \frac{\sum_{chr} |TD_{obs}-TD_{exp}|}{TD_{total}}}
 where \eqn{TD_{total}} is the number of TD, \eqn{TD_{obs}} and
 \eqn{TD_exp} are observed number of TD and expected number of TD for each chromosome.
+\item TDP: tandem duplication score used defined by our group work,
+TD represents segment with copy number greater than 2.
+\deqn{TD = \frac{TD_{total}}{\sum_{chr} |TD_{obs}-TD_{exp}|+1}}
 \item sTDP: TDP score for short TD.
 \item lTDP: TDP score for long TD.
-\item TD: tandem duplication score, TD represents segment with copy number greater than 2.
-\deqn{TD = \frac{TD_{total}}{\sum_{chr} |TD_{obs}-TD_{exp}|+1}}
-\item sTD: TD score for short TD.
-\item lTD: TD score for long TD.
-\item Chromothripisis: according to reference \url{http://dx.doi.org/10.1016/j.cell.2013.02.023},
-Chromothripsis frequently leads to massive loss of segments on
+\item TDP_size : TDP region size (Mb).
+\item sTDP_size: sTDP region size (Mb).
+\item lTDP_size: lTDP region size(Mb).
+\item Chromoth_state: chromothripsis state score,
+according to reference \url{http://dx.doi.org/10.1016/j.cell.2013.02.023},
+chromothripsis frequently leads to massive loss of segments on
 the affected chromosome with segmental losses being interspersed with regions displaying
 normal (disomic) copy-number (e.g., copy-number states oscillating between
 copy-number = 1 and copy-number = 2), form tens to hundreds of locally clustered DNA rearrangements.
@@ -66,4 +72,7 @@ load(system.file("extdata", "toy_copynumber.RData",
 
 d <- scoring(cn)
 d
+
+d2 <- scoring(cn, TD_cn_cutoff = 4L)
+d2
 }

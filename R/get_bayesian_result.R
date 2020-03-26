@@ -37,7 +37,8 @@ get_bayesian_result <- function(run_info) {
   H <- H[index, , drop = FALSE]
   K <- sum(index)
 
-  scal_res <- helper_scale_nmf_matrix(W, H, K)
+  has_cn <- grepl("^CN[^C]", rownames(W)) | startsWith(rownames(W), "copynumber")
+  scal_res <- helper_scale_nmf_matrix(W, H, K, handle_cn = any(has_cn))
   Signature <- scal_res$Signature
   Exposure <- scal_res$Exposure
 

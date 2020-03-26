@@ -4,7 +4,7 @@
 \alias{sig_tally}
 \alias{sig_tally.CopyNumber}
 \alias{sig_tally.MAF}
-\title{Tally a Variation Object}
+\title{Tally a Genomic Alteration Object}
 \usage{
 sig_tally(object, ...)
 

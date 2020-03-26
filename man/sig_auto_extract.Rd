@@ -15,6 +15,7 @@ sig_auto_extract(
   niter = 2e+05,
   tol = 1e-07,
   cores = 1,
+  optimize = FALSE,
   skip = FALSE,
   recover = FALSE
 )
@@ -46,6 +47,8 @@ Only used when method is "Macintyre".}
 \item{tol}{tolerance for convergence.}
 
 \item{cores}{number of cpu cores to run NMF.}
+
+\item{optimize}{logical, for exposure optimization, especially useful for copy number signature.}
 
 \item{skip}{if \code{TRUE}, it will skip running a previous stored result. This can be used to
 extend run times, e.g. you try running 10 times firstly and then you want to extend it to

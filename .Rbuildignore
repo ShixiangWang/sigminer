@@ -16,3 +16,4 @@ inst/test
 .vscode/
 ^doc$
 ^Meta$
+.idea/

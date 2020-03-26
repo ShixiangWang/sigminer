@@ -20,7 +20,9 @@
 #' @param co_gradient_colors a Scale object representing gradient colors used to plot for continuous features.
 #' @param ca_gradient_colors a Scale object representing gradient colors used to plot for categorical features.
 #' @param plot_ratio a length-2 numeric vector to set the height/width ratio.
-#'
+#' @param breaks_count breaks for sample count. If set it to `NULL`,
+#' ggplot `bin` scale will be used to automatically determine the
+#' breaks. If set it to `NA`, `aes` for sample will be not used.
 #' @return a `ggplot2` object
 #' @export
 #' @examples
@@ -47,7 +49,11 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
                                         mid = "white", high = "red", midpoint = 0
                                       ),
                                       ca_gradient_colors = co_gradient_colors,
-                                      plot_ratio = "auto") {
+                                      plot_ratio = "auto",
+                                      breaks_count = c(
+                                        0L,
+                                        200L, 400L, 600L, 800L, 1020L
+                                      )) {
   if (!is.character(plot_ratio)) {
     if (length(plot_ratio) != 2 | !is.numeric(plot_ratio)) {
       stop("plot_ratio must be a length-2 numeric vector!")
@@ -56,12 +62,33 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
   if (missing(feature_list)) {
     feature_list <- tidy_cor$feature %>% unique()
   }
-  data <- tidy_cor %>%
-    dplyr::mutate(
-      Samples = .data$count,
-      signature = factor(.data$signature)
-    ) %>%
-    dplyr::filter(.data$feature %in% feature_list)
+
+  if (is.null(breaks_count)) {
+    data <- tidy_cor %>%
+      dplyr::mutate(
+        Samples = .data$count,
+        signature = factor(.data$signature)
+      ) %>%
+      dplyr::filter(.data$feature %in% feature_list)
+
+    size_limits <- range(data$Samples)
+  } else if (any(is.na(breaks_count))) {
+    data <- tidy_cor %>%
+      dplyr::mutate(
+        signature = factor(.data$signature)
+      ) %>%
+      dplyr::filter(.data$feature %in% feature_list)
+  } else {
+    data <- tidy_cor %>%
+      dplyr::mutate(
+        Samples = cut(.data$count,
+          breaks = breaks_count
+        ),
+        signature = factor(.data$signature)
+      ) %>%
+      dplyr::filter(.data$feature %in% feature_list)
+  }
+
 
   if (drop) {
     data <- data %>%
@@ -72,6 +99,17 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
       dplyr::mutate(
         measure = ifelse(.data$p > p_val | is.na(.data$p), 0, .data$measure),
       )
+
+    if (is.numeric(breaks_count)) {
+      size_levels <- levels(data$Samples)
+      data <- data %>%
+        dplyr::mutate(
+          Samples = ifelse(is.na(.data$Samples),
+            size_levels[1], .data$Samples %>% as.character()
+          ),
+          Samples = factor(.data$Samples, levels = size_levels)
+        )
+    }
   }
 
   .plot_cor <- function(data, type = "co") {
@@ -87,10 +125,27 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
         y = .data$feature
       ))
     }
-    p <- p + ggplot2::geom_point(ggplot2::aes_string(
-      color = "measure",
-      size = "Samples"
-    )) + ggplot2::scale_size_binned(guide = ggplot2::guide_bins(show.limits = TRUE))
+
+    if (any(is.na(breaks_count))) {
+      p <- p + ggplot2::geom_point(ggplot2::aes_string(
+        color = "measure"
+      ), size = 5)
+    } else {
+      p <- p + ggplot2::geom_point(ggplot2::aes_string(
+        color = "measure",
+        size = "Samples"
+      ))
+
+      if (is.null(breaks_count)) {
+        p <- p +
+          ggplot2::scale_size_binned(
+            limits = size_limits,
+            guide = ggplot2::guide_bins(show.limits = TRUE)
+          )
+      } else {
+        p <- p + ggplot2::scale_size_discrete(drop = FALSE)
+      }
+    }
 
     if (type == "co") {
       p <- p + co_gradient_colors
@@ -137,7 +192,8 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
         axis.text.x = element_blank(),
         axis.ticks.x = element_blank()
       )
-      ca <- gglist$ca + guides(size = FALSE) + labs(y = NULL)
+      ca <- gglist$ca + guides(size = FALSE) +
+        labs(y = NULL)
       co + ca + plot_layout(
         byrow = TRUE, heights = heights,
         widths = widths

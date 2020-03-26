@@ -6,7 +6,7 @@
 \usage{
 show_sig_profile(
   Signature,
-  mode = c("copynumber", "SBS"),
+  mode = c("SBS", "copynumber"),
   method = "Wang",
   normalize = c("row", "column", "raw", "feature"),
   filters = NULL,
@@ -23,6 +23,8 @@ show_sig_profile(
   x_label_angle = 60,
   x_label_vjust = 1,
   x_label_hjust = 1,
+  x_lab = "Components",
+  y_lab = "auto",
   params = NULL,
   show_cv = FALSE,
   params_label_size = 3,
@@ -92,6 +94,10 @@ data.}
 
 \item{x_label_hjust}{font hjust for x label.}
 
+\item{x_lab}{x axis lab.}
+
+\item{y_lab}{y axis lab.}
+
 \item{params}{params \code{data.frame} of components, obtained from \link{sig_tally}.}
 
 \item{show_cv}{default is \code{FALSE}, if \code{TRUE}, show coefficient of variation when
@@ -139,7 +145,9 @@ load(system.file("extdata", "toy_copynumber_signature_by_W.RData",
 ))
 # Show signature profile
 p2 <- show_sig_profile(sig,
-  style = "cosmic", method = "W",
+  style = "cosmic",
+  mode = "copynumber",
+  method = "W",
   normalize = "feature"
 )
 p2
@@ -153,6 +161,7 @@ load(system.file("extdata", "toy_copynumber_signature_by_M.RData",
 # original paper
 p3 <- show_sig_profile(sig,
   paint_axis_text = FALSE,
+  mode = "copynumber",
   method = "M", normalize = "column"
 )
 p3
@@ -165,6 +174,7 @@ load(system.file("extdata", "toy_copynumber_tally_M.RData",
 ))
 params <- get_tidy_parameter(cn_tally_M$components)
 p4 <- show_sig_profile(sig,
+  mode = "copynumber",
   method = "M", normalize = "column",
   params = params, y_expand = 2
 )

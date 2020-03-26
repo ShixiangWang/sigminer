@@ -16,7 +16,8 @@ show_sig_feature_corrplot(
   co_gradient_colors = scale_color_gradient2(low = "blue", mid = "white", high = "red",
     midpoint = 0),
   ca_gradient_colors = co_gradient_colors,
-  plot_ratio = "auto"
+  plot_ratio = "auto",
+  breaks_count = c(0L, 200L, 400L, 600L, 800L, 1020L)
 )
 }
 \arguments{
@@ -46,6 +47,10 @@ the result becomes blank white.}
 \item{ca_gradient_colors}{a Scale object representing gradient colors used to plot for categorical features.}
 
 \item{plot_ratio}{a length-2 numeric vector to set the height/width ratio.}
+
+\item{breaks_count}{breaks for sample count. If set it to \code{NULL},
+ggplot \code{bin} scale will be used to automatically determine the
+breaks. If set it to \code{NA}, \code{aes} for sample will be not used.}
 }
 \value{
 a \code{ggplot2} object
