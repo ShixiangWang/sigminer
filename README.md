@@ -10,7 +10,6 @@ status](https://www.r-pkg.org/badges/version/sigminer)](https://cran.r-project.o
 [![Coverage
 status](https://codecov.io/gh/ShixiangWang/sigminer/branch/master/graph/badge.svg)](https://codecov.io/github/ShixiangWang/sigminer?branch=master)
 [![](http://cranlogs.r-pkg.org/badges/grand-total/sigminer?color=orange)](https://cran.r-project.org/package=sigminer)
-[![HitCount](http://hits.dwyl.io/ShixiangWang/sigminer.svg)](http://hits.dwyl.io/ShixiangWang/sigminer)
 [![Closed
 issues](https://img.shields.io/github/issues-closed/ShixiangWang/sigminer.svg)](https://github.com/ShixiangWang/sigminer/issues?q=is%3Aissue+is%3Aclosed)
 
@@ -125,7 +124,8 @@ The code for extracting mutational signatures was based in part on the
 source code of the **SignatureAnalyzer** package, if you use this
 feature, please also cite:
 
-    Kim, Jaegil, et al. "Somatic ERCC2 mutations are associated with a distinct genomic signature in urothelial tumors." Nature genetics 48.6 (2016): 600.
+    Kim, Jaegil, et al. "Somatic ERCC2 mutations are associated with a distinct genomic
+        signature in urothelial tumors." Nature genetics 48.6 (2016): 600.
 
 ## References
 

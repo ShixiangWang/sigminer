@@ -222,5 +222,6 @@ scoring_MACN <- function(data) {
 
 
 utils::globalVariables(
-  c("chr_TD", "chr_lTD", "chr_sTD", "segLen")
+  c("chr_TD", "chr_lTD", "chr_sTD", "segLen",
+    "len_TD", "len_lTD", "len_sTD")
 )

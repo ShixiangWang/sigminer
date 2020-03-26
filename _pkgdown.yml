@@ -24,9 +24,16 @@ reference:
     - show_sig_number_survey2
     - sig_extract
     - sig_auto_extract
+  - title: Exposure quantification
+    desc: Quantify exposure in at least one sample with reference signature.
+    contents:
+    - sig_tally
+    - handle_hyper_mutation
+    - sig_fit
   - title: Signature visualization
     desc: Show signature profile and exposure.
     contents:
+    - show_catalogue
     - show_sig_profile
     - show_sig_exposure
     - show_cosmic_sig_profile
