@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 # sigminer: an easy-to-use and scalable toolkit for genomic alteration signature analysis and visualization in R <img src="man/figures/logo.png" align="right"  height="140" width="120" alt="logo"/>
 
 [![CRAN status](https://www.r-pkg.org/badges/version/sigminer)](https://cran.r-project.org/package=sigminer)
-[![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+[![lifecycle](https://img.shields.io/badge/lifecycle-stable-blue.svg)](https://www.tidyverse.org/lifecycle/#stable)
 ![R-CMD-check](https://github.com/ShixiangWang/sigminer/workflows/R-CMD-check/badge.svg)
 [![Coverage status](https://codecov.io/gh/ShixiangWang/sigminer/branch/master/graph/badge.svg)](https://codecov.io/github/ShixiangWang/sigminer?branch=master) 
 [![](http://cranlogs.r-pkg.org/badges/grand-total/sigminer?color=orange)](https://cran.r-project.org/package=sigminer)
@@ -36,7 +36,8 @@ thus providing new insight into cancer study.
 
 ### Feature
 
-- supports a standard pipeline for identification of two types of signatures: SBS signature and copy number signature
+- supports a standard *de novo* pipeline for identification of two types of signatures: SBS signature and copy number signature
+- supports quantify exposure for one sample based on *known signatures*
 - supports two methods for calling copy number signatures: one is from Macintyre et al. 2018 and the other is created by us
 - supports association and group analysis and visualization for signatures
 - supports a bayesian variant of NMF algorithm to enable optimal inferences for the number of signatures through the automatic relevance determination technique from **SignatureAnalyzer** package
@@ -46,7 +47,7 @@ thus providing new insight into cancer study.
 - supports parallel computation by R packages **foreach**, **future** and **NMF**
 - efficient code powered by R packages **data.table** and **tidyverse**
 - elegant plots powered by R packages **ggplot2**, **ggpubr**, **cowplot** and **patchwork**
-- well tested by R package **testthat** and documented by R package **roxygen2**, **pkgdown**, and etc.
+- well tested by R package **testthat** and documented by R package **roxygen2**, **roxytest**, **pkgdown**, and etc.
 for both reliable and reproducible research
 
 ## Installation
@@ -55,7 +56,7 @@ for both reliable and reproducible research
 > If you try to use this release, please don't install it from CRAN.
 > I am preparing to submit it to CRAN, but it takes some time.
 
-~~You can install the stable release of **sigminer** from CRAN with:~~
+You can install the stable release of **sigminer** from CRAN with:
 
 ```{r, eval=FALSE}
 install.packages("sigminer")

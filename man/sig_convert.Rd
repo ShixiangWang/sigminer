@@ -18,7 +18,7 @@ a component, \code{n} is the number of signature).}
 \item{to}{same as \code{from}.}
 }
 \value{
-
+a \code{matrix}
 }
 \description{
 Converts signatures between two representations relative to different sets of mutational opportunities.
@@ -35,13 +35,13 @@ load(system.file("extdata", "toy_mutational_signature.RData",
 ))
 # Exome-relative to Genome-relative
 sig_converted <- sig_convert(sig2,
-                             from = "human-exome",
-                             to = "human-genome")
+  from = "human-exome",
+  to = "human-genome"
+)
 sig_converted
 
-show_sig_profile(sig2, style="cosmic")
-show_sig_profile(sig_converted, style="cosmic")
-
+show_sig_profile(sig2, style = "cosmic")
+show_sig_profile(sig_converted, style = "cosmic")
 }
 \references{
 \code{convert_signatures} function from sigfit package.

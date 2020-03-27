@@ -72,6 +72,7 @@ reference:
   - title: Helpers
     desc: Helper functions used in the sigminer package.
     contents:
+    - sig_convert
     - get_genome_annotation
     - get_bayesian_result
     - get_tidy_parameter

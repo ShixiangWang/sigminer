@@ -5,7 +5,7 @@
 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/sigminer)](https://cran.r-project.org/package=sigminer)
-[![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+[![lifecycle](https://img.shields.io/badge/lifecycle-stable-blue.svg)](https://www.tidyverse.org/lifecycle/#stable)
 ![R-CMD-check](https://github.com/ShixiangWang/sigminer/workflows/R-CMD-check/badge.svg)
 [![Coverage
 status](https://codecov.io/gh/ShixiangWang/sigminer/branch/master/graph/badge.svg)](https://codecov.io/github/ShixiangWang/sigminer?branch=master)
@@ -25,8 +25,10 @@ records, thus providing new insight into cancer study.
 
 ### Feature
 
-  - supports a standard pipeline for identification of two types of
-    signatures: SBS signature and copy number signature
+  - supports a standard *de novo* pipeline for identification of two
+    types of signatures: SBS signature and copy number signature
+  - supports quantify exposure for one sample based on *known
+    signatures*
   - supports two methods for calling copy number signatures: one is from
     Macintyre et al. 2018 and the other is created by us
   - supports association and group analysis and visualization for
@@ -49,8 +51,8 @@ records, thus providing new insight into cancer study.
   - elegant plots powered by R packages **ggplot2**, **ggpubr**,
     **cowplot** and **patchwork**
   - well tested by R package **testthat** and documented by R package
-    **roxygen2**, **pkgdown**, and etc. for both reliable and
-    reproducible research
+    **roxygen2**, **roxytest**, **pkgdown**, and etc. for both reliable
+    and reproducible research
 
 ## Installation
 
@@ -59,7 +61,7 @@ records, thus providing new insight into cancer study.
 > install it from CRAN. I am preparing to submit it to CRAN, but it
 > takes some time.
 
-~~You can install the stable release of **sigminer** from CRAN with:~~
+You can install the stable release of **sigminer** from CRAN with:
 
 ``` r
 install.packages("sigminer")
