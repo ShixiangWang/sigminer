@@ -143,7 +143,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>sig_index</th>
-      <td><p>a vector for signature index.</p></td>
+      <td><p>a vector for signature index. "ALL" for all signatures.</p></td>
     </tr>
     <tr>
       <th>show_index</th>
@@ -170,12 +170,12 @@
 #&gt; <span class='message'>Valid index for db 'SBS':</span>
 #&gt; <span class='message'>1 2 3 4 5 6 7a 7b 7c 7d 8 9 10a 10b 11 12 13 14 15 16 17a 17b 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 84 85</span></div><div class='input'><span class='fu'>show_cosmic_sig_profile</span>(<span class='kw'>sig_index</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>5</span>)</div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Valid index for db 'legacy':</span>
-#&gt; <span class='message'>1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30</span></div><div class='img'><img src='show_cosmic_sig_profile-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>show_cosmic_sig_profile</span>(<span class='kw'>sig_db</span> <span class='kw'>=</span> <span class='st'>"SBS"</span>, <span class='kw'>sig_index</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"10a"</span>, <span class='st'>"17a"</span>))</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30</span></div><div class='output co'>#&gt; <span class='warning'>Warning: the condition has length &gt; 1 and only the first element will be used</span></div><div class='img'><img src='show_cosmic_sig_profile-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>show_cosmic_sig_profile</span>(<span class='kw'>sig_db</span> <span class='kw'>=</span> <span class='st'>"SBS"</span>, <span class='kw'>sig_index</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"10a"</span>, <span class='st'>"17a"</span>))</div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Valid index for db 'SBS':</span>
-#&gt; <span class='message'>1 2 3 4 5 6 7a 7b 7c 7d 8 9 10a 10b 11 12 13 14 15 16 17a 17b 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 84 85</span></div><div class='img'><img src='show_cosmic_sig_profile-2.png' alt='' width='700' height='433' /></div><div class='input'>
+#&gt; <span class='message'>1 2 3 4 5 6 7a 7b 7c 7d 8 9 10a 10b 11 12 13 14 15 16 17a 17b 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 84 85</span></div><div class='output co'>#&gt; <span class='warning'>Warning: the condition has length &gt; 1 and only the first element will be used</span></div><div class='img'><img src='show_cosmic_sig_profile-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='no'>gg</span> <span class='kw'>&lt;-</span> <span class='fu'>show_cosmic_sig_profile</span>(<span class='kw'>sig_index</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>5</span>)</div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Valid index for db 'legacy':</span>
-#&gt; <span class='message'>1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30</span></div><div class='input'><span class='no'>gg</span>$<span class='no'>aetiology</span></div><div class='output co'>#&gt;                                            aetiology
+#&gt; <span class='message'>1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30</span></div><div class='output co'>#&gt; <span class='warning'>Warning: the condition has length &gt; 1 and only the first element will be used</span></div><div class='input'><span class='no'>gg</span>$<span class='no'>aetiology</span></div><div class='output co'>#&gt;                                            aetiology
 #&gt; COSMIC_1 spontaneous deamination of 5-methylcytosine
 #&gt; COSMIC_2             APOBEC Cytidine Deaminase (C&gt;T)
 #&gt; COSMIC_3             defects in DNA-DSB repair by HR

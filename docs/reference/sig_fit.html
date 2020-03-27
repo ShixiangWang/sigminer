@@ -140,6 +140,7 @@ catalogue <code>V</code> with known signatures <code>W</code> by solving the min
   <span class='no'>sig</span>,
   <span class='kw'>sig_index</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>sig_db</span> <span class='kw'>=</span> <span class='st'>"legacy"</span>,
+  <span class='kw'>db_type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>""</span>, <span class='st'>"human-exome"</span>, <span class='st'>"human-genome"</span>),
   <span class='kw'>show_index</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"absolute"</span>, <span class='st'>"relative"</span>),
   <span class='kw'>return_class</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"matrix"</span>, <span class='st'>"data.table"</span>),
@@ -164,11 +165,17 @@ column representing signatures.</p></td>
     </tr>
     <tr>
       <th>sig_index</th>
-      <td><p>a vector for signature index.</p></td>
+      <td><p>a vector for signature index. "ALL" for all signatures.</p></td>
     </tr>
     <tr>
       <th>sig_db</th>
       <td><p>can be 'legacy' or 'SBS'. Default 'legacy'.</p></td>
+    </tr>
+    <tr>
+      <th>db_type</th>
+      <td><p>only used when <code>sig_db</code> is enabled.
+"" for keeping default, "human-exome" for transforming to exome frequency of component,
+and "human-genome" for transforming to whole genome frequency of component.</p></td>
     </tr>
     <tr>
       <th>show_index</th>

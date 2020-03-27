@@ -96,7 +96,8 @@ get_sig_similarity <- function(Signature, Ref = NULL,
         package = "maftools", mustWork = TRUE
       ))
       sigs <- sigs_db$db
-      sigs <- apply(sigs, 2, function(x) x / sum(x))
+      # sigs <- apply(sigs, 2, function(x) x / sum(x))
+
       ## v2 comes from Exome
       if (db_type == "human-genome") {
         sigs <- sig_convert(sig = sigs, from = "human-exome", to = "human-genome")
@@ -109,7 +110,7 @@ get_sig_similarity <- function(Signature, Ref = NULL,
       ))
       sigs <- sigs_db$db
       sigs <- apply(sigs, 2, function(x) x / sum(x))
-      ## v3 comes from WGS?
+      ## v3 comes from WGS (PCAWG)
       if (db_type == "human-exome") {
         sigs <- sig_convert(sig = sigs, from = "human-genome", to = "human-exome")
       }

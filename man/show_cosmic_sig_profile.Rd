@@ -12,7 +12,7 @@ show_cosmic_sig_profile(
 )
 }
 \arguments{
-\item{sig_index}{a vector for signature index.}
+\item{sig_index}{a vector for signature index. "ALL" for all signatures.}
 
 \item{show_index}{if \code{TRUE}, show valid index.}
 

@@ -1,6 +1,6 @@
 #' Plot COSMIC Signature Profile
 #'
-#' @param sig_index a vector for signature index.
+#' @param sig_index a vector for signature index. "ALL" for all signatures.
 #' @param show_index if `TRUE`, show valid index.
 #' @inheritParams get_sig_similarity
 #' @param ... other arguments passing to [show_sig_profile].
@@ -57,6 +57,10 @@ show_cosmic_sig_profile <- function(sig_index = NULL, show_index = TRUE, sig_db 
   } else {
     if (!is.character(sig_index)) {
       sig_index <- as.character(sig_index)
+    }
+
+    if (sig_index == "ALL") {
+      sig_index <- avail_index
     }
   }
 

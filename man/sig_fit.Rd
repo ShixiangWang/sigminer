@@ -9,6 +9,7 @@ sig_fit(
   sig,
   sig_index = NULL,
   sig_db = "legacy",
+  db_type = c("", "human-exome", "human-genome"),
   show_index = TRUE,
   type = c("absolute", "relative"),
   return_class = c("matrix", "data.table"),
@@ -25,9 +26,13 @@ transpose it by \code{t()}.}
 or just a raw signature matrix with row representing components (motifs) and
 column representing signatures.}
 
-\item{sig_index}{a vector for signature index.}
+\item{sig_index}{a vector for signature index. "ALL" for all signatures.}
 
 \item{sig_db}{can be 'legacy' or 'SBS'. Default 'legacy'.}
+
+\item{db_type}{only used when \code{sig_db} is enabled.
+"" for keeping default, "human-exome" for transforming to exome frequency of component,
+and "human-genome" for transforming to whole genome frequency of component.}
 
 \item{show_index}{if \code{TRUE}, show valid index.}
 

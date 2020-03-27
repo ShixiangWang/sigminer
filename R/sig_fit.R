@@ -12,6 +12,7 @@
 #' @inheritParams show_sig_profile
 #' @inheritParams show_cosmic_sig_profile
 #' @inheritParams get_sig_exposure
+#' @inheritParams get_sig_similarity
 #' @param sig a `Signature` object obtained either from [sig_extract] or [sig_auto_extract],
 #' or just a raw signature matrix with row representing components (motifs) and
 #' column representing signatures.
@@ -45,12 +46,14 @@ sig_fit <- function(catalogue_matrix,
                     sig,
                     sig_index = NULL,
                     sig_db = "legacy",
+                    db_type = c("", "human-exome", "human-genome"),
                     show_index = TRUE,
                     type = c("absolute", "relative"),
                     return_class = c("matrix", "data.table"),
                     rel_threshold = 0,
                     mode = c("SBS", "copynumber")) {
   stopifnot(is.matrix(catalogue_matrix))
+  db_type <- match.arg(db_type)
 
   if (is.null(sig_index)) {
     if (class(sig) == "Signature") {
@@ -66,12 +69,25 @@ sig_fit <- function(catalogue_matrix,
         package = "maftools", mustWork = TRUE
       ))
       sigs <- sigs_db$db
+
+      ## v2 comes from Exome
+      if (db_type == "human-genome") {
+        sigs <- sig_convert(sig = sigs, from = "human-exome", to = "human-genome")
+      }
+
       avail_index <- substring(colnames(sigs), 8)
     } else {
       sigs_db <- readRDS(file = system.file("extdata", "SBS_signatures.RDs",
         package = "maftools", mustWork = TRUE
       ))
       sigs <- sigs_db$db
+
+      sigs <- apply(sigs, 2, function(x) x / sum(x))
+      ## v3 comes from WGS (PCAWG)
+      if (db_type == "human-exome") {
+        sigs <- sig_convert(sig = sigs, from = "human-genome", to = "human-exome")
+      }
+
       avail_index <- substring(colnames(sigs), 4)
     }
 
@@ -86,6 +102,10 @@ sig_fit <- function(catalogue_matrix,
 
     if (!is.character(sig_index)) {
       sig_index <- as.character(sig_index)
+    }
+
+    if (sig_index == "ALL") {
+      sig_index <- avail_index
     }
 
     if (!all(sig_index %in% avail_index)) {
