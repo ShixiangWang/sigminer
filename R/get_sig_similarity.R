@@ -10,6 +10,9 @@
 #' More please see examples.
 #' @param Ref default is `NULL`, can be a same object as `Signature`.
 #' @param sig_db can be 'legacy' or 'SBS'. Default 'legacy'.
+#' @param db_type only used when `sig_db` is enabled.
+#' "" for keeping default, "human-exome" for transforming to exome frequency of component,
+#' and "human-genome" for transforming to whole genome frequency of component.
 #' @param method default is 'cosine' for cosine similarity.
 #' @param normalize one of "row" and "feature". "row" is typically used
 #' for mutational signatures. "feature" is designed by me to use when input
@@ -50,7 +53,9 @@
 #' expect_equal(length(s2), 3L)
 #' expect_equal(length(s3), 3L)
 #' expect_equal(length(s4), 3L)
-get_sig_similarity <- function(Signature, Ref = NULL, sig_db = "legacy",
+get_sig_similarity <- function(Signature, Ref = NULL,
+                               sig_db = "legacy",
+                               db_type = c("", "human-exome", "human-genome"),
                                method = "cosine",
                                normalize = c("row", "feature"),
                                feature_setting = sigminer::CN.features,
@@ -68,6 +73,7 @@ get_sig_similarity <- function(Signature, Ref = NULL, sig_db = "legacy",
   }
 
   normalize <- match.arg(normalize)
+  db_type <- match.arg(db_type)
 
   if (normalize == "feature") {
     use_W <- any(grepl("\\[.*\\]$", rownames(w)))
@@ -90,13 +96,24 @@ get_sig_similarity <- function(Signature, Ref = NULL, sig_db = "legacy",
         package = "maftools", mustWork = TRUE
       ))
       sigs <- sigs_db$db
+      sigs <- apply(sigs, 2, function(x) x / sum(x))
+      ## v2 comes from Exome
+      if (db_type == "human-genome") {
+        sigs <- sig_convert(sig = sigs, from = "human-exome", to = "human-genome")
+      }
+
       aetiology <- sigs_db$aetiology
-    }
-    else {
+    } else {
       sigs_db <- readRDS(file = system.file("extdata", "SBS_signatures.RDs",
         package = "maftools", mustWork = TRUE
       ))
       sigs <- sigs_db$db
+      sigs <- apply(sigs, 2, function(x) x / sum(x))
+      ## v3 comes from WGS?
+      if (db_type == "human-exome") {
+        sigs <- sig_convert(sig = sigs, from = "human-genome", to = "human-exome")
+      }
+
       aetiology <- sigs_db$aetiology
     }
   } else {
