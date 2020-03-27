@@ -143,6 +143,7 @@ from <code>compareSignatures()</code> in <strong>maftools</strong> package.</p>
   <span class='no'>Signature</span>,
   <span class='kw'>Ref</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>sig_db</span> <span class='kw'>=</span> <span class='st'>"legacy"</span>,
+  <span class='kw'>db_type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>""</span>, <span class='st'>"human-exome"</span>, <span class='st'>"human-genome"</span>),
   <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"cosine"</span>,
   <span class='kw'>normalize</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"row"</span>, <span class='st'>"feature"</span>),
   <span class='kw'>feature_setting</span> <span class='kw'>=</span> <span class='kw pkg'>sigminer</span><span class='kw ns'>::</span><span class='no'><a href='CN.features.html'>CN.features</a></span>,
@@ -165,6 +166,12 @@ More please see examples.</p></td>
     <tr>
       <th>sig_db</th>
       <td><p>can be 'legacy' or 'SBS'. Default 'legacy'.</p></td>
+    </tr>
+    <tr>
+      <th>db_type</th>
+      <td><p>only used when <code>sig_db</code> is enabled.
+"" for keeping default, "human-exome" for transforming to exome frequency of component,
+and "human-genome" for transforming to whole genome frequency of component.</p></td>
     </tr>
     <tr>
       <th>method</th>
