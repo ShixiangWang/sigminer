@@ -131,7 +131,7 @@ a \code{ggplot} object
 Who don't like to show a barplot for signature profile? This is for it.
 }
 \examples{
-# Load mutational signature
+# Load SBS signature
 load(system.file("extdata", "toy_mutational_signature.RData",
   package = "sigminer", mustWork = TRUE
 ))

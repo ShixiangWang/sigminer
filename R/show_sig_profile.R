@@ -59,7 +59,7 @@
 #' @return a `ggplot` object
 #' @export
 #' @examples
-#' # Load mutational signature
+#' # Load SBS signature
 #' load(system.file("extdata", "toy_mutational_signature.RData",
 #'   package = "sigminer", mustWork = TRUE
 #' ))

@@ -8,6 +8,7 @@ get_sig_similarity(
   Signature,
   Ref = NULL,
   sig_db = "legacy",
+  db_type = c("", "human-exome", "human-genome"),
   method = "cosine",
   normalize = c("row", "feature"),
   feature_setting = sigminer::CN.features,
@@ -22,6 +23,10 @@ More please see examples.}
 \item{Ref}{default is \code{NULL}, can be a same object as \code{Signature}.}
 
 \item{sig_db}{can be 'legacy' or 'SBS'. Default 'legacy'.}
+
+\item{db_type}{only used when \code{sig_db} is enabled.
+"" for keeping default, "human-exome" for transforming to exome frequency of component,
+and "human-genome" for transforming to whole genome frequency of component.}
 
 \item{method}{default is 'cosine' for cosine similarity.}
 
