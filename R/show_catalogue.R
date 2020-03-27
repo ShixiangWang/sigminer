@@ -51,6 +51,8 @@ show_catalogue <- function(catalogue,
       rowSums(na.rm = TRUE) %>%
       as.matrix()
     colnames(mat) <- "Total"
+  } else {
+    mat <- mat[, samples, drop = FALSE]
   }
 
   mode <- match.arg(mode)
