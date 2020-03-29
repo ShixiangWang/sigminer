@@ -74,14 +74,19 @@ with:
 
 ``` r
 remotes::install_github("ShixiangWang/sigminer")
+# For Chinese users, run 
+remotes::install_git("https://gitee.com/ShixiangWang/sigminer")
 ```
 
 ## Usage
 
 A complete documentation of **sigminer** can be read online at
-<https://shixiangwang.github.io/sigminer-doc/>. All functions are well
-organized and documented at
-<https://shixiangwang.github.io/sigminer/reference/index.html>. For
+<https://shixiangwang.github.io/sigminer-doc/> (For Chinese users, you
+can also read it at <https://shixiangwang.gitee.io/sigminer-doc>). All
+functions are well organized and documented at
+<https://shixiangwang.github.io/sigminer/reference/index.html> (For
+Chinese users, you can also read it at
+<https://shixiangwang.gitee.io/sigminer/reference/index.html>). For
 usage of a specific function `fun`, run `?fun` in your R console to see
 its documentation.
 
