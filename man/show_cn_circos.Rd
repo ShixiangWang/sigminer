@@ -62,5 +62,4 @@ show_cn_circos(cn, samples = 4)
 
 layout(1) # reset layout
 }
-
 }

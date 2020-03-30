@@ -6,7 +6,8 @@
 #' @param type 'absolute' for signature exposure and 'relative' for signature relative exposure.
 #' @param rel_threshold used when type is 'relative', relative exposure less
 #' than this value will be set to 0 and the remaining signature exposure will be scaled
-#' to make sum as 1 accordingly.
+#' to make sum as 1 accordingly. Of note, this is a little different from the
+#' same parameter in [sig_fit].
 #' @return a `data.table`
 #' @author Shixiang Wang <w_shixiang@163.com>
 #' @export

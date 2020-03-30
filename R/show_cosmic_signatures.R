@@ -59,7 +59,7 @@ show_cosmic_sig_profile <- function(sig_index = NULL, show_index = TRUE, sig_db 
       sig_index <- as.character(sig_index)
     }
 
-    if (sig_index == "ALL") {
+    if ("ALL" %in% sig_index) {
       sig_index <- avail_index
     }
   }

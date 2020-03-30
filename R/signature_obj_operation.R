@@ -16,6 +16,8 @@
 #'
 #' # The older names are stored in tags.
 #' print(attr(cc, "tag"))
+#' @testexamples
+#' expect_is(cc, "Signature")
 sig_names <- function(sig) {
   stopifnot(inherits(sig, "Signature"))
   colnames(sig$Signature)
@@ -134,4 +136,3 @@ sig_exposure <- function(sig, type = c("absolute", "relative")) {
     return(sig$Exposure.norm)
   }
 }
-

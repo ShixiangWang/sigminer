@@ -18,6 +18,7 @@
 #' column representing signatures.
 #' @param return_class string, 'matrix' or 'data.table'.
 #' @param rel_threshold numeric vector, a relative exposure lower than this value will be set to 0.
+#' Of note, this is a little different from the same parameter in [get_sig_exposure].
 #'
 #' @return The exposure result either in `matrix` or `data.table` format.
 #' @export
@@ -56,7 +57,7 @@ sig_fit <- function(catalogue_matrix,
   db_type <- match.arg(db_type)
 
   if (is.null(sig_index)) {
-    if (class(sig) == "Signature") {
+    if (inherits(sig, "Signature")) {
       sig_matrix <- sig$Signature
     } else if (is.matrix(sig)) {
       sig_matrix <- sig
@@ -104,7 +105,7 @@ sig_fit <- function(catalogue_matrix,
       sig_index <- as.character(sig_index)
     }
 
-    if (sig_index == "ALL") {
+    if ("ALL" %in% sig_index) {
       sig_index <- avail_index
     }
 

@@ -62,6 +62,12 @@
 #' dir(tempdir(), pattern = "Test_copynumber")
 #' @testexamples
 #' expect_s3_class(res, "Signature")
+#' res <- sig_auto_extract(cn_tally_M$nmf_matrix, result_prefix = "test",
+#'                         method = "L1KL", nrun = 1)
+#' expect_s3_class(res, "Signature")
+#' res <- sig_auto_extract(cn_tally_M$nmf_matrix, result_prefix = "test",
+#'                         method = "L2KL", nrun = 1)
+#' expect_s3_class(res, "Signature")
 #' @seealso [sig_tally] for getting variation matrix,
 #' [sig_extract] for extracting signatures using **NMF** package, [sig_estimate] for
 #' estimating signature number for [sig_extract].
