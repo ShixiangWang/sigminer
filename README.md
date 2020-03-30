@@ -159,10 +159,12 @@ feature, please also cite:
 ## LICENSE
 
 The software is made available for non commercial research purposes only
-under the [MIT](LICENSE.md). However, notwithstanding any provision of
-the MIT License, the software currently may not be used for commercial
-purposes without explicit written permission after contacting Shixiang
-Wang <wangshx@shanghaitech.edu.cn> or Xue-Song Liu
+under the
+[MIT](https://github.com/ShixiangWang/sigminer/blob/master/LICENSE.md).
+However, notwithstanding any provision of the MIT License, the software
+currently may not be used for commercial purposes without explicit
+written permission after contacting Shixiang Wang
+<wangshx@shanghaitech.edu.cn> or Xue-Song Liu
 <liuxs@shanghaitech.edu.cn>.
 
 MIT © 2019-2020 Shixiang Wang, Xue-Song Liu
