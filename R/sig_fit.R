@@ -18,6 +18,7 @@
 #' column representing signatures.
 #' @param return_class string, 'matrix' or 'data.table'.
 #' @param rel_threshold numeric vector, a relative exposure lower than this value will be set to 0.
+#' Of note, this is a little different from the same parameter in [get_sig_exposure].
 #'
 #' @return The exposure result either in `matrix` or `data.table` format.
 #' @export

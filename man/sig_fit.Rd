@@ -40,7 +40,8 @@ and "human-genome" for transforming to whole genome frequency of component.}
 
 \item{return_class}{string, 'matrix' or 'data.table'.}
 
-\item{rel_threshold}{numeric vector, a relative exposure lower than this value will be set to 0.}
+\item{rel_threshold}{numeric vector, a relative exposure lower than this value will be set to 0.
+Of note, this is a little different from the same parameter in \link{get_sig_exposure}.}
 
 \item{mode}{signature type for plotting, now supports 'copynumber' or 'SBS'.}
 }

@@ -2,6 +2,8 @@
 #' @export
 #' @examples
 #' hello()
+#' @testexamples
+#' expect_message(hello(), "sigminer")
 hello <- function() {
   msg <- paste0("Thanks for using 'sigminer' package!
 =========================================================================
