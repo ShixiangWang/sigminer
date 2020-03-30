@@ -139,7 +139,7 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber"),
                              check_sig_names = TRUE) {
   stopifnot(all(!is.na(sig_names)), is.character(x_lab), is.character(y_lab))
 
-  if (class(Signature) == "Signature") {
+  if (inherits(Signature, "Signature")) {
     Sig <- Signature$Signature
   } else if (is.matrix(Signature)) {
     if (check_sig_names) {
