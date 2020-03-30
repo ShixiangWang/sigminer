@@ -69,6 +69,7 @@ Suggests:
     pheatmap,
     rmarkdown,
     roxygen2,
+    R.utils,
     testthat
 VignetteBuilder: 
     knitr
