@@ -17,7 +17,7 @@
 #' # The older names are stored in tags.
 #' print(attr(cc, "tag"))
 #' @testexamples
-#'
+#' expect_is(cc, "Signature")
 sig_names <- function(sig) {
   stopifnot(inherits(sig, "Signature"))
   colnames(sig$Signature)
@@ -44,8 +44,6 @@ sig_modify_names <- function(sig, new_names) {
 #' @examples
 #' ## Get signature number
 #' sig_number(sig2)
-#' @testexamples
-#'
 sig_number <- function(sig) {
   stopifnot(inherits(sig, "Signature"))
   sig$K
@@ -56,8 +54,6 @@ sig_number <- function(sig) {
 #' @examples
 #' ## Get signature attributes
 #' sig_number(sig2)
-#' @testexamples
-#'
 sig_attrs <- function(sig) {
   stopifnot(inherits(sig, "Signature"))
   attributes(sig)[!names(attributes(sig)) %in% c("names", "class")]
@@ -71,8 +67,6 @@ sig_attrs <- function(sig) {
 #' ## Get signature matrix
 #' z <- sig_signature(sig2)
 #' z <- sig_signature(sig2, normalize = "raw")
-#' @testexamples
-#'
 sig_signature <- function(sig, normalize = c("row", "column", "raw", "feature")) {
   stopifnot(inherits(sig, "Signature"))
 
@@ -133,8 +127,6 @@ sig_signature <- function(sig, normalize = c("row", "column", "raw", "feature"))
 #' ## it returns a matrix instead of data table.
 #' z <- sig_exposure(sig2) # it is same as sig$Exposure
 #' z <- sig_exposure(sig2, type = "relative") # it is same as sig2$Exposure.norm
-#' @testexamples
-#'
 sig_exposure <- function(sig, type = c("absolute", "relative")) {
   stopifnot(inherits(sig, "Signature"))
   type <- match.arg(type)
