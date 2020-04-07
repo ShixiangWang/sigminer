@@ -64,7 +64,6 @@ Suggests:
     BSgenome,
     BSgenome.Hsapiens.UCSC.hg19,
     covr,
-    fuzzyjoin,
     ggfittext,
     knitr,
     pheatmap,

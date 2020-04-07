@@ -1,8 +1,7 @@
 # Show a summary copy number profile for a group of samples
 #
 # TODO/NOTE:
-# This function does not work currently,
-# I will think it latter
+# Implement it with foverlap and cytoband
 
 show_cn_group_profile <- function(data,
                                   chrs = paste0("chr", c(1:22, "X")),
@@ -66,14 +65,14 @@ show_cn_group_profile <- function(data,
     df = data_cnv
   )
 
-  data_join <- fuzzyjoin::genome_join(
-    data_cnv_split, data_cnv,
-    by = c("chromosome", "start", "end")
-  ) %>%
-    dplyr::mutate(
-      ID = paste(.data$chromosome.x, .data$start.x, .data$end.x, sep = "-"),
-      segType = ifelse(.data$segVal > 2, "Amp", "Del")
-    )
+  # data_join <- data.table::foverlaps(
+  #   data_cnv_split, data_cnv,
+  #   by = c("chromosome", "start", "end")
+  # ) %>%
+  #   dplyr::mutate(
+  #     ID = paste(.data$chromosome.x, .data$start.x, .data$end.x, sep = "-"),
+  #     segType = ifelse(.data$segVal > 2, "Amp", "Del")
+  #   )
   data_join <- data_join %>%
     dplyr::group_by(.data$ID, .data$segType) %>%
     dplyr::summarise(segVal = mean(.data$segVal)) %>%
