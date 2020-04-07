@@ -2,6 +2,9 @@
 #
 # TODO/NOTE:
 # Implement it with foverlap and cytoband
+# 对每个 cytoband 按密度设定进行分割
+# 然后将病人的 CNV map 上去，计算 CNV 扩增或删除的比例
+# 然后绘图
 
 show_cn_group_profile <- function(data,
                                   chrs = paste0("chr", c(1:22, "X")),
