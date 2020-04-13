@@ -216,13 +216,37 @@ You can also use <a href='https://rdrr.io/pkg/maftools/man/read.maf.html'>maftoo
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>laml.maf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"tcga_laml.maf.gz"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"maftools"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>laml</span> <span class='kw'>&lt;-</span> <span class='fu'>read_maf</span>(<span class='kw'>maf</span> <span class='kw'>=</span> <span class='no'>laml.maf</span>)</div><div class='output co'>#&gt; -Reading
+<span class='kw'>if</span> (!<span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='st'>"R.utils"</span>)) {
+  <span class='fu'><a href='https://rdrr.io/r/base/message.html'>message</a></span>(<span class='st'>"Please install 'R.utils' package firstly"</span>)
+} <span class='kw'>else</span> {
+  <span class='no'>laml</span> <span class='kw'>&lt;-</span> <span class='fu'>read_maf</span>(<span class='kw'>maf</span> <span class='kw'>=</span> <span class='no'>laml.maf</span>)
+  <span class='no'>laml</span>
+}</div><div class='output co'>#&gt; <span class='message'>载入需要的程辑包：R.utils</span></div><div class='output co'>#&gt; <span class='message'>载入需要的程辑包：R.oo</span></div><div class='output co'>#&gt; <span class='message'>载入需要的程辑包：R.methodsS3</span></div><div class='output co'>#&gt; <span class='message'>R.methodsS3 v1.8.0 (2020-02-14 07:10:20 UTC) successfully loaded. See ?R.methodsS3 for help.</span></div><div class='output co'>#&gt; <span class='message'>R.oo v1.23.0 successfully loaded. See ?R.oo for help.</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>载入程辑包：‘R.oo’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:R.methodsS3’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    throw</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:magrittr’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    equals</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:methods’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    getClasses, getMethods</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    attach, detach, load, save</span></div><div class='output co'>#&gt; <span class='message'>R.utils v2.9.2 successfully loaded. See ?R.utils for help.</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>载入程辑包：‘R.utils’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:pkgmaker’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    isPackageInstalled</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:magrittr’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    extract</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:utils’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    timestamp</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    cat, commandArgs, getOption, inherits, isOpen, nullfile, parse,</span>
+#&gt; <span class='message'>    warnings</span></div><div class='output co'>#&gt; -Reading
 #&gt; -Validating
 #&gt; -Silent variants: 475 
 #&gt; -Summarizing
 #&gt; -Processing clinical data
 #&gt; --Missing clinical data
-#&gt; -Finished in 0.330s elapsed (0.250s cpu) </div><div class='input'><span class='no'>laml</span></div><div class='output co'>#&gt; An object of class  MAF 
+#&gt; -Finished in 0.206s elapsed (0.736s cpu) </div><div class='output co'>#&gt; An object of class  MAF 
 #&gt;                    ID          summary  Mean Median
 #&gt;  1:        NCBI_Build               37    NA     NA
 #&gt;  2:            Center genome.wustl.edu    NA     NA

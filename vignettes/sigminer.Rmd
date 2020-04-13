@@ -3,4 +3,4 @@
 %\VignetteIndexEntry{sigminer vignette}
 -->
 
-Please go to https://shixiangwang.github.io/sigminer-doc/ for full vignette.
+Please go to https://shixiangwang.github.io/sigminer-doc/ or https://shixiangwang.gitee.io/sigminer-doc/ (for Chinese readers)  for full vignette.
