@@ -56,8 +56,10 @@ load(system.file("extdata", "toy_copynumber_tally_W.RData",
 ))
 # Extract copy number signatures
 library(NMF)
-sig <- sig_extract(cn_tally_W$nmf_matrix, 2, nrun = 10,
-                   pConstant = 1e-13)
+sig <- sig_extract(cn_tally_W$nmf_matrix, 2,
+  nrun = 10,
+  pConstant = 1e-13
+)
 
 # Methods 'consensus' and 'samples' are from NMF::predict()
 get_groups(sig, method = "consensus", match_consensus = TRUE)
