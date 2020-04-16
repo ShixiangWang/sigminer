@@ -202,7 +202,7 @@ show_group_comparison <- function(group_comparison,
       }
 
       if (show_pvalue) {
-        if (!requireNamespace("ggpubr")) {
+        if (!requireNamespace("ggpubr", quietly = TRUE)) {
           stop("'ggpubr' package is needed for plotting p values.")
         }
 

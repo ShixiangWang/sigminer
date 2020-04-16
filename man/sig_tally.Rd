@@ -30,9 +30,8 @@ sig_tally(object, ...)
 
 \method{sig_tally}{MAF}(
   object,
+  mode = c("SBS", "DBS", "ID"),
   ref_genome = NULL,
-  prefix = NULL,
-  add = TRUE,
   ignore_chrs = NULL,
   use_syn = TRUE,
   keep_only_matrix = FALSE,
@@ -101,12 +100,10 @@ Only used when method is "Macintyre".}
 
 \item{keep_only_matrix}{if \code{TRUE}, keep only matrix for signature extraction.}
 
+\item{mode}{type of mutation matrix to extract, can be one of 'SBS', 'DBS' and 'ID'.}
+
 \item{ref_genome}{BSgenome object or name of the installed BSgenome package. Example: BSgenome.Hsapiens.UCSC.hg19
 Default NULL, tries to auto-detect from installed genomes.}
-
-\item{prefix}{Prefix to add or remove from contig names in MAF file.}
-
-\item{add}{If prefix is used, default is to add prefix to contig names in MAF file. If false prefix will be removed from contig names.}
 
 \item{use_syn}{Logical. Whether to include synonymous variants in analysis. Defaults to TRUE}
 }
@@ -144,7 +141,7 @@ with \link{read_copynumber}).
 \itemize{
 \item \code{CopyNumber}: Returns copy number features, components and component-by-sample matrix
 
-\item \code{MAF}: Returns SBS mutation component-by-sample matrix and APOBEC enrichment
+\item \code{MAF}: Returns SBS mutation sample-by-component matrix and APOBEC enrichment
 }}
 
 \examples{
@@ -166,7 +163,7 @@ if (require("BSgenome.Hsapiens.UCSC.hg19")) {
   mt_tally <- sig_tally(
     laml,
     ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
-    prefix = "chr", add = TRUE, useSyn = TRUE
+    use_syn = TRUE
   )
 } else {
   message("Please install package 'BSgenome.Hsapiens.UCSC.hg19' firstly!")

@@ -35,12 +35,6 @@
 #'
 #' layout(1) # reset layout
 #' }
-#' @tests
-#' load(system.file("extdata", "toy_copynumber.RData",
-#'   package = "sigminer", mustWork = TRUE
-#' ))
-#' show_cn_circos(cn, samples = 1)
-#' show_cn_circos(cn, samples = "TCGA-99-7458-01A-11D-2035-01")
 show_cn_circos <- function(data, samples = NULL,
                            show_title = TRUE,
                            chrs = paste0("chr", 1:22),

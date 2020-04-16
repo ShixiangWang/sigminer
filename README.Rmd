@@ -34,6 +34,36 @@ alteration spectra, called 'signature'. This package helps users to
 extract, analyze and visualize signatures from genomic alteration records,
 thus providing new insight into cancer study.
 
+**SBS signatures**:
+
+```{r, fig.width=12, fig.height=5, echo=FALSE, message=FALSE}
+library(sigminer)
+load(system.file("extdata", "toy_mutational_signature.RData",
+  package = "sigminer", mustWork = TRUE
+))
+# Show signature profile
+p1 <- show_sig_profile(sig2, mode = "SBS", style = "cosmic")
+p1
+
+```
+
+**Copy number signatures**:
+
+```{r fig.width=12, fig.height=5, echo=FALSE}
+load(system.file("extdata", "toy_copynumber_signature_by_W.RData",
+  package = "sigminer", mustWork = TRUE
+))
+# Show signature profile
+p2 <- show_sig_profile(sig,
+  style = "cosmic",
+  mode = "copynumber",
+  method = "W",
+  normalize = "feature"
+)
+p2
+```
+
+
 ### Feature
 
 - supports a standard *de novo* pipeline for identification of two types of signatures: SBS signature and copy number signature

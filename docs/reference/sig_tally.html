@@ -83,7 +83,7 @@ about how to set sex for identifying copy number signatures." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
       </span>
     </div>
 
@@ -163,9 +163,8 @@ about how to set sex for identifying copy number signatures.</p>
 <span class='co'># S3 method for MAF</span>
 <span class='fu'>sig_tally</span>(
   <span class='no'>object</span>,
+  <span class='kw'>mode</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"SBS"</span>, <span class='st'>"DBS"</span>, <span class='st'>"ID"</span>),
   <span class='kw'>ref_genome</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>prefix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>ignore_chrs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>use_syn</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>keep_only_matrix</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
@@ -271,17 +270,13 @@ Only used when method is "Macintyre".</p></td>
       <td><p>if <code>TRUE</code>, keep only matrix for signature extraction.</p></td>
     </tr>
     <tr>
+      <th>mode</th>
+      <td><p>type of mutation matrix to extract, can be one of 'SBS', 'DBS' and 'ID'.</p></td>
+    </tr>
+    <tr>
       <th>ref_genome</th>
       <td><p>BSgenome object or name of the installed BSgenome package. Example: BSgenome.Hsapiens.UCSC.hg19
 Default NULL, tries to auto-detect from installed genomes.</p></td>
-    </tr>
-    <tr>
-      <th>prefix</th>
-      <td><p>Prefix to add or remove from contig names in MAF file.</p></td>
-    </tr>
-    <tr>
-      <th>add</th>
-      <td><p>If prefix is used, default is to add prefix to contig names in MAF file. If false prefix will be removed from contig names.</p></td>
     </tr>
     <tr>
       <th>use_syn</th>
@@ -316,7 +311,7 @@ with <a href='read_copynumber.html'>read_copynumber</a>).</p></li>
     
 <ul>
 <li><p><code>CopyNumber</code>: Returns copy number features, components and component-by-sample matrix</p></li>
-<li><p><code>MAF</code>: Returns SBS mutation component-by-sample matrix and APOBEC enrichment</p></li>
+<li><p><code>MAF</code>: Returns SBS mutation sample-by-component matrix and APOBEC enrichment</p></li>
 </ul>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
@@ -336,11 +331,11 @@ processes in ovarian carcinoma." Nature genetics 50.9 (2018): 1262.</p>
 <span class='co'># \donttest{</span>
 <span class='co'># Use method designed by Wang, Shixiang et al.</span>
 <span class='no'>cn_tally_W</span> <span class='kw'>&lt;-</span> <span class='fu'>sig_tally</span>(<span class='no'>cn</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"W"</span>)</div><div class='output co'>#&gt; <span class='message'>=&gt; Step: getting copy number features</span></div><div class='output co'>#&gt; <span class='message'>Getting breakpoint count per 10 Mb...</span></div><div class='output co'>#&gt; <span class='message'>Getting breakpoint count per chromosome arm...</span></div><div class='output co'>#&gt; <span class='message'>Getting copy number...</span></div><div class='output co'>#&gt; <span class='message'>Getting change-point copy number change...</span></div><div class='output co'>#&gt; <span class='message'>Getting length of chains of oscillating copy number...</span></div><div class='output co'>#&gt; <span class='message'>Getting (log10 based) segment size...</span></div><div class='output co'>#&gt; <span class='message'>Getting the minimal number of chromosome with 50% CNV...</span></div><div class='output co'>#&gt; <span class='message'>Getting burden of chromosome...</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Step: generating copy number components</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Step: generating components by sample matrix</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Done.</span></div><div class='input'><span class='co'># Use method designed by Macintyre et al.</span>
-<span class='no'>cn_tally_M</span> <span class='kw'>&lt;-</span> <span class='fu'>sig_tally</span>(<span class='no'>cn</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"M"</span>)</div><div class='output co'>#&gt; <span class='message'>=&gt; Step: getting copy number features</span></div><div class='output co'>#&gt; <span class='message'>Getting segment size...</span></div><div class='output co'>#&gt; <span class='message'>Getting breakpoint count per 10 Mb...</span></div><div class='output co'>#&gt; <span class='message'>Getting length of chains of oscillating copy number...</span></div><div class='output co'>#&gt; <span class='message'>Getting breakpoint count per chromosome arm...</span></div><div class='output co'>#&gt; <span class='message'>Getting change-point copy number change...</span></div><div class='output co'>#&gt; <span class='message'>Getting copy number...</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Step: fitting copy number components</span></div><div class='output co'>#&gt; <span class='message'>Fitting feature: segsize</span></div><div class='output co'>#&gt; <span class='message'>载入需要的程辑包：globals</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>载入程辑包：‘globals’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:R.utils’:</span>
+<span class='no'>cn_tally_M</span> <span class='kw'>&lt;-</span> <span class='fu'>sig_tally</span>(<span class='no'>cn</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"M"</span>)</div><div class='output co'>#&gt; <span class='message'>=&gt; Step: getting copy number features</span></div><div class='output co'>#&gt; <span class='message'>Getting segment size...</span></div><div class='output co'>#&gt; <span class='message'>Getting breakpoint count per 10 Mb...</span></div><div class='output co'>#&gt; <span class='message'>Getting length of chains of oscillating copy number...</span></div><div class='output co'>#&gt; <span class='message'>Getting breakpoint count per chromosome arm...</span></div><div class='output co'>#&gt; <span class='message'>Getting change-point copy number change...</span></div><div class='output co'>#&gt; <span class='message'>Getting copy number...</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Step: fitting copy number components</span></div><div class='output co'>#&gt; <span class='message'>Fitting feature: segsize</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: globals</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: 'globals'</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from 'package:R.utils':</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    cleanup</span></div><div class='output co'>#&gt; <span class='message'>载入需要的程辑包：future</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>载入程辑包：‘future’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:NMF’:</span>
+#&gt; <span class='message'>    cleanup</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: future</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: 'future'</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from 'package:NMF':</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    run</span></div><div class='output co'>#&gt; 2 : *
 #&gt; 3 : *
@@ -482,42 +477,37 @@ processes in ovarian carcinoma." Nature genetics 50.9 (2018): 1262.</p>
 #&gt; -Summarizing
 #&gt; -Processing clinical data
 #&gt; --Missing clinical data
-#&gt; -Finished in 0.198s elapsed (0.716s cpu) </div><div class='input'><span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='st'>"BSgenome.Hsapiens.UCSC.hg19"</span>)) {
+#&gt; -Finished in 0.320s elapsed (0.240s cpu) </div><div class='input'><span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='st'>"BSgenome.Hsapiens.UCSC.hg19"</span>)) {
   <span class='no'>mt_tally</span> <span class='kw'>&lt;-</span> <span class='fu'>sig_tally</span>(
     <span class='no'>laml</span>,
     <span class='kw'>ref_genome</span> <span class='kw'>=</span> <span class='st'>"BSgenome.Hsapiens.UCSC.hg19"</span>,
-    <span class='kw'>prefix</span> <span class='kw'>=</span> <span class='st'>"chr"</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>useSyn</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+    <span class='kw'>use_syn</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
   )
 } <span class='kw'>else</span> {
   <span class='fu'><a href='https://rdrr.io/r/base/message.html'>message</a></span>(<span class='st'>"Please install package 'BSgenome.Hsapiens.UCSC.hg19' firstly!"</span>)
-}</div><div class='output co'>#&gt; <span class='message'>载入需要的程辑包：BSgenome.Hsapiens.UCSC.hg19</span></div><div class='output co'>#&gt; <span class='message'>载入需要的程辑包：BSgenome</span></div><div class='output co'>#&gt; <span class='message'>载入需要的程辑包：S4Vectors</span></div><div class='output co'>#&gt; <span class='message'>载入需要的程辑包：stats4</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>载入程辑包：‘S4Vectors’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:future’:</span>
+}</div><div class='output co'>#&gt; <span class='message'>Loading required package: BSgenome.Hsapiens.UCSC.hg19</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: BSgenome</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: S4Vectors</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: stats4</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: 'S4Vectors'</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from 'package:future':</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    values</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:NMF’:</span>
+#&gt; <span class='message'>    values</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from 'package:NMF':</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    nrun</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:pkgmaker’:</span>
+#&gt; <span class='message'>    nrun</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from 'package:pkgmaker':</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    new2</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:base’:</span>
+#&gt; <span class='message'>    new2</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from 'package:base':</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    expand.grid</span></div><div class='output co'>#&gt; <span class='message'>载入需要的程辑包：IRanges</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>载入程辑包：‘IRanges’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:R.oo’:</span>
+#&gt; <span class='message'>    expand.grid</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: IRanges</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: 'IRanges'</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from 'package:R.oo':</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    trim</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:purrr’:</span>
+#&gt; <span class='message'>    trim</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from 'package:purrr':</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    reduce</span></div><div class='output co'>#&gt; <span class='message'>载入需要的程辑包：GenomeInfoDb</span></div><div class='output co'>#&gt; <span class='message'>载入需要的程辑包：GenomicRanges</span></div><div class='output co'>#&gt; <span class='message'>载入需要的程辑包：Biostrings</span></div><div class='output co'>#&gt; <span class='message'>载入需要的程辑包：XVector</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>载入程辑包：‘XVector’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:purrr’:</span>
+#&gt; <span class='message'>    reduce</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from 'package:grDevices':</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    windows</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: GenomeInfoDb</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: GenomicRanges</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: Biostrings</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: XVector</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: 'XVector'</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from 'package:purrr':</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    compact</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>载入程辑包：‘Biostrings’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:base’:</span>
+#&gt; <span class='message'>Attaching package: 'Biostrings'</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from 'package:base':</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    strsplit</span></div><div class='output co'>#&gt; <span class='message'>载入需要的程辑包：rtracklayer</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Chromosome names in MAF must match chromosome names in reference genome.</span>
-#&gt; <span class='warning'>Ignorinig 101 single nucleotide variants from missing chromosomes chr23</span></div><div class='output co'>#&gt; -Extracting 5' and 3' adjacent bases
-#&gt; -Extracting +/- 20bp around mutated bases for background C&gt;T estimation
-#&gt; -Estimating APOBEC enrichment scores
-#&gt; --Performing one-way Fisher's test for APOBEC enrichment
-#&gt; ---APOBEC related mutations are enriched in  3.315 % of samples (APOBEC enrichment score &gt; 2 ;  6  of  181  samples)
-#&gt; -Creating mutation matrix
-#&gt; --matrix of dimension 188x96</div><div class='input'># }
+#&gt; <span class='message'>    strsplit</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: rtracklayer</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Checking chromosome names...</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Done</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Checking start and end position...</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Done</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Extracting 5' and 3' adjacent bases</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Extracting +/- 20bp around mutated bases for background C&gt;T estimation</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Estimating APOBEC enrichment scores</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Performing one-way Fisher's test for APOBEC enrichment</span></div><div class='output co'>#&gt; <span class='message'>=&gt; APOBEC related mutations are enriched in 3.297% of samples (APOBEC enrichment score &gt; 2; 6 of 182 samples)</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Creating SBS sample-by-component matrice</span></div><div class='output co'>#&gt; <span class='message'>=&gt; Done</span></div><div class='input'># }
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

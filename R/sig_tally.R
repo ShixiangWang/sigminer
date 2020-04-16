@@ -63,10 +63,10 @@
 #'   mt_tally <- sig_tally(
 #'     laml,
 #'     ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
-#'     prefix = "chr", add = TRUE, useSyn = TRUE
+#'     use_syn = TRUE
 #'   )
 #'
-#'   expect_equal(length(mt_tally), 2L)
+#'   expect_equal(length(mt_tally), 3L)
 #' } else {
 #'   message("Please install package 'BSgenome.Hsapiens.UCSC.hg19' firstly!")
 #' }
@@ -240,8 +240,9 @@ sig_tally.CopyNumber <- function(object,
   }
 }
 
-#' @describeIn sig_tally Returns SBS mutation component-by-sample matrix and APOBEC enrichment
+#' @describeIn sig_tally Returns SBS mutation sample-by-component matrix and APOBEC enrichment
 #' @inheritParams maftools::trinucleotideMatrix
+#' @param mode type of mutation matrix to extract, can be one of 'SBS', 'DBS' and 'ID'.
 #' @param ignore_chrs Chromsomes to ignore from analysis. e.g. chrX and chrY.
 #' @param use_syn Logical. Whether to include synonymous variants in analysis. Defaults to TRUE
 #' @references Mayakonda, Anand, et al. "Maftools: efficient and comprehensive analysis of somatic variants in cancer." Genome research 28.11 (2018): 1747-1756.
@@ -254,24 +255,131 @@ sig_tally.CopyNumber <- function(object,
 #'   mt_tally <- sig_tally(
 #'     laml,
 #'     ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
-#'     prefix = "chr", add = TRUE, useSyn = TRUE
+#'     use_syn = TRUE
 #'   )
 #' } else {
 #'   message("Please install package 'BSgenome.Hsapiens.UCSC.hg19' firstly!")
 #' }
 #' }
 #' @export
-sig_tally.MAF <- function(object, ref_genome = NULL, prefix = NULL,
-                          add = TRUE, ignore_chrs = NULL, use_syn = TRUE,
+sig_tally.MAF <- function(object, mode = c("SBS", "DBS", "ID"), ref_genome = NULL,
+                          ignore_chrs = NULL, use_syn = TRUE,
                           keep_only_matrix = FALSE,
                           ...) {
-  # TODO: Rewrite this function instead of using maftools
-  # Make result consistent with result from sig_tally.CopyNumber
-  res <- maftools::trinucleotideMatrix(
-    object,
-    ref_genome = ref_genome, prefix = prefix,
-    add = add, ignoreChr = ignore_chrs, useSyn = use_syn, fn = NULL
+
+  mode = match.arg(mode)
+
+  hsgs.installed <- BSgenome::installed.genomes(splitNameParts = TRUE)
+  data.table::setDT(x = hsgs.installed)
+  # hsgs.installed = hsgs.installed[organism %in% "Hsapiens"]
+
+  if (nrow(hsgs.installed) == 0) {
+    stop("Could not find any installed BSgenomes.\nUse BSgenome::available.genomes() for options.")
+  }
+
+  if (is.null(ref_genome)) {
+    message("=> User did not set 'ref_genome'")
+    message("=> Found following BSgenome installtions. Using first entry\n")
+    print(hsgs.installed)
+    ref_genome <- hsgs.installed$pkgname[1]
+  } else {
+    if (!ref_genome %in% hsgs.installed$pkgname) {
+      message(paste0("=> Could not find BSgenome "), ref_genome, "\n")
+      message("=> Found following BSgenome installtions. Correct 'ref_genome' argument if necessary\n")
+      print(hsgs.installed)
+      stop()
+    }
+  }
+
+  ref_genome <- BSgenome::getBSgenome(genome = ref_genome)
+  query <- maftools::subsetMaf(
+    maf = object,
+    query = "Variant_Type %in% c('SNP', 'INS', 'DEL')", fields = "Chromosome",
+    includeSyn = use_syn, mafObj = FALSE
   )
+
+  # Remove unwanted contigs
+  if (!is.null(ignore_chrs)) {
+    query <- query[!query$Chromosome %in% ignore_chrs]
+  }
+
+  if (nrow(query) == 0) {
+    stop("Zero variants to analyze!")
+  }
+
+  message("=> Checking chromosome names...")
+  query$Chromosome <- sub(
+    pattern = "chr",
+    replacement = "chr",
+    x = as.character(query$Chromosome),
+    ignore.case = TRUE
+  )
+
+  ## Make sure all have prefix
+  if (any(!grepl("chr", query$Chromosome))) {
+    query$Chromosome[!grepl("chr", query$Chromosome)] <-
+      paste0("chr", query$Chromosome[!grepl("chr", query$Chromosome)])
+  }
+
+  ## Handle non-autosomes
+  query$Chromosome <- sub(
+    pattern = "x",
+    replacement = "X",
+    x = as.character(query$Chromosome),
+    ignore.case = TRUE
+  )
+
+  query$Chromosome <- sub(
+    pattern = "y",
+    replacement = "Y",
+    x = as.character(query$Chromosome),
+    ignore.case = TRUE
+  )
+
+  query$Chromosome <- sub(
+    pattern = "MT",
+    replacement = "M",
+    x = as.character(query$Chromosome),
+    ignore.case = TRUE
+  )
+
+  # detect and transform chromosome 23 to "X"
+  query$Chromosome <- sub("23", "X", query$Chromosome)
+  # detect and transform chromosome 24 to "Y"
+  query$Chromosome <- sub("24", "Y", query$Chromosome)
+  message("=> Done")
+
+  message("=> Checking start and end position...")
+  query$Start_Position <- as.numeric(as.character(query$Start_Position))
+  query$End_Position <- as.numeric(as.character(query$End_Position))
+  message("=> Done")
+
+  query_seq_lvls <- query[, .N, Chromosome]
+  ref_seqs_lvls <- BSgenome::seqnames(x = ref_genome)
+  query_seq_lvls_missing <- query_seq_lvls[!Chromosome %in% ref_seqs_lvls]
+
+  if (nrow(query_seq_lvls_missing) > 0) {
+    warning(paste0(
+      "Chromosome names in MAF must match chromosome names in reference genome.\nIgnorinig ",
+      query_seq_lvls_missing[, sum(N)],
+      " single nucleotide variants from missing chromosomes ",
+      paste(query_seq_lvls_missing[, Chromosome], collapse = ", ")
+    ),
+    immediate. = TRUE
+    )
+  }
+
+  query <- query[!Chromosome %in% query_seq_lvls_missing[, Chromosome]]
+
+  if (mode == "SBS") {
+    res <- generate_matrix_SBS(query, ref_genome)
+  } else if (mode == "DBS") {
+
+  } else {
+    ## INDEL
+  }
+
+  message("=> Done")
 
   if (keep_only_matrix) {
     res$nmf_matrix
@@ -279,3 +387,11 @@ sig_tally.MAF <- function(object, ref_genome = NULL, prefix = NULL,
     res
   }
 }
+
+
+utils::globalVariables(
+  c(
+    ".N",
+    "Chromosome"
+  )
+)
