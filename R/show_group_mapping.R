@@ -31,16 +31,26 @@
 #' )
 #' p2
 #' @testexamples
+#' if (!is.null(p1)) {
 #' expect_s3_class(p1, "ggplot")
+#' }
+#' if (!is.null(p2)) {
 #' expect_s3_class(p2, "ggplot")
+#' }
 show_group_mapping <- function(data, col_to_flow, cols_to_map, include_sig = FALSE,
                                fill_na = FALSE,
                                title = NULL, xlab = NULL, ylab = NULL,
                                custom_theme = cowplot::theme_minimal_hgrid()) {
   stopifnot(is.data.frame(data), length(col_to_flow) == 1)
 
+  if (!requireNamespace("ggalluvial", quietly = TRUE)) {
+    message("Please install package 'ggalluvial' before using this feature!")
+    return(invisible(NULL))
+  }
+
   if (!requireNamespace("ggfittext", quietly = TRUE)) {
-    stop("Please install package 'ggfittext' before using this feature!")
+    message("Please install package 'ggfittext' before using this feature!")
+    return(invisible(NULL))
   }
 
   if (include_sig) {

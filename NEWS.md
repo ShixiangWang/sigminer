@@ -1,3 +1,8 @@
+# sigminer 1.0.1
+
+- Removed `fuzzyjoin` package from dependency.
+- Moved `ggalluvial` package to field `suggsets`.
+
 # sigminer 1.0.0
 
 All users, this is a break-through version of **sigminer**,
