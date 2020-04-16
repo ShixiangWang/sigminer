@@ -30,6 +30,7 @@ sig_tally(object, ...)
 
 \method{sig_tally}{MAF}(
   object,
+  mode = c("SBS", "DBS", "ID"),
   ref_genome = NULL,
   ignore_chrs = NULL,
   use_syn = TRUE,
@@ -98,6 +99,8 @@ Only used when method is "Macintyre".}
 Only used when method is "Macintyre".}
 
 \item{keep_only_matrix}{if \code{TRUE}, keep only matrix for signature extraction.}
+
+\item{mode}{type of mutation matrix to extract, can be one of 'SBS', 'DBS' and 'ID'.}
 
 \item{ref_genome}{BSgenome object or name of the installed BSgenome package. Example: BSgenome.Hsapiens.UCSC.hg19
 Default NULL, tries to auto-detect from installed genomes.}

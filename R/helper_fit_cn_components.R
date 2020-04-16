@@ -20,8 +20,13 @@ fitComponent <-
                                unique = FALSE, cores = 1, seed = 123456) {
       # doParallel doest not work in Windows
       # doParallel::registerDoParallel(cores = cores)
-      doFuture::registerDoFuture()
-      future::plan("multiprocess", workers = cores)
+
+      if (!requireNamespace("doFuture", quietly = TRUE)) {
+        message("'doFuture' is recommended to install for improving computation")
+      } else {
+        doFuture::registerDoFuture()
+        future::plan("multiprocess", workers = cores)
+      }
 
       MYCALL <- match.call()
       MYCALL1 <- MYCALL

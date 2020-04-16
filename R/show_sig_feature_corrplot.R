@@ -54,6 +54,11 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
                                         0L,
                                         200L, 400L, 600L, 800L, 1020L
                                       )) {
+  if (!requireNamespace("patchwork", quietly = TRUE)) {
+    message("'patchwork' package is required to use this feature.")
+    return(invisible(NULL))
+  }
+
   if (!is.character(plot_ratio)) {
     if (length(plot_ratio) != 2 | !is.numeric(plot_ratio)) {
       stop("plot_ratio must be a length-2 numeric vector!")
@@ -166,7 +171,8 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
   names(gglist) <- data$type
   gglist <- purrr::map2(gglist, names(gglist), function(p,
                                                         type) {
-    p <- p + cowplot::theme_cowplot() + ggpubr::rotate_x_text(45) +
+    p <- p + cowplot::theme_cowplot() +
+      ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45)) +
       ggplot2::labs(x = xlab, y = ylab)
     if (type == "co") {
       p <- p + labs(color = "Correlation\ncoefficient")
@@ -194,7 +200,7 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
       )
       ca <- gglist$ca + guides(size = FALSE) +
         labs(y = NULL)
-      co + ca + plot_layout(
+      co + ca + patchwork::plot_layout(
         byrow = TRUE, heights = heights,
         widths = widths
       )
@@ -208,7 +214,7 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
       )
       ca <- gglist$ca + ggplot2::guides(size = FALSE) +
         labs(y = NULL)
-      co + ca + plot_layout(
+      co + ca + patchwork::plot_layout(
         byrow = TRUE, heights = heights,
         widths = widths
       )

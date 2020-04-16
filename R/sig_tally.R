@@ -63,10 +63,10 @@
 #'   mt_tally <- sig_tally(
 #'     laml,
 #'     ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
-#'     prefix = "chr", add = TRUE, useSyn = TRUE
+#'     use_syn = TRUE
 #'   )
 #'
-#'   expect_equal(length(mt_tally), 2L)
+#'   expect_equal(length(mt_tally), 3L)
 #' } else {
 #'   message("Please install package 'BSgenome.Hsapiens.UCSC.hg19' firstly!")
 #' }
@@ -242,6 +242,7 @@ sig_tally.CopyNumber <- function(object,
 
 #' @describeIn sig_tally Returns SBS mutation sample-by-component matrix and APOBEC enrichment
 #' @inheritParams maftools::trinucleotideMatrix
+#' @param mode type of mutation matrix to extract, can be one of 'SBS', 'DBS' and 'ID'.
 #' @param ignore_chrs Chromsomes to ignore from analysis. e.g. chrX and chrY.
 #' @param use_syn Logical. Whether to include synonymous variants in analysis. Defaults to TRUE
 #' @references Mayakonda, Anand, et al. "Maftools: efficient and comprehensive analysis of somatic variants in cancer." Genome research 28.11 (2018): 1747-1756.
@@ -261,10 +262,13 @@ sig_tally.CopyNumber <- function(object,
 #' }
 #' }
 #' @export
-sig_tally.MAF <- function(object, ref_genome = NULL,
+sig_tally.MAF <- function(object, mode = c("SBS", "DBS", "ID"), ref_genome = NULL,
                           ignore_chrs = NULL, use_syn = TRUE,
                           keep_only_matrix = FALSE,
                           ...) {
+
+  mode = match.arg(mode)
+
   hsgs.installed <- BSgenome::installed.genomes(splitNameParts = TRUE)
   data.table::setDT(x = hsgs.installed)
   # hsgs.installed = hsgs.installed[organism %in% "Hsapiens"]
@@ -367,7 +371,13 @@ sig_tally.MAF <- function(object, ref_genome = NULL,
 
   query <- query[!Chromosome %in% query_seq_lvls_missing[, Chromosome]]
 
-  res <- generate_matrix_SBS(query, ref_genome)
+  if (mode == "SBS") {
+    res <- generate_matrix_SBS(query, ref_genome)
+  } else if (mode == "DBS") {
+
+  } else {
+    ## INDEL
+  }
 
   message("=> Done")
 

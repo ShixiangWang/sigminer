@@ -81,7 +81,7 @@ This function is designed for this purpose." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
       </span>
     </div>
 
@@ -153,8 +153,8 @@ This function is designed for this purpose.</p>
   <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 ))
 
-<span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sig_auto_extract.html'>sig_auto_extract</a></span>(<span class='no'>cn_tally_W</span>$<span class='no'>nmf_matrix</span>, <span class='kw'>result_prefix</span> <span class='kw'>=</span> <span class='st'>"Test_copynumber"</span>, <span class='kw'>nrun</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: [ONE-TIME WARNING] Forked processing ('multicore') is disabled in future (&gt;= 1.13.0) when running R from RStudio, because it is considered unstable. Because of this, plan("multicore") will fall back to plan("sequential"), and plan("multiprocess") will fall back to plan("multisession") - not plan("multicore") as in the past. For more details, how to control forked processing or not, and how to silence this warning in future R sessions, see ?future::supportsMulticore</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>载入程辑包：‘purrr’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:magrittr’:</span>
+<span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sig_auto_extract.html'>sig_auto_extract</a></span>(<span class='no'>cn_tally_W</span>$<span class='no'>nmf_matrix</span>, <span class='kw'>result_prefix</span> <span class='kw'>=</span> <span class='st'>"Test_copynumber"</span>, <span class='kw'>nrun</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: 'purrr'</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from 'package:magrittr':</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    set_names</span></div><div class='output co'>#&gt; <span class='message'>Select Run 1, which K = 2 as best solution.</span></div><div class='input'>
 <span class='co'># All run info are stored in res$Raw$summary_run</span>
