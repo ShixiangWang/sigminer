@@ -63,6 +63,12 @@ setdiff(rownames(mt_tally$nmf_matrix), rownames(val$nmf_matrix))
 "TCGA-AB-2823" %in% laml@data$Tumor_Sample_Barcode
 "TCGA-AB-2823" %in% rownames(val$nmf_matrix)
 
+
+mt_tally <- sig_tally(
+  maftools::subsetMaf(laml, tsb = c("TCGA-AB-2988")),
+  ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
+  use_syn = TRUE, ignore_chrs = "23")
+
 ## Test 1536
 data = data.table::fread("../MatrixGenerator-Test/data/wt/luad/input/test_luad.maf")
 colnames(data) = colnames(laml@data)

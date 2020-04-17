@@ -1,4 +1,4 @@
-generate_matrix_SBS <- function(query, ref_genome) {
+generate_matrix_SBS <- function(query, ref_genome, genome_build = "hg19") {
   ## TODO handle 4 transcriptional bias categories
   query <- query[query$Variant_Type == "SNP"]
   if (nrow(query) == 0) {
@@ -108,6 +108,7 @@ generate_matrix_SBS <- function(query, ref_genome) {
   extract.tbl$SubstitutionTypeMotif <- factor(extract.tbl$SubstitutionTypeMotif, levels = penta_comb)
 
   extract.tbl$TriSubstitutionMotif <- factor(extract.tbl$TriSubstitutionMotif, levels = tri_comb2)
+  extract.tbl$Substitution <- factor(extract.tbl$Substitution, levels = unique(c(as.character(conv), names(conv))))
 
   # Compile data
   ## This is nucleotide frequcny and motif frequency across 41 bp in C>T and C>G context.
@@ -118,6 +119,8 @@ generate_matrix_SBS <- function(query, ref_genome) {
       wga = sum(wga), bases = sum(A, T, G, C)
     ), Tumor_Sample_Barcode
   ]
+  ## The by operation may remove some samples here
+  ## should it be added??
 
   ## This is per sample conversion events
   sub.tbl <- extract.tbl[, .N, list(Tumor_Sample_Barcode, Substitution)]
@@ -212,7 +215,7 @@ generate_matrix_SBS <- function(query, ref_genome) {
 }
 
 
-records_to_matrix <- function(dt, samp_col, component_col) {
+records_to_matrix <- function(dt, samp_col, component_col, add_trans_bias = FALSE, build = "hg19") {
   dt.summary <- dt[, .N, by = c(samp_col, component_col)]
   mat <- as.data.frame(data.table::dcast(dt.summary,
     formula = as.formula(paste(samp_col, "~", component_col)),
