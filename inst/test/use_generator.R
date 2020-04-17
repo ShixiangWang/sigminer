@@ -49,6 +49,9 @@ all.equal(mt_tally$APOBEC_scores, val$APOBEC_scores)
 colnames(mt_tally$APOBEC_scores)
 colnames(val$APOBEC_scores)
 
+colnames(mt_tally$APOBEC_scores)[!colnames(mt_tally$APOBEC_scores) == colnames(val$APOBEC_scores)]
+colnames(val$APOBEC_scores)[!colnames(mt_tally$APOBEC_scores) == colnames(val$APOBEC_scores)]
+
 purrr::map2(mt_tally$APOBEC_scores, val$APOBEC_scores, all.equal)
 
 all(colnames(mt_tally$nmf_matrix) == colnames(val$nmf_matrix))

@@ -1,3 +1,8 @@
+# sigminer 1.0.2
+
+- Added merged transcript info for hg19 and hg38 build, this is availabe by `data()`
+- Added gene info for hg19 and hg38 build to extdata directory
+
 # sigminer 1.0.1
 
 - Removed `fuzzyjoin` package from dependency.

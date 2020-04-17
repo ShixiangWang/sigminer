@@ -116,6 +116,7 @@ sig_tally <- function(object, ...) {
 #' @param niter the maximum number of iterations.
 #' Only used when method is "Macintyre".
 #' @param keep_only_matrix if `TRUE`, keep only matrix for signature extraction.
+#' For a `MAF` object, this will just return the most useful matrix.
 #' @references Macintyre, Geoff, et al. "Copy number signatures and mutational
 #' processes in ovarian carcinoma." Nature genetics 50.9 (2018): 1262.
 #' @export
@@ -246,6 +247,7 @@ sig_tally.CopyNumber <- function(object,
 #' @param ignore_chrs Chromsomes to ignore from analysis. e.g. chrX and chrY.
 #' @param use_syn Logical. Whether to include synonymous variants in analysis. Defaults to TRUE
 #' @references Mayakonda, Anand, et al. "Maftools: efficient and comprehensive analysis of somatic variants in cancer." Genome research 28.11 (2018): 1747-1756.
+#' @references Roberts SA, Lawrence MS, Klimczak LJ, et al. An APOBEC Cytidine Deaminase Mutagenesis Pattern is Widespread in Human Cancers. Nature genetics. 2013;45(9):970-976. doi:10.1038/ng.2702.
 #' @examples
 #' \donttest{
 #' # Prepare SBS signature analysis

@@ -98,7 +98,8 @@ Only used when method is "Macintyre".}
 \item{niter}{the maximum number of iterations.
 Only used when method is "Macintyre".}
 
-\item{keep_only_matrix}{if \code{TRUE}, keep only matrix for signature extraction.}
+\item{keep_only_matrix}{if \code{TRUE}, keep only matrix for signature extraction.
+For a \code{MAF} object, this will just return the most useful matrix.}
 
 \item{mode}{type of mutation matrix to extract, can be one of 'SBS', 'DBS' and 'ID'.}
 
@@ -175,6 +176,8 @@ Macintyre, Geoff, et al. "Copy number signatures and mutational
 processes in ovarian carcinoma." Nature genetics 50.9 (2018): 1262.
 
 Mayakonda, Anand, et al. "Maftools: efficient and comprehensive analysis of somatic variants in cancer." Genome research 28.11 (2018): 1747-1756.
+
+Roberts SA, Lawrence MS, Klimczak LJ, et al. An APOBEC Cytidine Deaminase Mutagenesis Pattern is Widespread in Human Cancers. Nature genetics. 2013;45(9):970-976. doi:10.1038/ng.2702.
 }
 \seealso{
 \link{sig_estimate} for estimating signature number for \link{sig_extract},
