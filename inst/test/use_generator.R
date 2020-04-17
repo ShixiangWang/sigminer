@@ -102,9 +102,11 @@ val_mat = val_mat[rownames(test_mat), colnames(test_mat)]
 
 all.equal(test_mat, val_mat)
 
+j = 1
 for (i in 1:nrow(test_mat)) {
-  if (sum(test_mat[i, ] -  val_mat[i, ]) > 0) {
-    print(i)
+  if (sum(abs(test_mat[i, ] -  val_mat[i, ])) > 0) {
+    message(i, " # ", j)
+    j = j + 1
   }
 }
 
@@ -112,9 +114,81 @@ sum(test_mat)
 sum(val_mat)
 data[Variant_Type == "SNP"] %>% nrow()
 
-which(test_mat[4, ] - val_mat[4, ] > 0)
+which(abs(test_mat[4, ] - val_mat[4, ]) > 0)
 test_mat[4, 183]
 val_mat[4, 183]
 
+sum(test_mat[4, ])
+sum(val_mat[4, ])
+
+which(abs(test_mat[54, ] - val_mat[54, ]) > 0)
+
+sum(test_mat[54, ])
+sum(val_mat[54, ])
+
 sum(test_tally$all_matrice$SBS_6)
 sum(test_tally$all_matrice$SBS_96)
+
+## Test 24
+data = data.table::fread("../MatrixGenerator-Test/data/wt/luad/input/test_luad.maf")
+colnames(data) = colnames(laml@data)
+colnames(data)[14:17] = c("X1", "X2", "Tumor_Sample_Barcode", "X3")
+
+test = read_maf(data)
+test_tally = sig_tally(
+  test,
+  ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
+  use_syn = TRUE, add_trans_bias = TRUE
+)
+
+sapply(test_tally$all_matrice, dim)
+sapply(test_tally$all_matrice, sum)
+
+test_mat = test_tally$all_matrice$SBS_24
+
+table(data$Chromosome)
+
+val_dt = data.table::fread("../MatrixGenerator-Test/data/wt/luad/output/SBS/test.SBS24.all")
+val_mat = val_dt %>%
+  tibble::column_to_rownames("MutationType") %>%
+  as.matrix() %>%
+  t
+
+val_mat
+
+dim(test_mat)
+dim(val_mat)
+
+all(colnames(test_mat) == colnames(val_mat))
+
+val_mat = val_mat[rownames(test_mat), colnames(test_mat)]
+
+all.equal(test_mat, val_mat)
+
+j = 1
+for (i in 1:20) {
+  dif = sum(abs(test_mat[i, ] -  val_mat[i, ]))
+  if (dif > 0) {
+    print(dif)
+    message(i, " # ", j)
+    j = j + 1
+  }
+}
+
+which(rowSums(test_mat) == rowSums(val_mat))
+
+# Use TCGA-05-4244-01A-01D-1105-08 for deeper debugging
+test_mat["TCGA-05-4244-01A-01D-1105-08",]
+val_mat["TCGA-05-4244-01A-01D-1105-08",]
+
+one = read_maf(data[Tumor_Sample_Barcode == "TCGA-05-4244-01A-01D-1105-08"])
+one_tally = sig_tally(
+  one,
+  ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
+  use_syn = TRUE, add_trans_bias = TRUE
+)
+
+sum(one_tally$all_matrice$SBS_24)
+sum(val_mat["TCGA-05-4244-01A-01D-1105-08",])
+
+one_tally$all_matrice$SBS_24

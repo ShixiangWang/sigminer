@@ -32,6 +32,8 @@ sig_tally(object, ...)
   object,
   mode = c("SBS", "DBS", "ID"),
   ref_genome = NULL,
+  genome_build = NULL,
+  add_trans_bias = FALSE,
   ignore_chrs = NULL,
   use_syn = TRUE,
   keep_only_matrix = FALSE,
@@ -105,6 +107,12 @@ For a \code{MAF} object, this will just return the most useful matrix.}
 
 \item{ref_genome}{BSgenome object or name of the installed BSgenome package. Example: BSgenome.Hsapiens.UCSC.hg19
 Default NULL, tries to auto-detect from installed genomes.}
+
+\item{genome_build}{genome build 'hg19' or 'hg38', if not set, guess it by \code{ref_genome}.}
+
+\item{add_trans_bias}{if \code{TRUE}, consider transcriptional bias categories.
+'T:' for Transcribed; 'U:' for Un-transcribed'; 'B:' for Bi-directional;
+'N:' for Non-transcribed; 'Q:' for Questionable.}
 
 \item{use_syn}{Logical. Whether to include synonymous variants in analysis. Defaults to TRUE}
 }

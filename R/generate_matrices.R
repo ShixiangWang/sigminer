@@ -1,4 +1,4 @@
-generate_matrix_SBS <- function(query, ref_genome, genome_build = "hg19") {
+generate_matrix_SBS <- function(query, ref_genome, genome_build = "hg19", add_trans_bias = FALSE) {
   ## TODO handle 4 transcriptional bias categories
   query <- query[query$Variant_Type == "SNP"]
   if (nrow(query) == 0) {
@@ -75,32 +75,40 @@ generate_matrix_SBS <- function(query, ref_genome, genome_build = "hg19") {
 
 
   # Possible substitution types after being referred to by the pyrimidine of the mutated Watson-Crick base pair
-  penta_comb <- expand.grid(
+
+  # penta_comb <- expand.grid(
+  #   complement,
+  #   complement,
+  #   "[",
+  #   unique(as.character(conv)),
+  #   "]",
+  #   complement,
+  #   complement,
+  #   stringsAsFactors = FALSE
+  # ) %>%
+  #   apply(1, paste0, collapse = "") %>%
+  #   unique()
+
+  penta_comb <- vector_to_combination(
     complement,
     complement,
     "[",
     unique(as.character(conv)),
     "]",
     complement,
-    complement,
-    stringsAsFactors = FALSE
-  ) %>%
-    apply(1, paste0, collapse = "") %>%
-    unique()
+    complement
+  )
 
   tri_comb <- substr(penta_comb, 2, 8) %>%
     unique()
 
-  tri_comb2 <- expand.grid(
+  tri_comb2 <- vector_to_combination(
     complement,
     "[",
     unique(c(as.character(conv), names(conv))),
     "]",
-    complement,
-    stringsAsFactors = FALSE
-  ) %>%
-    apply(1, paste0, collapse = "") %>%
-    unique()
+    complement
+  )
 
   # Set levels for type (mainly component)
   extract.tbl$SubstitutionType <- factor(extract.tbl$SubstitutionType, levels = unique(as.character(conv)))
@@ -197,33 +205,100 @@ generate_matrix_SBS <- function(query, ref_genome, genome_build = "hg19") {
 
   SBS_6 <- records_to_matrix(extract.tbl, "Tumor_Sample_Barcode", "SubstitutionType")
   SBS_6 <- SBS_6[, c("T>C", "C>T", "T>A", "T>G", "C>A", "C>G")] %>% as.matrix()
+
   SBS_96 <- records_to_matrix(extract.tbl, "Tumor_Sample_Barcode", "TriSubstitutionTypeMotif")
   SBS_96 <- SBS_96[, tri_comb] %>% as.matrix()
+
   SBS_1536 <- records_to_matrix(extract.tbl, "Tumor_Sample_Barcode", "SubstitutionTypeMotif")
   SBS_1536 <- SBS_1536[, penta_comb] %>% as.matrix()
 
-  res <- list(
-    nmf_matrix = SBS_96,
-    all_matrice = list(
-      SBS_6 = SBS_6,
-      SBS_96 = SBS_96,
-      SBS_1536 = SBS_1536
-    ),
-    APOBEC_scores = sub.tbl
-  )
+  if (add_trans_bias) {
+    t_labels = c("T:", "U:", "B:", "N:")
+
+    SBS_24 <- records_to_matrix(extract.tbl, "Tumor_Sample_Barcode", "SubstitutionType",
+                                add_trans_bias = TRUE, build = genome_build)
+    SBS_24 <- SBS_24[, vector_to_combination(t_labels,
+                                            c("T>C", "C>T", "T>A", "T>G", "C>A", "C>G"))] %>% as.matrix()
+
+    SBS_384 <- records_to_matrix(extract.tbl, "Tumor_Sample_Barcode", "TriSubstitutionTypeMotif",
+                                 add_trans_bias = TRUE, build = genome_build)
+    SBS_384 <- SBS_384[, vector_to_combination(t_labels, tri_comb)] %>% as.matrix()
+
+    SBS_6144 <- records_to_matrix(extract.tbl, "Tumor_Sample_Barcode", "SubstitutionTypeMotif",
+                                  add_trans_bias = TRUE, build = genome_build)
+    SBS_6144 <- SBS_6144[, vector_to_combination(t_labels, penta_comb)] %>% as.matrix()
+  }
+
+  if (add_trans_bias) {
+    res <- list(
+      nmf_matrix = SBS_384,
+      all_matrice = list(
+        SBS_6 = SBS_6,
+        SBS_24 = SBS_24,
+        SBS_96 = SBS_96,
+        SBS_384 = SBS_384,
+        SBS_1536 = SBS_1536,
+        SBS_6144 = SBS_6144
+      ),
+      APOBEC_scores = sub.tbl
+    )
+  } else {
+    res <- list(
+      nmf_matrix = SBS_96,
+      all_matrice = list(
+        SBS_6 = SBS_6,
+        SBS_96 = SBS_96,
+        SBS_1536 = SBS_1536
+      ),
+      APOBEC_scores = sub.tbl
+    )
+  }
   res
 }
 
 
 records_to_matrix <- function(dt, samp_col, component_col, add_trans_bias = FALSE, build = "hg19") {
+  if (add_trans_bias) {
+    transcript_dt = get(paste0("transcript.", build), envir = as.environment("package:sigminer"))
+    data.table::setkey(transcript_dt, chrom, start, end)
+
+    loc_dt = dt[, .(Chromosome, Start, End)]
+    colnames(loc_dt) = c("chrom", "start", "end")
+    m_dt = data.table::foverlaps(loc_dt, transcript_dt, type = "any", which = TRUE)[
+      , .(MatchCount = sum(!is.na(yid))) , by = xid]
+    dt$transcript_bias_label = ifelse(
+      m_dt$MatchCount >= 2, "B:",
+      ifelse(m_dt$MatchCount == 0, "N:",
+             ifelse(dt$should_reverse,  ## Need expand the logical to DBS and ID
+                    "T:", "U:"))        ## If should reverse, the base switch to template strand from coding strand
+    )
+    new_levels = vector_to_combination(
+      c("T:", "U:", "B:", "N:"),
+      levels(dt[[component_col]])
+    )
+    dt[[component_col]] = paste0(dt$transcript_bias_label, dt[[component_col]])
+    dt[[component_col]] = factor(dt[[component_col]], levels = new_levels)
+
+  }
+
   dt.summary <- dt[, .N, by = c(samp_col, component_col)]
   mat <- as.data.frame(data.table::dcast(dt.summary,
-    formula = as.formula(paste(samp_col, "~", component_col)),
-    fill = 0, value.var = "N", drop = FALSE
+                                         formula = as.formula(paste(samp_col, "~", component_col)),
+                                         fill = 0, value.var = "N", drop = FALSE
   ))
+
   rownames(mat) <- mat[, 1]
   mat <- mat[, -1]
   mat
+}
+
+vector_to_combination = function(...) {
+  expand.grid(
+    ...,
+    stringsAsFactors = FALSE
+  ) %>%
+    apply(1, paste0, collapse = "") %>%
+    unique()
 }
 
 utils::globalVariables(
@@ -238,5 +313,6 @@ utils::globalVariables(
     "fraction_APOBEC_mutations", "n_A", "n_C", "n_C>G_and_C>T",
     "n_G", "n_T", "n_mutations", "non_APOBEC_mutations",
     "tCw", "tCw_to_A", "tCw_to_G", "tCw_to_G+tCw_to_T",
-    "tCw_to_T", "tcw", "wGa", "wGa_to_A", "wGa_to_C","wGa_to_T", "wga")
+    "tCw_to_T", "tcw", "wGa", "wGa_to_A", "wGa_to_C","wGa_to_T", "wga",
+    "xid", "yid", "Start", "End")
 )

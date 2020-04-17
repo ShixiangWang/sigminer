@@ -244,6 +244,10 @@ sig_tally.CopyNumber <- function(object,
 #' @describeIn sig_tally Returns SBS mutation sample-by-component matrix and APOBEC enrichment
 #' @inheritParams maftools::trinucleotideMatrix
 #' @param mode type of mutation matrix to extract, can be one of 'SBS', 'DBS' and 'ID'.
+#' @param genome_build genome build 'hg19' or 'hg38', if not set, guess it by `ref_genome`.
+#' @param add_trans_bias if `TRUE`, consider transcriptional bias categories.
+#' 'T:' for Transcribed; 'U:' for Un-transcribed'; 'B:' for Bi-directional;
+#' 'N:' for Non-transcribed; 'Q:' for Questionable.
 #' @param ignore_chrs Chromsomes to ignore from analysis. e.g. chrX and chrY.
 #' @param use_syn Logical. Whether to include synonymous variants in analysis. Defaults to TRUE
 #' @references Mayakonda, Anand, et al. "Maftools: efficient and comprehensive analysis of somatic variants in cancer." Genome research 28.11 (2018): 1747-1756.
@@ -264,12 +268,26 @@ sig_tally.CopyNumber <- function(object,
 #' }
 #' }
 #' @export
-sig_tally.MAF <- function(object, mode = c("SBS", "DBS", "ID"), ref_genome = NULL,
-                          ignore_chrs = NULL, use_syn = TRUE,
+sig_tally.MAF <- function(object, mode = c("SBS", "DBS", "ID"),
+                          ref_genome = NULL,
+                          genome_build = NULL,
+                          add_trans_bias = FALSE,
+                          ignore_chrs = NULL,
+                          use_syn = TRUE,
                           keep_only_matrix = FALSE,
                           ...) {
 
   mode = match.arg(mode)
+
+  if (is.null(genome_build)) {
+    if (grepl("hg19", ref_genome)) {
+      genome_build = "hg19"
+    } else if (grepl("hg38", ref_genome)) {
+      genome_build = "hg38"
+    } else {
+      stop("Cannot guess the genome build, please set it by hand!")
+    }
+  }
 
   hsgs.installed <- BSgenome::installed.genomes(splitNameParts = TRUE)
   data.table::setDT(x = hsgs.installed)
@@ -374,7 +392,7 @@ sig_tally.MAF <- function(object, mode = c("SBS", "DBS", "ID"), ref_genome = NUL
   query <- query[!Chromosome %in% query_seq_lvls_missing[, Chromosome]]
 
   if (mode == "SBS") {
-    res <- generate_matrix_SBS(query, ref_genome)
+    res <- generate_matrix_SBS(query, ref_genome, genome_build = genome_build, add_trans_bias = add_trans_bias)
   } else if (mode == "DBS") {
 
   } else {
