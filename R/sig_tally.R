@@ -276,14 +276,13 @@ sig_tally.MAF <- function(object, mode = c("SBS", "DBS", "ID"),
                           use_syn = TRUE,
                           keep_only_matrix = FALSE,
                           ...) {
-
-  mode = match.arg(mode)
+  mode <- match.arg(mode)
 
   if (is.null(genome_build)) {
     if (grepl("hg19", ref_genome)) {
-      genome_build = "hg19"
+      genome_build <- "hg19"
     } else if (grepl("hg38", ref_genome)) {
-      genome_build = "hg38"
+      genome_build <- "hg38"
     } else {
       stop("Cannot guess the genome build, please set it by hand!")
     }

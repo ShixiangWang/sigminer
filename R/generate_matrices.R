@@ -203,33 +203,45 @@ generate_matrix_SBS <- function(query, ref_genome, genome_build = "hg19", add_tr
 
   message("=> Creating SBS sample-by-component matrice")
 
+  message("==> Creating SBS-6 matrix")
   SBS_6 <- records_to_matrix(extract.tbl, "Tumor_Sample_Barcode", "SubstitutionType")
   SBS_6 <- SBS_6[, c("T>C", "C>T", "T>A", "T>G", "C>A", "C>G")] %>% as.matrix()
 
+  message("==> Creating SBS-96 matrix")
   SBS_96 <- records_to_matrix(extract.tbl, "Tumor_Sample_Barcode", "TriSubstitutionTypeMotif")
   SBS_96 <- SBS_96[, tri_comb] %>% as.matrix()
 
+  message("==> Creating SBS-1536 matrix")
   SBS_1536 <- records_to_matrix(extract.tbl, "Tumor_Sample_Barcode", "SubstitutionTypeMotif")
   SBS_1536 <- SBS_1536[, penta_comb] %>% as.matrix()
 
   if (add_trans_bias) {
-    t_labels = c("T:", "U:", "B:", "N:")
+    t_labels <- c("T:", "U:", "B:", "N:")
 
+    message("==> Creating SBS-24 (6x4) matrix")
     SBS_24 <- records_to_matrix(extract.tbl, "Tumor_Sample_Barcode", "SubstitutionType",
-                                add_trans_bias = TRUE, build = genome_build)
-    SBS_24 <- SBS_24[, vector_to_combination(t_labels,
-                                            c("T>C", "C>T", "T>A", "T>G", "C>A", "C>G"))] %>% as.matrix()
+      add_trans_bias = TRUE, build = genome_build
+    )
+    SBS_24 <- SBS_24[, vector_to_combination(
+      t_labels,
+      c("T>C", "C>T", "T>A", "T>G", "C>A", "C>G")
+    )] %>% as.matrix()
 
+    message("==> Creating SBS-384 (96x4) matrix")
     SBS_384 <- records_to_matrix(extract.tbl, "Tumor_Sample_Barcode", "TriSubstitutionTypeMotif",
-                                 add_trans_bias = TRUE, build = genome_build)
+      add_trans_bias = TRUE, build = genome_build
+    )
     SBS_384 <- SBS_384[, vector_to_combination(t_labels, tri_comb)] %>% as.matrix()
 
+    message("==> Creating SBS-6144 (1536x4) matrix")
     SBS_6144 <- records_to_matrix(extract.tbl, "Tumor_Sample_Barcode", "SubstitutionTypeMotif",
-                                  add_trans_bias = TRUE, build = genome_build)
+      add_trans_bias = TRUE, build = genome_build
+    )
     SBS_6144 <- SBS_6144[, vector_to_combination(t_labels, penta_comb)] %>% as.matrix()
   }
 
   if (add_trans_bias) {
+    message("=> Return SBS-384 as major matrix")
     res <- list(
       nmf_matrix = SBS_384,
       all_matrice = list(
@@ -243,6 +255,7 @@ generate_matrix_SBS <- function(query, ref_genome, genome_build = "hg19", add_tr
       APOBEC_scores = sub.tbl
     )
   } else {
+    message("=> Return SBS-96 as major matrix")
     res <- list(
       nmf_matrix = SBS_96,
       all_matrice = list(
@@ -259,32 +272,38 @@ generate_matrix_SBS <- function(query, ref_genome, genome_build = "hg19", add_tr
 
 records_to_matrix <- function(dt, samp_col, component_col, add_trans_bias = FALSE, build = "hg19") {
   if (add_trans_bias) {
-    transcript_dt = get(paste0("transcript.", build), envir = as.environment("package:sigminer"))
+    transcript_dt <- get(paste0("transcript.", build), envir = as.environment("package:sigminer"))
     data.table::setkey(transcript_dt, chrom, start, end)
 
-    loc_dt = dt[, .(Chromosome, Start, End)]
-    colnames(loc_dt) = c("chrom", "start", "end")
-    m_dt = data.table::foverlaps(loc_dt, transcript_dt, type = "any", which = TRUE)[
-      , .(MatchCount = sum(!is.na(yid))) , by = xid]
-    dt$transcript_bias_label = ifelse(
+    loc_dt <- dt[, .(Chromosome, Start, End)]
+    loc_dt$MutIndex <- 1:nrow(loc_dt)
+    colnames(loc_dt)[1:3] <- c("chrom", "start", "end")
+    m_dt <- data.table::foverlaps(loc_dt, transcript_dt, type = "any")[
+      , .(MatchCount = .N, strand = paste0(unique(strand), collapse = "/")),
+      by = MutIndex
+    ]
+    ## Actually, the MatchCount should only be 0, 1, 2
+    dt$transcript_bias_label <- ifelse(
       m_dt$MatchCount >= 2, "B:",
       ifelse(m_dt$MatchCount == 0, "N:",
-             ifelse(dt$should_reverse,  ## Need expand the logical to DBS and ID
-                    "T:", "U:"))        ## If should reverse, the base switch to template strand from coding strand
+        ifelse(xor(dt$should_reverse, m_dt$strand == "-"), ## Need expand the logical to DBS and ID
+          # (dt$should_reverse & m_dt$strand == "+") | (!dt$should_reverse & m_dt$strand == "-"),
+          "T:", "U:"
+        )
+      ) ## If should reverse, the base switch to template strand from coding strand
     )
-    new_levels = vector_to_combination(
+    new_levels <- vector_to_combination(
       c("T:", "U:", "B:", "N:"),
       levels(dt[[component_col]])
     )
-    dt[[component_col]] = paste0(dt$transcript_bias_label, dt[[component_col]])
-    dt[[component_col]] = factor(dt[[component_col]], levels = new_levels)
-
+    dt[[component_col]] <- paste0(dt$transcript_bias_label, dt[[component_col]])
+    dt[[component_col]] <- factor(dt[[component_col]], levels = new_levels)
   }
 
   dt.summary <- dt[, .N, by = c(samp_col, component_col)]
   mat <- as.data.frame(data.table::dcast(dt.summary,
-                                         formula = as.formula(paste(samp_col, "~", component_col)),
-                                         fill = 0, value.var = "N", drop = FALSE
+    formula = as.formula(paste(samp_col, "~", component_col)),
+    fill = 0, value.var = "N", drop = FALSE
   ))
 
   rownames(mat) <- mat[, 1]
@@ -292,7 +311,7 @@ records_to_matrix <- function(dt, samp_col, component_col, add_trans_bias = FALS
   mat
 }
 
-vector_to_combination = function(...) {
+vector_to_combination <- function(...) {
   expand.grid(
     ...,
     stringsAsFactors = FALSE
@@ -302,7 +321,8 @@ vector_to_combination = function(...) {
 }
 
 utils::globalVariables(
-  c("A", "APOBEC_Enriched", "APOBEC_Enrichment",
+  c(
+    "A", "APOBEC_Enriched", "APOBEC_Enrichment",
     "A[G>A]A", "A[G>C]A", "A[G>T]A", "G",
     "Substitution",
     "T[C>A]A", "T[C>A]T",
@@ -313,6 +333,7 @@ utils::globalVariables(
     "fraction_APOBEC_mutations", "n_A", "n_C", "n_C>G_and_C>T",
     "n_G", "n_T", "n_mutations", "non_APOBEC_mutations",
     "tCw", "tCw_to_A", "tCw_to_G", "tCw_to_G+tCw_to_T",
-    "tCw_to_T", "tcw", "wGa", "wGa_to_A", "wGa_to_C","wGa_to_T", "wga",
-    "xid", "yid", "Start", "End")
+    "tCw_to_T", "tcw", "wGa", "wGa_to_A", "wGa_to_C", "wGa_to_T", "wga",
+    "Start", "End", "MutIndex"
+  )
 )
