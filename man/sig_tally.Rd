@@ -174,6 +174,17 @@ if (require("BSgenome.Hsapiens.UCSC.hg19")) {
     ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
     use_syn = TRUE
   )
+  mt_tally$nmf_matrix[1:5, 1:5]
+
+  ## Use strand bias categories
+  mt_tally <- sig_tally(
+    laml,
+    ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
+    use_syn = TRUE, add_trans_bias = TRUE
+  )
+  ## Test it by enrichment analysis
+  enrich_component_strand_bias(mt_tally$nmf_matrix)
+  enrich_component_strand_bias(mt_tally$all_matrice$SBS_24)
 } else {
   message("Please install package 'BSgenome.Hsapiens.UCSC.hg19' firstly!")
 }

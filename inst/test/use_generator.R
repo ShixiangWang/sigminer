@@ -191,4 +191,9 @@ one_tally = sig_tally(
 sum(one_tally$all_matrice$SBS_24)
 sum(val_mat["TCGA-05-4244-01A-01D-1105-08",])
 
-one_tally$all_matrice$SBS_24
+rbind(
+one_tally$all_matrice$SBS_24,
+val_mat["TCGA-05-4244-01A-01D-1105-08", colnames(one_tally$all_matrice$SBS_24), drop = FALSE]
+)
+
+# B is more and N is less
