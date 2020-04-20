@@ -1,5 +1,8 @@
+
+# SBS ---------------------------------------------------------------------
+
 generate_matrix_SBS <- function(query, ref_genome, genome_build = "hg19", add_trans_bias = FALSE) {
-  ## TODO handle 4 transcriptional bias categories
+  ## TODO make 4 transcriptional bias categories all right
   query <- query[query$Variant_Type == "SNP"]
   if (nrow(query) == 0) {
     stop("Zero SNPs to analyze!")
@@ -310,6 +313,24 @@ records_to_matrix <- function(dt, samp_col, component_col, add_trans_bias = FALS
   mat <- mat[, -1]
   mat
 }
+
+
+
+# DBS ---------------------------------------------------------------------
+
+generate_matrix_DBS <- function(query, ref_genome, genome_build = "hg19", add_trans_bias = FALSE) {
+  ## TODO make 4 transcriptional bias categories all right
+  query <- query[query$Variant_Type == "SNP"]
+  if (nrow(query) == 0) {
+    stop("Zero SNPs to analyze!")
+  }
+}
+
+# INDELs (ID) -------------------------------------------------------------
+
+
+
+# Utils -------------------------------------------------------------------
 
 vector_to_combination <- function(...) {
   expand.grid(
