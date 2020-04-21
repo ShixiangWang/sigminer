@@ -130,6 +130,8 @@ sum(test_tally$all_matrice$SBS_6)
 sum(test_tally$all_matrice$SBS_96)
 
 ## Test 24
+laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
+laml <- read_maf(maf = laml.maf)
 data = data.table::fread("../MatrixGenerator-Test/data/wt/luad/input/test_luad.maf")
 colnames(data) = colnames(laml@data)
 colnames(data)[14:17] = c("X1", "X2", "Tumor_Sample_Barcode", "X3")

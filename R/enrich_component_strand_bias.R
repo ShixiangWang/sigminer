@@ -95,7 +95,7 @@ enrich_component_strand_bias <- function(mat) {
     dplyr::arrange(.data$p_value, .data$fdr) %>%
     data.table::as.data.table()
 
-  colnames(res)[3:6] = c("N_T", "N_U", "Total_T", "Total_U")
+  colnames(res)[3:6] <- c("N_T", "N_U", "Total_T", "Total_U")
 
   return(res)
 }

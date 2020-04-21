@@ -111,8 +111,13 @@ Default NULL, tries to auto-detect from installed genomes.}
 \item{genome_build}{genome build 'hg19' or 'hg38', if not set, guess it by \code{ref_genome}.}
 
 \item{add_trans_bias}{if \code{TRUE}, consider transcriptional bias categories.
-'T:' for Transcribed; 'U:' for Un-transcribed'; 'B:' for Bi-directional;
-'N:' for Non-transcribed; 'Q:' for Questionable.}
+'T:' for Transcribed (the variant is on the transcribed strand);
+'U:' for Un-transcribed (the variant is on the untranscribed strand);
+'B:' for Bi-directional (the variant is on both strand and is transcribed either way);
+'N:' for Non-transcribed (the variant is in a non-coding region and is untranslated);
+'Q:' for Questionable.
+\strong{NOTE}: the result counts of 'B' and 'N' labels are a little different from
+SigProfilerMatrixGenerator, the reason is unknown (may be caused by annotation file).}
 
 \item{use_syn}{Logical. Whether to include synonymous variants in analysis. Defaults to TRUE}
 }
@@ -197,6 +202,8 @@ processes in ovarian carcinoma." Nature genetics 50.9 (2018): 1262.
 Mayakonda, Anand, et al. "Maftools: efficient and comprehensive analysis of somatic variants in cancer." Genome research 28.11 (2018): 1747-1756.
 
 Roberts SA, Lawrence MS, Klimczak LJ, et al. An APOBEC Cytidine Deaminase Mutagenesis Pattern is Widespread in Human Cancers. Nature genetics. 2013;45(9):970-976. doi:10.1038/ng.2702.
+
+Bergstrom EN, Huang MN, Mahto U, Barnes M, Stratton MR, Rozen SG, Alexandrov LB: SigProfilerMatrixGenerator: a tool for visualizing and exploring patterns of small mutational events. BMC Genomics 2019, 20:685 https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-019-6041-2
 }
 \seealso{
 \link{sig_estimate} for estimating signature number for \link{sig_extract},

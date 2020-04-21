@@ -259,12 +259,18 @@ sig_tally.CopyNumber <- function(object,
 #' @param mode type of mutation matrix to extract, can be one of 'SBS', 'DBS' and 'ID'.
 #' @param genome_build genome build 'hg19' or 'hg38', if not set, guess it by `ref_genome`.
 #' @param add_trans_bias if `TRUE`, consider transcriptional bias categories.
-#' 'T:' for Transcribed; 'U:' for Un-transcribed'; 'B:' for Bi-directional;
-#' 'N:' for Non-transcribed; 'Q:' for Questionable.
+#' 'T:' for Transcribed (the variant is on the transcribed strand);
+#' 'U:' for Un-transcribed (the variant is on the untranscribed strand);
+#' 'B:' for Bi-directional (the variant is on both strand and is transcribed either way);
+#' 'N:' for Non-transcribed (the variant is in a non-coding region and is untranslated);
+#' 'Q:' for Questionable.
+#' **NOTE**: the result counts of 'B' and 'N' labels are a little different from
+#' SigProfilerMatrixGenerator, the reason is unknown (may be caused by annotation file).
 #' @param ignore_chrs Chromsomes to ignore from analysis. e.g. chrX and chrY.
 #' @param use_syn Logical. Whether to include synonymous variants in analysis. Defaults to TRUE
 #' @references Mayakonda, Anand, et al. "Maftools: efficient and comprehensive analysis of somatic variants in cancer." Genome research 28.11 (2018): 1747-1756.
 #' @references Roberts SA, Lawrence MS, Klimczak LJ, et al. An APOBEC Cytidine Deaminase Mutagenesis Pattern is Widespread in Human Cancers. Nature genetics. 2013;45(9):970-976. doi:10.1038/ng.2702.
+#' @references Bergstrom EN, Huang MN, Mahto U, Barnes M, Stratton MR, Rozen SG, Alexandrov LB: SigProfilerMatrixGenerator: a tool for visualizing and exploring patterns of small mutational events. BMC Genomics 2019, 20:685 https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-019-6041-2
 #' @examples
 #' \donttest{
 #' # Prepare SBS signature analysis
