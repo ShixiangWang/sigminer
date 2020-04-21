@@ -286,8 +286,12 @@ records_to_matrix <- function(dt, samp_col, component_col, add_trans_bias = FALS
       by = MutIndex
     ]
     ## Actually, the MatchCount should only be 0, 1, 2
+    if (any(m_dt$MatchCount > 2)) {
+      stop("More than 2 regions counted, please report your data and code to developer!")
+    }
+
     dt$transcript_bias_label <- ifelse(
-      m_dt$MatchCount >= 2, "B:",
+      m_dt$MatchCount == 2, "B:",
       ifelse(m_dt$MatchCount == 0, "N:",
         ifelse(xor(dt$should_reverse, m_dt$strand == "-"), ## Need expand the logical to DBS and ID
           # (dt$should_reverse & m_dt$strand == "+") | (!dt$should_reverse & m_dt$strand == "-"),
