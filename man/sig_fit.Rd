@@ -16,7 +16,8 @@ sig_fit(
   return_class = c("matrix", "data.table"),
   return_error = FALSE,
   rel_threshold = 0,
-  mode = c("SBS", "copynumber")
+  mode = c("SBS", "copynumber"),
+  ...
 )
 }
 \arguments{
@@ -51,6 +52,8 @@ and "human-genome" for transforming to whole genome frequency of component.}
 Of note, this is a little different from the same parameter in \link{get_sig_exposure}.}
 
 \item{mode}{signature type for plotting, now supports 'copynumber' or 'SBS'.}
+
+\item{...}{control parameters passing to \code{GenSA} function when use method 'SA'}
 }
 \value{
 The exposure result either in \code{matrix} or \code{data.table} format.
@@ -102,10 +105,16 @@ if (requireNamespace("GenSA", quietly = TRUE)) {
 
   H_dt <- sig_fit(V, W, method = "SA", return_class = "data.table")
   H_dt
+
+  ## Modify arguments to method
+  sig_fit(V, W, method = "SA", maxit = 2000, temperature = 100)
 }
 }
 \references{
 Daniel Huebschmann, Zuguang Gu and Matthias Schlesner (2019). YAPSA: Yet Another Package for Signature Analysis. R package version 1.12.0.
 
 Huang X, Wojtowicz D, Przytycka TM. Detecting presence of mutational signatures in cancer with confidence. Bioinformatics. 2018;34(2):330–337. doi:10.1093/bioinformatics/btx604
+}
+\seealso{
+\link{sig_extract}, \link{sig_auto_extract}
 }

@@ -24,10 +24,12 @@
 #' @param return_error if `TRUE`, also return method error (Frobenius norm).
 #' @param rel_threshold numeric vector, a relative exposure lower than this value will be set to 0.
 #' Of note, this is a little different from the same parameter in [get_sig_exposure].
+#' @param ... control parameters passing to `GenSA` function when use method 'SA'
 #'
 #' @return The exposure result either in `matrix` or `data.table` format.
 #' If `return_error` set `TRUE`, a `list` is returned.
 #' @export
+#' @seealso [sig_extract], [sig_auto_extract]
 #' @references Daniel Huebschmann, Zuguang Gu and Matthias Schlesner (2019). YAPSA: Yet Another Package for Signature Analysis. R package version 1.12.0.
 #' @references Huang X, Wojtowicz D, Przytycka TM. Detecting presence of mutational signatures in cancer with confidence. Bioinformatics. 2018;34(2):330–337. doi:10.1093/bioinformatics/btx604
 #' @examples
@@ -66,6 +68,9 @@
 #'
 #'   H_dt <- sig_fit(V, W, method = "SA", return_class = "data.table")
 #'   H_dt
+#'
+#'   ## Modify arguments to method
+#'   sig_fit(V, W, method = "SA", maxit = 2000, temperature = 100)
 #' }
 #' @testexamples
 #' expect_is(H_infer, "matrix")
@@ -81,7 +86,9 @@ sig_fit <- function(catalogue_matrix,
                     return_class = c("matrix", "data.table"),
                     return_error = FALSE,
                     rel_threshold = 0,
-                    mode = c("SBS", "copynumber")) {
+                    mode = c("SBS", "copynumber"),
+                    ...) {
+  ## TODO: add mode for DBS and INDEL and also add COSMIC database for them
   stopifnot(is.matrix(catalogue_matrix))
   db_type <- match.arg(db_type)
   method <- match.arg(method)
@@ -218,7 +225,8 @@ sig_fit <- function(catalogue_matrix,
   expo <- purrr::map2(as.data.frame(catalogue_matrix), rel_threshold,
     f_fit,
     sig_matrix,
-    type = type
+    type = type,
+    ...
   )
 
   expo <- dplyr::bind_rows(expo) %>%
@@ -257,7 +265,7 @@ sig_fit <- function(catalogue_matrix,
 ## sig_matrix: reference signature matrix, components X signatures
 ## type: type of signature contribution to return
 
-decompose_LS <- function(x, y, sig_matrix, type = "absolute") {
+decompose_LS <- function(x, y, sig_matrix, type = "absolute", ...) {
   # Set constraints x >= 0
   G <- diag(dim(sig_matrix)[2])
   H <- rep(0, dim(sig_matrix)[2])
@@ -275,7 +283,7 @@ decompose_LS <- function(x, y, sig_matrix, type = "absolute") {
 # m observed turmor profile vector for a single patient/sample, 96 by 1. m is normalized.
 # P is same as sig_matrix
 
-decompose_QP <- function(x, y, P, type = "absolute") {
+decompose_QP <- function(x, y, P, type = "absolute", ...) {
   m <- x / sum(x)
   # N: how many signatures are selected
   N <- ncol(P)
@@ -302,7 +310,9 @@ decompose_QP <- function(x, y, P, type = "absolute") {
 }
 
 
-decompose_SA <- function(x, y, P, type = "absolute", control = list()) {
+decompose_SA <- function(x, y, P, type = "absolute", ...) {
+  control = list(...)
+
   m <- x / sum(x)
   # objective function to be minimized
   # local version of Frobenius norm to simplify and speed-up the objective function
