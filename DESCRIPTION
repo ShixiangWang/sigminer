@@ -48,7 +48,6 @@ Imports:
     ggplotify,
     ggpubr,
     IRanges,
-    lsei,
     maftools,
     magrittr,
     methods,
@@ -64,15 +63,18 @@ Suggests:
     BSgenome.Hsapiens.UCSC.hg19,
     covr,
     doFuture,
+    GenSA,
     ggalluvial,
     ggfittext,
     knitr,
+    lsei,
+    patchwork,
     pheatmap,
+    quadprog,
     R.utils,
     rmarkdown,
     roxygen2,
-    testthat,
-    patchwork
+    testthat
 VignetteBuilder: 
     knitr
 biocViews:

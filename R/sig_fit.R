@@ -1,10 +1,12 @@
-#' Fit Signature Exposure with Linear Combination Decomposition
+#' Fit Signature Exposures with Linear Combination Decomposition
 #'
 #' The function performs a signatures decomposition of a given mutational
 #' catalogue `V` with known signatures `W` by solving the minimization problem
-#' `min(||W*H - V||)` with additional constraints of non-negativity on H where W and V are known.
+#' `min(||W*H - V||)` where W and V are known.
 #'
-#' This is a modification based on `LCD` function from YAPSA pakcage.
+#' The method 'LS' is a modification based on `LCD` function from YAPSA pakcage.
+#' The method 'QP' and 'SA' are modified from SignatureEstimation package.
+#' See references for details.
 #'
 #' @param catalogue_matrix a numeric matrix `V` with row representing components and
 #' columns representing samples, typically you can get `nmf_matrix` from `sig_tally()` and
@@ -16,13 +18,18 @@
 #' @param sig a `Signature` object obtained either from [sig_extract] or [sig_auto_extract],
 #' or just a raw signature matrix with row representing components (motifs) and
 #' column representing signatures.
+#' @param method method to solve the minimazation problem.
+#' 'LS' for least square; 'QP' for quadratic programming; 'SA' for simulated annealing.
 #' @param return_class string, 'matrix' or 'data.table'.
+#' @param return_error if `TRUE`, also return method error (Frobenius norm).
 #' @param rel_threshold numeric vector, a relative exposure lower than this value will be set to 0.
 #' Of note, this is a little different from the same parameter in [get_sig_exposure].
 #'
 #' @return The exposure result either in `matrix` or `data.table` format.
+#' If `return_error` set `TRUE`, a `list` is returned.
 #' @export
-#'
+#' @references Daniel Huebschmann, Zuguang Gu and Matthias Schlesner (2019). YAPSA: Yet Another Package for Signature Analysis. R package version 1.12.0.
+#' @references Huang X, Wojtowicz D, Przytycka TM. Detecting presence of mutational signatures in cancer with confidence. Bioinformatics. 2018;34(2):330–337. doi:10.1093/bioinformatics/btx604
 #' @examples
 #' W <- matrix(c(1, 2, 3, 4, 5, 6), ncol = 2)
 #' colnames(W) <- c("sig1", "sig2")
@@ -34,12 +41,32 @@
 #' V <- W %*% H
 #' V
 #'
-#' H_infer <- sig_fit(V, W)
-#' H_infer
-#' H
+#' if (requireNamespace("lsei", quietly = TRUE)) {
+#'   H_infer <- sig_fit(V, W)
+#'   H_infer
+#'   H
 #'
-#' H_dt <- sig_fit(V, W, return_class = "data.table")
-#' H_dt
+#'   H_dt <- sig_fit(V, W, return_class = "data.table")
+#'   H_dt
+#' }
+#'
+#' if (requireNamespace("quadprog", quietly = TRUE)) {
+#'   H_infer <- sig_fit(V, W, method = "QP")
+#'   H_infer
+#'   H
+#'
+#'   H_dt <- sig_fit(V, W, method = "QP", return_class = "data.table")
+#'   H_dt
+#' }
+#'
+#' if (requireNamespace("GenSA", quietly = TRUE)) {
+#'   H_infer <- sig_fit(V, W, method = "SA")
+#'   H_infer
+#'   H
+#'
+#'   H_dt <- sig_fit(V, W, method = "SA", return_class = "data.table")
+#'   H_dt
+#' }
 #' @testexamples
 #' expect_is(H_infer, "matrix")
 #' expect_is(H_dt, "data.table")
@@ -49,12 +76,15 @@ sig_fit <- function(catalogue_matrix,
                     sig_db = "legacy",
                     db_type = c("", "human-exome", "human-genome"),
                     show_index = TRUE,
+                    method = c("LS", "QP", "SA"),
                     type = c("absolute", "relative"),
                     return_class = c("matrix", "data.table"),
+                    return_error = FALSE,
                     rel_threshold = 0,
                     mode = c("SBS", "copynumber")) {
   stopifnot(is.matrix(catalogue_matrix))
   db_type <- match.arg(db_type)
+  method <- match.arg(method)
 
   if (is.null(sig_index)) {
     if (inherits(sig, "Signature")) {
@@ -158,29 +188,45 @@ sig_fit <- function(catalogue_matrix,
     }
   }
 
-  # Set constraints x >= 0
-  G <- diag(dim(sig_matrix)[2])
-  H <- rep(0, dim(sig_matrix)[2])
-
-  expo <- purrr::map2(as.data.frame(catalogue_matrix), rel_threshold, function(x, y, type = "absolute") {
-    expo <- lsei::lsei(
-      a = sig_matrix,
-      b = x,
-      e = G, f = H
-    )
-    rel_expo <- expo / sum(expo)
-    expo[rel_expo < y] <- 0
-    if (type == "relative") {
-      expo <- expo / sum(expo)
+  f_fit <- switch(method,
+    LS = {
+      if (!requireNamespace("lsei", quietly = TRUE)) {
+        message("Please install 'lsei' package firstly.")
+        return(NULL)
+      }
+      message("=> Calling method 'LS'...")
+      decompose_LS
+    },
+    QP = {
+      if (!requireNamespace("quadprog", quietly = TRUE)) {
+        message("Please install 'quadprog' package firstly.")
+        return(NULL)
+      }
+      message("=> Calling method 'QP'...")
+      decompose_QP
+    },
+    SA = {
+      if (!requireNamespace("GenSA", quietly = TRUE)) {
+        message("Please install 'GenSA' package firstly.")
+        return(NULL)
+      }
+      message("=> Calling method 'SA'...")
+      decompose_SA
     }
-    expo <- round(expo, digits = 3)
-    expo
-  }, type = type)
+  )
+
+  expo <- purrr::map2(as.data.frame(catalogue_matrix), rel_threshold,
+    f_fit,
+    sig_matrix,
+    type = type
+  )
 
   expo <- dplyr::bind_rows(expo) %>%
     as.matrix()
   rownames(expo) <- colnames(sig_matrix)
   colnames(expo) <- colnames(catalogue_matrix)
+
+  expo_mat <- expo
 
   if (return_class != "matrix") {
     expo <- expo %>%
@@ -190,5 +236,107 @@ sig_fit <- function(catalogue_matrix,
       tidyr::pivot_wider(id_cols = "sample", names_from = "Sig", values_from = "expo") %>%
       data.table::as.data.table()
   }
+
+  message("=> Done")
+  if (return_error) {
+    ## compute estimation error for each sample/patient (Frobenius norm)
+    errors = sapply(seq(ncol(expo_mat)), function(i) FrobeniusNorm(catalogue_matrix[,i], sig_matrix, expo_mat[,i]))
+    names(errors) = colnames(catalogue_matrix)
+
+    return(list(
+      expo = expo,
+      errors = errors
+    ))
+  }
+
+  return(expo)
+}
+
+## x: catalogue to decompose
+## y: relative exposure threshold
+## sig_matrix: reference signature matrix, components X signatures
+## type: type of signature contribution to return
+
+decompose_LS <- function(x, y, sig_matrix, type = "absolute") {
+  # Set constraints x >= 0
+  G <- diag(dim(sig_matrix)[2])
+  H <- rep(0, dim(sig_matrix)[2])
+
+  expo <- lsei::lsei(
+    a = sig_matrix,
+    b = x,
+    e = G,
+    f = H
+  )
+
+  return_expo(expo = expo, y, type)
+}
+
+# m observed turmor profile vector for a single patient/sample, 96 by 1. m is normalized.
+# P is same as sig_matrix
+
+decompose_QP <- function(x, y, P, type = "absolute") {
+  m <- x / sum(x)
+  # N: how many signatures are selected
+  N <- ncol(P)
+  # G: matrix appearing in the quatric programming objective function
+  G <- t(P) %*% P
+  # C: matrix constraints under which we want to minimize the quatric programming objective function.
+  C <- cbind(rep(1, N), diag(N))
+  # b: vector containing the values of b_0.
+  b <- c(1, rep(0, N))
+  # d: vector appearing in the quatric programming objective function
+  d <- t(m) %*% P
+
+  # Solve quadratic programming problem
+  out <- quadprog::solve.QP(Dmat = G, dvec = d, Amat = C, bvec = b, meq = 1)
+
+  # Some exposure values are negative, but very close to 0
+  # Change these neagtive values to zero and renormalized
+  expo <- out$solution
+  expo[expo < 0] <- 0
+  expo <- expo / sum(expo)
+
+  # return the exposures
+  return_expo(expo, y, type, total = sum(x))
+}
+
+
+decompose_SA <- function(x, y, P, type = "absolute", control = list()) {
+  m <- x / sum(x)
+  # objective function to be minimized
+  # local version of Frobenius norm to simplify and speed-up the objective function
+  FrobeniusNorm.local <- function(exposures) {
+    estimate <- P %*% exposures
+    return(sqrt(sum((m - (estimate / sum(estimate)))^2)))
+  }
+  # N: how many signatures are selected
+  N <- ncol(P)
+  # change our suggestion to control GenSA function based on user's requirements
+  our.control <- list(maxit = 1000, temperature = 10, nb.stop.improvement = 1000, simple.function = TRUE)
+  our.control[names(control)] <- control
+  # Solve the problem using simulated annealing package GenSA
+  sa <- GenSA::GenSA(lower = rep(0.0, N), upper = rep(1.0, N), fn = FrobeniusNorm.local, control = our.control)
+  # Normalize the solution
+  expo <- sa$par / sum(sa$par)
+
+  # return the exposures
+  return_expo(expo, y, type, total = sum(x))
+}
+
+## total is used to set the total exposure in a sample
+## for method QP and SA
+return_expo <- function(expo, y, type = "absolute", total = NULL) {
+  if (sum(expo) == 1) {
+    rel_expo <- expo
+    expo <- expo * total
+  } else {
+    rel_expo <- expo / sum(expo)
+  }
+  expo[rel_expo < y] <- 0
+  if (type == "relative") {
+    expo <- expo / sum(expo)
+  }
+  expo <- round(expo, digits = 3)
   expo
 }
