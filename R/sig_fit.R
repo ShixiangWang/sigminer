@@ -21,9 +21,12 @@
 #' @param method method to solve the minimazation problem.
 #' 'LS' for least square; 'QP' for quadratic programming; 'SA' for simulated annealing.
 #' @param return_class string, 'matrix' or 'data.table'.
-#' @param return_error if `TRUE`, also return method error (Frobenius norm).
+#' @param return_error if `TRUE`, also return method error (Frobenius norm). NOTE:
+#' it is better to obtain the error when the type is 'absolute', because the error is
+#' affected by relative exposure accuracy.
 #' @param rel_threshold numeric vector, a relative exposure lower than this value will be set to 0.
 #' Of note, this is a little different from the same parameter in [get_sig_exposure].
+#' @param true_catalog used by [sig_fit_bootstrap], user never use it.
 #' @param ... control parameters passing to `GenSA` function when use method 'SA'
 #'
 #' @return The exposure result either in `matrix` or `data.table` format.
@@ -87,6 +90,7 @@ sig_fit <- function(catalogue_matrix,
                     return_error = FALSE,
                     rel_threshold = 0,
                     mode = c("SBS", "copynumber"),
+                    true_catalog = NULL,
                     ...) {
   ## TODO: add mode for DBS and INDEL and also add COSMIC database for them
   stopifnot(is.matrix(catalogue_matrix))
@@ -247,9 +251,47 @@ sig_fit <- function(catalogue_matrix,
 
   message("=> Done")
   if (return_error) {
+    if (!is.null(true_catalog)) {
+      ## Make sure component names are same
+      if (!is.null(sig_rowname) & !is.null(names(true_catalog))) {
+        true_catalog <- true_catalog[sig_rowname]
+      }
+    }
+
     ## compute estimation error for each sample/patient (Frobenius norm)
-    errors = sapply(seq(ncol(expo_mat)), function(i) FrobeniusNorm(catalogue_matrix[,i], sig_matrix, expo_mat[,i]))
-    names(errors) = colnames(catalogue_matrix)
+    if (type == "relative") {
+      warning("When the type is 'relative', the returned error is affected by its precision.", immediate. = TRUE)
+      if (is.null(true_catalog)) {
+        errors <- sapply(
+          seq(ncol(expo_mat)),
+          function(i) {
+            FrobeniusNorm(
+              catalogue_matrix[, i],
+              sig_matrix,
+              expo_mat[, i] * sum(catalogue_matrix[, i])
+            )
+          }
+        )
+      } else {
+        errors <- sapply(
+          seq(ncol(expo_mat)),
+          function(i) {
+            FrobeniusNorm(
+              true_catalog,
+              sig_matrix,
+              expo_mat[, i] * sum(catalogue_matrix[, i])
+            )
+          }
+        )
+      }
+    } else {
+      if (is.null(true_catalog)) {
+        errors <- sapply(seq(ncol(expo_mat)), function(i) FrobeniusNorm(catalogue_matrix[, i], sig_matrix, expo_mat[, i]))
+      } else {
+        errors <- sapply(seq(ncol(expo_mat)), function(i) FrobeniusNorm(true_catalog, sig_matrix, expo_mat[, i]))
+      }
+    }
+    names(errors) <- colnames(catalogue_matrix)
 
     return(list(
       expo = expo,
@@ -259,6 +301,7 @@ sig_fit <- function(catalogue_matrix,
 
   return(expo)
 }
+
 
 ## x: catalogue to decompose
 ## y: relative exposure threshold
@@ -277,7 +320,8 @@ decompose_LS <- function(x, y, sig_matrix, type = "absolute", ...) {
     f = H
   )
 
-  return_expo(expo = expo, y, type)
+  expo <- expo / sum(expo)
+  return_expo(expo = expo, y, type, total = sum(x))
 }
 
 # m observed turmor profile vector for a single patient/sample, 96 by 1. m is normalized.
@@ -311,7 +355,7 @@ decompose_QP <- function(x, y, P, type = "absolute", ...) {
 
 
 decompose_SA <- function(x, y, P, type = "absolute", ...) {
-  control = list(...)
+  control <- list(...)
 
   m <- x / sum(x)
   # objective function to be minimized
@@ -337,12 +381,8 @@ decompose_SA <- function(x, y, P, type = "absolute", ...) {
 ## total is used to set the total exposure in a sample
 ## for method QP and SA
 return_expo <- function(expo, y, type = "absolute", total = NULL) {
-  if (sum(expo) == 1) {
-    rel_expo <- expo
-    expo <- expo * total
-  } else {
-    rel_expo <- expo / sum(expo)
-  }
+  rel_expo <- expo
+  expo <- expo * total
   expo[rel_expo < y] <- 0
   if (type == "relative") {
     expo <- expo / sum(expo)

@@ -17,6 +17,7 @@ sig_fit(
   return_error = FALSE,
   rel_threshold = 0,
   mode = c("SBS", "copynumber"),
+  true_catalog = NULL,
   ...
 )
 }
@@ -46,12 +47,16 @@ and "human-genome" for transforming to whole genome frequency of component.}
 
 \item{return_class}{string, 'matrix' or 'data.table'.}
 
-\item{return_error}{if \code{TRUE}, also return method error (Frobenius norm).}
+\item{return_error}{if \code{TRUE}, also return method error (Frobenius norm). NOTE:
+it is better to obtain the error when the type is 'absolute', because the error is
+affected by relative exposure accuracy.}
 
 \item{rel_threshold}{numeric vector, a relative exposure lower than this value will be set to 0.
 Of note, this is a little different from the same parameter in \link{get_sig_exposure}.}
 
 \item{mode}{signature type for plotting, now supports 'copynumber' or 'SBS'.}
+
+\item{true_catalog}{used by \link{sig_fit_bootstrap}, user never use it.}
 
 \item{...}{control parameters passing to \code{GenSA} function when use method 'SA'}
 }
