@@ -99,13 +99,22 @@ sig_fit <- function(catalogue_matrix,
 
   if (is.null(sig_index)) {
     if (inherits(sig, "Signature")) {
+      send_success("Signature object detected.")
       sig_matrix <- sig$Signature
     } else if (is.matrix(sig)) {
+      send_success("Signature matrix detected.")
       sig_matrix <- sig
     } else {
-      stop("Invalid input for 'sig'", call. = FALSE)
+      send_error("Invalid input for 'sig'.")
+      send_error("Exit.")
+      send_stop()
     }
   } else {
+    send_success("Signature index detected.")
+
+    sb <- cli::cli_status("> checking database in {.pkg maftools}.",
+                          msg_done = "database checked.")
+
     if (sig_db == "legacy") {
       sigs_db <- readRDS(file = system.file("extdata", "legacy_signatures.RDs",
         package = "maftools", mustWork = TRUE
@@ -133,13 +142,15 @@ sig_fit <- function(catalogue_matrix,
       avail_index <- substring(colnames(sigs), 4)
     }
 
+    cli::cli_status_update(sb, "> checking signature index.")
+
+    msg <- paste(
+      paste0("\nValid index for db '", sig_db, "':"),
+      paste0(avail_index, collapse = " "),
+      sep = "\n"
+    )
     if (show_index) {
-      msg <- paste(
-        paste0("\nValid index for db '", sig_db, "':"),
-        paste0(avail_index, collapse = " "),
-        sep = "\n"
-      )
-      message(msg)
+      send_info(msg)
     }
 
     if (!is.character(sig_index)) {
@@ -151,7 +162,9 @@ sig_fit <- function(catalogue_matrix,
     }
 
     if (!all(sig_index %in% avail_index)) {
-      stop(msg)
+      cli::cli_alert_danger("Invalid index.")
+      cli::cli_alert_info(msg)
+      send_stop()
     }
 
     index <- c()
@@ -161,6 +174,8 @@ sig_fit <- function(catalogue_matrix,
 
     sig_matrix <- as.matrix(sigs[, index, drop = FALSE])
   }
+
+  cli::cli_status_clear(sb)
 
   mode <- match.arg(mode)
   type <- match.arg(type)

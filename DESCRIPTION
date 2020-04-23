@@ -36,6 +36,7 @@ Depends:
 Imports: 
     Biostrings,
     circlize,
+    cli,
     cowplot,
     data.table,
     dplyr,

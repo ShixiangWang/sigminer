@@ -17,5 +17,6 @@
 #' @importFrom utils data download.file head packageDescription
 #' @import flexmix
 #' @import ggplot2
+#' @import cli
 #' @name sigminer
 NULL

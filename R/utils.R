@@ -100,3 +100,38 @@ FrobeniusNorm <- function(M, P, E) {
 is.wholenumber <- function(x, tol = .Machine$double.eps) {
   abs(x - round(x)) < tol
 }
+
+
+# Signals ----------------------------------------------------------------
+
+send_info = function(...) {
+  cli::cli_alert_info(
+    cli::style_bold(...)
+  )
+}
+
+send_success = function(...) {
+  cli::cli_alert_success(
+    cli::style_bold(...)
+  )
+}
+
+send_warning = function(...) {
+  cli::cli_alert_warning(
+    cli::style_bold(...)
+  )
+}
+
+send_error = function(...) {
+  cli::cli_alert_danger(
+    cli::style_bold(...)
+  )
+}
+
+
+# https://stackoverflow.com/questions/14469522/stop-an-r-program-without-error
+send_stop <- function() {
+  opt <- options(show.error.messages = FALSE)
+  on.exit(options(opt))
+  stop()
+}
