@@ -4,6 +4,14 @@
 #' @param catalog a named numeric vector or a numeric matrix with dimension Nx1.
 #' N is the number of component, 1 is the sample.
 #' @param n the number of bootstrap replicates.
+#' @param find_suboptimal logical, if `TRUE`, find suboptimal decompositions with
+#' slightly higher error than the optimal solution by method 'SA'. This is useful
+#' to explore hidden dependencies between signatures. More see reference.
+#' @param suboptimal_ref_error baseline error used for finding suboptimal solution.
+#' if it is `NULL`, then use 'SA' method to obtain the optimal error.
+#' @param suboptimal_factor suboptimal factor to get suboptimal error, default is `1.05`,
+#' i.e., suboptimal error is `1.05` times baseline error.
+#' @references Huang X, Wojtowicz D, Przytycka TM. Detecting presence of mutational signatures in cancer with confidence. Bioinformatics. 2018;34(2):330–337. doi:10.1093/bioinformatics/btx604
 #' @return a `list`
 #' @export
 #' @keywords bootstrap
@@ -38,9 +46,19 @@ sig_fit_bootstrap <- function(catalog,
                               type = c("absolute", "relative"),
                               rel_threshold = 0,
                               mode = c("SBS", "copynumber"),
+                              find_suboptimal = FALSE,
+                              suboptimal_ref_error = NULL,
+                              suboptimal_factor = 1.05,
                               ...) {
   method <- match.arg(method)
   mode <- match.arg(mode)
+
+  if (find_suboptimal) {
+    if (method != "SA") {
+      warning("Only method 'SA' can be used to find suboptimal decomposition.\n Resetting method.", immediate. = TRUE)
+      method <- "SA"
+    }
+  }
 
   if (is.matrix(catalog)) {
     if (ncol(catalog) != 1) {
@@ -65,6 +83,29 @@ sig_fit_bootstrap <- function(catalog,
   total_count <- sum(catalog)
   K <- length(catalog) # number of mutation types
 
+  if (find_suboptimal & is.null(suboptimal_ref_error)) {
+    message("=> Running 'SA' method to getting optimal error as baseline error...")
+    catalog_mat <- matrix(catalog, ncol = 1)
+    rownames(catalog_mat) <- names(catalog)
+    optimal_res <- sig_fit(
+      catalogue_matrix = catalog_mat,
+      sig = sig,
+      sig_index = sig_index,
+      sig_db = sig_db,
+      db_type = db_type,
+      show_index = show_index,
+      method = "SA",
+      type = type,
+      return_class = "matrix",
+      return_error = TRUE,
+      rel_threshold = rel_threshold,
+      mode = mode,
+      true_catalog = catalog,
+      ...
+    )
+    suboptimal_ref_error <- optimal_res$errors
+  }
+
   res <- replicate(n, {
     sampled <- sample(seq(K), total_count, replace = TRUE, prob = catalog / sum(catalog))
     catalog_mat <- as.integer(table(factor(sampled, levels = seq(K))))
@@ -85,8 +126,8 @@ sig_fit_bootstrap <- function(catalog,
         return_error = TRUE,
         rel_threshold = rel_threshold,
         mode = mode,
-        true_catalog = catalog,
-        ...
+        true_catalog = catalog#,
+        #control = c(list(...), threshold.stop = suboptimal_factor * suboptimal_ref_error),
       )
     )
   })

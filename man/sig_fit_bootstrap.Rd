@@ -16,6 +16,9 @@ sig_fit_bootstrap(
   type = c("absolute", "relative"),
   rel_threshold = 0,
   mode = c("SBS", "copynumber"),
+  find_suboptimal = FALSE,
+  suboptimal_ref_error = NULL,
+  suboptimal_factor = 1.05,
   ...
 )
 }
@@ -49,6 +52,16 @@ Of note, this is a little different from the same parameter in \link{get_sig_exp
 
 \item{mode}{signature type for plotting, now supports 'copynumber' or 'SBS'.}
 
+\item{find_suboptimal}{logical, if \code{TRUE}, find suboptimal decompositions with
+slightly higher error than the optimal solution by method 'SA'. This is useful
+to explore hidden dependencies between signatures. More see reference.}
+
+\item{suboptimal_ref_error}{baseline error used for finding suboptimal solution.
+if it is \code{NULL}, then use 'SA' method to obtain the optimal error.}
+
+\item{suboptimal_factor}{suboptimal factor to get suboptimal error, default is \code{1.05},
+i.e., suboptimal error is \code{1.05} times baseline error.}
+
 \item{...}{control parameters passing to \code{GenSA} function when use method 'SA'}
 }
 \value{
@@ -74,5 +87,8 @@ if (requireNamespace("lsei", quietly = TRUE)) {
   boxplot(t(H_bootstrap$expo))
   H[, 1]
 }
+}
+\references{
+Huang X, Wojtowicz D, Przytycka TM. Detecting presence of mutational signatures in cancer with confidence. Bioinformatics. 2018;34(2):330–337. doi:10.1093/bioinformatics/btx604
 }
 \keyword{bootstrap}
