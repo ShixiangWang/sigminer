@@ -1,10 +1,13 @@
 #' Obtain Bootstrap Distribution of Signature Exposures of a Certain Tumor Sample
 #'
+#' This can be used to obtain the confidence of signature exposures or search
+#' the suboptimal decomposition solution.
+#'
 #' @inheritParams sig_fit
 #' @param catalog a named numeric vector or a numeric matrix with dimension Nx1.
 #' N is the number of component, 1 is the sample.
 #' @param n the number of bootstrap replicates.
-#' @param find_suboptimal logical, if `TRUE`, find suboptimal decompositions with
+#' @param find_suboptimal logical, if `TRUE`, find suboptimal decomposition with
 #' slightly higher error than the optimal solution by method 'SA'. This is useful
 #' to explore hidden dependencies between signatures. More see reference.
 #' @param suboptimal_ref_error baseline error used for finding suboptimal solution.
@@ -104,7 +107,43 @@ sig_fit_bootstrap <- function(catalog,
       ...
     )
     suboptimal_ref_error <- optimal_res$errors
+    if (suboptimal_ref_error == 0) {
+      message("=> The optimal error is 0, resetting it to 1% of total exposure")
+      suboptimal_ref_error <- 0.01 * sum(catalog)
+    }
   }
+
+
+  message("=> Running bootstrap...")
+
+  Args_add = list(...)
+
+  if (!is.null(sig_index)) {
+    sig = NA
+  }
+  if (find_suboptimal) {
+    threshold.stop = suboptimal_factor * suboptimal_ref_error
+  } else {
+    threshold.stop = NULL
+  }
+
+  Args <- list(
+    catalogue_matrix = NA,
+    sig = sig,
+    sig_index = sig_index,
+    sig_db = sig_db,
+    db_type = db_type,
+    show_index = show_index,
+    method = method,
+    type = type,
+    return_class = "matrix",
+    return_error = TRUE,
+    rel_threshold = rel_threshold,
+    mode = mode,
+    true_catalog = catalog,
+    threshold.stop = threshold.stop
+  )
+  Args = c(Args, Args_add)
 
   res <- replicate(n, {
     sampled <- sample(seq(K), total_count, replace = TRUE, prob = catalog / sum(catalog))
@@ -112,25 +151,33 @@ sig_fit_bootstrap <- function(catalog,
     catalog_mat <- matrix(catalog_mat, ncol = 1)
     rownames(catalog_mat) <- names(catalog)
 
+    Args$catalogue_matrix <- catalog_mat
+
     suppressMessages(
-      sig_fit(
-        catalogue_matrix = catalog_mat,
-        sig = sig,
-        sig_index = sig_index,
-        sig_db = sig_db,
-        db_type = db_type,
-        show_index = show_index,
-        method = method,
-        type = type,
-        return_class = "matrix",
-        return_error = TRUE,
-        rel_threshold = rel_threshold,
-        mode = mode,
-        true_catalog = catalog#,
-        #control = c(list(...), threshold.stop = suboptimal_factor * suboptimal_ref_error),
-      )
+      base::do.call("sig_fit", args = Args)
     )
+
+    # suppressMessages(
+    #   sig_fit(
+    #     catalogue_matrix = catalog_mat,
+    #     sig = sig,
+    #     sig_index = sig_index,
+    #     sig_db = sig_db,
+    #     db_type = db_type,
+    #     show_index = show_index,
+    #     method = method,
+    #     type = type,
+    #     return_class = "matrix",
+    #     return_error = TRUE,
+    #     rel_threshold = rel_threshold,
+    #     mode = mode,
+    #     true_catalog = catalog,
+    #     unlist(c(list(...), threshold.stop = suboptimal_factor * suboptimal_ref_error))
+    #   )
+    # )
   })
+
+  message("=> Done")
 
   expo <- res[1, ]
   expo <- sapply(expo, cbind)

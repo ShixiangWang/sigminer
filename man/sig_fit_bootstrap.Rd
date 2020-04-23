@@ -52,7 +52,7 @@ Of note, this is a little different from the same parameter in \link{get_sig_exp
 
 \item{mode}{signature type for plotting, now supports 'copynumber' or 'SBS'.}
 
-\item{find_suboptimal}{logical, if \code{TRUE}, find suboptimal decompositions with
+\item{find_suboptimal}{logical, if \code{TRUE}, find suboptimal decomposition with
 slightly higher error than the optimal solution by method 'SA'. This is useful
 to explore hidden dependencies between signatures. More see reference.}
 
@@ -62,13 +62,14 @@ if it is \code{NULL}, then use 'SA' method to obtain the optimal error.}
 \item{suboptimal_factor}{suboptimal factor to get suboptimal error, default is \code{1.05},
 i.e., suboptimal error is \code{1.05} times baseline error.}
 
-\item{...}{control parameters passing to \code{GenSA} function when use method 'SA'}
+\item{...}{control parameters passing to argument \code{control} in \code{GenSA} function when use method 'SA'.}
 }
 \value{
 a \code{list}
 }
 \description{
-Obtain Bootstrap Distribution of Signature Exposures of a Certain Tumor Sample
+This can be used to obtain the confidence of signature exposures or search
+the suboptimal decomposition solution.
 }
 \examples{
 W <- matrix(c(1, 2, 3, 4, 5, 6), ncol = 2)

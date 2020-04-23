@@ -58,7 +58,7 @@ Of note, this is a little different from the same parameter in \link{get_sig_exp
 
 \item{true_catalog}{used by \link{sig_fit_bootstrap}, user never use it.}
 
-\item{...}{control parameters passing to \code{GenSA} function when use method 'SA'}
+\item{...}{control parameters passing to argument \code{control} in \code{GenSA} function when use method 'SA'.}
 }
 \value{
 The exposure result either in \code{matrix} or \code{data.table} format.
@@ -112,7 +112,7 @@ if (requireNamespace("GenSA", quietly = TRUE)) {
   H_dt
 
   ## Modify arguments to method
-  sig_fit(V, W, method = "SA", maxit = 2000, temperature = 100)
+  sig_fit(V, W, method = "SA", maxit = 10, temperature = 100)
 }
 }
 \references{

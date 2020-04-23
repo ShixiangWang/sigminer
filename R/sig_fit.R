@@ -27,7 +27,7 @@
 #' @param rel_threshold numeric vector, a relative exposure lower than this value will be set to 0.
 #' Of note, this is a little different from the same parameter in [get_sig_exposure].
 #' @param true_catalog used by [sig_fit_bootstrap], user never use it.
-#' @param ... control parameters passing to `GenSA` function when use method 'SA'
+#' @param ... control parameters passing to argument `control` in `GenSA` function when use method 'SA'.
 #'
 #' @return The exposure result either in `matrix` or `data.table` format.
 #' If `return_error` set `TRUE`, a `list` is returned.
@@ -73,7 +73,7 @@
 #'   H_dt
 #'
 #'   ## Modify arguments to method
-#'   sig_fit(V, W, method = "SA", maxit = 2000, temperature = 100)
+#'   sig_fit(V, W, method = "SA", maxit = 10, temperature = 100)
 #' }
 #' @testexamples
 #' expect_is(H_infer, "matrix")

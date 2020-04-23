@@ -112,3 +112,4 @@ load(system.file("extdata", "asso_data.RData",
 show_sig_feature_corrplot(tidy_data.seqz.feature, p_val = 1)
 show_sig_feature_corrplot(tidy_data.seqz.feature, breaks_count = NULL)
 show_sig_feature_corrplot(tidy_data.seqz.feature, breaks_count = NA)
+
