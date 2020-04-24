@@ -34,9 +34,18 @@
 #'   ## Typically, you have to run many times to get close to the answer
 #'   boxplot(t(H_bootstrap$expo))
 #'   H[, 1]
+#'
+#'   ## Find suboptimal decomposition
+#'   H_suboptimal <- sig_fit_bootstrap(V[, 1], W,
+#'     n = 10,
+#'     type = "absolute",
+#'     method = "SA",
+#'     find_suboptimal = TRUE
+#'   )
 #' }
 #' @testexamples
 #' expect_is(H_bootstrap, "list")
+#' expect_is(H_suboptimal, "list")
 
 sig_fit_bootstrap <- function(catalog,
                               sig,
