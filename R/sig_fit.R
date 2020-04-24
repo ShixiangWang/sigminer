@@ -110,8 +110,7 @@ sig_fit <- function(catalogue_matrix,
       sig_matrix <- sig
     } else {
       send_error("Invalid input for 'sig'.")
-      send_error("Exit.")
-      send_stop()
+      send_stop("Exit.")
     }
   } else {
     send_success("Signature index detected.")
@@ -201,8 +200,7 @@ sig_fit <- function(catalogue_matrix,
   ## Check if V and W have same rows
   send_info("Checking row number for catalog matrix and signature matrix.")
   if (nrow(catalogue_matrix) != nrow(sig_matrix)) {
-    send_error("Catalogue matrix and Signature matrix should have same rows, please check!")
-    send_stop()
+    send_stop("Catalogue matrix and Signature matrix should have same rows, please check!")
   }
   send_success("Checked.")
 
@@ -227,22 +225,19 @@ sig_fit <- function(catalogue_matrix,
   f_fit <- switch(method,
     LS = {
       if (!requireNamespace("lsei", quietly = TRUE)) {
-        send_error("Please install 'lsei' package firstly.")
-        send_stop()
+        send_stop("Please install 'lsei' package firstly.")
       }
       decompose_LS
     },
     QP = {
       if (!requireNamespace("quadprog", quietly = TRUE)) {
-        send_error("Please install 'quadprog' package firstly.")
-        send_stop()
+        send_stop("Please install 'quadprog' package firstly.")
       }
       decompose_QP
     },
     SA = {
       if (!requireNamespace("GenSA", quietly = TRUE)) {
-        send_error("Please install 'GenSA' package firstly.")
-        send_stop()
+        send_stop("Please install 'GenSA' package firstly.")
       }
       decompose_SA
     }

@@ -138,7 +138,11 @@ get_timestamp <- function() {
 }
 
 # https://stackoverflow.com/questions/14469522/stop-an-r-program-without-error
-send_stop <- function() {
+send_stop <- function(...) {
+  args <- list(...)
+  if (length(args) != 0) {
+    send_error(...)
+  }
   opt <- options(show.error.messages = FALSE)
   on.exit(options(opt))
   stop()
