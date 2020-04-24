@@ -441,7 +441,7 @@ generate_matrix_DBS <- function(query, ref_genome, genome_build = "hg19", add_tr
   }
 
   ##加入strand bias
-  transcript_dt <- get(paste0("transcript.", build), envir = as.environment("package:sigminer"))
+  transcript_dt <- get(paste0("transcript.", genome_build), envir = as.environment("package:sigminer"))
   dt <- query[,.(x=Chromosome, pos=Start_Position)] %>% distinct(x,pos)
 
   plus_strand <- transcript_dt[strand=="+",.(x=chrom,start,end,strand)]
