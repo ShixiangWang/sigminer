@@ -329,179 +329,222 @@ generate_matrix_DBS <- function(query, ref_genome, genome_build = "hg19", add_tr
   }
   sample <- as.data.frame(table(query$Tumor_Sample_Barcode))
   sample$Var1 <- as.character(sample$Var1)
-  matrix <- data.frame(mutation_type=c(
-    "AC>CA","AC>CG","AC>CT","AC>GA","AC>GG","AC>GT",
-    "AC>TA","AC>TG","AC>TT","AT>CA","AT>CC","AT>CG",
-    "AT>GA","AT>GC","AT>TA","CC>AA","CC>AG","CC>AT",
-    "CC>GA","CC>GG","CC>GT","CC>TA","CC>TG","CC>TT",
-    "CG>AT","CG>GC","CG>GT","CG>TA","CG>TC","CG>TT",
-    "CT>AA","CT>AC","CT>AG","CT>GA","CT>GC","CT>GG",
-    "CT>TA","CT>TC","CT>TG","GC>AA","GC>AG","GC>AT",
-    "GC>CA","GC>CG","GC>TA","TA>AT","TA>CG","TA>CT",
-    "TA>GC","TA>GG","TA>GT","TC>AA","TC>AG","TC>AT",
-    "TC>CA","TC>CG","TC>CT","TC>GA","TC>GG","TC>GT",
-    "TG>AA","TG>AC","TG>AT","TG>CA","TG>CC","TG>CT",
-    "TG>GA","TG>GC","TG>GT","TT>AA","TT>AC","TT>AG",
-    "TT>CA","TT>CC","TT>CG","TT>GA","TT>GC","TT>GG"
-  ),reverse=c(
-    "GT>TG","GT>CG","GT>AG","GT>TC","GT>CC","GT>AC",
-    "GT>TA","GT>CA","GT>AA","AT>TG","AT>GG","AT>CG",
-    "AT>TC","AT>GC","AT>TA","GG>TT","GG>CT","GG>AT",
-    "GG>TC","GG>CC","GG>AC","GG>TA","GG>CA","GG>AA",
-    "CG>AT","CG>GC","CG>AC","CG>TA","CG>GA","CG>AA",
-    "AG>TT","AG>GT","AG>CT","AG>TC","AG>GC","AG>CC",
-    "AG>TA","AG>GA","AG>CA","GC>TT","GC>CT","GC>AT",
-    "GC>TG","GC>CG","GC>TA","TA>AT","TA>CG","TA>AG",
-    "TA>GC","TA>CC","TA>AC","GA>TT","GA>CT","GA>AT",
-    "GA>TG","GA>CG","GA>AG","GA>TC","GA>CC","GA>AC",
-    "CA>TT","CA>GT","CA>AT","CA>TG","CA>GG","CA>AG",
-    "CA>TC","CA>GC","CA>AC","AA>TT","AA>GT","AA>CT",
-    "AA>TG","AA>GG","AA>CG","AA>TC","AA>GC","AA>CC"
-  ),stringsAsFactors = F)
+  matrix <- data.frame(mutation_type = c(
+    "AC>CA", "AC>CG", "AC>CT", "AC>GA", "AC>GG", "AC>GT",
+    "AC>TA", "AC>TG", "AC>TT", "AT>CA", "AT>CC", "AT>CG",
+    "AT>GA", "AT>GC", "AT>TA", "CC>AA", "CC>AG", "CC>AT",
+    "CC>GA", "CC>GG", "CC>GT", "CC>TA", "CC>TG", "CC>TT",
+    "CG>AT", "CG>GC", "CG>GT", "CG>TA", "CG>TC", "CG>TT",
+    "CT>AA", "CT>AC", "CT>AG", "CT>GA", "CT>GC", "CT>GG",
+    "CT>TA", "CT>TC", "CT>TG", "GC>AA", "GC>AG", "GC>AT",
+    "GC>CA", "GC>CG", "GC>TA", "TA>AT", "TA>CG", "TA>CT",
+    "TA>GC", "TA>GG", "TA>GT", "TC>AA", "TC>AG", "TC>AT",
+    "TC>CA", "TC>CG", "TC>CT", "TC>GA", "TC>GG", "TC>GT",
+    "TG>AA", "TG>AC", "TG>AT", "TG>CA", "TG>CC", "TG>CT",
+    "TG>GA", "TG>GC", "TG>GT", "TT>AA", "TT>AC", "TT>AG",
+    "TT>CA", "TT>CC", "TT>CG", "TT>GA", "TT>GC", "TT>GG"
+  ), reverse = c(
+    "GT>TG", "GT>CG", "GT>AG", "GT>TC", "GT>CC", "GT>AC",
+    "GT>TA", "GT>CA", "GT>AA", "AT>TG", "AT>GG", "AT>CG",
+    "AT>TC", "AT>GC", "AT>TA", "GG>TT", "GG>CT", "GG>AT",
+    "GG>TC", "GG>CC", "GG>AC", "GG>TA", "GG>CA", "GG>AA",
+    "CG>AT", "CG>GC", "CG>AC", "CG>TA", "CG>GA", "CG>AA",
+    "AG>TT", "AG>GT", "AG>CT", "AG>TC", "AG>GC", "AG>CC",
+    "AG>TA", "AG>GA", "AG>CA", "GC>TT", "GC>CT", "GC>AT",
+    "GC>TG", "GC>CG", "GC>TA", "TA>AT", "TA>CG", "TA>AG",
+    "TA>GC", "TA>CC", "TA>AC", "GA>TT", "GA>CT", "GA>AT",
+    "GA>TG", "GA>CG", "GA>AG", "GA>TC", "GA>CC", "GA>AC",
+    "CA>TT", "CA>GT", "CA>AT", "CA>TG", "CA>GG", "CA>AG",
+    "CA>TC", "CA>GC", "CA>AC", "AA>TT", "AA>GT", "AA>CT",
+    "AA>TG", "AA>GG", "AA>CG", "AA>TC", "AA>GC", "AA>CC"
+  ), stringsAsFactors = F)
   matrix_sb <- matrix %>%
-    mutate(u="U",N="N",T="T",B="B",Q="Q") %>%
-    pivot_longer(c("u","N","T","B","Q"),names_to = "type",values_to = "value") %>%
+    mutate(u = "U", N = "N", T = "T", B = "B", Q = "Q") %>%
+    pivot_longer(c("u", "N", "T", "B", "Q"), names_to = "type", values_to = "value") %>%
     select(-type) %>%
-    mutate(mutation_type=paste(value,mutation_type,sep = ":"),reverse=paste(value,reverse,sep = ":")) %>%
-    filter((!substr(mutation_type,3,4)%in%c("TC","TT","CT","CC") & substr(mutation_type,1,1)=="Q") |
-             substr(mutation_type,3,4)%in%c("TC","TT","CT","CC") & substr(mutation_type,1,1)!="Q") %>%
+    mutate(mutation_type = paste(value, mutation_type, sep = ":"), reverse = paste(value, reverse, sep = ":")) %>%
+    filter((!substr(mutation_type, 3, 4) %in% c("TC", "TT", "CT", "CC") & substr(mutation_type, 1, 1) == "Q") |
+      substr(mutation_type, 3, 4) %in% c("TC", "TT", "CT", "CC") & substr(mutation_type, 1, 1) != "Q") %>%
     select(-value)
 
-  query <- query %>% mutate(index=paste(Chromosome,Start_Position,Tumor_Sample_Barcode,sep = ":"),
-                            index_up=paste(Chromosome,(Start_Position-1),Tumor_Sample_Barcode,sep = ":"),
-                            index_down=paste(Chromosome,(Start_Position+1),Tumor_Sample_Barcode,sep = ":"))
+  query <- query %>% mutate(
+    index = paste(Chromosome, Start_Position, Tumor_Sample_Barcode, sep = ":"),
+    index_up = paste(Chromosome, (Start_Position - 1), Tumor_Sample_Barcode, sep = ":"),
+    index_down = paste(Chromosome, (Start_Position + 1), Tumor_Sample_Barcode, sep = ":")
+  )
 
 
 
-  ##找上游的双碱基突变
+  ## 找上游的双碱基突变
   query <- query %>%
-    mutate(source_up_p=chmatch(index_up,index),
-           source_down_p=chmatch(index_down,index),
-           source_up=ifelse(is.na(source_up_p),NA,paste(query$Reference_Allele[source_up_p],Reference_Allele,sep="")),
-           mutation_up=ifelse(is.na(source_up_p),NA,paste(query$Tumor_Seq_Allele2[source_up_p],Tumor_Seq_Allele2,sep="")),
-           source_down=ifelse(is.na(source_down_p),NA,paste(Reference_Allele,query$Reference_Allele[source_down_p],sep="")),
-           mutation_down=ifelse(is.na(source_down_p),NA,paste(Tumor_Seq_Allele2,query$Tumor_Seq_Allele2[source_down_p],sep=""))
+    mutate(
+      source_up_p = chmatch(index_up, index),
+      source_down_p = chmatch(index_down, index),
+      source_up = ifelse(is.na(source_up_p), NA, paste(query$Reference_Allele[source_up_p], Reference_Allele, sep = "")),
+      mutation_up = ifelse(is.na(source_up_p), NA, paste(query$Tumor_Seq_Allele2[source_up_p], Tumor_Seq_Allele2, sep = "")),
+      source_down = ifelse(is.na(source_down_p), NA, paste(Reference_Allele, query$Reference_Allele[source_down_p], sep = "")),
+      mutation_down = ifelse(is.na(source_down_p), NA, paste(Tumor_Seq_Allele2, query$Tumor_Seq_Allele2[source_down_p], sep = ""))
     )
 
-  ##将匹配的上游的突变位点打个标签，后面找下游突变的时候就不找有这些标签的突变
+  ## 将匹配的上游的突变位点打个标签，后面找下游突变的时候就不找有这些标签的突变
   tag_p <- query$source_up_p
   tag_p <- na.omit(tag_p)
   query$index[tag_p] <- "link"
 
-  ##去掉下游突变中和上游重复的
-  query$source_down <- ifelse(query$index=="link",NA,query$source_down)
-  query$mutation_down <- ifelse(query$index=="link",NA,query$mutation_down)
-  query <- query %>% filter(!(is.na(source_up)&is.na(source_down)&is.na(mutation_down)&is.na(mutation_up)))
+  ## 去掉下游突变中和上游重复的
+  query$source_down <- ifelse(query$index == "link", NA, query$source_down)
+  query$mutation_down <- ifelse(query$index == "link", NA, query$mutation_down)
+  query <- query %>% filter(!(is.na(source_up) & is.na(source_down) & is.na(mutation_down) & is.na(mutation_up)))
   query <- query %>%
-    mutate(mutation_type_up=ifelse(is.na(source_up),NA,paste(source_up,mutation_up,sep = ">")),
-           mutation_type_down=ifelse(is.na(source_down),NA,paste(source_down,mutation_down,sep = ">")))
+    mutate(
+      mutation_type_up = ifelse(is.na(source_up), NA, paste(source_up, mutation_up, sep = ">")),
+      mutation_type_down = ifelse(is.na(source_down), NA, paste(source_down, mutation_down, sep = ">"))
+    )
 
-  ##将互补的碱基转化
+  ## 将互补的碱基转化
 
-  query$mutation_type_up <- sapply(query$mutation_type_up,
-                                   function(x){
-                                     if(x%in%matrix$reverse){
-                                       a = which(matrix$reverse==x)
-                                       return(matrix$mutation_type[a])
-                                     }else{return(x)}
-                                   })
-  query$mutation_type_down <- sapply(query$mutation_type_down,
-                                     function(x){
-                                       if(x%in%matrix$reverse){
-                                         a = which(matrix$reverse==x)
-                                         return(matrix$mutation_type[a])
-                                       }else{return(x)}
-                                     })
-  ##合并
+  query$mutation_type_up <- sapply(
+    query$mutation_type_up,
+    function(x) {
+      if (x %in% matrix$reverse) {
+        a <- which(matrix$reverse == x)
+        return(matrix$mutation_type[a])
+      } else {
+        return(x)
+      }
+    }
+  )
+  query$mutation_type_down <- sapply(
+    query$mutation_type_down,
+    function(x) {
+      if (x %in% matrix$reverse) {
+        a <- which(matrix$reverse == x)
+        return(matrix$mutation_type[a])
+      } else {
+        return(x)
+      }
+    }
+  )
+  ## 合并
   query <- setDT(query)
-  a <- query[,.N,by=.(mutation_type_up,Tumor_Sample_Barcode)] %>% as.data.frame()
-  colnames(a) <- c("mutation_type","sample","n")
-  b <- query[,.N,by=.(mutation_type_down,Tumor_Sample_Barcode)] %>% as.data.frame()
-  colnames(b) <- c("mutation_type","sample","n")
-  all <- rbind(a,b)
+  a <- query[, .N, by = .(mutation_type_up, Tumor_Sample_Barcode)] %>% as.data.frame()
+  colnames(a) <- c("mutation_type", "sample", "n")
+  b <- query[, .N, by = .(mutation_type_down, Tumor_Sample_Barcode)] %>% as.data.frame()
+  colnames(b) <- c("mutation_type", "sample", "n")
+  all <- rbind(a, b)
   all <- na.omit(all)
 
-  matrix[,3:(nrow(sample)+2)] <- NA
-  colnames(matrix)[3:(nrow(sample)+2)] <- sample$Var1
+  matrix[, 3:(nrow(sample) + 2)] <- NA
+  colnames(matrix)[3:(nrow(sample) + 2)] <- sample$Var1
 
-  ##生成矩阵
-  for (i in 3:(nrow(sample)+2)){
-    a = which(all$sample==colnames(matrix)[i])
-    b = all[a,]
-    if(length(b)==0){matrix[,i]=0}
-    else{
-      matrix[,i]=sapply(matrix$mutation_type,
-                        function(x){
-                          c = which(b$mutation_type==x)
-                          if(length(c)==0){return(0)}
-                          else{return(sum(b[c,3]))}
-                        })
+  ## 生成矩阵
+  for (i in 3:(nrow(sample) + 2)) {
+    a <- which(all$sample == colnames(matrix)[i])
+    b <- all[a, ]
+    if (length(b) == 0) {
+      matrix[, i] <- 0
+    }
+    else {
+      matrix[, i] <- sapply(
+        matrix$mutation_type,
+        function(x) {
+          c <- which(b$mutation_type == x)
+          if (length(c) == 0) {
+            return(0)
+          }
+          else {
+            return(sum(b[c, 3]))
+          }
+        }
+      )
     }
   }
 
-  ##加入strand bias
+  ## 加入strand bias
   transcript_dt <- get(paste0("transcript.", genome_build), envir = as.environment("package:sigminer"))
-  dt <- query[,.(x=Chromosome, pos=Start_Position)] %>% distinct(x,pos)
+  dt <- query[, .(x = Chromosome, pos = Start_Position)] %>% distinct(x, pos)
 
-  plus_strand <- transcript_dt[strand=="+",.(x=chrom,start,end,strand)]
-  minus_strand <- transcript_dt[strand=="-",.(x=chrom,start,end,strand)]
-  overlap_plus <- dt[plus_strand, .(x, pos=x.pos,start,end,strand),on=.(x, pos>=start, pos<=end), nomatch=F,allow.cartesian=TRUE][,index:=paste(x,pos,sep = ":")]%>%
-    distinct(index,.keep_all=T)
-  overlap_minus <- dt[minus_strand, .(x, pos=x.pos,start,end,strand),on=.(x, pos>=start, pos<=end), nomatch=F,allow.cartesian=TRUE][,index:=paste(x,pos,sep = ":")]%>%
-    distinct(index,.keep_all=T)
-  intersect_position <- intersect(overlap_minus$index,overlap_plus$index)
-  query <- query[,index_p := paste(Chromosome,Start_Position,sep=":")]
-
-  query <- query %>%
-    mutate(bias_type_up=ifelse(index_p%in%overlap_plus$index & substr(mutation_type_up,1,2)%in%c("TC","TT","CT","CC"),"U",
-                               ifelse(index_p%in%overlap_plus$index & !(substr(mutation_type_up,1,2)%in%c("TC","TT","CT","CC")),"Q",
-                                      ifelse(index_p%in%overlap_minus$index & substr(mutation_type_up,1,2)%in%c("TC","TT","CT","CC"),"T",
-                                             ifelse(index_p%in%overlap_minus$index & !(substr(mutation_type_up,1,2)%in%c("TC","TT","CT","CC")),"Q","N")))),
-           bias_type_down=ifelse(index_p%in%overlap_plus$index & substr(mutation_type_down,1,2)%in%c("TC","TT","CT","CC"),"U",
-                                 ifelse(index_p%in%overlap_plus$index & !(substr(mutation_type_down,1,2)%in%c("TC","TT","CT","CC")),"Q",
-                                        ifelse(index_p%in%overlap_minus$index & substr(mutation_type_down,1,2)%in%c("TC","TT","CT","CC"),"T",
-                                               ifelse(index_p%in%overlap_minus$index & !(substr(mutation_type_down,1,2)%in%c("TC","TT","CT","CC")),"Q","N")))))
+  plus_strand <- transcript_dt[strand == "+", .(x = chrom, start, end, strand)]
+  minus_strand <- transcript_dt[strand == "-", .(x = chrom, start, end, strand)]
+  overlap_plus <- dt[plus_strand, .(x, pos = x.pos, start, end, strand), on = .(x, pos >= start, pos <= end), nomatch = F, allow.cartesian = TRUE][, index := paste(x, pos, sep = ":")] %>%
+    distinct(index, .keep_all = T)
+  overlap_minus <- dt[minus_strand, .(x, pos = x.pos, start, end, strand), on = .(x, pos >= start, pos <= end), nomatch = F, allow.cartesian = TRUE][, index := paste(x, pos, sep = ":")] %>%
+    distinct(index, .keep_all = T)
+  intersect_position <- intersect(overlap_minus$index, overlap_plus$index)
+  query <- query[, index_p := paste(Chromosome, Start_Position, sep = ":")]
 
   query <- query %>%
-    mutate(bias_type_up=ifelse(index_p%in%intersect_position & substr(mutation_type_up,1,2)%in%c("TC","TT","CT","CC"),"B",bias_type_up),
-           bias_type_down=ifelse(index_p%in%intersect_position & substr(mutation_type_down,1,2)%in%c("TC","TT","CT","CC"),"B",mutation_type_down))
-  query <- query %>%
-    mutate(bias_type_up=ifelse(is.na(bias_type_up),NA,paste(bias_type_up,mutation_type_up,sep = ":")),
-           bias_type_down=ifelse(is.na(bias_type_down),NA,paste(bias_type_down,mutation_type_down,sep = ":")))
+    mutate(
+      bias_type_up = ifelse(index_p %in% overlap_plus$index & substr(mutation_type_up, 1, 2) %in% c("TC", "TT", "CT", "CC"), "U",
+        ifelse(index_p %in% overlap_plus$index & !(substr(mutation_type_up, 1, 2) %in% c("TC", "TT", "CT", "CC")), "Q",
+          ifelse(index_p %in% overlap_minus$index & substr(mutation_type_up, 1, 2) %in% c("TC", "TT", "CT", "CC"), "T",
+            ifelse(index_p %in% overlap_minus$index & !(substr(mutation_type_up, 1, 2) %in% c("TC", "TT", "CT", "CC")), "Q", "N")
+          )
+        )
+      ),
+      bias_type_down = ifelse(index_p %in% overlap_plus$index & substr(mutation_type_down, 1, 2) %in% c("TC", "TT", "CT", "CC"), "U",
+        ifelse(index_p %in% overlap_plus$index & !(substr(mutation_type_down, 1, 2) %in% c("TC", "TT", "CT", "CC")), "Q",
+          ifelse(index_p %in% overlap_minus$index & substr(mutation_type_down, 1, 2) %in% c("TC", "TT", "CT", "CC"), "T",
+            ifelse(index_p %in% overlap_minus$index & !(substr(mutation_type_down, 1, 2) %in% c("TC", "TT", "CT", "CC")), "Q", "N")
+          )
+        )
+      )
+    )
 
-  ##合并
+  query <- query %>%
+    mutate(
+      bias_type_up = ifelse(index_p %in% intersect_position & substr(mutation_type_up, 1, 2) %in% c("TC", "TT", "CT", "CC"), "B", bias_type_up),
+      bias_type_down = ifelse(index_p %in% intersect_position & substr(mutation_type_down, 1, 2) %in% c("TC", "TT", "CT", "CC"), "B", mutation_type_down)
+    )
+  query <- query %>%
+    mutate(
+      bias_type_up = ifelse(is.na(bias_type_up), NA, paste(bias_type_up, mutation_type_up, sep = ":")),
+      bias_type_down = ifelse(is.na(bias_type_down), NA, paste(bias_type_down, mutation_type_down, sep = ":"))
+    )
+
+  ## 合并
   query <- setDT(query)
-  c <- query[,.N,by=.(bias_type_up,Tumor_Sample_Barcode)] %>% as.data.frame()
-  colnames(c) <- c("mutation_type","sample","n")
-  d <- query[,.N,by=.(bias_type_down,Tumor_Sample_Barcode)] %>% as.data.frame()
-  colnames(d) <- c("mutation_type","sample","n")
-  all2 <- rbind(c,d)
+  c <- query[, .N, by = .(bias_type_up, Tumor_Sample_Barcode)] %>% as.data.frame()
+  colnames(c) <- c("mutation_type", "sample", "n")
+  d <- query[, .N, by = .(bias_type_down, Tumor_Sample_Barcode)] %>% as.data.frame()
+  colnames(d) <- c("mutation_type", "sample", "n")
+  all2 <- rbind(c, d)
   all2 <- na.omit(all2)
 
-  matrix_sb[,3:(nrow(sample)+2)] <- NA
-  colnames(matrix_sb)[3:(nrow(sample)+2)] <- sample$Var1
+  matrix_sb[, 3:(nrow(sample) + 2)] <- NA
+  colnames(matrix_sb)[3:(nrow(sample) + 2)] <- sample$Var1
 
-  ##生成矩阵
-  for (i in 3:(nrow(sample)+2)){
-    e = which(all2$sample==colnames(matrix_sb)[i])
-    k = all2[e,]
-    if(length(k)==0){matrix_sb[,i]=0}
-    else{
-      matrix_sb[,i]=sapply(matrix_sb$mutation_type,
-                           function(x){
-                             j = which(k$mutation_type==x)
-                             if(length(j)==0){return(0)}
-                             else{return(sum(k[j,3]))}
-                           })
+  ## 生成矩阵
+  for (i in 3:(nrow(sample) + 2)) {
+    e <- which(all2$sample == colnames(matrix_sb)[i])
+    k <- all2[e, ]
+    if (length(k) == 0) {
+      matrix_sb[, i] <- 0
+    }
+    else {
+      matrix_sb[, i] <- sapply(
+        matrix_sb$mutation_type,
+        function(x) {
+          j <- which(k$mutation_type == x)
+          if (length(j) == 0) {
+            return(0)
+          }
+          else {
+            return(sum(k[j, 3]))
+          }
+        }
+      )
     }
   }
 
   matrix <- matrix[-2]
   matrix_sb <- matrix_sb[-2]
 
-  if(add_trans_bias){
-    all_m <- list(DBS_78=matrix,DBS_186=matrix_sb)
-  }else{all_m <- matrix}
+  if (add_trans_bias) {
+    all_m <- list(DBS_78 = matrix, DBS_186 = matrix_sb)
+  } else {
+    all_m <- matrix
+  }
 
   all_m
 }

@@ -56,12 +56,19 @@ sig_fit_bootstrap <- function(catalog,
   method <- match.arg(method)
   mode <- match.arg(mode)
 
+  timer <- Sys.time()
+  send_info("Started.")
+  on.exit(send_elapsed_time(timer))
+
   if (find_suboptimal) {
+    send_info("Suboptimal mode enabled.")
     if (method != "SA") {
-      warning("Only method 'SA' can be used to find suboptimal decomposition.\n Resetting method.", immediate. = TRUE)
+      send_warning("Only method 'SA' can be used to find suboptimal decomposition. Resetting method.")
       method <- "SA"
     }
   }
+
+  send_info("Checking catalog.")
 
   if (is.matrix(catalog)) {
     if (ncol(catalog) != 1) {
@@ -82,12 +89,14 @@ sig_fit_bootstrap <- function(catalog,
     catalog <- catalog[has_cn_w]
   }
 
+  send_success("Done.")
+
   ## To here, catalog is a named vector
   total_count <- sum(catalog)
   K <- length(catalog) # number of mutation types
 
   if (find_suboptimal & is.null(suboptimal_ref_error)) {
-    message("=> Running 'SA' method to getting optimal error as baseline error...")
+    send_info("Running 'SA' method to getting optimal error as baseline error.")
     catalog_mat <- matrix(catalog, ncol = 1)
     rownames(catalog_mat) <- names(catalog)
     optimal_res <- sig_fit(
@@ -108,23 +117,20 @@ sig_fit_bootstrap <- function(catalog,
     )
     suboptimal_ref_error <- optimal_res$errors
     if (suboptimal_ref_error == 0) {
-      message("=> The optimal error is 0, resetting it to 1% of total exposure")
+      send_info("The optimal error is 0, resetting it to 1% of total exposure.")
       suboptimal_ref_error <- 0.01 * sum(catalog)
     }
+    send_success("Got baseline error.")
   }
 
-
-  message("=> Running bootstrap...")
-
-  Args_add = list(...)
-
+  Args_add <- list(...)
   if (!is.null(sig_index)) {
-    sig = NA
+    sig <- NA
   }
   if (find_suboptimal) {
-    threshold.stop = suboptimal_factor * suboptimal_ref_error
+    threshold.stop <- suboptimal_factor * suboptimal_ref_error
   } else {
-    threshold.stop = NULL
+    threshold.stop <- NULL
   }
 
   Args <- list(
@@ -143,15 +149,20 @@ sig_fit_bootstrap <- function(catalog,
     true_catalog = catalog,
     threshold.stop = threshold.stop
   )
-  Args = c(Args, Args_add)
+  Args <- c(Args, Args_add)
 
-  res <- replicate(n, {
+  send_info("About to start bootstrap.")
+  sb <- cli::cli_status("{symbol$arrow_right} Bootstrapping {n} times.")
+
+  res <- sapply(1:n, function(i) {
     sampled <- sample(seq(K), total_count, replace = TRUE, prob = catalog / sum(catalog))
     catalog_mat <- as.integer(table(factor(sampled, levels = seq(K))))
     catalog_mat <- matrix(catalog_mat, ncol = 1)
     rownames(catalog_mat) <- names(catalog)
 
     Args$catalogue_matrix <- catalog_mat
+
+    cli::cli_status_update(id = sb, "{symbol$arrow_right} Total {n} times, starting no.{i}.")
 
     suppressMessages(
       base::do.call("sig_fit", args = Args)
@@ -177,14 +188,20 @@ sig_fit_bootstrap <- function(catalog,
     # )
   })
 
-  message("=> Done")
+  cli::cli_status_clear(sb)
+  send_success("Bootstrap done.")
 
   expo <- res[1, ]
   expo <- sapply(expo, cbind)
   rownames(expo) <- rownames(res[1, ][[1]])
 
+  send_success("Signature exposures collected.")
+
   errors <- sapply(res[2, ], c)
   names(errors) <- colnames(expo) <- paste0("Rep_", seq(n))
+
+  send_success("Errors collected.")
+  send_success("Done.")
 
   return(list(expo = expo, errors = errors))
 }

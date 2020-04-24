@@ -97,6 +97,10 @@ sig_fit <- function(catalogue_matrix,
   db_type <- match.arg(db_type)
   method <- match.arg(method)
 
+  timer <- Sys.time()
+  send_info("Started.")
+  on.exit(send_elapsed_time(timer))
+
   if (is.null(sig_index)) {
     if (inherits(sig, "Signature")) {
       send_success("Signature object detected.")
@@ -111,9 +115,7 @@ sig_fit <- function(catalogue_matrix,
     }
   } else {
     send_success("Signature index detected.")
-
-    sb <- cli::cli_status("> checking database in {.pkg maftools}.",
-                          msg_done = "database checked.")
+    send_info("Checking signature database in {.pkg maftools}.")
 
     if (sig_db == "legacy") {
       sigs_db <- readRDS(file = system.file("extdata", "legacy_signatures.RDs",
@@ -142,10 +144,10 @@ sig_fit <- function(catalogue_matrix,
       avail_index <- substring(colnames(sigs), 4)
     }
 
-    cli::cli_status_update(sb, "> checking signature index.")
+    send_info("Checking signature index.")
 
     msg <- paste(
-      paste0("\nValid index for db '", sig_db, "':"),
+      paste0("Valid index for db '", sig_db, "':"),
       paste0(avail_index, collapse = " "),
       sep = "\n"
     )
@@ -162,8 +164,8 @@ sig_fit <- function(catalogue_matrix,
     }
 
     if (!all(sig_index %in% avail_index)) {
-      cli::cli_alert_danger("Invalid index.")
-      cli::cli_alert_info(msg)
+      send_error("Invalid index.")
+      send_info(msg)
       send_stop()
     }
 
@@ -175,34 +177,40 @@ sig_fit <- function(catalogue_matrix,
     sig_matrix <- as.matrix(sigs[, index, drop = FALSE])
   }
 
-  cli::cli_status_clear(sb)
+  send_success("Database and index checked.")
 
   mode <- match.arg(mode)
   type <- match.arg(type)
   return_class <- match.arg(return_class)
 
   if (mode == "copynumber") {
+    send_info("Copy number mode detected. Checking and handling component names...")
     ## For copy number signature
     ## Only feature of copy number used for exposure quantification
     ## So the result exposure is estimated copy number segments
     has_cn_w <- grepl("^CN[^C]", rownames(sig_matrix)) | startsWith(rownames(sig_matrix), "copynumber")
     sig_matrix <- sig_matrix[has_cn_w, , drop = FALSE]
     catalogue_matrix <- catalogue_matrix[rownames(sig_matrix), , drop = FALSE]
+    send_success("Component names checked and handled.")
   }
 
   ## Keep sum of signature to 1
   sig_matrix <- apply(sig_matrix, 2, function(x) x / sum(x))
-
+  send_success("Signature normalized.")
 
   ## Check if V and W have same rows
+  send_info("Checking row number for catalog matrix and signature matrix.")
   if (nrow(catalogue_matrix) != nrow(sig_matrix)) {
-    stop("Catalogue matrix and Signature matrix should have same rows, please check!")
+    send_error("Catalogue matrix and Signature matrix should have same rows, please check!")
+    send_stop()
   }
+  send_success("Checked.")
 
   ## If V and W have row names, check the order
   cat_rowname <- rownames(catalogue_matrix)
   sig_rowname <- rownames(sig_matrix)
   if (!is.null(cat_rowname) & !is.null(sig_rowname)) {
+    send_info("Checking rownames for catalog matrix and signature matrix.")
     if (!all(sig_rowname == cat_rowname)) {
       message("Matrix V and W don't have same orders. Try reordering...")
       if (all(sort(cat_rowname) == sort(sig_rowname))) {
@@ -212,42 +220,45 @@ sig_fit <- function(catalogue_matrix,
         stop("The rownames of matrix are not identical, please check your input!")
       }
     }
+    send_success("Checked.")
   }
 
+  send_success("Method '", method, "' detected.")
   f_fit <- switch(method,
     LS = {
       if (!requireNamespace("lsei", quietly = TRUE)) {
-        message("Please install 'lsei' package firstly.")
-        return(NULL)
+        send_error("Please install 'lsei' package firstly.")
+        send_stop()
       }
-      message("=> Calling method 'LS'...")
       decompose_LS
     },
     QP = {
       if (!requireNamespace("quadprog", quietly = TRUE)) {
-        message("Please install 'quadprog' package firstly.")
-        return(NULL)
+        send_error("Please install 'quadprog' package firstly.")
+        send_stop()
       }
-      message("=> Calling method 'QP'...")
       decompose_QP
     },
     SA = {
       if (!requireNamespace("GenSA", quietly = TRUE)) {
-        message("Please install 'GenSA' package firstly.")
-        return(NULL)
+        send_error("Please install 'GenSA' package firstly.")
+        send_stop()
       }
-      message("=> Calling method 'SA'...")
       decompose_SA
     }
   )
+  send_success("Corresponding function generated.")
 
+  send_info("Calling function.")
   expo <- purrr::map2(as.data.frame(catalogue_matrix), rel_threshold,
     f_fit,
     sig_matrix,
     type = type,
     ...
   )
+  send_success("Done.")
 
+  send_info("Generating output signature exposures.")
   expo <- dplyr::bind_rows(expo) %>%
     as.matrix()
   rownames(expo) <- colnames(sig_matrix)
@@ -264,8 +275,9 @@ sig_fit <- function(catalogue_matrix,
       data.table::as.data.table()
   }
 
-  message("=> Done")
+  send_success("Done.")
   if (return_error) {
+    send_info("Calculating errors (Frobenius Norm).")
     if (!is.null(true_catalog)) {
       ## Make sure component names are same
       if (!is.null(sig_rowname) & !is.null(names(true_catalog))) {
@@ -275,7 +287,7 @@ sig_fit <- function(catalogue_matrix,
 
     ## compute estimation error for each sample/patient (Frobenius norm)
     if (type == "relative") {
-      warning("When the type is 'relative', the returned error is affected by its precision.", immediate. = TRUE)
+      send_warning("When the type is 'relative', the returned error is affected by its precision.")
       if (is.null(true_catalog)) {
         errors <- sapply(
           seq(ncol(expo_mat)),
@@ -308,6 +320,7 @@ sig_fit <- function(catalogue_matrix,
     }
     names(errors) <- colnames(catalogue_matrix)
 
+    send_success("Done.")
     return(list(
       expo = expo,
       errors = errors

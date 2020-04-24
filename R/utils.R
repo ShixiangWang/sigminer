@@ -104,30 +104,38 @@ is.wholenumber <- function(x, tol = .Machine$double.eps) {
 
 # Signals ----------------------------------------------------------------
 
-send_info = function(...) {
+send_info <- function(...) {
   cli::cli_alert_info(
-    cli::style_bold(...)
+    cli::style_bold(get_timestamp(), cli::col_blue(...))
   )
 }
 
-send_success = function(...) {
+send_success <- function(...) {
   cli::cli_alert_success(
-    cli::style_bold(...)
+    cli::style_bold(get_timestamp(), cli::col_green(...))
   )
 }
 
-send_warning = function(...) {
+send_warning <- function(...) {
   cli::cli_alert_warning(
-    cli::style_bold(...)
+    cli::style_bold(get_timestamp(), cli::col_yellow(...))
   )
 }
 
-send_error = function(...) {
+send_error <- function(...) {
   cli::cli_alert_danger(
-    cli::style_bold(...)
+    cli::style_bold(get_timestamp(), cli::col_red(...))
   )
 }
 
+send_elapsed_time <- function(timer) {
+  timer <- Sys.time() - timer
+  send_info(round(timer, 3), " ", attr(timer, "units"), " elapsed.")
+}
+
+get_timestamp <- function() {
+  paste0("[", Sys.time(), "]: ")
+}
 
 # https://stackoverflow.com/questions/14469522/stop-an-r-program-without-error
 send_stop <- function() {
