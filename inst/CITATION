@@ -1,0 +1,19 @@
+citHeader("To cite sigminer in publications use:")
+
+citEntry(
+  entry    = "Article",
+  title    = "The predictive power of tumor mutational burden in lung cancer immunotherapy response is influenced by patients’ sex",
+  author   = personList(as.person("Shixiang Wang"),
+                       as.person("Xuesong Liu")
+                       ),
+  journal  = "International journal of cancer",
+  year     = 2019,
+  volume   = 145,
+  number   = 10,
+  pages    = "2840--2849",
+  url      = "https://doi.org/10.1002/ijc.32327",
+  textVersion = paste(
+    "Wang, Shixiang, et al. \"The predictive power of tumor mutational burden in lung cancer immunotherapy response",
+    "is influenced by patients’ sex.\" International journal of cancer 145.10 (2019): 2840-2849."
+  )
+)
