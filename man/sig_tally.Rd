@@ -189,7 +189,7 @@ if (require("BSgenome.Hsapiens.UCSC.hg19")) {
   )
   ## Test it by enrichment analysis
   enrich_component_strand_bias(mt_tally$nmf_matrix)
-  enrich_component_strand_bias(mt_tally$all_matrice$SBS_24)
+  enrich_component_strand_bias(mt_tally$all_matrices$SBS_24)
 } else {
   message("Please install package 'BSgenome.Hsapiens.UCSC.hg19' firstly!")
 }

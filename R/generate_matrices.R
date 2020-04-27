@@ -16,7 +16,7 @@ generate_matrix_SBS <- function(query, ref_genome, genome_build = "hg19", add_tr
     downstream = query$End_Position + 20
   )
 
-  message("=> Extracting 5' and 3' adjacent bases")
+  send_info("Extracting 5' and 3' adjacent bases.")
   ss <- BSgenome::getSeq(
     x = ref_genome,
     names = extract.tbl$Chromosome,
@@ -25,7 +25,7 @@ generate_matrix_SBS <- function(query, ref_genome, genome_build = "hg19", add_tr
     as.character = TRUE
   )
 
-  message("=> Extracting +/- 20bp around mutated bases for background C>T estimation")
+  send_info("Extracting +/- 20bp around mutated bases for background C>T estimation.")
   updwn <- BSgenome::getSeq(
     x = ref_genome, names = extract.tbl$Chromosome, start = extract.tbl$upstream,
     end = extract.tbl$downstream, as.character = FALSE
@@ -175,7 +175,7 @@ generate_matrix_SBS <- function(query, ref_genome, genome_build = "hg19", add_tr
   sub.tbl[, fraction_APOBEC_mutations := round((n_mutations - non_APOBEC_mutations) / n_mutations, digits = 3)]
   data.table::setDF(sub.tbl)
 
-  message("=> Estimating APOBEC enrichment scores")
+  send_info("Estimating APOBEC enrichment scores.")
   apobec.fisher.dat <- sub.tbl[, c(19, 28, 32, 33, 34)]
   if (nrow(apobec.fisher.dat) == 1) {
     apobec.fisher.dat <- t(as.matrix(apply(X = apobec.fisher.dat, 2, as.numeric)))
@@ -184,7 +184,7 @@ generate_matrix_SBS <- function(query, ref_genome, genome_build = "hg19", add_tr
   }
 
   ### One way Fisher test to estimate over representation og APOBEC associated tcw mutations
-  message("=> Performing one-way Fisher's test for APOBEC enrichment")
+  send_info("Performing one-way Fisher's test for APOBEC enrichment.")
   sub.tbl <- cbind(sub.tbl, data.table::rbindlist(apply(X = apobec.fisher.dat, 1, function(x) {
     xf <- fisher.test(matrix(c(x[2], sum(x[3], x[4]), x[1] - x[2], x[3] - x[4]), nrow = 2), alternative = "g")
     data.table::data.table(fisher_pvalue = xf$p.value, or = xf$estimate, ci.up = xf$conf.int[1], ci.low = xf$conf.int[2])
@@ -198,31 +198,30 @@ generate_matrix_SBS <- function(query, ref_genome, genome_build = "hg19", add_tr
   sub.tbl$APOBEC_Enriched <- ifelse(test = sub.tbl$APOBEC_Enrichment > 2, yes = "yes", no = "no")
   sub.tbl[, fdr := p.adjust(sub.tbl$fisher_pvalue, method = "fdr")] # Adjusted p-values
 
-  message(
-    paste0("=> APOBEC related mutations are enriched in "),
+  send_success(
+    paste0("APOBEC related mutations are enriched in "),
     round(nrow(sub.tbl[APOBEC_Enriched %in% "yes"]) / nrow(sub.tbl) * 100, digits = 3),
     "% of samples (APOBEC enrichment score > 2; ",
     nrow(sub.tbl[APOBEC_Enriched %in% "yes"]), " of ", nrow(sub.tbl), " samples)"
   )
 
-  message("=> Creating SBS sample-by-component matrice")
+  send_info("Creating SBS sample-by-component matrices.")
 
-  message("==> Creating SBS-6 matrix")
   SBS_6 <- records_to_matrix(extract.tbl, "Tumor_Sample_Barcode", "SubstitutionType")
   SBS_6 <- SBS_6[, c("T>C", "C>T", "T>A", "T>G", "C>A", "C>G")] %>% as.matrix()
+  send_success("SBS-6 matrix created.")
 
-  message("==> Creating SBS-96 matrix")
   SBS_96 <- records_to_matrix(extract.tbl, "Tumor_Sample_Barcode", "TriSubstitutionTypeMotif")
   SBS_96 <- SBS_96[, tri_comb] %>% as.matrix()
+  send_success("SBS-96 matrix created.")
 
-  message("==> Creating SBS-1536 matrix")
   SBS_1536 <- records_to_matrix(extract.tbl, "Tumor_Sample_Barcode", "SubstitutionTypeMotif")
   SBS_1536 <- SBS_1536[, penta_comb] %>% as.matrix()
+  send_success("SBS-1536 matrix created.")
 
   if (add_trans_bias) {
     t_labels <- c("T:", "U:", "B:", "N:")
 
-    message("==> Creating SBS-24 (6x4) matrix")
     SBS_24 <- records_to_matrix(extract.tbl, "Tumor_Sample_Barcode", "SubstitutionType",
       add_trans_bias = TRUE, build = genome_build
     )
@@ -230,25 +229,26 @@ generate_matrix_SBS <- function(query, ref_genome, genome_build = "hg19", add_tr
       t_labels,
       c("T>C", "C>T", "T>A", "T>G", "C>A", "C>G")
     )] %>% as.matrix()
+    send_success("SBS-24 (6x4) matrix created.")
 
-    message("==> Creating SBS-384 (96x4) matrix")
     SBS_384 <- records_to_matrix(extract.tbl, "Tumor_Sample_Barcode", "TriSubstitutionTypeMotif",
       add_trans_bias = TRUE, build = genome_build
     )
     SBS_384 <- SBS_384[, vector_to_combination(t_labels, tri_comb)] %>% as.matrix()
+    send_success("SBS-384 (96x4) matrix created.")
 
-    message("==> Creating SBS-6144 (1536x4) matrix")
     SBS_6144 <- records_to_matrix(extract.tbl, "Tumor_Sample_Barcode", "SubstitutionTypeMotif",
       add_trans_bias = TRUE, build = genome_build
     )
     SBS_6144 <- SBS_6144[, vector_to_combination(t_labels, penta_comb)] %>% as.matrix()
+    send_success("SBS-6144 (1536x4) matrix created.")
   }
 
   if (add_trans_bias) {
-    message("=> Return SBS-384 as major matrix")
+    send_info("Return SBS-384 as major matrix.")
     res <- list(
       nmf_matrix = SBS_384,
-      all_matrice = list(
+      all_matrices = list(
         SBS_6 = SBS_6,
         SBS_24 = SBS_24,
         SBS_96 = SBS_96,
@@ -259,10 +259,10 @@ generate_matrix_SBS <- function(query, ref_genome, genome_build = "hg19", add_tr
       APOBEC_scores = sub.tbl
     )
   } else {
-    message("=> Return SBS-96 as major matrix")
+    send_info("Return SBS-96 as major matrix.")
     res <- list(
       nmf_matrix = SBS_96,
-      all_matrice = list(
+      all_matrices = list(
         SBS_6 = SBS_6,
         SBS_96 = SBS_96,
         SBS_1536 = SBS_1536
@@ -288,7 +288,7 @@ records_to_matrix <- function(dt, samp_col, component_col, add_trans_bias = FALS
     ]
     ## Actually, the MatchCount should only be 0, 1, 2
     if (any(m_dt$MatchCount > 2)) {
-      stop("More than 2 regions counted, please report your data and code to developer!")
+      send_stop("More than 2 regions counted, please report your data and code to developer!")
     }
 
     dt$transcript_bias_label <- ifelse(
@@ -360,28 +360,27 @@ generate_matrix_DBS <- function(query, ref_genome, genome_build = "hg19", add_tr
     "CA>TC", "CA>GC", "CA>AC", "AA>TT", "AA>GT", "AA>CT",
     "AA>TG", "AA>GG", "AA>CG", "AA>TC", "AA>GC", "AA>CC"
   ), stringsAsFactors = F)
-  matrix_sb <- matrix %>%
-    mutate(u = "U", N = "N", T = "T", B = "B", Q = "Q") %>%
-    pivot_longer(c("u", "N", "T", "B", "Q"), names_to = "type", values_to = "value") %>%
-    select(-type) %>%
-    mutate(mutation_type = paste(value, mutation_type, sep = ":"), reverse = paste(value, reverse, sep = ":")) %>%
-    filter((!substr(mutation_type, 3, 4) %in% c("TC", "TT", "CT", "CC") & substr(mutation_type, 1, 1) == "Q") |
-      substr(mutation_type, 3, 4) %in% c("TC", "TT", "CT", "CC") & substr(mutation_type, 1, 1) != "Q") %>%
-    select(-value)
 
-  query <- query %>% mutate(
+  matrix_sb <- matrix %>%
+    dplyr::mutate(u = "U", N = "N", T = "T", B = "B", Q = "Q") %>%
+    tidyr::pivot_longer(c("u", "N", "T", "B", "Q"), names_to = "type", values_to = "value") %>%
+    dplyr::select(-.data$type) %>%
+    dplyr::mutate(mutation_type = paste(value, mutation_type, sep = ":"), reverse = paste(value, reverse, sep = ":")) %>%
+    dplyr::filter((!substr(mutation_type, 3, 4) %in% c("TC", "TT", "CT", "CC") & substr(mutation_type, 1, 1) == "Q") |
+      substr(mutation_type, 3, 4) %in% c("TC", "TT", "CT", "CC") & substr(mutation_type, 1, 1) != "Q") %>%
+    dplyr::select(-.data$value)
+
+  query <- query %>% dplyr::mutate(
     index = paste(Chromosome, Start_Position, Tumor_Sample_Barcode, sep = ":"),
     index_up = paste(Chromosome, (Start_Position - 1), Tumor_Sample_Barcode, sep = ":"),
     index_down = paste(Chromosome, (Start_Position + 1), Tumor_Sample_Barcode, sep = ":")
   )
 
-
-
-  ## 找上游的双碱基突变
+  ## Search for DBS
   query <- query %>%
-    mutate(
-      source_up_p = chmatch(index_up, index),
-      source_down_p = chmatch(index_down, index),
+    dplyr::mutate(
+      source_up_p = data.table::chmatch(index_up, index),
+      source_down_p = data.table::chmatch(index_down, index),
       source_up = ifelse(is.na(source_up_p), NA, paste(query$Reference_Allele[source_up_p], Reference_Allele, sep = "")),
       mutation_up = ifelse(is.na(source_up_p), NA, paste(query$Tumor_Seq_Allele2[source_up_p], Tumor_Seq_Allele2, sep = "")),
       source_down = ifelse(is.na(source_down_p), NA, paste(Reference_Allele, query$Reference_Allele[source_down_p], sep = "")),
@@ -396,15 +395,14 @@ generate_matrix_DBS <- function(query, ref_genome, genome_build = "hg19", add_tr
   ## 去掉下游突变中和上游重复的
   query$source_down <- ifelse(query$index == "link", NA, query$source_down)
   query$mutation_down <- ifelse(query$index == "link", NA, query$mutation_down)
-  query <- query %>% filter(!(is.na(source_up) & is.na(source_down) & is.na(mutation_down) & is.na(mutation_up)))
+  query <- query %>% dplyr::filter(!(is.na(source_up) & is.na(source_down) & is.na(mutation_down) & is.na(mutation_up)))
   query <- query %>%
-    mutate(
+    dplyr::mutate(
       mutation_type_up = ifelse(is.na(source_up), NA, paste(source_up, mutation_up, sep = ">")),
       mutation_type_down = ifelse(is.na(source_down), NA, paste(source_down, mutation_down, sep = ">"))
     )
 
   ## 将互补的碱基转化
-
   query$mutation_type_up <- sapply(
     query$mutation_type_up,
     function(x) {
@@ -427,8 +425,9 @@ generate_matrix_DBS <- function(query, ref_genome, genome_build = "hg19", add_tr
       }
     }
   )
+
   ## 合并
-  query <- setDT(query)
+  query <- data.table::setDT(query)
   a <- query[, .N, by = .(mutation_type_up, Tumor_Sample_Barcode)] %>% as.data.frame()
   colnames(a) <- c("mutation_type", "sample", "n")
   b <- query[, .N, by = .(mutation_type_down, Tumor_Sample_Barcode)] %>% as.data.frame()
@@ -469,14 +468,14 @@ generate_matrix_DBS <- function(query, ref_genome, genome_build = "hg19", add_tr
   plus_strand <- transcript_dt[strand == "+", .(x = chrom, start, end, strand)]
   minus_strand <- transcript_dt[strand == "-", .(x = chrom, start, end, strand)]
   overlap_plus <- dt[plus_strand, .(x, pos = x.pos, start, end, strand), on = .(x, pos >= start, pos <= end), nomatch = F, allow.cartesian = TRUE][, index := paste(x, pos, sep = ":")] %>%
-    distinct(index, .keep_all = T)
+    dplyr::distinct(index, .keep_all = T)
   overlap_minus <- dt[minus_strand, .(x, pos = x.pos, start, end, strand), on = .(x, pos >= start, pos <= end), nomatch = F, allow.cartesian = TRUE][, index := paste(x, pos, sep = ":")] %>%
-    distinct(index, .keep_all = T)
+    dplyr::distinct(index, .keep_all = T)
   intersect_position <- intersect(overlap_minus$index, overlap_plus$index)
   query <- query[, index_p := paste(Chromosome, Start_Position, sep = ":")]
 
   query <- query %>%
-    mutate(
+    dplyr::mutate(
       bias_type_up = ifelse(index_p %in% overlap_plus$index & substr(mutation_type_up, 1, 2) %in% c("TC", "TT", "CT", "CC"), "U",
         ifelse(index_p %in% overlap_plus$index & !(substr(mutation_type_up, 1, 2) %in% c("TC", "TT", "CT", "CC")), "Q",
           ifelse(index_p %in% overlap_minus$index & substr(mutation_type_up, 1, 2) %in% c("TC", "TT", "CT", "CC"), "T",
@@ -494,18 +493,18 @@ generate_matrix_DBS <- function(query, ref_genome, genome_build = "hg19", add_tr
     )
 
   query <- query %>%
-    mutate(
+    dplyr::mutate(
       bias_type_up = ifelse(index_p %in% intersect_position & substr(mutation_type_up, 1, 2) %in% c("TC", "TT", "CT", "CC"), "B", bias_type_up),
       bias_type_down = ifelse(index_p %in% intersect_position & substr(mutation_type_down, 1, 2) %in% c("TC", "TT", "CT", "CC"), "B", mutation_type_down)
     )
   query <- query %>%
-    mutate(
+    dplyr::mutate(
       bias_type_up = ifelse(is.na(bias_type_up), NA, paste(bias_type_up, mutation_type_up, sep = ":")),
       bias_type_down = ifelse(is.na(bias_type_down), NA, paste(bias_type_down, mutation_type_down, sep = ":"))
     )
 
   ## 合并
-  query <- setDT(query)
+  query <- data.table::setDT(query)
   c <- query[, .N, by = .(bias_type_up, Tumor_Sample_Barcode)] %>% as.data.frame()
   colnames(c) <- c("mutation_type", "sample", "n")
   d <- query[, .N, by = .(bias_type_down, Tumor_Sample_Barcode)] %>% as.data.frame()

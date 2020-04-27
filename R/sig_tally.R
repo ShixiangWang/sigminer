@@ -76,7 +76,7 @@
 #'   )
 #'   ## Test it by enrichment analysis
 #'   dt1 = enrich_component_strand_bias(mt_tally$nmf_matrix)
-#'   dt2 = enrich_component_strand_bias(mt_tally$all_matrice$SBS_24)
+#'   dt2 = enrich_component_strand_bias(mt_tally$all_matrices$SBS_24)
 #'
 #'   expect_s3_class(dt1, "data.table")
 #'   expect_s3_class(dt2, "data.table")
@@ -304,7 +304,7 @@ sig_tally.CopyNumber <- function(object,
 #'   )
 #'   ## Test it by enrichment analysis
 #'   enrich_component_strand_bias(mt_tally$nmf_matrix)
-#'   enrich_component_strand_bias(mt_tally$all_matrice$SBS_24)
+#'   enrich_component_strand_bias(mt_tally$all_matrices$SBS_24)
 #' } else {
 #'   message("Please install package 'BSgenome.Hsapiens.UCSC.hg19' firstly!")
 #' }
@@ -326,7 +326,7 @@ sig_tally.MAF <- function(object, mode = c("SBS", "DBS", "ID"),
     } else if (grepl("hg38", ref_genome)) {
       genome_build <- "hg38"
     } else {
-      stop("Cannot guess the genome build, please set it by hand!")
+      send_stop("Cannot guess the genome build, please set it by hand!")
     }
   }
 
@@ -335,52 +335,56 @@ sig_tally.MAF <- function(object, mode = c("SBS", "DBS", "ID"),
   # hsgs.installed = hsgs.installed[organism %in% "Hsapiens"]
 
   if (nrow(hsgs.installed) == 0) {
-    stop("Could not find any installed BSgenomes.\nUse BSgenome::available.genomes() for options.")
+    send_stop("Could not find any installed BSgenomes. Use {.code BSgenome::available.genomes()} for options.")
   }
 
   if (is.null(ref_genome)) {
-    message("=> User did not set 'ref_genome'")
-    message("=> Found following BSgenome installtions. Using first entry\n")
+    send_info("User did not set {.code ref_genome}.")
+    send_success("Found following BSgenome installtions. Using first entry.\n")
     print(hsgs.installed)
     ref_genome <- hsgs.installed$pkgname[1]
   } else {
     if (!ref_genome %in% hsgs.installed$pkgname) {
-      message(paste0("=> Could not find BSgenome "), ref_genome, "\n")
-      message("=> Found following BSgenome installtions. Correct 'ref_genome' argument if necessary\n")
+      send_error("Could not find BSgenome {.code ", ref_genome, "}.")
+      send_info("Found following BSgenome installtions. Correct {.code ref_genome} argument if necessary.")
       print(hsgs.installed)
-      stop()
+      send_stop("Exit.")
     }
   }
 
   ref_genome <- BSgenome::getBSgenome(genome = ref_genome)
+  send_success("Reference genome loaded.")
+
   query <- maftools::subsetMaf(
     maf = object,
     query = "Variant_Type %in% c('SNP', 'INS', 'DEL')", fields = "Chromosome",
     includeSyn = use_syn, mafObj = FALSE
   )
+  send_success("Variants from MAF object queried.")
 
   # Remove unwanted contigs
   if (!is.null(ignore_chrs)) {
     query <- query[!query$Chromosome %in% ignore_chrs]
+    send_success("Unwanted contigs removed.")
   }
 
   if (nrow(query) == 0) {
-    stop("Zero variants to analyze!")
+    send_stop("Zero variants to analyze!")
   }
 
-  message("=> Checking chromosome names...")
   query$Chromosome <- sub(
     pattern = "chr",
     replacement = "chr",
     x = as.character(query$Chromosome),
     ignore.case = TRUE
   )
-
   ## Make sure all have prefix
   if (any(!grepl("chr", query$Chromosome))) {
     query$Chromosome[!grepl("chr", query$Chromosome)] <-
       paste0("chr", query$Chromosome[!grepl("chr", query$Chromosome)])
   }
+
+  send_success("Chromosome names checked.")
 
   ## Handle non-autosomes
   query$Chromosome <- sub(
@@ -408,39 +412,40 @@ sig_tally.MAF <- function(object, mode = c("SBS", "DBS", "ID"),
   query$Chromosome <- sub("23", "X", query$Chromosome)
   # detect and transform chromosome 24 to "Y"
   query$Chromosome <- sub("24", "Y", query$Chromosome)
-  message("=> Done")
 
-  message("=> Checking start and end position...")
+  send_success("Sex chromosomes properly handled.")
+
   query$Start_Position <- as.numeric(as.character(query$Start_Position))
   query$End_Position <- as.numeric(as.character(query$End_Position))
-  message("=> Done")
+
+  send_success("Variant start and end position checked.")
 
   query_seq_lvls <- query[, .N, Chromosome]
   ref_seqs_lvls <- BSgenome::seqnames(x = ref_genome)
   query_seq_lvls_missing <- query_seq_lvls[!Chromosome %in% ref_seqs_lvls]
 
   if (nrow(query_seq_lvls_missing) > 0) {
-    warning(paste0(
+    send_warning(paste0(
       "Chromosome names in MAF must match chromosome names in reference genome.\nIgnorinig ",
       query_seq_lvls_missing[, sum(N)],
       " single nucleotide variants from missing chromosomes ",
       paste(query_seq_lvls_missing[, Chromosome], collapse = ", ")
-    ),
-    immediate. = TRUE
-    )
+    ))
   }
 
   query <- query[!Chromosome %in% query_seq_lvls_missing[, Chromosome]]
 
+  send_success("Variant data for matrix generation preprocessed.")
+
   if (mode == "SBS") {
     res <- generate_matrix_SBS(query, ref_genome, genome_build = genome_build, add_trans_bias = add_trans_bias)
   } else if (mode == "DBS") {
-
+    res <- generate_matrix_DBS(query, ref_genome, genome_build = genome_build, add_trans_bias = add_trans_bias)
   } else {
     ## INDEL
   }
 
-  message("=> Done")
+  send_success("Done.")
 
   if (keep_only_matrix) {
     res$nmf_matrix
