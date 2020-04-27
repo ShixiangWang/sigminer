@@ -113,3 +113,25 @@ show_sig_feature_corrplot(tidy_data.seqz.feature, p_val = 1)
 show_sig_feature_corrplot(tidy_data.seqz.feature, breaks_count = NULL)
 show_sig_feature_corrplot(tidy_data.seqz.feature, breaks_count = NA)
 
+
+# Test DBS ----------------------------------------------------------------
+
+maf = read_maf("../MatrixGenerator-Test/data/LUSC/tcga_lusc_from_dcc.maf")
+mt_tally <- sig_tally(
+  maf,
+  ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
+  use_syn = TRUE, add_trans_bias = TRUE, mode = "DBS"
+)
+
+
+
+z2 = query[, search_DBS(.SD),
+      by = Tumor_Sample_Barcode]
+
+# query %>%
+#   dplyr::as_tibble() %>%
+#   dplyr::group_by(Tumor_Sample_Barcode) %>%
+#   tidyr::nest() %>%
+#   dplyr::mutate(data = purrr::map(.data$data, search_DBS)) %>%
+#   tidyr::unnest("data") %>%
+#   data.table::as.data.table()
