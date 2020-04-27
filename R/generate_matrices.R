@@ -2,7 +2,8 @@
 # SBS ---------------------------------------------------------------------
 
 generate_matrix_SBS <- function(query, ref_genome, genome_build = "hg19", add_trans_bias = FALSE) {
-  ## TODO make 4 transcriptional bias categories all right
+  ## T: and U: are basically same to sigprofiler, the other two types (N: and B:) are
+  ## a bit different, may be caused by different annotations.
   query <- query[query$Variant_Type == "SNP"]
   if (nrow(query) == 0) {
     stop("Zero SNPs to analyze!")
@@ -325,8 +326,9 @@ records_to_matrix <- function(dt, samp_col, component_col, add_trans_bias = FALS
 generate_matrix_DBS <- function(query, ref_genome, genome_build = "hg19", add_trans_bias = FALSE) {
   query <- query[query$Variant_Type == "SNP"]
   if (nrow(query) == 0) {
-    stop("Zero DBSs to analyze!")
+    send_stop("Zero DBSs to analyze!")
   }
+
   sample <- as.data.frame(table(query$Tumor_Sample_Barcode))
   sample$Var1 <- as.character(sample$Var1)
   matrix <- data.frame(mutation_type = c(

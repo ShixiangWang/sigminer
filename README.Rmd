@@ -42,7 +42,7 @@ load(system.file("extdata", "toy_mutational_signature.RData",
   package = "sigminer", mustWork = TRUE
 ))
 # Show signature profile
-p1 <- show_sig_profile(sig2, mode = "SBS", style = "cosmic")
+p1 <- show_sig_profile(sig2, mode = "SBS", style = "cosmic", x_label_angle = 90)
 p1
 
 ```

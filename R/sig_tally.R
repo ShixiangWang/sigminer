@@ -85,6 +85,10 @@
 #' }
 #'
 sig_tally <- function(object, ...) {
+  timer <- Sys.time()
+  send_info("Started.")
+  on.exit(send_elapsed_time(timer))
+
   UseMethod("sig_tally")
 }
 
@@ -156,16 +160,17 @@ sig_tally.CopyNumber <- function(object,
     # Method: Macintyre
     type <- match.arg(type)
 
-    message("=> Step: getting copy number features")
+    send_info("Step: getting copy number features.")
     cn_features <- get_features(
       CN_data = cn_list, cores = cores,
       genome_build = object@genome_build
     )
     cn_features <- lapply(cn_features, function(x) as.data.frame(x))
+    send_success("Gotten.")
 
-    message("=> Step: fitting copy number components")
+    send_info("Step: fitting copy number components.")
     if (is.null(reference_components) | is.list(reference_components)) {
-      message("Detected reference components.")
+      send_success("Reference components detected.")
       cn_components <- reference_components
     } else {
       cn_components <- get_components(
@@ -176,49 +181,55 @@ sig_tally.CopyNumber <- function(object,
         threshold = threshold,
         nrep = nrep, niter = niter, cores = cores
       )
+      send_success("Components fitted.")
     }
 
     if (type == "count") {
-      message("=> Step: calculating the sum of posterior probabilities")
+      send_info("Step: calculating the sum of cluster count based on posterior probabilities.")
       cn_matrix <- get_matrix(cn_features, cn_components,
         type = "count",
         cores = cores
       )
     } else {
-      message("=> Step: calculating the sum of posterior probabilities")
+      send_info("Step: calculating the sum of posterior probabilities.")
       cn_matrix <- get_matrix(cn_features, cn_components,
         type = "probability",
         cores = cores
       )
     }
   } else {
-    # Method: Wang Shixiang
-    message("=> Step: getting copy number features")
+    # Method: Wang Shixiang, 'W'
+
+    send_info("Step: getting copy number features.")
     cn_features <- get_features_wang(
       CN_data = cn_list, cores = cores,
       genome_build = object@genome_build,
       feature_setting = feature_setting
     )
+    send_success("Gotten.")
     # Make order as unique(feature_setting)$feature
     # cn_features <- cn_features[unique(feature_setting$feature)]
 
-    message("=> Step: generating copy number components")
-    # Chck feature setting
+    send_info("Step: generating copy number components.")
+    # Check feature setting
     if (!inherits(feature_setting, "sigminer.features")) {
       feature_setting <- get_feature_components(feature_setting)
     }
+    send_success("{.code feature_setting} checked.")
 
+    send_info("Step: counting components.")
     cn_components <- purrr::map2(cn_features, names(cn_features),
       count_components_wrapper,
       feature_setting = feature_setting
     )
+    send_success("Counted.")
 
     ## Remove BoChr value is 0 in features
     if ("BoChr" %in% names(cn_features)) {
       cn_features$BoChr <- cn_features$BoChr[cn_features$BoChr$value != 0]
     }
 
-    message("=> Step: generating components by sample matrix")
+    send_info("Step: generating components by sample matrix.")
     cn_matrix <- data.table::rbindlist(cn_components, fill = TRUE, use.names = TRUE) %>%
       dplyr::as_tibble() %>%
       tibble::column_to_rownames(var = "component") %>%
@@ -228,14 +239,15 @@ sig_tally.CopyNumber <- function(object,
       t()
 
     if (any(is.na(cn_matrix))) {
-      message("Warning: NA detected. There may be an issue, please contact the developer!")
-      message("\tData will still returned, but please take case of it.")
+      send_warning("{.code NA} detected. There may be an issue, please contact the developer!")
+      send_warning("Data will still returned, but please take case of it.")
     }
     # cn_matrix[is.na(cn_matrix)] <- 0L
     feature_setting$n_obs <- colSums(cn_matrix, na.rm = TRUE)
   }
 
-  message("=> Done.")
+  send_success("Matrix generated.")
+
   if (keep_only_matrix) {
     cn_matrix
   } else {
