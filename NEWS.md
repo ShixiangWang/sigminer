@@ -5,6 +5,7 @@
 - Added multiple classification method for SBS signature.
 - Added strand bias enrichment analysis for SBS signature.
 - Moved multiple packages from field `Imports` to `Suggests`.
+- Added feature `report_bootstrap_p_value()` to report p values.
 
 # sigminer 1.0.2
 

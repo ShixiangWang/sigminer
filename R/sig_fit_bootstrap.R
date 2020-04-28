@@ -35,6 +35,14 @@
 #'   boxplot(t(H_bootstrap$expo))
 #'   H[, 1]
 #'
+#'   ## Return P values
+#'   ## In practice, run times >= 100
+#'   ## is recommended
+#'   report_bootstrap_p_value(H_bootstrap)
+#'   ## For multiple samples
+#'   ## Input a list
+#'   report_bootstrap_p_value(list(samp1 = H_bootstrap, samp2 = H_bootstrap))
+#'
 #'   ## Find suboptimal decomposition
 #'   H_suboptimal <- sig_fit_bootstrap(V[, 1], W,
 #'     n = 10,
@@ -208,9 +216,55 @@ sig_fit_bootstrap <- function(catalog,
 
   errors <- sapply(res[2, ], c)
   names(errors) <- colnames(expo) <- paste0("Rep_", seq(n))
-
   send_success("Errors collected.")
+
   send_success("Done.")
 
   return(list(expo = expo, errors = errors))
+}
+
+
+## Handle one or more samples
+#' Report P Values from bootstrap Results
+#'
+#' See examples in [sig_fit_bootstrap].
+#'
+#' @param x a (list of) result from [sig_fit_bootstrap].
+#' @param thresholds a vector of relative exposure threshold for calculating p values.
+#'
+#' @return a (list of) `matrix`
+#' @export
+report_bootstrap_p_value <- function(x, thresholds = c(0.01, 0.05, 0.1)) {
+  stopifnot(is.list(x), is.numeric(thresholds))
+
+  timer <- Sys.time()
+  send_info("Started.")
+  on.exit(send_elapsed_time(timer))
+
+  if (!is.null(x$expo)) {
+    send_success("Single sample mode enabled.")
+    expo <- x$expo
+    y <- bootstrap_p_value(expo, thresholds)
+  } else {
+    send_success("Batch mode enabled.")
+    y <- lapply(x, function(xi, y) {
+      bootstrap_p_value(xi$expo, y)
+    }, y = thresholds)
+  }
+
+  send_success("Done.")
+  return(y)
+}
+
+## Handle one sample
+bootstrap_p_value <- function(x, y) {
+  # if (any(is.null(rownames(x)), is.null(colnames(x)))) {
+  #   send_stop("Exposure matrix should have both rownames and colnames.")
+  # }
+  x <- x / colSums(x)
+  y_mat <- sapply(y, function(yi) {
+    rowSums(x < yi) / ncol(x)
+  })
+  colnames(y_mat) <- paste0("threshold_", y)
+  return(y_mat)
 }

@@ -88,6 +88,14 @@ if (requireNamespace("lsei", quietly = TRUE)) {
   boxplot(t(H_bootstrap$expo))
   H[, 1]
 
+  ## Return P values
+  ## In practice, run times >= 100
+  ## is recommended
+  report_bootstrap_p_value(H_bootstrap)
+  ## For multiple samples
+  ## Input a list
+  report_bootstrap_p_value(list(samp1 = H_bootstrap, samp2 = H_bootstrap))
+
   ## Find suboptimal decomposition
   H_suboptimal <- sig_fit_bootstrap(V[, 1], W,
     n = 10,
