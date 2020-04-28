@@ -68,7 +68,7 @@ fitComponent <-
           .export = c("k", "z", "MYCALL1", "nrep", "verbose", "bestFlexmix", "seed", "...")
         ) %dopar% {
           set.seed(seed, kind = "L'Ecuyer-CMRG")
-          #loadNamespace("flexmix")
+          # loadNamespace("flexmix")
           ns <- as.character(k[n])
           if (verbose) {
             cat(k[n], ":")

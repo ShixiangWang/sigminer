@@ -127,8 +127,10 @@ a \code{list} contains a \code{matrix} used for NMF de-composition.
 \description{
 Tally a variation object like \link{MAF} and return a matrix for NMF de-composition and more.
 This is a generic function,
-so it can be further extended to other mutation cases. Please read details
-about how to set sex for identifying copy number signatures.
+so it can be further extended to other mutation cases.
+Please read details about how to set sex for identifying copy number signatures.
+Please read \url{https://osf.io/s93d5/} for the generation of SBS, DBS and ID (INDEL)
+components.
 }
 \details{
 For identifying copy number signatures, we have to derive copy number

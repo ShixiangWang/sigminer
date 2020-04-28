@@ -447,22 +447,25 @@ generate_matrix_INDEL <- function(query, ref_genome, genome_build = "hg19", add_
     # MicroHomology INDELS
     "2:Del:M:1", "3:Del:M:1", "3:Del:M:2", "4:Del:M:1", "4:Del:M:2", "4:Del:M:3",
     "5:Del:M:1", "5:Del:M:2", "5:Del:M:3", "5:Del:M:4", "5:Del:M:5",
-    "complex", "non_matching"
+    "complex"
+    # , "non_matching"
   )
 
   ## Update Variant_Type
   query[, Variant_Type := ifelse(Variant_Type == "INS", "Ins", "Del")]
   ## Set ID type
   query[, ID_type := ifelse(Reference_Allele == "-",
-                            Tumor_Seq_Allele2,
-                            Reference_Allele)]
+    Tumor_Seq_Allele2,
+    Reference_Allele
+  )]
   ## Seach 'complex' motif
   query[, ID_motif := ifelse(Reference_Allele != "-" & Tumor_Seq_Allele2 != "-",
-                             "complex", NA_character_)]
+    "complex", NA_character_
+  )]
 
   ## Drop records with 'complex' motif
-  query_comp = query[ID_motif == "complex"]
-  query = query[is.na(ID_motif)]
+  query_comp <- query[ID_motif == "complex"]
+  query <- query[is.na(ID_motif)]
 
   if (nrow(query) == 0) {
     send_stop("Zero INDELs to analyze after dropping 'complex' labeled records!")
@@ -472,41 +475,45 @@ generate_matrix_INDEL <- function(query, ref_genome, genome_build = "hg19", add_
   query[, mut_base := substr(ID_type, 1, 1)]
 
   ## Query sequence
-  query[, `:=`(
-    ref_seq = BSgenome::getSeq(
-      x = ref_genome,
-      names = Chromosome,
-      start = Start_Position - 50,
-      end = End_Position + 250
-    ) %>% as.character(),
-    upstream = BSgenome::getSeq(
+  query[, upstream := as.character(
+    BSgenome::getSeq(
       x = ref_genome,
       names = Chromosome,
       start = Start_Position - 50,
       end = Start_Position - 1
-    ) %>% as.character(),
-    downstream = BSgenome::getSeq(
+    )
+  )]
+  query[, downstream := as.character(
+    BSgenome::getSeq(
       x = ref_genome,
       names = Chromosome,
       start = End_Position + 1,
       end = End_Position + 250
-    ) %>% as.character()
+    )
   )]
+
+  send_success("Reference sequences queried from genome.")
+
   ## Length of INDEL
   query[, ID_len := ifelse(nchar(ID_type) < 5, nchar(ID_type), 5)]
+  send_success("INDEL length extracted.")
   ## Repeat count
   query[, count_repeat := mapply(count_repeat, ID_type, downstream) %>% as.integer()]
+  send_success("Repeat units counted.")
   ## Micro-homology count
-  query[, count_homosize := mapply(count_homology_size,
-                                   ID_type, upstream, downstream) %>% as.integer()]
+  query[, count_homosize := mapply(
+    count_homology_size,
+    ID_type, upstream, downstream
+  ) %>% as.integer()]
+  send_success("Microhomology size calculated.")
 
   ## Set maximum repeat/homology-size count?
   query[, count_repeat := ifelse(count_repeat > 5, 5, count_repeat)]
   query[, count_homosize := ifelse(count_homosize > 5, 5, count_homosize)]
 
   ## For length-1 INDEL
-  conv = c("C", "T")
-  names(conv) = c("G", "A")
+  conv <- c("C", "T")
+  names(conv) <- c("G", "A")
   query[, should_reverse := ID_len == 1 & mut_base %in% c("G", "A")]
   query[, mut_base := ifelse(should_reverse, conv[mut_base], mut_base)]
   ## For length-n (n>1) INDEL
@@ -518,24 +525,45 @@ generate_matrix_INDEL <- function(query, ref_genome, genome_build = "hg19", add_
     ID_len == 1,
     paste(ID_len, Variant_Type, mut_base, count_repeat, sep = ":"),
     ifelse(mut_base == "R" & Variant_Type == "Del",
-           paste(ID_len, Variant_Type, mut_base, count_repeat + 1, sep = ":"),
-           ifelse(mut_base == "R" & Variant_Type == "Ins",
-                  paste(ID_len, Variant_Type, mut_base, count_repeat, sep = ":"),
-                  paste(ID_len, Variant_Type, mut_base, count_homosize, sep = ":")
-                  )
-           )
+      paste(ID_len, Variant_Type, mut_base, count_repeat + 1, sep = ":"),
+      ifelse(mut_base == "R" & Variant_Type == "Ins",
+        paste(ID_len, Variant_Type, mut_base, count_repeat, sep = ":"),
+        paste(ID_len, Variant_Type, mut_base, count_homosize, sep = ":")
+      )
+    )
   )]
   ## What about type "non_matching"?
   ## ???
-  query[, ID_motif := ifelse(ID_motif %in% indel_types, ID_motif, "non_matching")]
+  # query[, ID_motif := ifelse(ID_motif %in% indel_types, ID_motif, "non_matching")]
 
   ## Generate all factors
-  query = rbind(query, query_comp, fill = TRUE)
-  query[, ID_motif := factor(ID_motif, levels = indel_types)]
+  ## Currently remove non_matching as reported by SigProfiler
+  sim_types <- c(indel_types[1:24], "long_Del", "long_Ins", "MH", "complex")
+  query <- rbind(query, query_comp, fill = TRUE)
 
-  ID_28 = NULL
-  ID_84 <- records_to_matrix(query, "Tumor_Sample_Barcode", "ID_motif")
-  send_success("ID-84 matrix created.")
+  query[, ID_motif_sp := ID_motif][
+    , ID_motif_sp := ifelse(
+      ID_motif_sp %in% indel_types[25:48],
+      "long_Del",
+      ifelse(
+        ID_motif_sp %in% indel_types[49:72],
+        "long_Ins",
+        ifelse(
+          ID_motif_sp %in% indel_types[73:83],
+          "MH",
+          "complex"
+        )
+      )
+    )
+  ]
+  query[, ID_motif := factor(ID_motif, levels = indel_types[-84])]
+  query[, ID_motif_sp := factor(ID_motif_sp, levels = sim_types)]
+  send_success("INDEL records classified into different components (types).")
+
+  ID_28 <- records_to_matrix(query, "Tumor_Sample_Barcode", "ID_motif_sp")
+  send_success("ID-28 matrix created.")
+  ID_83 <- records_to_matrix(query, "Tumor_Sample_Barcode", "ID_motif")
+  send_success("ID-83 matrix created.")
 
 
   if (add_trans_bias) {
@@ -549,17 +577,17 @@ generate_matrix_INDEL <- function(query, ref_genome, genome_build = "hg19", add_
       nmf_matrix = ID_186,
       all_matrices = list(
         ID_28 = ID_28,
-        ID_84 = ID_84,
+        ID_83 = ID_83,
         ID_186 = ID_186
       )
     )
   } else {
-    send_info("Return ID-84 as major matrix.")
+    send_info("Return ID-83 as major matrix.")
     res <- list(
-      nmf_matrix = ID_84,
+      nmf_matrix = ID_83,
       all_matrices = list(
         ID_28 = ID_28,
-        ID_84 = ID_84
+        ID_83 = ID_83
       )
     )
   }
@@ -689,6 +717,9 @@ utils::globalVariables(
     "tCw_to_T", "tcw", "wGa", "wGa_to_A", "wGa_to_C", "wGa_to_T", "wga",
     "Start", "End", "MutIndex",
     ".SD", "dbs", "dbsMotif", "Reference_Allele", "Tumor_Seq_Allele2",
-    "chr", "region", "Start_Position", "Hugo_Symbol"
+    "chr", "region", "Start_Position", "Hugo_Symbol",
+    "End_Position", "ID_len", "ID_motif", "ID_motif_sp", "ID_type",
+    "Variant_Type", "count_homosize", "downstream", "mut_base", "should_reverse",
+    "upstream"
   )
 )
