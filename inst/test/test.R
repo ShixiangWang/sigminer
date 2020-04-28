@@ -135,3 +135,12 @@ z2 = query[, search_DBS(.SD),
 #   dplyr::mutate(data = purrr::map(.data$data, search_DBS)) %>%
 #   tidyr::unnest("data") %>%
 #   data.table::as.data.table()
+
+
+# Test INDEL --------------------------------------------------------------
+
+mt_tally <- sig_tally(
+  maf,
+  ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
+  use_syn = TRUE, add_trans_bias = TRUE, mode = "ID"
+)

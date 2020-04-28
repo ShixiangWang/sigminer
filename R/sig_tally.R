@@ -322,6 +322,10 @@ sig_tally.MAF <- function(object, mode = c("SBS", "DBS", "ID"),
                           use_syn = TRUE,
                           keep_only_matrix = FALSE,
                           ...) {
+  if (!requireNamespace("BSgenome", quietly = TRUE)) {
+    send_stop("Please install 'BSgenome' package firstly.")
+  }
+
   mode <- match.arg(mode)
 
   if (is.null(genome_build)) {
@@ -447,6 +451,7 @@ sig_tally.MAF <- function(object, mode = c("SBS", "DBS", "ID"),
     res <- generate_matrix_DBS(query, ref_genome, genome_build = genome_build, add_trans_bias = add_trans_bias)
   } else {
     ## INDEL
+    res <- generate_matrix_INDEL(query, ref_genome, genome_build = genome_build, add_trans_bias = add_trans_bias)
   }
 
   send_success("Done.")
