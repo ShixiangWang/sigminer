@@ -450,11 +450,64 @@ generate_matrix_INDEL <- function(query, ref_genome, genome_build = "hg19", add_
     "complex", "non_matching"
   )
 
-  # Init matrix
+  ## Init matrix
   indel_type_count <- 0
   rowname <- indel_types
   colname <- query$Tumor_Sample_Barcode
   ID_matrix <- matrix(data = 0, nrow = 85, ncol = nrow(query), byrow = FALSE, dimnames = list(rowname, colname))
+
+  ## Set ID type
+  query[, ID_type := ifelse(Reference_Allele == "-",
+                            Tumor_Seq_Allele2,
+                            Reference_Allele)]
+  ## Seach 'complex' motif
+  query[, ID_motif := ifelse(Reference_Allele != "-" & Tumor_Seq_Allele2 != "-",
+                             "complex", NA_character_)]
+  ## Get mutation base (only one?)
+  query[, mut_base := substr(ID_type, 1, 1)]
+
+  ## Query sequence
+  query[, `:=`(
+    ref_seq = BSgenome::getSeq(
+      x = ref_genome,
+      names = Chromosome,
+      start = Start_Position - 50,
+      end = End_Position + 250
+    ) %>% as.character(),
+    upstream = BSgenome::getSeq(
+      x = ref_genome,
+      names = Chromosome,
+      start = Start_Position - 50,
+      end = Start_Position - 1
+    ) %>% as.character(),
+    downstream = BSgenome::getSeq(
+      x = ref_genome,
+      names = Chromosome,
+      start = End_Position + 1,
+      end = End_Position + 250
+    ) %>% as.character()
+  )]
+  ## Length of INDEL
+  query[, ID_len := ifelse(nchar(ID_type) < 5, nchar(ID_type), 5)]
+  ## Repeat count
+  query[, count_repeat := mapply(count_repeat, ID_type, downstream) %>% as.integer()]
+  ## Micro-homology count
+  query[, count_homosize := mapply(count_homology_size,
+                                   ID_type, upstream, downstream) %>% as.integer()]
+
+  ## Set maximum repeat/homology-size count?
+  query[, count_repeat := ifelse(count_repeat > 5, 5, count_repeat)]
+  query[, count_homosize := ifelse(count_homosize > 5, 5, count_homosize)]
+
+  ## For length-1 INDEL
+  conv = c("C", "T")
+  names(conv) = c("G", "A")
+  query[, should_reverse := ID_len == 1 & mut_base %in% c("G", "A")]
+  query[, mut_base := ifelse(should_reverse, conv[mut_base], mut_base)]
+  ## For length-n (n>1) INDEL
+  query[, mut_base := ifelse(ID_len > 1, "R", mut_base)]
+  query[, mut_base := ifelse(count_homosize > 0, "M", mut_base)]
+
   for (i in 1:nrow(query)) {
     print(i)
     data_sample <- query[c(i), ]

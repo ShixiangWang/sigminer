@@ -138,7 +138,7 @@ z2 = query[, search_DBS(.SD),
 
 
 # Test INDEL --------------------------------------------------------------
-
+debug(generate_matrix_INDEL)
 mt_tally <- sig_tally(
   maf,
   ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
