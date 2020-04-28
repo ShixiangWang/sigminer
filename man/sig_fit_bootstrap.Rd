@@ -83,7 +83,7 @@ V <- W \%*\% H
 V
 
 if (requireNamespace("lsei", quietly = TRUE)) {
-  H_bootstrap <- sig_fit_bootstrap(V[, 1], W, n = 100, type = "absolute")
+  H_bootstrap <- sig_fit_bootstrap(V[, 1], W, n = 10, type = "absolute")
   ## Typically, you have to run many times to get close to the answer
   boxplot(t(H_bootstrap$expo))
   H[, 1]

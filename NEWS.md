@@ -4,6 +4,7 @@
 - Added feature `sig_fit_bootstrap()` for bootstrap results.
 - Added multiple classification method for SBS signature.
 - Added strand bias enrichment analysis for SBS signature.
+- Moved multiple packages from field `Imports` to `Suggests`.
 
 # sigminer 1.0.2
 

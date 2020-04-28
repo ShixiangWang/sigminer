@@ -172,8 +172,10 @@ read_copynumber <- function(input,
 
       if (complement) {
         # complement value 2 (normal copy) to chromosome not called
-        cli::cli_status_update(id = sb,
-                               "{symbol$arrow_right} Fill value 2 (normal copy) to uncalled chromosomes.")
+        cli::cli_status_update(
+          id = sb,
+          "{symbol$arrow_right} Fill value 2 (normal copy) to uncalled chromosomes."
+        )
         miss_index <- !valid_chr %in% unique(temp[["chromosome"]])
         miss_index[length(miss_index)] <- FALSE # disable Y
         if (any(miss_index)) {
@@ -187,8 +189,10 @@ read_copynumber <- function(input,
           temp <- rbind(temp, comp_df)
         }
 
-        cli::cli_status_update(id = sb,
-                               "{symbol$arrow_right} 'complement' option is TRUE, thus use_all automatically set to FALSE.")
+        cli::cli_status_update(
+          id = sb,
+          "{symbol$arrow_right} 'complement' option is TRUE, thus use_all automatically set to FALSE."
+        )
         use_all <- FALSE
       }
 

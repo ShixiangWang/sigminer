@@ -277,14 +277,13 @@ generate_matrix_SBS <- function(query, ref_genome, genome_build = "hg19", add_tr
 # DBS ---------------------------------------------------------------------
 
 generate_matrix_DBS <- function(query, ref_genome, genome_build = "hg19", add_trans_bias = FALSE) {
-
   query <- query[query$Variant_Type == "SNP"]
   if (nrow(query) == 0) {
     send_stop("Zero SNPs to analyze!")
   }
 
   ## Generate DBS catalogues
-  conv = c(
+  conv <- c(
     "AC>CA", "AC>CG", "AC>CT", "AC>GA", "AC>GG", "AC>GT",
     "AC>TA", "AC>TG", "AC>TT", "AT>CA", "AT>CC", "AT>CG",
     "AT>GA", "AT>GC", "AT>TA", "CC>AA", "CC>AG", "CC>AT",
@@ -299,7 +298,7 @@ generate_matrix_DBS <- function(query, ref_genome, genome_build = "hg19", add_tr
     "TG>GA", "TG>GC", "TG>GT", "TT>AA", "TT>AC", "TT>AG",
     "TT>CA", "TT>CC", "TT>CG", "TT>GA", "TT>GC", "TT>GG"
   )
-  names(conv) = c(
+  names(conv) <- c(
     "GT>TG", "GT>CG", "GT>AG", "GT>TC", "GT>CC", "GT>AC",
     "GT>TA", "GT>CA", "GT>AA", "AT>TG", "AT>GG", "AT>CG",
     "AT>TC", "AT>GC", "AT>TA", "GG>TT", "GG>CT", "GG>AT",
@@ -318,21 +317,24 @@ generate_matrix_DBS <- function(query, ref_genome, genome_build = "hg19", add_tr
   matrix <- data.frame(
     mutation_type = as.character(conv),
     reverse = names(conv),
-    stringsAsFactors = F)
+    stringsAsFactors = F
+  )
 
   catalog_df <- matrix %>%
     dplyr::mutate(u = "U", N = "N", T = "T", B = "B", Q = "Q") %>%
     tidyr::pivot_longer(c("u", "N", "T", "B", "Q"), names_to = "type", values_to = "value") %>%
     dplyr::select(-.data$type) %>%
-    dplyr::mutate(mutation_type = paste(.data$value, .data$mutation_type, sep = ":"),
-                  reverse = paste(.data$value, .data$reverse, sep = ":")) %>%
+    dplyr::mutate(
+      mutation_type = paste(.data$value, .data$mutation_type, sep = ":"),
+      reverse = paste(.data$value, .data$reverse, sep = ":")
+    ) %>%
     dplyr::filter((!substr(.data$mutation_type, 3, 4) %in% c("TC", "TT", "CT", "CC") & substr(.data$mutation_type, 1, 1) == "Q") |
       substr(.data$mutation_type, 3, 4) %in% c("TC", "TT", "CT", "CC") & substr(.data$mutation_type, 1, 1) != "Q") %>%
     dplyr::select(-.data$value)
 
   ## Search for DBS
   send_info("Searching DBS records...")
-  query = query[, search_DBS(.SD), by = Tumor_Sample_Barcode]
+  query <- query[, search_DBS(.SD), by = Tumor_Sample_Barcode]
   send_success("Done.")
   if (nrow(query)) {
     send_stop("Zero DBSs to analyze!")
@@ -349,15 +351,15 @@ generate_matrix_DBS <- function(query, ref_genome, genome_build = "hg19", add_tr
   if (add_trans_bias) {
     # DBS_186 = records_to_matrix(query, "Tumor_Sample_Barcode", "dbsMotif",
     #                             add_trans_bias = TRUE, build = genome_build, mode == "DBS")
-    DBS_186 = NULL
+    DBS_186 <- NULL
     send_success("DBS-186 matrix created.")
 
     send_info("Return DBS-186 as major matrix.")
     res <- list(
       nmf_matrix = DBS_186,
       all_matrices = list(
-       DBS_78 = DBS_78,
-       DBS_186 = DBS_186
+        DBS_78 = DBS_78,
+        DBS_186 = DBS_186
       )
     )
   } else {
@@ -373,10 +375,10 @@ generate_matrix_DBS <- function(query, ref_genome, genome_build = "hg19", add_tr
 }
 
 ## Search DBS in SNV records
-search_DBS = function(x) {
-  #x = data.table::as.data.table(x)
+search_DBS <- function(x) {
+  # x = data.table::as.data.table(x)
   ## Set a position data.table to cover all combinations
-  pos_dt = rbind(
+  pos_dt <- rbind(
     data.table::data.table(
       chr = x$Chromosome,
       start = x$Start_Position - 1,
@@ -393,21 +395,21 @@ search_DBS = function(x) {
   data.table::setkey(pos_dt, chr, start, end)
 
   ## Find the overlaps
-  x$chr = x$Chromosome
-  x$start = x$Start_Position
-  x$end = x$start
+  x$chr <- x$Chromosome
+  x$start <- x$Start_Position
+  x$end <- x$start
 
-  overlap_dt = data.table::foverlaps(x, pos_dt, type = "within")
+  overlap_dt <- data.table::foverlaps(x, pos_dt, type = "within")
   overlap_dt[, region := paste0(chr, ":", start, "-", end)]
 
-  freq_dt = overlap_dt[, .N, by = region]
+  freq_dt <- overlap_dt[, .N, by = region]
 
-  DBS_index = freq_dt$N > 1
+  DBS_index <- freq_dt$N > 1
   if (sum(DBS_index) < 1) {
     return(data.table::data.table())
   } else {
-    DBS_regions = freq_dt$region[DBS_index]
-    res_dt = overlap_dt[region %in% DBS_regions][order(Start_Position)]  # Mutation position should be ordered
+    DBS_regions <- freq_dt$region[DBS_index]
+    res_dt <- overlap_dt[region %in% DBS_regions][order(Start_Position)] # Mutation position should be ordered
     return(
       res_dt[, list(
         Hugo_Symbol = paste(unique(Hugo_Symbol), collapse = ","),
@@ -443,7 +445,7 @@ records_to_matrix <- function(dt, samp_col, component_col, add_trans_bias = FALS
       m_dt <- data.table::foverlaps(loc_dt, transcript_dt, type = "any")[
         , .(MatchCount = .N, strand = paste0(unique(strand), collapse = "/")),
         by = MutIndex
-        ]
+      ]
       ## Actually, the MatchCount should only be 0, 1, 2
       if (any(m_dt$MatchCount > 2)) {
         send_stop("More than 2 regions counted, please report your data and code to developer!")
@@ -452,10 +454,10 @@ records_to_matrix <- function(dt, samp_col, component_col, add_trans_bias = FALS
       dt$transcript_bias_label <- ifelse(
         m_dt$MatchCount == 2, "B:",
         ifelse(m_dt$MatchCount == 0, "N:",
-               ifelse(xor(dt$should_reverse, m_dt$strand == "-"), ## Need expand the logical to DBS and ID
-                      # (dt$should_reverse & m_dt$strand == "+") | (!dt$should_reverse & m_dt$strand == "-"),
-                      "T:", "U:"
-               )
+          ifelse(xor(dt$should_reverse, m_dt$strand == "-"), ## Need expand the logical to DBS and ID
+            # (dt$should_reverse & m_dt$strand == "+") | (!dt$should_reverse & m_dt$strand == "-"),
+            "T:", "U:"
+          )
         ) ## If should reverse, the base switch to template strand from coding strand
       )
       new_levels <- vector_to_combination(
@@ -473,8 +475,8 @@ records_to_matrix <- function(dt, samp_col, component_col, add_trans_bias = FALS
 
   dt.summary <- dt[, .N, by = c(samp_col, component_col)]
   mat <- as.data.frame(data.table::dcast(dt.summary,
-                                         formula = as.formula(paste(samp_col, "~", component_col)),
-                                         fill = 0, value.var = "N", drop = FALSE
+    formula = as.formula(paste(samp_col, "~", component_col)),
+    fill = 0, value.var = "N", drop = FALSE
   ))
 
   rownames(mat) <- mat[, 1]

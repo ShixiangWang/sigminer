@@ -157,6 +157,10 @@ sig_tally.CopyNumber <- function(object,
   cn_list <- get_cnlist(object, ignore_chrs = ignore_chrs)
 
   if (startsWith(method, "M")) {
+    if (!requireNamespace("flexmix", quietly = TRUE)) {
+      send_stop("Please install 'flexmix' package firstly.")
+    }
+
     # Method: Macintyre
     type <- match.arg(type)
 

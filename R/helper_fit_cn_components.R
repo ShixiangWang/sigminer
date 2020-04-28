@@ -37,10 +37,10 @@ fitComponent <-
           if (verbose) {
             cat(" *")
           }
-          x <- try(flexmix(...))
+          x <- try(flexmix::flexmix(...))
           if (!is(x, "try-error")) {
-            logLiks[m] <- logLik(x)
-            if (logLik(x) > logLik(z)) {
+            logLiks[m] <- flexmix::logLik(x)
+            if (flexmix::logLik(x) > flexmix::logLik(z)) {
               z <- x
             }
           }
@@ -64,9 +64,11 @@ fitComponent <-
         # logLiks <- matrix(nrow = length(k), ncol = nrep)
         z_list <- foreach(
           n = seq_along(k),
+          .packages = "flexmix",
           .export = c("k", "z", "MYCALL1", "nrep", "verbose", "bestFlexmix", "seed", "...")
         ) %dopar% {
           set.seed(seed, kind = "L'Ecuyer-CMRG")
+          #loadNamespace("flexmix")
           ns <- as.character(k[n])
           if (verbose) {
             cat(k[n], ":")

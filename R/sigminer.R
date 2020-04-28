@@ -15,7 +15,6 @@
 #' @importFrom grDevices colorRampPalette
 #' @importFrom stats as.formula fisher.test pairwise.table quantile setNames
 #' @importFrom utils data download.file head packageDescription
-#' @import flexmix
 #' @import ggplot2
 #' @import cli
 #' @name sigminer
