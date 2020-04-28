@@ -450,12 +450,8 @@ generate_matrix_INDEL <- function(query, ref_genome, genome_build = "hg19", add_
     "complex", "non_matching"
   )
 
-  ## Init matrix
-  indel_type_count <- 0
-  rowname <- indel_types
-  colname <- query$Tumor_Sample_Barcode
-  ID_matrix <- matrix(data = 0, nrow = 85, ncol = nrow(query), byrow = FALSE, dimnames = list(rowname, colname))
-
+  ## Update Variant_Type
+  query[, Variant_Type := ifelse(Variant_Type == "INS", "Ins", "Del")]
   ## Set ID type
   query[, ID_type := ifelse(Reference_Allele == "-",
                             Tumor_Seq_Allele2,
@@ -463,6 +459,15 @@ generate_matrix_INDEL <- function(query, ref_genome, genome_build = "hg19", add_
   ## Seach 'complex' motif
   query[, ID_motif := ifelse(Reference_Allele != "-" & Tumor_Seq_Allele2 != "-",
                              "complex", NA_character_)]
+
+  ## Drop records with 'complex' motif
+  query_comp = query[ID_motif == "complex"]
+  query = query[is.na(ID_motif)]
+
+  if (nrow(query) == 0) {
+    send_stop("Zero INDELs to analyze after dropping 'complex' labeled records!")
+  }
+
   ## Get mutation base (only one?)
   query[, mut_base := substr(ID_type, 1, 1)]
 
@@ -506,131 +511,59 @@ generate_matrix_INDEL <- function(query, ref_genome, genome_build = "hg19", add_
   query[, mut_base := ifelse(should_reverse, conv[mut_base], mut_base)]
   ## For length-n (n>1) INDEL
   query[, mut_base := ifelse(ID_len > 1, "R", mut_base)]
-  query[, mut_base := ifelse(count_homosize > 0, "M", mut_base)]
+  query[, mut_base := ifelse(ID_len > 1 & count_homosize > 0, "M", mut_base)]
 
-  for (i in 1:nrow(query)) {
-    print(i)
-    data_sample <- query[c(i), ]
-    # indel_type_count <- paste(indel_type_count,0)
-    ref <- data_sample$Reference_Allele
-    mut <- data_sample$Tumor_Seq_Allele2
-    mutation_ID <- data.table::data.table(indel_types, indel_type_count)
-    indel_type_count <- 0
-    ###### Tips:为了减少条件语句的使用，将该样本突变处有序列的部分赋值给ID_type
-    if (ref != "-" & mut == "-") {
-      ID_type <- ref
-    } else if (mut != "-" & ref == "-") {
-      ID_type <- mut
-    }
-    ###### 先将complex分出来
-    if (ref != "-" & mut != "-") {
-      real_type <- "complex"
-      for (i in 1:96) {
-        if (real_type == indel_types[i]) {
-          mutation_ID$indel_type_count[i] <- mutation_ID$indel_type_count[i] + 1
-          break
-        }
-      }
-    } else {
-      ###### Part2.1 记录mutation类型是ins还是del
-      if (mut == "-") {
-        mut_type <- "Del"
-        mut_base <- substr(ref, 1, 1)
-      } else {
-        mut_type <- "Ins"
-        mut_base <- substr(mut, 1, 1)
-      }
-      ###### Part3. 分类并计数indel_type
-      ###### Part3.1 取上下游序列
-      Chromosome <- paste0("chr", data_sample$Chromosome)
-      Start <- data_sample$Start_Position - 50
-      End <- data_sample$End_Position + 250
-      data_loc <- data.frame(Chromosome, Start, End)
-      # ref_genome <- BSgenome.Hsapiens.UCSC.hg19
-      get_seq <- BSgenome::getSeq(
-        x = ref_genome,
-        names = data_loc$Chromosome,
-        start = data_loc$Start,
-        end = data_loc$End
+  ## Generate Motifs
+  query[, ID_motif := ifelse(
+    ID_len == 1,
+    paste(ID_len, Variant_Type, mut_base, count_repeat, sep = ":"),
+    ifelse(mut_base == "R" & Variant_Type == "Del",
+           paste(ID_len, Variant_Type, mut_base, count_repeat + 1, sep = ":"),
+           ifelse(mut_base == "R" & Variant_Type == "Ins",
+                  paste(ID_len, Variant_Type, mut_base, count_repeat, sep = ":"),
+                  paste(ID_len, Variant_Type, mut_base, count_homosize, sep = ":")
+                  )
+           )
+  )]
+  ## What about type "non_matching"?
+  ## ???
+  query[, ID_motif := ifelse(ID_motif %in% indel_types, ID_motif, "non_matching")]
+
+  ## Generate all factors
+  query = rbind(query, query_comp, fill = TRUE)
+  query[, ID_motif := factor(ID_motif, levels = indel_types)]
+
+  ID_28 = NULL
+  ID_84 <- records_to_matrix(query, "Tumor_Sample_Barcode", "ID_motif")
+  send_success("ID-84 matrix created.")
+
+
+  if (add_trans_bias) {
+    # DBS_186 = records_to_matrix(query, "Tumor_Sample_Barcode", "dbsMotif",
+    #                             add_trans_bias = TRUE, build = genome_build, mode == "DBS")
+    ID_186 <- NULL
+    send_success("ID-186 matrix created.")
+
+    send_info("Return ID-186 as major matrix.")
+    res <- list(
+      nmf_matrix = ID_186,
+      all_matrices = list(
+        ID_28 = ID_28,
+        ID_84 = ID_84,
+        ID_186 = ID_186
       )
-      upstream <- BSgenome::getSeq(
-        x = ref_genome,
-        names = data_loc$Chromosome,
-        start = data_loc$Start,
-        end = data_loc$Start + 49
+    )
+  } else {
+    send_info("Return ID-84 as major matrix.")
+    res <- list(
+      nmf_matrix = ID_84,
+      all_matrices = list(
+        ID_28 = ID_28,
+        ID_84 = ID_84
       )
-      downstream <- BSgenome::getSeq(
-        x = ref_genome,
-        names = data_loc$Chromosome,
-        start = data_loc$End - 249,
-        end = data_loc$End
-      )
-      ###### Part3.2 计数突变处序列长度:length_INDEL
-      length_INDEL <- 0
-      if (nchar(as.character(ID_type)) < 5) {
-        length_INDEL <- nchar(as.character(ID_type))
-      } else if (nchar(as.character(ID_type)) >= 5) {
-        length_INDEL <- 5
-      }
-      ###### Part3.3 记录和突变位点匹配的次数
-      # a = "AA"
-      # # b = "AAAACCTT"
-      # paste0()
-      # sub("(^AA+).*", "\\1", b)
-      # sub("^((AA)+).*$", "\\1", "AAAACC")
-      count_repeat <- count_repeat(as.character(ID_type), as.character(downstream))
-      ###### Part3.4 记录homology次数
-      count_homology_size <- count_homology_size(ID_type, as.character(upstream), as.character(downstream))
-      ###### Part3.4 判断单位点还是多位点，区别计数
-      ###### repeat_num是重复数的计数（单个位点和多个位点的homology计数方法不同）
-      repeat_num <- 0
-      ###### Part3.4.1 单个位点
-      # 转化整个链（针对1bp indel）
-      if (nchar(as.character(ID_type)) == 1) {
-        if (mut_base == "G") {
-          mut_base <- "C"
-          strand <- "-1"
-        } else if (mut_base == "A") {
-          mut_base <- "T"
-          strand <- "-1"
-        }
-        if (count_repeat > 5) {
-          count_repeat <- 5
-        }
-        ###### Part3.4.2 多个位点
-      } else if (nchar(as.character(ID_type)) > 1) {
-        mut_base <- "R"
-        if (count_repeat > 5) {
-          count_repeat <- 5
-        }
-      } else if (count_homology_size > 0) {
-        mut_base <- "M"
-        if (count_homology_size > 5) {
-          count_homology_size <- 5
-        }
-      }
-      ###### Part4 整合indel_type为标准格式，记录为real_types
-      if (nchar(ID_type == 1)) {
-        real_type <- paste(length_INDEL, ":", mut_type, ":", mut_base, ":", count_repeat, sep = "")
-      } else if (mut_base == "R" & mut_type == "Del") {
-        real_type <- paste(length_INDEL, ":", mut_type, ":", mut_base, ":", count_repeat + 1, sep = "")
-      } else if (mut_base == "R" & mut_type == "Ins") {
-        real_type <- paste(length_INDEL, ":", mut_type, ":", mut_base, ":", count_repeat, sep = "")
-      } else {
-        real_type <- paste(length_INDEL, ":", mut_type, ":", mut_base, ":", count_homology_size, sep = "")
-      }
-      ###### Part5 对indel_type进行计数
-      indel_type_count <- 0
-      mutation_ID <- data.table(indel_types, indel_type_count)
-      for (n in 1:85) {
-        if (identical(real_type, indel_types[n])) {
-          # mutation_ID$indel_type_count[n] <- mutation_ID$indel_type_count[n] + 1
-          ID_matrix[n, i] <- ID_matrix[n, i] + 1
-        }
-      }
-    }
-    # 检查单个样本的类型：mutation_ID[indel_type_count > 0]
+    )
   }
+  res
 }
 
 
