@@ -117,6 +117,9 @@ show_sig_number_survey2 <- function(x, y = NULL, what = c(
   if (!is(y, "NMF.rank")) {
     p <- p + scale_shape(guide = "none") + scale_linetype(guide = "none")
   }
+  if (!requireNamespace("RColorBrewer", quietly = TRUE)) {
+    send_stop("Please install 'RColorBrewer' package firstly.")
+  }
   myColors <- RColorBrewer::brewer.pal(5, "Set1")
   names(myColors) <- levels(pdata$Type)
   p <- p + scale_colour_manual(name = "Measure type", values = myColors)

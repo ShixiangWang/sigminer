@@ -17,7 +17,6 @@ read_copynumber(
   genome_build = c("hg19", "hg38"),
   genome_measure = c("called", "wg"),
   complement = TRUE,
-  verbose = FALSE,
   ...
 )
 }
@@ -56,8 +55,6 @@ Set 'wg' will use autosome size from genome build, this option is useful for WGS
 \item{complement}{if \code{TRUE}, complement chromosome (except 'Y') does not show in input data
 with normal copy 2 and force \code{use_all} to \code{FALSE} (no matter what user input).}
 
-\item{verbose}{print extra messages.}
-
 \item{...}{other parameters pass to \code{\link[data.table:fread]{data.table::fread()}}}
 }
 \value{
@@ -74,7 +71,7 @@ load(system.file("extdata", "toy_segTab.RData",
 ))
 cn <- read_copynumber(segTabs,
   seg_cols = c("chromosome", "start", "end", "segVal"),
-  genome_build = "hg19", complement = FALSE, verbose = TRUE
+  genome_build = "hg19", complement = FALSE
 )
 cn
 

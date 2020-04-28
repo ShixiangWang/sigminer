@@ -114,15 +114,15 @@ subset.CopyNumber <- function(x, subset = TRUE, ...) {
 }
 
 # Parameter - object: a CopyNumber object
-validate_segTab <- function(object, verbose = FALSE) {
+validate_segTab <- function(object) {
   if (!is.integer(object@data[["segVal"]])) {
     if (is.character(object@data[["segVal"]])) {
-      if (verbose) message("'segVal' is characater type, try transforming to integer.")
+      send_warning("'segVal' is characater type, try transforming to integer.")
       object@data[["segVal"]] <- as.integer(object@data[["segVal"]])
     }
 
     if (is.double(object@data[["segVal"]])) {
-      if (verbose) message("'segVal' is not integer type, round it to integer.")
+      send_warning("'segVal' is not integer type, round it to integer.")
       object@data[["segVal"]] <- as.integer(round(object@data[["segVal"]]))
     }
   }

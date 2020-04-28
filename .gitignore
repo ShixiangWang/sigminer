@@ -6,3 +6,4 @@ NMF_*
 .vscode/
 doc
 Meta
+data-raw/*.gtf.gz

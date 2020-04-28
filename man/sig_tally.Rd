@@ -32,6 +32,8 @@ sig_tally(object, ...)
   object,
   mode = c("SBS", "DBS", "ID"),
   ref_genome = NULL,
+  genome_build = NULL,
+  add_trans_bias = FALSE,
   ignore_chrs = NULL,
   use_syn = TRUE,
   keep_only_matrix = FALSE,
@@ -98,12 +100,24 @@ Only used when method is "Macintyre".}
 \item{niter}{the maximum number of iterations.
 Only used when method is "Macintyre".}
 
-\item{keep_only_matrix}{if \code{TRUE}, keep only matrix for signature extraction.}
+\item{keep_only_matrix}{if \code{TRUE}, keep only matrix for signature extraction.
+For a \code{MAF} object, this will just return the most useful matrix.}
 
 \item{mode}{type of mutation matrix to extract, can be one of 'SBS', 'DBS' and 'ID'.}
 
 \item{ref_genome}{BSgenome object or name of the installed BSgenome package. Example: BSgenome.Hsapiens.UCSC.hg19
 Default NULL, tries to auto-detect from installed genomes.}
+
+\item{genome_build}{genome build 'hg19' or 'hg38', if not set, guess it by \code{ref_genome}.}
+
+\item{add_trans_bias}{if \code{TRUE}, consider transcriptional bias categories.
+'T:' for Transcribed (the variant is on the transcribed strand);
+'U:' for Un-transcribed (the variant is on the untranscribed strand);
+'B:' for Bi-directional (the variant is on both strand and is transcribed either way);
+'N:' for Non-transcribed (the variant is in a non-coding region and is untranslated);
+'Q:' for Questionable.
+\strong{NOTE}: the result counts of 'B' and 'N' labels are a little different from
+SigProfilerMatrixGenerator, the reason is unknown (may be caused by annotation file).}
 
 \item{use_syn}{Logical. Whether to include synonymous variants in analysis. Defaults to TRUE}
 }
@@ -165,6 +179,17 @@ if (require("BSgenome.Hsapiens.UCSC.hg19")) {
     ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
     use_syn = TRUE
   )
+  mt_tally$nmf_matrix[1:5, 1:5]
+
+  ## Use strand bias categories
+  mt_tally <- sig_tally(
+    laml,
+    ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
+    use_syn = TRUE, add_trans_bias = TRUE
+  )
+  ## Test it by enrichment analysis
+  enrich_component_strand_bias(mt_tally$nmf_matrix)
+  enrich_component_strand_bias(mt_tally$all_matrices$SBS_24)
 } else {
   message("Please install package 'BSgenome.Hsapiens.UCSC.hg19' firstly!")
 }
@@ -175,6 +200,10 @@ Macintyre, Geoff, et al. "Copy number signatures and mutational
 processes in ovarian carcinoma." Nature genetics 50.9 (2018): 1262.
 
 Mayakonda, Anand, et al. "Maftools: efficient and comprehensive analysis of somatic variants in cancer." Genome research 28.11 (2018): 1747-1756.
+
+Roberts SA, Lawrence MS, Klimczak LJ, et al. An APOBEC Cytidine Deaminase Mutagenesis Pattern is Widespread in Human Cancers. Nature genetics. 2013;45(9):970-976. doi:10.1038/ng.2702.
+
+Bergstrom EN, Huang MN, Mahto U, Barnes M, Stratton MR, Rozen SG, Alexandrov LB: SigProfilerMatrixGenerator: a tool for visualizing and exploring patterns of small mutational events. BMC Genomics 2019, 20:685 https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-019-6041-2
 }
 \seealso{
 \link{sig_estimate} for estimating signature number for \link{sig_extract},

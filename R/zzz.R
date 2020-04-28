@@ -1,7 +1,7 @@
 .onAttach <- function(libname, pkgname) {
   version <- packageDescription(pkgname, fields = "Version")
 
-  msg <- paste0(pkgname, " version ", version, ", run hello() to see more.")
+  msg <- paste0(pkgname, " version ", version, ", run hello() to see usage and citation.")
   packageStartupMessage(msg)
 }
 

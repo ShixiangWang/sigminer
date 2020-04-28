@@ -42,7 +42,7 @@ load(system.file("extdata", "toy_mutational_signature.RData",
   package = "sigminer", mustWork = TRUE
 ))
 # Show signature profile
-p1 <- show_sig_profile(sig2, mode = "SBS", style = "cosmic")
+p1 <- show_sig_profile(sig2, mode = "SBS", style = "cosmic", x_label_angle = 90)
 p1
 
 ```
@@ -85,17 +85,17 @@ for both reliable and reproducible research
 You can install the stable release of **sigminer** from CRAN with:
 
 ```{r, eval=FALSE}
-install.packages("sigminer")
+install.packages("sigminer", dependencies = TRUE)
 # Or
-BiocManager::install("sigminer")
+BiocManager::install("sigminer", dependencies = TRUE)
 ```
 
 You can install the development version of **sigminer** from Github with:
 
 ```{r, eval=FALSE}
-remotes::install_github("ShixiangWang/sigminer")
+remotes::install_github("ShixiangWang/sigminer", dependencies = TRUE)
 # For Chinese users, run 
-remotes::install_git("https://gitee.com/ShixiangWang/sigminer")
+remotes::install_git("https://gitee.com/ShixiangWang/sigminer", dependencies = TRUE)
 ```
 
 ## Usage
@@ -121,16 +121,16 @@ Wang, Shixiang, et al. "The predictive power of tumor mutational burden
     International journal of cancer (2019).
 ```
 
-and the paper implementing NMF in R:
+## Acknowledgments
+
+If you use **NMF** package in R, please also cite:
 
 ```
 Gaujoux, Renaud, and Cathal Seoighe. "A Flexible R Package for 
     Nonnegative Matrix Factorization."" BMC Bioinformatics 11, no. 1 (December 2010).
 ```
 
-## Acknowledgments
-
-The code for extracting copy number signatures was based in part on the source code 
+The method "M" for extracting copy number signatures was based in part on the source code 
 from paper *Copy number signatures and mutational processes in ovarian carcinoma*, 
 if you use this feature, please also cite:
 
@@ -139,7 +139,7 @@ Macintyre, Geoff, et al. "Copy number signatures and mutational
     processes in ovarian carcinoma." Nature genetics 50.9 (2018): 1262.
 ```
 
-The code for extracting mutational signatures was based in part on the source 
+The code for extracting SBS signatures was based in part on the source 
 code of the **maftools** package, if you use this feature, please also cite:
 
 ```

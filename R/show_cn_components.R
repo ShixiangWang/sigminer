@@ -103,7 +103,9 @@ show_cn_components <- function(parameters,
     }
 
     requireNamespace("cowplot")
-
+    if (!requireNamespace("RColorBrewer", quietly = TRUE)) {
+      send_stop("Please install 'RColorBrewer' package firstly.")
+    }
     cbPalette <-
       c(
         RColorBrewer::brewer.pal(8, "Dark2"),

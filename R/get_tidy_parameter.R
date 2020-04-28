@@ -39,7 +39,7 @@ get_tidy_parameter <- function(x) {
 
 .get_parameter <- function(x) {
   assert_class(x, "flexmix")
-  paras <- parameters(x)
+  paras <- flexmix::parameters(x)
   # weight is how many events assigned
   # to a cluster (component)
   # i.e. number of observations
@@ -49,7 +49,7 @@ get_tidy_parameter <- function(x) {
   # of observations assigned to each of the
   # clusters according to the a-posteriori probabilities.
   .get_weight <- function(mean, x) {
-    wt_tb <- clusters(x) %>%
+    wt_tb <- flexmix::clusters(x) %>%
       table()
     wt <- as.numeric(wt_tb)
     if (length(wt) == length(mean)) {

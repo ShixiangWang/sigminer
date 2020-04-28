@@ -12,12 +12,12 @@ get_cnlist <- function(CopyNumber, ignore_chrs = NULL) {
   if (!is.null(ignore_chrs)) {
     chrs_exist <- ignore_chrs %in% unique(data$chromosome)
     if (!any(chrs_exist)) {
-      message(
+      send_info(
         "No chromosome names called ",
         paste(ignore_chrs, collapse = ","), " found in data, skipping filter."
       )
     } else {
-      message("Filtering out segments in ", paste(ignore_chrs[chrs_exist], collapse = ","))
+      send_info("Filtering out segments in ", paste(ignore_chrs[chrs_exist], collapse = ","))
       data <- data[!chromosome %in% ignore_chrs[chrs_exist]]
     }
   }
@@ -47,22 +47,22 @@ get_features <- function(CN_data,
 
   .get_feature <- function(i) {
     if (i == "segsize") {
-      message("Getting segment size...")
+      send_info("Getting segment size...")
       getSegsize(CN_data)
     } else if (i == "bp10MB") {
-      message("Getting breakpoint count per 10 Mb...")
+      send_info("Getting breakpoint count per 10 Mb...")
       getBPnum(CN_data, chrlen)
     } else if (i == "osCN") {
-      message("Getting length of chains of oscillating copy number...")
+      send_info("Getting length of chains of oscillating copy number...")
       getOscilation(CN_data)
     } else if (i == "bpchrarm") {
-      message("Getting breakpoint count per chromosome arm...")
+      send_info("Getting breakpoint count per chromosome arm...")
       getCentromereDistCounts(CN_data, centromeres)
     } else if (i == "changepoint") {
-      message("Getting change-point copy number change...")
+      send_info("Getting change-point copy number change...")
       getChangepointCN(CN_data)
     } else {
-      message("Getting copy number...")
+      send_info("Getting copy number...")
       getCN(CN_data)
     }
   }
@@ -93,33 +93,33 @@ get_features_wang <- function(CN_data,
 
   .get_feature <- function(i) {
     if (i == "SS") {
-      message("Getting (log10 based) segment size...")
+      send_info("Getting (log10 based) segment size...")
       zz <- getSegsize(CN_data)
       zz$value <- log10(zz$value)
       zz
     } else if (i == "BP10MB") {
-      message("Getting breakpoint count per 10 Mb...")
+      send_info("Getting breakpoint count per 10 Mb...")
       getBPnum(CN_data, chrlen)
     } else if (i == "OsCN") {
-      message("Getting length of chains of oscillating copy number...")
+      send_info("Getting length of chains of oscillating copy number...")
       getOscilation(CN_data)
     } else if (i == "BPArm") {
-      message("Getting breakpoint count per chromosome arm...")
+      send_info("Getting breakpoint count per chromosome arm...")
       getCentromereDistCounts(CN_data, centromeres)
     } else if (i == "CNCP") {
-      message("Getting change-point copy number change...")
+      send_info("Getting change-point copy number change...")
       getChangepointCN(CN_data)
     } else if (i == "CN") {
-      message("Getting copy number...")
+      send_info("Getting copy number...")
       getCN(CN_data)
     } else if (i == "BoChr") {
-      message("Getting burden of chromosome...")
+      send_info("Getting burden of chromosome...")
       getBoChr(CN_data, genome_build)
     } else if (i == "NChrV") {
-      message("Getting number of autosome with CNV...")
+      send_info("Getting number of autosome with CNV...")
       getNChrV(CN_data, genome_build)
     } else if (i == "NC50") {
-      message("Getting the minimal number of chromosome with 50% CNV...")
+      send_info("Getting the minimal number of chromosome with 50% CNV...")
       getNC50(CN_data, genome_build)
     }
   }
@@ -175,7 +175,7 @@ get_components <- function(CN_features,
                                  niter = 1000,
                                  cores = 1) {
     dat <- CN_feature$value
-    message("Fitting feature: ", feature_name)
+    send_info("Fitting feature: ", feature_name, ".")
     fit <-
       fitComponent(
         dat,
@@ -221,11 +221,11 @@ get_matrix <- function(CN_features,
   type <- match.arg(type)
 
   if (is.null(all_components)) {
-    message(
-      "About reference components\n   more detail please see https://github.com/ShixiangWang/absoluteCNVdata"
+    send_info(
+      "More details about reference components please see {.url https://github.com/ShixiangWang/absoluteCNVdata}"
     )
     if (!file.exists("Nat_Gen_component_parameters.rds")) {
-      message(
+      send_info(
         "Nat_Gen_component_parameters.rds doesnot exist, will download reference components."
       )
       download.file(
@@ -302,7 +302,7 @@ get_LengthFraction <- function(CN_data,
   } else if (ncol(segTab) == 4) {
     colnames(segTab) <- c("chromosome", "start", "end", "sample")
   } else {
-    stop(
+    send_stop(
       "If input is a data.frame, must have 4 necessary columns (chr, start, end, sample) and 1 optional column (segVal)."
     )
   }
@@ -324,9 +324,8 @@ get_LengthFraction <- function(CN_data,
 
   valid_chr <- c(paste0("chr", 1:22), "chrX", "chrY")
   if (!all(segTab$chromosome %in% valid_chr)) {
-    message("Filter some invalid segments... (not as 1:22 and X, Y)")
-
     segTab <- segTab[valid_chr, on = "chromosome"]
+    send_success("Some invalid segments (not as 1:22 and X, Y) dropped.")
   }
 
   arm_data <- get_ArmLocation(genome_build)
