@@ -2,7 +2,7 @@
 % Please edit documentation in R/sig_fit.R
 \name{sig_fit}
 \alias{sig_fit}
-\title{Fit Signature Exposure with Linear Combination Decomposition}
+\title{Fit Signature Exposures with Linear Combination Decomposition}
 \usage{
 sig_fit(
   catalogue_matrix,
@@ -11,10 +11,14 @@ sig_fit(
   sig_db = "legacy",
   db_type = c("", "human-exome", "human-genome"),
   show_index = TRUE,
+  method = c("LS", "QP", "SA"),
   type = c("absolute", "relative"),
   return_class = c("matrix", "data.table"),
+  return_error = FALSE,
   rel_threshold = 0,
-  mode = c("SBS", "copynumber")
+  mode = c("SBS", "copynumber"),
+  true_catalog = NULL,
+  ...
 )
 }
 \arguments{
@@ -36,25 +40,39 @@ and "human-genome" for transforming to whole genome frequency of component.}
 
 \item{show_index}{if \code{TRUE}, show valid index.}
 
+\item{method}{method to solve the minimazation problem.
+'LS' for least square; 'QP' for quadratic programming; 'SA' for simulated annealing.}
+
 \item{type}{'absolute' for signature exposure and 'relative' for signature relative exposure.}
 
 \item{return_class}{string, 'matrix' or 'data.table'.}
+
+\item{return_error}{if \code{TRUE}, also return method error (Frobenius norm). NOTE:
+it is better to obtain the error when the type is 'absolute', because the error is
+affected by relative exposure accuracy.}
 
 \item{rel_threshold}{numeric vector, a relative exposure lower than this value will be set to 0.
 Of note, this is a little different from the same parameter in \link{get_sig_exposure}.}
 
 \item{mode}{signature type for plotting, now supports 'copynumber' or 'SBS'.}
+
+\item{true_catalog}{used by \link{sig_fit_bootstrap}, user never use it.}
+
+\item{...}{control parameters passing to argument \code{control} in \code{GenSA} function when use method 'SA'.}
 }
 \value{
 The exposure result either in \code{matrix} or \code{data.table} format.
+If \code{return_error} set \code{TRUE}, a \code{list} is returned.
 }
 \description{
 The function performs a signatures decomposition of a given mutational
 catalogue \code{V} with known signatures \code{W} by solving the minimization problem
-\verb{min(||W*H - V||)} with additional constraints of non-negativity on H where W and V are known.
+\verb{min(||W*H - V||)} where W and V are known.
 }
 \details{
-This is a modification based on \code{LCD} function from YAPSA pakcage.
+The method 'LS' is a modification based on \code{LCD} function from YAPSA pakcage.
+The method 'QP' and 'SA' are modified from SignatureEstimation package.
+See references for details.
 }
 \examples{
 W <- matrix(c(1, 2, 3, 4, 5, 6), ncol = 2)
@@ -67,10 +85,41 @@ colnames(H) <- paste0("samp", 1:4)
 V <- W \%*\% H
 V
 
-H_infer <- sig_fit(V, W)
-H_infer
-H
+if (requireNamespace("lsei", quietly = TRUE)) {
+  H_infer <- sig_fit(V, W)
+  H_infer
+  H
 
-H_dt <- sig_fit(V, W, return_class = "data.table")
-H_dt
+  H_dt <- sig_fit(V, W, return_class = "data.table")
+  H_dt
+}
+
+if (requireNamespace("quadprog", quietly = TRUE)) {
+  H_infer <- sig_fit(V, W, method = "QP")
+  H_infer
+  H
+
+  H_dt <- sig_fit(V, W, method = "QP", return_class = "data.table")
+  H_dt
+}
+
+if (requireNamespace("GenSA", quietly = TRUE)) {
+  H_infer <- sig_fit(V, W, method = "SA")
+  H_infer
+  H
+
+  H_dt <- sig_fit(V, W, method = "SA", return_class = "data.table")
+  H_dt
+
+  ## Modify arguments to method
+  sig_fit(V, W, method = "SA", maxit = 10, temperature = 100)
+}
+}
+\references{
+Daniel Huebschmann, Zuguang Gu and Matthias Schlesner (2019). YAPSA: Yet Another Package for Signature Analysis. R package version 1.12.0.
+
+Huang X, Wojtowicz D, Przytycka TM. Detecting presence of mutational signatures in cancer with confidence. Bioinformatics. 2018;34(2):330–337. doi:10.1093/bioinformatics/btx604
+}
+\seealso{
+\link{sig_extract}, \link{sig_auto_extract}
 }

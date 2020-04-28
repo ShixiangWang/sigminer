@@ -67,18 +67,18 @@ records, thus providing new insight into cancer study.
 You can install the stable release of **sigminer** from CRAN with:
 
 ``` r
-install.packages("sigminer")
+install.packages("sigminer", dependencies = TRUE)
 # Or
-BiocManager::install("sigminer")
+BiocManager::install("sigminer", dependencies = TRUE)
 ```
 
 You can install the development version of **sigminer** from Github
 with:
 
 ``` r
-remotes::install_github("ShixiangWang/sigminer")
+remotes::install_github("ShixiangWang/sigminer", dependencies = TRUE)
 # For Chinese users, run 
-remotes::install_git("https://gitee.com/ShixiangWang/sigminer")
+remotes::install_git("https://gitee.com/ShixiangWang/sigminer", dependencies = TRUE)
 ```
 
 ## Usage
@@ -103,47 +103,50 @@ etiologies and clinical outcomes, under submission***
 -----
 
 Currently, **sigminer** has not been published. If you use **sigminer**
-in academic field, please cite our recent work:
+in academic field, please cite our recent
+    work:
 
     Wang, Shixiang, et al. "The predictive power of tumor mutational burden 
         in lung cancer immunotherapy response is influenced by patients' sex."
         International journal of cancer (2019).
 
-and the paper implementing NMF in R:
+## Acknowledgments
+
+If you use **NMF** package in R, please also cite:
 
     Gaujoux, Renaud, and Cathal Seoighe. "A Flexible R Package for 
         Nonnegative Matrix Factorization."" BMC Bioinformatics 11, no. 1 (December 2010).
 
-## Acknowledgments
-
-The code for extracting copy number signatures was based in part on the
-source code from paper *Copy number signatures and mutational processes
-in ovarian carcinoma*, if you use this feature, please also cite:
+The method “M” for extracting copy number signatures was based in part
+on the source code from paper *Copy number signatures and mutational
+processes in ovarian carcinoma*, if you use this feature, please also
+cite:
 
     Macintyre, Geoff, et al. "Copy number signatures and mutational
         processes in ovarian carcinoma." Nature genetics 50.9 (2018): 1262.
 
-The code for extracting mutational signatures was based in part on the
-source code of the **maftools** package, if you use this feature, please
-also cite:
+The code for extracting SBS signatures was based in part on the source
+code of the **maftools** package, if you use this feature, please also
+cite:
 
     Mayakonda, Anand, et al. "Maftools: efficient and comprehensive analysis
         of somatic variants in cancer." Genome research 28.11 (2018): 1747-1756.
 
 The code for extracting mutational signatures was based in part on the
 source code of the **SignatureAnalyzer** package, if you use this
-feature, please also cite:
+feature, please also
+    cite:
 
     Kim, Jaegil, et al. "Somatic ERCC2 mutations are associated with a distinct genomic
         signature in urothelial tumors." Nature genetics 48.6 (2016): 600.
 
 ## References
 
-1.  Alexandrov, Ludmil B., et al. “The repertoire of mutational
+1.  Alexandrov, Ludmil B., et al. “The repertoire of mutational
     signatures in human cancer.” Nature 578.7793 (2020): 94-101.
-2.  Macintyre, Geoff, et al. “Copy number signatures and mutational
+2.  Macintyre, Geoff, et al. “Copy number signatures and mutational
     processes in ovarian carcinoma.” Nature genetics 50.9 (2018): 1262.
-3.  Mayakonda, Anand, et al. “Maftools: efficient and comprehensive
+3.  Mayakonda, Anand, et al. “Maftools: efficient and comprehensive
     analysis of somatic variants in cancer.” Genome research 28.11
     (2018): 1747-1756.
 4.  Gaujoux, Renaud, and Cathal Seoighe. “A Flexible R Package for
@@ -155,7 +158,7 @@ feature, please also cite:
     determination in nonnegative matrix factorization with the/spl
     beta/-divergence.” IEEE Transactions on Pattern Analysis and Machine
     Intelligence 35.7 (2012): 1592-1605.
-7.  Kim, Jaegil, et al. “Somatic ERCC2 mutations are associated with a
+7.  Kim, Jaegil, et al. “Somatic ERCC2 mutations are associated with a
     distinct genomic signature in urothelial tumors.” Nature genetics
     48.6 (2016): 600.
 

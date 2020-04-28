@@ -12,7 +12,7 @@ calculateSumOfEvents <-
 
     if (type == "count") {
       df <- feature
-      message("Calculating the sum of event counts for ", name)
+      send_success("Calculating the sum of event counts for ", name, ".")
       df$cluster <- flexmix::clusters(component, data.frame(dat = as.numeric(feature[, 2]))) %>%
         as.character()
       df$cluster <- factor(df$cluster, levels = seq_along(comp_orders) %>% as.character())
@@ -25,7 +25,7 @@ calculateSumOfEvents <-
         dplyr::ungroup() %>%
         dplyr::select(c("ID", as.character(comp_orders)))
     } else {
-      message("Calculating the sum of posterior probabilities for ", name)
+      send_info("Calculating the sum of posterior probabilities for ", name, ".")
       curr <- flexmix::posterior(component, data.frame(dat = as.numeric(feature[, 2])))
       df <- cbind(feature, curr)
       df_sum <- df %>%
