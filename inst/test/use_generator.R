@@ -214,7 +214,8 @@ test_tally = sig_tally(
   test,
   ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
   use_syn = TRUE,
-  mode = "ID"
+  add_trans_bias = TRUE,
+  mode = "DBS"
 )
 
 test_mat = test_tally$all_matrice$ID_28

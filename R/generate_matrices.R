@@ -336,7 +336,8 @@ generate_matrix_DBS <- function(query, ref_genome, genome_build = "hg19", add_tr
   send_info("Searching DBS records...")
   query <- query[, search_DBS(.SD), by = Tumor_Sample_Barcode]
   send_success("Done.")
-  if (!nrow(query)) {
+
+  if (nrow(query) == 0) {
     send_stop("Zero DBSs to analyze!")
   }
 
@@ -344,21 +345,29 @@ generate_matrix_DBS <- function(query, ref_genome, genome_build = "hg19", add_tr
   query[, dbsMotif := ifelse(dbs %in% names(conv), conv[dbs], dbs)]
   query[, dbsMotif := factor(dbsMotif, levels = as.character(conv))]
 
-  DBS_78 <- records_to_matrix(query, "Tumor_Sample_Barcode", "dbsMotif")
+  DBS_78 <- records_to_matrix(query, "Tumor_Sample_Barcode", "dbsMotif") %>% as.matrix()
   send_success("DBS-78 matrix created.")
 
 
   if (add_trans_bias) {
-    DBS_186 = records_to_matrix(query, "Tumor_Sample_Barcode", "dbsMotif",
-                                 add_trans_bias = TRUE, build = genome_build, mode = "DBS")
+    query$End_Position = query$Start_Position + 1
+    DBS_186 <- records_to_matrix(query, "Tumor_Sample_Barcode", "dbsMotif",
+      add_trans_bias = TRUE, build = genome_build, mode = "DBS"
+    )
+    DBS_186 <- as.data.frame(t(DBS_186))
     DBS_186$mutation_type <- rownames(DBS_186)
-    DBS_186 <- setDT(DBS_186)
-    catalog_df <- setDT(catalog_df)
-    catalog_df <- DBS_186[catalog_df,on="mutation_type"]
+    data.table::setDT(DBS_186)
+    data.table::setDT(catalog_df)
+    catalog_df <- DBS_186[catalog_df, on = "mutation_type"]
     catalog_df[is.na(catalog_df)] <- 0
-    DBS_186 <- catalog_df %>% dplyr::select(-reverse) %>% dplyr::select(mutation_type,everything()) %>% as.data.frame()
-    rownames(DBS_186) <- DBS_186[,1]
-    DBS_186 <- DBS_186[,-1]
+    DBS_186 <- catalog_df %>%
+      dplyr::select(-.data$reverse) %>%
+      dplyr::select(
+        .data$mutation_type,
+        dplyr::everything()
+      ) %>% as.data.frame()
+    rownames(DBS_186) <- DBS_186$mutation_type
+    DBS_186 <- DBS_186[, -1] %>% as.matrix %>%  t()
     send_success("DBS-186 matrix created.")
 
     send_info("Return DBS-186 as major matrix.")
@@ -608,23 +617,29 @@ records_to_matrix <- function(dt, samp_col, component_col, add_trans_bias = FALS
     transcript_dt <- get(paste0("transcript.", build), envir = as.environment("package:sigminer"))
     data.table::setkey(transcript_dt, chrom, start, end)
 
-    if (mode == "SBS") {
+    if ("Start" %in% colnames(dt)) {
       loc_dt <- dt[, .(Chromosome, Start, End)]
-      loc_dt$MutIndex <- 1:nrow(loc_dt)
-      colnames(loc_dt)[1:3] <- c("chrom", "start", "end")
-      m_dt <- data.table::foverlaps(loc_dt, transcript_dt, type = "any")[
-        , .(MatchCount = .N, strand = paste0(unique(strand), collapse = "/")),
-        by = MutIndex
-      ]
-      ## Actually, the MatchCount should only be 0, 1, 2
-      if (any(m_dt$MatchCount > 2)) {
-        send_stop("More than 2 regions counted, please report your data and code to developer!")
-      }
+    } else {
+      loc_dt <- dt[, .(Chromosome, Start_Position, End_Position)]
+    }
+    colnames(loc_dt)[1:3] <- c("chrom", "start", "end")
+    loc_dt$MutIndex <- 1:nrow(loc_dt)
 
+    m_dt <- data.table::foverlaps(loc_dt, transcript_dt, type = "any")[
+      , .(MatchCount = .N, strand = paste0(unique(strand), collapse = "/")),
+      by = list(MutIndex)
+      ]
+
+    ## Actually, the MatchCount should only be 0, 1, 2
+    if (any(m_dt$MatchCount > 2)) {
+      send_stop("More than 2 regions counted, please report your data and code to developer!")
+    }
+
+    if (mode == "SBS") {
       dt$transcript_bias_label <- ifelse(
         m_dt$MatchCount == 2, "B:",
         ifelse(m_dt$MatchCount == 0, "N:",
-          ifelse(xor(dt$should_reverse, m_dt$strand == "-"), ## Need expand the logical to DBS and ID
+          ifelse(xor(dt$should_reverse, m_dt$strand == "-"),
             # (dt$should_reverse & m_dt$strand == "+") | (!dt$should_reverse & m_dt$strand == "-"),
             "T:", "U:"
           )
@@ -637,27 +652,23 @@ records_to_matrix <- function(dt, samp_col, component_col, add_trans_bias = FALS
       dt[[component_col]] <- paste0(dt$transcript_bias_label, dt[[component_col]])
       dt[[component_col]] <- factor(dt[[component_col]], levels = new_levels)
     } else if (mode == "DBS") {
-      dt$chrom <- dt$Chromosome
-      dt$start <- dt$Start_Position
-      dt$end <- dt$start
-      loc_dt <- dt[, .(chrom, start, end)]
-      loc_dt$MutIndex <- 1:nrow(loc_dt)
-      m_dt <- data.table::foverlaps(loc_dt, transcript_dt, type = "within")[
-        , .(MatchCount = .N, strand = paste0(unique(strand), collapse = "/")),
-        by = MutIndex
-        ]
       dt$transcript_bias_label <- ifelse(
-        substr(dt[[component_col]],1,2)%in%c("TT","TC","CT","CC"),
+        substr(dt[[component_col]], 1, 2) %in% c("TT", "TC", "CT", "CC"),
         ifelse(
           m_dt$MatchCount == 2, "B:",
-          ifelse(m_dt$strand=="NA", "N:",
-                 ifelse(m_dt$strand=="+",
-                        "U:", "T:"
-                 )
+          ifelse(m_dt$MatchCount == 0, "N:",
+            ifelse(m_dt$strand == "+",
+              "U:", "T:"
+            )
           )
-        ),"Q:")
+        ), "Q:"
+      )
+      new_levels <- vector_to_combination(
+        c("T:", "U:", "B:", "N:", "Q:"),
+        levels(dt[[component_col]])
+      )
       dt[[component_col]] <- paste0(dt$transcript_bias_label, dt[[component_col]])
-
+      dt[[component_col]] <- factor(dt[[component_col]], levels = new_levels)
     } else if (mode == "ID") {
 
     }
@@ -671,7 +682,6 @@ records_to_matrix <- function(dt, samp_col, component_col, add_trans_bias = FALS
 
   rownames(mat) <- mat[, 1]
   mat <- mat[, -1]
-  mat <- as.data.frame(t(mat))
   mat
 }
 
