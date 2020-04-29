@@ -199,3 +199,68 @@ val_mat["TCGA-05-4244-01A-01D-1105-08", colnames(one_tally$all_matrice$SBS_24), 
 )
 
 # B is more and N is less
+
+
+# INDEL -------------------------------------------------------------------
+
+laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
+laml <- read_maf(maf = laml.maf)
+data = data.table::fread("../MatrixGenerator-Test/data/wt/luad/input/test_luad.maf")
+colnames(data) = colnames(laml@data)
+colnames(data)[14:17] = c("X1", "X2", "Tumor_Sample_Barcode", "X3")
+
+test = read_maf(data)
+test_tally = sig_tally(
+  test,
+  ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
+  use_syn = TRUE,
+  mode = "ID"
+)
+
+test_mat = test_tally$all_matrice$ID_28
+
+val_dt = data.table::fread("../MatrixGenerator-Test/data/wt/luad/output/ID/test.ID28.all")
+val_mat = val_dt %>%
+  tibble::column_to_rownames("MutationType") %>%
+  as.matrix() %>%
+  t
+
+val_mat
+
+dim(test_mat)
+dim(val_mat)
+
+val_mat = val_mat[rownames(test_mat), colnames(test_mat)]
+all.equal(test_mat, val_mat)
+
+j = 1
+for (i in 1:20) {
+  dif = sum(abs(test_mat[i, ] -  val_mat[i, ]))
+  if (dif > 0) {
+    print(dif)
+    message(i, " # ", j)
+    j = j + 1
+  }
+}
+
+
+# Use TCGA-05-4244-01A-01D-1105-08 for deeper debugging
+test_mat["TCGA-05-4244-01A-01D-1105-08",]
+val_mat["TCGA-05-4244-01A-01D-1105-08",]
+
+
+one = read_maf(data[Tumor_Sample_Barcode == "TCGA-05-4244-01A-01D-1105-08"])
+one_tally = sig_tally(
+  one,
+  ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
+  use_syn = TRUE,
+  mode = "ID"
+)
+
+sum(one_tally$all_matrice$ID_83)
+sum(val_mat["TCGA-05-4244-01A-01D-1105-08",])
+
+rbind(
+  one_tally$all_matrice$ID_28,
+  val_mat["TCGA-05-4244-01A-01D-1105-08", colnames(one_tally$all_matrice$ID_28), drop = FALSE]
+)

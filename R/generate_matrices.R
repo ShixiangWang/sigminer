@@ -471,7 +471,7 @@ generate_matrix_INDEL <- function(query, ref_genome, genome_build = "hg19", add_
     send_stop("Zero INDELs to analyze after dropping 'complex' labeled records!")
   }
 
-  ## Get mutation base (only one?)
+  ## Get first INDEL base
   query[, mut_base := substr(ID_type, 1, 1)]
 
   ## Query sequence
@@ -491,15 +491,15 @@ generate_matrix_INDEL <- function(query, ref_genome, genome_build = "hg19", add_
       end = End_Position + 250
     )
   )]
-
   send_success("Reference sequences queried from genome.")
 
   ## Length of INDEL
   query[, ID_len := ifelse(nchar(ID_type) < 5, nchar(ID_type), 5)]
   send_success("INDEL length extracted.")
-  ## Repeat count
-  query[, count_repeat := mapply(count_repeat, ID_type, downstream) %>% as.integer()]
-  send_success("Repeat units counted.")
+
+  ## Adjacent repeats (copies) count
+  query[, count_repeat := mapply(count_repeat, ID_type, downstream) + mapply(count_repeat, ID_type, upstream, is_downstream = FALSE)]
+  send_success("Adjacent copies counted.")
   ## Micro-homology count
   query[, count_homosize := mapply(
     count_homology_size,
@@ -507,7 +507,7 @@ generate_matrix_INDEL <- function(query, ref_genome, genome_build = "hg19", add_
   ) %>% as.integer()]
   send_success("Microhomology size calculated.")
 
-  ## Set maximum repeat/homology-size count?
+  ## Set maximum repeat/homology-size count
   query[, count_repeat := ifelse(count_repeat > 5, 5, count_repeat)]
   query[, count_homosize := ifelse(count_homosize > 5, 5, count_homosize)]
 
@@ -518,53 +518,52 @@ generate_matrix_INDEL <- function(query, ref_genome, genome_build = "hg19", add_
   query[, mut_base := ifelse(should_reverse, conv[mut_base], mut_base)]
   ## For length-n (n>1) INDEL
   query[, mut_base := ifelse(ID_len > 1, "R", mut_base)]
-  query[, mut_base := ifelse(ID_len > 1 & count_homosize > 0, "M", mut_base)]
-
-  ## Generate Motifs
-  query[, ID_motif := ifelse(
-    ID_len == 1,
-    paste(ID_len, Variant_Type, mut_base, count_repeat, sep = ":"),
-    ifelse(mut_base == "R" & Variant_Type == "Del",
-      paste(ID_len, Variant_Type, mut_base, count_repeat + 1, sep = ":"),
-      ifelse(mut_base == "R" & Variant_Type == "Ins",
-        paste(ID_len, Variant_Type, mut_base, count_repeat, sep = ":"),
-        paste(ID_len, Variant_Type, mut_base, count_homosize, sep = ":")
-      )
-    )
-  )]
-  ## What about type "non_matching"?
-  ## ???
-  # query[, ID_motif := ifelse(ID_motif %in% indel_types, ID_motif, "non_matching")]
+  query[, mut_base := ifelse(ID_len > 1 & count_repeat == 0 & count_homosize > 0, "M", mut_base)]
 
   ## Generate all factors
-  ## Currently remove non_matching as reported by SigProfiler
   sim_types <- c(indel_types[1:24], "long_Del", "long_Ins", "MH", "complex")
   query <- rbind(query, query_comp, fill = TRUE)
 
-  query[, ID_motif_sp := ID_motif][
-    , ID_motif_sp := ifelse(
-      ID_motif_sp %in% indel_types[25:48],
-      "long_Del",
-      ifelse(
-        ID_motif_sp %in% indel_types[49:72],
-        "long_Ins",
-        ifelse(
-          ID_motif_sp %in% indel_types[73:83],
-          "MH",
-          "complex"
-        )
+  ## Generate Motifs
+  ## ifelse() has problems for assign values here
+  ## use case_when
+  ##
+  ## NOTE: according to reference paper says
+  ## "Since almost no insertions with microhomologies
+  ## were identified across more than 20,000 tumors"
+  ## so records like this will classified into 'non_matching' in ID_motif
+  ## and 'MH' in ID_motif_sp
+  query <- query %>%
+    dplyr::as_tibble() %>%
+    dplyr::mutate(
+      ID_motif = dplyr::case_when(
+        ID_len == 1 ~ paste(ID_len, Variant_Type, mut_base, count_repeat, sep = ":"),
+        mut_base == "R" ~ paste(ID_len, Variant_Type, mut_base, count_repeat, sep = ":"),
+        mut_base == "M" ~ paste(ID_len, Variant_Type, mut_base, count_homosize, sep = ":"),
+        ID_motif == "complex" ~ "complex",
+        TRUE ~ "non_matching"
+      ),
+      ID_motif_sp = ID_motif
+    ) %>%
+    dplyr::mutate(
+      ID_motif_sp = dplyr::case_when(
+        ID_motif_sp %in% c(indel_types[1:24], "complex") ~ ID_motif_sp,
+        ID_motif_sp %in% indel_types[25:48] ~ "long_Del",
+        ID_motif_sp %in% indel_types[49:72] ~ "long_Ins",
+        TRUE ~ "MH"
       )
-    )
-  ]
+    ) %>%
+    data.table::as.data.table()
+
+  ## "complex" type will be dropped off from ID-83
   query[, ID_motif := factor(ID_motif, levels = indel_types[-84])]
   query[, ID_motif_sp := factor(ID_motif_sp, levels = sim_types)]
   send_success("INDEL records classified into different components (types).")
 
-  ID_28 <- records_to_matrix(query, "Tumor_Sample_Barcode", "ID_motif_sp")
+  ID_28 <- records_to_matrix(query, "Tumor_Sample_Barcode", "ID_motif_sp") %>% as.matrix()
   send_success("ID-28 matrix created.")
-  ID_83 <- records_to_matrix(query, "Tumor_Sample_Barcode", "ID_motif")
+  ID_83 <- records_to_matrix(query, "Tumor_Sample_Barcode", "ID_motif") %>% as.matrix()
   send_success("ID-83 matrix created.")
-
 
   if (add_trans_bias) {
     # DBS_186 = records_to_matrix(query, "Tumor_Sample_Barcode", "dbsMotif",
@@ -657,19 +656,45 @@ vector_to_combination <- function(...) {
     unique()
 }
 
-count_repeat <- function(x, sequence) {
-  if (startsWith(sequence, x)) {
-    pattern <- paste0(
-      "^((",
-      x,
-      ")+).*$"
-    )
-    nchar(sub(pattern, "\\1", sequence)) / nchar(x)
+count_repeat <- function(x, sequence, is_downstream = TRUE) {
+  if (is_downstream) {
+    if (startsWith(sequence, x)) {
+      pattern <- paste0(
+        "^((",
+        x,
+        ")+).*$"
+      )
+      nchar(sub(pattern, "\\1", sequence)) / nchar(x)
+    } else {
+      return(0L)
+    }
   } else {
-    return(0L)
+    if (endsWith(sequence, x)) {
+      return(count_repeat(
+        Biostrings::reverse(x),
+        Biostrings::reverse(sequence)
+      ))
+    } else {
+      return(0L)
+    }
   }
 }
 
+
+## Examples:
+## ACCAA|TC|TAGCGGC or ACAAC|TC|AAGCGGC
+## ACCCA|TATC|TATAGCGGC or ACCCATC|TATC|AAGCGGC
+## ACCCA|TAGCCTC|TAGCCTAGCGGC or ACCCAGCCTC|TAGCCTC|AAGCGGC
+##
+## 1
+## count_homology_size("TC", "ACCAA", "TAGCGGC")
+## count_homology_size("TC", "ACCAC", "AAGCGGC")
+## 3
+## count_homology_size("TATC", "ACCCA", "TATAGCGGC")
+## count_homology_size("TATC", "ACCCATC", "AAGCGGC")
+## 5+
+## count_homology_size("TAGCCTC", "ACCCA", "TAGCCTAGCGGC")
+## count_homology_size("TAGCCTC", "ACCCAGCCTC", "AAGCGGC")
 count_homology_size <- function(x, upstream, downstream) {
   size <- nchar(as.character(x))
   if (size >= 2) {
@@ -683,8 +708,6 @@ count_homology_size <- function(x, upstream, downstream) {
         x_down <- substr(x_down, 1, nchar(x_down) - 1)
       }
     }
-    # Upstream
-    # ACAAC|TC|AAGCGGC
     x_up <- substring(x, 2)
     size_up <- 0
     while (nchar(x_up) > 0) {
@@ -697,7 +720,7 @@ count_homology_size <- function(x, upstream, downstream) {
     }
     max(size_up, size_down)
   } else {
-    0
+    return(0L)
   }
 }
 
