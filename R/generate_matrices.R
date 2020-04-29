@@ -321,8 +321,8 @@ generate_matrix_DBS <- function(query, ref_genome, genome_build = "hg19", add_tr
   )
 
   catalog_df <- matrix %>%
-    dplyr::mutate(u = "U", N = "N", T = "T", B = "B", Q = "Q") %>%
-    tidyr::pivot_longer(c("u", "N", "T", "B", "Q"), names_to = "type", values_to = "value") %>%
+    dplyr::mutate(U = "U", N = "N", T = "T", B = "B", Q = "Q") %>%
+    tidyr::pivot_longer(c("U", "N", "T", "B", "Q"), names_to = "type", values_to = "value") %>%
     dplyr::select(-.data$type) %>%
     dplyr::mutate(
       mutation_type = paste(.data$value, .data$mutation_type, sep = ":"),
@@ -336,7 +336,7 @@ generate_matrix_DBS <- function(query, ref_genome, genome_build = "hg19", add_tr
   send_info("Searching DBS records...")
   query <- query[, search_DBS(.SD), by = Tumor_Sample_Barcode]
   send_success("Done.")
-  if (nrow(query)) {
+  if (!nrow(query)) {
     send_stop("Zero DBSs to analyze!")
   }
 
@@ -349,9 +349,16 @@ generate_matrix_DBS <- function(query, ref_genome, genome_build = "hg19", add_tr
 
 
   if (add_trans_bias) {
-    # DBS_186 = records_to_matrix(query, "Tumor_Sample_Barcode", "dbsMotif",
-    #                             add_trans_bias = TRUE, build = genome_build, mode == "DBS")
-    DBS_186 <- NULL
+    DBS_186 = records_to_matrix(query, "Tumor_Sample_Barcode", "dbsMotif",
+                                 add_trans_bias = TRUE, build = genome_build, mode = "DBS")
+    DBS_186$mutation_type <- rownames(DBS_186)
+    DBS_186 <- setDT(DBS_186)
+    catalog_df <- setDT(catalog_df)
+    catalog_df <- DBS_186[catalog_df,on="mutation_type"]
+    catalog_df[is.na(catalog_df)] <- 0
+    DBS_186 <- catalog_df %>% dplyr::select(-reverse) %>% dplyr::select(mutation_type,everything()) %>% as.data.frame()
+    rownames(DBS_186) <- DBS_186[,1]
+    DBS_186 <- DBS_186[,-1]
     send_success("DBS-186 matrix created.")
 
     send_info("Return DBS-186 as major matrix.")
@@ -467,6 +474,26 @@ records_to_matrix <- function(dt, samp_col, component_col, add_trans_bias = FALS
       dt[[component_col]] <- paste0(dt$transcript_bias_label, dt[[component_col]])
       dt[[component_col]] <- factor(dt[[component_col]], levels = new_levels)
     } else if (mode == "DBS") {
+      dt$chrom <- dt$Chromosome
+      dt$start <- dt$Start_Position
+      dt$end <- dt$start
+      loc_dt <- dt[, .(chrom, start, end)]
+      loc_dt$MutIndex <- 1:nrow(loc_dt)
+      m_dt <- data.table::foverlaps(loc_dt, transcript_dt, type = "within")[
+        , .(MatchCount = .N, strand = paste0(unique(strand), collapse = "/")),
+        by = MutIndex
+        ]
+      dt$transcript_bias_label <- ifelse(
+        substr(dt[[component_col]],1,2)%in%c("TT","TC","CT","CC"),
+        ifelse(
+          m_dt$MatchCount == 2, "B:",
+          ifelse(m_dt$strand=="NA", "N:",
+                 ifelse(m_dt$strand=="+",
+                        "U:", "T:"
+                 )
+          )
+        ),"Q:")
+      dt[[component_col]] <- paste0(dt$transcript_bias_label, dt[[component_col]])
 
     } else if (mode == "ID") {
 
@@ -481,6 +508,7 @@ records_to_matrix <- function(dt, samp_col, component_col, add_trans_bias = FALS
 
   rownames(mat) <- mat[, 1]
   mat <- mat[, -1]
+  mat <- as.data.frame(t(mat))
   mat
 }
 
