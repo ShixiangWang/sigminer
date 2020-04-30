@@ -25,7 +25,6 @@
 #' Set 'wg' will use autosome size from genome build, this option is useful for WGS, SNP etc..
 #' @param complement if `TRUE`, complement chromosome (except 'Y') does not show in input data
 #' with normal copy 2 and force `use_all` to `FALSE` (no matter what user input).
-#' @param verbose print extra messages.
 #' @param ... other parameters pass to [data.table::fread()]
 #' @author Shixiang Wang <w_shixiang@163.com>
 #' @return a [CopyNumber] object
@@ -37,7 +36,7 @@
 #' ))
 #' cn <- read_copynumber(segTabs,
 #'   seg_cols = c("chromosome", "start", "end", "segVal"),
-#'   genome_build = "hg19", complement = FALSE, verbose = TRUE
+#'   genome_build = "hg19", complement = FALSE
 #' )
 #' cn
 #'
@@ -62,18 +61,23 @@ read_copynumber <- function(input,
                             genome_build = c("hg19", "hg38"),
                             genome_measure = c("called", "wg"),
                             complement = TRUE,
-                            verbose = FALSE,
                             ...) {
   stopifnot(
     is.character(samp_col),
     length(samp_col) == 1,
-    min_segnum >= 0,
-    is.logical(verbose)
+    min_segnum >= 0
   )
+
+  timer <- Sys.time()
+  send_info("Started.")
+  on.exit(send_elapsed_time(timer))
 
   #--- match genome build
   genome_build <- match.arg(genome_build)
   genome_measure <- match.arg(genome_measure)
+
+  send_info("Genome build  : ", genome_build, ".")
+  send_info("Genome measure: ", genome_measure, ".")
 
   # get chromosome lengths
   valid_chr <- c(paste0("chr", 1:22), "chrX", "chrY")
@@ -83,11 +87,13 @@ read_copynumber <- function(input,
     genome_build = genome_build
   )
   data.table::setDT(chrlen)
+  send_success("Chromosome size database for build obtained.")
 
+  send_info("Reading input.")
   if (tryCatch(dir.exists(input), error = function(e) FALSE)) {
-    if (verbose) message("Treating input as a directory...")
+    send_success("A directory as input detected.")
     if (length(input) != 1) {
-      stop("Only can take one directory as input!")
+      send_stop("Only can take one directory as input!")
     }
     # get files and exclude directories
     all.files <- list.files(
@@ -99,29 +105,32 @@ read_copynumber <- function(input,
     )
     files <- all.files[!file.info(file.path(input, all.files))$isdir]
     if (length(files) == 0) {
-      stop("No files exist, please check!")
+      send_stop("No files exist, please check!")
     }
     files_path <- file.path(input, files)
     data_list <- list()
     dropoff_list <- list()
 
     # read files
+    sb <- cli::cli_status("{symbol$arrow_right} About to read files.")
+    Sys.sleep(0.5)
     for (i in seq_along(files_path)) {
-      if (verbose) message("Reading ", files_path[i])
+      cli::cli_status_update(id = sb, "{symbol$arrow_right} Reading file {files_path[i]}.")
+
       temp <- data.table::fread(files_path[i], ...)
       if (!all(seg_cols %in% colnames(temp))) {
-        stop("Not all seg_cols are in file, please check.")
+        send_stop("Not all seg_cols are in file, please check.")
       }
 
       if (length(samp_col %in% colnames(temp)) == 0 | !(samp_col %in% colnames(temp))) {
-        if (verbose) message("Select file names as sample names.")
+        cli::cli_status_update(id = sb, "{symbol$arrow_right} Select file names as sample names.")
         temp[, "sample"] <- files[i]
         sample_col <- "sample"
       }
 
       tempName <- unique(temp[[samp_col]])
       if (length(tempName) > 1) {
-        stop("When input is a directory, a file can only contain one sample.")
+        send_stop("When input is a directory, a file can only contain one sample.")
       }
 
       # set column order
@@ -134,7 +143,7 @@ read_copynumber <- function(input,
       }
 
       # unify chromosome column
-      if (verbose) message("Checking chromosome names...")
+      cli::cli_status_update(id = sb, "{symbol$arrow_right} Checking chromosome names.")
       temp[, chromosome := sub(
         pattern = "chr",
         replacement = "chr",
@@ -163,7 +172,10 @@ read_copynumber <- function(input,
 
       if (complement) {
         # complement value 2 (normal copy) to chromosome not called
-        if (verbose) message("Fill value 2 (normal copy) to uncalled chromosomes.")
+        cli::cli_status_update(
+          id = sb,
+          "{symbol$arrow_right} Fill value 2 (normal copy) to uncalled chromosomes."
+        )
         miss_index <- !valid_chr %in% unique(temp[["chromosome"]])
         miss_index[length(miss_index)] <- FALSE # disable Y
         if (any(miss_index)) {
@@ -176,7 +188,11 @@ read_copynumber <- function(input,
           )]
           temp <- rbind(temp, comp_df)
         }
-        if (verbose) message("'complement' option is TRUE, thus use_all automatically set to FALSE.")
+
+        cli::cli_status_update(
+          id = sb,
+          "{symbol$arrow_right} 'complement' option is TRUE, thus use_all automatically set to FALSE."
+        )
         use_all <- FALSE
       }
 
@@ -187,6 +203,7 @@ read_copynumber <- function(input,
         data_list[[tempName]] <- temp
       }
     }
+    cli::cli_status_clear(sb)
 
     if (length(data_list) >= 1) {
       data_df <- data.table::rbindlist(data_list, use.names = TRUE, fill = TRUE)
@@ -201,42 +218,45 @@ read_copynumber <- function(input,
     }
   } else if (all(is.character(input)) | is.data.frame(input)) {
     if (!is.data.frame(input)) {
-      if (verbose) message("Treating input as a file...")
+      send_success("A file as input detected.")
       if (length(input) > 1) {
-        stop("Muliple files are not a valid input, please use directory as input.")
+        send_stop("Muliple files are not a valid input, please use directory as input.")
       }
       if (!file.exists(input)) {
-        stop("Input file not exists.")
+        send_stop("Input file not exists.")
       }
 
       temp <- data.table::fread(input, ...)
     } else {
-      if (verbose) message("Treating input as a data frame...")
+      send_success("A data frame as input detected.")
       temp <- data.table::as.data.table(input)
     }
 
     #--- Check column names
     if (is.null(samp_col)) {
-      stop("'samp_col' parameter must set!")
+      send_stop("'samp_col' parameter must set!")
     }
     if (!all(seg_cols %in% colnames(temp))) {
-      stop("Not all seg_cols are in file, please check.")
+      send_stop("Not all seg_cols are in file, please check.")
     }
     if (!(samp_col %in% colnames(temp))) {
-      stop("Column ", samp_col, " does not exist.")
+      send_stop("Column ", samp_col, " does not exist.")
     }
+    send_success("Column names checked.")
 
     #--- Set column order
     data.table::setcolorder(temp, neworder = c(seg_cols, samp_col))
     new_cols <- c("chromosome", "start", "end", "segVal", "sample")
     colnames(temp)[1:5] <- new_cols
 
+    send_success("Column order set.")
+
     if (any(is.na(temp$segVal))) {
       temp <- temp[!is.na(temp$segVal)]
+      send_success("Rows with NA copy number removed.")
     }
 
     # unify chromosome column
-    if (verbose) message("Checking chromosome names...")
     temp[, chromosome := sub(
       pattern = "chr",
       replacement = "chr",
@@ -263,10 +283,10 @@ read_copynumber <- function(input,
     # detect and transform chromosome 24 to "Y"
     temp[["chromosome"]] <- sub("24", "Y", temp[["chromosome"]])
 
+    send_success("Chromosomes unified.")
+
     if (complement) {
       # complement value 2 (normal copy) to chromosome not called
-      if (verbose) message("Fill value 2 (normal copy) to uncalled chromosomes.")
-
       comp <- data.table::data.table()
       for (i in unique(temp[["sample"]])) {
         tmp_sample <- temp[i, on = "sample"]
@@ -284,8 +304,9 @@ read_copynumber <- function(input,
         }
       }
       temp <- rbind(temp, comp)
-      if (verbose) message("complement is TRUE, thus use_all automatically set to FALSE.")
+      send_success("Value 2 (normal copy) filled to uncalled chromosomes.")
       use_all <- FALSE
+      send_info("'complement' is TRUE, thus use_all automatically set to FALSE.")
     }
 
     if (!use_all) temp <- temp[, new_cols, with = FALSE]
@@ -296,11 +317,12 @@ read_copynumber <- function(input,
     data_df <- temp[sample %in% keep_samples]
     dropoff_df <- temp[sample %in% dropoff_samples]
   } else {
-    stop("Invalid input.")
+    send_stop("Invalid input.")
   }
 
+  send_success("Data imported.")
+
   if (!all(data_df$chromosome %in% valid_chr)) {
-    if (verbose) message("Filter some invalid segments... (not as 1:22 and X, Y)")
     data_drop <- data_df[!chromosome %in% valid_chr]
     if (nrow(dropoff_df) >= 1) {
       dropoff_df <- base::rbind(dropoff_df, data_drop)
@@ -309,13 +331,12 @@ read_copynumber <- function(input,
     }
 
     data_df <- data_df[chromosome %in% valid_chr]
+    send_success("Some invalid segments (not 1:22 and X, Y) dropped.")
   }
 
-  if (verbose) {
-    message("Segments info:")
-    message("    Keep - ", nrow(data_df))
-    message("  Filter - ", nrow(dropoff_df))
-  }
+  send_info("Segments info:")
+  send_info("    Keep - ", nrow(data_df))
+  send_info("    Drop - ", nrow(dropoff_df))
 
   # reset copy number for high copy number segments
   data_df$segVal[data_df$segVal > max_copynumber] <- max_copynumber
@@ -328,24 +349,28 @@ read_copynumber <- function(input,
   data_df <- data_df[order(data_df$sample)]
 
   if (join_adj_seg) {
-    if (verbose) message("Joining adjacent segments with same copy number value...")
     data_df <- helper_join_segments(data_df)
+    send_success("Adjacent segments with same copy number value joined")
   }
+  send_success("Segmental table cleaned.")
 
-  if (verbose) message("Anotating...")
+  send_info("Annotating.")
   annot <- get_LengthFraction(data_df,
     genome_build = genome_build,
     seg_cols = new_cols[1:4],
     samp_col = new_cols[5]
   )
-  if (verbose) message("\nSummarizing per sample...")
+  message()
+  send_success("Annotation done.")
+
+  send_info("Summarizing per sample.")
   sum_sample <- get_cnsummary_sample(data_df,
     genome_build = genome_build,
     genome_measure = genome_measure
   )
+  send_success("Summarized.")
 
-  if (verbose) message("Done!")
-
+  send_info("Generating CopyNumber object.")
   res <- CopyNumber(
     data = data_df,
     summary.per.sample = sum_sample,
@@ -354,8 +379,11 @@ read_copynumber <- function(input,
     annotation = annot,
     dropoff.segs = dropoff_df
   )
+  send_success("Generated.")
 
-  res <- validate_segTab(res, verbose = verbose)
+  send_info("Validating object.")
+  res <- validate_segTab(res)
+  send_success("Done.")
   res
 }
 

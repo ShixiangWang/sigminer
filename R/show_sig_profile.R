@@ -411,6 +411,10 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber"),
   }
 
   if (style != "default" | paint_axis_text) {
+    if (!requireNamespace("ggplotify", quietly = TRUE)) {
+      send_stop("Please install 'ggplotify' package firstly.")
+    }
+
     g <- ggplot_gtable(ggplot_build(p))
 
     if (style != "default") {

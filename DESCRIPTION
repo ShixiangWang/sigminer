@@ -1,7 +1,8 @@
 Package: sigminer
 Title: Extract, Analyze and Visualize Signatures for Genomic
     Variations
-Version: 1.0.1
+Version: 1.0.3
+Date: 2020-04-21
 Authors@R: 
     c(person(given = "Shixiang",
              family = "Wang",
@@ -12,6 +13,12 @@ Authors@R:
              family = "Liu",
              role = c("aut", "ctb"),
              comment = c(ORCID = "0000-0002-7736-0077")),
+      person(given = "Tao",
+             family = "Wu",
+             role = c("aut", "ctb")),
+      person(given = "Ziyu",
+             family = "Tao",
+             role = c("aut", "ctb")),
       person(given = "Geoffrey",
              family = "Macintyre",
              role = "ctb"),
@@ -22,10 +29,11 @@ Description: Genomic alterations including single nucleotide
     substitution, copy number alteration, etc. are the major force for
     cancer initialization and development. Due to the specificity of
     molecular lesions caused by genomic alterations, we can generate
-    characteristic alteration spectra, called 'signature' (Alexandrov,
-    Ludmil B., et al. (2020) <DOI:10.1038/s41586-020-1943-3> & Macintyre,
-    Geoff, et al. (2018) <DOI:10.1038/s41588-018-0179-8>).  This package
-    helps users to extract, analyze and visualize signatures from genomic
+    characteristic alteration spectra, called 'signature' (Wang, Shixiang,
+    et al.  (2020) <DOI:10.1101/2020.04.27.20082404> & Alexandrov, Ludmil
+    B., et al. (2020) <DOI:10.1038/s41586-020-1943-3> & Macintyre, Geoff,
+    et al. (2018) <DOI:10.1038/s41588-018-0179-8>).  This package helps
+    users to extract, analyze and visualize signatures from genomic
     alteration records, thus providing new insight into cancer study.
 License: MIT + file LICENSE
 URL: https://github.com/ShixiangWang/sigminer
@@ -33,50 +41,53 @@ BugReports: https://github.com/ShixiangWang/sigminer/issues
 Depends: 
     R (>= 3.5)
 Imports: 
-    Biostrings,
-    circlize,
+    cli,
     cowplot,
     data.table,
     dplyr,
-    flexmix,
     foreach,
     furrr,
     future,
-    GenomicRanges,
     ggplot2 (>= 3.3.0),
-    ggplotify,
     ggpubr,
-    IRanges,
-    lsei,
     maftools,
     magrittr,
     methods,
     NMF,
     purrr,
-    RColorBrewer,
     rlang,
     stats,
-    tibble,
     tidyr
 Suggests: 
+    Biostrings,
     BSgenome,
     BSgenome.Hsapiens.UCSC.hg19,
+    circlize,
     covr,
     doFuture,
+    flexmix,
+    GenomicRanges,
+    GenSA,
     ggalluvial,
     ggfittext,
+    ggplotify,
+    IRanges,
     knitr,
+    lsei,
+    patchwork,
     pheatmap,
+    quadprog,
     R.utils,
+    RColorBrewer,
     rmarkdown,
     roxygen2,
     testthat,
-    patchwork
+    tibble
 VignetteBuilder: 
     knitr
 biocViews:
 Encoding: UTF-8
 LazyData: true
-Roxygen: list(markdown = TRUE, roclets = c("namespace", "rd",
-    "roxytest::testthat_roclet"))
+Roxygen: list(markdown = TRUE, roclets = c("collate",
+    "namespace", "rd", "roxytest::testthat_roclet"))
 RoxygenNote: 7.1.0

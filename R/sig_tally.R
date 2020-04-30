@@ -2,8 +2,10 @@
 #'
 #' Tally a variation object like [MAF] and return a matrix for NMF de-composition and more.
 #' This is a generic function,
-#' so it can be further extended to other mutation cases. Please read details
-#' about how to set sex for identifying copy number signatures.
+#' so it can be further extended to other mutation cases.
+#' Please read details about how to set sex for identifying copy number signatures.
+#' Please read <https://osf.io/s93d5/> for the generation of SBS, DBS and ID (INDEL)
+#' components.
 #'
 #' For identifying copy number signatures, we have to derive copy number
 #' features firstly. Due to the difference of copy number values in sex chromosomes
@@ -67,11 +69,28 @@
 #'   )
 #'
 #'   expect_equal(length(mt_tally), 3L)
+#'
+#'   ## Use strand bias categories
+#'   mt_tally <- sig_tally(
+#'     laml,
+#'     ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
+#'     use_syn = TRUE, add_trans_bias = TRUE
+#'   )
+#'   ## Test it by enrichment analysis
+#'   dt1 = enrich_component_strand_bias(mt_tally$nmf_matrix)
+#'   dt2 = enrich_component_strand_bias(mt_tally$all_matrices$SBS_24)
+#'
+#'   expect_s3_class(dt1, "data.table")
+#'   expect_s3_class(dt2, "data.table")
 #' } else {
 #'   message("Please install package 'BSgenome.Hsapiens.UCSC.hg19' firstly!")
 #' }
 #'
 sig_tally <- function(object, ...) {
+  timer <- Sys.time()
+  send_info("Started.")
+  on.exit(send_elapsed_time(timer))
+
   UseMethod("sig_tally")
 }
 
@@ -116,6 +135,7 @@ sig_tally <- function(object, ...) {
 #' @param niter the maximum number of iterations.
 #' Only used when method is "Macintyre".
 #' @param keep_only_matrix if `TRUE`, keep only matrix for signature extraction.
+#' For a `MAF` object, this will just return the most useful matrix.
 #' @references Macintyre, Geoff, et al. "Copy number signatures and mutational
 #' processes in ovarian carcinoma." Nature genetics 50.9 (2018): 1262.
 #' @export
@@ -139,19 +159,24 @@ sig_tally.CopyNumber <- function(object,
   cn_list <- get_cnlist(object, ignore_chrs = ignore_chrs)
 
   if (startsWith(method, "M")) {
+    if (!requireNamespace("flexmix", quietly = TRUE)) {
+      send_stop("Please install 'flexmix' package firstly.")
+    }
+
     # Method: Macintyre
     type <- match.arg(type)
 
-    message("=> Step: getting copy number features")
+    send_info("Step: getting copy number features.")
     cn_features <- get_features(
       CN_data = cn_list, cores = cores,
       genome_build = object@genome_build
     )
     cn_features <- lapply(cn_features, function(x) as.data.frame(x))
+    send_success("Gotten.")
 
-    message("=> Step: fitting copy number components")
+    send_info("Step: fitting copy number components.")
     if (is.null(reference_components) | is.list(reference_components)) {
-      message("Detected reference components.")
+      send_success("Reference components detected.")
       cn_components <- reference_components
     } else {
       cn_components <- get_components(
@@ -162,49 +187,55 @@ sig_tally.CopyNumber <- function(object,
         threshold = threshold,
         nrep = nrep, niter = niter, cores = cores
       )
+      send_success("Components fitted.")
     }
 
     if (type == "count") {
-      message("=> Step: calculating the sum of posterior probabilities")
+      send_info("Step: calculating the sum of cluster count based on posterior probabilities.")
       cn_matrix <- get_matrix(cn_features, cn_components,
         type = "count",
         cores = cores
       )
     } else {
-      message("=> Step: calculating the sum of posterior probabilities")
+      send_info("Step: calculating the sum of posterior probabilities.")
       cn_matrix <- get_matrix(cn_features, cn_components,
         type = "probability",
         cores = cores
       )
     }
   } else {
-    # Method: Wang Shixiang
-    message("=> Step: getting copy number features")
+    # Method: Wang Shixiang, 'W'
+
+    send_info("Step: getting copy number features.")
     cn_features <- get_features_wang(
       CN_data = cn_list, cores = cores,
       genome_build = object@genome_build,
       feature_setting = feature_setting
     )
+    send_success("Gotten.")
     # Make order as unique(feature_setting)$feature
     # cn_features <- cn_features[unique(feature_setting$feature)]
 
-    message("=> Step: generating copy number components")
-    # Chck feature setting
+    send_info("Step: generating copy number components.")
+    # Check feature setting
     if (!inherits(feature_setting, "sigminer.features")) {
       feature_setting <- get_feature_components(feature_setting)
     }
+    send_success("{.code feature_setting} checked.")
 
+    send_info("Step: counting components.")
     cn_components <- purrr::map2(cn_features, names(cn_features),
       count_components_wrapper,
       feature_setting = feature_setting
     )
+    send_success("Counted.")
 
     ## Remove BoChr value is 0 in features
     if ("BoChr" %in% names(cn_features)) {
       cn_features$BoChr <- cn_features$BoChr[cn_features$BoChr$value != 0]
     }
 
-    message("=> Step: generating components by sample matrix")
+    send_info("Step: generating components by sample matrix.")
     cn_matrix <- data.table::rbindlist(cn_components, fill = TRUE, use.names = TRUE) %>%
       dplyr::as_tibble() %>%
       tibble::column_to_rownames(var = "component") %>%
@@ -214,14 +245,15 @@ sig_tally.CopyNumber <- function(object,
       t()
 
     if (any(is.na(cn_matrix))) {
-      message("Warning: NA detected. There may be an issue, please contact the developer!")
-      message("\tData will still returned, but please take case of it.")
+      send_warning("{.code NA} detected. There may be an issue, please contact the developer!")
+      send_warning("Data will still returned, but please take case of it.")
     }
     # cn_matrix[is.na(cn_matrix)] <- 0L
     feature_setting$n_obs <- colSums(cn_matrix, na.rm = TRUE)
   }
 
-  message("=> Done.")
+  send_success("Matrix generated.")
+
   if (keep_only_matrix) {
     cn_matrix
   } else {
@@ -243,9 +275,20 @@ sig_tally.CopyNumber <- function(object,
 #' @describeIn sig_tally Returns SBS mutation sample-by-component matrix and APOBEC enrichment
 #' @inheritParams maftools::trinucleotideMatrix
 #' @param mode type of mutation matrix to extract, can be one of 'SBS', 'DBS' and 'ID'.
+#' @param genome_build genome build 'hg19' or 'hg38', if not set, guess it by `ref_genome`.
+#' @param add_trans_bias if `TRUE`, consider transcriptional bias categories.
+#' 'T:' for Transcribed (the variant is on the transcribed strand);
+#' 'U:' for Un-transcribed (the variant is on the untranscribed strand);
+#' 'B:' for Bi-directional (the variant is on both strand and is transcribed either way);
+#' 'N:' for Non-transcribed (the variant is in a non-coding region and is untranslated);
+#' 'Q:' for Questionable.
+#' **NOTE**: the result counts of 'B' and 'N' labels are a little different from
+#' SigProfilerMatrixGenerator, the reason is unknown (may be caused by annotation file).
 #' @param ignore_chrs Chromsomes to ignore from analysis. e.g. chrX and chrY.
 #' @param use_syn Logical. Whether to include synonymous variants in analysis. Defaults to TRUE
 #' @references Mayakonda, Anand, et al. "Maftools: efficient and comprehensive analysis of somatic variants in cancer." Genome research 28.11 (2018): 1747-1756.
+#' @references Roberts SA, Lawrence MS, Klimczak LJ, et al. An APOBEC Cytidine Deaminase Mutagenesis Pattern is Widespread in Human Cancers. Nature genetics. 2013;45(9):970-976. doi:10.1038/ng.2702.
+#' @references Bergstrom EN, Huang MN, Mahto U, Barnes M, Stratton MR, Rozen SG, Alexandrov LB: SigProfilerMatrixGenerator: a tool for visualizing and exploring patterns of small mutational events. BMC Genomics 2019, 20:685 https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-019-6041-2
 #' @examples
 #' \donttest{
 #' # Prepare SBS signature analysis
@@ -257,69 +300,101 @@ sig_tally.CopyNumber <- function(object,
 #'     ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
 #'     use_syn = TRUE
 #'   )
+#'   mt_tally$nmf_matrix[1:5, 1:5]
+#'
+#'   ## Use strand bias categories
+#'   mt_tally <- sig_tally(
+#'     laml,
+#'     ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
+#'     use_syn = TRUE, add_trans_bias = TRUE
+#'   )
+#'   ## Test it by enrichment analysis
+#'   enrich_component_strand_bias(mt_tally$nmf_matrix)
+#'   enrich_component_strand_bias(mt_tally$all_matrices$SBS_24)
 #' } else {
 #'   message("Please install package 'BSgenome.Hsapiens.UCSC.hg19' firstly!")
 #' }
 #' }
 #' @export
-sig_tally.MAF <- function(object, mode = c("SBS", "DBS", "ID"), ref_genome = NULL,
-                          ignore_chrs = NULL, use_syn = TRUE,
+sig_tally.MAF <- function(object, mode = c("SBS", "DBS", "ID"),
+                          ref_genome = NULL,
+                          genome_build = NULL,
+                          add_trans_bias = FALSE,
+                          ignore_chrs = NULL,
+                          use_syn = TRUE,
                           keep_only_matrix = FALSE,
                           ...) {
+  if (!requireNamespace("BSgenome", quietly = TRUE)) {
+    send_stop("Please install 'BSgenome' package firstly.")
+  }
 
-  mode = match.arg(mode)
+  mode <- match.arg(mode)
+
+  if (is.null(genome_build)) {
+    if (grepl("hg19", ref_genome)) {
+      genome_build <- "hg19"
+    } else if (grepl("hg38", ref_genome)) {
+      genome_build <- "hg38"
+    } else {
+      send_stop("Cannot guess the genome build, please set it by hand!")
+    }
+  }
 
   hsgs.installed <- BSgenome::installed.genomes(splitNameParts = TRUE)
   data.table::setDT(x = hsgs.installed)
   # hsgs.installed = hsgs.installed[organism %in% "Hsapiens"]
 
   if (nrow(hsgs.installed) == 0) {
-    stop("Could not find any installed BSgenomes.\nUse BSgenome::available.genomes() for options.")
+    send_stop("Could not find any installed BSgenomes. Use {.code BSgenome::available.genomes()} for options.")
   }
 
   if (is.null(ref_genome)) {
-    message("=> User did not set 'ref_genome'")
-    message("=> Found following BSgenome installtions. Using first entry\n")
+    send_info("User did not set {.code ref_genome}.")
+    send_success("Found following BSgenome installtions. Using first entry.\n")
     print(hsgs.installed)
     ref_genome <- hsgs.installed$pkgname[1]
   } else {
     if (!ref_genome %in% hsgs.installed$pkgname) {
-      message(paste0("=> Could not find BSgenome "), ref_genome, "\n")
-      message("=> Found following BSgenome installtions. Correct 'ref_genome' argument if necessary\n")
+      send_error("Could not find BSgenome {.code ", ref_genome, "}.")
+      send_info("Found following BSgenome installtions. Correct {.code ref_genome} argument if necessary.")
       print(hsgs.installed)
-      stop()
+      send_stop("Exit.")
     }
   }
 
   ref_genome <- BSgenome::getBSgenome(genome = ref_genome)
+  send_success("Reference genome loaded.")
+
   query <- maftools::subsetMaf(
     maf = object,
     query = "Variant_Type %in% c('SNP', 'INS', 'DEL')", fields = "Chromosome",
     includeSyn = use_syn, mafObj = FALSE
   )
+  send_success("Variants from MAF object queried.")
 
   # Remove unwanted contigs
   if (!is.null(ignore_chrs)) {
     query <- query[!query$Chromosome %in% ignore_chrs]
+    send_success("Unwanted contigs removed.")
   }
 
   if (nrow(query) == 0) {
-    stop("Zero variants to analyze!")
+    send_stop("Zero variants to analyze!")
   }
 
-  message("=> Checking chromosome names...")
   query$Chromosome <- sub(
     pattern = "chr",
     replacement = "chr",
     x = as.character(query$Chromosome),
     ignore.case = TRUE
   )
-
   ## Make sure all have prefix
   if (any(!grepl("chr", query$Chromosome))) {
     query$Chromosome[!grepl("chr", query$Chromosome)] <-
       paste0("chr", query$Chromosome[!grepl("chr", query$Chromosome)])
   }
+
+  send_success("Chromosome names checked.")
 
   ## Handle non-autosomes
   query$Chromosome <- sub(
@@ -347,39 +422,41 @@ sig_tally.MAF <- function(object, mode = c("SBS", "DBS", "ID"), ref_genome = NUL
   query$Chromosome <- sub("23", "X", query$Chromosome)
   # detect and transform chromosome 24 to "Y"
   query$Chromosome <- sub("24", "Y", query$Chromosome)
-  message("=> Done")
 
-  message("=> Checking start and end position...")
+  send_success("Sex chromosomes properly handled.")
+
   query$Start_Position <- as.numeric(as.character(query$Start_Position))
   query$End_Position <- as.numeric(as.character(query$End_Position))
-  message("=> Done")
+
+  send_success("Variant start and end position checked.")
 
   query_seq_lvls <- query[, .N, Chromosome]
   ref_seqs_lvls <- BSgenome::seqnames(x = ref_genome)
   query_seq_lvls_missing <- query_seq_lvls[!Chromosome %in% ref_seqs_lvls]
 
   if (nrow(query_seq_lvls_missing) > 0) {
-    warning(paste0(
+    send_warning(paste0(
       "Chromosome names in MAF must match chromosome names in reference genome.\nIgnorinig ",
       query_seq_lvls_missing[, sum(N)],
       " single nucleotide variants from missing chromosomes ",
       paste(query_seq_lvls_missing[, Chromosome], collapse = ", ")
-    ),
-    immediate. = TRUE
-    )
+    ))
   }
 
   query <- query[!Chromosome %in% query_seq_lvls_missing[, Chromosome]]
 
-  if (mode == "SBS") {
-    res <- generate_matrix_SBS(query, ref_genome)
-  } else if (mode == "DBS") {
+  send_success("Variant data for matrix generation preprocessed.")
 
+  if (mode == "SBS") {
+    res <- generate_matrix_SBS(query, ref_genome, genome_build = genome_build, add_trans_bias = add_trans_bias)
+  } else if (mode == "DBS") {
+    res <- generate_matrix_DBS(query, ref_genome, genome_build = genome_build, add_trans_bias = add_trans_bias)
   } else {
     ## INDEL
+    res <- generate_matrix_INDEL(query, ref_genome, genome_build = genome_build, add_trans_bias = add_trans_bias)
   }
 
-  message("=> Done")
+  send_success("Done.")
 
   if (keep_only_matrix) {
     res$nmf_matrix

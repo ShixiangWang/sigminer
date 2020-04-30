@@ -6,3 +6,6 @@ NMF_*
 .vscode/
 doc
 Meta
+data-raw/*.gtf.gz
+data-raw/SigProfiler*
+data-raw/*.csv

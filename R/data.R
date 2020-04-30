@@ -55,6 +55,24 @@ NULL
 #' data(cytobands.hg38)
 NULL
 
+#' Merged Transcript Location at Genome Build hg19
+#' @docType data
+#' @name transcript.hg19
+#' @format A `data.table`
+#' @source from GENCODE release v33.
+#' @examples
+#' data(transcript.hg19)
+NULL
+
+#' Merged Transcript Location at Genome Build hg38
+#' @docType data
+#' @name transcript.hg38
+#' @format A `data.table`
+#' @source from GENCODE release v33.
+#' @examples
+#' data(transcript.hg38)
+NULL
+
 #' Classfication Table of Copy Number Features Devised by Wang et al.
 #' @docType data
 #' @name CN.features

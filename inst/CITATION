@@ -1,0 +1,26 @@
+citHeader("To cite sigminer in publications use:")
+
+citEntry(
+  entry    = "Article",
+  title    = "Copy number signature analyses in prostate cancer reveal distinct etiologies and clinical outcomes",
+  author   = personList(as.person("Shixiang Wang"),
+                       as.person("Huimin Li"),
+                       as.person("Minfang Song"),
+                       as.person("Zaoke He"),
+                       as.person("Tao Wu"),
+                       as.person("Xuan Wang"),
+                       as.person("Ziyu Tao"),
+                       as.person("Kai Wu"),
+                       as.person("Xue-Song Liu")
+                       ),
+  journal  = "medRxiv",
+  year     = 2020,
+#  volume   = 145,
+#  number   = 10,
+#  pages    = "2840--2849",
+  url      = "https://www.medrxiv.org/content/early/2020/04/29/2020.04.27.20082404",
+  textVersion = paste(
+    "Wang, Shixiang, et al. \"Copy number signature analyses in prostate cancer reveal distinct etiologies and clinical outcomes\"",
+    "medRxiv (2020)."
+  )
+)

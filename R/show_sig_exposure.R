@@ -212,6 +212,9 @@ show_sig_exposure <- function(Signature,
   }
 
   if (style == "cosmic") {
+    if (!requireNamespace("ggplotify", quietly = TRUE)) {
+      send_stop("Please install 'ggplotify' package firstly.")
+    }
     g <- ggplot_gtable(ggplot_build(p))
 
     strip_t <- which(grepl("strip-t", g$layout$name))
