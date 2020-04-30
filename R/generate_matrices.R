@@ -344,18 +344,17 @@ generate_matrix_DBS <- function(query, ref_genome, genome_build = "hg19", add_tr
   query[, dbs := paste(Reference_Allele, Tumor_Seq_Allele2, sep = ">")]
   query[, dbsMotif := ifelse(dbs %in% names(conv), conv[dbs], dbs)]
   query[, dbsMotif := factor(dbsMotif, levels = as.character(conv))]
-  query[,is_reversed := ifelse(substr(dbsMotif,1,2)==substr(dbs,1,2),F,T)]
+  query[, should_reverse := substr(dbsMotif, 1, 2) != substr(dbs, 1, 2)]
 
   DBS_78 <- records_to_matrix(query, "Tumor_Sample_Barcode", "dbsMotif") %>% as.matrix()
   send_success("DBS-78 matrix created.")
 
-
   if (add_trans_bias) {
-    query$End_Position = query$Start_Position + 1
+    query$End_Position <- query$Start_Position + 1
     DBS_186 <- records_to_matrix(query, "Tumor_Sample_Barcode", "dbsMotif",
       add_trans_bias = TRUE, build = genome_build, mode = "DBS"
     )
-    DBS_186 <- DBS_186 %>% as.matrix %>%  t()
+    DBS_186 <- DBS_186 %>% as.matrix()
     send_success("DBS-186 matrix created.")
 
     send_info("Return DBS-186 as major matrix.")
@@ -616,7 +615,7 @@ records_to_matrix <- function(dt, samp_col, component_col, add_trans_bias = FALS
     m_dt <- data.table::foverlaps(loc_dt, transcript_dt, type = "any")[
       , .(MatchCount = .N, strand = paste0(unique(strand), collapse = "/")),
       by = list(MutIndex)
-      ]
+    ]
 
     ## Actually, the MatchCount should only be 0, 1, 2
     if (any(m_dt$MatchCount > 2)) {
@@ -640,25 +639,44 @@ records_to_matrix <- function(dt, samp_col, component_col, add_trans_bias = FALS
       dt[[component_col]] <- paste0(dt$transcript_bias_label, dt[[component_col]])
       dt[[component_col]] <- factor(dt[[component_col]], levels = new_levels)
     } else if (mode == "DBS") {
-      m_dt$is_plus_strand <- ifelse(m_dt$strand=="+",T,F)
+
+      # dt <- dt %>%
+      #   dplyr::as_tibble() %>%
+      #   #dplyr::bind_cols(m_dt %>% dplyr::as_tibble()) %>%
+      #   dplyr::mutate(
+      #     transcript_bias_label = dplyr::case_when(
+      #       !substr(.data[[component_col]], 1, 2) %in% c("TT", "TC", "CT", "CC") ~ "Q:",
+      #       m_dt$MatchCount == 2 ~ "B:",
+      #       m_dt$MatchCount == 0 ~ "N:",
+      #       xor(dt$should_reverse, m_dt$strand == "-") ~ "T:",
+      #       TRUE ~ "U:"
+      #     )
+      #   ) %>%
+      #   data.table::as.data.table()
+
       dt$transcript_bias_label <- ifelse(
         substr(dt[[component_col]], 1, 2) %in% c("TT", "TC", "CT", "CC"),
         ifelse(
           m_dt$MatchCount == 2, "B:",
-          ifelse(m_dt$strand=="NA", "N:",
-                 ifelse(xor(m_dt$is_plus_strand,dt$is_reversed),
-                        "U:","T:"
-                 )
+          ifelse(m_dt$MatchCount == 0, "N:",
+            ifelse(xor(dt$should_reverse, m_dt$strand == "-"),
+              "T:", "U:"
+            )
           )
         ), "Q:"
       )
+
       new_levels <- vector_to_combination(
         c("T:", "U:", "B:", "N:", "Q:"),
         levels(dt[[component_col]])
       )
-      new_levels <-ifelse(substr(new_levels,3,4)%in%c("TT", "TC", "CT", "CC")&substr(new_levels,1,1)!="Q",new_levels,
-                          ifelse(substr(new_levels,3,4)%in%c("TT", "TC", "CT", "CC")&substr(new_levels,1,1)=="Q",
-                                 NA,gsub("[A-Z]\\:","Q:",new_levels))) %>% na.omit() %>% unique()
+      new_levels <- ifelse(substr(new_levels, 3, 4) %in% c("TT", "TC", "CT", "CC") & substr(new_levels, 1, 1) != "Q", new_levels,
+        ifelse(substr(new_levels, 3, 4) %in% c("TT", "TC", "CT", "CC") & substr(new_levels, 1, 1) == "Q",
+          NA, gsub("[A-Z]\\:", "Q:", new_levels)
+        )
+      ) %>%
+        na.omit() %>%
+        unique()
 
       dt[[component_col]] <- paste0(dt$transcript_bias_label, dt[[component_col]])
       dt[[component_col]] <- factor(dt[[component_col]], levels = new_levels)
