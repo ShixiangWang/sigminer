@@ -97,18 +97,12 @@ its documentation.
 
 -----
 
-***Copy number signature analyses in prostate cancer reveal distinct
-etiologies and clinical outcomes, under submission***
+***Wang, Shixiang, et al. “Copy number signature analyses in prostate
+cancer reveal distinct etiologies and clinical outcomes” medRxiv
+(2020)***
+<https://www.medrxiv.org/content/early/2020/04/29/2020.04.27.20082404>
 
 -----
-
-Currently, **sigminer** has not been published. If you use **sigminer**
-in academic field, please cite our recent
-    work:
-
-    Wang, Shixiang, et al. "The predictive power of tumor mutational burden 
-        in lung cancer immunotherapy response is influenced by patients' sex."
-        International journal of cancer (2019).
 
 ## Acknowledgments
 

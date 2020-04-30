@@ -7,6 +7,7 @@
 - Moved multiple packages from field `Imports` to `Suggests`.
 - Added feature `report_bootstrap_p_value()` to report p values.
 - Added common DBS and ID signature.
+- Updated citation.
 
 # sigminer 1.0.2
 

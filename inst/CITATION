@@ -2,18 +2,25 @@ citHeader("To cite sigminer in publications use:")
 
 citEntry(
   entry    = "Article",
-  title    = "The predictive power of tumor mutational burden in lung cancer immunotherapy response is influenced by patients’ sex",
+  title    = "Copy number signature analyses in prostate cancer reveal distinct etiologies and clinical outcomes",
   author   = personList(as.person("Shixiang Wang"),
-                       as.person("Xuesong Liu")
+                       as.person("Huimin Li"),
+                       as.person("Minfang Song"),
+                       as.person("Zaoke He"),
+                       as.person("Tao Wu"),
+                       as.person("Xuan Wang"),
+                       as.person("Ziyu Tao"),
+                       as.person("Kai Wu"),
+                       as.person("Xue-Song Liu")
                        ),
-  journal  = "International journal of cancer",
-  year     = 2019,
-  volume   = 145,
-  number   = 10,
-  pages    = "2840--2849",
-  url      = "https://doi.org/10.1002/ijc.32327",
+  journal  = "medRxiv",
+  year     = 2020,
+#  volume   = 145,
+#  number   = 10,
+#  pages    = "2840--2849",
+  url      = "https://www.medrxiv.org/content/early/2020/04/29/2020.04.27.20082404",
   textVersion = paste(
-    "Wang, Shixiang, et al. \"The predictive power of tumor mutational burden in lung cancer immunotherapy response",
-    "is influenced by patients’ sex.\" International journal of cancer 145.10 (2019): 2840-2849."
+    "Wang, Shixiang, et al. \"Copy number signature analyses in prostate cancer reveal distinct etiologies and clinical outcomes\"",
+    "medRxiv (2020)."
   )
 )
