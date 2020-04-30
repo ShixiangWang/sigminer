@@ -210,7 +210,7 @@ sig_fit <- function(catalogue_matrix,
   if (!is.null(cat_rowname) & !is.null(sig_rowname)) {
     send_info("Checking rownames for catalog matrix and signature matrix.")
     if (!all(sig_rowname == cat_rowname)) {
-      message("Matrix V and W don't have same orders. Try reordering...")
+      send_info("Matrix V and W don't have same orders. Try reordering...")
       if (all(sort(cat_rowname) == sort(sig_rowname))) {
         ## Set catalogue matrix as signature matrix
         catalogue_matrix <- catalogue_matrix[sig_rowname, , drop = FALSE]
