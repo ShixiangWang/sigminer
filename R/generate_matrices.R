@@ -2,6 +2,7 @@
 # SBS ---------------------------------------------------------------------
 
 generate_matrix_SBS <- function(query, ref_genome, genome_build = "hg19", add_trans_bias = FALSE) {
+  send_info("SBS matrix generation - start.")
   ## T: and U: are basically same to sigprofiler, the other two types (N: and B:) are
   ## a bit different, may be caused by different annotations.
   query <- query[query$Variant_Type == "SNP"]
@@ -277,6 +278,8 @@ generate_matrix_SBS <- function(query, ref_genome, genome_build = "hg19", add_tr
 # DBS ---------------------------------------------------------------------
 
 generate_matrix_DBS <- function(query, ref_genome, genome_build = "hg19", add_trans_bias = FALSE) {
+  send_info("DBS matrix generation - start.")
+
   query <- query[query$Variant_Type == "SNP"]
   if (nrow(query) == 0) {
     send_stop("Zero SNPs to analyze!")
@@ -428,6 +431,8 @@ search_DBS <- function(x) {
 # INDELs (ID) -------------------------------------------------------------
 
 generate_matrix_INDEL <- function(query, ref_genome, genome_build = "hg19", add_trans_bias = FALSE) {
+  send_info("INDEL matrix generation - start.")
+
   query <- query[query$Variant_Type != "SNP"]
   if (nrow(query) == 0) {
     send_stop("Zero INDELs to analyze!")
