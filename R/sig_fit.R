@@ -124,7 +124,7 @@ sig_fit <- function(catalogue_matrix,
                         package = "maftools", mustWork = TRUE),
       DBS = system.file("extdata", "DBS_signatures.rds",
                         package = "sigminer", mustWork = TRUE),
-      ID = system.file("extdata", "ID_signatures.RDs",
+      ID = system.file("extdata", "ID_signatures.rds",
                        package = "sigminer", mustWork = TRUE),
       send_stop("Invalid parameter passing to {.code sig_db}.")
     )

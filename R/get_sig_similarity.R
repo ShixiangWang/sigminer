@@ -101,7 +101,7 @@ get_sig_similarity <- function(Signature, Ref = NULL,
                         package = "maftools", mustWork = TRUE),
       DBS = system.file("extdata", "DBS_signatures.rds",
                         package = "sigminer", mustWork = TRUE),
-      ID = system.file("extdata", "ID_signatures.RDs",
+      ID = system.file("extdata", "ID_signatures.rds",
                        package = "sigminer", mustWork = TRUE)
     )
     sigs_db <- readRDS(file = db_file)

@@ -19,28 +19,36 @@
 #' @testexamples
 #' expect_s3_class(gg, "ggplot")
 show_cosmic_sig_profile <- function(sig_index = NULL, show_index = TRUE, sig_db = "legacy", ...) {
-  sig_db <- match.arg(arg = sig_db, choices = c("legacy", "SBS"))
-
   if (packageVersion("maftools") < "2.2.0") {
-    message("This feature requires maftools >=2.2.0, please install it firstly!")
+    send_error("This feature requires maftools >=2.2.0, please install it firstly!")
     return(invisible())
   }
 
-  if (sig_db == "legacy") {
-    sigs_db <- readRDS(file = system.file("extdata", "legacy_signatures.RDs",
-      package = "maftools", mustWork = TRUE
-    ))
-    sigs <- sigs_db$db
-    aetiology <- sigs_db$aetiology
-    avail_index <- substring(colnames(sigs), 8)
-  } else {
-    sigs_db <- readRDS(file = system.file("extdata", "SBS_signatures.RDs",
-      package = "maftools", mustWork = TRUE
-    ))
-    sigs <- sigs_db$db
-    aetiology <- sigs_db$aetiology
-    avail_index <- substring(colnames(sigs), 4)
-  }
+  db_file = switch(
+    sig_db,
+    legacy = system.file("extdata", "legacy_signatures.RDs",
+                         package = "maftools", mustWork = TRUE),
+    SBS = system.file("extdata", "SBS_signatures.RDs",
+                      package = "maftools", mustWork = TRUE),
+    DBS = system.file("extdata", "DBS_signatures.rds",
+                      package = "sigminer", mustWork = TRUE),
+    ID = system.file("extdata", "ID_signatures.rds",
+                     package = "sigminer", mustWork = TRUE),
+    send_stop("Invalid parameter passing to {.code sig_db}.")
+  )
+  sigs_db <- readRDS(file = db_file)
+  sigs <- sigs_db$db
+  aetiology <- sigs_db$aetiology
+
+  sigs <- apply(sigs, 2, function(x) x / sum(x))
+
+  avail_index <- switch(
+    sig_db,
+    legacy = substring(colnames(sigs), 8),
+    SBS = substring(colnames(sigs), 4),
+    DBS = substring(colnames(sigs), 4),
+    ID = substring(colnames(sigs), 3)
+  )
 
   msg <- paste(
     paste0("\nValid index for db '", sig_db, "':"),
