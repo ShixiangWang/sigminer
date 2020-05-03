@@ -92,7 +92,7 @@ sig_fit <- function(catalogue_matrix,
                     mode = c("SBS", "copynumber"),
                     true_catalog = NULL,
                     ...) {
-  ## TODO: add mode for DBS and INDEL and also add COSMIC database for them
+
   stopifnot(is.matrix(catalogue_matrix))
   db_type <- match.arg(db_type)
   method <- match.arg(method)
@@ -114,34 +114,41 @@ sig_fit <- function(catalogue_matrix,
     }
   } else {
     send_success("Signature index detected.")
-    send_info("Checking signature database in {.pkg maftools}.")
+    send_info("Checking signature database in package.")
 
-    if (sig_db == "legacy") {
-      sigs_db <- readRDS(file = system.file("extdata", "legacy_signatures.RDs",
-        package = "maftools", mustWork = TRUE
-      ))
-      sigs <- sigs_db$db
+    db_file = switch(
+      sig_db,
+      legacy = system.file("extdata", "legacy_signatures.RDs",
+                           package = "maftools", mustWork = TRUE),
+      SBS = system.file("extdata", "SBS_signatures.RDs",
+                        package = "maftools", mustWork = TRUE),
+      DBS = system.file("extdata", "DBS_signatures.rds",
+                        package = "sigminer", mustWork = TRUE),
+      ID = system.file("extdata", "ID_signatures.RDs",
+                       package = "sigminer", mustWork = TRUE),
+      send_stop("Invalid parameter passing to {.code sig_db}.")
+    )
+    sigs_db <- readRDS(file = db_file)
+    sigs <- sigs_db$db
+    sigs <- apply(sigs, 2, function(x) x / sum(x))
 
+    ## Some extra processing
+    if (sig_db == "legacy" & db_type == "human-genome") {
       ## v2 comes from Exome
-      if (db_type == "human-genome") {
-        sigs <- sig_convert(sig = sigs, from = "human-exome", to = "human-genome")
-      }
-
-      avail_index <- substring(colnames(sigs), 8)
-    } else {
-      sigs_db <- readRDS(file = system.file("extdata", "SBS_signatures.RDs",
-        package = "maftools", mustWork = TRUE
-      ))
-      sigs <- sigs_db$db
-
-      sigs <- apply(sigs, 2, function(x) x / sum(x))
+      sigs <- sig_convert(sig = sigs, from = "human-exome", to = "human-genome")
+    } else if (sig_db == "SBS" & db_type == "human-exome") {
       ## v3 comes from WGS (PCAWG)
-      if (db_type == "human-exome") {
-        sigs <- sig_convert(sig = sigs, from = "human-genome", to = "human-exome")
-      }
-
-      avail_index <- substring(colnames(sigs), 4)
+      ## Should DBS and ID also handle such cases?
+      sigs <- sig_convert(sig = sigs, from = "human-genome", to = "human-exome")
     }
+
+    avail_index <- switch(
+      sig_db,
+      legacy = substring(colnames(sigs), 8),
+      SBS = substring(colnames(sigs), 4),
+      DBS = substring(colnames(sigs), 4),
+      ID = substring(colnames(sigs), 3)
+    )
 
     send_info("Checking signature index.")
 

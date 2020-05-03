@@ -21,10 +21,14 @@ DBS_aetiology = data.frame(
                 "Possibly related to APOBEC mutagenesis")
 )
 
+rownames(DBS_aetiology) = colnames(DBS)
+
+DBS = apply(DBS, 2, function(x) x / sum(x)) %>% as.data.frame()
+
 DBS_db = list(
   db = DBS,
   aetiology = DBS_aetiology,
-  date = "2020/04/30"
+  date = "2020/05/03"
 )
 
 saveRDS(DBS_db, file = "inst/extdata/DBS_signatures.rds")
@@ -81,10 +85,13 @@ ID_aetiology = data.frame(
                 "Unknown")
 )
 
+rownames(ID_aetiology) = colnames(ID)
+ID = apply(ID, 2, function(x) x / sum(x)) %>% as.data.frame()
+
 ID_db = list(
   db = ID,
   aetiology = ID_aetiology,
-  date = "2020/04/30"
+  date = "2020/05/03"
 )
 
 saveRDS(ID_db, file = "inst/extdata/ID_signatures.rds")
