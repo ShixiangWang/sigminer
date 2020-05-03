@@ -2,7 +2,7 @@ library(tidyverse)
 ## This has been stored in Maftools
 ## SBS = vroom::vroom("data-raw/SigProfiler Signatures/SigProfiler reference signatures/SigProfiler reference whole-genome signatures/sigProfiler_SBS_signatures_2018_03_28.csv")
 ##
-DBS = vroom::vroom("data-raw/SigProfiler Signatures/SigProfiler reference signatures/SigProfiler reference whole-genome signatures/sigProfiler_DBS_signatures.csv")
+DBS = readr::read_csv("data-raw/SigProfiler Signatures/SigProfiler reference signatures/SigProfiler reference whole-genome signatures/sigProfiler_DBS_signatures.csv")
 ##
 DBS_db = list()
 DBS = DBS %>% column_to_rownames("Mutation Type")
@@ -34,7 +34,7 @@ DBS_db = list(
 saveRDS(DBS_db, file = "inst/extdata/DBS_signatures.rds")
 
 ## INDEL
-ID = vroom::vroom("data-raw/SigProfiler Signatures/SigProfiler reference signatures/SigProfiler reference whole-genome signatures/sigProfiler_ID_signatures.csv")
+ID = readr::read_csv("data-raw/SigProfiler Signatures/SigProfiler reference signatures/SigProfiler reference whole-genome signatures/sigProfiler_ID_signatures.csv")
 ID = ID %>% column_to_rownames("Mutation Type")
 rownames(ID)
 
