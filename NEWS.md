@@ -1,3 +1,7 @@
+# sigminer 1.0.4
+
+- Added profile plot for DBS and INDEL.
+
 # sigminer 1.0.3
 
 - Added multiple methods for `sig_fit()`.
