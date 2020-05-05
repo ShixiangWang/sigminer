@@ -292,7 +292,7 @@ sig_fit <- function(catalogue_matrix,
 
     ## compute estimation error for each sample/patient (Frobenius norm)
     if (type == "relative") {
-      send_warning("When the type is 'relative', the returned error is affected by its precision.")
+      send_warning("When the type is 'relative', the returned error is a little affected by its precision.")
       if (is.null(true_catalog)) {
         errors <- sapply(
           seq(ncol(expo_mat)),
@@ -324,6 +324,7 @@ sig_fit <- function(catalogue_matrix,
       }
     }
     names(errors) <- colnames(catalogue_matrix)
+    errors <- round(errors, digits = 3)
 
     send_success("Done.")
     return(list(
