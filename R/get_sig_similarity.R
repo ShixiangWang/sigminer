@@ -93,16 +93,20 @@ get_sig_similarity <- function(Signature, Ref = NULL,
   method <- match.arg(arg = method, choices = c("cosine"))
 
   if (is.null(Ref)) {
-    db_file = switch(
+    db_file <- switch(
       sig_db,
       legacy = system.file("extdata", "legacy_signatures.RDs",
-                           package = "maftools", mustWork = TRUE),
+        package = "maftools", mustWork = TRUE
+      ),
       SBS = system.file("extdata", "SBS_signatures.RDs",
-                        package = "maftools", mustWork = TRUE),
+        package = "maftools", mustWork = TRUE
+      ),
       DBS = system.file("extdata", "DBS_signatures.rds",
-                        package = "sigminer", mustWork = TRUE),
+        package = "sigminer", mustWork = TRUE
+      ),
       ID = system.file("extdata", "ID_signatures.rds",
-                       package = "sigminer", mustWork = TRUE)
+        package = "sigminer", mustWork = TRUE
+      )
     )
     sigs_db <- readRDS(file = db_file)
     sigs <- sigs_db$db

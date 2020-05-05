@@ -92,7 +92,6 @@ sig_fit <- function(catalogue_matrix,
                     mode = c("SBS", "copynumber"),
                     true_catalog = NULL,
                     ...) {
-
   stopifnot(is.matrix(catalogue_matrix))
   db_type <- match.arg(db_type)
   method <- match.arg(method)
@@ -116,16 +115,20 @@ sig_fit <- function(catalogue_matrix,
     send_success("Signature index detected.")
     send_info("Checking signature database in package.")
 
-    db_file = switch(
+    db_file <- switch(
       sig_db,
       legacy = system.file("extdata", "legacy_signatures.RDs",
-                           package = "maftools", mustWork = TRUE),
+        package = "maftools", mustWork = TRUE
+      ),
       SBS = system.file("extdata", "SBS_signatures.RDs",
-                        package = "maftools", mustWork = TRUE),
+        package = "maftools", mustWork = TRUE
+      ),
       DBS = system.file("extdata", "DBS_signatures.rds",
-                        package = "sigminer", mustWork = TRUE),
+        package = "sigminer", mustWork = TRUE
+      ),
       ID = system.file("extdata", "ID_signatures.rds",
-                       package = "sigminer", mustWork = TRUE),
+        package = "sigminer", mustWork = TRUE
+      ),
       send_stop("Invalid parameter passing to {.code sig_db}.")
     )
     sigs_db <- readRDS(file = db_file)

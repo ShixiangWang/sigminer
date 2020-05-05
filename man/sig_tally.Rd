@@ -30,7 +30,7 @@ sig_tally(object, ...)
 
 \method{sig_tally}{MAF}(
   object,
-  mode = c("SBS", "DBS", "ID"),
+  mode = c("SBS", "DBS", "ID", "ALL"),
   ref_genome = NULL,
   genome_build = NULL,
   add_trans_bias = FALSE,

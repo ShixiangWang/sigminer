@@ -469,7 +469,7 @@ sig_tally.MAF <- function(object, mode = c("SBS", "DBS", "ID", "ALL"),
         NULL
       }
     )
-    res_ID  <- tryCatch(
+    res_ID <- tryCatch(
       generate_matrix_INDEL(query, ref_genome, genome_build = genome_build, add_trans_bias = add_trans_bias),
       error = function(e) {
         NULL

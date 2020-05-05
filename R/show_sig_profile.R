@@ -237,45 +237,47 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
 
     mat <- tidyr::gather(mat, class, signature, -c("context", "base"))
     mat <- dplyr::mutate(mat,
-                         context = factor(.data$context),
-                         base = factor(.data$base, levels = c(
-                           "AC>NN", "AT>NN",
-                           "CC>NN", "CG>NN",
-                           "CT>NN", "GC>NN",
-                           "TA>NN", "TC>NN",
-                           "TG>NN", "TT>NN"
-                         )),
-                         class = factor(class)
+      context = factor(.data$context),
+      base = factor(.data$base, levels = c(
+        "AC>NN", "AT>NN",
+        "CC>NN", "CG>NN",
+        "CT>NN", "GC>NN",
+        "TA>NN", "TC>NN",
+        "TG>NN", "TT>NN"
+      )),
+      class = factor(class)
     )
   } else if (mode == "ID") {
-    conv = c("2", "3", "4", "5:D:M")
-    names(conv) = c("2:D:M", "3:D:M", "4:D:M", "5:D:M")
+    conv <- c("2", "3", "4", "5:D:M")
+    names(conv) <- c("2:D:M", "3:D:M", "4:D:M", "5:D:M")
 
     mat$base <- paste0(substr(mat$context, 1, 3), substr(mat$context, 6, 7))
     mat$base <- ifelse(grepl("D:M", mat$base),
-                       conv[mat$base], mat$base)
+      conv[mat$base], mat$base
+    )
     mat$count <- as.integer(substr(mat$context, 9, 9))
     mat$is_del <- grepl(":Del:[RCT]", mat$context)
     mat$count <- ifelse(mat$is_del, mat$count + 1, mat$count)
     mat$context <- ifelse(mat$is_del,
-                        ifelse(mat$count == 6, "6+", as.character(mat$count)),
-                        ifelse(mat$count == 5, "5+", as.character(mat$count)))
+      ifelse(mat$count == 6, "6+", as.character(mat$count)),
+      ifelse(mat$count == 5, "5+", as.character(mat$count))
+    )
     mat$count <- NULL
     mat$is_del <- NULL
 
     mat <- tidyr::gather(mat, class, signature, -c("context", "base"))
     mat <- dplyr::mutate(mat,
-                         context = factor(.data$context),
-                         base = factor(.data$base, levels = c(
-                           "1:D:C", "1:D:T",
-                           "1:I:C", "1:I:T",
-                           "2:D:R", "3:D:R",
-                           "4:D:R", "5:D:R",
-                           "2:I:R", "3:I:R",
-                           "4:I:R", "5:I:R",
-                           "2", "3", "4", "5:D:M"
-                         )),
-                         class = factor(class)
+      context = factor(.data$context),
+      base = factor(.data$base, levels = c(
+        "1:D:C", "1:D:T",
+        "1:I:C", "1:I:T",
+        "2:D:R", "3:D:R",
+        "4:D:R", "5:D:R",
+        "2:I:R", "3:I:R",
+        "4:I:R", "5:I:R",
+        "2", "3", "4", "5:D:M"
+      )),
+      class = factor(class)
     )
   }
 

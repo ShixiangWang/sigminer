@@ -16,7 +16,7 @@ show_cosmic_sig_profile(
 
 \item{show_index}{if \code{TRUE}, show valid index.}
 
-\item{sig_db}{can be 'legacy' or 'SBS'. Default 'legacy'.}
+\item{sig_db}{can be 'legacy' (for COSMIC v2 'SBS'), 'SBS', 'DBS' and 'ID'. Default 'legacy'.}
 
 \item{...}{other arguments passing to \link{show_sig_profile}.}
 }

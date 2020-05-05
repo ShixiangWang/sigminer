@@ -22,7 +22,7 @@ More please see examples.}
 
 \item{Ref}{default is \code{NULL}, can be a same object as \code{Signature}.}
 
-\item{sig_db}{can be 'legacy' or 'SBS'. Default 'legacy'.}
+\item{sig_db}{can be 'legacy' (for COSMIC v2 'SBS'), 'SBS', 'DBS' and 'ID'. Default 'legacy'.}
 
 \item{db_type}{only used when \code{sig_db} is enabled.
 "" for keeping default, "human-exome" for transforming to exome frequency of component,
@@ -31,7 +31,7 @@ and "human-genome" for transforming to whole genome frequency of component.}
 \item{method}{default is 'cosine' for cosine similarity.}
 
 \item{normalize}{one of "row" and "feature". "row" is typically used
-for mutational signatures. "feature" is designed by me to use when input
+for common mutational signatures. "feature" is designed by me to use when input
 are copy number signatures.}
 
 \item{feature_setting}{a \code{data.frame} used for classification.
@@ -77,6 +77,8 @@ s4 <- get_sig_similarity(sig2,
   pattern_to_rm = c("T[T>G]C", "T[T>G]G", "T[T>G]T")
 )
 s4
+
+## Same to DBS and ID signatures
 }
 \author{
 Shixiang Wang \href{mailto:w_shixiang@163.com}{w_shixiang@163.com}

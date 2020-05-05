@@ -45,6 +45,8 @@ col2hex <- function(col, alpha) grDevices::rgb(t(grDevices::col2rgb(col)), alpha
 #' Set Color Style for Plotting
 #'
 #' @param style one of 'default' and 'cosmic'.
+#' @param mode only used when the `style` is 'cosmic', can be one of
+#' "SBS", "copynumber", "DBS", "ID".
 #'
 #' @return color values.
 #' @export
