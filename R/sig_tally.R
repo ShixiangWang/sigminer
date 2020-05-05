@@ -316,7 +316,7 @@ sig_tally.CopyNumber <- function(object,
 #' }
 #' }
 #' @export
-sig_tally.MAF <- function(object, mode = c("SBS", "DBS", "ID"),
+sig_tally.MAF <- function(object, mode = c("SBS", "DBS", "ID", "ALL"),
                           ref_genome = NULL,
                           genome_build = NULL,
                           add_trans_bias = FALSE,
@@ -451,17 +451,45 @@ sig_tally.MAF <- function(object, mode = c("SBS", "DBS", "ID"),
     res <- generate_matrix_SBS(query, ref_genome, genome_build = genome_build, add_trans_bias = add_trans_bias)
   } else if (mode == "DBS") {
     res <- generate_matrix_DBS(query, ref_genome, genome_build = genome_build, add_trans_bias = add_trans_bias)
-  } else {
+  } else if (mode == "ID") {
     ## INDEL
     res <- generate_matrix_INDEL(query, ref_genome, genome_build = genome_build, add_trans_bias = add_trans_bias)
+  } else {
+    send_info("All types of matrices generation - start.")
+
+    res_SBS <- tryCatch(
+      generate_matrix_SBS(query, ref_genome, genome_build = genome_build, add_trans_bias = add_trans_bias),
+      error = function(e) {
+        NULL
+      }
+    )
+    res_DBS <- tryCatch(
+      generate_matrix_DBS(query, ref_genome, genome_build = genome_build, add_trans_bias = add_trans_bias),
+      error = function(e) {
+        NULL
+      }
+    )
+    res_ID <- tryCatch(
+      generate_matrix_INDEL(query, ref_genome, genome_build = genome_build, add_trans_bias = add_trans_bias),
+      error = function(e) {
+        NULL
+      }
+    )
+
+    send_info("All types of matrices generation - end.")
+    res <- c(res_SBS$all_matrices, res_DBS$all_matrices, res_ID$all_matrices)
   }
 
   send_success("Done.")
 
   if (keep_only_matrix) {
-    res$nmf_matrix
+    if (mode == "ALL") {
+      send_warning("Mode 'ALL' cannot return a single matrix.")
+      return(res)
+    }
+    return(res$nmf_matrix)
   } else {
-    res
+    return(res)
   }
 }
 

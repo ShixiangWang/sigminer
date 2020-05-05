@@ -31,10 +31,18 @@ records, thus providing new insight into cancer study.
 
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
 
+**DBS signatures**:
+
+<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
+
+**INDEL (i.e. ID) signatures**:
+
+<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
+
 ### Feature
 
-  - supports a standard *de novo* pipeline for identification of two
-    types of signatures: SBS signature and copy number signature
+  - supports a standard *de novo* pipeline for identification of **4**
+    types of signatures: copy number, SBS, DBS and INDEL
   - supports quantify exposure for one sample based on *known
     signatures*
   - supports two methods for calling copy number signatures: one is from
@@ -155,6 +163,11 @@ feature, please also
 7.  Kim, Jaegil, et al. “Somatic ERCC2 mutations are associated with a
     distinct genomic signature in urothelial tumors.” Nature genetics
     48.6 (2016): 600.
+8.  Bergstrom EN, Huang MN, Mahto U, Barnes M, Stratton MR, Rozen SG,
+    Alexandrov LB: SigProfilerMatrixGenerator: a tool for visualizing
+    and exploring patterns of small mutational events. BMC Genomics
+    2019, 20:685
+    <https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-019-6041-2>
 
 ## LICENSE
 

@@ -9,13 +9,13 @@
 #' @param Signature a `Signature` object or a component-by-signature matrix (sum of each column is 1).
 #' More please see examples.
 #' @param Ref default is `NULL`, can be a same object as `Signature`.
-#' @param sig_db can be 'legacy' or 'SBS'. Default 'legacy'.
+#' @param sig_db can be 'legacy' (for COSMIC v2 'SBS'), 'SBS', 'DBS' and 'ID'. Default 'legacy'.
 #' @param db_type only used when `sig_db` is enabled.
 #' "" for keeping default, "human-exome" for transforming to exome frequency of component,
 #' and "human-genome" for transforming to whole genome frequency of component.
 #' @param method default is 'cosine' for cosine similarity.
 #' @param normalize one of "row" and "feature". "row" is typically used
-#' for mutational signatures. "feature" is designed by me to use when input
+#' for common mutational signatures. "feature" is designed by me to use when input
 #' are copy number signatures.
 #' @param pattern_to_rm patterns for removing some features/components in similarity
 #' calculation. A vector of component name is also accepted.
@@ -48,6 +48,8 @@
 #'   pattern_to_rm = c("T[T>G]C", "T[T>G]G", "T[T>G]T")
 #' )
 #' s4
+#'
+#' ## Same to DBS and ID signatures
 #' @testexamples
 #' expect_equal(length(s1), 3L)
 #' expect_equal(length(s2), 3L)
@@ -61,7 +63,7 @@ get_sig_similarity <- function(Signature, Ref = NULL,
                                feature_setting = sigminer::CN.features,
                                pattern_to_rm = NULL,
                                verbose = TRUE) {
-  if (class(Signature) == "Signature") {
+  if (inherits(Signature, "Signature")) {
     w <- Signature$Signature.norm
   } else if (is.matrix(Signature)) {
     w <- Signature
@@ -87,35 +89,39 @@ get_sig_similarity <- function(Signature, Ref = NULL,
     }
   }
 
-  sig_db <- match.arg(arg = sig_db, choices = c("legacy", "SBS"))
+  sig_db <- match.arg(arg = sig_db, choices = c("legacy", "SBS", "DBS", "ID"))
   method <- match.arg(arg = method, choices = c("cosine"))
 
   if (is.null(Ref)) {
-    if (sig_db == "legacy") {
-      sigs_db <- readRDS(file = system.file("extdata", "legacy_signatures.RDs",
+    db_file <- switch(
+      sig_db,
+      legacy = system.file("extdata", "legacy_signatures.RDs",
         package = "maftools", mustWork = TRUE
-      ))
-      sigs <- sigs_db$db
-      # sigs <- apply(sigs, 2, function(x) x / sum(x))
+      ),
+      SBS = system.file("extdata", "SBS_signatures.RDs",
+        package = "maftools", mustWork = TRUE
+      ),
+      DBS = system.file("extdata", "DBS_signatures.rds",
+        package = "sigminer", mustWork = TRUE
+      ),
+      ID = system.file("extdata", "ID_signatures.rds",
+        package = "sigminer", mustWork = TRUE
+      )
+    )
+    sigs_db <- readRDS(file = db_file)
+    sigs <- sigs_db$db
+    aetiology <- sigs_db$aetiology
 
+    sigs <- apply(sigs, 2, function(x) x / sum(x))
+
+    ## Some extra processing
+    if (sig_db == "legacy" & db_type == "human-genome") {
       ## v2 comes from Exome
-      if (db_type == "human-genome") {
-        sigs <- sig_convert(sig = sigs, from = "human-exome", to = "human-genome")
-      }
-
-      aetiology <- sigs_db$aetiology
-    } else {
-      sigs_db <- readRDS(file = system.file("extdata", "SBS_signatures.RDs",
-        package = "maftools", mustWork = TRUE
-      ))
-      sigs <- sigs_db$db
-      sigs <- apply(sigs, 2, function(x) x / sum(x))
+      sigs <- sig_convert(sig = sigs, from = "human-exome", to = "human-genome")
+    } else if (sig_db == "SBS" & db_type == "human-exome") {
       ## v3 comes from WGS (PCAWG)
-      if (db_type == "human-exome") {
-        sigs <- sig_convert(sig = sigs, from = "human-genome", to = "human-exome")
-      }
-
-      aetiology <- sigs_db$aetiology
+      ## Should DBS and ID also handle such cases?
+      sigs <- sig_convert(sig = sigs, from = "human-genome", to = "human-exome")
     }
   } else {
     if (class(Ref) == "Signature") {

@@ -84,7 +84,7 @@ from compareSignatures() in maftools package." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.4</span>
       </span>
     </div>
 
@@ -165,7 +165,7 @@ More please see examples.</p></td>
     </tr>
     <tr>
       <th>sig_db</th>
-      <td><p>can be 'legacy' or 'SBS'. Default 'legacy'.</p></td>
+      <td><p>can be 'legacy' (for COSMIC v2 'SBS'), 'SBS', 'DBS' and 'ID'. Default 'legacy'.</p></td>
     </tr>
     <tr>
       <th>db_type</th>
@@ -180,7 +180,7 @@ and "human-genome" for transforming to whole genome frequency of component.</p><
     <tr>
       <th>normalize</th>
       <td><p>one of "row" and "feature". "row" is typically used
-for mutational signatures. "feature" is designed by me to use when input
+for common mutational signatures. "feature" is designed by me to use when input
 are copy number signatures.</p></td>
     </tr>
     <tr>
@@ -499,7 +499,9 @@ The remove operation will be done after normalization. Default is <code>NULL</co
 #&gt; 
 #&gt; 
 #&gt; attr(,"class")
-#&gt; [1] "similarity" "list"      </div></pre>
+#&gt; [1] "similarity" "list"      </div><div class='input'>
+## Same to DBS and ID signatures
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -511,7 +513,7 @@ The remove operation will be done after normalization. Default is <code>NULL</co
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://orcid.org/0000-0001-9855-7357'>Shixiang Wang</a>, <a href='https://orcid.org/0000-0002-7736-0077'>Xue-Song Liu</a>.</p>
+  <p>Developed by <a href='https://orcid.org/0000-0001-9855-7357'>Shixiang Wang</a>, <a href='https://orcid.org/0000-0002-7736-0077'>Xue-Song Liu</a>, Tao Wu, Ziyu Tao.</p>
 </div>
 
 <div class="pkgdown">

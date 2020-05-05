@@ -30,6 +30,8 @@ reference:
     - sig_tally
     - handle_hyper_mutation
     - sig_fit
+    - sig_fit_bootstrap
+    - report_bootstrap_p_value
   - title: Signature visualization
     desc: Show signature profile and exposure.
     contents:
@@ -59,8 +61,9 @@ reference:
     - get_group_comparison
     - show_group_comparison
     - show_group_mapping
+    - enrich_component_strand_bias
   - title: Package datasets
-    desc: Datasets used for signature identification and analysis.
+    desc: Datasets used for signature identification and analysis (some stored in `extdata/`).
     contents:
     - CN.features
     - centromeres.hg19
@@ -69,6 +72,8 @@ reference:
     - chromsize.hg38
     - cytobands.hg19
     - cytobands.hg38
+    - transcript.hg19
+    - transcript.hg38
   - title: Helpers
     desc: Helper functions used in the sigminer package.
     contents:

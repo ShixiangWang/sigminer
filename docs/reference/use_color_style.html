@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.4</span>
       </span>
     </div>
 
@@ -131,7 +131,7 @@
     <p>Set Color Style for Plotting</p>
     </div>
 
-    <pre class="usage"><span class='fu'>use_color_style</span>(<span class='no'>style</span>)</pre>
+    <pre class="usage"><span class='fu'>use_color_style</span>(<span class='no'>style</span>, <span class='kw'>mode</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"SBS"</span>, <span class='st'>"copynumber"</span>, <span class='st'>"DBS"</span>, <span class='st'>"ID"</span>))</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -139,6 +139,11 @@
     <tr>
       <th>style</th>
       <td><p>one of 'default' and 'cosmic'.</p></td>
+    </tr>
+    <tr>
+      <th>mode</th>
+      <td><p>only used when the <code>style</code> is 'cosmic', can be one of
+"SBS", "copynumber", "DBS", "ID".</p></td>
     </tr>
     </table>
 
@@ -163,7 +168,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://orcid.org/0000-0001-9855-7357'>Shixiang Wang</a>, <a href='https://orcid.org/0000-0002-7736-0077'>Xue-Song Liu</a>.</p>
+  <p>Developed by <a href='https://orcid.org/0000-0001-9855-7357'>Shixiang Wang</a>, <a href='https://orcid.org/0000-0002-7736-0077'>Xue-Song Liu</a>, Tao Wu, Ziyu Tao.</p>
 </div>
 
 <div class="pkgdown">

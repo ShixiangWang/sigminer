@@ -112,13 +112,13 @@
 #' expect_s3_class(p2, "ggplot")
 #' expect_s3_class(p3, "ggplot")
 #' expect_s3_class(p4, "ggplot")
-show_sig_profile <- function(Signature, mode = c("SBS", "copynumber"),
+show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID"),
                              method = "Wang",
                              normalize = c("row", "column", "raw", "feature"),
                              filters = NULL,
                              feature_setting = sigminer::CN.features,
                              style = c("default", "cosmic"),
-                             palette = use_color_style(style),
+                             palette = use_color_style(style, mode),
                              set_gradient_color = FALSE,
                              free_space = "free_x",
                              rm_panel_border = style == "cosmic",
@@ -126,7 +126,7 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber"),
                              bar_border_color = ifelse(style == "default", "grey50", "white"),
                              bar_width = 0.7,
                              paint_axis_text = TRUE,
-                             x_label_angle = 60,
+                             x_label_angle = ifelse(mode == "copynumber", 60, 90),
                              x_label_vjust = 1,
                              x_label_hjust = 1,
                              x_lab = "Components",
@@ -217,7 +217,7 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber"),
         class = factor(class)
       )
     }
-  } else {
+  } else if (mode == "SBS") {
     mat$base <- sub("[ACGT]\\[(.*)\\][ACGT]", "\\1", mat$context)
     mat$context <- sub("(\\[.*\\])", "\\-", mat$context)
 
@@ -228,6 +228,54 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber"),
         "C>A", "C>G",
         "C>T", "T>A",
         "T>C", "T>G"
+      )),
+      class = factor(class)
+    )
+  } else if (mode == "DBS") {
+    mat$base <- paste0(substr(mat$context, 1, 3), "NN")
+    mat$context <- substr(mat$context, 4, 5)
+
+    mat <- tidyr::gather(mat, class, signature, -c("context", "base"))
+    mat <- dplyr::mutate(mat,
+      context = factor(.data$context),
+      base = factor(.data$base, levels = c(
+        "AC>NN", "AT>NN",
+        "CC>NN", "CG>NN",
+        "CT>NN", "GC>NN",
+        "TA>NN", "TC>NN",
+        "TG>NN", "TT>NN"
+      )),
+      class = factor(class)
+    )
+  } else if (mode == "ID") {
+    conv <- c("2", "3", "4", "5:D:M")
+    names(conv) <- c("2:D:M", "3:D:M", "4:D:M", "5:D:M")
+
+    mat$base <- paste0(substr(mat$context, 1, 3), substr(mat$context, 6, 7))
+    mat$base <- ifelse(grepl("D:M", mat$base),
+      conv[mat$base], mat$base
+    )
+    mat$count <- as.integer(substr(mat$context, 9, 9))
+    mat$is_del <- grepl(":Del:[RCT]", mat$context)
+    mat$count <- ifelse(mat$is_del, mat$count + 1, mat$count)
+    mat$context <- ifelse(mat$is_del,
+      ifelse(mat$count == 6, "6+", as.character(mat$count)),
+      ifelse(mat$count == 5, "5+", as.character(mat$count))
+    )
+    mat$count <- NULL
+    mat$is_del <- NULL
+
+    mat <- tidyr::gather(mat, class, signature, -c("context", "base"))
+    mat <- dplyr::mutate(mat,
+      context = factor(.data$context),
+      base = factor(.data$base, levels = c(
+        "1:D:C", "1:D:T",
+        "1:I:C", "1:I:T",
+        "2:D:R", "3:D:R",
+        "4:D:R", "5:D:R",
+        "2:I:R", "3:I:R",
+        "4:I:R", "5:I:R",
+        "2", "3", "4", "5:D:M"
       )),
       class = factor(class)
     )

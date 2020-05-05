@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Fit Signature Exposure with Linear Combination Decomposition — sig_fit • sigminer</title>
+<title>Fit Signature Exposures with Linear Combination Decomposition — sig_fit • sigminer</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,10 +46,10 @@
 
 
 
-<meta property="og:title" content="Fit Signature Exposure with Linear Combination Decomposition — sig_fit" />
+<meta property="og:title" content="Fit Signature Exposures with Linear Combination Decomposition — sig_fit" />
 <meta property="og:description" content="The function performs a signatures decomposition of a given mutational
 catalogue V with known signatures W by solving the minimization problem
-min(||W*H - V||) with additional constraints of non-negativity on H where W and V are known." />
+min(||W*H - V||) where W and V are known." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -82,7 +82,7 @@ min(||W*H - V||) with additional constraints of non-negativity on H where W and 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.4</span>
       </span>
     </div>
 
@@ -124,7 +124,7 @@ min(||W*H - V||) with additional constraints of non-negativity on H where W and 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Fit Signature Exposure with Linear Combination Decomposition</h1>
+    <h1>Fit Signature Exposures with Linear Combination Decomposition</h1>
     <small class="dont-index">Source: <a href='https://github.com/ShixiangWang/sigminer/blob/master/R/sig_fit.R'><code>R/sig_fit.R</code></a></small>
     <div class="hidden name"><code>sig_fit.Rd</code></div>
     </div>
@@ -132,7 +132,7 @@ min(||W*H - V||) with additional constraints of non-negativity on H where W and 
     <div class="ref-description">
     <p>The function performs a signatures decomposition of a given mutational
 catalogue <code>V</code> with known signatures <code>W</code> by solving the minimization problem
-<code>min(||W*H - V||)</code> with additional constraints of non-negativity on H where W and V are known.</p>
+<code>min(||W*H - V||)</code> where W and V are known.</p>
     </div>
 
     <pre class="usage"><span class='fu'>sig_fit</span>(
@@ -142,10 +142,14 @@ catalogue <code>V</code> with known signatures <code>W</code> by solving the min
   <span class='kw'>sig_db</span> <span class='kw'>=</span> <span class='st'>"legacy"</span>,
   <span class='kw'>db_type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>""</span>, <span class='st'>"human-exome"</span>, <span class='st'>"human-genome"</span>),
   <span class='kw'>show_index</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"LS"</span>, <span class='st'>"QP"</span>, <span class='st'>"SA"</span>),
   <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"absolute"</span>, <span class='st'>"relative"</span>),
   <span class='kw'>return_class</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"matrix"</span>, <span class='st'>"data.table"</span>),
+  <span class='kw'>return_error</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>rel_threshold</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>mode</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"SBS"</span>, <span class='st'>"copynumber"</span>)
+  <span class='kw'>mode</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"SBS"</span>, <span class='st'>"copynumber"</span>),
+  <span class='kw'>true_catalog</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -169,7 +173,7 @@ column representing signatures.</p></td>
     </tr>
     <tr>
       <th>sig_db</th>
-      <td><p>can be 'legacy' or 'SBS'. Default 'legacy'.</p></td>
+      <td><p>can be 'legacy' (for COSMIC v2 'SBS'), 'SBS', 'DBS' and 'ID'. Default 'legacy'.</p></td>
     </tr>
     <tr>
       <th>db_type</th>
@@ -182,12 +186,23 @@ and "human-genome" for transforming to whole genome frequency of component.</p><
       <td><p>if <code>TRUE</code>, show valid index.</p></td>
     </tr>
     <tr>
+      <th>method</th>
+      <td><p>method to solve the minimazation problem.
+'LS' for least square; 'QP' for quadratic programming; 'SA' for simulated annealing.</p></td>
+    </tr>
+    <tr>
       <th>type</th>
       <td><p>'absolute' for signature exposure and 'relative' for signature relative exposure.</p></td>
     </tr>
     <tr>
       <th>return_class</th>
       <td><p>string, 'matrix' or 'data.table'.</p></td>
+    </tr>
+    <tr>
+      <th>return_error</th>
+      <td><p>if <code>TRUE</code>, also return method error (Frobenius norm). NOTE:
+it is better to obtain the error when the type is 'absolute', because the error is
+affected by relative exposure accuracy.</p></td>
     </tr>
     <tr>
       <th>rel_threshold</th>
@@ -198,14 +213,32 @@ Of note, this is a little different from the same parameter in <a href='get_sig_
       <th>mode</th>
       <td><p>signature type for plotting, now supports 'copynumber' or 'SBS'.</p></td>
     </tr>
+    <tr>
+      <th>true_catalog</th>
+      <td><p>used by <a href='sig_fit_bootstrap.html'>sig_fit_bootstrap</a>, user never use it.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>control parameters passing to argument <code>control</code> in <code>GenSA</code> function when use method 'SA'.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The exposure result either in <code>matrix</code> or <code>data.table</code> format.</p>
+    <p>The exposure result either in <code>matrix</code> or <code>data.table</code> format.
+If <code>return_error</code> set <code>TRUE</code>, a <code>list</code> is returned.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This is a modification based on <code>LCD</code> function from YAPSA pakcage.</p>
+    <p>The method 'LS' is a modification based on <code>LCD</code> function from YAPSA pakcage.
+The method 'QP' and 'SA' are modified from SignatureEstimation package.
+See references for details.</p>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Daniel Huebschmann, Zuguang Gu and Matthias Schlesner (2019). YAPSA: Yet Another Package for Signature Analysis. R package version 1.12.0.</p>
+<p>Huang X, Wojtowicz D, Przytycka TM. Detecting presence of mutational signatures in cancer with confidence. Bioinformatics. 2018;34(2):330–337. doi:10.1093/bioinformatics/btx604</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><a href='sig_extract.html'>sig_extract</a>, <a href='sig_auto_extract.html'>sig_auto_extract</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>W</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>), <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>)
@@ -220,18 +253,43 @@ Of note, this is a little different from the same parameter in <a href='get_sig_
 #&gt; [1,] 1.666667   2.1 2.566667   0.7
 #&gt; [2,] 2.333333   3.0 3.333333   1.0
 #&gt; [3,] 3.000000   3.9 4.100000   1.3</div><div class='input'>
-<span class='no'>H_infer</span> <span class='kw'>&lt;-</span> <span class='fu'>sig_fit</span>(<span class='no'>V</span>, <span class='no'>W</span>)
-<span class='no'>H_infer</span></div><div class='output co'>#&gt;      samp1 samp2 samp3 samp4
-#&gt; sig1     2     3     1     1
-#&gt; sig2     5     6     9     2</div><div class='input'><span class='no'>H</span></div><div class='output co'>#&gt;      samp1 samp2 samp3 samp4
-#&gt; [1,]     2     3     1     1
-#&gt; [2,]     5     6     9     2</div><div class='input'>
-<span class='no'>H_dt</span> <span class='kw'>&lt;-</span> <span class='fu'>sig_fit</span>(<span class='no'>V</span>, <span class='no'>W</span>, <span class='kw'>return_class</span> <span class='kw'>=</span> <span class='st'>"data.table"</span>)
-<span class='no'>H_dt</span></div><div class='output co'>#&gt;    sample sig1 sig2
+<span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"lsei"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) {
+  <span class='no'>H_infer</span> <span class='kw'>&lt;-</span> <span class='fu'>sig_fit</span>(<span class='no'>V</span>, <span class='no'>W</span>)
+  <span class='no'>H_infer</span>
+  <span class='no'>H</span>
+
+  <span class='no'>H_dt</span> <span class='kw'>&lt;-</span> <span class='fu'>sig_fit</span>(<span class='no'>V</span>, <span class='no'>W</span>, <span class='kw'>return_class</span> <span class='kw'>=</span> <span class='st'>"data.table"</span>)
+  <span class='no'>H_dt</span>
+}</div><div class='output co'>#&gt; <span class='message'><span style='color: #00BBBB;'>i</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #0000BB;font-weight: bold;'>Started.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #00BB00;font-weight: bold;'>Signature matrix detected.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #00BB00;font-weight: bold;'>Database and index checked.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #00BB00;font-weight: bold;'>Signature normalized.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>i</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #0000BB;font-weight: bold;'>Checking row number for catalog matrix and signature matrix.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #00BB00;font-weight: bold;'>Checked.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #00BB00;font-weight: bold;'>Method 'LS' detected.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #00BB00;font-weight: bold;'>Corresponding function generated.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>i</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #0000BB;font-weight: bold;'>Calling function.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #00BB00;font-weight: bold;'>Done.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>i</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #0000BB;font-weight: bold;'>Generating output signature exposures.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #00BB00;font-weight: bold;'>Done.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>i</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #0000BB;font-weight: bold;'>0.064 secs elapsed.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>i</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #0000BB;font-weight: bold;'>Started.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #00BB00;font-weight: bold;'>Signature matrix detected.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #00BB00;font-weight: bold;'>Database and index checked.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #00BB00;font-weight: bold;'>Signature normalized.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>i</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #0000BB;font-weight: bold;'>Checking row number for catalog matrix and signature matrix.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #00BB00;font-weight: bold;'>Checked.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #00BB00;font-weight: bold;'>Method 'LS' detected.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #00BB00;font-weight: bold;'>Corresponding function generated.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>i</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #0000BB;font-weight: bold;'>Calling function.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #00BB00;font-weight: bold;'>Done.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>i</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #0000BB;font-weight: bold;'>Generating output signature exposures.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #00BB00;font-weight: bold;'>Done.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>i</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #0000BB;font-weight: bold;'>0.132 secs elapsed.</span><span></span></div><div class='output co'>#&gt;    sample sig1 sig2
 #&gt; 1:  samp1    2    5
 #&gt; 2:  samp2    3    6
 #&gt; 3:  samp3    1    9
-#&gt; 4:  samp4    1    2</div></pre>
+#&gt; 4:  samp4    1    2</div><div class='input'>
+<span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"quadprog"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) {
+  <span class='no'>H_infer</span> <span class='kw'>&lt;-</span> <span class='fu'>sig_fit</span>(<span class='no'>V</span>, <span class='no'>W</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"QP"</span>)
+  <span class='no'>H_infer</span>
+  <span class='no'>H</span>
+
+  <span class='no'>H_dt</span> <span class='kw'>&lt;-</span> <span class='fu'>sig_fit</span>(<span class='no'>V</span>, <span class='no'>W</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"QP"</span>, <span class='kw'>return_class</span> <span class='kw'>=</span> <span class='st'>"data.table"</span>)
+  <span class='no'>H_dt</span>
+}</div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>i</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #0000BB;font-weight: bold;'>Started.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #00BB00;font-weight: bold;'>Signature matrix detected.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #00BB00;font-weight: bold;'>Database and index checked.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #00BB00;font-weight: bold;'>Signature normalized.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>i</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #0000BB;font-weight: bold;'>Checking row number for catalog matrix and signature matrix.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #00BB00;font-weight: bold;'>Checked.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #00BB00;font-weight: bold;'>Method 'QP' detected.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #00BB00;font-weight: bold;'>Corresponding function generated.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>i</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #0000BB;font-weight: bold;'>Calling function.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #00BB00;font-weight: bold;'>Done.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>i</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #0000BB;font-weight: bold;'>Generating output signature exposures.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #00BB00;font-weight: bold;'>Done.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>i</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #0000BB;font-weight: bold;'>0.097 secs elapsed.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>i</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #0000BB;font-weight: bold;'>Started.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #00BB00;font-weight: bold;'>Signature matrix detected.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #00BB00;font-weight: bold;'>Database and index checked.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #00BB00;font-weight: bold;'>Signature normalized.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>i</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #0000BB;font-weight: bold;'>Checking row number for catalog matrix and signature matrix.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #00BB00;font-weight: bold;'>Checked.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #00BB00;font-weight: bold;'>Method 'QP' detected.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #00BB00;font-weight: bold;'>Corresponding function generated.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>i</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #0000BB;font-weight: bold;'>Calling function.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #00BB00;font-weight: bold;'>Done.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>i</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #0000BB;font-weight: bold;'>Generating output signature exposures.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #00BB00;font-weight: bold;'>Done.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>i</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #0000BB;font-weight: bold;'>0.095 secs elapsed.</span><span></span></div><div class='output co'>#&gt;    sample sig1 sig2
+#&gt; 1:  samp1    2    5
+#&gt; 2:  samp2    3    6
+#&gt; 3:  samp3    1    9
+#&gt; 4:  samp4    1    2</div><div class='input'>
+<span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"GenSA"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) {
+  <span class='no'>H_infer</span> <span class='kw'>&lt;-</span> <span class='fu'>sig_fit</span>(<span class='no'>V</span>, <span class='no'>W</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"SA"</span>)
+  <span class='no'>H_infer</span>
+  <span class='no'>H</span>
+
+  <span class='no'>H_dt</span> <span class='kw'>&lt;-</span> <span class='fu'>sig_fit</span>(<span class='no'>V</span>, <span class='no'>W</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"SA"</span>, <span class='kw'>return_class</span> <span class='kw'>=</span> <span class='st'>"data.table"</span>)
+  <span class='no'>H_dt</span>
+
+  <span class='co'>## Modify arguments to method</span>
+  <span class='fu'>sig_fit</span>(<span class='no'>V</span>, <span class='no'>W</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"SA"</span>, <span class='kw'>maxit</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>temperature</span> <span class='kw'>=</span> <span class='fl'>100</span>)
+}</div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>i</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #0000BB;font-weight: bold;'>Started.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #00BB00;font-weight: bold;'>Signature matrix detected.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #00BB00;font-weight: bold;'>Database and index checked.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #00BB00;font-weight: bold;'>Signature normalized.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>i</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #0000BB;font-weight: bold;'>Checking row number for catalog matrix and signature matrix.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #00BB00;font-weight: bold;'>Checked.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #00BB00;font-weight: bold;'>Method 'SA' detected.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #00BB00;font-weight: bold;'>Corresponding function generated.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>i</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:18]: </span><span style='color: #0000BB;font-weight: bold;'>Calling function.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:20]: </span><span style='color: #00BB00;font-weight: bold;'>Done.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>i</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:20]: </span><span style='color: #0000BB;font-weight: bold;'>Generating output signature exposures.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:20]: </span><span style='color: #00BB00;font-weight: bold;'>Done.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>i</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:20]: </span><span style='color: #0000BB;font-weight: bold;'>1.718 secs elapsed.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>i</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:20]: </span><span style='color: #0000BB;font-weight: bold;'>Started.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:20]: </span><span style='color: #00BB00;font-weight: bold;'>Signature matrix detected.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:20]: </span><span style='color: #00BB00;font-weight: bold;'>Database and index checked.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:20]: </span><span style='color: #00BB00;font-weight: bold;'>Signature normalized.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>i</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:20]: </span><span style='color: #0000BB;font-weight: bold;'>Checking row number for catalog matrix and signature matrix.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:20]: </span><span style='color: #00BB00;font-weight: bold;'>Checked.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:20]: </span><span style='color: #00BB00;font-weight: bold;'>Method 'SA' detected.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:20]: </span><span style='color: #00BB00;font-weight: bold;'>Corresponding function generated.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>i</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:20]: </span><span style='color: #0000BB;font-weight: bold;'>Calling function.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:22]: </span><span style='color: #00BB00;font-weight: bold;'>Done.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>i</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:22]: </span><span style='color: #0000BB;font-weight: bold;'>Generating output signature exposures.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:22]: </span><span style='color: #00BB00;font-weight: bold;'>Done.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>i</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:22]: </span><span style='color: #0000BB;font-weight: bold;'>1.773 secs elapsed.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>i</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:22]: </span><span style='color: #0000BB;font-weight: bold;'>Started.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:22]: </span><span style='color: #00BB00;font-weight: bold;'>Signature matrix detected.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:22]: </span><span style='color: #00BB00;font-weight: bold;'>Database and index checked.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:22]: </span><span style='color: #00BB00;font-weight: bold;'>Signature normalized.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>i</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:22]: </span><span style='color: #0000BB;font-weight: bold;'>Checking row number for catalog matrix and signature matrix.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:22]: </span><span style='color: #00BB00;font-weight: bold;'>Checked.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:22]: </span><span style='color: #00BB00;font-weight: bold;'>Method 'SA' detected.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:22]: </span><span style='color: #00BB00;font-weight: bold;'>Corresponding function generated.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>i</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:22]: </span><span style='color: #0000BB;font-weight: bold;'>Calling function.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:22]: </span><span style='color: #00BB00;font-weight: bold;'>Done.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>i</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:22]: </span><span style='color: #0000BB;font-weight: bold;'>Generating output signature exposures.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>√</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:22]: </span><span style='color: #00BB00;font-weight: bold;'>Done.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>i</span><span> </span><span style='font-weight: bold;'>[2020-05-05 18:43:22]: </span><span style='color: #0000BB;font-weight: bold;'>0.092 secs elapsed.</span><span></span></div><div class='output co'>#&gt;      samp1 samp2 samp3 samp4
+#&gt; sig1     2     3     1     1
+#&gt; sig2     5     6     9     2</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -243,7 +301,7 @@ Of note, this is a little different from the same parameter in <a href='get_sig_
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://orcid.org/0000-0001-9855-7357'>Shixiang Wang</a>, <a href='https://orcid.org/0000-0002-7736-0077'>Xue-Song Liu</a>.</p>
+  <p>Developed by <a href='https://orcid.org/0000-0001-9855-7357'>Shixiang Wang</a>, <a href='https://orcid.org/0000-0002-7736-0077'>Xue-Song Liu</a>, Tao Wu, Ziyu Tao.</p>
 </div>
 
 <div class="pkgdown">

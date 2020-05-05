@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.4</span>
       </span>
     </div>
 
@@ -259,7 +259,19 @@
         <td>
           <p><code><a href="sig_fit.html">sig_fit()</a></code> </p>
         </td>
-        <td><p>Fit Signature Exposure with Linear Combination Decomposition</p></td>
+        <td><p>Fit Signature Exposures with Linear Combination Decomposition</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="sig_fit_bootstrap.html">sig_fit_bootstrap()</a></code> </p>
+        </td>
+        <td><p>Obtain Bootstrap Distribution of Signature Exposures of a Certain Tumor Sample</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="report_bootstrap_p_value.html">report_bootstrap_p_value()</a></code> </p>
+        </td>
+        <td><p>Report P Values from bootstrap Results</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -389,12 +401,18 @@
           <p><code><a href="show_group_mapping.html">show_group_mapping()</a></code> </p>
         </td>
         <td><p>Map Groups using Sankey</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="enrich_component_strand_bias.html">enrich_component_strand_bias()</a></code> </p>
+        </td>
+        <td><p>Performs Strand Bias Enrichment Analysis for a Given Sample-by-Component Matrix</p></td>
       </tr>
     </tbody><tbody>
       <tr>
         <th colspan="2">
           <h2 id="section-package-datasets" class="hasAnchor"><a href="#section-package-datasets" class="anchor"></a>Package datasets</h2>
-          <p class="section-desc"><p>Datasets used for signature identification and analysis.</p></p>
+          <p class="section-desc"><p>Datasets used for signature identification and analysis (some stored in <code>extdata/</code>).</p></p>
         </th>
       </tr>
       
@@ -444,6 +462,18 @@
           <p><code><a href="cytobands.hg38.html">cytobands.hg38</a></code> </p>
         </td>
         <td><p>Location of Chromosome Cytobands at Genome Build hg38</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="transcript.hg19.html">transcript.hg19</a></code> </p>
+        </td>
+        <td><p>Merged Transcript Location at Genome Build hg19</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="transcript.hg38.html">transcript.hg38</a></code> </p>
+        </td>
+        <td><p>Merged Transcript Location at Genome Build hg38</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -600,7 +630,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://orcid.org/0000-0001-9855-7357'>Shixiang Wang</a>, <a href='https://orcid.org/0000-0002-7736-0077'>Xue-Song Liu</a>.</p>
+  <p>Developed by <a href='https://orcid.org/0000-0001-9855-7357'>Shixiang Wang</a>, <a href='https://orcid.org/0000-0002-7736-0077'>Xue-Song Liu</a>, Tao Wu, Ziyu Tao.</p>
 </div>
 
 <div class="pkgdown">
