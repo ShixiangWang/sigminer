@@ -87,9 +87,16 @@ show_cosmic_sig_profile <- function(sig_index = NULL, show_index = TRUE, sig_db 
   }
 
   sig_mat <- as.matrix(sigs[, index, drop = FALSE])
+
+  if (sig_db %in% c("legacy", "SBS")) {
+    mode = "SBS"
+  } else {
+    mode = sig_db
+  }
+
   gg <- show_sig_profile(sig_mat,
     check_sig_names = FALSE,
-    mode = "SBS",
+    mode = mode,
     normalize = "row",
     sig_orders = index,
     ...

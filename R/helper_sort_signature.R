@@ -4,10 +4,11 @@ helper_sort_signature <- function(sig) {
   # Sort mutational signatures by C>T mutation type
   # Sort copy number signatures by segsize/SS feature for method 'M'
   is_c2t <- grepl("C>T", rownames(sig))
+  is_cn <- grepl("SS", rownames(sig)) | grepl("segsize", rownames(sig))
   if (any(is_c2t)) {
     to_rank <- colSums(sig[is_c2t, ])
     sig_order <- order(to_rank)
-  } else {
+  } else if (any(is_cn)) {
     use_M <- any(grepl("\\d+$", rownames(sig)))
     if (use_M) {
       mat <- sig[startsWith(rownames(sig), "segsize"), , drop = FALSE]
@@ -16,6 +17,9 @@ helper_sort_signature <- function(sig) {
       mat <- sig[startsWith(rownames(sig), "SS"), , drop = FALSE]
     }
     sig_order <- get_segsize_order(mat)
+  } else {
+    ## Keep not change for now
+    sig_order <- seq_len(ncol(sig))
   }
   return(sig_order)
 }
