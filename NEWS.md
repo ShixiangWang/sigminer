@@ -1,6 +1,7 @@
 # sigminer 1.0.4
 
 - Added profile plot for DBS and INDEL.
+- Fixed error for signature extraction in mode 'DBS' or 'ID'.
 
 # sigminer 1.0.3
 
