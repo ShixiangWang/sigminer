@@ -99,8 +99,8 @@ fitComponent <-
         logLiks <- t(sapply(z_list, function(x) x[["logLiks"]]))
       }
 
-      logLiks <- logLiks[is.finite(sapply(z, logLik)), , drop = FALSE]
-      z <- z[is.finite(sapply(z, logLik))]
+      logLiks <- logLiks[is.finite(sapply(z, flexmix::logLik)), , drop = FALSE]
+      z <- z[is.finite(sapply(z, flexmix::logLik))]
       rownames(logLiks) <- names(z)
       if (!length(z)) {
         stop("No convergence to a suitable mixture")
