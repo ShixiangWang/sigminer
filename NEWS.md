@@ -2,6 +2,7 @@
 
 - Added profile plot for DBS and INDEL.
 - Fixed error for signature extraction in mode 'DBS' or 'ID'.
+- Fixed method 'M' for CN tally cannot work when `cores > 1` (#161).
 
 # sigminer 1.0.3
 
