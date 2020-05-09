@@ -32,7 +32,7 @@
 #' @return The exposure result either in `matrix` or `data.table` format.
 #' If `return_error` set `TRUE`, a `list` is returned.
 #' @export
-#' @seealso [sig_extract], [sig_auto_extract]
+#' @seealso [sig_extract], [sig_auto_extract], [sig_fit_bootstrap], [sig_fit_bootstrap_batch]
 #' @references Daniel Huebschmann, Zuguang Gu and Matthias Schlesner (2019). YAPSA: Yet Another Package for Signature Analysis. R package version 1.12.0.
 #' @references Huang X, Wojtowicz D, Przytycka TM. Detecting presence of mutational signatures in cancer with confidence. Bioinformatics. 2018;34(2):330–337. doi:10.1093/bioinformatics/btx604
 #' @examples

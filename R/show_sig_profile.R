@@ -9,7 +9,7 @@
 #' @param Signature a `Signature` object obtained either from [sig_extract] or [sig_auto_extract],
 #' or just a raw signature matrix with row representing components (motifs) and column
 #' representing signatures (column names must start with 'Sig').
-#' @param mode signature type for plotting, now supports 'copynumber' or 'SBS'.
+#' @param mode signature type for plotting, now supports 'copynumber', 'SBS', 'DBS' and 'ID'.
 #' @param method method for copy number feature classfication in [sig_tally],
 #' can be one of "Macintyre" ("M") and "Wang" ("W").
 #' @param normalize one of 'row', 'column', 'raw' and "feature", for row normalization (signature),

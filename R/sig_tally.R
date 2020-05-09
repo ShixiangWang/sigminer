@@ -476,8 +476,9 @@ sig_tally.MAF <- function(object, mode = c("SBS", "DBS", "ID", "ALL"),
       }
     )
 
-    send_info("All types of matrices generation - end.")
+    send_info("All types of matrices generation (APOBEC scores included) - end.")
     res <- c(res_SBS$all_matrices, res_DBS$all_matrices, res_ID$all_matrices)
+    res$APOBEC_scores <- res_SBS$APOBEC_scores
   }
 
   send_success("Done.")

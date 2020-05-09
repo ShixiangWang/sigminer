@@ -1,3 +1,8 @@
+# sigminer 1.0.5
+
+- Exported APOBEC result when the mode is 'ALL' in `sig_tally()`.
+- Add batch bootstrap analysis feature (#158).
+
 # sigminer 1.0.4
 
 - Added profile plot for DBS and INDEL.

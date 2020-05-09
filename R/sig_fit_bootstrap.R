@@ -18,6 +18,7 @@
 #' @return a `list`
 #' @export
 #' @keywords bootstrap
+#' @seealso [sig_fit], [sig_fit_bootstrap_batch]
 #' @examples
 #' W <- matrix(c(1, 2, 3, 4, 5, 6), ncol = 2)
 #' colnames(W) <- c("sig1", "sig2")
