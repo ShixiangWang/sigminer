@@ -6,6 +6,7 @@
 #' @param p_val_thresholds a vector of relative exposure threshold for calculating p values.
 #' @param use_parallel if `TRUE`, use parallel computation based on **furrr** package,
 #' not implemented yet.
+#' @param seed random seed to reproduce the result.
 #' @param ... other common parameters passing to [sig_fit_bootstrap], including `sig`, `sig_index`,
 #' `sig_db`, `db_type`, `mode`, etc.
 #'
@@ -25,27 +26,30 @@
 #' V
 #'
 #' if (requireNamespace("lsei") & requireNamespace("quadprog")) {
-#'   z = sig_fit_bootstrap_batch(t(V), sig = W, n = 10)
+#'   z = sig_fit_bootstrap_batch(V, sig = W, n = 10)
 #'   z
 #' }
 #' @testexamples
 #' expect_is(z, "list")
 sig_fit_bootstrap_batch = function(catalogue_matrix, methods = c("LS", "QP"), n = 100L,
                                    p_val_thresholds = c(0.05),
-                                   use_parallel = FALSE, ...) {
+                                   use_parallel = FALSE,
+                                   seed = 123456L,
+                                   ...) {
+
+  set.seed(seed)
   methods = match.arg(methods, choices = c("LS", "QP", "SA"), several.ok = TRUE)
 
   timer <- Sys.time()
   send_info("Batch Bootstrap Signature Exposure Analysis Started.")
   on.exit(send_elapsed_time(timer, "Total "))
 
-  mat <- t(catalogue_matrix)
   ## Get optimal exposures with different methods
   send_info("Finding optimal exposures (&errors) for different methods.")
   optimal_list <- list()
   for (m in methods) {
     send_info('Calling method {.code ',  m, "}.")
-    expo_list = sig_fit(mat, method = m,
+    expo_list = sig_fit(catalogue_matrix, method = m,
                         return_error = TRUE,
                         return_class = "data.table",
                         ...)
@@ -73,9 +77,16 @@ sig_fit_bootstrap_batch = function(catalogue_matrix, methods = c("LS", "QP"), n 
     return(out_list)
   }
 
-  ## TODO: Use furrr if use_parallel??
-  bt_list <- purrr::map2(as.data.frame(mat), colnames(mat), call_bt,
-                         y = rownames(mat), methods = methods, n = n, ...)
+  if (use_parallel) {
+    oplan <- future::plan()
+    future::plan("multiprocess", workers = future::availableCores())
+    on.exit(future::plan(oplan), add = TRUE)
+    bt_list <- furrr::future_map2(as.data.frame(catalogue_matrix), colnames(catalogue_matrix), call_bt,
+                           y = rownames(catalogue_matrix), methods = methods, n = n, ..., .progress = TRUE)
+  } else {
+    bt_list <- purrr::map2(as.data.frame(catalogue_matrix), colnames(catalogue_matrix), call_bt,
+                           y = rownames(catalogue_matrix), methods = methods, n = n, ...)
+  }
   send_success("Gotten.")
 
   send_info("Reporting p values...")
