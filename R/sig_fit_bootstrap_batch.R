@@ -26,19 +26,18 @@
 #' V
 #'
 #' if (requireNamespace("lsei") & requireNamespace("quadprog")) {
-#'   z = sig_fit_bootstrap_batch(V, sig = W, n = 10)
+#'   z <- sig_fit_bootstrap_batch(V, sig = W, n = 10)
 #'   z
 #' }
 #' @testexamples
 #' expect_is(z, "list")
-sig_fit_bootstrap_batch = function(catalogue_matrix, methods = c("LS", "QP"), n = 100L,
-                                   p_val_thresholds = c(0.05),
-                                   use_parallel = FALSE,
-                                   seed = 123456L,
-                                   ...) {
-
+sig_fit_bootstrap_batch <- function(catalogue_matrix, methods = c("LS", "QP"), n = 100L,
+                                    p_val_thresholds = c(0.05),
+                                    use_parallel = FALSE,
+                                    seed = 123456L,
+                                    ...) {
   set.seed(seed)
-  methods = match.arg(methods, choices = c("LS", "QP", "SA"), several.ok = TRUE)
+  methods <- match.arg(methods, choices = c("LS", "QP", "SA"), several.ok = TRUE)
 
   timer <- Sys.time()
   send_info("Batch Bootstrap Signature Exposure Analysis Started.")
@@ -48,12 +47,14 @@ sig_fit_bootstrap_batch = function(catalogue_matrix, methods = c("LS", "QP"), n 
   send_info("Finding optimal exposures (&errors) for different methods.")
   optimal_list <- list()
   for (m in methods) {
-    send_info('Calling method {.code ',  m, "}.")
-    expo_list = sig_fit(catalogue_matrix, method = m,
-                        return_error = TRUE,
-                        return_class = "data.table",
-                        ...)
-    expo_list$expo <- data.table::melt(expo_list$expo, id.vars = "sample", variable.name = 'sig', value.name = 'exposure')
+    send_info("Calling method {.code ", m, "}.")
+    expo_list <- sig_fit(catalogue_matrix,
+      method = m,
+      return_error = TRUE,
+      return_class = "data.table",
+      ...
+    )
+    expo_list$expo <- data.table::melt(expo_list$expo, id.vars = "sample", variable.name = "sig", value.name = "exposure")
     expo_list$errors <- data.table::data.table(
       sample = names(expo_list$errors),
       errors = as.numeric(expo_list$errors)
@@ -67,11 +68,11 @@ sig_fit_bootstrap_batch = function(catalogue_matrix, methods = c("LS", "QP"), n 
   send_info("Getting bootstrap exposures (&errors) for different methods.")
   send_info("This step is time consuming, please be patient.")
   call_bt <- function(x, sample, y, methods, n = 1000, ...) {
-    names(x) = y
+    names(x) <- y
     out_list <- list()
     send_info("Processing sample {.code ", sample, "}.")
     for (m in methods) {
-      out = sig_fit_bootstrap(x, n = n, ...)
+      out <- sig_fit_bootstrap(x, n = n, ...)
       out_list[[m]] <- out
     }
     return(out_list)
@@ -82,10 +83,12 @@ sig_fit_bootstrap_batch = function(catalogue_matrix, methods = c("LS", "QP"), n 
     future::plan("multiprocess", workers = future::availableCores())
     on.exit(future::plan(oplan), add = TRUE)
     bt_list <- furrr::future_map2(as.data.frame(catalogue_matrix), colnames(catalogue_matrix), call_bt,
-                           y = rownames(catalogue_matrix), methods = methods, n = n, ..., .progress = TRUE)
+      y = rownames(catalogue_matrix), methods = methods, n = n, ..., .progress = TRUE
+    )
   } else {
     bt_list <- purrr::map2(as.data.frame(catalogue_matrix), colnames(catalogue_matrix), call_bt,
-                           y = rownames(catalogue_matrix), methods = methods, n = n, ...)
+      y = rownames(catalogue_matrix), methods = methods, n = n, ...
+    )
   }
   send_success("Gotten.")
 
@@ -101,8 +104,8 @@ sig_fit_bootstrap_batch = function(catalogue_matrix, methods = c("LS", "QP"), n 
       out$expo <- out$expo %>%
         t() %>%
         as.data.frame() %>%
-        tibble::rownames_to_column(var = 'type') %>%
-        tidyr::pivot_longer(-"type", names_to = 'sig', values_to = 'exposure') %>%
+        tibble::rownames_to_column(var = "type") %>%
+        tidyr::pivot_longer(-"type", names_to = "sig", values_to = "exposure") %>%
         data.table::as.data.table()
       out$errors <- data.table::data.table(
         type = names(out$errors),
@@ -124,8 +127,8 @@ sig_fit_bootstrap_batch = function(catalogue_matrix, methods = c("LS", "QP"), n 
       out <- out %>%
         t() %>%
         as.data.frame() %>%
-        tibble::rownames_to_column(var = 'threshold') %>%
-        tidyr::pivot_longer(-"threshold", names_to = 'sig', values_to = 'p_value') %>%
+        tibble::rownames_to_column(var = "threshold") %>%
+        tidyr::pivot_longer(-"threshold", names_to = "sig", values_to = "p_value") %>%
         data.table::as.data.table()
       out
     })
@@ -137,14 +140,16 @@ sig_fit_bootstrap_batch = function(catalogue_matrix, methods = c("LS", "QP"), n 
 
   ## Outputing
   send_success("Outputing.")
-  optimal_list$expo$type = "optimal"
-  optimal_list$errors$type = "optimal"
+  optimal_list$expo$type <- "optimal"
+  optimal_list$errors$type <- "optimal"
 
   expos <- rbind(optimal_list$expo, bt_list$expo, fill = TRUE)
   errors <- rbind(optimal_list$errors, bt_list$errors, fill = TRUE)
 
-  result = list(expo = expos,
-                error = errors,
-                p_val = p_val)
+  result <- list(
+    expo = expos,
+    error = errors,
+    p_val = p_val
+  )
   return(result)
 }

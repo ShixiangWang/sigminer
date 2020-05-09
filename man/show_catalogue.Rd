@@ -22,7 +22,7 @@ show_catalogue(
 matrix with row representing components (motifs) and
 column representing samples}
 
-\item{mode}{signature type for plotting, now supports 'copynumber' or 'SBS'.}
+\item{mode}{signature type for plotting, now supports 'copynumber', 'SBS', 'DBS' and 'ID'.}
 
 \item{method}{method for copy number feature classfication in \link{sig_tally},
 can be one of "Macintyre" ("M") and "Wang" ("W").}

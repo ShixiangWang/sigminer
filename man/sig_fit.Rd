@@ -54,7 +54,7 @@ affected by relative exposure accuracy.}
 \item{rel_threshold}{numeric vector, a relative exposure lower than this value will be set to 0.
 Of note, this is a little different from the same parameter in \link{get_sig_exposure}.}
 
-\item{mode}{signature type for plotting, now supports 'copynumber' or 'SBS'.}
+\item{mode}{signature type for plotting, now supports 'copynumber', 'SBS', 'DBS' and 'ID'.}
 
 \item{true_catalog}{used by \link{sig_fit_bootstrap}, user never use it.}
 
@@ -121,5 +121,5 @@ Daniel Huebschmann, Zuguang Gu and Matthias Schlesner (2019). YAPSA: Yet Another
 Huang X, Wojtowicz D, Przytycka TM. Detecting presence of mutational signatures in cancer with confidence. Bioinformatics. 2018;34(2):330–337. doi:10.1093/bioinformatics/btx604
 }
 \seealso{
-\link{sig_extract}, \link{sig_auto_extract}
+\link{sig_extract}, \link{sig_auto_extract}, \link{sig_fit_bootstrap}, \link{sig_fit_bootstrap_batch}
 }

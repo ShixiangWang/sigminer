@@ -58,7 +58,7 @@ with normal copy 2 and force \code{use_all} to \code{FALSE} (no matter what user
 \item{...}{other parameters pass to \code{\link[data.table:fread]{data.table::fread()}}}
 }
 \value{
-a \link{CopyNumber} object
+a \link{CopyNumber} object.
 }
 \description{
 Read \strong{absolute} copy number profile for preparing CNV signature
@@ -74,6 +74,7 @@ cn <- read_copynumber(segTabs,
   genome_build = "hg19", complement = FALSE
 )
 cn
+cn_subset <- subset(cn, sample == "TCGA-DF-A2KN-01A-11D-A17U-01")
 
 tab_file <- system.file("extdata", "metastatic_tumor.segtab.txt",
   package = "sigminer", mustWork = TRUE
