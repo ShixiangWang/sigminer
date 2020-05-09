@@ -168,9 +168,9 @@ send_error <- function(...) {
   )
 }
 
-send_elapsed_time <- function(timer) {
+send_elapsed_time <- function(timer, ...) {
   timer <- Sys.time() - timer
-  send_info(round(timer, 3), " ", attr(timer, "units"), " elapsed.")
+  send_info(..., round(timer, 3), " ", attr(timer, "units"), " elapsed.")
 }
 
 get_timestamp <- function() {

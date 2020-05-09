@@ -22,7 +22,6 @@
 #' @testexamples
 #' expect_s3_class(res, "Signature")
 #' expect_equal(length(res_run1), 7L)
-#'
 get_bayesian_result <- function(run_info) {
   necessary_cols <- c("Run", "file")
   stopifnot(all(necessary_cols %in% colnames(run_info)))

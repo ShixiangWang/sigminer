@@ -50,7 +50,7 @@ and "human-genome" for transforming to whole genome frequency of component.}
 \item{rel_threshold}{numeric vector, a relative exposure lower than this value will be set to 0.
 Of note, this is a little different from the same parameter in \link{get_sig_exposure}.}
 
-\item{mode}{signature type for plotting, now supports 'copynumber' or 'SBS'.}
+\item{mode}{signature type for plotting, now supports 'copynumber', 'SBS', 'DBS' and 'ID'.}
 
 \item{find_suboptimal}{logical, if \code{TRUE}, find suboptimal decomposition with
 slightly higher error than the optimal solution by method 'SA'. This is useful
@@ -107,5 +107,8 @@ if (requireNamespace("lsei", quietly = TRUE)) {
 }
 \references{
 Huang X, Wojtowicz D, Przytycka TM. Detecting presence of mutational signatures in cancer with confidence. Bioinformatics. 2018;34(2):330–337. doi:10.1093/bioinformatics/btx604
+}
+\seealso{
+\link{sig_fit}, \link{sig_fit_bootstrap_batch}
 }
 \keyword{bootstrap}

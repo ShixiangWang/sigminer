@@ -9,7 +9,7 @@
 #' @param Signature a `Signature` object obtained either from [sig_extract] or [sig_auto_extract],
 #' or just a raw signature matrix with row representing components (motifs) and column
 #' representing signatures (column names must start with 'Sig').
-#' @param mode signature type for plotting, now supports 'copynumber' or 'SBS'.
+#' @param mode signature type for plotting, now supports 'copynumber', 'SBS', 'DBS' and 'ID'.
 #' @param method method for copy number feature classfication in [sig_tally],
 #' can be one of "Macintyre" ("M") and "Wang" ("W").
 #' @param normalize one of 'row', 'column', 'raw' and "feature", for row normalization (signature),
@@ -171,9 +171,23 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
     }), ]
   }
 
+  ## Check if it has transcription labels
+  has_labels <- grepl("^[TU]:", rownames(Sig))
+  if (any(has_labels)) {
+    Sig <- Sig[has_labels, , drop = FALSE]
+    has_labels <- TRUE
+  } else {
+    has_labels <- FALSE
+  }
+
   # >>>>>>>>>>>>>>>>> identify mode and do data transformation
   mat <- as.data.frame(Sig)
   mat$context <- rownames(mat)
+
+  if (has_labels) {
+    mat$context <- substring(mat$context, 3)
+    mat$label <- factor(substr(rownames(mat), 1, 1), levels = c("T", "U"))
+  }
 
   if (mode == "copynumber") {
     if (startsWith(method, "M")) {
@@ -221,7 +235,12 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
     mat$base <- sub("[ACGT]\\[(.*)\\][ACGT]", "\\1", mat$context)
     mat$context <- sub("(\\[.*\\])", "\\-", mat$context)
 
-    mat <- tidyr::gather(mat, class, signature, -c("context", "base"))
+    if (has_labels) {
+      mat <- tidyr::gather(mat, class, signature, -c("context", "base", "label"))
+    } else {
+      mat <- tidyr::gather(mat, class, signature, -c("context", "base"))
+    }
+
     mat <- dplyr::mutate(mat,
       context = factor(.data$context),
       base = factor(.data$base, levels = c(
@@ -235,7 +254,12 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
     mat$base <- paste0(substr(mat$context, 1, 3), "NN")
     mat$context <- substr(mat$context, 4, 5)
 
-    mat <- tidyr::gather(mat, class, signature, -c("context", "base"))
+    if (has_labels) {
+      mat <- tidyr::gather(mat, class, signature, -c("context", "base", "label"))
+    } else {
+      mat <- tidyr::gather(mat, class, signature, -c("context", "base"))
+    }
+
     mat <- dplyr::mutate(mat,
       context = factor(.data$context),
       base = factor(.data$base, levels = c(
@@ -248,37 +272,65 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
       class = factor(class)
     )
   } else if (mode == "ID") {
-    conv <- c("2", "3", "4", "5:D:M")
-    names(conv) <- c("2:D:M", "3:D:M", "4:D:M", "5:D:M")
-
-    mat$base <- paste0(substr(mat$context, 1, 3), substr(mat$context, 6, 7))
-    mat$base <- ifelse(grepl("D:M", mat$base),
-      conv[mat$base], mat$base
-    )
+    is_ID28 <- any(grepl("long_Del", rownames(mat)))
+    if (!is_ID28) {
+      conv <- c("2", "3", "4", "5:D:M")
+      names(conv) <- c("2:D:M", "3:D:M", "4:D:M", "5:D:M")
+      mat$base <- paste0(substr(mat$context, 1, 3), substr(mat$context, 6, 7))
+      mat$base <- ifelse(grepl("D:M", mat$base),
+        conv[mat$base], mat$base
+      )
+    } else {
+      mat$base <- ifelse(
+        grepl("^[0-9]", mat$context),
+        paste0(substr(mat$context, 1, 3), substr(mat$context, 6, 7)),
+        "Others"
+      )
+    }
     mat$count <- as.integer(substr(mat$context, 9, 9))
     mat$is_del <- grepl(":Del:[RCT]", mat$context)
     mat$count <- ifelse(mat$is_del, mat$count + 1, mat$count)
-    mat$context <- ifelse(mat$is_del,
-      ifelse(mat$count == 6, "6+", as.character(mat$count)),
-      ifelse(mat$count == 5, "5+", as.character(mat$count))
+    mat$context <- ifelse(is.na(mat$count),
+      mat$context,
+      ifelse(mat$is_del,
+        ifelse(mat$count == 6, "6+", as.character(mat$count)),
+        ifelse(mat$count == 5, "5+", as.character(mat$count))
+      )
     )
     mat$count <- NULL
     mat$is_del <- NULL
 
-    mat <- tidyr::gather(mat, class, signature, -c("context", "base"))
-    mat <- dplyr::mutate(mat,
-      context = factor(.data$context),
-      base = factor(.data$base, levels = c(
-        "1:D:C", "1:D:T",
-        "1:I:C", "1:I:T",
-        "2:D:R", "3:D:R",
-        "4:D:R", "5:D:R",
-        "2:I:R", "3:I:R",
-        "4:I:R", "5:I:R",
-        "2", "3", "4", "5:D:M"
-      )),
-      class = factor(class)
-    )
+    if (has_labels) {
+      mat <- tidyr::gather(mat, class, signature, -c("context", "base", "label"))
+    } else {
+      mat <- tidyr::gather(mat, class, signature, -c("context", "base"))
+    }
+
+    if (!is_ID28) {
+      mat <- dplyr::mutate(mat,
+        context = factor(.data$context),
+        base = factor(.data$base, levels = c(
+          "1:D:C", "1:D:T",
+          "1:I:C", "1:I:T",
+          "2:D:R", "3:D:R",
+          "4:D:R", "5:D:R",
+          "2:I:R", "3:I:R",
+          "4:I:R", "5:I:R",
+          "2", "3", "4", "5:D:M"
+        )),
+        class = factor(class)
+      )
+    } else {
+      mat <- dplyr::mutate(mat,
+        context = factor(.data$context),
+        base = factor(.data$base, levels = c(
+          "1:D:C", "1:D:T",
+          "1:I:C", "1:I:T",
+          "Others"
+        )),
+        class = factor(class)
+      )
+    }
   }
 
   if (normalize == "feature") {
@@ -334,12 +386,21 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
       ) +
       scale_fill_manual(values = helper_create_colormap(col_df$base, col_df$N))
   } else {
-    p <- ggplot(mat) +
-      geom_bar(aes_string(x = "context", y = "signature", fill = "base"),
-        stat = "identity", position = "identity",
-        colour = bar_border_color, width = bar_width
-      ) +
-      scale_fill_manual(values = palette)
+    if (has_labels) {
+      p <- ggplot(mat) +
+        geom_bar(aes_string(x = "context", y = "signature", fill = "label"),
+          stat = "identity", position = ggplot2::position_dodge2(preserve = "single", padding = 0),
+          colour = bar_border_color, width = bar_width
+        ) +
+        scale_fill_manual(values = c("darkblue", "red"))
+    } else {
+      p <- ggplot(mat) +
+        geom_bar(aes_string(x = "context", y = "signature", fill = "base"),
+          stat = "identity", position = "identity",
+          colour = bar_border_color, width = bar_width
+        ) +
+        scale_fill_manual(values = palette)
+    }
   }
 
 

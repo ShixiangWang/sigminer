@@ -27,7 +27,7 @@
 #' with normal copy 2 and force `use_all` to `FALSE` (no matter what user input).
 #' @param ... other parameters pass to [data.table::fread()]
 #' @author Shixiang Wang <w_shixiang@163.com>
-#' @return a [CopyNumber] object
+#' @return a [CopyNumber] object.
 #' @export
 #' @examples
 #' # Load toy dataset of absolute copynumber profile
@@ -39,6 +39,7 @@
 #'   genome_build = "hg19", complement = FALSE
 #' )
 #' cn
+#' cn_subset <- subset(cn, sample == "TCGA-DF-A2KN-01A-11D-A17U-01")
 #'
 #' tab_file <- system.file("extdata", "metastatic_tumor.segtab.txt",
 #'   package = "sigminer", mustWork = TRUE
@@ -47,6 +48,7 @@
 #' cn2
 #' @testexamples
 #' expect_s4_class(cn, "CopyNumber")
+#' expect_s4_class(cn_subset, "CopyNumber")
 #' expect_s4_class(cn2, "CopyNumber")
 #' @seealso [read_maf] for reading mutation data to [MAF] object.
 read_copynumber <- function(input,
