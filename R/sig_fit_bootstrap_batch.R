@@ -1,4 +1,4 @@
-#' Bootstrap Analysis of Signature Exposures
+#' Exposure Instability Analysis of Signature Exposures with Bootstrap
 #'
 #' @inheritParams sig_fit
 #' @inheritParams sig_fit_bootstrap

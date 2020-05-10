@@ -2,7 +2,7 @@
 % Please edit documentation in R/sig_fit_bootstrap_batch.R
 \name{sig_fit_bootstrap_batch}
 \alias{sig_fit_bootstrap_batch}
-\title{Bootstrap Analysis of Signature Exposures}
+\title{Exposure Instability Analysis of Signature Exposures with Bootstrap}
 \usage{
 sig_fit_bootstrap_batch(
   catalogue_matrix,
@@ -37,7 +37,7 @@ not implemented yet.}
 a \code{list} of \code{data.table}.
 }
 \description{
-Bootstrap Analysis of Signature Exposures
+Exposure Instability Analysis of Signature Exposures with Bootstrap
 }
 \examples{
 W <- matrix(c(1, 2, 3, 4, 5, 6), ncol = 2)

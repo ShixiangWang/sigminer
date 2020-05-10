@@ -14,7 +14,7 @@ reference:
     - CopyNumber-class
     - MAF-class
     - subset.CopyNumber
-  - title: Signature identification
+  - title: Core pipeline 1 - de novo signature identification
     desc: Identify signatures from genomic variation profile. After reading data, the following functions construct the standard pipeline for most users.
     contents:
     - sig_tally
@@ -24,13 +24,14 @@ reference:
     - show_sig_number_survey2
     - sig_extract
     - sig_auto_extract
-  - title: Exposure quantification
-    desc: Quantify exposure in at least one sample with reference signature.
+  - title: Core pipeline 2 - signature exposure fitting and optimization
+    desc: Quantify exposure in at least one sample with reference signatures. It can also be used to optimize signature exposure from pipeline 1 and analyze exposure instability.
     contents:
     - sig_tally
     - handle_hyper_mutation
     - sig_fit
     - sig_fit_bootstrap
+    - sig_fit_bootstrap_batch
     - report_bootstrap_p_value
   - title: Signature visualization
     desc: Show signature profile and exposure.
