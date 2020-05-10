@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.5</span>
       </span>
     </div>
 
@@ -178,7 +178,7 @@
     </tbody><tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-signature-identification" class="hasAnchor"><a href="#section-signature-identification" class="anchor"></a>Signature identification</h2>
+          <h2 id="section-core-pipeline-de-novo-signature-identification" class="hasAnchor"><a href="#section-core-pipeline-de-novo-signature-identification" class="anchor"></a>Core pipeline 1 - de novo signature identification</h2>
           <p class="section-desc"><p>Identify signatures from genomic variation profile. After reading data, the following functions construct the standard pipeline for most users.</p></p>
         </th>
       </tr>
@@ -233,8 +233,8 @@
     </tbody><tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-exposure-quantification" class="hasAnchor"><a href="#section-exposure-quantification" class="anchor"></a>Exposure quantification</h2>
-          <p class="section-desc"><p>Quantify exposure in at least one sample with reference signature.</p></p>
+          <h2 id="section-core-pipeline-signature-exposure-fitting-and-optimization" class="hasAnchor"><a href="#section-core-pipeline-signature-exposure-fitting-and-optimization" class="anchor"></a>Core pipeline 2 - signature exposure fitting and optimization</h2>
+          <p class="section-desc"><p>Quantify exposure in at least one sample with reference signatures. It can also be used to optimize signature exposure from pipeline 1 and analyze exposure instability.</p></p>
         </th>
       </tr>
       
@@ -266,6 +266,12 @@
           <p><code><a href="sig_fit_bootstrap.html">sig_fit_bootstrap()</a></code> </p>
         </td>
         <td><p>Obtain Bootstrap Distribution of Signature Exposures of a Certain Tumor Sample</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="sig_fit_bootstrap_batch.html">sig_fit_bootstrap_batch()</a></code> </p>
+        </td>
+        <td><p>Exposure Instability Analysis of Signature Exposures with Bootstrap</p></td>
       </tr><tr>
         
         <td>
@@ -634,7 +640,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>
