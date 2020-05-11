@@ -11,6 +11,7 @@ test_that("Function sig_extract() @ L29", {
   # Extract copy number signatures
   library(NMF)
   res <- sig_extract(cn_tally_M$nmf_matrix, 2, nrun = 1)
+  
   expect_s3_class(res, "Signature")
 })
 
