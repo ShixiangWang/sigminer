@@ -28,6 +28,7 @@
 #' if (requireNamespace("lsei") & requireNamespace("quadprog")) {
 #'   z <- sig_fit_bootstrap_batch(V, sig = W, n = 2)
 #'   z
+#'   z10 <- sig_fit_bootstrap_batch(V, sig = W, n = 10)
 #' }
 #' @testexamples
 #' expect_is(z, "list")

@@ -21,14 +21,7 @@
 #' library(NMF)
 #' res <- sig_extract(cn_tally_M$nmf_matrix, 2, nrun = 1)
 #' }
-#' @tests
-#' load(system.file("extdata", "toy_copynumber_tally_M.RData",
-#'   package = "sigminer", mustWork = TRUE
-#' ))
-#' # Extract copy number signatures
-#' library(NMF)
-#' res <- sig_extract(cn_tally_M$nmf_matrix, 2, nrun = 1)
-#'
+#' @testexamples
 #' expect_s3_class(res, "Signature")
 #' @seealso [sig_tally] for getting variation matrix,
 #' [sig_estimate] for estimating signature number for [sig_extract], [sig_auto_extract] for
