@@ -66,7 +66,9 @@ A bayesian variant of NMF algorithm to enable optimal inferences for the
 number of signatures through the automatic relevance determination technique.
 This functions delevers highly interpretable and sparse representations for
 both signature profiles and attributions at a balance between data fitting and
-model complexity. See detail part and references for more.
+model complexity (this method may introduce more signatures than expected,
+especially for copy number signatures (thus \strong{I don't recommend you to use this feature
+to extract copy number signatures})). See detail part and references for more.
 }
 \details{
 There are three methods available in this function: "L1W.L2H", "L1KL" and "L2KL".
