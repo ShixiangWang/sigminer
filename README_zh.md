@@ -16,15 +16,15 @@ issues](https://img.shields.io/github/issues-closed/ShixiangWang/sigminer.svg)](
 从 CRAN 上安装稳定版本：
 
 ``` r
-install.packages("sigminer")
+install.packages("sigminer", dependencies = TRUE)
 # Or
-BiocManager::install("sigminer")
+BiocManager::install("sigminer", dependencies = TRUE)
 ```
 
 从 Gitee 上安装开发版本：
 
 ``` r
-remotes::install_git("https://gitee.com/ShixiangWang/sigminer")
+remotes::install_git("https://gitee.com/ShixiangWang/sigminer", dependencies = TRUE)
 ```
 
 ## 使用文档
@@ -36,8 +36,11 @@ remotes::install_git("https://gitee.com/ShixiangWang/sigminer")
 
 -----
 
-***Copy number signature analyses in prostate cancer reveal distinct
-etiologies and clinical outcomes, under submission***
+***
+
+***Wang, Shixiang, et al. "Copy number signature analyses in prostate cancer reveal distinct etiologies and clinical outcomes" medRxiv (2020)*** <https://www.medrxiv.org/content/early/2020/04/29/2020.04.27.20082404>
+
+***
 
 -----
 
