@@ -2,7 +2,7 @@
 
 context("File R/sig_fit.R: @testexamples")
 
-test_that("Function sig_fit() @ L81", {
+test_that("Function sig_fit() @ L93", {
   
   W <- matrix(c(1, 2, 3, 4, 5, 6), ncol = 2)
   colnames(W) <- c("sig1", "sig2")
@@ -21,6 +21,10 @@ test_that("Function sig_fit() @ L81", {
   
     H_dt <- sig_fit(V, W, return_class = "data.table")
     H_dt
+  
+    ## Show results
+    show_sig_fit(H_infer)
+    show_sig_fit(H_dt)
   }
   
   if (requireNamespace("quadprog", quietly = TRUE)) {
@@ -30,6 +34,10 @@ test_that("Function sig_fit() @ L81", {
   
     H_dt <- sig_fit(V, W, method = "QP", return_class = "data.table")
     H_dt
+  
+    ## Show results
+    show_sig_fit(H_infer)
+    show_sig_fit(H_dt)
   }
   
   if (requireNamespace("GenSA", quietly = TRUE)) {
@@ -42,6 +50,10 @@ test_that("Function sig_fit() @ L81", {
   
     ## Modify arguments to method
     sig_fit(V, W, method = "SA", maxit = 10, temperature = 100)
+  
+    ## Show results
+    show_sig_fit(H_infer)
+    show_sig_fit(H_dt)
   }
   expect_is(H_infer, "matrix")
   expect_is(H_dt, "data.table")
