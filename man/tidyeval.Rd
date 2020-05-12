@@ -8,6 +8,7 @@
 \alias{sym}
 \alias{syms}
 \alias{.data}
+\alias{.env}
 \alias{:=}
 \alias{as_name}
 \alias{as_label}

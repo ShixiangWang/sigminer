@@ -12,7 +12,7 @@
 #'
 #' @return a `list` of `data.table`.
 #' @export
-#' @seealso [sig_fit], [[sig_fit_bootstrap]
+#' @seealso [sig_fit], [sig_fit_bootstrap]
 #'
 #' @examples
 #' W <- matrix(c(1, 2, 3, 4, 5, 6), ncol = 2)
@@ -26,17 +26,22 @@
 #' V
 #'
 #' if (requireNamespace("lsei") & requireNamespace("quadprog")) {
-#'   z <- sig_fit_bootstrap_batch(V, sig = W, n = 10)
+#'   z <- sig_fit_bootstrap_batch(V, sig = W, n = 2)
 #'   z
+#'   z10 <- sig_fit_bootstrap_batch(V, sig = W, n = 10)
 #' }
 #' @testexamples
 #' expect_is(z, "list")
+#' z2 <- sig_fit_bootstrap_batch(V, sig = W, n = 2, use_parallel = TRUE)
+#' expect_is(z2, "list")
 sig_fit_bootstrap_batch <- function(catalogue_matrix, methods = c("LS", "QP"), n = 100L,
                                     p_val_thresholds = c(0.05),
                                     use_parallel = FALSE,
                                     seed = 123456L,
                                     ...) {
-  set.seed(seed)
+  stopifnot(is.matrix(catalogue_matrix))
+
+  set.seed(seed, kind = "L'Ecuyer-CMRG")
   methods <- match.arg(methods, choices = c("LS", "QP", "SA"), several.ok = TRUE)
 
   timer <- Sys.time()
@@ -81,6 +86,7 @@ sig_fit_bootstrap_batch <- function(catalogue_matrix, methods = c("LS", "QP"), n
   if (use_parallel) {
     oplan <- future::plan()
     future::plan("multiprocess", workers = future::availableCores())
+    furrr::future_options(seed = TRUE)
     on.exit(future::plan(oplan), add = TRUE)
     bt_list <- furrr::future_map2(as.data.frame(catalogue_matrix), colnames(catalogue_matrix), call_bt,
       y = rownames(catalogue_matrix), methods = methods, n = n, ..., .progress = TRUE

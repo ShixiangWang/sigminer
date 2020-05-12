@@ -141,7 +141,6 @@ is.wholenumber <- function(x, tol = .Machine$double.eps) {
   abs(x - round(x)) < tol
 }
 
-
 # Signals ----------------------------------------------------------------
 
 send_info <- function(...) {

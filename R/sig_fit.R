@@ -53,6 +53,10 @@
 #'
 #'   H_dt <- sig_fit(V, W, return_class = "data.table")
 #'   H_dt
+#'
+#'   ## Show results
+#'   show_sig_fit(H_infer)
+#'   show_sig_fit(H_dt)
 #' }
 #'
 #' if (requireNamespace("quadprog", quietly = TRUE)) {
@@ -62,6 +66,10 @@
 #'
 #'   H_dt <- sig_fit(V, W, method = "QP", return_class = "data.table")
 #'   H_dt
+#'
+#'   ## Show results
+#'   show_sig_fit(H_infer)
+#'   show_sig_fit(H_dt)
 #' }
 #'
 #' if (requireNamespace("GenSA", quietly = TRUE)) {
@@ -74,6 +82,10 @@
 #'
 #'   ## Modify arguments to method
 #'   sig_fit(V, W, method = "SA", maxit = 10, temperature = 100)
+#'
+#'   ## Show results
+#'   show_sig_fit(H_infer)
+#'   show_sig_fit(H_dt)
 #' }
 #' @testexamples
 #' expect_is(H_infer, "matrix")

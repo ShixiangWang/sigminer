@@ -51,10 +51,11 @@ V <- W \%*\% H
 V
 
 if (requireNamespace("lsei") & requireNamespace("quadprog")) {
-  z <- sig_fit_bootstrap_batch(V, sig = W, n = 10)
+  z <- sig_fit_bootstrap_batch(V, sig = W, n = 2)
   z
+  z10 <- sig_fit_bootstrap_batch(V, sig = W, n = 10)
 }
 }
 \seealso{
-\link{sig_fit}, [\link{sig_fit_bootstrap}
+\link{sig_fit}, \link{sig_fit_bootstrap}
 }
