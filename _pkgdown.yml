@@ -41,6 +41,13 @@ reference:
     - show_sig_exposure
     - show_cosmic_sig_profile
     - show_sig_consensusmap
+  - title: Fit and bootstrap visualization
+    desc: Show signature fit and bootstrap analysis results.
+    contents:
+    - show_sig_fit
+    - show_sig_bootstrap_exposure
+    - show_sig_bootstrap_error
+    - show_sig_bootstrap_stability
   - title: Signature object operation
     desc: Obtain or modify `Signature` object information.
     contents:
