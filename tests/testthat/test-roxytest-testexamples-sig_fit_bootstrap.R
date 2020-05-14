@@ -2,7 +2,7 @@
 
 context("File R/sig_fit_bootstrap.R: @testexamples")
 
-test_that("Function sig_fit_bootstrap() @ L59", {
+test_that("Function sig_fit_bootstrap() @ L61", {
   
   W <- matrix(c(1, 2, 3, 4, 5, 6), ncol = 2)
   colnames(W) <- c("sig1", "sig2")

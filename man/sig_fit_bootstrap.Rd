@@ -13,6 +13,7 @@ sig_fit_bootstrap(
   db_type = c("", "human-exome", "human-genome"),
   show_index = TRUE,
   method = c("LS", "QP", "SA"),
+  SA_not_bootstrap = FALSE,
   type = c("absolute", "relative"),
   rel_threshold = 0,
   mode = c("SBS", "copynumber"),
@@ -44,6 +45,9 @@ and "human-genome" for transforming to whole genome frequency of component.}
 
 \item{method}{method to solve the minimazation problem.
 'LS' for least square; 'QP' for quadratic programming; 'SA' for simulated annealing.}
+
+\item{SA_not_bootstrap}{if \code{TRUE}, directly run 'SA' multiple times with original input instead of
+bootstrap samples.}
 
 \item{type}{'absolute' for signature exposure and 'relative' for signature relative exposure.}
 
