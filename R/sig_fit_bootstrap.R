@@ -7,6 +7,8 @@
 #' @param catalog a named numeric vector or a numeric matrix with dimension Nx1.
 #' N is the number of component, 1 is the sample.
 #' @param n the number of bootstrap replicates.
+#' @param SA_not_bootstrap if `TRUE`, directly run 'SA' multiple times with original input instead of
+#' bootstrap samples.
 #' @param find_suboptimal logical, if `TRUE`, find suboptimal decomposition with
 #' slightly higher error than the optimal solution by method 'SA'. This is useful
 #' to explore hidden dependencies between signatures. More see reference.
@@ -64,6 +66,7 @@ sig_fit_bootstrap <- function(catalog,
                               db_type = c("", "human-exome", "human-genome"),
                               show_index = TRUE,
                               method = c("LS", "QP", "SA"),
+                              SA_not_bootstrap = FALSE,
                               type = c("absolute", "relative"),
                               rel_threshold = 0,
                               mode = c("SBS", "copynumber"),
@@ -172,11 +175,19 @@ sig_fit_bootstrap <- function(catalog,
   send_info("About to start bootstrap.")
   sb <- cli::cli_status("{symbol$arrow_right} Bootstrapping {n} times.")
 
-  res <- sapply(1:n, function(i) {
-    sampled <- sample(seq(K), total_count, replace = TRUE, prob = catalog / sum(catalog))
-    catalog_mat <- as.integer(table(factor(sampled, levels = seq(K))))
-    catalog_mat <- matrix(catalog_mat, ncol = 1)
+  if (SA_not_bootstrap && method == "SA") {
+    send_info("'SA' method is detected & 'SA_not_bootstrap' is TRUE, run 'SA' multiple times with original catalogues.")
+    catalog_mat <- matrix(catalog, ncol = 1)
     rownames(catalog_mat) <- names(catalog)
+  }
+
+  res <- sapply(1:n, function(i) {
+    if (any(!SA_not_bootstrap, method != "SA")) {
+      sampled <- sample(seq(K), total_count, replace = TRUE, prob = catalog / sum(catalog))
+      catalog_mat <- as.integer(table(factor(sampled, levels = seq(K))))
+      catalog_mat <- matrix(catalog_mat, ncol = 1)
+      rownames(catalog_mat) <- names(catalog)
+    }
 
     Args$catalogue_matrix <- catalog_mat
 

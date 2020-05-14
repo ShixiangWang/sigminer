@@ -413,6 +413,7 @@ decompose_SA <- function(x, y, P, type = "absolute", ...) {
   # N: how many signatures are selected
   N <- ncol(P)
   # change our suggestion to control GenSA function based on user's requirements
+  # https://blog.csdn.net/georgesale/article/details/80631417
   our.control <- list(maxit = 1000, temperature = 10, nb.stop.improvement = 1000, simple.function = TRUE)
   our.control[names(control)] <- control
   # Solve the problem using simulated annealing package GenSA
