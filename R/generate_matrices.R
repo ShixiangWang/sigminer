@@ -508,7 +508,9 @@ generate_matrix_INDEL <- function(query, ref_genome, genome_build = "hg19", add_
   ## Adjacent repeats (copies) count
   query[, count_repeat := mapply(count_repeat, ID_type, downstream) + mapply(count_repeat, ID_type, upstream, is_downstream = FALSE)]
   send_success("Adjacent copies counted.")
-  ## Micro-homology count
+  ## determine pyrimidine situaiton
+  query[, pyrimidine_all := mapply(choose_all_Pyrimidine, ID_type)]
+   ## Micro-homology count
   query[, count_homosize := mapply(
     count_homology_size,
     ID_type, upstream, downstream
@@ -572,20 +574,19 @@ generate_matrix_INDEL <- function(query, ref_genome, genome_build = "hg19", add_
   send_success("ID-28 matrix created.")
   ID_83 <- records_to_matrix(query, "Tumor_Sample_Barcode", "ID_motif") %>% as.matrix()
   send_success("ID-83 matrix created.")
+  ID_415 <- records_to_matrix(query, "Tumor_Sample_Barcode", ) %>% as.matrix()
+  send_success("ID-415 matrix created.")
 
   if (add_trans_bias) {
-    # DBS_186 = records_to_matrix(query, "Tumor_Sample_Barcode", "dbsMotif",
-    #                             add_trans_bias = TRUE, build = genome_build, mode == "DBS")
-    ID_186 <- NULL
-    send_success("ID-186 matrix created.")
+    send_success("ID-415 matrix created.")
 
-    send_info("Return ID-186 as major matrix.")
+    send_info("Return ID-415 as major matrix.")
     res <- list(
       nmf_matrix = ID_186,
       all_matrices = list(
         ID_28 = ID_28,
         ID_83 = ID_83,
-        ID_186 = ID_186
+        ID_415 = ID_415
       )
     )
   } else {
@@ -675,18 +676,36 @@ records_to_matrix <- function(dt, samp_col, component_col, add_trans_bias = FALS
         c("T:", "U:", "B:", "N:", "Q:"),
         levels(dt[[component_col]])
       )
-      new_levels <- ifelse(substr(new_levels, 3, 4) %in% c("TT", "TC", "CT", "CC") & substr(new_levels, 1, 1) != "Q", new_levels,
-        ifelse(substr(new_levels, 3, 4) %in% c("TT", "TC", "CT", "CC") & substr(new_levels, 1, 1) == "Q",
-          NA, gsub("[A-Z]\\:", "Q:", new_levels)
+
+      dt[[component_col]] <- paste0(dt$transcript_bias_label, dt[[component_col]])
+      dt[[component_col]] <- factor(dt[[component_col]], levels = new_levels)
+    } else if (mode == "ID") {
+      dt$transcript_bias_label <- ifelse(
+        dt$pyrimidine_all == TRUE,
+        ifelse(
+          m_dt$MatchCount == 2, "B:",
+          ifelse(m_dt$MatchCount == 0, "N:",
+                 ifelse(xor(dt$should_reverse, m_dt$strand == "-"),
+                        "T:", "U:"
+                        )
+          )
         )
+        ,"Q:"
+      )
+      new_levels <- vector_to_combination(
+        c("T:", "U:", "B:", "N:", "Q:"),
+        levels(dt[[component_col]])
+      )
+      new_levels <- ifelse(substr(new_levels, 3, 4) %in% c("TT", "TC", "CT", "CC") & substr(new_levels, 1, 1) != "Q", new_levels,
+                           ifelse(substr(new_levels, 3, 4) %in% c("TT", "TC", "CT", "CC") & substr(new_levels, 1, 1) == "Q",
+                                  NA, gsub("[A-Z]\\:", "Q:", new_levels)
+                           )
       ) %>%
         na.omit() %>%
         unique()
 
       dt[[component_col]] <- paste0(dt$transcript_bias_label, dt[[component_col]])
       dt[[component_col]] <- factor(dt[[component_col]], levels = new_levels)
-    } else if (mode == "ID") {
-
     }
   }
 
@@ -777,6 +796,21 @@ count_homology_size <- function(x, upstream, downstream) {
     return(0L)
   }
 }
+
+choose_all_Pyrimidine <- function(x){
+  while (nchar(x) > 0){
+    if (substring(x,1,1) == "T"|substring(x,i,i) == "C"){
+      all_pyrimidine <- TRUE
+      x <- substr(x,2,nchar(x))
+    }else{
+      all_pyrimidine <- FALSE
+      break
+    }
+  }
+  all_pyrimidine
+}
+
+
 
 utils::globalVariables(
   c(
