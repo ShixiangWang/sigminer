@@ -142,5 +142,5 @@ debug(generate_matrix_INDEL)
 mt_tally <- sig_tally(
   maf,
   ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
-  use_syn = TRUE, mode = "ID"
+  use_syn = TRUE, mode = "ID", add_trans_bias = TRUE
 )
