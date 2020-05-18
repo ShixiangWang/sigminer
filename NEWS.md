@@ -1,3 +1,7 @@
+# sigminer 1.0.6
+
+- Added strand bias labeling for INDEL.
+
 # sigminer 1.0.5
 
 - Exported APOBEC result when the mode is 'ALL' in `sig_tally()`.

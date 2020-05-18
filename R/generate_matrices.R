@@ -528,6 +528,12 @@ generate_matrix_INDEL <- function(query, ref_genome, genome_build = "hg19", add_
   query[, mut_base := ifelse(ID_len > 1, "R", mut_base)]
   query[, mut_base := ifelse(ID_len > 1 & count_repeat == 0 & count_homosize > 0, "M", mut_base)]
 
+  ## Generate variables to handle strand bias labeling
+  query[, should_reverse := sapply(ID_type, is_all_purine)]
+  query[, ID_type := ifelse(should_reverse, purine2pyrimidine(ID_type), ID_type)]
+  # determine pyrimidine situaiton
+  query$all_pyrimidine <- sapply(query$ID_type, is_all_pyrimidine)
+
   ## Generate all factors
   sim_types <- c(indel_types[1:24], "long_Del", "long_Ins", "MH", "complex")
   query <- rbind(query, query_comp, fill = TRUE)
@@ -574,18 +580,18 @@ generate_matrix_INDEL <- function(query, ref_genome, genome_build = "hg19", add_
   send_success("ID-83 matrix created.")
 
   if (add_trans_bias) {
-    # DBS_186 = records_to_matrix(query, "Tumor_Sample_Barcode", "dbsMotif",
-    #                             add_trans_bias = TRUE, build = genome_build, mode == "DBS")
-    ID_186 <- NULL
-    send_success("ID-186 matrix created.")
+    ID_415 <- records_to_matrix(query, "Tumor_Sample_Barcode", "ID_motif",
+      add_trans_bias = TRUE, build = genome_build, mode = "ID"
+    )
+    send_success("ID-415 matrix created.")
 
-    send_info("Return ID-186 as major matrix.")
+    send_info("Return ID-415 as major matrix.")
     res <- list(
-      nmf_matrix = ID_186,
+      nmf_matrix = ID_415,
       all_matrices = list(
         ID_28 = ID_28,
         ID_83 = ID_83,
-        ID_186 = ID_186
+        ID_415 = ID_415
       )
     )
   } else {
@@ -686,7 +692,24 @@ records_to_matrix <- function(dt, samp_col, component_col, add_trans_bias = FALS
       dt[[component_col]] <- paste0(dt$transcript_bias_label, dt[[component_col]])
       dt[[component_col]] <- factor(dt[[component_col]], levels = new_levels)
     } else if (mode == "ID") {
-
+      dt$transcript_bias_label <- ifelse(
+        dt$all_pyrimidine == TRUE,
+        ifelse(
+          m_dt$MatchCount == 2, "B:",
+          ifelse(m_dt$MatchCount == 0, "N:",
+            ifelse(xor(dt$should_reverse, m_dt$strand == "-"),
+              "T:", "U:"
+            )
+          )
+        ),
+        "Q:"
+      )
+      new_levels <- vector_to_combination(
+        c("T:", "U:", "B:", "N:", "Q:"),
+        levels(dt[[component_col]])
+      )
+      dt[[component_col]] <- paste0(dt$transcript_bias_label, dt[[component_col]])
+      dt[[component_col]] <- factor(dt[[component_col]], levels = new_levels)
     }
   }
 
@@ -776,6 +799,20 @@ count_homology_size <- function(x, upstream, downstream) {
   } else {
     return(0L)
   }
+}
+
+is_all_pyrimidine <- function(x) {
+  !isTRUE(nchar(gsub("[CT]", "", x)) > 0)
+}
+
+is_all_purine <- function(x) {
+  !isTRUE(nchar(gsub("[AG]", "", x)) > 0)
+}
+
+purine2pyrimidine <- function(x) {
+  x <- chartr("A", "T", x)
+  x <- chartr("G", "C", x)
+  return(x)
 }
 
 utils::globalVariables(
