@@ -1,6 +1,7 @@
 # sigminer 1.0.6
 
 - Added strand bias labeling for INDEL.
+- Added COSMIC TSB signatures.
 
 # sigminer 1.0.5
 

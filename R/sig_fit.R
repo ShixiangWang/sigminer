@@ -101,7 +101,7 @@ sig_fit <- function(catalogue_matrix,
                     return_class = c("matrix", "data.table"),
                     return_error = FALSE,
                     rel_threshold = 0,
-                    mode = c("SBS", "copynumber"),
+                    mode = c("SBS", "DBS", "ID", "copynumber"),
                     true_catalog = NULL,
                     ...) {
   stopifnot(is.matrix(catalogue_matrix))
@@ -141,6 +141,9 @@ sig_fit <- function(catalogue_matrix,
       ID = system.file("extdata", "ID_signatures.rds",
         package = "sigminer", mustWork = TRUE
       ),
+      TSB = system.file("extdata", "TSB_signatures.rds",
+                       package = "sigminer", mustWork = TRUE
+      ),
       send_stop("Invalid parameter passing to {.code sig_db}.")
     )
     sigs_db <- readRDS(file = db_file)
@@ -162,7 +165,8 @@ sig_fit <- function(catalogue_matrix,
       legacy = substring(colnames(sigs), 8),
       SBS = substring(colnames(sigs), 4),
       DBS = substring(colnames(sigs), 4),
-      ID = substring(colnames(sigs), 3)
+      ID = substring(colnames(sigs), 3),
+      TSB = substring(colnames(sigs), 4)
     )
 
     send_info("Checking signature index.")

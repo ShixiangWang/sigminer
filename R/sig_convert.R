@@ -13,7 +13,7 @@
 #' @param to same as `from`.
 #' @references `convert_signatures` function from sigfit package.
 #'
-#' @return a `matrix`
+#' @return a `matrix`.
 #' @export
 #' @examples
 #' # Load SBS signature

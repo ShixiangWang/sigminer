@@ -14,9 +14,11 @@ show_cosmic_sig_profile(
 \arguments{
 \item{sig_index}{a vector for signature index. "ALL" for all signatures.}
 
-\item{show_index}{if \code{TRUE}, show valid index.}
+\item{show_index}{if \code{TRUE}, show valid indices.}
 
-\item{sig_db}{can be 'legacy' (for COSMIC v2 'SBS'), 'SBS', 'DBS' and 'ID'. Default 'legacy'.}
+\item{sig_db}{can be 'legacy' (for COSMIC v2 'SBS'),
+'SBS', 'DBS', 'ID' and 'TSB' (for SBS transcriptional strand bias signatures).
+Default 'legacy'.}
 
 \item{...}{other arguments passing to \link{show_sig_profile}.}
 }
