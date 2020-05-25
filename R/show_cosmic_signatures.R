@@ -39,7 +39,7 @@ show_cosmic_sig_profile <- function(sig_index = NULL, show_index = TRUE, sig_db 
       package = "sigminer", mustWork = TRUE
     ),
     TSB = system.file("extdata", "TSB_signatures.rds",
-                     package = "sigminer", mustWork = TRUE
+      package = "sigminer", mustWork = TRUE
     ),
     send_stop("Invalid parameter passing to {.code sig_db}.")
   )

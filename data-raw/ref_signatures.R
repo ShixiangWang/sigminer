@@ -106,26 +106,28 @@ saveRDS(ID_db, file = "inst/extdata/ID_signatures.rds")
 TSB <- readr::read_csv("data-raw/SigProfiler Signatures/SigProfiler reference signatures/Sigprofiler Transcriptional Strand Bias Signatures/sigProfiler_TSB_signatures.csv")
 TSB <- TSB %>%
   mutate(component = paste(Strand,
-                           paste0(
-                             substr(Subtype, 1, 1),
-                             "[",
-                             Type,
-                             "]",
-                             substr(Subtype, 3, 3)
-                           ), sep = ":"))
+    paste0(
+      substr(Subtype, 1, 1),
+      "[",
+      Type,
+      "]",
+      substr(Subtype, 3, 3)
+    ),
+    sep = ":"
+  ))
 
 TSB_db <- list()
 TSB <- TSB %>%
   dplyr::select(-c("Strand", "Type", "Subtype")) %>%
   column_to_rownames("component")
 ## Ref link: https://cancer.sanger.ac.uk/cosmic/signatures/SBS
-sbs_file = system.file("extdata", "SBS_signatures.RDs",
-                       package = "maftools", mustWork = TRUE
+sbs_file <- system.file("extdata", "SBS_signatures.RDs",
+  package = "maftools", mustWork = TRUE
 )
-sbs = readRDS(sbs_file)
+sbs <- readRDS(sbs_file)
 rbind(colnames(sbs$db), colnames(TSB))
 
-colnames(TSB) = colnames(TSB) %>% str_remove("-E")
+colnames(TSB) <- colnames(TSB) %>% str_remove("-E")
 
 TSB_aetiology <- sbs$aetiology[!rownames(sbs$aetiology) %in% c("SBS84", "SBS85"), , drop = FALSE]
 

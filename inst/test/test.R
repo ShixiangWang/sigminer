@@ -144,3 +144,44 @@ mt_tally <- sig_tally(
   ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
   use_syn = TRUE, mode = "ID", add_trans_bias = TRUE
 )
+
+
+# Test bootstrap batch in practice ----------------------------------------
+
+library(sigminer)
+library(NMF)
+
+laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools", mustWork = TRUE)
+laml <- read_maf(maf = laml.maf)
+if (require("BSgenome.Hsapiens.UCSC.hg19")) {
+  mt_tally <- sig_tally(
+    laml,
+    ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
+    prefix = "chr", useSyn = TRUE
+  )
+} else {
+  message("Please install package 'BSgenome.Hsapiens.UCSC.hg19' firstly!")
+}
+
+sig_fit(mt_tally$nmf_matrix %>% t(),
+                        sig_index = 1:30,
+                        sig_db = "legacy",
+                        methods = c("LS", "QP"))
+
+for (i in 1:nrow(mt_tally$nmf_matrix)) {
+  print(i)
+  bt_res <- sig_fit_bootstrap(mt_tally$nmf_matrix[i, ],
+                              sig_index = 1:30,
+                              sig_db = "legacy",
+                              methods = c("QP"), n = 1)
+}
+
+bt_res <- sig_fit_bootstrap(mt_tally$nmf_matrix[1, ],
+                            sig_index = 1:30,
+                            sig_db = "legacy",
+                            methods = c("QP"), n = 2)
+
+bt_res <- sig_fit_bootstrap_batch(mt_tally$nmf_matrix %>% t(),
+                                  sig_index = 1:30,
+                                  sig_db = "legacy",
+                                  methods = c("QP"), n = 2)

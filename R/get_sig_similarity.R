@@ -111,7 +111,7 @@ get_sig_similarity <- function(Signature, Ref = NULL,
         package = "sigminer", mustWork = TRUE
       ),
       TSB = system.file("extdata", "TSB_signatures.rds",
-                       package = "sigminer", mustWork = TRUE
+        package = "sigminer", mustWork = TRUE
       )
     )
     sigs_db <- readRDS(file = db_file)

@@ -142,7 +142,7 @@ sig_fit <- function(catalogue_matrix,
         package = "sigminer", mustWork = TRUE
       ),
       TSB = system.file("extdata", "TSB_signatures.rds",
-                       package = "sigminer", mustWork = TRUE
+        package = "sigminer", mustWork = TRUE
       ),
       send_stop("Invalid parameter passing to {.code sig_db}.")
     )

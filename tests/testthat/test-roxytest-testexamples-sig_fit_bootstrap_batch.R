@@ -2,7 +2,7 @@
 
 context("File R/sig_fit_bootstrap_batch.R: @testexamples")
 
-test_that("Function sig_fit_bootstrap_batch() @ L37", {
+test_that("Function sig_fit_bootstrap_batch() @ L39", {
   
   W <- matrix(c(1, 2, 3, 4, 5, 6), ncol = 2)
   colnames(W) <- c("sig1", "sig2")
