@@ -1,5 +1,6 @@
 # sigminer 1.0.6
 
+- Properly handled null-count samples in `sig_fit_bootstrap_batch()`.
 - Added strand bias labeling for INDEL.
 - Added COSMIC TSB signatures.
 
