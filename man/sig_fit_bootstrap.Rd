@@ -16,7 +16,7 @@ sig_fit_bootstrap(
   SA_not_bootstrap = FALSE,
   type = c("absolute", "relative"),
   rel_threshold = 0,
-  mode = c("SBS", "copynumber"),
+  mode = c("SBS", "DBS", "ID", "copynumber"),
   find_suboptimal = FALSE,
   suboptimal_ref_error = NULL,
   suboptimal_factor = 1.05,
@@ -35,13 +35,16 @@ column representing signatures.}
 
 \item{sig_index}{a vector for signature index. "ALL" for all signatures.}
 
-\item{sig_db}{can be 'legacy' (for COSMIC v2 'SBS'), 'SBS', 'DBS' and 'ID'. Default 'legacy'.}
+\item{sig_db}{can be 'legacy' (for COSMIC v2 'SBS'),
+'SBS', 'DBS', 'ID' and 'TSB' (for SBS transcriptional strand bias signatures).
+Default 'legacy'.}
 
 \item{db_type}{only used when \code{sig_db} is enabled.
 "" for keeping default, "human-exome" for transforming to exome frequency of component,
-and "human-genome" for transforming to whole genome frequency of component.}
+and "human-genome" for transforming to whole genome frequency of component.
+Currently only works for 'SBS'.}
 
-\item{show_index}{if \code{TRUE}, show valid index.}
+\item{show_index}{if \code{TRUE}, show valid indices.}
 
 \item{method}{method to solve the minimazation problem.
 'LS' for least square; 'QP' for quadratic programming; 'SA' for simulated annealing.}

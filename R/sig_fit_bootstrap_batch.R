@@ -3,9 +3,11 @@
 #' @inheritParams sig_fit
 #' @inheritParams sig_fit_bootstrap
 #' @param methods a subset of `c("LS", "QP", "SA")`.
+#' @param min_count minimal exposure in a sample, default is 1. Any patient has total exposure less
+#' than this value will be filtered out.
 #' @param p_val_thresholds a vector of relative exposure threshold for calculating p values.
 #' @param use_parallel if `TRUE`, use parallel computation based on **furrr** package,
-#' not implemented yet.
+#' a known issue is that the result cannot be reproduced in parallel mode.
 #' @param seed random seed to reproduce the result.
 #' @param ... other common parameters passing to [sig_fit_bootstrap], including `sig`, `sig_index`,
 #' `sig_db`, `db_type`, `mode`, etc.
@@ -34,7 +36,10 @@
 #' expect_is(z, "list")
 #' z2 <- sig_fit_bootstrap_batch(V, sig = W, n = 2, use_parallel = TRUE)
 #' expect_is(z2, "list")
-sig_fit_bootstrap_batch <- function(catalogue_matrix, methods = c("LS", "QP"), n = 100L,
+sig_fit_bootstrap_batch <- function(catalogue_matrix,
+                                    methods = c("LS", "QP"),
+                                    n = 100L,
+                                    min_count = 1L,
                                     p_val_thresholds = c(0.05),
                                     use_parallel = FALSE,
                                     seed = 123456L,
@@ -47,6 +52,15 @@ sig_fit_bootstrap_batch <- function(catalogue_matrix, methods = c("LS", "QP"), n
   timer <- Sys.time()
   send_info("Batch Bootstrap Signature Exposure Analysis Started.")
   on.exit(send_elapsed_time(timer, "Total "))
+
+  samp_index <- colSums(catalogue_matrix) > min_count
+  if (sum(samp_index) != nrow(catalogue_matrix)) {
+    send_info(paste(
+      "Samples to be filtered out:",
+      paste(colnames(catalogue_matrix)[!samp_index], collapse = ",")
+    ))
+    catalogue_matrix <- catalogue_matrix[, samp_index, drop = FALSE]
+  }
 
   ## Get optimal exposures with different methods
   send_info("Finding optimal exposures (&errors) for different methods.")

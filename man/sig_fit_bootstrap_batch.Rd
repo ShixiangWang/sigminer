@@ -8,6 +8,7 @@ sig_fit_bootstrap_batch(
   catalogue_matrix,
   methods = c("LS", "QP"),
   n = 100L,
+  min_count = 1L,
   p_val_thresholds = c(0.05),
   use_parallel = FALSE,
   seed = 123456L,
@@ -23,10 +24,13 @@ transpose it by \code{t()}.}
 
 \item{n}{the number of bootstrap replicates.}
 
+\item{min_count}{minimal exposure in a sample, default is 1. Any patient has total exposure less
+than this value will be filtered out.}
+
 \item{p_val_thresholds}{a vector of relative exposure threshold for calculating p values.}
 
 \item{use_parallel}{if \code{TRUE}, use parallel computation based on \strong{furrr} package,
-not implemented yet.}
+a known issue is that the result cannot be reproduced in parallel mode.}
 
 \item{seed}{random seed to reproduce the result.}
 

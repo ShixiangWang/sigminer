@@ -9,10 +9,13 @@
 #' @param Signature a `Signature` object or a component-by-signature matrix (sum of each column is 1).
 #' More please see examples.
 #' @param Ref default is `NULL`, can be a same object as `Signature`.
-#' @param sig_db can be 'legacy' (for COSMIC v2 'SBS'), 'SBS', 'DBS' and 'ID'. Default 'legacy'.
+#' @param sig_db can be 'legacy' (for COSMIC v2 'SBS'),
+#' 'SBS', 'DBS', 'ID' and 'TSB' (for SBS transcriptional strand bias signatures).
+#' Default 'legacy'.
 #' @param db_type only used when `sig_db` is enabled.
 #' "" for keeping default, "human-exome" for transforming to exome frequency of component,
 #' and "human-genome" for transforming to whole genome frequency of component.
+#' Currently only works for 'SBS'.
 #' @param method default is 'cosine' for cosine similarity.
 #' @param normalize one of "row" and "feature". "row" is typically used
 #' for common mutational signatures. "feature" is designed by me to use when input
@@ -89,7 +92,7 @@ get_sig_similarity <- function(Signature, Ref = NULL,
     }
   }
 
-  sig_db <- match.arg(arg = sig_db, choices = c("legacy", "SBS", "DBS", "ID"))
+  sig_db <- match.arg(arg = sig_db, choices = c("legacy", "SBS", "DBS", "ID", "TSB"))
   method <- match.arg(arg = method, choices = c("cosine"))
 
   if (is.null(Ref)) {
@@ -105,6 +108,9 @@ get_sig_similarity <- function(Signature, Ref = NULL,
         package = "sigminer", mustWork = TRUE
       ),
       ID = system.file("extdata", "ID_signatures.rds",
+        package = "sigminer", mustWork = TRUE
+      ),
+      TSB = system.file("extdata", "TSB_signatures.rds",
         package = "sigminer", mustWork = TRUE
       )
     )

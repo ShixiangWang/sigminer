@@ -1,7 +1,7 @@
 #' Plot COSMIC Signature Profile
 #'
 #' @param sig_index a vector for signature index. "ALL" for all signatures.
-#' @param show_index if `TRUE`, show valid index.
+#' @param show_index if `TRUE`, show valid indices.
 #' @inheritParams get_sig_similarity
 #' @param ... other arguments passing to [show_sig_profile].
 #'
@@ -38,6 +38,9 @@ show_cosmic_sig_profile <- function(sig_index = NULL, show_index = TRUE, sig_db 
     ID = system.file("extdata", "ID_signatures.rds",
       package = "sigminer", mustWork = TRUE
     ),
+    TSB = system.file("extdata", "TSB_signatures.rds",
+      package = "sigminer", mustWork = TRUE
+    ),
     send_stop("Invalid parameter passing to {.code sig_db}.")
   )
   sigs_db <- readRDS(file = db_file)
@@ -51,7 +54,8 @@ show_cosmic_sig_profile <- function(sig_index = NULL, show_index = TRUE, sig_db 
     legacy = substring(colnames(sigs), 8),
     SBS = substring(colnames(sigs), 4),
     DBS = substring(colnames(sigs), 4),
-    ID = substring(colnames(sigs), 3)
+    ID = substring(colnames(sigs), 3),
+    TSB = substring(colnames(sigs), 4)
   )
 
   msg <- paste(
@@ -88,7 +92,7 @@ show_cosmic_sig_profile <- function(sig_index = NULL, show_index = TRUE, sig_db 
 
   sig_mat <- as.matrix(sigs[, index, drop = FALSE])
 
-  if (sig_db %in% c("legacy", "SBS")) {
+  if (sig_db %in% c("legacy", "SBS", "TSB")) {
     mode <- "SBS"
   } else {
     mode <- sig_db

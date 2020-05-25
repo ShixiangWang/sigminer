@@ -2,7 +2,7 @@
 
 context("File R/show_sig_bootstrap.R: @testexamples")
 
-test_that("[unknown alias] @ L88", {
+test_that("[unknown alias] @ L89", {
   
   
   if (require("BSgenome.Hsapiens.UCSC.hg19")) {
@@ -31,9 +31,11 @@ test_that("[unknown alias] @ L88", {
     ## Show bootstrap exposure (optimal exposure is shown as triangle)
     p1 <- show_sig_bootstrap_exposure(bt_result, methods = c("LS", "QP"))
     p1
-    p2 <- show_sig_bootstrap_exposure(bt_result, methods = c("LS", "QP"),
-                                                 sample = "TCGA-AB-3012",
-                                                 signatures = c("Sig1", "Sig2"))
+    p2 <- show_sig_bootstrap_exposure(bt_result,
+      methods = c("LS", "QP"),
+      sample = "TCGA-AB-3012",
+      signatures = c("Sig1", "Sig2")
+    )
     p2
   
     ## Show bootstrap error
@@ -47,7 +49,6 @@ test_that("[unknown alias] @ L88", {
     p5
     p6 <- show_sig_bootstrap_stability(bt_result, methods = c("LS", "QP"), measure = "AbsDiff")
     p6
-  
   } else {
     message("Please install package 'BSgenome.Hsapiens.UCSC.hg19' firstly!")
   }

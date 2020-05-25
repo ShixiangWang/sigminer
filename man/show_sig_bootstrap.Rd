@@ -164,9 +164,11 @@ if (require("BSgenome.Hsapiens.UCSC.hg19")) {
   ## Show bootstrap exposure (optimal exposure is shown as triangle)
   p1 <- show_sig_bootstrap_exposure(bt_result, methods = c("LS", "QP"))
   p1
-  p2 <- show_sig_bootstrap_exposure(bt_result, methods = c("LS", "QP"),
-                                               sample = "TCGA-AB-3012",
-                                               signatures = c("Sig1", "Sig2"))
+  p2 <- show_sig_bootstrap_exposure(bt_result,
+    methods = c("LS", "QP"),
+    sample = "TCGA-AB-3012",
+    signatures = c("Sig1", "Sig2")
+  )
   p2
 
   ## Show bootstrap error
@@ -180,7 +182,6 @@ if (require("BSgenome.Hsapiens.UCSC.hg19")) {
   p5
   p6 <- show_sig_bootstrap_stability(bt_result, methods = c("LS", "QP"), measure = "AbsDiff")
   p6
-
 } else {
   message("Please install package 'BSgenome.Hsapiens.UCSC.hg19' firstly!")
 }

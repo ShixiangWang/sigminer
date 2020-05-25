@@ -22,11 +22,14 @@ More please see examples.}
 
 \item{Ref}{default is \code{NULL}, can be a same object as \code{Signature}.}
 
-\item{sig_db}{can be 'legacy' (for COSMIC v2 'SBS'), 'SBS', 'DBS' and 'ID'. Default 'legacy'.}
+\item{sig_db}{can be 'legacy' (for COSMIC v2 'SBS'),
+'SBS', 'DBS', 'ID' and 'TSB' (for SBS transcriptional strand bias signatures).
+Default 'legacy'.}
 
 \item{db_type}{only used when \code{sig_db} is enabled.
 "" for keeping default, "human-exome" for transforming to exome frequency of component,
-and "human-genome" for transforming to whole genome frequency of component.}
+and "human-genome" for transforming to whole genome frequency of component.
+Currently only works for 'SBS'.}
 
 \item{method}{default is 'cosine' for cosine similarity.}
 

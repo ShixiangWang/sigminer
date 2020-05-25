@@ -18,7 +18,7 @@ a component, \code{n} is the number of signature).}
 \item{to}{same as \code{from}.}
 }
 \value{
-a \code{matrix}
+a \code{matrix}.
 }
 \description{
 Converts signatures between two representations relative to different sets of mutational opportunities.
