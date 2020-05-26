@@ -58,7 +58,8 @@ Imports:
     rlang,
     stats,
     tidyr
-Suggests: 
+Suggests:
+    Biobase,
     Biostrings,
     BSgenome,
     BSgenome.Hsapiens.UCSC.hg19,
