@@ -2,7 +2,7 @@
 % Please edit documentation in R/sig_fit_bootstrap_batch.R
 \name{sig_fit_bootstrap_batch}
 \alias{sig_fit_bootstrap_batch}
-\title{Exposure Instability Analysis of Signature Exposures with Bootstrap}
+\title{Exposure Instability Analysis of Signature Exposures with Bootstrapping}
 \usage{
 sig_fit_bootstrap_batch(
   catalogue_matrix,
@@ -12,6 +12,8 @@ sig_fit_bootstrap_batch(
   p_val_thresholds = c(0.05),
   use_parallel = FALSE,
   seed = 123456L,
+  job_id = NULL,
+  result_dir = tempdir(),
   ...
 )
 }
@@ -34,6 +36,12 @@ a known issue is that the result cannot be reproduced in parallel mode.}
 
 \item{seed}{random seed to reproduce the result.}
 
+\item{job_id}{a job ID, default is \code{NULL}, can be a string. When not \code{NULL}, all bootstrapped results
+will be saved to local machine location defined by \code{result_dir}. This is very useful for running
+more than 10 times for more than 100 samples.}
+
+\item{result_dir}{see above, default is temp directory defined by R.}
+
 \item{...}{other common parameters passing to \link{sig_fit_bootstrap}, including \code{sig}, \code{sig_index},
 \code{sig_db}, \code{db_type}, \code{mode}, etc.}
 }
@@ -41,7 +49,7 @@ a known issue is that the result cannot be reproduced in parallel mode.}
 a \code{list} of \code{data.table}.
 }
 \description{
-Exposure Instability Analysis of Signature Exposures with Bootstrap
+Exposure Instability Analysis of Signature Exposures with Bootstrapping
 }
 \examples{
 W <- matrix(c(1, 2, 3, 4, 5, 6), ncol = 2)

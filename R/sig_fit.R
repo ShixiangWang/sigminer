@@ -51,12 +51,13 @@
 #'   H_infer
 #'   H
 #'
-#'   ## Get clusters/groups
-#'   z <- get_groups(H_infer, method = "k-means")
-#'   show_groups(z)
-#'
 #'   H_dt <- sig_fit(V, W, return_class = "data.table")
 #'   H_dt
+#'
+#'   ## Get clusters/groups
+#'   H_dt_rel <- sig_fit(V, W, return_class = "data.table", type = "relative")
+#'   z <- get_groups(H_dt_rel, method = "k-means")
+#'   show_groups(z)
 #'
 #'   ## Show results
 #'   show_sig_fit(H_infer)

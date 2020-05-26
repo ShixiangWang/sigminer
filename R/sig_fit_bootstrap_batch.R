@@ -1,4 +1,4 @@
-#' Exposure Instability Analysis of Signature Exposures with Bootstrap
+#' Exposure Instability Analysis of Signature Exposures with Bootstrapping
 #'
 #' @inheritParams sig_fit
 #' @inheritParams sig_fit_bootstrap
@@ -9,6 +9,10 @@
 #' @param use_parallel if `TRUE`, use parallel computation based on **furrr** package,
 #' a known issue is that the result cannot be reproduced in parallel mode.
 #' @param seed random seed to reproduce the result.
+#' @param job_id a job ID, default is `NULL`, can be a string. When not `NULL`, all bootstrapped results
+#' will be saved to local machine location defined by `result_dir`. This is very useful for running
+#' more than 10 times for more than 100 samples.
+#' @param result_dir see above, default is temp directory defined by R.
 #' @param ... other common parameters passing to [sig_fit_bootstrap], including `sig`, `sig_index`,
 #' `sig_db`, `db_type`, `mode`, etc.
 #'
@@ -43,6 +47,8 @@ sig_fit_bootstrap_batch <- function(catalogue_matrix,
                                     p_val_thresholds = c(0.05),
                                     use_parallel = FALSE,
                                     seed = 123456L,
+                                    job_id = NULL,
+                                    result_dir = tempdir(),
                                     ...) {
   stopifnot(is.matrix(catalogue_matrix))
 
@@ -52,6 +58,13 @@ sig_fit_bootstrap_batch <- function(catalogue_matrix,
   timer <- Sys.time()
   send_info("Batch Bootstrap Signature Exposure Analysis Started.")
   on.exit(send_elapsed_time(timer, "Total "))
+
+  if (!is.null(job_id)) {
+    if (!dir.exists(result_dir)) {
+      dir.create(result_dir, recursive = TRUE)
+    }
+    send_success("Job mode is enabled. All bootstrapped results will be saved to ", result_dir)
+  }
 
   samp_index <- colSums(catalogue_matrix) > min_count
   if (sum(samp_index) != nrow(catalogue_matrix)) {
@@ -87,6 +100,13 @@ sig_fit_bootstrap_batch <- function(catalogue_matrix,
   send_info("Getting bootstrap exposures (&errors) for different methods.")
   send_info("This step is time consuming, please be patient.")
   call_bt <- function(x, sample, y, methods, n = 1000, ...) {
+    if (!is.null(job_id)) {
+      fpath <- file.path(result_dir, paste0(job_id, "_", sample, ".rds"))
+      if (file.exists(fpath)) {
+        send_info("Sample '", sample, "' has been processed.")
+        return(fpath)
+      }
+    }
     names(x) <- y
     out_list <- list()
     send_info("Processing sample {.code ", sample, "}.")
@@ -94,7 +114,12 @@ sig_fit_bootstrap_batch <- function(catalogue_matrix,
       out <- sig_fit_bootstrap(x, n = n, method = m, ...)
       out_list[[m]] <- out
     }
-    return(out_list)
+    if (!is.null(job_id)) {
+      saveRDS(out_list, file = fpath)
+      return(fpath)
+    } else {
+      return(out_list)
+    }
   }
 
   if (use_parallel) {
@@ -110,6 +135,14 @@ sig_fit_bootstrap_batch <- function(catalogue_matrix,
       y = rownames(catalogue_matrix), methods = methods, n = n, ...
     )
   }
+
+  if (is.character(bt_list[[1]])) {
+    ## Assume file paths
+    bt_list <- purrr::map(bt_list, function(x) {
+      readRDS(x)
+    })
+  }
+
   send_success("Gotten.")
 
   send_info("Reporting p values...")

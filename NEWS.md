@@ -1,5 +1,6 @@
 # sigminer 1.0.6
 
+- Added job mode for `sig_fit_bootstrap_batch` for more useful in practice.
 - Added `show_groups()` to show the signature contribution in each group from `get_groups()`.
 - Expanded clustering in `get_groups()` to result of `sig_fit()`.
 - Properly handled null-count samples in `sig_fit_bootstrap_batch()`.
