@@ -2,7 +2,7 @@
 
 context("File R/sig_fit.R: @testexamples")
 
-test_that("Function sig_fit() @ L93", {
+test_that("Function sig_fit() @ L97", {
   
   W <- matrix(c(1, 2, 3, 4, 5, 6), ncol = 2)
   colnames(W) <- c("sig1", "sig2")
@@ -18,6 +18,10 @@ test_that("Function sig_fit() @ L93", {
     H_infer <- sig_fit(V, W)
     H_infer
     H
+  
+    ## Get clusters/groups
+    z <- get_groups(H_infer, method = "k-means")
+    show_groups(z)
   
     H_dt <- sig_fit(V, W, return_class = "data.table")
     H_dt

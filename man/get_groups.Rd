@@ -12,7 +12,8 @@ get_groups(
 )
 }
 \arguments{
-\item{Signature}{a \code{Signature} object obtained either from \link{sig_extract} or \link{sig_auto_extract}.}
+\item{Signature}{a \code{Signature} object obtained either from \link{sig_extract} or \link{sig_auto_extract}.
+Now it can be used to relative exposure result in \code{data.table} format from \link{sig_fit}.}
 
 \item{method}{grouping method, more see details, could be one of the following:
 \itemize{
@@ -70,5 +71,5 @@ get_groups(sig, method = "k-means")
 }
 }
 \seealso{
-\code{\link[NMF:predict]{NMF::predict()}}
+\code{\link[NMF:predict]{NMF::predict()}}, \link{show_groups}.
 }

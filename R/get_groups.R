@@ -15,6 +15,7 @@
 #' about implementation please see source code of [sig_extract()] function.
 #'
 #' @param Signature a `Signature` object obtained either from [sig_extract] or [sig_auto_extract].
+#' Now it can be used to relative exposure result in `data.table` format from [sig_fit].
 #' @param method grouping method, more see details, could be one of the following:
 #' - 'consensus' - returns the cluster membership based on the hierarchical clustering of the consensus matrix,
 #' it can only be used for the result obtained by [sig_extract()] with multiple runs using **NMF** package.
@@ -50,18 +51,41 @@
 #' # Use k-means clustering
 #' get_groups(sig, method = "k-means")
 #' }
-#' @seealso [NMF::predict()]
+#' @seealso [NMF::predict()], [show_groups].
 get_groups <- function(Signature,
                        method = c("consensus", "k-means", "exposure", "samples"),
                        n_cluster = NULL,
                        match_consensus = TRUE) {
-  stopifnot(inherits(Signature, "Signature"), is.null(n_cluster) | n_cluster > 1)
+  fit_flag = data.table::is.data.table(Signature)
+  stopifnot(inherits(Signature, "Signature") | fit_flag,
+            is.null(n_cluster) | n_cluster > 1)
   method <- match.arg(method)
 
+  timer <- Sys.time()
+  send_info("Started.")
+  on.exit(send_elapsed_time(timer))
+
+  if (fit_flag) {
+    send_success("A 'data.table' detected.")
+
+    if (method %in% c("consensus", "samples")) {
+      send_stop("Method 'consensus' and 'samples' cannot be applied to input data in {.code data.table} format.\n Choose others please.")
+    }
+    send_success("Method checked.")
+
+    if (purrr::map_lgl(Signature, ~ifelse(is.numeric(.), any(. > 1), FALSE)) %>% any()) {
+      send_stop("When input is {.code data.table} (from sig_fit), a relative exposure result is valid.")
+    }
+    send_success("Exposure should be relative checked.")
+
+  } else {
+    send_success("'Signature' object detected.")
+  }
+
   if (method == "consensus") {
-    message("=> Obtaining clusters from the hierarchical clustering of the consensus matrix...")
+    send_info("Obtaining clusters from the hierarchical clustering of the consensus matrix...")
     if (!"nmf_obj" %in% names(Signature$Raw)) {
-      stop("Input Signature object does not contain NMF object, please select other methods")
+      send_stop("Input Signature object does not contain NMF object, please select other methods.")
     }
     nmfObj <- Signature$Raw$nmf_obj
     predict.consensus <- predict(nmfObj, what = "consensus")
@@ -82,15 +106,15 @@ get_groups <- function(Signature,
     }
 
     data$group <- as.character(data$group)
-    message("=> Finding the dominant signature of each group...")
+    send_info("Finding the dominant signature of each group...")
     data <- find_enriched_signature(data, Signature)
     ztable <- data$table
     data <- data$data
   } else if (method == "samples") {
-    message("=> Obtaining clusters by the contribution of signature to each sample...")
+    send_info("Obtaining clusters by the contribution of signature to each sample...")
 
     if (!"nmf_obj" %in% names(Signature$Raw)) {
-      stop("Input Signature object does not contain NMF object, please select other methods")
+      send_stop("Input Signature object does not contain NMF object, please select other methods.")
     }
     nmfObj <- Signature$Raw$nmf_obj
     predict.samples <- predict(nmfObj, what = "samples", prob = T)
@@ -104,15 +128,25 @@ get_groups <- function(Signature,
     )
 
     data$group <- as.character(data$group)
-    message("=> Finding the dominant signature of each group...")
+    send_info("Finding the dominant signature of each group...")
     data <- find_enriched_signature(data, Signature)
     ztable <- data$table
     data <- data$data
   } else if (method == "exposure") {
-    message("=> Creating clusters by the dominant signature (fraction is returned as weight)...")
-    expo_df <- get_sig_exposure(Signature, type = "relative")
+    send_info("Creating clusters by the dominant signature (fraction is returned as weight)...")
+    if (fit_flag) {
+      expo_df <- Signature
+    } else {
+      expo_df <- get_sig_exposure(Signature, type = "relative")
+    }
+
+    sig_names = colnames(expo_df)[-1]
+    common_prefix <- Biobase::lcPrefixC(sig_names)
+    mps <- seq_along(sig_names)
+    names(mps) <- sig_names
+
     data <- expo_df %>%
-      tidyr::gather(key = "Signature", value = "Exposure", dplyr::starts_with("Sig")) %>%
+      tidyr::gather(key = "Signature", value = "Exposure", dplyr::starts_with(common_prefix)) %>%
       dplyr::group_by(.data$sample) %>%
       dplyr::top_n(1, .data$Exposure) %>%
       dplyr::ungroup() %>%
@@ -123,24 +157,28 @@ get_groups <- function(Signature,
         group = .data$Signature,
         weight = .data$Exposure
       ) %>%
-      dplyr::mutate(group = as.integer(sub("Sig", "", .data$group))) %>%
+      dplyr::mutate(group = as.integer(mps[.data$group])) %>%
       dplyr::arrange(.data$group)
 
     data$group <- as.character(as.integer(factor(data$group)))
     ztable <- table(data$group, data$enrich_sig)
   } else if (method == "k-means") {
     set.seed(seed = 1024)
-    expo_df <- get_sig_exposure(Signature, type = "relative")
+    if (fit_flag) {
+      expo_df <- Signature
+    } else {
+      expo_df <- get_sig_exposure(Signature, type = "relative")
+    }
     contrib <- expo_df %>%
       as.data.frame() %>%
       tibble::column_to_rownames("sample")
     n_cluster <- ifelse(is.null(n_cluster), ncol(contrib), n_cluster)
-    message("=> Running k-means with ", n_cluster, " clusters...")
+    send_info("Running k-means with ", n_cluster, " clusters...")
     contrib.km <- kmeans(x = contrib, centers = n_cluster)
-    message("=> Generating a table of group and signature contribution (stored in 'map_table' attr):")
+    send_info("Generating a table of group and signature contribution (stored in 'map_table' attr):")
     ztable <- contrib.km$centers
     print(ztable)
-    message("=> Assigning a group to a signature with the maximum fraction...")
+    send_info("Assigning a group to a signature with the maximum fraction...")
     cluster_df <- as.data.frame(apply(t(ztable), 2, function(x) which(x == max(x))))
     colnames(cluster_df)[1] <- "enrich_sig"
     cluster_df$enrich_sig <- colnames(contrib)[cluster_df$enrich_sig]
@@ -162,7 +200,7 @@ get_groups <- function(Signature,
   if (!match_consensus) {
     data <- data[order(as.integer(data$group))]
   }
-  message("=> Summarizing...")
+  send_info("Summarizing...")
   sum_tb <- table(data$group)
   map_dt <- unique(data[, c("group", "enrich_sig"), with = FALSE])
   map_dic <- map_dt$enrich_sig
@@ -177,6 +215,8 @@ get_groups <- function(Signature,
     attr(data, "map_table") <- ztable
   }
 
+  send_warning("The 'enrich_sig' column is set to dominant signature in one group, ",
+               "please check and make it consistent with biological meaning (correct it by hand if necessary).")
   return(data)
 }
 
