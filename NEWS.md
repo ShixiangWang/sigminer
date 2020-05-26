@@ -1,5 +1,6 @@
 # sigminer 1.0.6
 
+- Expanded clustering in `get_groups()` to result of `sig_fit()`.
 - Properly handled null-count samples in `sig_fit_bootstrap_batch()`.
 - Added strand bias labeling for INDEL.
 - Added COSMIC TSB signatures.
