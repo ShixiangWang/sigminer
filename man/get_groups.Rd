@@ -71,5 +71,5 @@ get_groups(sig, method = "k-means")
 }
 }
 \seealso{
-\code{\link[NMF:predict]{NMF::predict()}}
+\code{\link[NMF:predict]{NMF::predict()}}, \link{show_groups}.
 }

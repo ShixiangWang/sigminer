@@ -51,7 +51,7 @@
 #' # Use k-means clustering
 #' get_groups(sig, method = "k-means")
 #' }
-#' @seealso [NMF::predict()]
+#' @seealso [NMF::predict()], [show_groups].
 get_groups <- function(Signature,
                        method = c("consensus", "k-means", "exposure", "samples"),
                        n_cluster = NULL,
