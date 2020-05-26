@@ -60,6 +60,9 @@ sig_fit_bootstrap_batch <- function(catalogue_matrix,
   on.exit(send_elapsed_time(timer, "Total "))
 
   if (!is.null(job_id)) {
+    if (!dir.exists(result_dir)) {
+      dir.create(result_dir, recursive = TRUE)
+    }
     send_success("Job mode is enabled. All bootstrapped results will be saved to ", result_dir)
   }
 
