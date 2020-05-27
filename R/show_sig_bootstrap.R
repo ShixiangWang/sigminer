@@ -144,7 +144,7 @@ show_sig_bootstrap_exposure <- function(bt_result, sample = NULL, signatures = N
 #' @export
 show_sig_bootstrap_error <- function(bt_result, sample = NULL,
                                      methods = "LS", palette = "aaas", title = NULL,
-                                     xlab = FALSE, ylab = "Decomposition error", width = 0.3,
+                                     xlab = FALSE, ylab = "Reconstruction error (F2 norm)", width = 0.3,
                                      dodge_width = 0.8, outlier.shape = NA,
                                      add = "jitter", add.params = list(alpha = 0.3),
                                      legend = "none",
