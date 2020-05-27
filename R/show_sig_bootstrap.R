@@ -134,8 +134,9 @@ show_sig_bootstrap_exposure <- function(bt_result, sample = NULL, signatures = N
   ) +
     ggplot2::geom_point(
       data = subset(dat, dat$type == "optimal"),
-      mapping = aes_string(x = "sig", y = "exposure", color = "method"),
-      shape = 2, position = ggplot2::position_dodge2(width = dodge_width, preserve = "single")
+      mapping = ggplot2::aes_string(x = "sig", y = "exposure", color = "method"),
+      shape = 17, size = 4,
+      position = ggplot2::position_dodge2(width = dodge_width, preserve = "single")
     )
 }
 
@@ -184,8 +185,9 @@ show_sig_bootstrap_error <- function(bt_result, sample = NULL,
   ) +
     ggplot2::geom_point(
       data = subset(dat, dat$type == "optimal"),
-      mapping = aes_string(x = "method", y = "errors", color = "method"),
-      shape = 2, position = ggplot2::position_dodge2(width = dodge_width, preserve = "single")
+      mapping = ggplot2::aes_string(x = "method", y = "errors", color = "method"),
+      shape = 17, size = 4,
+      position = ggplot2::position_dodge2(width = dodge_width, preserve = "single")
     )
 }
 
