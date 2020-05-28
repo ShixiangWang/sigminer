@@ -13,11 +13,21 @@
 #' @export
 #' @seealso [sig_fit], [show_sig_bootstrap_exposure], [sig_fit_bootstrap], [sig_fit_bootstrap_batch]
 show_sig_fit <- function(fit_result, samples = NULL, signatures = NULL,
-                         palette = "aaas", title = NULL,
+                         plot_fun = c("boxplot", "violin"),
+                         palette = "aaas",
+                         title = NULL,
                          xlab = FALSE, ylab = "Signature exposure", legend = "none",
                          width = 0.3, outlier.shape = NA,
                          add = "jitter", add.params = list(alpha = 0.3),
                          ...) {
+
+  plot_fun <- match.arg(plot_fun)
+  plot_fun <- switch(
+    plot_fun,
+    boxplot = ggpubr::ggboxplot,
+    violin = ggpubr::ggviolin
+  )
+
   timer <- Sys.time()
   send_info("Started.")
   on.exit(send_elapsed_time(timer))
