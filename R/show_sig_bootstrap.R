@@ -134,8 +134,9 @@ show_sig_bootstrap_exposure <- function(bt_result, sample = NULL, signatures = N
   ) +
     ggplot2::geom_point(
       data = subset(dat, dat$type == "optimal"),
-      mapping = aes_string(x = "sig", y = "exposure", color = "method"),
-      shape = 2, position = ggplot2::position_dodge2(width = dodge_width, preserve = "single")
+      mapping = ggplot2::aes_string(x = "sig", y = "exposure", color = "method"),
+      shape = 17, size = 4,
+      position = ggplot2::position_dodge2(width = dodge_width, preserve = "single")
     )
 }
 
@@ -144,7 +145,7 @@ show_sig_bootstrap_exposure <- function(bt_result, sample = NULL, signatures = N
 #' @export
 show_sig_bootstrap_error <- function(bt_result, sample = NULL,
                                      methods = "LS", palette = "aaas", title = NULL,
-                                     xlab = FALSE, ylab = "Decomposition error", width = 0.3,
+                                     xlab = FALSE, ylab = "Reconstruction error (F2 norm)", width = 0.3,
                                      dodge_width = 0.8, outlier.shape = NA,
                                      add = "jitter", add.params = list(alpha = 0.3),
                                      legend = "none",
@@ -184,8 +185,9 @@ show_sig_bootstrap_error <- function(bt_result, sample = NULL,
   ) +
     ggplot2::geom_point(
       data = subset(dat, dat$type == "optimal"),
-      mapping = aes_string(x = "method", y = "errors", color = "method"),
-      shape = 2, position = ggplot2::position_dodge2(width = dodge_width, preserve = "single")
+      mapping = ggplot2::aes_string(x = "method", y = "errors", color = "method"),
+      shape = 17, size = 4,
+      position = ggplot2::position_dodge2(width = dodge_width, preserve = "single")
     )
 }
 
