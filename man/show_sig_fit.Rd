@@ -8,6 +8,7 @@ show_sig_fit(
   fit_result,
   samples = NULL,
   signatures = NULL,
+  plot_fun = c("boxplot", "violin"),
   palette = "aaas",
   title = NULL,
   xlab = FALSE,
@@ -26,6 +27,8 @@ show_sig_fit(
 \item{samples}{samples to show, if \code{NULL}, all samples are used.}
 
 \item{signatures}{signatures to show.}
+
+\item{plot_fun}{set the plot function.}
 
 \item{palette}{the color palette to be used for coloring or filling by groups.
 Allowed values include "grey" for grey color palettes; brewer palettes e.g.

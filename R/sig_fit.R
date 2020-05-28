@@ -289,6 +289,7 @@ sig_fit <- function(catalogue_matrix,
     as.matrix()
   rownames(expo) <- colnames(sig_matrix)
   colnames(expo) <- colnames(catalogue_matrix)
+  expo[is.na(expo)] <- 0
 
   expo_mat <- expo
 

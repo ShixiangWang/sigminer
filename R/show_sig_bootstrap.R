@@ -23,7 +23,8 @@
 #' @param signatures signatures to show.
 #' @param measure measure to estimate the exposure instability, can be one of 'MRSE', 'MAE' and 'AbsDiff'.
 #' @param dodge_width dodge width.
-#' @param ... other parameters passing to [ggpubr::ggboxplot].
+#' @param plot_fun set the plot function.
+#' @param ... other parameters passing to [ggpubr::ggboxplot] or [ggpubr::ggviolin].
 #'
 #' @name show_sig_bootstrap
 #' @return a `ggplot` object
@@ -91,12 +92,19 @@ NULL
 #' @rdname show_sig_bootstrap
 #' @export
 show_sig_bootstrap_exposure <- function(bt_result, sample = NULL, signatures = NULL,
-                                        methods = "LS", palette = "aaas", title = NULL,
+                                        methods = "LS", plot_fun = c("boxplot", "violin"),
+                                        palette = "aaas", title = NULL,
                                         xlab = FALSE, ylab = "Signature exposure", width = 0.3,
                                         dodge_width = 0.8, outlier.shape = NA,
                                         add = "jitter", add.params = list(alpha = 0.3),
                                         ...) {
   stopifnot(is.list(bt_result))
+  plot_fun <- match.arg(plot_fun)
+  plot_fun <- switch(
+    plot_fun,
+    boxplot = ggpubr::ggboxplot,
+    violin = ggpubr::ggviolin
+  )
 
   timer <- Sys.time()
   send_info("Started.")
@@ -127,7 +135,7 @@ show_sig_bootstrap_exposure <- function(bt_result, sample = NULL, signatures = N
 
   send_info("Plotting.")
   ## Plotting
-  ggpubr::ggboxplot(subset(dat, dat$type != "optimal"),
+  plot_fun(subset(dat, dat$type != "optimal"),
     x = "sig", y = "exposure", color = "method", outlier.shape = outlier.shape,
     palette = palette, width = width, add = add, add.params = add.params,
     title = title, xlab = xlab, ylab = ylab, ...
@@ -144,13 +152,20 @@ show_sig_bootstrap_exposure <- function(bt_result, sample = NULL, signatures = N
 #' @rdname show_sig_bootstrap
 #' @export
 show_sig_bootstrap_error <- function(bt_result, sample = NULL,
-                                     methods = "LS", palette = "aaas", title = NULL,
+                                     methods = "LS", plot_fun = c("boxplot", "violin"),
+                                     palette = "aaas", title = NULL,
                                      xlab = FALSE, ylab = "Reconstruction error (F2 norm)", width = 0.3,
                                      dodge_width = 0.8, outlier.shape = NA,
                                      add = "jitter", add.params = list(alpha = 0.3),
                                      legend = "none",
                                      ...) {
   stopifnot(is.list(bt_result))
+  plot_fun <- match.arg(plot_fun)
+  plot_fun <- switch(
+    plot_fun,
+    boxplot = ggpubr::ggboxplot,
+    violin = ggpubr::ggviolin
+  )
 
   timer <- Sys.time()
   send_info("Started.")
@@ -178,7 +193,7 @@ show_sig_bootstrap_error <- function(bt_result, sample = NULL,
 
   send_info("Plotting.")
   ## Plotting
-  ggpubr::ggboxplot(subset(dat, dat$type != "optimal"),
+  plot_fun(subset(dat, dat$type != "optimal"),
     x = "method", y = "errors", color = "method", outlier.shape = outlier.shape,
     palette = palette, width = width, add = add, add.params = list(alpha = 0.3),
     title = title, xlab = xlab, ylab = ylab, legend = legend, ...
@@ -195,12 +210,19 @@ show_sig_bootstrap_error <- function(bt_result, sample = NULL,
 #' @rdname show_sig_bootstrap
 #' @export
 show_sig_bootstrap_stability <- function(bt_result, signatures = NULL, measure = c("MRSE", "MAE", "AbsDiff"),
-                                         methods = "LS", palette = "aaas", title = NULL,
+                                         methods = "LS", plot_fun = c("boxplot", "violin"),
+                                         palette = "aaas", title = NULL,
                                          xlab = FALSE, ylab = "Signature instability",
                                          width = 0.3, outlier.shape = NA,
                                          add = "jitter", add.params = list(alpha = 0.3),
                                          ...) {
   stopifnot(is.list(bt_result))
+  plot_fun <- match.arg(plot_fun)
+  plot_fun <- switch(
+    plot_fun,
+    boxplot = ggpubr::ggboxplot,
+    violin = ggpubr::ggviolin
+  )
   measure <- match.arg(measure)
 
   timer <- Sys.time()

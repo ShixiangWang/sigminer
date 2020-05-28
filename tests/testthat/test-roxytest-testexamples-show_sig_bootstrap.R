@@ -2,7 +2,7 @@
 
 context("File R/show_sig_bootstrap.R: @testexamples")
 
-test_that("[unknown alias] @ L89", {
+test_that("[unknown alias] @ L90", {
   
   
   if (require("BSgenome.Hsapiens.UCSC.hg19")) {

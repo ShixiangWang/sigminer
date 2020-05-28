@@ -12,6 +12,7 @@ show_sig_bootstrap_exposure(
   sample = NULL,
   signatures = NULL,
   methods = "LS",
+  plot_fun = c("boxplot", "violin"),
   palette = "aaas",
   title = NULL,
   xlab = FALSE,
@@ -28,10 +29,11 @@ show_sig_bootstrap_error(
   bt_result,
   sample = NULL,
   methods = "LS",
+  plot_fun = c("boxplot", "violin"),
   palette = "aaas",
   title = NULL,
   xlab = FALSE,
-  ylab = "Decomposition error",
+  ylab = "Reconstruction error (F2 norm)",
   width = 0.3,
   dodge_width = 0.8,
   outlier.shape = NA,
@@ -46,6 +48,7 @@ show_sig_bootstrap_stability(
   signatures = NULL,
   measure = c("MRSE", "MAE", "AbsDiff"),
   methods = "LS",
+  plot_fun = c("boxplot", "violin"),
   palette = "aaas",
   title = NULL,
   xlab = FALSE,
@@ -65,6 +68,8 @@ show_sig_bootstrap_stability(
 \item{signatures}{signatures to show.}
 
 \item{methods}{a subset of \code{c("LS", "QP", "SA")}.}
+
+\item{plot_fun}{set the plot function.}
 
 \item{palette}{the color palette to be used for coloring or filling by groups.
 Allowed values include "grey" for grey color palettes; brewer palettes e.g.
@@ -105,7 +110,7 @@ error bars). Allowed values are one or the combination of: "none",
 \item{add.params}{parameters (color, shape, size, fill, linetype) for the
 argument 'add'; e.g.: add.params = list(color = "red").}
 
-\item{...}{other parameters passing to \link[ggpubr:ggboxplot]{ggpubr::ggboxplot}.}
+\item{...}{other parameters passing to \link[ggpubr:ggboxplot]{ggpubr::ggboxplot} or \link[ggpubr:ggviolin]{ggpubr::ggviolin}.}
 
 \item{legend}{character specifying legend position. Allowed values are one of
 c("top", "bottom", "left", "right", "none"). To remove the legend use
