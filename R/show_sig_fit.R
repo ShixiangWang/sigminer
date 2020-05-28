@@ -68,7 +68,7 @@ show_sig_fit <- function(fit_result, samples = NULL, signatures = NULL,
 
   send_info("Plotting.")
   ## Plotting
-  ggpubr::ggboxplot(dat,
+  plot_fun(dat,
     x = "sig", y = "exposure", color = "sig", outlier.shape = outlier.shape,
     palette = palette, width = width, add = add, add.params = add.params,
     title = title, xlab = xlab, ylab = ylab, legend = legend, ...

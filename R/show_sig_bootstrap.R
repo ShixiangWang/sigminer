@@ -278,7 +278,7 @@ show_sig_bootstrap_stability <- function(bt_result, signatures = NULL, measure =
 
   send_info("Plotting.")
   ## Plotting
-  ggpubr::ggboxplot(dat,
+  plot_fun(dat,
     x = "sig", y = "measure", color = "method", outlier.shape = outlier.shape,
     palette = palette, width = width, add = add, add.params = add.params,
     title = title, xlab = xlab, ylab = ylab, ...
