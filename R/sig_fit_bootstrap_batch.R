@@ -75,6 +75,10 @@ sig_fit_bootstrap_batch <- function(catalogue_matrix,
     catalogue_matrix <- catalogue_matrix[, samp_index, drop = FALSE]
   }
 
+  if (ncol(catalogue_matrix) < 1) {
+    send_stop("No sample left after filtering, please check your input!")
+  }
+
   ## Get optimal exposures with different methods
   send_info("Finding optimal exposures (&errors) for different methods.")
   optimal_list <- list()
