@@ -111,6 +111,7 @@ sig_fit_bootstrap_batch <- function(catalogue_matrix,
         return(fpath)
       }
     }
+    on.exit(gc(verbose = FALSE))
     names(x) <- y
     out_list <- list()
     send_info("Processing sample {.code ", sample, "}.")
