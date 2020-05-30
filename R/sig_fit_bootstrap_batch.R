@@ -6,8 +6,7 @@
 #' @param min_count minimal exposure in a sample, default is 1. Any patient has total exposure less
 #' than this value will be filtered out.
 #' @param p_val_thresholds a vector of relative exposure threshold for calculating p values.
-#' @param use_parallel if `TRUE`, use parallel computation based on **furrr** package,
-#' a known issue is that the result cannot be reproduced in parallel mode.
+#' @param use_parallel if `TRUE`, use parallel computation based on **furrr** package.
 #' @param seed random seed to reproduce the result.
 #' @param job_id a job ID, default is `NULL`, can be a string. When not `NULL`, all bootstrapped results
 #' will be saved to local machine location defined by `result_dir`. This is very useful for running
@@ -130,10 +129,11 @@ sig_fit_bootstrap_batch <- function(catalogue_matrix,
   if (use_parallel) {
     oplan <- future::plan()
     future::plan("multiprocess", workers = future::availableCores())
-    furrr::future_options(seed = TRUE)
+    #furrr::future_options(seed = TRUE)
     on.exit(future::plan(oplan), add = TRUE)
     bt_list <- furrr::future_map2(as.data.frame(catalogue_matrix), colnames(catalogue_matrix), call_bt,
-      y = rownames(catalogue_matrix), methods = methods, n = n, ..., .progress = TRUE
+      y = rownames(catalogue_matrix), methods = methods, n = n, ..., .progress = TRUE,
+      .options = furrr::future_options(seed = seed) # set options
     )
   } else {
     bt_list <- purrr::map2(as.data.frame(catalogue_matrix), colnames(catalogue_matrix), call_bt,
