@@ -192,15 +192,24 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
   if (mode == "copynumber") {
     if (startsWith(method, "M")) {
       mat$base <- sub("\\d+$", "", mat$context)
+      if (!"copynumber" %in% mat$base) {
+        send_stop("You may choose wrong 'method' option, please try method = 'W'.")
+      }
       mat <- tidyr::gather(mat, class, signature, -c("context", "base"))
+
+      ## Use same label as "Wang" method.
+      mp <- c("BP10MB", "BPArm", "CN", "CNCP", "OsCN", "SS")
+      names(mp) <- c(
+        "bp10MB", "bpchrarm",
+        "copynumber", "changepoint",
+        "osCN", "segsize"
+      )
 
       mat <- mat %>%
         dplyr::mutate(
-          base = factor(.data$base, levels = c(
-            "bp10MB", "bpchrarm",
-            "copynumber", "changepoint",
-            "osCN", "segsize"
-          ))
+          base = mp[base],
+          context = paste0(base, "[", gsub("[[:alpha:]]", "", .data$context), "]"),
+          base = factor(.data$base, levels = as.character(mp))
         ) %>%
         dplyr::arrange(.data$base)
 
@@ -212,6 +221,9 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
       )
     } else {
       mat$base <- sub("\\[.*\\]$", "", mat$context)
+      if (!"CN" %in% mat$base) {
+        send_stop("You may choose wrong 'method' option, please try method = 'M'.")
+      }
       mat <- tidyr::gather(mat, class, signature, -c("context", "base"))
 
       if (!inherits(feature_setting, "sigminer.features")) {
@@ -233,6 +245,9 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
     }
   } else if (mode == "SBS") {
     mat$base <- sub("[ACGT]\\[(.*)\\][ACGT]", "\\1", mat$context)
+    if (!any(grepl("C>A", mat$base))) {
+      send_stop("You may choose wrong 'mode' option, this is designed for 'SBS'.")
+    }
     mat$context <- sub("(\\[.*\\])", "\\-", mat$context)
 
     if (has_labels) {
@@ -252,6 +267,9 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
     )
   } else if (mode == "DBS") {
     mat$base <- paste0(substr(mat$context, 1, 3), "NN")
+    if (!any(grepl("CC>NN", mat$base))) {
+      send_stop("You may choose wrong 'mode' option, this is designed for 'DBS'.")
+    }
     mat$context <- substr(mat$context, 4, 5)
 
     if (has_labels) {
@@ -299,6 +317,10 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
     )
     mat$count <- NULL
     mat$is_del <- NULL
+
+    if (!any(grepl("1:D:C", mat$base))) {
+      send_stop("You may choose wrong 'mode' option, this is designed for 'ID'.")
+    }
 
     if (has_labels) {
       mat <- tidyr::gather(mat, class, signature, -c("context", "base", "label"))
