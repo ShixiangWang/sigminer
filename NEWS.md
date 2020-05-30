@@ -1,5 +1,6 @@
 # sigminer 1.0.6
 
+- Fixed unconsistent bootstrap when use `furrr`, solution is from <https://github.com/DavisVaughan/furrr/issues/107>.
 - Properly handled null-count sample in `sig_fit()` for methods `QP` and `SA`.
 - Supported boxplot or violin in `show_sig_fit()` and `show_sig_bootstrap_*` functions.
 - Added job mode for `sig_fit_bootstrap_batch` for more useful in practice.
