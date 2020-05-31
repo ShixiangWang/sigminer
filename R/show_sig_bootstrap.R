@@ -56,25 +56,25 @@
 #'   ## bt_result = sig_fit_bootstrap_batch(mat, sig = mt_sig, n = 10, use_parallel = TRUE)
 #'
 #'   ## Show bootstrap exposure (optimal exposure is shown as triangle)
-#'   p1 <- show_sig_bootstrap_exposure(bt_result, methods = c("LS", "QP"))
+#'   p1 <- show_sig_bootstrap_exposure(bt_result, methods = c("QP"))
 #'   p1
 #'   p2 <- show_sig_bootstrap_exposure(bt_result,
-#'     methods = c("LS", "QP"),
+#'     methods = c("QP"),
 #'     sample = "TCGA-AB-3012",
 #'     signatures = c("Sig1", "Sig2")
 #'   )
 #'   p2
 #'
 #'   ## Show bootstrap error
-#'   p3 <- show_sig_bootstrap_error(bt_result, methods = c("LS", "QP"))
+#'   p3 <- show_sig_bootstrap_error(bt_result, methods = c("QP"))
 #'   p3
 #'
 #'   ## Show exposure (in)stability
-#'   p4 <- show_sig_bootstrap_stability(bt_result, methods = c("LS", "QP"))
+#'   p4 <- show_sig_bootstrap_stability(bt_result, methods = c("QP"))
 #'   p4
-#'   p5 <- show_sig_bootstrap_stability(bt_result, methods = c("LS", "QP"), measure = "MAE")
+#'   p5 <- show_sig_bootstrap_stability(bt_result, methods = c("QP"), measure = "MAE")
 #'   p5
-#'   p6 <- show_sig_bootstrap_stability(bt_result, methods = c("LS", "QP"), measure = "AbsDiff")
+#'   p6 <- show_sig_bootstrap_stability(bt_result, methods = c("QP"), measure = "AbsDiff")
 #'   p6
 #' } else {
 #'   message("Please install package 'BSgenome.Hsapiens.UCSC.hg19' firstly!")
@@ -92,7 +92,7 @@ NULL
 #' @rdname show_sig_bootstrap
 #' @export
 show_sig_bootstrap_exposure <- function(bt_result, sample = NULL, signatures = NULL,
-                                        methods = "LS", plot_fun = c("boxplot", "violin"),
+                                        methods = "QP", plot_fun = c("boxplot", "violin"),
                                         palette = "aaas", title = NULL,
                                         xlab = FALSE, ylab = "Signature exposure", width = 0.3,
                                         dodge_width = 0.8, outlier.shape = NA,
@@ -152,7 +152,7 @@ show_sig_bootstrap_exposure <- function(bt_result, sample = NULL, signatures = N
 #' @rdname show_sig_bootstrap
 #' @export
 show_sig_bootstrap_error <- function(bt_result, sample = NULL,
-                                     methods = "LS", plot_fun = c("boxplot", "violin"),
+                                     methods = "QP", plot_fun = c("boxplot", "violin"),
                                      palette = "aaas", title = NULL,
                                      xlab = FALSE, ylab = "Reconstruction error (F2 norm)", width = 0.3,
                                      dodge_width = 0.8, outlier.shape = NA,
@@ -210,7 +210,7 @@ show_sig_bootstrap_error <- function(bt_result, sample = NULL,
 #' @rdname show_sig_bootstrap
 #' @export
 show_sig_bootstrap_stability <- function(bt_result, signatures = NULL, measure = c("MRSE", "MAE", "AbsDiff"),
-                                         methods = "LS", plot_fun = c("boxplot", "violin"),
+                                         methods = "QP", plot_fun = c("boxplot", "violin"),
                                          palette = "aaas", title = NULL,
                                          xlab = FALSE, ylab = "Signature instability",
                                          width = 0.3, outlier.shape = NA,

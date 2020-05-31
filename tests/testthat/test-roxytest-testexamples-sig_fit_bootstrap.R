@@ -14,7 +14,7 @@ test_that("Function sig_fit_bootstrap() @ L61", {
   V <- W %*% H
   V
   
-  if (requireNamespace("lsei", quietly = TRUE)) {
+  if (requireNamespace("quadprog", quietly = TRUE)) {
     H_bootstrap <- sig_fit_bootstrap(V[, 1], W, n = 10, type = "absolute")
     ## Typically, you have to run many times to get close to the answer
     boxplot(t(H_bootstrap$expo))

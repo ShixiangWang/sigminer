@@ -6,7 +6,7 @@
 \usage{
 sig_fit_bootstrap_batch(
   catalogue_matrix,
-  methods = c("LS", "QP"),
+  methods = c("QP"),
   n = 100L,
   min_count = 1L,
   p_val_thresholds = c(0.05),
@@ -61,10 +61,9 @@ colnames(H) <- paste0("samp", 1:4)
 V <- W \%*\% H
 V
 
-if (requireNamespace("lsei") & requireNamespace("quadprog")) {
-  z <- sig_fit_bootstrap_batch(V, sig = W, n = 2)
-  z
+if (requireNamespace("quadprog")) {
   z10 <- sig_fit_bootstrap_batch(V, sig = W, n = 10)
+  z10
 }
 }
 \seealso{

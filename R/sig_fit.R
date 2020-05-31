@@ -46,24 +46,6 @@
 #' V <- W %*% H
 #' V
 #'
-#' if (requireNamespace("lsei", quietly = TRUE)) {
-#'   H_infer <- sig_fit(V, W)
-#'   H_infer
-#'   H
-#'
-#'   H_dt <- sig_fit(V, W, return_class = "data.table")
-#'   H_dt
-#'
-#'   ## Get clusters/groups
-#'   H_dt_rel <- sig_fit(V, W, return_class = "data.table", type = "relative")
-#'   z <- get_groups(H_dt_rel, method = "k-means")
-#'   show_groups(z)
-#'
-#'   ## Show results
-#'   show_sig_fit(H_infer)
-#'   show_sig_fit(H_dt)
-#' }
-#'
 #' if (requireNamespace("quadprog", quietly = TRUE)) {
 #'   H_infer <- sig_fit(V, W, method = "QP")
 #'   H_infer
@@ -75,6 +57,11 @@
 #'   ## Show results
 #'   show_sig_fit(H_infer)
 #'   show_sig_fit(H_dt)
+#'
+#'   ## Get clusters/groups
+#'   H_dt_rel <- sig_fit(V, W, return_class = "data.table", type = "relative")
+#'   z <- get_groups(H_dt_rel, method = "k-means")
+#'   show_groups(z)
 #' }
 #'
 #' if (requireNamespace("GenSA", quietly = TRUE)) {
@@ -101,7 +88,7 @@ sig_fit <- function(catalogue_matrix,
                     sig_db = "legacy",
                     db_type = c("", "human-exome", "human-genome"),
                     show_index = TRUE,
-                    method = c("LS", "QP", "SA"),
+                    method = c("QP", "LS", "SA"),
                     type = c("absolute", "relative"),
                     return_class = c("matrix", "data.table"),
                     return_error = FALSE,
@@ -255,9 +242,9 @@ sig_fit <- function(catalogue_matrix,
   send_success("Method '", method, "' detected.")
   f_fit <- switch(method,
     LS = {
-      if (!requireNamespace("lsei", quietly = TRUE)) {
-        send_stop("Please install 'lsei' package firstly.")
-      }
+      # if (!requireNamespace("lsei", quietly = TRUE)) {
+      #   send_stop("Please install 'lsei' package from <https://github.com/ShixiangWang/lsei> firstly.")
+      # }
       decompose_LS
     },
     QP = {
@@ -369,7 +356,12 @@ decompose_LS <- function(x, y, sig_matrix, type = "absolute", ...) {
   G <- diag(dim(sig_matrix)[2])
   H <- rep(0, dim(sig_matrix)[2])
 
-  expo <- lsei::lsei(
+  lsei <-tryCatch(eval(parse(text = "lsei::lsei")),
+                  error = function(e) {
+                    send_stop("Package 'lsei' not found. Please install it from <https://github.com/ShixiangWang/lsei> firstly.")
+                  })
+
+  expo <- lsei(
     a = sig_matrix,
     b = x,
     e = G,

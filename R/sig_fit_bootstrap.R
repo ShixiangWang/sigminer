@@ -32,7 +32,7 @@
 #' V <- W %*% H
 #' V
 #'
-#' if (requireNamespace("lsei", quietly = TRUE)) {
+#' if (requireNamespace("quadprog", quietly = TRUE)) {
 #'   H_bootstrap <- sig_fit_bootstrap(V[, 1], W, n = 10, type = "absolute")
 #'   ## Typically, you have to run many times to get close to the answer
 #'   boxplot(t(H_bootstrap$expo))
@@ -65,7 +65,7 @@ sig_fit_bootstrap <- function(catalog,
                               sig_db = "legacy",
                               db_type = c("", "human-exome", "human-genome"),
                               show_index = TRUE,
-                              method = c("LS", "QP", "SA"),
+                              method = c("QP", "LS", "SA"),
                               SA_not_bootstrap = FALSE,
                               type = c("absolute", "relative"),
                               rel_threshold = 0,
