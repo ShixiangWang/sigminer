@@ -207,8 +207,8 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
 
       mat <- mat %>%
         dplyr::mutate(
-          base = mp[base],
-          context = paste0(base, "[", gsub("[[:alpha:]]", "", .data$context), "]"),
+          base = mp[.data$base],
+          context = paste0(.data$base, "[", gsub("[[:alpha:]]", "", .data$context), "]"),
           base = factor(.data$base, levels = as.character(mp))
         ) %>%
         dplyr::arrange(.data$base)

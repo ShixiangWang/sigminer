@@ -11,7 +11,7 @@ sig_fit(
   sig_db = "legacy",
   db_type = c("", "human-exome", "human-genome"),
   show_index = TRUE,
-  method = c("LS", "QP", "SA"),
+  method = c("QP", "LS", "SA"),
   type = c("absolute", "relative"),
   return_class = c("matrix", "data.table"),
   return_error = FALSE,
@@ -88,24 +88,6 @@ colnames(H) <- paste0("samp", 1:4)
 V <- W \%*\% H
 V
 
-if (requireNamespace("lsei", quietly = TRUE)) {
-  H_infer <- sig_fit(V, W)
-  H_infer
-  H
-
-  H_dt <- sig_fit(V, W, return_class = "data.table")
-  H_dt
-
-  ## Get clusters/groups
-  H_dt_rel <- sig_fit(V, W, return_class = "data.table", type = "relative")
-  z <- get_groups(H_dt_rel, method = "k-means")
-  show_groups(z)
-
-  ## Show results
-  show_sig_fit(H_infer)
-  show_sig_fit(H_dt)
-}
-
 if (requireNamespace("quadprog", quietly = TRUE)) {
   H_infer <- sig_fit(V, W, method = "QP")
   H_infer
@@ -117,6 +99,11 @@ if (requireNamespace("quadprog", quietly = TRUE)) {
   ## Show results
   show_sig_fit(H_infer)
   show_sig_fit(H_dt)
+
+  ## Get clusters/groups
+  H_dt_rel <- sig_fit(V, W, return_class = "data.table", type = "relative")
+  z <- get_groups(H_dt_rel, method = "k-means")
+  show_groups(z)
 }
 
 if (requireNamespace("GenSA", quietly = TRUE)) {

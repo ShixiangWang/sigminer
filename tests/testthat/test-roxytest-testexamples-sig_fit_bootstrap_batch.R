@@ -2,7 +2,7 @@
 
 context("File R/sig_fit_bootstrap_batch.R: @testexamples")
 
-test_that("Function sig_fit_bootstrap_batch() @ L42", {
+test_that("Function sig_fit_bootstrap_batch() @ L41", {
   
   W <- matrix(c(1, 2, 3, 4, 5, 6), ncol = 2)
   colnames(W) <- c("sig1", "sig2")
@@ -14,12 +14,11 @@ test_that("Function sig_fit_bootstrap_batch() @ L42", {
   V <- W %*% H
   V
   
-  if (requireNamespace("lsei") & requireNamespace("quadprog")) {
-    z <- sig_fit_bootstrap_batch(V, sig = W, n = 2)
-    z
+  if (requireNamespace("quadprog")) {
     z10 <- sig_fit_bootstrap_batch(V, sig = W, n = 10)
+    z10
   }
-  expect_is(z, "list")
+  expect_is(z10, "list")
   z2 <- sig_fit_bootstrap_batch(V, sig = W, n = 2, use_parallel = TRUE)
   expect_is(z2, "list")
 })

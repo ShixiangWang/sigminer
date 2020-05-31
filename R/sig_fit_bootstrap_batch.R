@@ -30,17 +30,16 @@
 #' V <- W %*% H
 #' V
 #'
-#' if (requireNamespace("lsei") & requireNamespace("quadprog")) {
-#'   z <- sig_fit_bootstrap_batch(V, sig = W, n = 2)
-#'   z
+#' if (requireNamespace("quadprog")) {
 #'   z10 <- sig_fit_bootstrap_batch(V, sig = W, n = 10)
+#'   z10
 #' }
 #' @testexamples
-#' expect_is(z, "list")
+#' expect_is(z10, "list")
 #' z2 <- sig_fit_bootstrap_batch(V, sig = W, n = 2, use_parallel = TRUE)
 #' expect_is(z2, "list")
 sig_fit_bootstrap_batch <- function(catalogue_matrix,
-                                    methods = c("LS", "QP"),
+                                    methods = c("QP"),
                                     n = 100L,
                                     min_count = 1L,
                                     p_val_thresholds = c(0.05),
