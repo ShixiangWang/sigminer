@@ -24,6 +24,8 @@
 #' @param measure measure to estimate the exposure instability, can be one of 'MRSE', 'MAE' and 'AbsDiff'.
 #' @param dodge_width dodge width.
 #' @param plot_fun set the plot function.
+#' @param highlight set the color for optimal solution. Default is "auto", which use the same color as
+#' bootstrap results, you can set it to color like "red", "gold", etc.
 #' @param ... other parameters passing to [ggpubr::ggboxplot] or [ggpubr::ggviolin].
 #'
 #' @name show_sig_bootstrap
@@ -93,6 +95,7 @@ NULL
 #' @export
 show_sig_bootstrap_exposure <- function(bt_result, sample = NULL, signatures = NULL,
                                         methods = "QP", plot_fun = c("boxplot", "violin"),
+                                        highlight = "auto",
                                         palette = "aaas", title = NULL,
                                         xlab = FALSE, ylab = "Signature exposure", width = 0.3,
                                         dodge_width = 0.8, outlier.shape = NA,
@@ -135,17 +138,28 @@ show_sig_bootstrap_exposure <- function(bt_result, sample = NULL, signatures = N
 
   send_info("Plotting.")
   ## Plotting
-  plot_fun(subset(dat, dat$type != "optimal"),
+  p <- plot_fun(subset(dat, dat$type != "optimal"),
     x = "sig", y = "exposure", color = "method", outlier.shape = outlier.shape,
     palette = palette, width = width, add = add, add.params = add.params,
     title = title, xlab = xlab, ylab = ylab, ...
-  ) +
-    ggplot2::geom_point(
+  )
+
+  if (highlight == "auto") {
+    p <- p + ggplot2::geom_point(
       data = subset(dat, dat$type == "optimal"),
       mapping = ggplot2::aes_string(x = "sig", y = "exposure", color = "method"),
       shape = 17, size = 4,
       position = ggplot2::position_dodge2(width = dodge_width, preserve = "single")
     )
+  } else {
+    p <- p + ggplot2::geom_point(
+      data = subset(dat, dat$type == "optimal"),
+      mapping = ggplot2::aes_string(x = "sig", y = "exposure"),
+      shape = 17, size = 4, color = highlight,
+      position = ggplot2::position_dodge2(width = dodge_width, preserve = "single")
+    )
+  }
+  p
 }
 
 
@@ -153,6 +167,7 @@ show_sig_bootstrap_exposure <- function(bt_result, sample = NULL, signatures = N
 #' @export
 show_sig_bootstrap_error <- function(bt_result, sample = NULL,
                                      methods = "QP", plot_fun = c("boxplot", "violin"),
+                                     highlight = "auto",
                                      palette = "aaas", title = NULL,
                                      xlab = FALSE, ylab = "Reconstruction error (F2 norm)", width = 0.3,
                                      dodge_width = 0.8, outlier.shape = NA,
@@ -193,17 +208,28 @@ show_sig_bootstrap_error <- function(bt_result, sample = NULL,
 
   send_info("Plotting.")
   ## Plotting
-  plot_fun(subset(dat, dat$type != "optimal"),
+  p <- plot_fun(subset(dat, dat$type != "optimal"),
     x = "method", y = "errors", color = "method", outlier.shape = outlier.shape,
     palette = palette, width = width, add = add, add.params = list(alpha = 0.3),
     title = title, xlab = xlab, ylab = ylab, legend = legend, ...
-  ) +
-    ggplot2::geom_point(
+  )
+
+  if (highlight == "auto") {
+    p <- p + ggplot2::geom_point(
       data = subset(dat, dat$type == "optimal"),
       mapping = ggplot2::aes_string(x = "method", y = "errors", color = "method"),
       shape = 17, size = 4,
       position = ggplot2::position_dodge2(width = dodge_width, preserve = "single")
     )
+  } else {
+    p <- p + ggplot2::geom_point(
+      data = subset(dat, dat$type == "optimal"),
+      mapping = ggplot2::aes_string(x = "method", y = "errors"),
+      shape = 17, size = 4, color = highlight,
+      position = ggplot2::position_dodge2(width = dodge_width, preserve = "single")
+    )
+  }
+  p
 }
 
 
