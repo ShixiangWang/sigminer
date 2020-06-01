@@ -1,7 +1,7 @@
 Package: sigminer
 Title: Extract, Analyze and Visualize Signatures for Genomic
     Variations
-Version: 1.0.6
+Version: 1.0.7
 Date: 2020-06-01
 Authors@R: 
     c(person(given = "Shixiang",

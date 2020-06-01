@@ -208,7 +208,7 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
       mat <- mat %>%
         dplyr::mutate(
           base = mp[.data$base],
-          context = paste0(.data$base, "[", gsub("[[:alpha:]]", "", .data$context), "]"),
+          context = paste0(.data$base, "[", sub(".*[^0-9]+(\\d+$)", "\\1", .data$context), "]"),
           base = factor(.data$base, levels = as.character(mp))
         ) %>%
         dplyr::arrange(.data$base)
@@ -428,6 +428,9 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
 
   if (mode == "copynumber" & startsWith(method, "M")) {
     if (!is.null(params)) {
+      params <- dplyr::mutate(params,
+                              feature = mp[.data$feature],
+                              components = paste0(.data$feature, "[", sub(".*[^0-9]+(\\d+$)", "\\1", .data$components), "]"))
       params$class <- factor(levels(mat[["class"]])[1], levels = levels(mat[["class"]]))
       p <- p + geom_text(aes(
         x = .data$components, y = Inf,
