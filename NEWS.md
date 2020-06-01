@@ -1,5 +1,6 @@
 # sigminer 1.0.7
 
+- Added option `highlight_size` for `show_sig_bootstrap_*()`.
 - Fixed bug about signature profile plotting for method 'M'.
 
 # sigminer 1.0.6

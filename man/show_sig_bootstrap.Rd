@@ -14,6 +14,7 @@ show_sig_bootstrap_exposure(
   methods = "QP",
   plot_fun = c("boxplot", "violin"),
   highlight = "auto",
+  highlight_size = 4,
   palette = "aaas",
   title = NULL,
   xlab = FALSE,
@@ -32,6 +33,7 @@ show_sig_bootstrap_error(
   methods = "QP",
   plot_fun = c("boxplot", "violin"),
   highlight = "auto",
+  highlight_size = 4,
   palette = "aaas",
   title = NULL,
   xlab = FALSE,
@@ -75,6 +77,8 @@ show_sig_bootstrap_stability(
 
 \item{highlight}{set the color for optimal solution. Default is "auto", which use the same color as
 bootstrap results, you can set it to color like "red", "gold", etc.}
+
+\item{highlight_size}{size for highlighting triangle, default is \code{4}.}
 
 \item{palette}{the color palette to be used for coloring or filling by groups.
 Allowed values include "grey" for grey color palettes; brewer palettes e.g.
