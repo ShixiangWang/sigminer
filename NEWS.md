@@ -1,5 +1,6 @@
 # sigminer 1.0.6
 
+- Added "scatter" in `sig_fit()` function to better visualize a few samples.
 - Added "highlight" option.
 - `lsei` package was removed from CRAN, here I reset default method to 'QP' and tried best to keep the LS usage in sigminer ([#189](https://github.com/ShixiangWang/sigminer/issues/189)).
 - Made consistent copy number labels in `show_sig_profile()` and added input checking for this function.

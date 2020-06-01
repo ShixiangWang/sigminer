@@ -13,7 +13,7 @@
 #' @export
 #' @seealso [sig_fit], [show_sig_bootstrap_exposure], [sig_fit_bootstrap], [sig_fit_bootstrap_batch]
 show_sig_fit <- function(fit_result, samples = NULL, signatures = NULL,
-                         plot_fun = c("boxplot", "violin"),
+                         plot_fun = c("boxplot", "violin", "scatter"),
                          palette = "aaas",
                          title = NULL,
                          xlab = FALSE, ylab = "Signature exposure", legend = "none",
@@ -21,11 +21,12 @@ show_sig_fit <- function(fit_result, samples = NULL, signatures = NULL,
                          add = "jitter", add.params = list(alpha = 0.3),
                          ...) {
 
-  plot_fun <- match.arg(plot_fun)
+  fun_setting <- plot_fun <- match.arg(plot_fun)
   plot_fun <- switch(
     plot_fun,
     boxplot = ggpubr::ggboxplot,
-    violin = ggpubr::ggviolin
+    violin = ggpubr::ggviolin,
+    scatter = ggpubr::ggscatter
   )
 
   timer <- Sys.time()
@@ -68,9 +69,20 @@ show_sig_fit <- function(fit_result, samples = NULL, signatures = NULL,
 
   send_info("Plotting.")
   ## Plotting
-  plot_fun(dat,
-    x = "sig", y = "exposure", color = "sig", outlier.shape = outlier.shape,
-    palette = palette, width = width, add = add, add.params = add.params,
-    title = title, xlab = xlab, ylab = ylab, legend = legend, ...
-  )
+  if (isFALSE(fun_setting == "scatter")) {
+    plot_fun(dat,
+             x = "sig", y = "exposure", color = "sig", outlier.shape = outlier.shape,
+             palette = palette, width = width, add = add, add.params = add.params,
+             title = title, xlab = xlab, ylab = ylab, legend = legend, ...
+    )
+  } else {
+    if (legend == "none") {
+      send_warning("When plot_fun='scatter', setting legend='top' is recommended.")
+    }
+    plot_fun(dat,
+             x = "sig", y = "exposure", color = "sample", shape = "sample",
+             palette = palette,
+             title = title, xlab = xlab, ylab = ylab, legend = legend, ...
+    )
+  }
 }

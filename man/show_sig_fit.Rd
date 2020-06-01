@@ -8,7 +8,7 @@ show_sig_fit(
   fit_result,
   samples = NULL,
   signatures = NULL,
-  plot_fun = c("boxplot", "violin"),
+  plot_fun = c("boxplot", "violin", "scatter"),
   palette = "aaas",
   title = NULL,
   xlab = FALSE,
