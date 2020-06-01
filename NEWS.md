@@ -1,3 +1,7 @@
+# sigminer 1.0.7
+
+- Fixed bug about signature profile plotting for method 'M'.
+
 # sigminer 1.0.6
 
 - Added "scatter" in `sig_fit()` function to better visualize a few samples.
