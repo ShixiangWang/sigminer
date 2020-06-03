@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.7</span>
       </span>
     </div>
 
@@ -125,9 +125,40 @@
       <small>Source: <a href='https://github.com/ShixiangWang/sigminer/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="sigminer-1-0-7" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.7">
+<a href="#sigminer-1-0-7" class="anchor"></a>sigminer 1.0.7<small> Unreleased </small>
+</h1>
+<ul>
+<li>Fixed bug about using reference components from NatGen 2018 paper.</li>
+<li>Added option <code>highlight_size</code> for <code>show_sig_bootstrap_*()</code>.</li>
+<li>Fixed bug about signature profile plotting for method ‘M’.</li>
+</ul>
+</div>
+    <div id="sigminer-1-0-6" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.6">
+<a href="#sigminer-1-0-6" class="anchor"></a>sigminer 1.0.6<small> 2020-06-01 </small>
+</h1>
+<ul>
+<li>Added “scatter” in <code><a href="../reference/sig_fit.html">sig_fit()</a></code> function to better visualize a few samples.</li>
+<li>Added “highlight” option.</li>
+<li>
+<code>lsei</code> package was removed from CRAN, here I reset default method to ‘QP’ and tried best to keep the LS usage in sigminer (<a href="https://github.com/ShixiangWang/sigminer/issues/189"><a href='https://github.com/ShixiangWang/sigminer/issues/189'>#189</a></a>).</li>
+<li>Made consistent copy number labels in <code><a href="../reference/show_sig_profile.html">show_sig_profile()</a></code> and added input checking for this function.</li>
+<li>Fixed unconsistent bootstrap when use <code>furrr</code>, solution is from <a href="https://github.com/DavisVaughan/furrr/issues/107" class="uri">https://github.com/DavisVaughan/furrr/issues/107</a>.</li>
+<li>Properly handled null-count sample in <code><a href="../reference/sig_fit.html">sig_fit()</a></code> for methods <code>QP</code> and <code>SA</code>.</li>
+<li>Supported boxplot or violin in <code><a href="../reference/show_sig_fit.html">show_sig_fit()</a></code> and <code>show_sig_bootstrap_*</code> functions.</li>
+<li>Added job mode for <code>sig_fit_bootstrap_batch</code> for more useful in practice.</li>
+<li>Added <code><a href="../reference/show_groups.html">show_groups()</a></code> to show the signature contribution in each group from <code><a href="../reference/get_groups.html">get_groups()</a></code>.</li>
+<li>Expanded clustering in <code><a href="../reference/get_groups.html">get_groups()</a></code> to result of <code><a href="../reference/sig_fit.html">sig_fit()</a></code>.</li>
+<li>Properly handled null-count samples in <code><a href="../reference/sig_fit_bootstrap_batch.html">sig_fit_bootstrap_batch()</a></code>.</li>
+<li>Added strand bias labeling for INDEL.</li>
+<li>Added COSMIC TSB signatures.</li>
+</ul>
+</div>
     <div id="sigminer-1-0-5" class="section level1">
 <h1 class="page-header" data-toc-text="1.0.5">
-<a href="#sigminer-1-0-5" class="anchor"></a>sigminer 1.0.5<small> Unreleased </small>
+<a href="#sigminer-1-0-5" class="anchor"></a>sigminer 1.0.5<small> 2020-05-14 </small>
 </h1>
 <ul>
 <li>Exported APOBEC result when the mode is ‘ALL’ in <code><a href="../reference/sig_tally.html">sig_tally()</a></code>.</li>

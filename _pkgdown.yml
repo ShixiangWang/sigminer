@@ -65,6 +65,7 @@ reference:
     - get_sig_feature_association
     - get_tidy_association
     - show_sig_feature_corrplot
+    - show_groups
     - get_groups
     - get_group_comparison
     - show_group_comparison

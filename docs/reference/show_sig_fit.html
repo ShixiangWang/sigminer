@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.7</span>
       </span>
     </div>
 
@@ -135,6 +135,7 @@
   <span class='no'>fit_result</span>,
   <span class='kw'>samples</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>signatures</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>plot_fun</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"boxplot"</span>, <span class='st'>"violin"</span>, <span class='st'>"scatter"</span>),
   <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"aaas"</span>,
   <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
@@ -161,6 +162,10 @@
     <tr>
       <th>signatures</th>
       <td><p>signatures to show.</p></td>
+    </tr>
+    <tr>
+      <th>plot_fun</th>
+      <td><p>set the plot function.</p></td>
     </tr>
     <tr>
       <th>palette</th>
