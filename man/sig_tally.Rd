@@ -147,7 +147,7 @@ the following, you can use the same way to set (per R session).
 \item If your cohort are all males, set \code{sigminer.sex} to 'male' and
 \code{sigminer.copynumber.max} to a proper value (the best is consistent
 with \link{read_copynumber}).
-\item If your cohort contains bother males and females, set \code{sigminer.sex}
+\item If your cohort contains both males and females, set \code{sigminer.sex}
 as a \code{data.frame} with two columns "sample" and "sex". And
 set \code{sigminer.copynumber.max} to a proper value (the best is consistent
 with \link{read_copynumber}).

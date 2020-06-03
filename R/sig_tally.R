@@ -21,7 +21,7 @@
 #' - If your cohort are all males, set `sigminer.sex` to 'male' and
 #' `sigminer.copynumber.max` to a proper value (the best is consistent
 #' with [read_copynumber]).
-#' - If your cohort contains bother males and females, set `sigminer.sex`
+#' - If your cohort contains both males and females, set `sigminer.sex`
 #' as a `data.frame` with two columns "sample" and "sex". And
 #' set `sigminer.copynumber.max` to a proper value (the best is consistent
 #' with [read_copynumber]).
@@ -283,6 +283,9 @@ sig_tally.CopyNumber <- function(object,
     cn_matrix
   } else {
     if (startsWith(method, "M")) {
+      if (is.null(cn_components)) {
+        cn_components <- readRDS(file.path(tempdir(), "Nat_Gen_component_parameters.rds"))
+      }
       para_df <- get_tidy_parameter(cn_components)
     } else {
       para_df <- feature_setting

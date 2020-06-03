@@ -1,5 +1,6 @@
 # sigminer 1.0.7
 
+- Fixed bug about using reference components from NatGen 2018 paper.
 - Added option `highlight_size` for `show_sig_bootstrap_*()`.
 - Fixed bug about signature profile plotting for method 'M'.
 
