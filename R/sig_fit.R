@@ -7,6 +7,8 @@
 #' The method 'LS' is a modification based on `LCD` function from YAPSA pakcage.
 #' The method 'QP' and 'SA' are modified from SignatureEstimation package.
 #' See references for details.
+#' Of note, when fitting exposures for copy number signatures, only components of
+#' feature CN is used.
 #'
 #' @param catalogue_matrix a numeric matrix `V` with row representing components and
 #' columns representing samples, typically you can get `nmf_matrix` from `sig_tally()` and
@@ -33,8 +35,13 @@
 #' If `return_error` set `TRUE`, a `list` is returned.
 #' @export
 #' @seealso [sig_extract], [sig_auto_extract], [sig_fit_bootstrap], [sig_fit_bootstrap_batch]
-#' @references Daniel Huebschmann, Zuguang Gu and Matthias Schlesner (2019). YAPSA: Yet Another Package for Signature Analysis. R package version 1.12.0.
-#' @references Huang X, Wojtowicz D, Przytycka TM. Detecting presence of mutational signatures in cancer with confidence. Bioinformatics. 2018;34(2):330–337. doi:10.1093/bioinformatics/btx604
+#' @references
+#' Daniel Huebschmann, Zuguang Gu and Matthias Schlesner (2019). YAPSA: Yet Another Package for Signature Analysis. R package version 1.12.0.
+#'
+#' Huang X, Wojtowicz D, Przytycka TM. Detecting presence of mutational signatures in cancer with confidence. Bioinformatics. 2018;34(2):330–337. doi:10.1093/bioinformatics/btx604
+#'
+#' Kim, Jaegil, et al. "Somatic ERCC2 mutations are associated with a distinct genomic signature in urothelial tumors."
+#'  Nature genetics 48.6 (2016): 600.
 #' @examples
 #' W <- matrix(c(1, 2, 3, 4, 5, 6), ncol = 2)
 #' colnames(W) <- c("sig1", "sig2")
