@@ -224,17 +224,29 @@ get_matrix <- function(CN_features,
     send_info(
       "More details about reference components please see {.url https://github.com/ShixiangWang/absoluteCNVdata}"
     )
-    if (!file.exists("Nat_Gen_component_parameters.rds")) {
+    if (!file.exists(file.path(tempdir(), "Nat_Gen_component_parameters.rds"))) {
       send_info(
         "Nat_Gen_component_parameters.rds doesnot exist, will download reference components."
       )
-      download.file(
-        url = "https://github.com/ShixiangWang/absoluteCNVdata/raw/master/component_parameters.rds",
-        destfile = file.path(tempdir(), "Nat_Gen_component_parameters.rds")
+      tryCatch(
+        download.file(
+          url = "https://github.com/ShixiangWang/absoluteCNVdata/raw/master/component_parameters.rds",
+          destfile = file.path(tempdir(), "Nat_Gen_component_parameters.rds")
+        ),
+        error = function(e) {
+          send_info("Bad internet from GitHub, try Gitee (may also not work).")
+          download.file(
+            url = "https://gitee.com/ShixiangWang/absoluteCNVdata/raw/master/component_parameters.rds",
+            destfile = file.path(tempdir(), "Nat_Gen_component_parameters.rds")
+          )
+        }
       )
     }
     all_components <-
       readRDS(file.path(tempdir(), "Nat_Gen_component_parameters.rds"))
+    send_warning(
+      "This reference data may only works for ovarian cancer!"
+    )
   }
 
   feature_orders <- c("bp10MB", "copynumber", "changepoint", "bpchrarm", "osCN", "segsize")
