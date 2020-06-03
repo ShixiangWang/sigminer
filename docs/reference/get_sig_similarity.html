@@ -84,7 +84,7 @@ from compareSignatures() in maftools package." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.7</span>
       </span>
     </div>
 
@@ -165,13 +165,16 @@ More please see examples.</p></td>
     </tr>
     <tr>
       <th>sig_db</th>
-      <td><p>can be 'legacy' (for COSMIC v2 'SBS'), 'SBS', 'DBS' and 'ID'. Default 'legacy'.</p></td>
+      <td><p>can be 'legacy' (for COSMIC v2 'SBS'),
+'SBS', 'DBS', 'ID' and 'TSB' (for SBS transcriptional strand bias signatures).
+Default 'legacy'.</p></td>
     </tr>
     <tr>
       <th>db_type</th>
       <td><p>only used when <code>sig_db</code> is enabled.
 "" for keeping default, "human-exome" for transforming to exome frequency of component,
-and "human-genome" for transforming to whole genome frequency of component.</p></td>
+and "human-genome" for transforming to whole genome frequency of component.
+Currently only works for 'SBS'.</p></td>
     </tr>
     <tr>
       <th>method</th>
