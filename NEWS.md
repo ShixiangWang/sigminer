@@ -1,5 +1,7 @@
 # sigminer 1.0.7
 
+- Added feature in `show_sig_bootstrap_*()` for plotting aggregated values.
+- Fixed bug when use `get_groups()` for clustering.
 - Fixed bug about using reference components from NatGen 2018 paper.
 - Added option `highlight_size` for `show_sig_bootstrap_*()`.
 - Fixed bug about signature profile plotting for method 'M'.

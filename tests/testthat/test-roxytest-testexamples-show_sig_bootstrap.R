@@ -2,7 +2,7 @@
 
 context("File R/show_sig_bootstrap.R: @testexamples")
 
-test_that("[unknown alias] @ L93", {
+test_that("[unknown alias] @ L99", {
   
   
   if (require("BSgenome.Hsapiens.UCSC.hg19")) {
@@ -28,8 +28,10 @@ test_that("[unknown alias] @ L93", {
     ## Parallel computation
     ## bt_result = sig_fit_bootstrap_batch(mat, sig = mt_sig, n = 10, use_parallel = TRUE)
   
+    ## At default, mean bootstrap exposure for each sample has been calculated
+    p <- show_sig_bootstrap_exposure(bt_result, methods = c("QP"))
     ## Show bootstrap exposure (optimal exposure is shown as triangle)
-    p1 <- show_sig_bootstrap_exposure(bt_result, methods = c("QP"))
+    p1 <- show_sig_bootstrap_exposure(bt_result, methods = c("QP"), sample = "TCGA-AB-2802")
     p1
     p2 <- show_sig_bootstrap_exposure(bt_result,
       methods = c("QP"),
@@ -39,7 +41,10 @@ test_that("[unknown alias] @ L93", {
     p2
   
     ## Show bootstrap error
-    p3 <- show_sig_bootstrap_error(bt_result, methods = c("QP"))
+    ## Similar to exposure above
+    p <- show_sig_bootstrap_error(bt_result, methods = c("QP"))
+    p
+    p3 <- show_sig_bootstrap_error(bt_result, methods = c("QP"), sample = "TCGA-AB-2802")
     p3
   
     ## Show exposure (in)stability
