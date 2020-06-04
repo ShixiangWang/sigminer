@@ -89,7 +89,8 @@ get_groups <- function(Signature,
     }
     nmfObj <- Signature$Raw$nmf_obj
     predict.consensus <- predict(nmfObj, what = "consensus")
-    silhouette.consensus <- silhouette(nmfObj, what = "consensus")
+    sil <- "NMF" %:::% "silhouette.NMF"
+    silhouette.consensus <- sil(nmfObj, what = "consensus")
 
     data <- data.frame(
       sample = sampleNames(nmfObj),
