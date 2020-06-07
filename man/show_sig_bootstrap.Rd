@@ -52,7 +52,7 @@ show_sig_bootstrap_error(
 show_sig_bootstrap_stability(
   bt_result,
   signatures = NULL,
-  measure = c("MRSE", "MAE", "AbsDiff"),
+  measure = c("RMSE", "MAE", "AbsDiff"),
   methods = "QP",
   plot_fun = c("boxplot", "violin"),
   palette = "aaas",
@@ -130,7 +130,7 @@ c("top", "bottom", "left", "right", "none"). To remove the legend use
 legend = "none". Legend position can be also specified using a numeric
 vector c(x, y); see details section.}
 
-\item{measure}{measure to estimate the exposure instability, can be one of 'MRSE', 'MAE' and 'AbsDiff'.}
+\item{measure}{measure to estimate the exposure instability, can be one of 'RMSE', 'MAE' and 'AbsDiff'.}
 }
 \value{
 a \code{ggplot} object
@@ -148,7 +148,7 @@ The error from optimal solution (the decomposition error from original input) is
 \item \link{show_sig_bootstrap_stability} - this function plots the signature exposure instability for specified signatures. Currently,
 the instability measure supports 3 types:
 \itemize{
-\item 'MRSE' for Mean Root Squared Error (default) of bootstrap exposures and original exposures for each sample.
+\item 'RMSE' for Mean Root Squared Error (default) of bootstrap exposures and original exposures for each sample.
 \item 'MAE' for Mean Absolute Error of bootstrap exposures and original exposures for each sample.
 \item 'AbsDiff' for Absolute Difference between mean bootstram exposure and original exposure.
 }
