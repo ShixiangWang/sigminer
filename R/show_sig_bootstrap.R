@@ -10,7 +10,7 @@
 #' The error from optimal solution (the decomposition error from original input) is shown as triangle point. **Only one sample can be plotted**.
 #' - [show_sig_bootstrap_stability] - this function plots the signature exposure instability for specified signatures. Currently,
 #' the instability measure supports 3 types:
-#'   - 'MRSE' for Mean Root Squared Error (default) of bootstrap exposures and original exposures for each sample.
+#'   - 'RMSE' for Mean Root Squared Error (default) of bootstrap exposures and original exposures for each sample.
 #'   - 'MAE' for Mean Absolute Error of bootstrap exposures and original exposures for each sample.
 #'   - 'AbsDiff' for Absolute Difference between mean bootstram exposure and original exposure.
 #'
@@ -21,7 +21,7 @@
 #' @param bt_result result object from [sig_fit_bootstrap_batch].
 #' @param sample a sample id.
 #' @param signatures signatures to show.
-#' @param measure measure to estimate the exposure instability, can be one of 'MRSE', 'MAE' and 'AbsDiff'.
+#' @param measure measure to estimate the exposure instability, can be one of 'RMSE', 'MAE' and 'AbsDiff'.
 #' @param dodge_width dodge width.
 #' @param plot_fun set the plot function.
 #' @param agg_fun set the aggregation function when `sample` is `NULL`.
@@ -289,7 +289,7 @@ show_sig_bootstrap_error <- function(bt_result, sample = NULL,
 
 #' @rdname show_sig_bootstrap
 #' @export
-show_sig_bootstrap_stability <- function(bt_result, signatures = NULL, measure = c("MRSE", "MAE", "AbsDiff"),
+show_sig_bootstrap_stability <- function(bt_result, signatures = NULL, measure = c("RMSE", "MAE", "AbsDiff"),
                                          methods = "QP", plot_fun = c("boxplot", "violin"),
                                          palette = "aaas", title = NULL,
                                          xlab = FALSE, ylab = "Signature instability",
@@ -338,8 +338,8 @@ show_sig_bootstrap_stability <- function(bt_result, signatures = NULL, measure =
       dplyr::summarise(measure = abs(.data$optimal - .data$bootstrap)) %>%
       dplyr::ungroup()
   } else {
-    ## Calculate MRSE（Mean Root Squared Error）or MAE (Mean Absolute Error)
-    if (measure == "MRSE") {
+    ## Calculate RMSE（Root Mean Squared Error）or MAE (Mean Absolute Error)
+    if (measure == "RMSE") {
       ## across solution: https://github.com/tidyverse/dplyr/issues/5230
       dat <- dat %>%
         tidyr::pivot_wider(names_from = "type", values_from = "exposure") %>%

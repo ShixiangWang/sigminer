@@ -1,5 +1,6 @@
 # sigminer 1.0.7
 
+- Fixed a typo, correct `MRSE` to `RMSE`.
 - Added feature in `show_sig_bootstrap_*()` for plotting aggregated values.
 - Fixed bug when use `get_groups()` for clustering.
 - Fixed bug about using reference components from NatGen 2018 paper.
