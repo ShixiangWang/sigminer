@@ -112,6 +112,10 @@ cancer reveal distinct etiologies and clinical outcomes” medRxiv
 
 -----
 
+## Download Stats
+
+<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
+
 ## Acknowledgments
 
 If you use **NMF** package in R, please also cite:

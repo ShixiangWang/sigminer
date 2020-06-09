@@ -136,6 +136,24 @@ For usage of a specific function `fun`, run `?fun` in your R console to see its 
 
 ***
 
+## Download Stats
+
+```{r, echo=FALSE}
+library("ggplot2")
+library("dlstats")
+
+x <- cran_stats(c("sigminer"))
+
+if (!is.null(x)) {
+   #head(x)
+   ggplot(x, aes(end, downloads, group=package, color=package)) +
+       geom_line() + geom_point(aes(shape=package)) + 
+    theme_minimal() + theme(legend.position = "none") +
+    labs(x = "Time")
+}
+```
+
+
 ## Acknowledgments
 
 If you use **NMF** package in R, please also cite:
