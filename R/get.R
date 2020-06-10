@@ -5,10 +5,25 @@
 # Get copy number list ----------------------------------------------------
 
 get_cnlist <- function(CopyNumber, ignore_chrs = NULL) {
-  if (!inherits(CopyNumber, "CopyNumber")) {
-    stop("Input must be a CopyNumber object!")
+  if (!inherits(CopyNumber, "CopyNumber") & !data.table::is.data.table(CopyNumber)) {
+    stop("Input must be a CopyNumber object or a data.table!")
   }
-  data <- data.table::copy(CopyNumber@data)
+  if (is.data.frame(CopyNumber)) {
+    ## If it is a data.table
+    # order by segment start position by each chromosome in each sample
+    req_cols <- c("chromosome", "start", "end", "segVal", "sample")
+    data <- data.table::copy(CopyNumber)
+
+    if (!all(req_cols %in% colnames(data))) {
+      stop(paste0(req_cols, collapse = ","), " are necessary columns!")
+    }
+
+    data <- data[, .SD[order(.SD$start, decreasing = FALSE)], by = c("sample", "chromosome")]
+    all_cols <- colnames(data)
+    data.table::setcolorder(data, neworder = c(req_cols, setdiff(all_cols, req_cols)))
+  } else {
+    data <- data.table::copy(CopyNumber@data)
+  }
   if (!is.null(ignore_chrs)) {
     chrs_exist <- ignore_chrs %in% unique(data$chromosome)
     if (!any(chrs_exist)) {
@@ -614,6 +629,7 @@ utils::globalVariables(
     "i",
     "chrom",
     "chromosome",
-    "segVal"
+    "segVal",
+    ".SD"
   )
 )

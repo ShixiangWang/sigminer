@@ -347,8 +347,11 @@ read_copynumber <- function(input,
   # make sure position is numeric
   data_df$start <- as.numeric(data_df$start)
   data_df$end <- as.numeric(data_df$end)
-  # order by sample name
-  data_df <- data_df[order(data_df$sample)]
+  # order by segment start position by each chromosome in each sample
+  data_df <- data_df[, .SD[order(.SD$start, decreasing = FALSE)], by = c("sample", "chromosome")]
+  all_cols <- colnames(data_df)
+  data.table::setcolorder(data_df, neworder = c(c("chromosome", "start", "end", "segVal", "sample"),
+                                                setdiff(all_cols, c("chromosome", "start", "end", "segVal", "sample"))))
 
   if (join_adj_seg) {
     data_df <- helper_join_segments(data_df)
@@ -396,6 +399,7 @@ utils::globalVariables(
   c(
     ".",
     "N",
-    ".N"
+    ".N",
+    ".SD"
   )
 )
