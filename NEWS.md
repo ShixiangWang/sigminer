@@ -1,5 +1,6 @@
 # sigminer 1.0.7
 
+- Fixed potential problem raised by unordered copy number segments ([#217](https://github.com/ShixiangWang/sigminer/issues/217)).
 - Fixed a typo, correct `MRSE` to `RMSE`.
 - Added feature in `show_sig_bootstrap_*()` for plotting aggregated values.
 - Fixed bug when use `get_groups()` for clustering.
