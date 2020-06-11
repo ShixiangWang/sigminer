@@ -6,7 +6,7 @@ helper_join_segments <- function(segTab) {
     tidyr::nest() %>%
     dplyr::summarise(data = purrr::map(.data$data, join_segments)) %>%
     tidyr::unnest("data") %>%
-    dplyr::select(final_orders) %>%
+    dplyr::select(final_orders, dplyr::everything()) %>%
     data.table::as.data.table()
 
   segTab
@@ -30,11 +30,21 @@ join_segments <- function(df) {
 
     join_df <- purrr::map_df(join_list, function(index, df) {
       res <- df[index, ]
-      dplyr::tibble(
+      out <- dplyr::tibble(
         start = res$start[1],
         end = res$end[length(res$end)],
         segVal = res$segVal[1]
       )
+      if (ncol(res) == 3L) {
+        return(out)
+      } else {
+        dplyr::bind_cols(
+          out,
+          dplyr::summarise_at(res, dplyr::vars(-c("start", "end", "segVal")),
+                              ~ifelse(is.numeric(.), mean(., na.rm = TRUE),
+                                      paste0(unique(na.omit(.)), collapse = ",")))
+        )
+      }
     }, df = df)
 
     if (length(not_join_index) > 0) {

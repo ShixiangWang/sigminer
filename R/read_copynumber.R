@@ -15,6 +15,8 @@
 #' (set this parameter to `NULL` is recommended in this case).
 #' @param join_adj_seg if `TRUE` (default), join adjacent segments with
 #' same copy number value. This is helpful for precisely count the number of breakpoint.
+#' When set `use_all=TRUE`, the mean function will be applied to extra numeric columns
+#' and unique string columns will be pasted by comma for joined records.
 #' @param use_all default is `FALSE`. If `True`, use all columns from raw input.
 #' @param min_segnum minimal number of copy number segments within a sample.
 #' @param max_copynumber bigger copy number within a sample will be reset to this value.
@@ -347,16 +349,17 @@ read_copynumber <- function(input,
   # make sure position is numeric
   data_df$start <- as.numeric(data_df$start)
   data_df$end <- as.numeric(data_df$end)
+
+  if (join_adj_seg) {
+    data_df <- helper_join_segments(data_df)
+    send_success("Adjacent segments with same copy number value joined")
+  }
   # order by segment start position by each chromosome in each sample
   data_df <- data_df[, .SD[order(.SD$start, decreasing = FALSE)], by = c("sample", "chromosome")]
   all_cols <- colnames(data_df)
   data.table::setcolorder(data_df, neworder = c(c("chromosome", "start", "end", "segVal", "sample"),
                                                 setdiff(all_cols, c("chromosome", "start", "end", "segVal", "sample"))))
 
-  if (join_adj_seg) {
-    data_df <- helper_join_segments(data_df)
-    send_success("Adjacent segments with same copy number value joined")
-  }
   send_success("Segmental table cleaned.")
 
   send_info("Annotating.")
