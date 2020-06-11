@@ -1,5 +1,6 @@
 # sigminer 1.0.7
 
+- Removed useless options in `read_maf()`.
 - Made `use_all` option in `read_copynumber()` working correctly.
 - Fixed potential problem raised by unordered copy number segments ([#217](https://github.com/ShixiangWang/sigminer/issues/217)).
 - Fixed a typo, correct `MRSE` to `RMSE`.

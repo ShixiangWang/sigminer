@@ -38,7 +38,7 @@ for common mutational signatures. "feature" is designed by me to use when input
 are copy number signatures.}
 
 \item{feature_setting}{a \code{data.frame} used for classification.
-Only used when method is "Wang" ("W").
+\strong{Only used when method is "Wang" ("W")}.
 Default is \link{CN.features}. Users can also set custom input with "feature",
 "min" and "max" columns available. Valid features can be printed by
 \code{unique(CN.features$feature)}.}
