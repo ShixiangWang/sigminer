@@ -37,7 +37,9 @@ is a directory and cannot find \code{samp_col}, sample names will use file names
 (set this parameter to \code{NULL} is recommended in this case).}
 
 \item{join_adj_seg}{if \code{TRUE} (default), join adjacent segments with
-same copy number value. This is helpful for precisely count the number of breakpoint.}
+same copy number value. This is helpful for precisely count the number of breakpoint.
+When set \code{use_all=TRUE}, the mean function will be applied to extra numeric columns
+and unique string columns will be pasted by comma for joined records.}
 
 \item{use_all}{default is \code{FALSE}. If \code{True}, use all columns from raw input.}
 
