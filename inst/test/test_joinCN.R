@@ -2,10 +2,21 @@ load(system.file("extdata", "toy_segTab.RData",
                  package = "sigminer", mustWork = TRUE
 ))
 segTabs = segTabs[rev(1:nrow(segTabs))]
+segTabs$cc = 1
+segTabs$b = "a"
 cn2 <- read_copynumber(segTabs,
                       seg_cols = c("chromosome", "start", "end", "segVal"),
-                      genome_build = "hg19", complement = FALSE, verbose = TRUE, join_adj_seg = FALSE
+                      genome_build = "hg19", complement = FALSE, verbose = TRUE, join_adj_seg = FALSE, use_all = FALSE
 )
+
+cn2@data
+
+cn2 <- read_copynumber(segTabs,
+                       seg_cols = c("chromosome", "start", "end", "segVal"),
+                       genome_build = "hg19", complement = FALSE, verbose = TRUE, join_adj_seg = TRUE, use_all = TRUE
+)
+
+cn2@data
 
 View(cn@data)
 
