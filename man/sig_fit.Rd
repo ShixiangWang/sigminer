@@ -11,7 +11,7 @@ sig_fit(
   sig_db = "legacy",
   db_type = c("", "human-exome", "human-genome"),
   show_index = TRUE,
-  method = c("QP", "LS", "SA"),
+  method = c("QP", "NNLS", "SA"),
   type = c("absolute", "relative"),
   return_class = c("matrix", "data.table"),
   return_error = FALSE,
@@ -44,7 +44,7 @@ Currently only works for 'SBS'.}
 \item{show_index}{if \code{TRUE}, show valid indices.}
 
 \item{method}{method to solve the minimazation problem.
-'LS' for least square; 'QP' for quadratic programming; 'SA' for simulated annealing.}
+'NNLS' for nonnegative least square; 'QP' for quadratic programming; 'SA' for simulated annealing.}
 
 \item{type}{'absolute' for signature exposure and 'relative' for signature relative exposure.}
 
@@ -73,7 +73,7 @@ catalogue \code{V} with known signatures \code{W} by solving the minimization pr
 \verb{min(||W*H - V||)} where W and V are known.
 }
 \details{
-The method 'LS' is a modification based on \code{LCD} function from YAPSA pakcage.
+The method 'NNLS' solves the minimization problem with nonnegative least-squares constraints.
 The method 'QP' and 'SA' are modified from SignatureEstimation package.
 See references for details.
 Of note, when fitting exposures for copy number signatures, only components of

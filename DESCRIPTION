@@ -76,6 +76,7 @@ Suggests:
     knitr,
     patchwork,
     pheatmap,
+    pracma,
     quadprog,
     R.utils,
     RColorBrewer,

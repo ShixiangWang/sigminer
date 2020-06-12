@@ -22,7 +22,7 @@ sig_fit_bootstrap_batch(
 columns representing samples, typically you can get \code{nmf_matrix} from \code{sig_tally()} and
 transpose it by \code{t()}.}
 
-\item{methods}{a subset of \code{c("LS", "QP", "SA")}.}
+\item{methods}{a subset of \code{c("NNLS", "QP", "SA")}.}
 
 \item{n}{the number of bootstrap replicates.}
 
