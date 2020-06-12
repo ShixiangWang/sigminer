@@ -12,7 +12,7 @@ sig_fit_bootstrap(
   sig_db = "legacy",
   db_type = c("", "human-exome", "human-genome"),
   show_index = TRUE,
-  method = c("QP", "LS", "SA"),
+  method = c("QP", "NNLS", "SA"),
   SA_not_bootstrap = FALSE,
   type = c("absolute", "relative"),
   rel_threshold = 0,
@@ -47,7 +47,7 @@ Currently only works for 'SBS'.}
 \item{show_index}{if \code{TRUE}, show valid indices.}
 
 \item{method}{method to solve the minimazation problem.
-'LS' for least square; 'QP' for quadratic programming; 'SA' for simulated annealing.}
+'NNLS' for nonnegative least square; 'QP' for quadratic programming; 'SA' for simulated annealing.}
 
 \item{SA_not_bootstrap}{if \code{TRUE}, directly run 'SA' multiple times with original input instead of
 bootstrap samples.}

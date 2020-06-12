@@ -4,7 +4,7 @@
 #' catalogue `V` with known signatures `W` by solving the minimization problem
 #' `min(||W*H - V||)` where W and V are known.
 #'
-#' The method 'LS' is a modification based on `LCD` function from YAPSA pakcage.
+#' The method 'NNLS' solves the minimization problem with nonnegative least-squares constraints.
 #' The method 'QP' and 'SA' are modified from SignatureEstimation package.
 #' See references for details.
 #' Of note, when fitting exposures for copy number signatures, only components of
@@ -21,7 +21,7 @@
 #' or just a raw signature matrix with row representing components (motifs) and
 #' column representing signatures.
 #' @param method method to solve the minimazation problem.
-#' 'LS' for least square; 'QP' for quadratic programming; 'SA' for simulated annealing.
+#' 'NNLS' for nonnegative least square; 'QP' for quadratic programming; 'SA' for simulated annealing.
 #' @param return_class string, 'matrix' or 'data.table'.
 #' @param return_error if `TRUE`, also return method error (Frobenius norm). NOTE:
 #' it is better to obtain the error when the type is 'absolute', because the error is
@@ -95,7 +95,7 @@ sig_fit <- function(catalogue_matrix,
                     sig_db = "legacy",
                     db_type = c("", "human-exome", "human-genome"),
                     show_index = TRUE,
-                    method = c("QP", "LS", "SA"),
+                    method = c("QP", "NNLS", "SA"),
                     type = c("absolute", "relative"),
                     return_class = c("matrix", "data.table"),
                     return_error = FALSE,
@@ -248,11 +248,11 @@ sig_fit <- function(catalogue_matrix,
 
   send_success("Method '", method, "' detected.")
   f_fit <- switch(method,
-    LS = {
-      # if (!requireNamespace("lsei", quietly = TRUE)) {
-      #   send_stop("Please install 'lsei' package from <https://github.com/ShixiangWang/lsei> firstly.")
-      # }
-      decompose_LS
+    NNLS = {
+      if (!requireNamespace("pracma", quietly = TRUE)) {
+        send_stop("Please install 'pracma' package firstly.")
+      }
+      decompose_NNLS
     },
     QP = {
       if (!requireNamespace("quadprog", quietly = TRUE)) {
@@ -358,22 +358,30 @@ sig_fit <- function(catalogue_matrix,
 ## sig_matrix: reference signature matrix, components X signatures
 ## type: type of signature contribution to return
 
-decompose_LS <- function(x, y, sig_matrix, type = "absolute", ...) {
-  # Set constraints x >= 0
-  G <- diag(dim(sig_matrix)[2])
-  H <- rep(0, dim(sig_matrix)[2])
+# decompose_LS <- function(x, y, sig_matrix, type = "absolute", ...) {
+#   # Set constraints x >= 0
+#   G <- diag(dim(sig_matrix)[2])
+#   H <- rep(0, dim(sig_matrix)[2])
+#
+#   lsei <- tryCatch(eval(parse(text = "lsei::lsei")),
+#                   error = function(e) {
+#                     send_stop("Package 'lsei' not found. Please install it from <https://github.com/ShixiangWang/lsei> firstly.")
+#                   })
+#
+#   expo <- lsei(
+#     a = sig_matrix,
+#     b = x,
+#     e = G,
+#     f = H
+#   )
+#
+#   expo <- expo / sum(expo)
+#   return_expo(expo = expo, y, type, total = sum(x))
+# }
 
-  lsei <-tryCatch(eval(parse(text = "lsei::lsei")),
-                  error = function(e) {
-                    send_stop("Package 'lsei' not found. Please install it from <https://github.com/ShixiangWang/lsei> firstly.")
-                  })
-
-  expo <- lsei(
-    a = sig_matrix,
-    b = x,
-    e = G,
-    f = H
-  )
+decompose_NNLS <- function(x, y, sig_matrix, type = "absolute", ...) {
+  ## lsqnonneg solve nonnegative least-squares constraints problem.
+  expo <- pracma::lsqnonneg(sig_matrix, x)$x
 
   expo <- expo / sum(expo)
   return_expo(expo = expo, y, type, total = sum(x))

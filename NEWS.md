@@ -1,6 +1,7 @@
 # sigminer 1.0.7
 
 - Removed useless options in `read_maf()`.
+- Modify method 'LS' in `sig_fit()` to 'NNLS' and implement it with **pracma** package ([#216](https://github.com/ShixiangWang/sigminer/issues/216)).
 - Made `use_all` option in `read_copynumber()` working correctly.
 - Fixed potential problem raised by unordered copy number segments ([#217](https://github.com/ShixiangWang/sigminer/issues/217)).
 - Fixed a typo, correct `MRSE` to `RMSE`.
