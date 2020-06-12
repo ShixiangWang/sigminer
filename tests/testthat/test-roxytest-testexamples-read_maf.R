@@ -2,7 +2,7 @@
 
 context("File R/read_maf.R: @testexamples")
 
-test_that("Function read_maf() @ L24", {
+test_that("Function read_maf() @ L23", {
   
   laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools", mustWork = TRUE)
   if (!require("R.utils")) {

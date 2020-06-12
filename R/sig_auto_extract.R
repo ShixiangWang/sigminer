@@ -35,6 +35,7 @@
 #' If you want select other solution, please check [get_bayesian_result].
 #' @param K0 number of initial signatures.
 #' @param nrun number of independent simulations.
+#' @param niter the maximum number of iterations.
 #' @param tol tolerance for convergence.
 #' @param skip if `TRUE`, it will skip running a previous stored result. This can be used to
 #' extend run times, e.g. you try running 10 times firstly and then you want to extend it to

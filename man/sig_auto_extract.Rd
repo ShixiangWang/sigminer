@@ -41,8 +41,7 @@ If you want select other solution, please check \link{get_bayesian_result}.}
 
 \item{nrun}{number of independent simulations.}
 
-\item{niter}{the maximum number of iterations.
-Only used when method is "Macintyre".}
+\item{niter}{the maximum number of iterations.}
 
 \item{tol}{tolerance for convergence.}
 

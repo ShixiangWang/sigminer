@@ -2,7 +2,7 @@
 
 context("File R/sig_auto_extract.R: @testexamples")
 
-test_that("Function sig_auto_extract() @ L76", {
+test_that("Function sig_auto_extract() @ L77", {
   
   load(system.file("extdata", "toy_copynumber_tally_M.RData",
     package = "sigminer", mustWork = TRUE
