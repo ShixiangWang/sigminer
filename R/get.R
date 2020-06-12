@@ -4,7 +4,7 @@
 
 # Get copy number list ----------------------------------------------------
 
-get_cnlist <- function(CopyNumber, ignore_chrs = NULL) {
+get_cnlist <- function(CopyNumber, ignore_chrs = NULL, add_index = FALSE) {
   if (!inherits(CopyNumber, "CopyNumber") & !data.table::is.data.table(CopyNumber)) {
     stop("Input must be a CopyNumber object or a data.table!")
   }
@@ -36,6 +36,11 @@ get_cnlist <- function(CopyNumber, ignore_chrs = NULL) {
       data <- data[!chromosome %in% ignore_chrs[chrs_exist]]
     }
   }
+
+  if (add_index) {
+    data$Index <- seq(1, nrow(data))
+  }
+
   res <- split(data, by = "sample")
   res
 }
