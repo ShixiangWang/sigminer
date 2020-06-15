@@ -78,8 +78,7 @@ getPC_CNCP_Right <- function(abs_profiles){
 
     x_cp <- x_cp %>%
       dplyr::as_tibble() %>%
-      dplyr::group_by(chromosome)
-    x_cp <- x_cp %>%
+      dplyr::group_by(chromosome) %>%
       dplyr::mutate(value = abs(rev(c(0, diff(rev(segVal)))))) %>%
       dplyr::select(c("sample", "value", "Index"))
   }) %>%
@@ -87,20 +86,49 @@ getPC_CNCP_Right <- function(abs_profiles){
   y[order(y$Index)]
 }
 
-# getPC_CNCP_Max <- function(abs_profiles){
+getPC_CNCP_Max <- function(abs_profiles){
+  Right_df <- getPC_CNCP_Right(abs_profiles)
+  Left_df <- getPC_CNCP_Left(abs_profiles) %>%
+    dplyr::rename("left_value" = value)
+  y = purrr::map_df(abs_profiles, function(x){
+    max_df <- dplyr::left_join(Right_df, Left_df) %>%
+      dplyr::mutate(value = ifelse(value > left_value, value, left_value)) %>%
+      dplyr::select(c("sample", "value", "Index"))
+
+  }) %>%
+    data.table::as.data.table() %>%
+    unique()
+  y[order(y$Index)]
+}
+
+# getPC_OsCN <- function(abs_profiles){
 #   y = purrr::map_df(abs_profiles, function(x){
-#     Right_df <- getPC_CNCP_Right(abs_profiles)
-#     Left_df <- getPC_CNCP_Left(abs_profiles)
-#     max_df <- Right_df
+#     x_cp <- data.table::copy(x)
+#     x_cp <- x_cp %>%
+#       dplyr::as_tibble() %>%
+#       dplyr::group_by(chromosome) %>%
+#       dplyr::mutate(value = function(z){
+#         count = 0
+#         for(i in 1:`dplyr::n(z)`){
+#           if(i < 3){
+#             0
+#           }else{
+#             number <- x_cp[,i]$segVal - x_cp[,i-2]$segVal
+#             number <- ifelse(number = 0, count+1, count)
+#           }
+#         }
+#       })
+#     # length = dplyr::n()
 #
+#
+#     # %>%
+#     #   dplyr::mutate(value = function(n){
+#     #
+#     #   })
 #   }) %>%
 #     data.table::as.data.table()
 #   y[order(y$Index)]
 # }
-
-getPC_OsCN <- function(){
-
-}
 
 
 
