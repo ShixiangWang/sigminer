@@ -62,3 +62,65 @@ getCN_v2 <- function(abs_profiles) {
   colnames(cn) <- c("sample", "value", "Index")
   cn
 }
+
+
+getBP10MB_v2 <- function(abs_profiles) {
+  y = purrr::map_df(abs_profiles, function(x){
+
+    x_cp = data.table::copy(x)
+    x_cp$region_start <- x$start - 5000000L
+    x_cp$region_end <- x$start + 5000000L
+    x_cp$region_start <- ifelse(x_cp$region_start <= 0, 1L, x_cp$region_start)
+    x_cp[, c("start", "end", "segVal") := NULL]
+
+    data.table::setkey(x_cp, "chromosome", "region_start", "region_end")
+    x_overlap <- data.table::foverlaps(x, x_cp,
+                                       by.x = c("chromosome", "start", "end"),
+                                       type = "any")
+    x %>%
+      dplyr::as_tibble() %>%
+      dplyr::full_join(
+        x_overlap %>%
+          dplyr::as_tibble() %>%
+          dplyr::group_by(.data$Index) %>%
+          dplyr::summarise(
+            value = dplyr::n() - 1L
+          ),
+        by = c("Index")
+      ) %>%
+      dplyr::select(c("sample", "value", "Index"))
+  }) %>%
+    data.table::as.data.table()
+
+  y[order(y$Index)]
+
+}
+
+getCNCP_Left <- function(abs_profiles) {
+  y = purrr::map_df(abs_profiles, function(x){
+    x %>%
+      dplyr::as_tibble() %>%
+      dplyr::group_by(.data$chromosome) %>%
+      dplyr::mutate(value = abs(c(0L, diff(.data$segVal)))) %>%
+      dplyr::ungroup() %>%
+      dplyr::select(c("sample", "value", "Index"))
+  }) %>%
+    data.table::as.data.table()
+
+  y[order(y$Index)]
+}
+
+getCNCP_Right <- function(abs_profiles) {
+  y = purrr::map_df(abs_profiles, function(x){
+    x %>%
+      dplyr::as_tibble() %>%
+      dplyr::group_by(.data$chromosome) %>%
+      dplyr::mutate(value = rev(abs(c(0L, diff(rev(.data$segVal)))))) %>%
+      dplyr::ungroup() %>%
+      dplyr::select(c("sample", "value", "Index"))
+  }) %>%
+    data.table::as.data.table()
+
+  y[order(y$Index)]
+}
+

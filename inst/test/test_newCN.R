@@ -17,6 +17,24 @@ cn_tally_T <- sig_tally(cn, method = "T")
 cn_tally_T$CN
 cn_tally_T$SS
 
+
+a = sigminer:::get_cnlist(cn, add_index = T)
+getBP10MB_v2(a)
+getCNCP_Left(a)
+getCNCP_Right(a)
+
+debug(getOscilation)
+getOscilation(a, use_index = T)
+
+test = dplyr::tibble(
+  chromosome = c("chr1", "chr1", "chr2", "chr2", "chr2"),
+  segVal = c(2, 1, 3, 1, 0)
+)
+
+test %>%
+dplyr::group_by(.data$chromosome) %>%
+  dplyr::mutate(value = abs(c(0L, diff(.data$segVal))))
+
 # a <- sigminer:::get_cnlist(cn)
 # b <- sigminer:::get_cnlist(segTabs)
 #

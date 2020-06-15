@@ -359,6 +359,9 @@ read_copynumber <- function(input,
   all_cols <- colnames(data_df)
   data.table::setcolorder(data_df, neworder = c(c("chromosome", "start", "end", "segVal", "sample"),
                                                 setdiff(all_cols, c("chromosome", "start", "end", "segVal", "sample"))))
+  if ("groups" %in% names(attributes(data_df))) {
+    attr(data_df, "groups") <- NULL
+  }
 
   send_success("Segmental table cleaned.")
 

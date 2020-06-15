@@ -51,8 +51,8 @@ getBPnum <- function(abs_profiles, chrlen) {
   return(res)
 }
 
-getOscilation <- function(abs_profiles) {
-  oscCounts <- purrr::map_df(abs_profiles, function(x) {
+getOscilation <- function(abs_profiles, use_index = FALSE) {
+  res <- purrr::map_df(abs_profiles, function(x) {
     x <- x %>%
       dplyr::as_tibble() %>%
       dplyr::group_by(.data$chromosome) %>%
@@ -60,34 +60,80 @@ getOscilation <- function(abs_profiles) {
       dplyr::mutate(value = purrr::map(
         data, function(df) {
           currseg <- df$segVal
+          len_seg <- length(currseg)
           oscCounts <- c()
-          if (length(currseg) > 3) {
+          if (len_seg >= 3) {
+            ## for seg value sequences 4 1 4 6 4
+            ## result for use_index=TRUE should be 1 0 1
+            ## result for use_index=FALSE should be 1 1
             prevval <- currseg[1]
-            count <- 0
-            for (j in 3:length(currseg))
-            {
+            count <- 0L
+            for (j in seq(3L, len_seg)) {
               if (currseg[j] == prevval & currseg[j] != currseg[j - 1]) {
-                count <- count + 1
+                count <- count + 1L
               } else {
-                oscCounts <- c(oscCounts, count)
-                count <- 0
+                count <- 0L
               }
+              ## All iterations are recorded
+              oscCounts <- c(oscCounts, count)
               prevval <- currseg[j - 1]
             }
-            return(oscCounts)
+            if (!use_index) {
+              ## Keep only the maximum values
+              index2keep <- which(oscCounts == 0L) - 1L
+              index2keep <- index2keep[index2keep > 0]
+              if (oscCounts[len_seg - 2L] != 0L) {
+                index2keep = c(index2keep, len_seg - 2L)
+              }
+              oscCounts <- oscCounts[index2keep]
+              return(oscCounts)
+            } else {
+              ## Return one value to one segment
+              if (all(oscCounts == 0L)) {
+                return(c(0L, 0L, oscCounts))
+              } else {
+                new_counter = vector("integer", length = len_seg)
+                for (i in seq(3L, len_seg)) {
+                  cc <- oscCounts[i - 2L]
+                  if (cc != 0L) {
+                    ## update values in affected segments
+                    new_counter[(i - (cc + 1L)):i] <- pmax(new_counter[(i - (cc + 1L)):i], cc)
+                  }
+                }
+                return(new_counter)
+              }
+            }
           } else {
-            return(0L)
+            if (!use_index) {
+              return(0L)
+            } else {
+              ## Retuen one value to one segment
+              return(rep(0L, len_seg))
+            }
           }
         }
       )) %>%
-      dplyr::ungroup() %>%
-      dplyr::select(c("value"))
-    data.table::data.table(
-      value = purrr::reduce(x$value, c)
-    )
-  }, .id = "ID")
+      dplyr::ungroup()
 
-  oscCounts
+    if (!use_index) {
+      x <- x %>%
+        dplyr::select(c("value"))
+      data.table::data.table(
+        value = purrr::reduce(x$value, c)
+      )
+    } else {
+      x %>% tidyr::unnest(c("data", "value")) %>%
+        dplyr::select(c("value", "Index")) %>%
+        data.table::as.data.table()
+    }
+
+  }, .id = ifelse(use_index, "sample", "ID"))
+
+  if (use_index) {
+    res[order(res$Index)]
+  } else {
+    res
+  }
 }
 
 getCentromereDistCounts <-

@@ -1,5 +1,6 @@
 # sigminer 1.0.7
 
+- Fixed bug in OsCN feature calculation.
 - Removed useless options in `read_maf()`.
 - Modify method 'LS' in `sig_fit()` to 'NNLS' and implement it with **pracma** package ([#216](https://github.com/ShixiangWang/sigminer/issues/216)).
 - Made `use_all` option in `read_copynumber()` working correctly.
