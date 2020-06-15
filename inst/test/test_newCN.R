@@ -22,8 +22,9 @@ a = sigminer:::get_cnlist(cn, add_index = T)
 getBP10MB_v2(a)
 getCNCP_Left(a)
 getCNCP_Right(a)
+getCNCP_Max(a)
 
-debug(getOscilation)
+# debug(getOscilation)
 getOscilation(a, use_index = T)
 
 test = dplyr::tibble(

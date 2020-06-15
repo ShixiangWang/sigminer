@@ -124,3 +124,18 @@ getCNCP_Right <- function(abs_profiles) {
   y[order(y$Index)]
 }
 
+getCNCP_Max <- function(abs_profiles){
+  df_left <- getCNCP_Left(abs_profiles) %>%
+    dplyr::as_tibble() %>%
+    dplyr::rename(left_value = .data$value)
+  df_right <- getCNCP_Right(abs_profiles) %>%
+    dplyr::as_tibble() %>%
+    dplyr::rename(right_value = .data$value)
+
+  y <- dplyr::full_join(df_left, df_right %>% dplyr::select(-"sample"), by = "Index") %>%
+    dplyr::mutate(value = pmax(.data$left_value, .data$right_value)) %>%
+    dplyr::select(c("sample", "value", "Index")) %>%
+    data.table::as.data.table()
+
+  y[order(y$Index)]
+}
