@@ -132,7 +132,7 @@ show_cn_features <- function(features,
     if (return_plotlist) {
       return(p_list)
     } else {
-      if (startsWith(method, "W") & length(p_list) != 8) {
+      if (startsWith(method, "W") & length(p_list) == 8) {
         top_2_row <- cowplot::plot_grid(plotlist = p_list[1:6], nrow = 2, align = align)
         bot_row <- cowplot::plot_grid(plotlist = p_list[-(1:6)], nrow = 1, align = align, rel_widths = c(1, 2))
         p <- cowplot::plot_grid(top_2_row, bot_row, nrow = 2, align = align, rel_heights = c(2, 1), ...)
