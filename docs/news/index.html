@@ -130,6 +130,13 @@
 <a href="#sigminer-1-0-7" class="anchor"></a>sigminer 1.0.7<small> Unreleased </small>
 </h1>
 <ul>
+<li>Removed useless options in <code><a href="../reference/read_maf.html">read_maf()</a></code>.</li>
+<li>Modify method ‘LS’ in <code><a href="../reference/sig_fit.html">sig_fit()</a></code> to ‘NNLS’ and implement it with <strong>pracma</strong> package (<a href="https://github.com/ShixiangWang/sigminer/issues/216"><a href='https://github.com/ShixiangWang/sigminer/issues/216'>#216</a></a>).</li>
+<li>Made <code>use_all</code> option in <code><a href="../reference/read_copynumber.html">read_copynumber()</a></code> working correctly.</li>
+<li>Fixed potential problem raised by unordered copy number segments (<a href="https://github.com/ShixiangWang/sigminer/issues/217"><a href='https://github.com/ShixiangWang/sigminer/issues/217'>#217</a></a>).</li>
+<li>Fixed a typo, correct <code>MRSE</code> to <code>RMSE</code>.</li>
+<li>Added feature in <code>show_sig_bootstrap_*()</code> for plotting aggregated values.</li>
+<li>Fixed bug when use <code><a href="../reference/get_groups.html">get_groups()</a></code> for clustering.</li>
 <li>Fixed bug about using reference components from NatGen 2018 paper.</li>
 <li>Added option <code>highlight_size</code> for <code>show_sig_bootstrap_*()</code>.</li>
 <li>Fixed bug about signature profile plotting for method ‘M’.</li>
