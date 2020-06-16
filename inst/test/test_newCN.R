@@ -17,6 +17,8 @@ cn_tally_T <- sig_tally(cn, method = "T")
 cn_tally_T$CN
 cn_tally_T$SS
 
+show_cn_features(cn_tally_T, method = "T", nrow = 3)
+
 
 a = sigminer:::get_cnlist(cn, add_index = T)
 getBP10MB_v2(a)

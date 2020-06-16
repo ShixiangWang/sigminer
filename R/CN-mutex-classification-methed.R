@@ -19,7 +19,7 @@ get_features_mutex <- function(CN_data,
   on.exit(future::plan(oplan), add = TRUE)
 
   #features <- unique(feature_setting$feature)
-  features <- c("BP10MB", "CN", "SS", "CNCP_L", "CNCP_R", "CNCP_M", "OsCN") # more?
+  features <- c("BP10MB", "CN", "SS", "CNCP_L", "CNCP_R", "CNCP_M", "OsCN", "StepRising", "StepFalling") # more?
 
   send_info("NOTE: this method derives features for each segment.")
 
@@ -48,6 +48,12 @@ get_features_mutex <- function(CN_data,
     } else if (i == "CNCP_M") {
       send_info("Getting maximum change-point amplitude at both side of each segment...")
       getCNCP_Max(CN_data)
+    } else if (i == "StepRising") {
+      send_info("Getting rising step size for each segment...")
+      getSteps(CN_data, rising = TRUE)
+    } else if (i == "StepFalling") {
+      send_info("Getting falling step size for each segment...")
+      getSteps(CN_data, rising = FALSE)
     }
   }
 
@@ -154,4 +160,51 @@ getCNCP_Max <- function(abs_profiles){
     data.table::as.data.table()
 
   y[order(y$Index)]
+}
+
+## Examples:
+## Rising 2-3-4-5 (size:4)
+## Falling 5-4-3-2 (size:4)
+## 2-3 (rising size:2)
+## 2 (size:0)
+getSteps <- function(abs_profiles, rising = TRUE) {
+  ## rising: up
+  ## falling: down
+  res <- purrr::map_df(abs_profiles, function(x) {
+    x <- x %>%
+      dplyr::as_tibble() %>%
+      dplyr::group_by(.data$chromosome) %>%
+      tidyr::nest() %>%
+      dplyr::mutate(value = purrr::map(
+        data, function(df) {
+          currseg <- df$segVal
+          len_seg <- length(currseg)
+          if (len_seg >= 2) {
+            if (rising) {
+              target <- which(diff(currseg) > 0) + 1L
+            } else {
+              target <- which(diff(currseg) < 0) + 1L
+            }
+            steps <- vector("integer", length = len_seg)
+            modify_list <- split(
+              target,
+              findInterval(target, target[which(diff(target) > 1)] + 1L)  # same if +2L
+            )
+            for (i in modify_list) {
+              steps[c(i[1] - 1L, i)] <- length(i) + 1L
+            }
+            return(steps)
+          } else {
+            return(0L)
+          }
+        }
+      )) %>%
+      dplyr::ungroup()
+
+    x %>% tidyr::unnest(c("data", "value")) %>%
+      dplyr::select(c("value", "Index")) %>%
+      data.table::as.data.table()
+  }, .id = "sample")
+
+  res[order(res$Index)]
 }
