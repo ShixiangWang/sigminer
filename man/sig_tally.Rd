@@ -47,7 +47,7 @@ sig_tally(object, ...)
 corresponding class (e.g. \code{CopyNumber}).}
 
 \item{method}{method for feature classfication, can be one of "Macintyre" ("M"),
-"Wang" ("W") and "Wang-Mutex" ("WM").}
+"Wang" ("W") and "Tao & Wang" ("T").}
 
 \item{ignore_chrs}{Chromsomes to ignore from analysis. e.g. chrX and chrY.}
 

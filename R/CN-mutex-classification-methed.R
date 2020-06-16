@@ -19,19 +19,35 @@ get_features_mutex <- function(CN_data,
   on.exit(future::plan(oplan), add = TRUE)
 
   #features <- unique(feature_setting$feature)
-  features <- c("CN", "SS")
-  # c("BP10MB", "CN", "SS", "CNCP-L", "CNCP-R", "CNCP-M", "OsCN") # more?
+  features <- c("BP10MB", "CN", "SS", "CNCP_L", "CNCP_R", "CNCP_M", "OsCN") # more?
+
+  send_info("NOTE: this method derives features for each segment.")
 
   .get_feature <- function(i) {
     if (i == "SS") {
-      send_info("Getting floor(log10 based segment size)...")
+      send_info("Getting floor(log10 based segment size) of eash segment...")
       zz <- getSegsize_v2(CN_data)
       zz$value <- floor(log10(zz$value))
       ## TODO: set <= 1 to 2
       zz
     } else if (i == "CN") {
-      send_info("Getting copy number...")
+      send_info("Getting absolute copy number value of each segment...")
       getCN_v2(CN_data)
+    } else if (i == "BP10MB") {
+      send_info("Getting breakpoint number within upstream/downstream 5Mb-flank region of each segment...")
+      getBP10MB_v2(CN_data)
+    } else if (i == "OsCN") {
+      send_info("Getting maximum length of chains of oscillating copy number for each segment...")
+      getOscilation(CN_data, use_index = TRUE)
+    } else if (i == "CNCP_L") {
+      send_info("Getting change-point amplitude at left side of each segment...")
+      getCNCP_Left(CN_data)
+    } else if (i == "CNCP_R") {
+      send_info("Getting change-point amplitude at right side of each segment...")
+      getCNCP_Right(CN_data)
+    } else if (i == "CNCP_M") {
+      send_info("Getting maximum change-point amplitude at both side of each segment...")
+      getCNCP_Max(CN_data)
     }
   }
 
@@ -50,7 +66,7 @@ getSegsize_v2 <- function(abs_profiles) {
     x[, c("sample", "segsize", "Index"), with = FALSE]
   })
   colnames(segsize) <- c("sample", "value", "Index")
-  segsize
+  segsize[order(segsize$Index)]
 }
 
 getCN_v2 <- function(abs_profiles) {
@@ -60,7 +76,7 @@ getCN_v2 <- function(abs_profiles) {
     x[, c("sample", "segVal", "Index"), with = FALSE]
   })
   colnames(cn) <- c("sample", "value", "Index")
-  cn
+  cn[order(cn$Index)]
 }
 
 
