@@ -11,7 +11,7 @@
 #' @param title the title.
 #' @param xlab label for x axis.
 #' @param ylab label for y axis.
-#' @param custom_theme theme for plotting, default is [cowplot::theme_minimal_hgrid()].
+#' @param custom_theme theme for plotting, default is `cowplot::theme_minimal_hgrid()`.
 #'
 #' @return a `ggplot` object
 #' @export

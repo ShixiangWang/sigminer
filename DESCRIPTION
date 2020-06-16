@@ -55,7 +55,7 @@ Imports:
     methods,
     NMF,
     purrr,
-    rlang,
+    rlang (>= 0.1.2),
     stats,
     tidyr
 Suggests:

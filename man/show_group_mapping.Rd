@@ -33,7 +33,7 @@ show_group_mapping(
 
 \item{ylab}{label for y axis.}
 
-\item{custom_theme}{theme for plotting, default is \code{\link[cowplot:theme_minimal_hgrid]{cowplot::theme_minimal_hgrid()}}.}
+\item{custom_theme}{theme for plotting, default is \code{cowplot::theme_minimal_hgrid()}.}
 }
 \value{
 a \code{ggplot} object
