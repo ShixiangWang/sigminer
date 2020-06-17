@@ -6,9 +6,9 @@
 ## similar to previous work but here we focus on each **segment**.
 ## Secondly, we classified all segments into mutually exclusive types based on features.
 get_features_mutex <- function(CN_data,
-                              cores = 1,
-                              genome_build = c("hg19", "hg38"),
-                              feature_setting = sigminer::CN.features) {
+                               cores = 1,
+                               genome_build = c("hg19", "hg38"),
+                               feature_setting = sigminer::CN.features) {
   genome_build <- match.arg(genome_build)
   # get chromosome lengths and centromere locations
   chrlen <- get_genome_annotation(data_type = "chr_size", genome_build = genome_build)
@@ -18,7 +18,7 @@ get_features_mutex <- function(CN_data,
   future::plan("multiprocess", workers = cores)
   on.exit(future::plan(oplan), add = TRUE)
 
-  #features <- unique(feature_setting$feature)
+  # features <- unique(feature_setting$feature)
   features <- c("CN", "SS")
   # c("BP10MB", "CN", "SS", "CNCP-L", "CNCP-R", "CNCP-M", "OsCN") # more?
 
@@ -36,7 +36,7 @@ get_features_mutex <- function(CN_data,
   }
 
   res <- furrr::future_map(features, .get_feature,
-                           .progress = TRUE
+    .progress = TRUE
   )
   res <- res %>% setNames(features)
   res

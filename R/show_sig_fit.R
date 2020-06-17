@@ -20,7 +20,6 @@ show_sig_fit <- function(fit_result, samples = NULL, signatures = NULL,
                          width = 0.3, outlier.shape = NA,
                          add = "jitter", add.params = list(alpha = 0.3),
                          ...) {
-
   fun_setting <- plot_fun <- match.arg(plot_fun)
   plot_fun <- switch(
     plot_fun,
@@ -71,18 +70,18 @@ show_sig_fit <- function(fit_result, samples = NULL, signatures = NULL,
   ## Plotting
   if (isFALSE(fun_setting == "scatter")) {
     plot_fun(dat,
-             x = "sig", y = "exposure", color = "sig", outlier.shape = outlier.shape,
-             palette = palette, width = width, add = add, add.params = add.params,
-             title = title, xlab = xlab, ylab = ylab, legend = legend, ...
+      x = "sig", y = "exposure", color = "sig", outlier.shape = outlier.shape,
+      palette = palette, width = width, add = add, add.params = add.params,
+      title = title, xlab = xlab, ylab = ylab, legend = legend, ...
     )
   } else {
     if (legend == "none") {
       send_warning("When plot_fun='scatter', setting legend='top' is recommended.")
     }
     plot_fun(dat,
-             x = "sig", y = "exposure", color = "sample", shape = "sample",
-             palette = palette,
-             title = title, xlab = xlab, ylab = ylab, legend = legend, ...
+      x = "sig", y = "exposure", color = "sample", shape = "sample",
+      palette = palette,
+      title = title, xlab = xlab, ylab = ylab, legend = legend, ...
     )
   }
 }

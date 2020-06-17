@@ -357,8 +357,10 @@ read_copynumber <- function(input,
   # order by segment start position by each chromosome in each sample
   data_df <- data_df[, .SD[order(.SD$start, decreasing = FALSE)], by = c("sample", "chromosome")]
   all_cols <- colnames(data_df)
-  data.table::setcolorder(data_df, neworder = c(c("chromosome", "start", "end", "segVal", "sample"),
-                                                setdiff(all_cols, c("chromosome", "start", "end", "segVal", "sample"))))
+  data.table::setcolorder(data_df, neworder = c(
+    c("chromosome", "start", "end", "segVal", "sample"),
+    setdiff(all_cols, c("chromosome", "start", "end", "segVal", "sample"))
+  ))
 
   send_success("Segmental table cleaned.")
 
@@ -368,7 +370,6 @@ read_copynumber <- function(input,
     seg_cols = new_cols[1:4],
     samp_col = new_cols[5]
   )
-  message()
   send_success("Annotation done.")
 
   send_info("Summarizing per sample.")
@@ -403,6 +404,12 @@ utils::globalVariables(
     ".",
     "N",
     ".N",
-    ".SD"
+    ".SD",
+    "flag",
+    "p_start",
+    "p_end",
+    "q_start",
+    "q_end",
+    "total_size"
   )
 )

@@ -365,73 +365,171 @@ get_LengthFraction <- function(CN_data,
 
   segTab <- data.table::merge.data.table(segTab, arm_data, by.x = "chromosome", by.y = "chrom", all.x = TRUE)
 
-  .annot_fun <- function(chrom, start, end, p_start, p_end, p_length, q_start, q_end, q_length, total_size) {
-    if (end <= p_end & start >= p_start) {
-      location <- paste0(sub("chr", "", chrom), "p")
-      annotation <- "short arm"
-      fraction <- (end - start + 1) / (p_end - p_start + 1)
-    } else if (end <= q_end &
-      start >= q_start) {
-      location <- paste0(sub("chr", "", chrom), "q")
-      annotation <- "long arm"
-      fraction <- (end - start + 1) / (q_end - q_start + 1)
-    } else if (start >= p_start &
-      start <= p_end &
-      end >= q_start & end <= q_end) {
-      location <- paste0(sub("chr", "", chrom), "pq") # across p and q arm
-      annotation <- "across short and long arm"
-      fraction <- 2 * ((end - start + 1) / total_size)
-    } else if (start < p_end & end < q_start) {
-      location <- paste0(sub("chr", "", chrom), "p")
-      annotation <- "short arm intersect with centromere region"
-      # only calculate region does not intersect
-      fraction <- (end - start + 1 - (end - p_end)) / (p_end - p_start + 1)
-    } else if (start > p_end &
-      start < q_start & end > q_start) {
-      location <- paste0(sub("chr", "", chrom), "q")
-      annotation <- "long arm intersect with centromere region"
-      # only calculate region does not intersect
-      fraction <- (end - start + 1 - (start - q_start)) / (q_end - q_start + 1)
-    } else {
-      location <- paste0(sub("chr", "", chrom), "pq") # suppose as pq
-      annotation <- "segment locate in centromere region"
-      fraction <- 2 * ((end - start + 1) / total_size)
-    }
-
-    dplyr::tibble(location = location, annotation = annotation, fraction = fraction)
-  }
-
-  annot_fun <- function(chrom, start, end, p_start, p_end, p_length, q_start,
-                        q_end, q_length, total_size, .pb = NULL) {
-    if (.pb$i < .pb$n) .pb$tick()$print()
-    .annot_fun(
-      chrom, start, end, p_start, p_end, p_length, q_start,
-      q_end, q_length, total_size
+  segTab[, flag := data.table::fifelse(
+    end <= p_end & start >= p_start,
+    1L,
+    data.table::fifelse(
+      end <= q_end & start >= q_start,
+      2L,
+      data.table::fifelse(
+        start >= p_start & start <= p_end & end >= q_start & end <= q_end,
+        3L,
+        data.table::fifelse(
+          start < p_end & end < q_start,
+          4L,
+          data.table::fifelse(
+            start > p_end & start < q_start & end > q_start,
+            5L,
+            6L
+          )
+        )
+      )
     )
-  }
+  )]
 
-  pb <- progress_estimated(nrow(segTab), 0)
+  segTab[, location := data.table::fifelse(
+    flag == 1L,
+    paste0(sub("chr", "", chromosome), "p"),
+    data.table::fifelse(
+      flag == 2L,
+      paste0(sub("chr", "", chromosome), "q"),
+      data.table::fifelse(
+        flag == 3L,
+        paste0(sub("chr", "", chromosome), "pq"),
+        data.table::fifelse(
+          flag == 4L,
+          paste0(sub("chr", "", chromosome), "p"),
+          data.table::fifelse(
+            flag == 5L,
+            paste0(sub("chr", "", chromosome), "q"),
+            paste0(sub("chr", "", chromosome), "pq")
+          )
+        )
+      )
+    )
+  )]
 
-  annot <- purrr::pmap_df(
-    list(
-      chrom = segTab$chromosome,
-      start = segTab$start,
-      end = segTab$end,
-      p_start = segTab$p_start,
-      p_end = segTab$p_end,
-      p_length = segTab$p_length,
-      q_start = segTab$q_start,
-      q_end = segTab$q_end,
-      q_length = segTab$q_length,
-      total_size = segTab$total_size
-    ), annot_fun,
-    .pb = pb
-  )
+  segTab[, annotation := data.table::fifelse(
+    flag == 1L,
+    "short arm",
+    data.table::fifelse(
+      flag == 2L,
+      "long arm",
+      data.table::fifelse(
+        flag == 3L,
+        "across short and long arm",
+        data.table::fifelse(
+          flag == 4L,
+          "short arm intersect with centromere region",
+          data.table::fifelse(
+            flag == 5L,
+            "long arm intersect with centromere region",
+            "segment locate in centromere region"
+          )
+        )
+      )
+    )
+  )]
 
-  cbind(
-    data.table::as.data.table(segTab)[, colnames(arm_data)[-1] := NULL],
-    data.table::as.data.table(annot)
-  )
+  segTab[, fraction := data.table::fifelse(
+    flag == 1L,
+    (end - start + 1) / (p_end - p_start + 1),
+    data.table::fifelse(
+      flag == 2L,
+      (end - start + 1) / (q_end - q_start + 1),
+      data.table::fifelse(
+        flag == 3L,
+        2 * ((end - start + 1) / total_size),
+        data.table::fifelse(
+          flag == 4L,
+          (end - start + 1 - (end - p_end)) / (p_end - p_start + 1),
+          data.table::fifelse(
+            flag == 5L,
+            (end - start + 1 - (start - q_start)) / (q_end - q_start + 1),
+            2 * ((end - start + 1) / total_size)
+          )
+        )
+      )
+    )
+  )]
+
+  segTab[, c(colnames(arm_data)[-1], "flag") := NULL]
+  segTab
+
+
+  # .annot_fun <- function(chrom, start, end, p_start, p_end, p_length, q_start, q_end, q_length, total_size) {
+  #   if (end <= p_end & start >= p_start) {
+  #     ## 1L
+  #     location <- paste0(sub("chr", "", chrom), "p")
+  #     annotation <- "short arm"
+  #     fraction <- (end - start + 1) / (p_end - p_start + 1)
+  #   } else if (end <= q_end &
+  #     start >= q_start) {
+  #     ## 2L
+  #     location <- paste0(sub("chr", "", chrom), "q")
+  #     annotation <- "long arm"
+  #     fraction <- (end - start + 1) / (q_end - q_start + 1)
+  #   } else if (start >= p_start &
+  #     start <= p_end &
+  #     end >= q_start & end <= q_end) {
+  #     ## 3L
+  #     location <- paste0(sub("chr", "", chrom), "pq") # across p and q arm
+  #     annotation <- "across short and long arm"
+  #     fraction <- 2 * ((end - start + 1) / total_size)
+  #   } else if (start < p_end & end < q_start) {
+  #     ## 4L
+  #     location <- paste0(sub("chr", "", chrom), "p")
+  #     annotation <- "short arm intersect with centromere region"
+  #     # only calculate region does not intersect
+  #     fraction <- (end - start + 1 - (end - p_end)) / (p_end - p_start + 1)
+  #   } else if (start > p_end &
+  #     start < q_start & end > q_start) {
+  #     ## 5L
+  #     location <- paste0(sub("chr", "", chrom), "q")
+  #     annotation <- "long arm intersect with centromere region"
+  #     # only calculate region does not intersect
+  #     fraction <- (end - start + 1 - (start - q_start)) / (q_end - q_start + 1)
+  #   } else {
+  #     ## 6L
+  #     location <- paste0(sub("chr", "", chrom), "pq") # suppose as pq
+  #     annotation <- "segment locate in centromere region"
+  #     fraction <- 2 * ((end - start + 1) / total_size)
+  #   }
+  #
+  #   dplyr::tibble(location = location, annotation = annotation, fraction = fraction)
+  # }
+  #
+  # annot_fun <- function(chrom, start, end, p_start, p_end, p_length, q_start,
+  #                       q_end, q_length, total_size, .pb = NULL) {
+  #   if (.pb$i < .pb$n) .pb$tick()$print()
+  #   .annot_fun(
+  #     chrom, start, end, p_start, p_end, p_length, q_start,
+  #     q_end, q_length, total_size
+  #   )
+  # }
+  #
+  # pb <- progress_estimated(nrow(segTab), 0)
+  #
+  # annot <- purrr::pmap_df(
+  #   list(
+  #     chrom = segTab$chromosome,
+  #     start = segTab$start,
+  #     end = segTab$end,
+  #     p_start = segTab$p_start,
+  #     p_end = segTab$p_end,
+  #     p_length = segTab$p_length,
+  #     q_start = segTab$q_start,
+  #     q_end = segTab$q_end,
+  #     q_length = segTab$q_length,
+  #     total_size = segTab$total_size
+  #   ), annot_fun,
+  #   .pb = pb
+  # )
+  #
+  # cbind(
+  #   data.table::as.data.table(segTab)[, colnames(arm_data)[-1] := NULL],
+  #   data.table::as.data.table(annot)
+  # )
 }
 
 

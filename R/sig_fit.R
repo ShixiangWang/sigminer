@@ -422,7 +422,6 @@ decompose_QP <- function(x, y, P, type = "absolute", ...) {
 
 
 decompose_SA <- function(x, y, P, type = "absolute", ...) {
-
   if (sum(x) != 0) {
     control <- list(...)
 

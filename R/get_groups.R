@@ -56,9 +56,11 @@ get_groups <- function(Signature,
                        method = c("consensus", "k-means", "exposure", "samples"),
                        n_cluster = NULL,
                        match_consensus = TRUE) {
-  fit_flag = data.table::is.data.table(Signature)
-  stopifnot(inherits(Signature, "Signature") | fit_flag,
-            is.null(n_cluster) | n_cluster > 1)
+  fit_flag <- data.table::is.data.table(Signature)
+  stopifnot(
+    inherits(Signature, "Signature") | fit_flag,
+    is.null(n_cluster) | n_cluster > 1
+  )
   method <- match.arg(method)
 
   timer <- Sys.time()
@@ -73,11 +75,10 @@ get_groups <- function(Signature,
     }
     send_success("Method checked.")
 
-    if (purrr::map_lgl(Signature, ~ifelse(is.numeric(.), any(. > 1), FALSE)) %>% any()) {
+    if (purrr::map_lgl(Signature, ~ ifelse(is.numeric(.), any(. > 1), FALSE)) %>% any()) {
       send_stop("When input is {.code data.table} (from sig_fit), a relative exposure result is valid.")
     }
     send_success("Exposure should be relative checked.")
-
   } else {
     send_success("'Signature' object detected.")
   }
@@ -141,7 +142,7 @@ get_groups <- function(Signature,
       expo_df <- get_sig_exposure(Signature, type = "relative")
     }
 
-    sig_names = colnames(expo_df)[-1]
+    sig_names <- colnames(expo_df)[-1]
     common_prefix <- Biobase::lcPrefixC(sig_names)
     mps <- seq_along(sig_names)
     names(mps) <- sig_names
@@ -216,8 +217,10 @@ get_groups <- function(Signature,
     attr(data, "map_table") <- ztable
   }
 
-  send_warning("The 'enrich_sig' column is set to dominant signature in one group, ",
-               "please check and make it consistent with biological meaning (correct it by hand if necessary).")
+  send_warning(
+    "The 'enrich_sig' column is set to dominant signature in one group, ",
+    "please check and make it consistent with biological meaning (correct it by hand if necessary)."
+  )
   return(data)
 }
 
