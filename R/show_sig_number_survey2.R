@@ -6,6 +6,12 @@
 #' @param x a `data.frame` or `NMF.rank` object obtained from [sig_estimate()].
 #' @param y for random simulation,
 #' a `data.frame` or `NMF.rank` object obtained from [sig_estimate()].
+#' @param what a character vector whose elements partially match one of the following item,
+#' which correspond to the measures computed by `summary()` on each – multi-run – NMF result:
+#' 'all', 'cophenetic', 'rss', 'residuals', 'dispersion', 'evar', 'silhouette'
+#' (and more specific `*.coef`, `*.basis`, `*.consensus`), 'sparseness'
+#' (and more specific `*.coef`, `*.basis`).
+#' It specifies which measure must be plotted (what='all' plots all the measures).
 #' @inheritParams NMF::nmfEstimateRank
 #'
 #' @return a `ggplot` object
