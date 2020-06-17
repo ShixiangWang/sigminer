@@ -21,7 +21,7 @@ join_segments <- function(df) {
   if (length(to_join_index) > 0) {
     not_join_index <- setdiff(1:nrow(df), to_join_index)
 
-    cutpoint <- equal_index[which(diff(equal_index) > 1)] + 2
+    cutpoint <- equal_index[which(diff(equal_index) > 1)] + 2L
     join_list <- split(
       to_join_index,
       findInterval(to_join_index, cutpoint)
