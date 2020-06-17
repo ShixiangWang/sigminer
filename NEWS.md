@@ -1,3 +1,7 @@
+# sigminer 1.0.8
+
+- Speed up the annotation process in `read_copynumber()`.
+
 # sigminer 1.0.7
 
 - Removed useless options in `read_maf()`.
