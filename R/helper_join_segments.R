@@ -40,9 +40,12 @@ join_segments <- function(df) {
       } else {
         dplyr::bind_cols(
           out,
-          dplyr::summarise_at(res, dplyr::vars(-c("start", "end", "segVal")),
-                              ~ifelse(is.numeric(.), mean(., na.rm = TRUE),
-                                      paste0(unique(na.omit(.)), collapse = ",")))
+          dplyr::summarise_at(
+            res, dplyr::vars(-c("start", "end", "segVal")),
+            ~ ifelse(is.numeric(.), mean(., na.rm = TRUE),
+              paste0(unique(na.omit(.)), collapse = ",")
+            )
+          )
         )
       }
     }, df = df)

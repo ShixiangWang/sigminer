@@ -33,11 +33,11 @@ show_sig_consensusmap(
 
 \item{lab_col}{labels for the columns.}
 
-\item{...}{other parameters passing to \link[NMF:consensusmap]{NMF::consensusmap}}
+\item{...}{other parameters passing to \code{NMF::consensusmap()}.}
 }
 \value{
 nothing
 }
 \description{
-This function is a wrapper of \link[NMF:consensusmap]{NMF::consensusmap}.
+This function is a wrapper of \code{NMF::consensusmap()}.
 }

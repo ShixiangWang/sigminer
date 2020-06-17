@@ -4,7 +4,7 @@
 #' This is used along with [sig_extract].
 #' Users should `library(NMF)` firstly. If NMF objects are returned,
 #' the result can be further visualized by NMF plot methods like
-#' [NMF::consensusmap()] and [NMF::basismap()].
+#' `NMF::consensusmap()` and `NMF::basismap()`.
 #'
 #' The most common approach is to choose the smallest rank for which cophenetic correlation coefficient
 #' starts decreasing (Used by this function). Another approach is to choose the rank for which the plot

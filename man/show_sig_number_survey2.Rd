@@ -22,16 +22,12 @@ show_sig_number_survey2(
 \item{y}{for random simulation,
 a \code{data.frame} or \code{NMF.rank} object obtained from \code{\link[=sig_estimate]{sig_estimate()}}.}
 
-\item{what}{a \code{character} vector whose elements
-  partially match one of the following item, which
-  correspond to the measures computed by
-  \code{\link[NMF]{summary}} on each -- multi-run -- NMF result:
-  \sQuote{all}, \sQuote{cophenetic}, \sQuote{rss},
-  \sQuote{residuals}, \sQuote{dispersion}, \sQuote{evar},
-  \sQuote{silhouette} (and more specific *.coef, *.basis,
-  *.consensus), \sQuote{sparseness} (and more specific
-  *.coef, *.basis). It specifies which measure must be
-  plotted (\code{what='all'} plots all the measures).}
+\item{what}{a character vector whose elements partially match one of the following item,
+which correspond to the measures computed by \code{summary()} on each – multi-run – NMF result:
+'all', 'cophenetic', 'rss', 'residuals', 'dispersion', 'evar', 'silhouette'
+(and more specific \verb{*.coef}, \verb{*.basis}, \verb{*.consensus}), 'sparseness'
+(and more specific \verb{*.coef}, \verb{*.basis}).
+It specifies which measure must be plotted (what='all' plots all the measures).}
 
 \item{na.rm}{single logical that specifies if the rank
   for which the measures are NA values should be removed

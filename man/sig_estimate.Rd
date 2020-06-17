@@ -65,7 +65,7 @@ Use \strong{NMF} package to evaluate the optimal number of signatures.
 This is used along with \link{sig_extract}.
 Users should \code{library(NMF)} firstly. If NMF objects are returned,
 the result can be further visualized by NMF plot methods like
-\code{\link[NMF:consensusmap]{NMF::consensusmap()}} and \code{\link[NMF:basismap]{NMF::basismap()}}.
+\code{NMF::consensusmap()} and \code{NMF::basismap()}.
 }
 \details{
 The most common approach is to choose the smallest rank for which cophenetic correlation coefficient

@@ -1,12 +1,12 @@
 #' Show Signature Consensus Map
 #'
-#' This function is a wrapper of [NMF::consensusmap].
+#' This function is a wrapper of `NMF::consensusmap()`.
 #'
 #' @inheritParams NMF::consensusmap
 #' @param sig a `Signature` object obtained from [sig_extract].
 #' @param lab_row labels for the rows.
 #' @param lab_col labels for the columns.
-#' @param ... other parameters passing to [NMF::consensusmap]
+#' @param ... other parameters passing to `NMF::consensusmap()`.
 #'
 #' @return nothing
 #' @export

@@ -185,3 +185,30 @@ bt_res <- sig_fit_bootstrap_batch(mt_tally$nmf_matrix %>% t(),
                                   sig_index = 1:30,
                                   sig_db = "legacy",
                                   methods = c("QP"), n = 2)
+
+load(system.file("extdata", "toy_segTab.RData",
+                 package = "sigminer", mustWork = TRUE
+))
+debug(get_LengthFraction)
+cn <- read_copynumber(segTabs,
+                      seg_cols = c("chromosome", "start", "end", "segVal"),
+                      genome_build = "hg19", complement = FALSE
+)
+
+
+cn2 <- read_copynumber(segTabs,
+                      seg_cols = c("chromosome", "start", "end", "segVal"),
+                      genome_build = "hg19", complement = FALSE
+)
+
+
+identical(cn@annotation, cn2@annotation)
+
+
+load("~/biodata/DoAbsolute/CN_list.RData")
+cn <- read_copynumber(input = CN_list$ACC@data, genome_build = "hg38",
+                      seg_cols = c("chromosome", "start", "end", "segVal"))
+cn2 <- read_copynumber(input = CN_list$ACC@data, genome_build = "hg38",
+                      seg_cols = c("chromosome", "start", "end", "segVal"))
+
+identical(cn@annotation, cn2@annotation)
