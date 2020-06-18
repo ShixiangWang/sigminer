@@ -9,17 +9,17 @@ get_features_mutex <- function(CN_data,
                                cores = 1,
                                genome_build = c("hg19", "hg38"),
                                feature_setting = sigminer::CN.features) {
-  genome_build <- match.arg(genome_build)
-  # get chromosome lengths and centromere locations
-  chrlen <- get_genome_annotation(data_type = "chr_size", genome_build = genome_build)
-  centromeres <- get_genome_annotation(data_type = "centro_loc", genome_build = genome_build)
+  # genome_build <- match.arg(genome_build)
+  # # get chromosome lengths and centromere locations
+  # chrlen <- get_genome_annotation(data_type = "chr_size", genome_build = genome_build)
+  # centromeres <- get_genome_annotation(data_type = "centro_loc", genome_build = genome_build)
 
   oplan <- future::plan()
   future::plan("multiprocess", workers = cores)
   on.exit(future::plan(oplan), add = TRUE)
 
   #features <- unique(feature_setting$feature)
-  features <- c("BP10MB", "CN", "SS", "CNCP_L", "CNCP_R", "CNCP_M", "OsCN", "StepRising", "StepFalling") # more?
+  features <- c("BP10MB", "CN", "SS", "CNCP_M", "OsCN", "StepRising", "StepFalling") # more?
 
   send_info("NOTE: this method derives features for each segment.")
 
@@ -39,12 +39,6 @@ get_features_mutex <- function(CN_data,
     } else if (i == "OsCN") {
       send_info("Getting maximum length of chains of oscillating copy number for each segment...")
       getOscilation(CN_data, use_index = TRUE)
-    } else if (i == "CNCP_L") {
-      send_info("Getting change-point amplitude at left side of each segment...")
-      getCNCP_Left(CN_data)
-    } else if (i == "CNCP_R") {
-      send_info("Getting change-point amplitude at right side of each segment...")
-      getCNCP_Right(CN_data)
     } else if (i == "CNCP_M") {
       send_info("Getting maximum change-point amplitude at both side of each segment...")
       getCNCP_Max(CN_data)

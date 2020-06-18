@@ -49,3 +49,29 @@ dplyr::group_by(.data$chromosome) %>%
 # head(b$`TCGA-99-7458-01A-11D-2035-01`)
 #
 # b <- sigminer:::get_cnlist(segTabs[, -2])
+
+
+load("~/biodata/DoAbsolute/CN_list.RData")
+cn <- read_copynumber(input = CN_list$ACC@data, genome_build = "hg38",
+                      seg_cols = c("chromosome", "start", "end", "segVal"))
+
+tally_T <- sig_tally(cn, method = "T")
+show_cn_features(tally_T, method = "T", nrow = 3)
+
+cn_list = lapply(CN_list, function(x) {
+  read_copynumber(input = x@data, genome_build = "hg38",
+                  seg_cols = c("chromosome", "start", "end", "segVal"))
+})
+
+tally_list <- lapply(cn_list, function(x) {
+  sig_tally(x, method = "T")
+})
+
+f_list <- lapply(tally_list, function(x) {
+  show_cn_features(x, method = "T", nrow = 3)
+})
+
+f_list$ACC
+f_list$BLCA
+f_list$LAML
+f_list$LGG
