@@ -291,31 +291,15 @@ sig_tally.CopyNumber <- function(object,
     ## TODO: should also set a feature_setting dataset??
     ## Is genome_build necessary here??
     send_info("Step: getting copy number features.")
-    cn_features <- get_features_mutex(
-      CN_data = cn_list, cores = cores,
-      genome_build = object@genome_build,
-      feature_setting = feature_setting
-    )
+    cn_features <- get_features_mutex(CN_data = cn_list, cores = cores)
     send_success("Gotten.")
 
-    ## Curretly return features and explore how to combine them
-    return(cn_features)
-    # Make order as unique(feature_setting)$feature
-    # cn_features <- cn_features[unique(feature_setting$feature)]
+    send_info("Step: generating copy number components based on combination.")
+    cn_components <- get_components_mutex(cn_features)
+    send_success("Combined.")
 
-    # send_info("Step: generating copy number components based on combination.")
-    # # Check feature setting
-    # if (!inherits(feature_setting, "sigminer.features")) {
-    #   feature_setting <- get_feature_components(feature_setting)
-    # }
-    # send_success("{.code feature_setting} checked.")
+    return(list(cn_features, cn_components))
     #
-    # send_info("Step: counting components.")
-    # cn_components <- purrr::map2(cn_features, names(cn_features),
-    #                              count_components_wrapper,
-    #                              feature_setting = feature_setting
-    # )
-    # send_success("Counted.")
     #
     # ## Remove BoChr value is 0 in features
     # if ("BoChr" %in% names(cn_features)) {

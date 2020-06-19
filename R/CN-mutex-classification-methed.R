@@ -6,13 +6,7 @@
 ## similar to previous work but here we focus on each **segment**.
 ## Secondly, we classified all segments into mutually exclusive types based on features.
 get_features_mutex <- function(CN_data,
-                               cores = 1,
-                               genome_build = c("hg19", "hg38"),
-                               feature_setting = sigminer::CN.features) {
-  # genome_build <- match.arg(genome_build)
-  # # get chromosome lengths and centromere locations
-  # chrlen <- get_genome_annotation(data_type = "chr_size", genome_build = genome_build)
-  # centromeres <- get_genome_annotation(data_type = "centro_loc", genome_build = genome_build)
+                               cores = 1) {
 
   oplan <- future::plan()
   future::plan("multiprocess", workers = cores)
@@ -201,4 +195,64 @@ getSteps <- function(abs_profiles, rising = TRUE) {
   }, .id = "sample")
 
   res[order(res$Index)]
+}
+
+
+
+# Get components ----------------------------------------------------------
+
+## Use two classification systems:
+## Standard system (S): keep simpler
+## Complex system (S): keep comprehensive
+get_components_mutex <- function(CN_features) {
+  feature_names <- names(CN_features)
+
+  purrr::map2(CN_features, feature_names, call_component)
+}
+
+call_component <- function(f_dt, f_name) {
+  f_dt <- data.table::copy(f_dt)
+
+  if (f_name == "BP10MB") {
+    f_dt$C_BP10MB = cut(f_dt$value,
+                        breaks = c(-Inf, 2L, 4L, 6L, 8L, 10L, Inf),
+                        labels = c("2-", "4-", "6-", "8-", "10-", "11+"))
+  } else if (f_name == "CN") {
+    f_dt$S_CN = cut(f_dt$value,
+                        breaks = c(-Inf, 0:8, Inf),
+                        labels = c(as.character(0:8), "9+"))
+    f_dt$L_CN = f_dt$S_CN
+  } else if (f_name == "SS") {
+    f_dt$S_CN = cut(f_dt$value,
+                    breaks = c(-Inf, 50000, 5000000, Inf),
+                    labels = c("S", "M", "L"))
+    f_dt$L_CN = cut(f_dt$value,
+                    breaks = c(-Inf, 2:7, Inf),
+                    labels = c("2-", as.character(3:7), "8+"))
+  } else if (f_name == "CNCP_M") {
+
+  } else if (f_name == "OsCN") {
+    f_dt$S_OsCN = cut(f_dt$value,
+                    breaks = c(-Inf, 2L, Inf),
+                    labels = c("N", "O"))
+    f_dt$L_OsCN = cut(f_dt$value,
+                    breaks = c(-Inf, 2L, 5L, Inf),
+                    labels = c("N", "SO", "LO"))
+
+  } else if (f_name == "StepRising") {
+    f_dt$S_StepR = cut(f_dt$value,
+                      breaks = c(-Inf, 2L, Inf),
+                      labels = c("N", "R"))
+    f_dt$L_StepR = cut(f_dt$value,
+                      breaks = c(-Inf, 2L, 3L, Inf),
+                      labels = c("N", "SR", "LR"))
+
+  } else if (f_name == "StepFalling") {
+    f_dt$S_StepF = cut(f_dt$value,
+                       breaks = c(-Inf, 2L, Inf),
+                       labels = c("N", "F"))
+    f_dt$L_StepF = cut(f_dt$value,
+                       breaks = c(-Inf, 2L, 3L, Inf),
+                       labels = c("N", "SF", "LF"))
+  }
 }
