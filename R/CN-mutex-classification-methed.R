@@ -20,8 +20,7 @@ get_features_mutex <- function(CN_data,
     if (i == "SS") {
       send_info("Getting floor(log10 based segment size) of eash segment...")
       zz <- getSegsize_v2(CN_data)
-      zz$value <- floor(log10(zz$value))
-      ## TODO: set <= 1 to 2
+      #zz$value <- floor(log10(zz$value))  # do it in get_components
       zz
     } else if (i == "CN") {
       send_info("Getting absolute copy number value of each segment...")
@@ -55,7 +54,7 @@ get_features_mutex <- function(CN_data,
 ## Make sure the index is also returned
 getSegsize_v2 <- function(abs_profiles) {
   segsize <- purrr::map_df(abs_profiles, function(x) {
-    x$segsize <- x$end - x$start + 1
+    x$segsize <- x$end - x$start + 1L
     x[, c("sample", "segsize", "Index"), with = FALSE]
   })
   colnames(segsize) <- c("sample", "value", "Index")
@@ -228,7 +227,7 @@ call_component <- function(f_dt, f_name) {
       breaks = c(-Inf, 50000L, 5000000L, Inf),
       labels = c("S", "M", "L")
     )
-    f_dt$C_SS <- cut(f_dt$value,
+    f_dt$C_SS <- cut(floor(log10(f_dt$value)),
       breaks = c(-Inf, 2:7, Inf),
       labels = c("2-", as.character(3:7), "8+")
     )
