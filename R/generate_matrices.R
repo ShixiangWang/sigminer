@@ -724,12 +724,12 @@ records_to_matrix <- function(dt, samp_col, component_col, add_trans_bias = FALS
   mat
 }
 
-vector_to_combination <- function(...) {
+vector_to_combination <- function(..., c_string = "") {
   expand.grid(
     ...,
     stringsAsFactors = FALSE
   ) %>%
-    apply(1, paste0, collapse = "") %>%
+    apply(1, paste0, collapse = c_string) %>%
     unique()
 }
 

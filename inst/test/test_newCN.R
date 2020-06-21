@@ -13,6 +13,7 @@ cn@data
 
 View(cn@data)
 
+debug(get_components_mutex)
 cn_tally_T <- sig_tally(cn, method = "T")
 cn_tally_T$CN
 cn_tally_T$SS
@@ -67,11 +68,8 @@ tally_list <- lapply(cn_list, function(x) {
   sig_tally(x, method = "T")
 })
 
-f_list <- lapply(tally_list, function(x) {
-  show_cn_features(x, method = "T", nrow = 3)
-})
+sapply(tally_list, function(x) {
+  colSums(x$nmf_matrix)
+}) %>% t()
 
-f_list$ACC
-f_list$BLCA
-f_list$LAML
-f_list$LGG
+
