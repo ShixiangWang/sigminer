@@ -3,7 +3,8 @@
 #' Tally a variation object like [MAF], [CopyNumber] and return a matrix for NMF de-composition and more.
 #' This is a generic function,
 #' so it can be further extended to other mutation cases.
-#' Please read details about how to set sex for identifying copy number signatures.
+#' **Please read details about how to set sex for identifying copy number signatures
+#' when using method "M" or "W"**.
 #' Please read <https://osf.io/s93d5/> for the generation of SBS, DBS and ID (INDEL)
 #' components. **Of note, many options are designed for method "M" only, and they are highlighted
 #' by bold fonts** (you can ignore them if you don't use "M" method).
