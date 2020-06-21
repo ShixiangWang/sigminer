@@ -388,7 +388,7 @@ handle_sex <- function(abs_profiles) {
         )
       ) %>%
       dplyr::select(-"sex") %>%
-      dplyr::select(c("chromosome", "start", "end", "segVal", "sample")) %>%
+      dplyr::select(c("chromosome", "start", "end", "segVal", "sample"), dplyr::everything()) %>%
       data.table::as.data.table()
   }
 
