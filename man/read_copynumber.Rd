@@ -64,7 +64,8 @@ a \link{CopyNumber} object.
 }
 \description{
 Read \strong{absolute} copy number profile for preparing CNV signature
-analysis.
+analysis. See detail part of \code{\link[=sig_tally]{sig_tally()}} to see how to handle sex to get correct
+summary.
 }
 \examples{
 # Load toy dataset of absolute copynumber profile

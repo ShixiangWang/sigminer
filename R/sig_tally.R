@@ -3,7 +3,7 @@
 #' Tally a variation object like [MAF], [CopyNumber] and return a matrix for NMF de-composition and more.
 #' This is a generic function,
 #' so it can be further extended to other mutation cases.
-#' Please read details about how to set sex for identifying copy number signatures.
+#' **Please read details about how to set sex for identifying copy number signatures**.
 #' Please read <https://osf.io/s93d5/> for the generation of SBS, DBS and ID (INDEL)
 #' components. **Of note, many options are designed for method "M" only, and they are highlighted
 #' by bold fonts** (you can ignore them if you don't use "M" method).
@@ -287,56 +287,21 @@ sig_tally.CopyNumber <- function(object,
     feature_setting$n_obs <- colSums(cn_matrix, na.rm = TRUE)
   } else {
     # Method: Tao & Wang, 'T'
-
-    ## TODO: should also set a feature_setting dataset??
-    ## Is genome_build necessary here??
     send_info("Step: getting copy number features.")
-    cn_features <- get_features_mutex(
-      CN_data = cn_list, cores = cores,
-      genome_build = object@genome_build,
-      feature_setting = feature_setting
-    )
+    cn_features <- get_features_mutex(CN_data = cn_list, cores = cores)
     send_success("Gotten.")
 
-    ## Curretly return features and explore how to combine them
-    return(cn_features)
-    # Make order as unique(feature_setting)$feature
-    # cn_features <- cn_features[unique(feature_setting$feature)]
+    send_info("Step: generating copy number components based on combination.")
+    cn_components <- get_components_mutex(cn_features)
+    send_success("Classified and combined.")
 
-    # send_info("Step: generating copy number components based on combination.")
-    # # Check feature setting
-    # if (!inherits(feature_setting, "sigminer.features")) {
-    #   feature_setting <- get_feature_components(feature_setting)
-    # }
-    # send_success("{.code feature_setting} checked.")
-    #
-    # send_info("Step: counting components.")
-    # cn_components <- purrr::map2(cn_features, names(cn_features),
-    #                              count_components_wrapper,
-    #                              feature_setting = feature_setting
-    # )
-    # send_success("Counted.")
-    #
-    # ## Remove BoChr value is 0 in features
-    # if ("BoChr" %in% names(cn_features)) {
-    #   cn_features$BoChr <- cn_features$BoChr[cn_features$BoChr$value != 0]
-    # }
-    #
-    # send_info("Step: generating components by sample matrix.")
-    # cn_matrix <- data.table::rbindlist(cn_components, fill = TRUE, use.names = TRUE) %>%
-    #   dplyr::as_tibble() %>%
-    #   tibble::column_to_rownames(var = "component") %>%
-    #   as.matrix()
-    # # Order the matrix as feature_setting
-    # cn_matrix <- cn_matrix[feature_setting$component, ] %>%
-    #   t()
-    #
-    # if (any(is.na(cn_matrix))) {
-    #   send_warning("{.code NA} detected. There may be an issue, please contact the developer!")
-    #   send_warning("Data will still returned, but please take case of it.")
-    # }
-    # # cn_matrix[is.na(cn_matrix)] <- 0L
-    # feature_setting$n_obs <- colSums(cn_matrix, na.rm = TRUE)
+    send_info("Step: generating components by sample matrix.")
+    cn_matrix_list <- get_matrix_mutex(cn_components)
+    cn_matrix <- cn_matrix_list$s_mat
+
+    if (keep_only_matrix) {
+      send_info("When keep_only_matrix is TRUE, only standard matrix kept.")
+    }
   }
 
   send_success("Matrix generated.")
@@ -349,16 +314,33 @@ sig_tally.CopyNumber <- function(object,
         cn_components <- readRDS(file.path(tempdir(), "Nat_Gen_component_parameters.rds"))
       }
       para_df <- get_tidy_parameter(cn_components)
-    } else {
+    } else if (startsWith(method, "W")) {
       para_df <- feature_setting
+    } else if (startsWith(method, "T")) {
+      para_df <- "Message: No this info for method T."
     }
 
-    list(
-      features = cn_features,
-      components = cn_components,
-      parameters = para_df,
-      nmf_matrix = cn_matrix
-    )
+    if (startsWith(method, "T")) {
+      res_list <- list(
+        features = cn_features,
+        components = cn_components,
+        parameters = para_df,
+        nmf_matrix = cn_matrix,
+        all_matrices = list(
+          standard_matrix = cn_matrix_list$s_mat,
+          complex_matrix = cn_matrix_list$c_mat
+        )
+      )
+    } else {
+      res_list <- list(
+        features = cn_features,
+        components = cn_components,
+        parameters = para_df,
+        nmf_matrix = cn_matrix
+      )
+    }
+
+    return(res_list)
   }
 }
 

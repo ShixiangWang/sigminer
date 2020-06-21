@@ -2,7 +2,8 @@
 
 #' @title  Read Absolute Copy Number Profile
 #' @description Read **absolute** copy number profile for preparing CNV signature
-#' analysis.
+#' analysis. See detail part of [sig_tally()] to see how to handle sex to get correct
+#' summary.
 #' @param input a `data.frame` or a file or a directory contains copy number profile.
 #' @param pattern an optional regular expression used to select part of files if
 #' `input` is a directory, more detail please see [list.files] function.
