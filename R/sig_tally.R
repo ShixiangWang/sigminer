@@ -80,8 +80,11 @@
 #' cn_tally_M <- sig_tally(cn, method = "M")
 #' # Use method designed by Wang, Shixiang et al.
 #' cn_tally_W <- sig_tally(cn, method = "W")
+#' # Use method designed by Tao & Wang.
+#' cn_tally_T <- sig_tally(cn, method = "T")
 #'
 #' expect_equal(length(cn_tally_M), length(cn_tally_W))
+#' expect_equal(length(cn_tally_T), 5L)
 #'
 #' ## for SBS
 #'
