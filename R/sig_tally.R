@@ -122,7 +122,8 @@ sig_tally <- function(object, ...) {
 
 #' @describeIn sig_tally Returns copy number features, components and component-by-sample matrix
 #' @param method method for feature classfication, can be one of "Macintyre" ("M"),
-#' "Wang" ("W") and "Tao & Wang" ("T").
+#' "Wang" ("W") and "Tao & Wang" ("T") **Currently, the method 'T' is in experimental stage,
+#' please don't use it for now**.
 #' @param feature_setting a `data.frame` used for classification.
 #' **Only used when method is "Wang" ("W")**.
 #' Default is [CN.features]. Users can also set custom input with "feature",

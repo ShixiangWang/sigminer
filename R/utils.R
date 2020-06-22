@@ -47,6 +47,7 @@ col2hex <- function(col, alpha) grDevices::rgb(t(grDevices::col2rgb(col)), alpha
 #' @param style one of 'default' and 'cosmic'.
 #' @param mode only used when the `style` is 'cosmic', can be one of
 #' "SBS", "copynumber", "DBS", "ID".
+#' @param method used to set a more custom palette for different methods.
 #'
 #' @return color values.
 #' @export
@@ -54,7 +55,7 @@ col2hex <- function(col, alpha) grDevices::rgb(t(grDevices::col2rgb(col)), alpha
 #' @examples
 #' use_color_style("default")
 #' use_color_style("cosmic")
-use_color_style <- function(style, mode = c("SBS", "copynumber", "DBS", "ID")) {
+use_color_style <- function(style, mode = c("SBS", "copynumber", "DBS", "ID"), method = "Wang") {
   # c("red", "cyan", "yellow", "blue", "magenta", "gray50", "orange", "darkgreen", "brown", "black", rainbow(10)[4:10])
   if (style == "default") {
     palette <- c(
@@ -96,23 +97,15 @@ use_color_style <- function(style, mode = c("SBS", "copynumber", "DBS", "ID")) {
       )
     )
 
-    # https://github.com/AlexandrovLab/SigProfilerPlotting/blob/a60c48c2b74f037b9df5a3f905cc6ada22623341/sigProfilerPlotting/sigProfilerPlotting.py#L96
-    # colors = [[3/256,189/256,239/256], [1/256,1/256,1/256],
-    #           [228/256,41/256,38/256], [203/256,202/256,202/256], [162/256,207/256,99/256], [236/256,199/256,197/256]]
-    #
-    # For ID
-    # https://github.com/AlexandrovLab/SigProfilerPlotting/blob/a60c48c2b74f037b9df5a3f905cc6ada22623341/sigProfilerPlotting/sigProfilerPlotting.py#L1558
-    # colors = [[253/256,190/256,111/256], [255/256,128/256,2/256], [176/256,221/256,139/256], [54/256,161/256,46/256],
-    #           [253/256,202/256,181/256], [252/256,138/256,106/256], [241/256,68/256,50/256], [188/256,25/256,26/256],
-    #           [208/256,225/256,242/256], [148/256,196/256,223/256], [74/256,152/256,201/256], [23/256,100/256,171/256],
-    #           [226/256,226/256,239/256], [182/256,182/256,216/256], [134/256,131/256,189/256], [98/256,64/256,155/256]]
-    #
-    #
-    # For DBS
-    # colors = [[3/256,189/256,239/256], [3/256,102/256,204/256],[162/256,207/256,99/256],
-    #           [1/256,102/256,1/256], [255/256,153/256,153/256], [228/256,41/256,38/256],
-    #           [255/256,178/256,102/256], [255/256,128/256,1/256], [204/256,153/256,255/256],
-    #           [76/256,1/256,153/256]]
+    if (mode == "copynumber" & startsWith(method, "T")) {
+      colors <- list(
+        c(182, 182, 216), c(134, 131, 189), c(98, 64, 155),
+        c(252, 138, 106), c(241, 68, 50), c(188, 25, 26),
+        c(148, 196, 223), c(74, 152, 201), c(23, 100, 171),
+        c(253, 190, 111), c(255, 128, 2), c(255, 80, 2),
+        c(176, 221, 139), c(100, 200, 100), c(54, 161, 46)
+      )
+    }
 
     palette <- sapply(colors, FUN = function(x) rgb2hex(x[1], x[2], x[3])) %>% as.character()
 
