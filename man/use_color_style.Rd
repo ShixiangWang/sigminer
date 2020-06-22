@@ -4,13 +4,19 @@
 \alias{use_color_style}
 \title{Set Color Style for Plotting}
 \usage{
-use_color_style(style, mode = c("SBS", "copynumber", "DBS", "ID"))
+use_color_style(
+  style,
+  mode = c("SBS", "copynumber", "DBS", "ID"),
+  method = "Wang"
+)
 }
 \arguments{
 \item{style}{one of 'default' and 'cosmic'.}
 
 \item{mode}{only used when the \code{style} is 'cosmic', can be one of
 "SBS", "copynumber", "DBS", "ID".}
+
+\item{method}{used to set a more custom palette for different methods.}
 }
 \value{
 color values.

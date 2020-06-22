@@ -80,8 +80,11 @@
 #' cn_tally_M <- sig_tally(cn, method = "M")
 #' # Use method designed by Wang, Shixiang et al.
 #' cn_tally_W <- sig_tally(cn, method = "W")
+#' # Use method designed by Tao & Wang.
+#' cn_tally_T <- sig_tally(cn, method = "T")
 #'
 #' expect_equal(length(cn_tally_M), length(cn_tally_W))
+#' expect_equal(length(cn_tally_T), 5L)
 #'
 #' ## for SBS
 #'
@@ -122,7 +125,8 @@ sig_tally <- function(object, ...) {
 
 #' @describeIn sig_tally Returns copy number features, components and component-by-sample matrix
 #' @param method method for feature classfication, can be one of "Macintyre" ("M"),
-#' "Wang" ("W") and "Tao & Wang" ("T").
+#' "Wang" ("W") and "Tao & Wang" ("T") **Currently, the method 'T' is in experimental stage,
+#' please don't use it for now**.
 #' @param feature_setting a `data.frame` used for classification.
 #' **Only used when method is "Wang" ("W")**.
 #' Default is [CN.features]. Users can also set custom input with "feature",

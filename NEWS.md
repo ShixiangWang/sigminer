@@ -1,5 +1,6 @@
 # sigminer 1.0.8
 
+- Added new and experimental classification method 'T' for copy number data.
 - Speed up the annotation process in `read_copynumber()`.
 
 # sigminer 1.0.7
