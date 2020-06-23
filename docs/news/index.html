@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.8</span>
       </span>
     </div>
 
@@ -125,11 +125,23 @@
       <small>Source: <a href='https://github.com/ShixiangWang/sigminer/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="sigminer-1-0-7" class="section level1">
-<h1 class="page-header" data-toc-text="1.0.7">
-<a href="#sigminer-1-0-7" class="anchor"></a>sigminer 1.0.7<small> Unreleased </small>
+    <div id="sigminer-1-0-8" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.8">
+<a href="#sigminer-1-0-8" class="anchor"></a>sigminer 1.0.8<small> Unreleased </small>
 </h1>
 <ul>
+<li>Supported mouse genome ‘mm10’ (<a href="https://github.com/ShixiangWang/sigminer/issues/241"><a href='https://github.com/ShixiangWang/sigminer/issues/241'>#241</a></a>).</li>
+<li>Added <code><a href="../reference/read_copynumber_seqz.html">read_copynumber_seqz()</a></code> to read sequenza result directory.</li>
+<li>Added new and experimental classification method ‘T’ for copy number data.</li>
+<li>Speed up the annotation process in <code><a href="../reference/read_copynumber.html">read_copynumber()</a></code>.</li>
+</ul>
+</div>
+    <div id="sigminer-1-0-7" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.7">
+<a href="#sigminer-1-0-7" class="anchor"></a>sigminer 1.0.7<small> 2020-06-17 </small>
+</h1>
+<ul>
+<li>Fixed bug in OsCN feature calculation.</li>
 <li>Removed useless options in <code><a href="../reference/read_maf.html">read_maf()</a></code>.</li>
 <li>Modify method ‘LS’ in <code><a href="../reference/sig_fit.html">sig_fit()</a></code> to ‘NNLS’ and implement it with <strong>pracma</strong> package (<a href="https://github.com/ShixiangWang/sigminer/issues/216"><a href='https://github.com/ShixiangWang/sigminer/issues/216'>#216</a></a>).</li>
 <li>Made <code>use_all</code> option in <code><a href="../reference/read_copynumber.html">read_copynumber()</a></code> working correctly.</li>

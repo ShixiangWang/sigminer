@@ -81,7 +81,7 @@ better help users to explore survey of signature number." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.8</span>
       </span>
     </div>
 
@@ -159,16 +159,12 @@ a <code>data.frame</code> or <code>NMF.rank</code> object obtained from <code><a
     </tr>
     <tr>
       <th>what</th>
-      <td><p>a <code>character</code> vector whose elements
-  partially match one of the following item, which
-  correspond to the measures computed by
-  <code><a href='https://rdrr.io/pkg/NMF/man/assess.html'>summary</a></code> on each -- multi-run -- NMF result:
-  &#8216;all&#8217;, &#8216;cophenetic&#8217;, &#8216;rss&#8217;,
-  &#8216;residuals&#8217;, &#8216;dispersion&#8217;, &#8216;evar&#8217;,
-  &#8216;silhouette&#8217; (and more specific *.coef, *.basis,
-  *.consensus), &#8216;sparseness&#8217; (and more specific
-  *.coef, *.basis). It specifies which measure must be
-  plotted (<code>what='all'</code> plots all the measures).</p></td>
+      <td><p>a character vector whose elements partially match one of the following item,
+which correspond to the measures computed by <code><a href='https://rdrr.io/r/base/summary.html'>summary()</a></code> on each – multi-run – NMF result:
+'all', 'cophenetic', 'rss', 'residuals', 'dispersion', 'evar', 'silhouette'
+(and more specific <code>*.coef</code>, <code>*.basis</code>, <code>*.consensus</code>), 'sparseness'
+(and more specific <code>*.coef</code>, <code>*.basis</code>).
+It specifies which measure must be plotted (what='all' plots all the measures).</p></td>
     </tr>
     <tr>
       <th>na.rm</th>
@@ -216,10 +212,10 @@ a <code>data.frame</code> or <code>NMF.rank</code> object obtained from <code><a
 #&gt; 4 brunet random   1     KL    4        0.7513321       0.4519870  203.3494
 #&gt; 5 brunet random   4     KL    5        0.7915950       0.4413905  120.2693
 #&gt;        evar silhouette.coef silhouette.basis residuals niter   cpu cpu.all nrun
-#&gt; 2 0.9987288       1.0000000        1.0000000 34.443128   520 0.043   9.014    5
-#&gt; 3 0.9996764       0.7608363        0.7624204 16.869207   800 0.056   9.018    5
-#&gt; 4 0.9997601       0.5192666        0.5091383 10.022368   620 0.071   8.993    5
-#&gt; 5 0.9998581       0.3421886        0.4701766  6.200343   790 0.053   3.856    5
+#&gt; 2 0.9987288       1.0000000        1.0000000 34.443128   520 0.039   3.727    5
+#&gt; 3 0.9996764       0.7608363        0.7624204 16.869207   800 0.053  23.569    5
+#&gt; 4 0.9997601       0.5192666        0.5091383 10.022368   620 0.064   3.853    5
+#&gt; 5 0.9998581       0.3421886        0.4701766  6.200343   790 0.046   9.153    5
 #&gt;   cophenetic dispersion silhouette.consensus
 #&gt; 2  0.9836628     0.8272            0.8933333
 #&gt; 3  0.9133654     0.5264            0.6458333

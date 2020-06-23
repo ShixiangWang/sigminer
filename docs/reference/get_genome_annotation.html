@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.8</span>
       </span>
     </div>
 
@@ -132,9 +132,9 @@
     </div>
 
     <pre class="usage"><span class='fu'>get_genome_annotation</span>(
-  <span class='kw'>data_type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"chr_size"</span>, <span class='st'>"centro_loc"</span>, <span class='st'>"cytobands"</span>),
+  <span class='kw'>data_type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"chr_size"</span>, <span class='st'>"centro_loc"</span>, <span class='st'>"cytobands"</span>, <span class='st'>"transcript"</span>),
   <span class='kw'>chrs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"chr"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>:<span class='fl'>22</span>, <span class='st'>"X"</span>, <span class='st'>"Y"</span>)),
-  <span class='kw'>genome_build</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"hg19"</span>, <span class='st'>"hg38"</span>)
+  <span class='kw'>genome_build</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"hg19"</span>, <span class='st'>"hg38"</span>, <span class='st'>"mm10"</span>)
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -143,8 +143,9 @@
     <tr>
       <th>data_type</th>
       <td><p>'chr_size' for chromosome size,
-'centro_loc' for location of centromeres and
-'cytobands' for location of chromosome cytobands.</p></td>
+'centro_loc' for location of centromeres,
+'cytobands' for location of chromosome cytobands
+and 'transcript' for location of transcripts.</p></td>
     </tr>
     <tr>
       <th>chrs</th>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>sigminer: Extract, Analyze and Visualize Signatures for Genomic Variations — sigminer • sigminer</title>
+<title>Read Absolute Copy Number Profile from Sequenza Result Directory — read_copynumber_seqz • sigminer</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="sigminer: Extract, Analyze and Visualize Signatures for Genomic Variations — sigminer" />
-<meta property="og:description" content="Please go to https://shixiangwang.github.io/sigminer-doc/ for full vignette." />
+<meta property="og:title" content="Read Absolute Copy Number Profile from Sequenza Result Directory — read_copynumber_seqz" />
+<meta property="og:description" content="Read Absolute Copy Number Profile from Sequenza Result Directory" />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -122,21 +122,38 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>sigminer: Extract, Analyze and Visualize Signatures for Genomic Variations</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ShixiangWang/sigminer/blob/master/R/sigminer.R'><code>R/sigminer.R</code></a></small>
-    <div class="hidden name"><code>sigminer.Rd</code></div>
+    <h1>Read Absolute Copy Number Profile from Sequenza Result Directory</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ShixiangWang/sigminer/blob/master/R/read_copynumber_seqz.R'><code>R/read_copynumber_seqz.R</code></a></small>
+    <div class="hidden name"><code>read_copynumber_seqz.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Please go to <a href='https://shixiangwang.github.io/sigminer-doc/'>https://shixiangwang.github.io/sigminer-doc/</a> for full vignette.</p>
+    <p>Read Absolute Copy Number Profile from Sequenza Result Directory</p>
     </div>
 
+    <pre class="usage"><span class='fu'>read_copynumber_seqz</span>(<span class='no'>target_dir</span>, <span class='kw'>return_df</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>target_dir</th>
+      <td><p>a directory path.</p></td>
+    </tr>
+    <tr>
+      <th>return_df</th>
+      <td><p>if <code>TRUE</code>, return a <code>data.frame</code> directly, otherwise return a
+<a href='CopyNumber-class.html'>CopyNumber</a> object.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>other parameters passing to <code><a href='read_copynumber.html'>read_copynumber()</a></code>.</p></td>
+    </tr>
+    </table>
 
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Result visualization for <a href='MAF-class.html'>MAF</a> is provide by <strong>maftools</strong> package,
-please read its <a href='https://bioconductor.org/packages/release/bioc/vignettes/maftools/inst/doc/maftools.html'>vignette</a>.</p>
+    <p>a <code>data.frame</code> or a <code>CopyNumber</code> object.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
