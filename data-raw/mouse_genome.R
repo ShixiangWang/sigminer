@@ -52,8 +52,9 @@ centromeres.hg19 %>% str()
 centromeres.mm10 = data.table::fread("data-raw/mm10.gap.txt.gz")
 centromeres.mm10[V8 == "centromere"]
 
+## The problem is that centromeres do not exist in the mouse. UCSC lists them as 110000-3000000 for every chromosome.
 centromeres.mm10 = data.frame(
-  chrom = paste0("chr", c(1:19, "X")),
+  chrom = paste0("chr", c(1:19, "X", "Y")),
   left.base = 110000L,
   right.base = 3000000L,
   stringsAsFactors = FALSE

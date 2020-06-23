@@ -2,7 +2,7 @@
 
 context("File R/get_genome_annotation.R: @testexamples")
 
-test_that("Function get_genome_annotation() @ L36", {
+test_that("Function get_genome_annotation() @ L37", {
   
   df1 <- get_genome_annotation()
   df1

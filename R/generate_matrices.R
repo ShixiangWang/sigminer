@@ -612,7 +612,7 @@ generate_matrix_INDEL <- function(query, ref_genome, genome_build = "hg19", add_
 
 records_to_matrix <- function(dt, samp_col, component_col, add_trans_bias = FALSE, build = "hg19", mode = "SBS") {
   if (add_trans_bias) {
-    transcript_dt <- get(paste0("transcript.", build), envir = as.environment("package:sigminer"))
+    transcript_dt <- get_genome_annotation(data_type = "transcript", genome_build = build)
     data.table::setkey(transcript_dt, chrom, start, end)
 
     if ("Start" %in% colnames(dt)) {

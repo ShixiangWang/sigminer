@@ -1,8 +1,9 @@
 #' Get Genome Annotation
 #'
 #' @param data_type 'chr_size' for chromosome size,
-#' 'centro_loc' for location of centromeres and
-#' 'cytobands' for location of chromosome cytobands.
+#' 'centro_loc' for location of centromeres,
+#' 'cytobands' for location of chromosome cytobands
+#' and 'transcript' for location of transcripts.
 #' @param genome_build one of 'hg19', 'hg38'
 #' @param chrs chromosomes start with 'chr'
 #' @return a `data.frame` containing annotation data

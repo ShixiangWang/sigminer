@@ -12,8 +12,9 @@ get_genome_annotation(
 }
 \arguments{
 \item{data_type}{'chr_size' for chromosome size,
-'centro_loc' for location of centromeres and
-'cytobands' for location of chromosome cytobands.}
+'centro_loc' for location of centromeres,
+'cytobands' for location of chromosome cytobands
+and 'transcript' for location of transcripts.}
 
 \item{chrs}{chromosomes start with 'chr'}
 

@@ -25,7 +25,7 @@ read_copynumber_seqz <- function(target_dir, return_df = FALSE, ...) {
     )
   ), SAMPLE, function(x, y) {
     message("Processing ", y)
-    df <- readr::read_tsv(x)
+    df <- data.table::fread(x, data.table = FALSE)
     df <- df %>%
       dplyr::select(c("chromosome", "start.pos", "end.pos", "CNt")) %>%
       dplyr::mutate(sample = y)
