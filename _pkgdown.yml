@@ -10,6 +10,7 @@ reference:
     desc: Read genomic variation data as an R object and more.
     contents:
     - read_copynumber
+    - read_copynumber_seqz
     - read_maf
     - CopyNumber-class
     - MAF-class
