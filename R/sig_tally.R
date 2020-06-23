@@ -349,9 +349,10 @@ sig_tally.CopyNumber <- function(object,
 }
 
 #' @describeIn sig_tally Returns SBS mutation sample-by-component matrix and APOBEC enrichment
-#' @inheritParams maftools::trinucleotideMatrix
 #' @param mode type of mutation matrix to extract, can be one of 'SBS', 'DBS' and 'ID'.
-#' @param genome_build genome build 'hg19' or 'hg38', if not set, guess it by `ref_genome`.
+#' @param ref_genome 'BSgenome.Hsapiens.UCSC.hg19', 'BSgenome.Hsapiens.UCSC.hg38' and
+#' 'BSgenome.Mmusculus.UCSC.mm10' etc.
+#' @param genome_build genome build 'hg19', 'hg38' or "mm10", if not set, guess it by `ref_genome`.
 #' @param add_trans_bias if `TRUE`, consider transcriptional bias categories.
 #' 'T:' for Transcribed (the variant is on the transcribed strand);
 #' 'U:' for Un-transcribed (the variant is on the untranscribed strand);
@@ -385,6 +386,8 @@ sig_tally.MAF <- function(object, mode = c("SBS", "DBS", "ID", "ALL"),
       genome_build <- "hg19"
     } else if (grepl("hg38", ref_genome)) {
       genome_build <- "hg38"
+    } else if (grepl("mm10$", ref_genome)) {
+      genome_build <- "mm10"
     } else {
       send_stop("Cannot guess the genome build, please set it by hand!")
     }
@@ -392,7 +395,6 @@ sig_tally.MAF <- function(object, mode = c("SBS", "DBS", "ID", "ALL"),
 
   hsgs.installed <- BSgenome::installed.genomes(splitNameParts = TRUE)
   data.table::setDT(x = hsgs.installed)
-  # hsgs.installed = hsgs.installed[organism %in% "Hsapiens"]
 
   if (nrow(hsgs.installed) == 0) {
     send_stop("Could not find any installed BSgenomes. Use {.code BSgenome::available.genomes()} for options.")

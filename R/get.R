@@ -49,7 +49,7 @@ get_cnlist <- function(CopyNumber, ignore_chrs = NULL, add_index = FALSE) {
 
 get_features <- function(CN_data,
                          cores = 1,
-                         genome_build = c("hg19", "hg38")) {
+                         genome_build = c("hg19", "hg38", "mm10")) {
   genome_build <- match.arg(genome_build)
   # get chromosome lengths and centromere locations
   chrlen <- get_genome_annotation(data_type = "chr_size", genome_build = genome_build)
@@ -98,7 +98,7 @@ get_features <- function(CN_data,
 
 get_features_wang <- function(CN_data,
                               cores = 1,
-                              genome_build = c("hg19", "hg38"),
+                              genome_build = c("hg19", "hg38", "mm10"),
                               feature_setting = sigminer::CN.features) {
   genome_build <- match.arg(genome_build)
   # get chromosome lengths and centromere locations
@@ -301,7 +301,7 @@ get_matrix <- function(CN_features,
 # Get copy number length profile ------------------------------------------
 
 get_LengthFraction <- function(CN_data,
-                               genome_build = c("hg19", "hg38"),
+                               genome_build = c("hg19", "hg38", "mm10"),
                                seg_cols = c("Chromosome", "Start.bp", "End.bp", "modal_cn"),
                                samp_col = "sample") {
   stopifnot(is.list(CN_data) | is.data.frame(CN_data))
@@ -354,10 +354,20 @@ get_LengthFraction <- function(CN_data,
     segTab$chromosome[!grepl("chr", segTab$chromosome)] <- paste0("chr", segTab$chromosome[!grepl("chr", segTab$chromosome)])
   }
 
-  valid_chr <- c(paste0("chr", 1:22), "chrX", "chrY")
-  if (!all(segTab$chromosome %in% valid_chr)) {
-    segTab <- segTab[valid_chr, on = "chromosome"]
-    send_success("Some invalid segments (not as 1:22 and X, Y) dropped.")
+  if (genome_build == "mm10") {
+    valid_chr <- c(paste0("chr", 1:19), "chrX", "chrY")
+
+    if (!all(segTab$chromosome %in% valid_chr)) {
+      segTab <- segTab[valid_chr, on = "chromosome"]
+      send_success("Some invalid segments (not as 1:19 and X, Y) dropped.")
+    }
+  } else {
+    valid_chr <- c(paste0("chr", 1:22), "chrX", "chrY")
+
+    if (!all(segTab$chromosome %in% valid_chr)) {
+      segTab <- segTab[valid_chr, on = "chromosome"]
+      send_success("Some invalid segments (not as 1:22 and X, Y) dropped.")
+    }
   }
 
   arm_data <- get_ArmLocation(genome_build)
@@ -535,22 +545,24 @@ get_LengthFraction <- function(CN_data,
 
 # Get arm location --------------------------------------------------------
 
-get_ArmLocation <- function(genome_build = c("hg19", "hg38")) {
+get_ArmLocation <- function(genome_build = c("hg19", "hg38", "mm10")) {
   genome_build <- match.arg(genome_build)
   # get chromosome lengths and centromere locations
   chrlen <- get_genome_annotation(data_type = "chr_size", genome_build = genome_build)
   centromeres <- get_genome_annotation(data_type = "centro_loc", genome_build = genome_build)
 
+  l <- nrow(chrlen)
   # compute and get results
+  # different for human and mouse
   res <- data.frame(
-    chrom = vector(mode = "character", length = 24),
-    p_start = vector("numeric", length = 24),
-    p_end = vector("numeric", length = 24),
-    p_length = vector("numeric", length = 24),
-    q_start = vector("numeric", length = 24),
-    q_end = vector("numeric", length = 24),
-    q_length = vector("numeric", length = 24),
-    total_size = vector("numeric", length = 24),
+    chrom = vector(mode = "character", length = l),
+    p_start = vector("numeric", length = l),
+    p_end = vector("numeric", length = l),
+    p_length = vector("numeric", length = l),
+    q_start = vector("numeric", length = l),
+    q_end = vector("numeric", length = l),
+    q_length = vector("numeric", length = l),
+    total_size = vector("numeric", length = l),
     stringsAsFactors = FALSE
   )
 
@@ -588,7 +600,7 @@ get_ArmLocation <- function(genome_build = c("hg19", "hg38")) {
 
 # Get summary of copy number variation per sample ------------------------------------
 
-get_cnsummary_sample <- function(segTab, genome_build = c("hg19", "hg38"),
+get_cnsummary_sample <- function(segTab, genome_build = c("hg19", "hg38", "mm10"),
                                  genome_measure = c("called", "wg")) {
   genome_build <- match.arg(genome_build)
   genome_measure <- match.arg(genome_measure)
@@ -635,7 +647,11 @@ get_cnsummary_sample <- function(segTab, genome_build = c("hg19", "hg38"),
   segTab$start <- as.numeric(segTab$start)
   segTab$end <- as.numeric(segTab$end)
 
-  autosome <- paste0("chr", 1:22)
+  if (genome_build == "mm10") {
+    autosome <- paste0("chr", 1:19)
+  } else {
+    autosome <- paste0("chr", 1:22)
+  }
 
   if (genome_measure == "wg") {
     chrlen <- get_genome_annotation(
