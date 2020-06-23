@@ -78,12 +78,16 @@ reference:
     - CN.features
     - centromeres.hg19
     - centromeres.hg38
+    - centromeres.mm10
     - chromsize.hg19
     - chromsize.hg38
+    - chromsize.mm10
     - cytobands.hg19
     - cytobands.hg38
+    - cytobands.mm10
     - transcript.hg19
     - transcript.hg38
+    - transcript.mm10
   - title: Helpers
     desc: Helper functions used in the sigminer package.
     contents:
