@@ -362,8 +362,10 @@ read_copynumber <- function(input,
   # order by segment start position by each chromosome in each sample
   data_df <- data_df[, .SD[order(.SD$start, decreasing = FALSE)], by = c("sample", "chromosome")]
   all_cols <- colnames(data_df)
-  data.table::setcolorder(data_df, neworder = c(c("chromosome", "start", "end", "segVal", "sample"),
-                                                setdiff(all_cols, c("chromosome", "start", "end", "segVal", "sample"))))
+  data.table::setcolorder(data_df, neworder = c(
+    c("chromosome", "start", "end", "segVal", "sample"),
+    setdiff(all_cols, c("chromosome", "start", "end", "segVal", "sample"))
+  ))
   if ("groups" %in% names(attributes(data_df))) {
     attr(data_df, "groups") <- NULL
   }

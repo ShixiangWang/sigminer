@@ -46,7 +46,7 @@ representing signatures (column names must start with 'Sig').}
 \item{mode}{signature type for plotting, now supports 'copynumber', 'SBS', 'DBS' and 'ID'.}
 
 \item{method}{method for copy number feature classfication in \link{sig_tally},
-can be one of "Macintyre" ("M"), "Wang" ("W") and "Tao & Wang" ("T").}
+can be one of "Macintyre" ("M"), "Wang" ("W").}
 
 \item{normalize}{one of 'row', 'column', 'raw' and "feature", for row normalization (signature),
 column normalization (component), raw data, row normalization by feature, respectively.

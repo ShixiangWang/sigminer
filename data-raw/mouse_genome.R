@@ -16,8 +16,8 @@ download.file(
 
 chromsize.hg19 %>% str()
 
-chromsize.mm10 = read.table("data-raw/mm10.chrom.sizes.txt", header = FALSE, sep = "\t")
-colnames(chromsize.mm10) = c("chrom", "size")
+chromsize.mm10 <- read.table("data-raw/mm10.chrom.sizes.txt", header = FALSE, sep = "\t")
+colnames(chromsize.mm10) <- c("chrom", "size")
 chromsize.mm10 %>% str()
 
 usethis::use_data(chromsize.mm10, overwrite = TRUE)
@@ -32,8 +32,8 @@ download.file(
 
 cytobands.hg19 %>% str()
 
-cytobands.mm10 = data.table::fread("data-raw/mm10.cytoBand.txt.gz", data.table = FALSE)
-colnames(cytobands.mm10) = c("chrom", "start", "end", "band", "stain")
+cytobands.mm10 <- data.table::fread("data-raw/mm10.cytoBand.txt.gz", data.table = FALSE)
+colnames(cytobands.mm10) <- c("chrom", "start", "end", "band", "stain")
 
 cytobands.mm10 %>% str()
 
@@ -49,11 +49,11 @@ download.file(
 
 centromeres.hg19 %>% str()
 
-centromeres.mm10 = data.table::fread("data-raw/mm10.gap.txt.gz")
+centromeres.mm10 <- data.table::fread("data-raw/mm10.gap.txt.gz")
 centromeres.mm10[V8 == "centromere"]
 
 ## The problem is that centromeres do not exist in the mouse. UCSC lists them as 110000-3000000 for every chromosome.
-centromeres.mm10 = data.frame(
+centromeres.mm10 <- data.frame(
   chrom = paste0("chr", c(1:19, "X", "Y")),
   left.base = 110000L,
   right.base = 3000000L,

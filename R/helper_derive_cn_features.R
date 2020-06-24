@@ -83,7 +83,7 @@ getOscilation <- function(abs_profiles, use_index = FALSE) {
               index2keep <- which(oscCounts == 0L) - 1L
               index2keep <- index2keep[index2keep > 0]
               if (oscCounts[len_seg - 2L] != 0L) {
-                index2keep = c(index2keep, len_seg - 2L)
+                index2keep <- c(index2keep, len_seg - 2L)
               }
               oscCounts <- oscCounts[index2keep]
               return(oscCounts)
@@ -92,7 +92,7 @@ getOscilation <- function(abs_profiles, use_index = FALSE) {
               if (all(oscCounts == 0L)) {
                 return(c(0L, 0L, oscCounts))
               } else {
-                new_counter = vector("integer", length = len_seg)
+                new_counter <- vector("integer", length = len_seg)
                 for (i in seq(3L, len_seg)) {
                   cc <- oscCounts[i - 2L]
                   if (cc != 0L) {
@@ -122,11 +122,11 @@ getOscilation <- function(abs_profiles, use_index = FALSE) {
         value = purrr::reduce(x$value, c)
       )
     } else {
-      x %>% tidyr::unnest(c("data", "value")) %>%
+      x %>%
+        tidyr::unnest(c("data", "value")) %>%
         dplyr::select(c("value", "Index")) %>%
         data.table::as.data.table()
     }
-
   }, .id = ifelse(use_index, "sample", "ID"))
 
   if (use_index) {

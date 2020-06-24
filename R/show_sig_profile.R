@@ -11,7 +11,7 @@
 #' representing signatures (column names must start with 'Sig').
 #' @param mode signature type for plotting, now supports 'copynumber', 'SBS', 'DBS' and 'ID'.
 #' @param method method for copy number feature classfication in [sig_tally],
-#' can be one of "Macintyre" ("M"), "Wang" ("W") and "Tao & Wang" ("T").
+#' can be one of "Macintyre" ("M"), "Wang" ("W").
 #' @param normalize one of 'row', 'column', 'raw' and "feature", for row normalization (signature),
 #' column normalization (component), raw data, row normalization by feature, respectively.
 #' Of note, 'feature' only works when the mode is 'copynumber'.
@@ -152,6 +152,10 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
     stop("Invalid input for 'Signature'", call. = FALSE)
   }
 
+  if (nrow(Sig) > 1000L) {
+    stop("This plot method doesn't support >1000 components, please try heatmap method!", call. = FALSE)
+  }
+
   mode <- match.arg(mode)
   method <- match.arg(method, choices = c("Macintyre", "M", "Wang", "W", "Tao & Wang", "T"))
   normalize <- match.arg(normalize)
@@ -252,14 +256,15 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
       mat <- tidyr::gather(mat, class, signature, -c("context", "base"))
 
       mat <- dplyr::mutate(mat,
-                           context = factor(.data$context),
-                           base = factor(.data$base, levels = c(
-                             "O:S", "O:M", "O:L",
-                             "R:S", "R:M", "R:L",
-                             "F:S", "F:M", "F:L",
-                             "N:S", "N:M", "N:L"
-                           )),
-                           class = factor(class))
+        context = factor(.data$context),
+        base = factor(.data$base, levels = c(
+          "O:S", "O:M", "O:L",
+          "R:S", "R:M", "R:L",
+          "F:S", "F:M", "F:L",
+          "N:S", "N:M", "N:L"
+        )),
+        class = factor(class)
+      )
     }
   } else if (mode == "SBS") {
     mat$base <- sub("[ACGT]\\[(.*)\\][ACGT]", "\\1", mat$context)
@@ -285,7 +290,7 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
     )
   } else if (mode == "DBS") {
     mat$base <- paste0(substr(mat$context, 1, 3), "NN")
-    if (!any(grepl("CC>NN", mat$base))) {
+    if (!any(grepl(">NN", mat$base))) {
       send_stop("You may choose wrong 'mode' option, this is designed for 'DBS'.")
     }
     mat$context <- substr(mat$context, 4, 5)
@@ -394,7 +399,7 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
   # >>>>>>> Set signature name and order
   if (!is.null(sig_names)) {
     if (length(sig_names) != length(unique(mat[["class"]]))) {
-      stop("The length of input signature names is not equal to signature number")
+      stop("The length of input signature names is not equal to signature number!")
     }
     names(sig_names) <- paste0("Sig_", seq_along(sig_names))
     mat[["class"]] <- sig_names[mat[["class"]]]

@@ -25,7 +25,7 @@ column representing samples}
 \item{mode}{signature type for plotting, now supports 'copynumber', 'SBS', 'DBS' and 'ID'.}
 
 \item{method}{method for copy number feature classfication in \link{sig_tally},
-can be one of "Macintyre" ("M"), "Wang" ("W") and "Tao & Wang" ("T").}
+can be one of "Macintyre" ("M"), "Wang" ("W").}
 
 \item{normalize}{normalize method.}
 

@@ -20,8 +20,8 @@ read_copynumber_seqz <- function(target_dir, return_df = FALSE, ...) {
   res <- purrr::map2_df(file.path(
     target_dir,
     paste(SAMPLE,
-          "_segments.txt",
-          sep = ""
+      "_segments.txt",
+      sep = ""
     )
   ), SAMPLE, function(x, y) {
     message("Processing ", y)

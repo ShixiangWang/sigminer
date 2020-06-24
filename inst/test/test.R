@@ -212,3 +212,26 @@ cn2 <- read_copynumber(input = CN_list$ACC@data, genome_build = "hg38",
                       seg_cols = c("chromosome", "start", "end", "segVal"))
 
 identical(cn@annotation, cn2@annotation)
+
+
+# Signature heatmap -------------------------------------------------------
+
+laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
+laml <- read_maf(maf = laml.maf)
+
+mt_tally <- sig_tally(
+  laml,
+  ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
+  use_syn = TRUE, mode = "ALL", add_trans_bias = TRUE
+)
+
+str(mt_tally, max.level = 1)
+
+show_sig_profile_heatmap(mt_tally$SBS_96[1:2,] %>% t(), check_sig_names = F)
+
+show_sig_profile_heatmap(mt_tally$SBS_24[1:2,] %>% t(), check_sig_names = F, flip_xy = TRUE)
+show_sig_profile_heatmap(mt_tally$SBS_1536[1:2,] %>% t(), check_sig_names = F)
+show_sig_profile_heatmap(mt_tally$SBS_384[1:2,] %>% t(), check_sig_names = F, flip_xy = TRUE)
+show_sig_profile_heatmap(mt_tally$SBS_6144[1:2,] %>% t(), check_sig_names = F)
+
+debug(show_sig_profile_heatmap)
