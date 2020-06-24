@@ -99,8 +99,6 @@ show_sig_profile_heatmap <- function(Signature, mode = c("SBS", "DBS"),
     has_labels <- FALSE
   }
 
-  # facet_flag <- 0L
-
   # >>>>>>>>>>>>>>>>> identify mode and do data transformation
   mat <- as.data.frame(Sig)
   mat$context <- rownames(mat)
@@ -181,20 +179,28 @@ show_sig_profile_heatmap <- function(Signature, mode = c("SBS", "DBS"),
       class = factor(class)
     )
   } else if (mode == "DBS") {
-    mat$base <- paste0(substr(mat$context, 1, 3), "NN")
-    if (!any(grepl(">NN", mat$base))) {
+    if (any(nchar(mat$context) <= 5)) {
+      mat$base <- paste0(substr(mat$context, 1, 3), "NN")
+      mat$context <- substr(mat$context, 4, 5)
+    } else {
+      mat$base <- paste0(substr(mat$context, 3, 5), "NN")
+      mat$context2 <- substr(mat$context, 6, 7)
+      mat$context <- paste0(
+        substr(mat$context, 1, 1),
+        "--",
+        substr(mat$context, 9, 9)
+      )
+    }
+    if (!any(grepl("[ACGT]{2}>[NN]{2}", mat$base))) {
       send_stop("You may choose wrong 'mode' option, this is designed for 'DBS'.")
     }
-    mat$context <- substr(mat$context, 4, 5)
 
+
+    mat$base <- substr(mat$base, 1, 2)
     if (has_labels) {
       ## T:NN>NN
-      mat$context2 <- mat$context
-      mat$context <- paste0(mat$label, ":", substr(mat$base, 1, 2))
-    } else {
-      mat$base <- substr(mat$base, 1, 2)
+      mat$base <- paste0(mat$label, ":", substr(mat$base, 1, 2))
     }
-
     mat$label <- NULL
 
     if (!is.null(mat$context2)) {
@@ -206,13 +212,7 @@ show_sig_profile_heatmap <- function(Signature, mode = c("SBS", "DBS"),
 
     mat <- dplyr::mutate(mat,
       context = factor(.data$context),
-      base = factor(.data$base, levels = c(
-        "AC>NN", "AT>NN",
-        "CC>NN", "CG>NN",
-        "CT>NN", "GC>NN",
-        "TA>NN", "TC>NN",
-        "TG>NN", "TT>NN"
-      )),
+      base = factor(.data$base),
       class = factor(class)
     )
   }
@@ -287,7 +287,9 @@ show_sig_profile_heatmap <- function(Signature, mode = c("SBS", "DBS"),
         color = "black",
         family = "mono"
       ),
-      legend.position = "bottom"
+      legend.position = "bottom",
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank()
     )
 
   p <- p + .theme_ss

@@ -235,3 +235,14 @@ show_sig_profile_heatmap(mt_tally$SBS_384[1:2,] %>% t(), check_sig_names = F, fl
 show_sig_profile_heatmap(mt_tally$SBS_6144[1:2,] %>% t(), check_sig_names = F)
 
 debug(show_sig_profile_heatmap)
+
+maf = read_maf("../MatrixGenerator-Test/data/LUSC/tcga_lusc_from_dcc.maf")
+mt_tally <- sig_tally(
+  maf,
+  ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
+  use_syn = TRUE, add_trans_bias = TRUE, mode = "DBS"
+)
+
+show_sig_profile_heatmap(mt_tally$all_matrices$DBS_78[3:4,] %>% t(), check_sig_names = F, mode = "DBS")
+show_sig_profile_heatmap(mt_tally$all_matrices$DBS_186[3:4,] %>% t(), check_sig_names = F, mode = "DBS")
+show_sig_profile_heatmap(mt_tally$all_matrices$DBS_1248[3:4,] %>% t(), check_sig_names = F, mode = "DBS")

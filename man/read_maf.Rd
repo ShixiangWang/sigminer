@@ -15,6 +15,8 @@ read_maf(maf, verbose = TRUE)
 This function is a wrapper of \link[maftools:read.maf]{maftools::read.maf}.
 Useless options in \link[maftools:read.maf]{maftools::read.maf} are dropped here.
 You can also use \link[maftools:read.maf]{maftools::read.maf} to read the data.
+All reference alleles and mutation alleles should be recorded in
+positive strand format.
 }
 \examples{
 laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools", mustWork = TRUE)

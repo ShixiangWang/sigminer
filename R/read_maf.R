@@ -5,6 +5,8 @@
 #' @description This function is a wrapper of [maftools::read.maf].
 #' Useless options in [maftools::read.maf] are dropped here.
 #' You can also use [maftools::read.maf] to read the data.
+#' All reference alleles and mutation alleles should be recorded in
+#' positive strand format.
 #'
 #' @inheritParams maftools::read.maf
 #' @examples
