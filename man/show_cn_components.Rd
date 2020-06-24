@@ -23,8 +23,7 @@ show_cn_components(
 from \link{sig_tally} function.}
 
 \item{method}{method for feature classfication, can be one of "Macintyre" ("M"),
-"Wang" ("W") and "Tao & Wang" ("T") \strong{Currently, the method 'T' is in experimental stage,
-please don't use it for now}.}
+"Wang" ("W").}
 
 \item{show_weights}{default is \code{TRUE}, show weights for each component.
 Only used when method is "Macintyre".}

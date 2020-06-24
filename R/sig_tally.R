@@ -125,8 +125,7 @@ sig_tally <- function(object, ...) {
 
 #' @describeIn sig_tally Returns copy number features, components and component-by-sample matrix
 #' @param method method for feature classfication, can be one of "Macintyre" ("M"),
-#' "Wang" ("W") and "Tao & Wang" ("T") **Currently, the method 'T' is in experimental stage,
-#' please don't use it for now**.
+#' "Wang" ("W").
 #' @param feature_setting a `data.frame` used for classification.
 #' **Only used when method is "Wang" ("W")**.
 #' Default is [CN.features]. Users can also set custom input with "feature",
@@ -191,6 +190,7 @@ sig_tally.CopyNumber <- function(object,
   method <- match.arg(method, choices = c("Macintyre", "M", "Wang", "W", "Tao & Wang", "T"))
 
   if (startsWith(method, "T")) {
+    send_warning("Currently, the method 'T' is in experimental stage, please don't use it for now!")
     ## Add segment index for method "T" so the segments can be easily joined or checked
     cn_list <- get_cnlist(object, ignore_chrs = ignore_chrs, add_index = TRUE)
   } else {
