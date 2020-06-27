@@ -27,7 +27,7 @@
 #' @inheritParams sig_tally
 #' @author Shixiang Wang <w_shixiang@163.com>
 #'
-#' @return a `list` containing smilarities, aetiologies if available, and best match.
+#' @return a `list` containing smilarities, aetiologies if available, best match and RSS.
 #' @export
 #'
 #' @examples
@@ -180,20 +180,26 @@ get_sig_similarity <- function(Signature, Ref = NULL,
     }
   }
 
-  if (method == "cosine") {
-    corMat <- c()
-    for (i in 1:ncol(w)) {
-      sig <- w[, i]
-      corMat <- rbind(corMat, apply(sigs, 2, function(x) {
-        round(crossprod(sig, x) / sqrt(crossprod(x) * crossprod(sig)),
-          digits = 3
-        )
-      }))
-    }
-    rownames(corMat) <- colnames(w)
-  } else {
-    # Other methods
+
+  corMat <- c()
+  for (i in 1:ncol(w)) {
+    sig <- w[, i]
+    corMat <- rbind(corMat, apply(sigs, 2, function(x) {
+      round(crossprod(sig, x) / sqrt(crossprod(x) * crossprod(sig)),
+            digits = 3
+      )
+    }))
   }
+  rownames(corMat) <- colnames(w)
+
+  RssMat <- c()
+  for (i in 1:ncol(w)) {
+    sig <- w[, i]
+    RssMat <- rbind(RssMat, apply(sigs, 2, function(x) {
+      round(sum((sig - x) ^ 2), digits = 6)
+    }))
+  }
+  rownames(RssMat) <- colnames(w)
 
   if (!exists("aetiology")) {
     aetiology <- NULL
@@ -248,7 +254,8 @@ get_sig_similarity <- function(Signature, Ref = NULL,
   res <- list(
     similarity = corMat,
     aetiology_db = ifelse(!is.null(aetiology), aetiology, NA),
-    best_match = best_matches
+    best_match = best_matches,
+    rss = RssMat
   )
   class(res) <- c("similarity", class(res))
 
