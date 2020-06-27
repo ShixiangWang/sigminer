@@ -50,7 +50,7 @@ The remove operation will be done after normalization. Default is \code{NULL}.}
 \item{verbose}{if \code{TRUE}, print extra info.}
 }
 \value{
-a \code{list} containing smilarities, aetiologies if available, and best match.
+a \code{list} containing smilarities, aetiologies if available, best match and RSS.
 }
 \description{
 The reference signatures can be either a \code{Signature} object specified by \code{Ref} argument
