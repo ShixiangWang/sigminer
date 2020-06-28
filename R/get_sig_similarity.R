@@ -6,7 +6,8 @@
 #' and "SBS" - which includes updated/refined 65 signatures. This function is modified
 #' from `compareSignatures()` in **maftools** package.
 #'
-#' @param Signature a `Signature` object or a component-by-signature matrix (sum of each column is 1).
+#' @param Signature a `Signature` object or a component-by-signature matrix (sum of each column is 1)
+#' or a normalized component-by-sample matirx (sum of each column is 1).
 #' More please see examples.
 #' @param Ref default is `NULL`, can be a same object as `Signature`.
 #' @param sig_db can be 'legacy' (for COSMIC v2 'SBS'),
