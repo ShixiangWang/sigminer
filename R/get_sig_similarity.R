@@ -54,10 +54,10 @@
 #'
 #' ## Same to DBS and ID signatures
 #' @testexamples
-#' expect_equal(length(s1), 3L)
-#' expect_equal(length(s2), 3L)
-#' expect_equal(length(s3), 3L)
-#' expect_equal(length(s4), 3L)
+#' expect_equal(length(s1), 4L)
+#' expect_equal(length(s2), 4L)
+#' expect_equal(length(s3), 4L)
+#' expect_equal(length(s4), 4L)
 get_sig_similarity <- function(Signature, Ref = NULL,
                                sig_db = "legacy",
                                db_type = c("", "human-exome", "human-genome"),

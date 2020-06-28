@@ -26,9 +26,9 @@ test_that("Function get_sig_similarity() @ L61", {
   s4
   
   ## Same to DBS and ID signatures
-  expect_equal(length(s1), 3L)
-  expect_equal(length(s2), 3L)
-  expect_equal(length(s3), 3L)
-  expect_equal(length(s4), 3L)
+  expect_equal(length(s1), 4L)
+  expect_equal(length(s2), 4L)
+  expect_equal(length(s3), 4L)
+  expect_equal(length(s4), 4L)
 })
 
