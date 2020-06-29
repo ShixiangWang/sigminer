@@ -254,8 +254,12 @@ load(system.file("extdata", "toy_copynumber_tally_M.RData",
                  package = "sigminer", mustWork = TRUE
 ))
 
-sigprofiler(cn_tally_M$nmf_matrix, "~/test/test_sigminer", use_conda = TRUE)
-sigprofiler(cn_tally_M$nmf_matrix, "~/test/test_sigminer", use_conda = FALSE, py_path = "/Users/wsx/anaconda3/bin/python",
+sigprofiler_extract(cn_tally_M$nmf_matrix, "~/test/test_sigminer", use_conda = TRUE)
+sigprofiler_extract(cn_tally_M$nmf_matrix, "~/test/test_sigminer", use_conda = FALSE, py_path = "/Users/wsx/anaconda3/bin/python",
             is_exome = TRUE)
-sigprofiler(cn_tally_M$nmf_matrix, "~/test/test_sigminer", use_conda = FALSE, py_path = "/Users/wsx/anaconda3/bin/python",
+sigprofiler_extract(cn_tally_M$nmf_matrix, "~/test/test_sigminer", use_conda = FALSE, py_path = "/Users/wsx/anaconda3/bin/python",
             is_exome = TRUE, genome_build = "hg38")
+
+sigprofiler_extract(cn_tally_M$nmf_matrix, "~/test/test_sigminer", use_conda = FALSE,
+                    py_path = "C:\\Tools\\miniconda3\\envs\\learn\\python.exe",
+                    is_exome = TRUE)

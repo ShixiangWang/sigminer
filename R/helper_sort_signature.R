@@ -1,14 +1,9 @@
-helper_sort_signature <- function(sig) {
+helper_sort_signature <- function(sig, expo) {
   stopifnot(is.matrix(sig), !is.null(rownames(sig)))
   # Component names are shown as rownames
-  # Sort mutational signatures by C>T mutation type
-  # Sort copy number signatures by segsize/SS feature for method 'M'
-  is_c2t <- grepl("C>T", rownames(sig))
+  # Sort copy number signatures by segsize/SS feature for method 'M'/'W'
   is_cn <- grepl("SS", rownames(sig)) | grepl("segsize", rownames(sig))
-  if (any(is_c2t)) {
-    to_rank <- colSums(sig[is_c2t, ])
-    sig_order <- order(to_rank)
-  } else if (any(is_cn)) {
+  if (any(is_cn)) {
     use_M <- any(grepl("\\d+$", rownames(sig)))
     if (use_M) {
       mat <- sig[startsWith(rownames(sig), "segsize"), , drop = FALSE]
@@ -18,8 +13,8 @@ helper_sort_signature <- function(sig) {
     }
     sig_order <- get_segsize_order(mat)
   } else {
-    ## Keep not change for now
-    sig_order <- seq_len(ncol(sig))
+    ## Order by burden #246
+    sig_order <- expo %>% rowSums() %>% order(decreasing = TRUE)
   }
   return(sig_order)
 }

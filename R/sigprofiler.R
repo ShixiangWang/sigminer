@@ -5,6 +5,7 @@
 #' Typically, a reference genome is not required because the input is a matrix (my understanding).
 #'
 #' @inheritParams sig_extract
+#' @rdname sigprofiler
 #' @param output output directory.
 #' @param range signature number range, i.e. `2:5`.
 #' @param nrun the number of iteration to be performed to extract each number signature.
@@ -26,17 +27,23 @@
 #'     package = "sigminer", mustWork = TRUE
 #'   ))
 #'
-#'   sigprofiler(cn_tally_M$nmf_matrix, "~/test/test_sigminer", use_conda = TRUE)
+#'   reticulate::conda_list()
 #'
-#'   sigprofiler(cn_tally_M$nmf_matrix, "~/test/test_sigminer", use_conda = FALSE, py_path = "/Users/wsx/anaconda3/bin/python")
+#'   sigprofiler_extract(cn_tally_M$nmf_matrix, "~/test/test_sigminer",
+#'     use_conda = TRUE
+#'   )
+#'
+#'   sigprofiler_extract(cn_tally_M$nmf_matrix, "~/test/test_sigminer",
+#'     use_conda = FALSE, py_path = "/Users/wsx/anaconda3/bin/python"
+#'   )
 #' }
-sigprofiler <- function(nmf_matrix, output, range = 2:5, nrun = 10L,
-                        is_exome = TRUE,
-                        init_method = c("random", "alexandrov-lab-custom", "nndsvd", "nndsvda", "nndsvdar"),
-                        cores = -1L,
-                        genome_build = c("hg19", "hg38", "mm10"),
-                        use_conda = FALSE,
-                        py_path = NULL) {
+sigprofiler_extract <- function(nmf_matrix, output, range = 2:5, nrun = 10L,
+                                is_exome = TRUE,
+                                init_method = c("random", "alexandrov-lab-custom", "nndsvd", "nndsvda", "nndsvdar"),
+                                cores = -1L,
+                                genome_build = c("hg19", "hg38", "mm10"),
+                                use_conda = FALSE,
+                                py_path = NULL) {
   output <- path.expand(output)
   genome_build <- match.arg(genome_build)
 
@@ -55,11 +62,10 @@ sigprofiler <- function(nmf_matrix, output, range = 2:5, nrun = 10L,
   }
 
   if (use_conda) {
-    if (length(reticulate::miniconda_path()) < 1) {
+    if (length(reticulate::conda_binary()) < 1) {
+      message("Cannot find conda binary, installing miniconda...")
       reticulate::install_miniconda()
     }
-
-    reticulate::use_miniconda()
 
     ## Prepare conda environment and packages
     tryCatch(
@@ -89,6 +95,11 @@ sigprofiler <- function(nmf_matrix, output, range = 2:5, nrun = 10L,
       reticulate::use_python(config$python)
     } else {
       reticulate::use_python(py_path, required = TRUE)
+    }
+
+    if (!reticulate::py_module_available("SigProfilerExtractor")) {
+      message("Python module 'SigProfilerExtractor' not found, try installing it...")
+      reticulate::py_install("SigProfilerExtractor", pip = TRUE)
     }
   }
 
