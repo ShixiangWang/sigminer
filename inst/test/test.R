@@ -246,3 +246,16 @@ mt_tally <- sig_tally(
 show_sig_profile_heatmap(mt_tally$all_matrices$DBS_78[3:4,] %>% t(), check_sig_names = F, mode = "DBS")
 show_sig_profile_heatmap(mt_tally$all_matrices$DBS_186[3:4,] %>% t(), check_sig_names = F, mode = "DBS")
 show_sig_profile_heatmap(mt_tally$all_matrices$DBS_1248[3:4,] %>% t(), check_sig_names = F, mode = "DBS")
+
+
+# Test sigprofiler --------------------------------------------------------
+
+load(system.file("extdata", "toy_copynumber_tally_M.RData",
+                 package = "sigminer", mustWork = TRUE
+))
+
+sigprofiler(cn_tally_M$nmf_matrix, "~/test/test_sigminer", use_conda = TRUE)
+sigprofiler(cn_tally_M$nmf_matrix, "~/test/test_sigminer", use_conda = FALSE, py_path = "/Users/wsx/anaconda3/bin/python",
+            is_exome = TRUE)
+sigprofiler(cn_tally_M$nmf_matrix, "~/test/test_sigminer", use_conda = FALSE, py_path = "/Users/wsx/anaconda3/bin/python",
+            is_exome = TRUE, genome_build = "hg38")
