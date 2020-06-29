@@ -18,7 +18,7 @@
 #' @param right_name label name for right y axis.
 #' @param left_color color for left axis.
 #' @param right_color color for right axis.
-#'
+#' @param left_shape,right_shape,shape_size shape setting.
 #' @return a `ggplot` object
 #' @export
 #'
@@ -97,7 +97,8 @@
 show_sig_number_survey <- function(object, x = "rank",
                                    left_y = "cophenetic", right_y = "rss",
                                    left_name = left_y, right_name = toupper(right_y),
-                                   left_color = "black", right_color = "red") {
+                                   left_color = "black", right_color = "red",
+                                   left_shape = 16, right_shape = 18, shape_size = 4) {
   stopifnot(class(object) == "Survey" | is.data.frame(object))
   if (class(object) == "Survey") {
     survey <- object$survey
@@ -108,7 +109,7 @@ show_sig_number_survey <- function(object, x = "rank",
   if (is.null(right_y)) {
     # Show one-axis plot
     p <- ggplot(data = survey) +
-      geom_point(aes_string(x = x, y = left_y), color = left_color) +
+      geom_point(aes_string(x = x, y = left_y), color = left_color, shape = left_shape, size = shape_size) +
       geom_line(aes_string(x = x, y = left_y), color = left_color) +
       scale_x_continuous(breaks = unique(survey[[x]]), labels = unique(survey[[x]])) +
       scale_y_continuous(name = left_name) +
@@ -122,8 +123,8 @@ show_sig_number_survey <- function(object, x = "rank",
     )
 
     p <- ggplot(data = survey) +
-      geom_point(aes_string(x = x, y = left_y), color = left_color) +
-      geom_point(aes_string(x = x, y = "new_right"), color = right_color) +
+      geom_point(aes_string(x = x, y = left_y), color = left_color, shape = left_shape, size = shape_size) +
+      geom_point(aes_string(x = x, y = "new_right"), color = right_color, shape = right_shape, size = shape_size) +
       geom_line(aes_string(x = x, y = left_y), color = left_color) +
       geom_line(aes_string(x = x, y = "new_right"), color = right_color) +
       scale_x_continuous(breaks = unique(survey[[x]]), labels = unique(survey[[x]])) +

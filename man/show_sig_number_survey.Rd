@@ -12,7 +12,10 @@ show_sig_number_survey(
   left_name = left_y,
   right_name = toupper(right_y),
   left_color = "black",
-  right_color = "red"
+  right_color = "red",
+  left_shape = 16,
+  right_shape = 18,
+  shape_size = 4
 )
 }
 \arguments{
@@ -33,6 +36,8 @@ one measure.}
 \item{left_color}{color for left axis.}
 
 \item{right_color}{color for right axis.}
+
+\item{left_shape, right_shape, shape_size}{shape setting.}
 }
 \value{
 a \code{ggplot} object
