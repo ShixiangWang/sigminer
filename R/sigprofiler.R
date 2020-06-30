@@ -157,6 +157,7 @@ sigprofiler_extract <- function(nmf_matrix, output, range = 2:5, nrun = 10L,
       sys$stdout$flush()
     },
     error = function(e) {
+      print(e$message)
       message("Error detected, try recalling with python command.")
       if (is.null(py_path)) {
         message("Python path not set, try calling with 'python'.")
@@ -191,6 +192,9 @@ sigprofiler_extract <- function(nmf_matrix, output, range = 2:5, nrun = 10L,
         )
       )
 
+      message("===")
+      message(cmds)
+      message("===")
       system(cmds)
     }
   )
