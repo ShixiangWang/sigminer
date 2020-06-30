@@ -145,7 +145,8 @@ sigprofiler_extract <- function(nmf_matrix, output, range = 2:5, nrun = 10L,
   #                      get_all_signature_matrices= False)
   tryCatch(
     {
-      sigpro$sigProfilerExtractor("table",
+      sigpro$sigProfilerExtractor(
+        "matrix",
         output,
         tmp_file,
         reference_genome = genome_build, opportunity_genome = genome_build,
@@ -168,7 +169,7 @@ sigprofiler_extract <- function(nmf_matrix, output, range = 2:5, nrun = 10L,
 
       cmd_import <- "from SigProfilerExtractor import sigpro as sig"
       cmd_call <- paste(
-        quote_opt("table"),
+        quote_opt("matrix"),
         quote_opt(output),
         quote_opt(tmp_file),
         quote_opt(genome_build, opt = "reference_genome"),
