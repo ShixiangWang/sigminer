@@ -75,8 +75,10 @@ sigprofiler_extract <- function(nmf_matrix, output, range = 2:5, nrun = 10L,
       reticulate::use_condaenv("sigminer_sigprofiler", required = TRUE),
       error = function(e) {
         message("Conda environment not detected, creat it and install required packages.")
+        message("======")
         reticulate::conda_create("sigminer_sigprofiler")
-        message("Be patient...")
+        message("Installing packages, be patient...")
+        message("======")
         reticulate::conda_install("sigminer_sigprofiler",
           packages = "SigProfilerExtractor",
           pip = TRUE
@@ -99,11 +101,11 @@ sigprofiler_extract <- function(nmf_matrix, output, range = 2:5, nrun = 10L,
     } else {
       reticulate::use_python(py_path, required = TRUE)
     }
+  }
 
-    if (!reticulate::py_module_available("SigProfilerExtractor")) {
-      message("Python module 'SigProfilerExtractor' not found, try installing it...")
-      reticulate::py_install("SigProfilerExtractor", pip = TRUE)
-    }
+  if (!reticulate::py_module_available("SigProfilerExtractor")) {
+    message("Python module 'SigProfilerExtractor' not found, try installing it...")
+    reticulate::py_install("SigProfilerExtractor", pip = TRUE)
   }
 
   init_method <- match.arg(init_method)
