@@ -62,10 +62,11 @@ sigprofiler_extract <- function(nmf_matrix, output, range = 2:5, nrun = 10L,
   }
 
   if (use_conda) {
-    if (length(reticulate::conda_binary()) < 1) {
-      message("Cannot find conda binary, installing miniconda...")
-      reticulate::install_miniconda()
-    }
+    tryCatch(reticulate::conda_binary(),
+             error = function(e) {
+               message("Cannot find conda binary, installing miniconda...")
+               reticulate::install_miniconda()
+             })
 
     ## Prepare conda environment and packages
     tryCatch(
