@@ -5,6 +5,7 @@
 #' Typically, a reference genome is not required because the input is a matrix (my understanding).
 #'
 #' @inheritParams sig_extract
+#' @name sigprofiler
 #' @rdname sigprofiler
 #' @param output output directory.
 #' @param range signature number range, i.e. `2:5`.
@@ -18,7 +19,7 @@
 #' @param use_conda if `TRUE`, create an independent conda environment to run SigProfiler.
 #' @param py_path path to Python executable file, e.g. '/Users/wsx/anaconda3/bin/python'.
 #'
-#' @return Nothing. See `output` directory.
+#' @return For `sigprofiler_extract()`, returns nothing. See `output` directory.
 #' @export
 #'
 #' @examples
@@ -63,10 +64,11 @@ sigprofiler_extract <- function(nmf_matrix, output, range = 2:5, nrun = 10L,
 
   if (use_conda) {
     tryCatch(reticulate::conda_binary(),
-             error = function(e) {
-               message("Cannot find conda binary, installing miniconda...")
-               reticulate::install_miniconda()
-             })
+      error = function(e) {
+        message("Cannot find conda binary, installing miniconda...")
+        reticulate::install_miniconda()
+      }
+    )
 
     ## Prepare conda environment and packages
     tryCatch(
@@ -223,4 +225,123 @@ quote_opt <- function(value, opt = NULL, rm_quote = FALSE) {
       )
     }
   }
+}
+
+
+
+# Import SigProfiler Results ----------------------------------------------
+
+#' Import SigProfiler Results into R
+#'
+#' @inheritParams sigprofiler
+#' @param type one of 'suggest' (for suggested solution) or 'all' (for all solutions).
+#'
+#' @return For `sigprofiler_import()`, a `list` containing `Signature` object.
+#' @export
+#' @rdname sigprofiler
+sigprofiler_import <- function(output, type = c("suggest", "all")) {
+  stopifnot(dir.exists(output))
+  type <- match.arg(type)
+
+  result_dir <- list.dirs(output, full.names = TRUE, recursive = FALSE)
+
+  if (length(result_dir) != 1) {
+    if (length(result_dir) == 0) {
+      stop("Cannot find any result directory in ", output, "!")
+    } else {
+      stop("Should not have more than 1 directory be found, please check ", output, "!")
+    }
+  }
+
+  all_solution_stats <- data.table::fread(file.path(result_dir, "All_solutions_stat.csv"))
+  colnames(all_solution_stats)[1] <- "SignatureNumber"
+
+  message("NOTE: signature(A,B,C)... will be renamed to Sig(1,2,3)...")
+
+  if (type == "suggest") {
+    solution_path <- file.path(result_dir, "Suggested_Solution/De_Novo_Solution")
+    message("Reading suggested solution...")
+
+    solution <- read_sigprofiler_solution(solution_path)
+
+    message("Done.")
+    return(list(
+      solution = solution,
+      all_stats = all_solution_stats
+    ))
+  } else {
+    solution_path <- file.path(result_dir, "All_Solutions")
+    message("Reading all solutions...")
+    solutions_path <- list.dirs(solution_path, full.names = TRUE, recursive = FALSE)
+    solutions <- purrr::map(solutions_path, read_sigprofiler_solution)
+    names(solutions) <- paste0("S", sub("[^_]+_(.+)_[^_]+", "\\1", basename(solutions_path)))
+
+    message("Done.")
+    return(list(
+      solution_list = solutions,
+      all_stats = all_solution_stats
+    ))
+  }
+}
+
+read_sigprofiler_solution <- function(x) {
+  expo_path <- list.files(x, pattern = "Activities.txt", recursive = TRUE, full.names = TRUE, ignore.case = TRUE)
+  sigs_path <- list.files(x, pattern = "Signatures.txt", recursive = TRUE, full.names = TRUE, ignore.case = TRUE)
+  stat_samp_path <- list.files(x, pattern = "Samples_Stats.txt", recursive = TRUE, full.names = TRUE, ignore.case = TRUE)
+  stat_sigs_path <- list.files(x, pattern = "Signatures_Stats.txt", recursive = TRUE, full.names = TRUE, ignore.case = TRUE)
+
+  expo <- data.table::fread(expo_path)
+  sigs <- data.table::fread(sigs_path)
+  stat_samp <- data.table::fread(stat_samp_path)
+  stat_sigs <- data.table::fread(stat_sigs_path)
+
+  K <- ncol(expo) - 1L
+
+  colnames(expo) <- c("sample", paste0("Sig", seq_len(K)))
+  colnames(sigs) <- c("component", paste0("Sig", seq_len(K)))
+  colnames(stat_sigs)[1] <- "Signatures"
+  stat_sigs$Signatures <- colnames(expo)[-1]
+  colnames(stat_samp)[1] <- "Samples"
+
+  Signature.norm <- sigs %>%
+    dplyr::as_tibble() %>%
+    tibble::column_to_rownames("component") %>%
+    as.matrix()
+
+  Exposure <- expo %>%
+    dplyr::as_tibble() %>%
+    tibble::column_to_rownames("sample") %>%
+    as.matrix() %>%
+    t()
+
+  Exposure.norm <- apply(Exposure, 2, function(x) x / sum(x, na.rm = TRUE))
+  # When only one signature
+  if (!is.matrix(Exposure.norm)) {
+    Exposure.norm <- matrix(Exposure.norm, nrow = 1, dimnames = list(
+      rownames(Exposure),
+      colnames(Exposure)
+    ))
+  }
+
+  Signature <- Signature.norm
+  for (j in seq_len(K)) {
+    Signature[, j] <- Signature[, j] * rowSums(Exposure)[j]
+  }
+
+  res <- list(
+    Signature = Signature,
+    Signature.norm = Signature.norm,
+    Exposure = Exposure,
+    Exposure.norm = Exposure.norm,
+    K = K,
+    Stats = list(
+      samples = stat_samp,
+      signatures = stat_sigs
+    )
+  )
+
+  class(res) <- "Signature"
+  attr(res, "call_method") <- "SigProfiler"
+
+  res
 }
