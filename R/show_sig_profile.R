@@ -221,7 +221,7 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
         context = factor(.data$context,
           levels = unique(mat[["context"]])
         ),
-        class = factor(class)
+        class = factor(class, levels = colnames(Sig))
       )
     } else if (startsWith(method, "W")) {
       mat$base <- sub("\\[.*\\]$", "", mat$context)
@@ -244,7 +244,7 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
           levels = comp_orders
         ),
         base = factor(.data$base, levels = f_orders),
-        class = factor(class)
+        class = factor(class, levels = colnames(Sig))
       )
     } else {
       ## Tao & Wang
@@ -263,7 +263,7 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
           "F:S", "F:M", "F:L",
           "N:S", "N:M", "N:L"
         )),
-        class = factor(class)
+        class = factor(class, levels = colnames(Sig))
       )
     }
   } else if (mode == "SBS") {
@@ -286,7 +286,7 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
         "C>T", "T>A",
         "T>C", "T>G"
       )),
-      class = factor(class)
+      class = factor(class, levels = colnames(Sig))
     )
   } else if (mode == "DBS") {
     mat$base <- paste0(substr(mat$context, 1, 3), "NN")
@@ -310,7 +310,7 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
         "TA>NN", "TC>NN",
         "TG>NN", "TT>NN"
       )),
-      class = factor(class)
+      class = factor(class, levels = colnames(Sig))
     )
   } else if (mode == "ID") {
     is_ID28 <- any(grepl("long_Del", rownames(mat)))
@@ -363,7 +363,7 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
           "4:I:R", "5:I:R",
           "2", "3", "4", "5:D:M"
         )),
-        class = factor(class)
+        class = factor(class, levels = colnames(Sig))
       )
     } else {
       mat <- dplyr::mutate(mat,
@@ -373,7 +373,7 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
           "1:I:C", "1:I:T",
           "Others"
         )),
-        class = factor(class)
+        class = factor(class, levels = colnames(Sig))
       )
     }
   }
