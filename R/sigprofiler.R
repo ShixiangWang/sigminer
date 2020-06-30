@@ -105,6 +105,7 @@ sigprofiler_extract <- function(nmf_matrix, output, range = 2:5, nrun = 10L,
 
   init_method <- match.arg(init_method)
   cores <- as.integer(cores)
+  nrun <- as.integer(nrun)
 
   sig_ranges <- range(range)
   sys <- reticulate::import("sys")
