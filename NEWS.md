@@ -1,5 +1,6 @@
 # sigminer 1.0.8
 
+- Added `read_vcf()` for simply reading VCF files.
 - Implemented DBS-1248.
 - Added `show_sig_profile_heatmap()`.
 - Supported mouse genome 'mm10' ([#241](https://github.com/ShixiangWang/sigminer/issues/241)).
