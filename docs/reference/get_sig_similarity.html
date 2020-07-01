@@ -156,7 +156,8 @@ from <code>compareSignatures()</code> in <strong>maftools</strong> package.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>Signature</th>
-      <td><p>a <code>Signature</code> object or a component-by-signature matrix (sum of each column is 1).
+      <td><p>a <code>Signature</code> object or a component-by-signature matrix (sum of each column is 1)
+or a normalized component-by-sample matirx (sum of each column is 1).
 More please see examples.</p></td>
     </tr>
     <tr>
@@ -208,7 +209,7 @@ The remove operation will be done after normalization. Default is <code>NULL</co
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a <code>list</code> containing smilarities, aetiologies if available, and best match.</p>
+    <p>a <code>list</code> containing smilarities, aetiologies if available, best match and RSS.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Load mutational signature</span>
@@ -250,6 +251,12 @@ The remove operation will be done after normalization. Default is <code>NULL</co
 #&gt; [1] "Best match: Sig3 [similarity: 1]"
 #&gt; 
 #&gt; 
+#&gt; 
+#&gt; $rss
+#&gt;          Sig1     Sig2     Sig3
+#&gt; Sig1 0.000000 0.190663 0.430982
+#&gt; Sig2 0.190663 0.000000 0.347182
+#&gt; Sig3 0.430982 0.347182 0.000000
 #&gt; 
 #&gt; attr(,"class")
 #&gt; [1] "similarity" "list"      </div><div class='input'>
@@ -334,6 +341,28 @@ The remove operation will be done after normalization. Default is <code>NULL</co
 #&gt; [1] "Best match: COSMIC_10 [similarity: 0.531]"
 #&gt; 
 #&gt; 
+#&gt; 
+#&gt; $rss
+#&gt;      COSMIC_1 COSMIC_2 COSMIC_3 COSMIC_4 COSMIC_5 COSMIC_6 COSMIC_7 COSMIC_8
+#&gt; Sig1 0.196097 0.381275 0.131756 0.151354 0.138708 0.189112 0.274678 0.144249
+#&gt; Sig2 0.010308 0.260416 0.049130 0.057907 0.038732 0.018462 0.147116 0.046236
+#&gt; Sig3 0.267683 0.486128 0.295636 0.309007 0.286322 0.287771 0.330549 0.298512
+#&gt;      COSMIC_9 COSMIC_10 COSMIC_11 COSMIC_12 COSMIC_13 COSMIC_14 COSMIC_15
+#&gt; Sig1 0.122469  0.268562  0.232737  0.160937  0.343557  0.188232  0.202241
+#&gt; Sig2 0.054665  0.176356  0.098130  0.062197  0.246334  0.041929  0.048867
+#&gt; Sig3 0.299111  0.221094  0.374494  0.301402  0.490448  0.321638  0.331894
+#&gt;      COSMIC_16 COSMIC_17 COSMIC_18 COSMIC_19 COSMIC_20 COSMIC_21 COSMIC_22
+#&gt; Sig1  0.143384  0.153749  0.187279  0.177991  0.174962  0.190372  0.214154
+#&gt; Sig2  0.052611  0.130778  0.084419  0.042521  0.050816  0.080133  0.123788
+#&gt; Sig3  0.297380  0.362154  0.330176  0.315960  0.279461  0.319197  0.362864
+#&gt;      COSMIC_23 COSMIC_24 COSMIC_25 COSMIC_26 COSMIC_27 COSMIC_28 COSMIC_29
+#&gt; Sig1  0.252139  0.160158  0.145373  0.168950  0.283903  0.138302  0.168325
+#&gt; Sig2  0.112681  0.070305  0.047482  0.059801  0.186810  0.131628  0.056578
+#&gt; Sig3  0.392254  0.315262  0.289055  0.299557  0.428669  0.367363  0.305609
+#&gt;      COSMIC_30
+#&gt; Sig1  0.172968
+#&gt; Sig2  0.052374
+#&gt; Sig3  0.306902
 #&gt; 
 #&gt; attr(,"class")
 #&gt; [1] "similarity" "list"      </div><div class='input'><span class='no'>s3</span> <span class='kw'>&lt;-</span> <span class='fu'>get_sig_similarity</span>(<span class='no'>sig2</span>, <span class='kw'>sig_db</span> <span class='kw'>=</span> <span class='st'>"SBS"</span>)</div><div class='output co'>#&gt; <span class='message'>-Comparing against COSMIC signatures</span></div><div class='output co'>#&gt; <span class='message'>------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>--Found Sig1 most similar to SBS28</span></div><div class='output co'>#&gt; <span class='message'>   Aetiology: Unknown [similarity: 0.383]</span></div><div class='output co'>#&gt; <span class='message'>--Found Sig2 most similar to SBS1</span></div><div class='output co'>#&gt; <span class='message'>   Aetiology: spontaneous or enzymatic deamination of 5-methylcytosine [similarity: 0.868]</span></div><div class='output co'>#&gt; <span class='message'>--Found Sig3 most similar to SBS10b</span></div><div class='output co'>#&gt; <span class='message'>   Aetiology: Polymerase epsilon exonuclease domain mutations [similarity: 0.865]</span></div><div class='output co'>#&gt; <span class='message'>------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>Return result invisiblely.</span></div><div class='input'><span class='no'>s3</span></div><div class='output co'>#&gt; $similarity
@@ -459,6 +488,44 @@ The remove operation will be done after normalization. Default is <code>NULL</co
 #&gt; 
 #&gt; 
 #&gt; 
+#&gt; $rss
+#&gt;          SBS1     SBS2     SBS3     SBS4     SBS5     SBS6    SBS7a    SBS7b
+#&gt; Sig1 0.369193 0.525837 0.133773 0.163154 0.142928 0.233049 0.329982 0.257810
+#&gt; Sig2 0.092395 0.401493 0.048795 0.069176 0.040832 0.029963 0.201746 0.129839
+#&gt; Sig3 0.412095 0.637387 0.296138 0.319891 0.281398 0.312334 0.410916 0.355830
+#&gt;         SBS7c    SBS7d     SBS8     SBS9   SBS10a   SBS10b    SBS11    SBS12
+#&gt; Sig1 0.220593 0.259290 0.151807 0.121283 0.592288 0.339654 0.249398 0.184606
+#&gt; Sig2 0.139360 0.160424 0.062998 0.063645 0.483733 0.262953 0.116867 0.086949
+#&gt; Sig3 0.389688 0.412737 0.312035 0.305754 0.740139 0.073998 0.400920 0.325061
+#&gt;         SBS13    SBS14    SBS15    SBS16   SBS17a   SBS17b    SBS18    SBS19
+#&gt; Sig1 0.384435 0.254322 0.251461 0.214292 0.361085 0.313559 0.181550 0.249426
+#&gt; Sig2 0.291947 0.141861 0.063769 0.116602 0.267755 0.388287 0.076398 0.119212
+#&gt; Sig3 0.531917 0.399662 0.366821 0.370351 0.501123 0.627313 0.321777 0.388976
+#&gt;         SBS20    SBS21    SBS22    SBS23    SBS24    SBS25    SBS26    SBS27
+#&gt; Sig1 0.222261 0.237466 0.209514 0.250671 0.159083 0.145363 0.183891 0.284051
+#&gt; Sig2 0.106840 0.139489 0.123211 0.111862 0.070913 0.047459 0.086505 0.186965
+#&gt; Sig3 0.362647 0.379998 0.360274 0.390581 0.320568 0.289040 0.321052 0.428821
+#&gt;         SBS28    SBS29    SBS30    SBS31    SBS32    SBS33    SBS34    SBS35
+#&gt; Sig1 0.251169 0.176705 0.217281 0.190168 0.198065 0.291670 0.326219 0.167234
+#&gt; Sig2 0.306440 0.073145 0.084439 0.077665 0.067240 0.189799 0.234887 0.071536
+#&gt; Sig3 0.546324 0.318320 0.348499 0.337970 0.339405 0.434520 0.481561 0.327852
+#&gt;         SBS36    SBS37    SBS38    SBS39    SBS40    SBS41    SBS42    SBS43
+#&gt; Sig1 0.222163 0.155024 0.321314 0.131135 0.133988 0.141395 0.180887 0.219344
+#&gt; Sig2 0.118089 0.069663 0.219050 0.056606 0.048896 0.073695 0.067748 0.138797
+#&gt; Sig3 0.360991 0.312379 0.475377 0.302408 0.295547 0.319400 0.330777 0.377444
+#&gt;         SBS44    SBS45    SBS46    SBS47    SBS48    SBS49    SBS50    SBS51
+#&gt; Sig1 0.182577 0.269907 0.176080 0.205584 0.674224 0.460338 0.197968 0.187056
+#&gt; Sig2 0.059625 0.166457 0.073658 0.114100 0.581815 0.360637 0.089241 0.088074
+#&gt; Sig3 0.310896 0.418861 0.306514 0.359080 0.817393 0.614301 0.347555 0.331071
+#&gt;         SBS52    SBS53    SBS54    SBS55    SBS56    SBS57    SBS58    SBS59
+#&gt; Sig1 0.378140 0.250307 0.239819 0.256845 0.345687 0.165649 0.185579 0.405001
+#&gt; Sig2 0.285849 0.161257 0.133842 0.174820 0.251045 0.089001 0.081505 0.317869
+#&gt; Sig3 0.484724 0.407754 0.362176 0.417739 0.487844 0.345214 0.342362 0.569894
+#&gt;         SBS60    SBS84    SBS85
+#&gt; Sig1 0.571066 0.204442 0.175558
+#&gt; Sig2 0.490093 0.089916 0.089645
+#&gt; Sig3 0.735723 0.343883 0.335085
+#&gt; 
 #&gt; attr(,"class")
 #&gt; [1] "similarity" "list"      </div><div class='input'>
 <span class='co'>## Remove some components</span>
@@ -500,6 +567,12 @@ The remove operation will be done after normalization. Default is <code>NULL</co
 #&gt; [1] "Best match: Sig3 [similarity: 1]"
 #&gt; 
 #&gt; 
+#&gt; 
+#&gt; $rss
+#&gt;          Sig1     Sig2     Sig3
+#&gt; Sig1 0.000000 0.176481 0.416715
+#&gt; Sig2 0.176481 0.000000 0.347079
+#&gt; Sig3 0.416715 0.347079 0.000000
 #&gt; 
 #&gt; attr(,"class")
 #&gt; [1] "similarity" "list"      </div><div class='input'>

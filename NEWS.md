@@ -1,11 +1,11 @@
 # sigminer 1.0.8
 
+- Added `sigprofiler_extract()` and `sigprofiler_import()` to call SigProfiler and import results.
 - Added `read_vcf()` for simply reading VCF files.
 - Implemented DBS-1248.
 - Added `show_sig_profile_heatmap()`.
 - Supported mouse genome 'mm10' ([#241](https://github.com/ShixiangWang/sigminer/issues/241)).
 - Added `read_copynumber_seqz()` to read sequenza result directory.
-- Added new and experimental classification method 'T' for copy number data.
 - Speed up the annotation process in `read_copynumber()`.
 
 # sigminer 1.0.7

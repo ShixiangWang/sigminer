@@ -12,6 +12,7 @@ reference:
     - read_copynumber
     - read_copynumber_seqz
     - read_maf
+    - read_vcf
     - CopyNumber-class
     - MAF-class
     - subset.CopyNumber
@@ -25,6 +26,7 @@ reference:
     - show_sig_number_survey2
     - sig_extract
     - sig_auto_extract
+    - sigprofiler
   - title: Core pipeline 2 - signature exposure fitting and optimization
     desc: Quantify exposure in at least one sample with reference signatures. It can also be used to optimize signature exposure from pipeline 1 and analyze exposure instability.
     contents:
@@ -39,6 +41,7 @@ reference:
     contents:
     - show_catalogue
     - show_sig_profile
+    - show_sig_profile_heatmap
     - show_sig_exposure
     - show_cosmic_sig_profile
     - show_sig_consensusmap
