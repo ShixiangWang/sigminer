@@ -9,10 +9,9 @@
 #' @export
 #' @seealso [read_maf], [read_copynumber]
 read_vcf <- function(vcfs, samples = NULL, keep_only_pass = TRUE, verbose = TRUE) {
-
   vcfs_name <- vcfs
   message("Reading file(s) ", paste(vcfs, collapse = ", "))
-  vcfs <- purrr::map(vcfs, ~data.table::fread(., skip = "#", select = c(1, 2, 4, 5, 7)))
+  vcfs <- purrr::map(vcfs, ~ data.table::fread(., skip = "#CHROM", select = c(1, 2, 4, 5, 7)))
 
   if (is.null(samples)) {
     names(vcfs) <- file_name(vcfs_name, must_chop = ".vcf")
@@ -39,8 +38,9 @@ read_vcf <- function(vcfs, samples = NULL, keep_only_pass = TRUE, verbose = TRUE
   vcfs$filter <- NULL
 
   vcfs$Chromosome <- ifelse(startsWith(vcfs$Chromosome, "chr"),
-                            vcfs$Chromosome,
-                            paste0("chr", vcfs$Chromosome))
+    vcfs$Chromosome,
+    paste0("chr", vcfs$Chromosome)
+  )
   vcfs$End_Position <- vcfs$Start_Position + pmax(nchar(vcfs$Reference_Allele), nchar(vcfs$Tumor_Seq_Allele2)) - 1L
   vcfs$Variant_Type <- dplyr::case_when(
     nchar(vcfs$Reference_Allele) == 1L & nchar(vcfs$Tumor_Seq_Allele2) == 1L ~ "SNP",
@@ -51,15 +51,15 @@ read_vcf <- function(vcfs, samples = NULL, keep_only_pass = TRUE, verbose = TRUE
     TRUE ~ "Unknown"
   )
 
-  vcfs$Variant_Classification = "Unknown"
-  vcfs$Hugo_Symbol = "Unknown"
+  vcfs$Variant_Classification <- "Unknown"
+  vcfs$Hugo_Symbol <- "Unknown"
 
   ## Annotate gene symbol
   # if (genome_build == "hg19") {
   #   gene_dt <- readRDS(system.file("extdata", "human_hg19_gene_info.rds", package = "sigminer", mustWork = TRUE))
   # } else {
   #   gene_dt <- readRDS(system.file("extdata", "human_hg38_gene_info.rds", package = "sigminer", mustWork = TRUE))
-  #}
+  # }
 
   maftools::read.maf(
     vcfs,

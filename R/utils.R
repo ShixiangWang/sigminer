@@ -40,7 +40,7 @@ isValidAndUnreserved <- function(string) {
 file_name <- function(filepath, must_chop = NULL) {
   y <- sub(pattern = "(.*)\\..*$", replacement = "\\1", basename(filepath))
   if (!is.null(must_chop)) {
-   y <- sub(must_chop, "", y)
+    y <- sub(must_chop, "", y)
   }
   y
 }

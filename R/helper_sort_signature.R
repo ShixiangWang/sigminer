@@ -14,7 +14,9 @@ helper_sort_signature <- function(sig, expo) {
     sig_order <- get_segsize_order(mat)
   } else {
     ## Order by burden #246
-    sig_order <- expo %>% rowSums() %>% order(decreasing = TRUE)
+    sig_order <- expo %>%
+      rowSums() %>%
+      order(decreasing = TRUE)
   }
   return(sig_order)
 }

@@ -350,9 +350,10 @@ get_LengthFraction <- function(CN_data,
     x = segTab$chromosome,
     ignore.case = TRUE
   )
-  if (any(!grepl("chr", segTab$chromosome))) {
-    segTab$chromosome[!grepl("chr", segTab$chromosome)] <- paste0("chr", segTab$chromosome[!grepl("chr", segTab$chromosome)])
-  }
+
+  segTab$chromosome <- ifelse(startsWith(segTab$chromosome, "chr"),
+                              segTab$chromosome,
+                              paste0("chr", segTab$chromosome))
 
   if (genome_build == "mm10") {
     valid_chr <- c(paste0("chr", 1:19), "chrX", "chrY")

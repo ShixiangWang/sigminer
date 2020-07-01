@@ -352,11 +352,14 @@ generate_matrix_DBS <- function(query, ref_genome, genome_build = "hg19", add_tr
 
   query$complexMotif <- paste0(query$upstream, "[", query$dbsMotif, "]", query$downstream)
   query$complexMotif <- factor(query$complexMotif,
-                               levels = vector_to_combination(c("A", "C", "G", "T"),
-                                                              "[",
-                                                              levels(query$dbsMotif),
-                                                              "]",
-                                                              c("A", "C", "G", "T")))
+    levels = vector_to_combination(
+      c("A", "C", "G", "T"),
+      "[",
+      levels(query$dbsMotif),
+      "]",
+      c("A", "C", "G", "T")
+    )
+  )
 
   DBS_78 <- records_to_matrix(query, "Tumor_Sample_Barcode", "dbsMotif") %>% as.matrix()
   send_success("DBS-78 matrix created.")

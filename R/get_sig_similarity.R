@@ -187,7 +187,7 @@ get_sig_similarity <- function(Signature, Ref = NULL,
     sig <- w[, i]
     corMat <- rbind(corMat, apply(sigs, 2, function(x) {
       round(crossprod(sig, x) / sqrt(crossprod(x) * crossprod(sig)),
-            digits = 3
+        digits = 3
       )
     }))
   }
@@ -197,7 +197,7 @@ get_sig_similarity <- function(Signature, Ref = NULL,
   for (i in 1:ncol(w)) {
     sig <- w[, i]
     RssMat <- rbind(RssMat, apply(sigs, 2, function(x) {
-      round(sum((sig - x) ^ 2), digits = 6)
+      round(sum((sig - x)^2), digits = 6)
     }))
   }
   rownames(RssMat) <- colnames(w)

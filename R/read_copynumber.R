@@ -159,10 +159,9 @@ read_copynumber <- function(input,
         x = as.character(chromosome),
         ignore.case = TRUE
       )]
-      if (any(!grepl("chr", temp$chromosome))) {
-        temp$chromosome[!grepl("chr", temp$chromosome)] <-
-          paste0("chr", temp$chromosome[!grepl("chr", temp$chromosome)])
-      }
+      temp$chromosome <- ifelse(startsWith(temp$chromosome, "chr"),
+                                temp$chromosome,
+                                paste0("chr", temp$chromosome))
       temp[, chromosome := sub(
         pattern = "x",
         replacement = "X",

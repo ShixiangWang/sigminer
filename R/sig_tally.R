@@ -441,10 +441,10 @@ sig_tally.MAF <- function(object, mode = c("SBS", "DBS", "ID", "ALL"),
     ignore.case = TRUE
   )
   ## Make sure all have prefix
-  if (any(!grepl("chr", query$Chromosome))) {
-    query$Chromosome[!grepl("chr", query$Chromosome)] <-
-      paste0("chr", query$Chromosome[!grepl("chr", query$Chromosome)])
-  }
+  query$Chromosome <- ifelse(startsWith(query$Chromosome, "chr"),
+    query$Chromosome,
+    paste0("chr", query$Chromosome)
+  )
 
   send_success("Chromosome names checked.")
 
