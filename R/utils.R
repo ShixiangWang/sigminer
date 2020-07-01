@@ -37,6 +37,14 @@ isValidAndUnreserved <- function(string) {
   )
 }
 
+file_name <- function(filepath, must_chop = NULL) {
+  y <- sub(pattern = "(.*)\\..*$", replacement = "\\1", basename(filepath))
+  if (!is.null(must_chop)) {
+   y <- sub(must_chop, "", y)
+  }
+  y
+}
+
 # From https://gist.github.com/mbannert/e9fcfa86de3b06068c83
 rgb2hex <- function(r, g, b) grDevices::rgb(r, g, b, maxColorValue = 255)
 col2hex <- function(col, alpha) grDevices::rgb(t(grDevices::col2rgb(col)), alpha = alpha, maxColorValue = 255)

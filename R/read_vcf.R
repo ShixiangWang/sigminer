@@ -1,11 +1,21 @@
-read_vcf <- function(vcfs, samples = NULL, keep_only_pass = TRUE, genome_build = c("hg19", "hg38"), verbose = TRUE) {
+#' Read VCF files as MAF object
+#'
+#' @param vcfs VCF file paths.
+#' @param samples sample names for VCF files.
+#' @param keep_only_pass if `TRUE`, keep only 'PASS' mutation for analysis.
+#' @param verbose if `TRUE`, print extra info.
+#'
+#' @return a [MAF].
+#' @export
+#' @seealso [read_maf], [read_copynumber]
+read_vcf <- function(vcfs, samples = NULL, keep_only_pass = TRUE, verbose = TRUE) {
 
   vcfs_name <- vcfs
   message("Reading file(s) ", paste(vcfs, collapse = ", "))
   vcfs <- purrr::map(vcfs, ~data.table::fread(., skip = "#", select = c(1, 2, 4, 5, 7)))
 
   if (is.null(samples)) {
-    names(vcfs) <- basename(vcfs_name)
+    names(vcfs) <- file_name(vcfs_name, must_chop = ".vcf")
   } else {
     if (length(samples) != length(vcfs_name)) {
       stop("Unequal files and samples!")
@@ -18,27 +28,52 @@ read_vcf <- function(vcfs, samples = NULL, keep_only_pass = TRUE, genome_build =
   # required.fields = c('Hugo_Symbol', 'Chromosome', 'Start_Position', 'End_Position', 'Reference_Allele', 'Tumor_Seq_Allele2',
   #                     'Variant_Classification', 'Variant_Type', 'Tumor_Sample_Barcode')
 
-  colnames(vcfs) <- c("Tumor_Sample_Barcode", "Chromosome", "Tumor_Sample_Barcode", "Reference_Allele", "Tumor_Seq_Allele2", "filter")
+  colnames(vcfs) <- c("Tumor_Sample_Barcode", "Chromosome", "Start_Position", "Reference_Allele", "Tumor_Seq_Allele2", "filter")
 
   if (keep_only_pass) {
     vcfs <- vcfs[vcfs$filter == "PASS", ]
+    if (nrow(vcfs) < 1L) {
+      stop("No mutation left after filtering.")
+    }
   }
   vcfs$filter <- NULL
 
+  vcfs$Chromosome <- ifelse(startsWith(vcfs$Chromosome, "chr"),
+                            vcfs$Chromosome,
+                            paste0("chr", vcfs$Chromosome))
+  vcfs$End_Position <- vcfs$Start_Position + pmax(nchar(vcfs$Reference_Allele), nchar(vcfs$Tumor_Seq_Allele2)) - 1L
+  vcfs$Variant_Type <- dplyr::case_when(
+    nchar(vcfs$Reference_Allele) == 1L & nchar(vcfs$Tumor_Seq_Allele2) == 1L ~ "SNP",
+    nchar(vcfs$Reference_Allele) < nchar(vcfs$Tumor_Seq_Allele2) ~ "INS",
+    nchar(vcfs$Reference_Allele) > nchar(vcfs$Tumor_Seq_Allele2) ~ "DEL",
+    nchar(vcfs$Reference_Allele) == 2L & nchar(vcfs$Tumor_Seq_Allele2) == 2L ~ "DNP",
+    nchar(vcfs$Reference_Allele) == 3L & nchar(vcfs$Tumor_Seq_Allele2) == 3L ~ "TNP",
+    TRUE ~ "Unknown"
+  )
+
+  vcfs$Variant_Classification = "Unknown"
+  vcfs$Hugo_Symbol = "Unknown"
+
   ## Annotate gene symbol
-  if (genome_build == "hg19") {
-    gene_dt <- readRDS(system.file("extdata", "human_hg19_gene_info.rds", package = "sigminer", mustWork = TRUE))
-  } else {
-    gene_dt <- readRDS(system.file("extdata", "human_hg38_gene_info.rds", package = "sigminer", mustWork = TRUE))
-  }
+  # if (genome_build == "hg19") {
+  #   gene_dt <- readRDS(system.file("extdata", "human_hg19_gene_info.rds", package = "sigminer", mustWork = TRUE))
+  # } else {
+  #   gene_dt <- readRDS(system.file("extdata", "human_hg38_gene_info.rds", package = "sigminer", mustWork = TRUE))
+  #}
 
-  # structure(list(Tumor_Sample_Barcode = c("201T.cave.annot.vcf",
-  #                                         "201T.cave.annot.vcf", "201T.cave.annot.vcf", "201T.cave.annot.vcf",
-  #                                         "201T.cave.annot.vcf", "201T.cave.annot.vcf"), Chromosome = c("1",
-  #                                                                                                       "1", "1", "1", "1", "1"), Tumor_Sample_Barcode = c(1249680L,
-  #                                                                                                                                                          1264136L, 1268403L, 1275688L, 1374508L, 1390967L), Reference_Allele = c("C",
-  #                                                                                                                                                                                                                                  "A", "G", "G", "G", "C"), Tumor_Seq_Allele2 = c("T", "T", "A",
-  #                                                                                                                                                                                                                                                                                  "A", "A", "A")), row.names = c(NA, -6L), class = c("data.table",
-  #                                                                                                                                                                                                                                                                                                                                     "data.frame"), .internal.selfref = <pointer: 0x7f8a3f80cae0>)
-
+  maftools::read.maf(
+    vcfs,
+    clinicalData = NULL,
+    removeDuplicatedVariants = TRUE,
+    useAll = TRUE,
+    gisticAllLesionsFile = NULL,
+    gisticAmpGenesFile = NULL,
+    gisticDelGenesFile = NULL,
+    gisticScoresFile = NULL,
+    cnLevel = "all",
+    cnTable = NULL,
+    isTCGA = FALSE,
+    vc_nonSyn = "Unknown",
+    verbose = verbose
+  )
 }
