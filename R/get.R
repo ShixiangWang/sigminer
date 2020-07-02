@@ -22,8 +22,14 @@ get_cnlist <- function(CopyNumber, ignore_chrs = NULL, add_index = FALSE) {
     all_cols <- colnames(data)
     data.table::setcolorder(data, neworder = c(req_cols, setdiff(all_cols, req_cols)))
   } else {
-    data <- data.table::copy(CopyNumber@data)
+    data <- CopyNumber@data
   }
+
+  if (add_index) {
+    data$Index <- seq(1, nrow(data))
+    send_success("Generated 'Index' column to track the copy number segment location.")
+  }
+
   if (!is.null(ignore_chrs)) {
     chrs_exist <- ignore_chrs %in% unique(data$chromosome)
     if (!any(chrs_exist)) {
@@ -35,10 +41,6 @@ get_cnlist <- function(CopyNumber, ignore_chrs = NULL, add_index = FALSE) {
       send_info("Filtering out segments in ", paste(ignore_chrs[chrs_exist], collapse = ","))
       data <- data[!chromosome %in% ignore_chrs[chrs_exist]]
     }
-  }
-
-  if (add_index) {
-    data$Index <- seq(1, nrow(data))
   }
 
   res <- split(data, by = "sample")
