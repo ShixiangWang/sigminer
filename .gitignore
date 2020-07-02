@@ -9,4 +9,4 @@ Meta
 data-raw/*.gtf.gz
 data-raw/SigProfiler*
 data-raw/*.csv
-*.vcf
+data-raw/*.vcf

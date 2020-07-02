@@ -29,6 +29,11 @@ a \link{MAF}.
 \description{
 Read VCF files as MAF object
 }
+\examples{
+vcfs <- list.files(system.file("extdata", package = "sigminer"), "*.vcf", full.names = TRUE)
+maf <- read_vcf(vcfs)
+maf <- read_vcf(vcfs, keep_only_pass = FALSE)
+}
 \seealso{
 \link{read_maf}, \link{read_copynumber}
 }

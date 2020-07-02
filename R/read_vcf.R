@@ -9,6 +9,10 @@
 #' @return a [MAF].
 #' @export
 #' @seealso [read_maf], [read_copynumber]
+#' @examples
+#' vcfs <- list.files(system.file("extdata", package = "sigminer"), "*.vcf", full.names = TRUE)
+#' maf <- read_vcf(vcfs)
+#' maf <- read_vcf(vcfs, keep_only_pass = FALSE)
 read_vcf <- function(vcfs, samples = NULL, genome_build = c("hg19", "hg38"), keep_only_pass = TRUE, verbose = TRUE) {
   genome_build <- match.arg(genome_build)
   vcfs_name <- vcfs
@@ -26,6 +30,9 @@ read_vcf <- function(vcfs, samples = NULL, genome_build = c("hg19", "hg38"), kee
 
   vcfs <- data.table::rbindlist(vcfs, use.names = FALSE, idcol = "sample")
   colnames(vcfs) <- c("Tumor_Sample_Barcode", "Chromosome", "Start_Position", "Reference_Allele", "Tumor_Seq_Allele2", "filter")
+  if (!is.character(vcfs$Chromosome[1])) {
+    vcfs$Chromosome <- as.character(vcfs$Chromosome)
+  }
 
   if (keep_only_pass) {
     vcfs <- vcfs[vcfs$filter == "PASS", ]
@@ -70,7 +77,7 @@ read_vcf <- function(vcfs, samples = NULL, genome_build = c("hg19", "hg38"), kee
   match_dt <- data.table::foverlaps(vcfs, dt, by.x = c("Chromosome", "Start_Position", "End_Position"),
                                     which = TRUE, nomatch = NULL)
   ## Keep only the first gene index
-  match_dt <- match_dt[unique(match_dt$xid)]
+  match_dt <- match_dt[!duplicated(match_dt$xid)]
   vcfs$Hugo_Symbol[match_dt$xid] <- dt$gene_name[match_dt$yid]
 
   if (verbose) message("Transforming into a MAF object...")
