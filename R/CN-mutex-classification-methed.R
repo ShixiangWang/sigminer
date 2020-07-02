@@ -14,7 +14,7 @@ get_features_mutex <- function(CN_data,
   # features <- unique(feature_setting$feature)
   features <- c("BP10MB", "CN", "SS", "CNCP_M", "OsCN", "StepRising", "StepFalling") # more?
 
-  send_info("NOTE: this method derives features for each segment.")
+  send_info("NOTE: this method derives features for each segment. Be patient...")
 
   .get_feature <- function(i) {
     if (i == "SS") {
@@ -317,7 +317,7 @@ get_matrix_mutex <- function(CN_components) {
 
   c_class_levels <- vector_to_combination(levels(dt_c$context_shape), levels(dt_c$C_SS), levels(dt_c$C_CN),
     paste0("A", levels(dt_c$C_CNCP_M)), paste0("B", levels(dt_c$C_BP10MB)),
-    sep = ":"
+    c_string = ":"
   )
   dt_c$c_class <- paste(dt_c$context_shape, dt_c$C_SS, dt_c$C_CN,
     paste0("A", dt_c$C_CNCP_M), paste0("B", dt_c$C_BP10MB),
