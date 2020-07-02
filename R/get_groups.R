@@ -120,7 +120,7 @@ get_groups <- function(Signature,
     }
     nmfObj <- Signature$Raw$nmf_obj
     predict.samples <- predict(nmfObj, what = "samples", prob = T)
-    silhouette.samples <- silhouette(nmfObj, what = "samples")
+    silhouette.samples <- cluster::silhouette(nmfObj, what = "samples")
     data <- data.frame(
       sample = names(predict.samples$predict),
       group = predict.samples$predict,
@@ -177,6 +177,7 @@ get_groups <- function(Signature,
     n_cluster <- ifelse(is.null(n_cluster), ncol(contrib), n_cluster)
     send_info("Running k-means with ", n_cluster, " clusters...")
     contrib.km <- kmeans(x = contrib, centers = n_cluster)
+    sil_width <- cluster::silhouette(contrib.km$cluster, cluster::daisy(contrib))
     send_info("Generating a table of group and signature contribution (stored in 'map_table' attr):")
     ztable <- contrib.km$centers
     print(ztable)
@@ -188,14 +189,12 @@ get_groups <- function(Signature,
     colnames(cluster_df)[1] <- "group"
     data <- as.data.frame(contrib.km$cluster)
     colnames(data)[1] <- "group"
+    data$silhouette_width = signif(sil_width[, "sil_width"], 3)
     data.table::setDT(data, keep.rownames = TRUE)
     colnames(data)[1] <- "sample"
     data$group <- as.character(data$group)
     data <- merge(data, cluster_df, by = "group")
-    # Set a default value for now
-    # data$weight <- 1L
-    # data.table::setcolorder(data, neworder = c("sample", "group", "weight", "enrich_sig"))
-    data.table::setcolorder(data, neworder = c("sample", "group", "enrich_sig"))
+    data.table::setcolorder(data, neworder = c("sample", "group", "silhouette_width", "enrich_sig"))
   }
 
   data <- data.table::as.data.table(data)
