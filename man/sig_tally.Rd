@@ -31,7 +31,7 @@ sig_tally(object, ...)
 \method{sig_tally}{MAF}(
   object,
   mode = c("SBS", "DBS", "ID", "ALL"),
-  ref_genome = NULL,
+  ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
   genome_build = NULL,
   add_trans_bias = FALSE,
   ignore_chrs = NULL,

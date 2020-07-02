@@ -4,12 +4,20 @@
 \alias{read_vcf}
 \title{Read VCF files as MAF object}
 \usage{
-read_vcf(vcfs, samples = NULL, keep_only_pass = TRUE, verbose = TRUE)
+read_vcf(
+  vcfs,
+  samples = NULL,
+  genome_build = c("hg19", "hg38"),
+  keep_only_pass = TRUE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{vcfs}{VCF file paths.}
 
 \item{samples}{sample names for VCF files.}
+
+\item{genome_build}{genome build version like "hg19".}
 
 \item{keep_only_pass}{if \code{TRUE}, keep only 'PASS' mutation for analysis.}
 

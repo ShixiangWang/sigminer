@@ -368,7 +368,7 @@ sig_tally.CopyNumber <- function(object,
 #' @references Bergstrom EN, Huang MN, Mahto U, Barnes M, Stratton MR, Rozen SG, Alexandrov LB: SigProfilerMatrixGenerator: a tool for visualizing and exploring patterns of small mutational events. BMC Genomics 2019, 20:685 https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-019-6041-2
 #' @export
 sig_tally.MAF <- function(object, mode = c("SBS", "DBS", "ID", "ALL"),
-                          ref_genome = NULL,
+                          ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
                           genome_build = NULL,
                           add_trans_bias = FALSE,
                           ignore_chrs = NULL,
@@ -380,18 +380,6 @@ sig_tally.MAF <- function(object, mode = c("SBS", "DBS", "ID", "ALL"),
   }
 
   mode <- match.arg(mode)
-
-  if (is.null(genome_build)) {
-    if (grepl("hg19", ref_genome)) {
-      genome_build <- "hg19"
-    } else if (grepl("hg38", ref_genome)) {
-      genome_build <- "hg38"
-    } else if (grepl("mm10$", ref_genome)) {
-      genome_build <- "mm10"
-    } else {
-      send_stop("Cannot guess the genome build, please set it by hand!")
-    }
-  }
 
   hsgs.installed <- BSgenome::installed.genomes(splitNameParts = TRUE)
   data.table::setDT(x = hsgs.installed)
@@ -411,6 +399,18 @@ sig_tally.MAF <- function(object, mode = c("SBS", "DBS", "ID", "ALL"),
       send_info("Found following BSgenome installtions. Correct {.code ref_genome} argument if necessary.")
       print(hsgs.installed)
       send_stop("Exit.")
+    }
+  }
+
+  if (is.null(genome_build)) {
+    if (grepl("hg19", ref_genome)) {
+      genome_build <- "hg19"
+    } else if (grepl("hg38", ref_genome)) {
+      genome_build <- "hg38"
+    } else if (grepl("mm10$", ref_genome)) {
+      genome_build <- "mm10"
+    } else {
+      send_stop("Cannot guess the genome build, please set it by hand!")
     }
   }
 
