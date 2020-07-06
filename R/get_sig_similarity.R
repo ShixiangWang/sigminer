@@ -257,8 +257,8 @@ get_sig_similarity <- function(Signature, Ref = NULL,
 #' s2
 #'
 #' @testexamples
-#' expect_s3_class(s1, "list")
-#' expect_s3_class(s2, "list")
+#' expect_is(s1, "list")
+#' expect_is(s2, "list")
 get_sig_db <- function(sig_db = "legacy") {
   db_file <- switch(
     sig_db,

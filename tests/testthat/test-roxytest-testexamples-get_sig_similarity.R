@@ -40,7 +40,7 @@ test_that("Function get_sig_db() @ L262", {
   s1
   s2
   
-  expect_s3_class(s1, "list")
-  expect_s3_class(s2, "list")
+  expect_is(s1, "list")
+  expect_is(s2, "list")
 })
 
