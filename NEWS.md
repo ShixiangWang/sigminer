@@ -1,5 +1,6 @@
 # sigminer 1.0.8
 
+- Tried to speed up joining adjacent segments in `read_copynumber()`, got 20% improvement.
 - Added `cosine()` function.
 - Added and exported `get_sig_db()` to let users directly load signature database.
 - Added `sigprofiler_extract()` and `sigprofiler_import()` to call SigProfiler and import results.

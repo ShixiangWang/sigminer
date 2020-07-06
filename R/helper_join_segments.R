@@ -1,3 +1,56 @@
+
+# data.table implementation 20% speed up ----------------------------------
+
+helper_join_segments2 <- function(segTab) {
+  segTab <- data.table::copy(segTab)
+  final_orders <- c("chromosome", "start", "end", "segVal", "sample")
+  cls_cols <- setdiff(colnames(segTab), c(final_orders, "segVal2"))
+  segTab$segVal2 <- segTab$segVal
+  segTab <- segTab[, .groupby_collapse(.SD, cls_cols),
+    by = list(sample, chromosome)
+  ]
+
+  segTab$data.table <- NULL
+  data.table::setcolorder(segTab, final_orders)
+  return(segTab)
+}
+
+.groupby_collapse <- function(dt, cols = NULL) {
+  if (length(cols) > 0) {
+    dt <- dt[, collapse_top2bottom(.SD, cols = cols),
+      by = data.table::rleid(segVal)
+    ]
+  } else {
+    dt <- dt[, collapse_top2bottom(.SD),
+      by = data.table::rleid(segVal)
+    ]
+  }
+  dt
+}
+
+collapse_top2bottom <- function(dt, cols = NULL) {
+  x <- data.table::data.table(
+    start = dt[1]$start,
+    end = dt[.N]$end,
+    segVal = dt[1]$segVal2
+  )
+
+  if (!is.null(cols)) {
+    x[, (cols) := lapply(dt[, cols, with = FALSE], function(x) {
+      if (is.numeric(x)) {
+        mean(x, na.rm = TRUE)
+      } else {
+        paste0(unique(na.omit(x)), collapse = ",")
+      }
+    })]
+  }
+  return(x)
+}
+
+
+# tidyverse implementation ------------------------------------------------
+
+
 helper_join_segments <- function(segTab) {
   final_orders <- c("chromosome", "start", "end", "segVal", "sample")
   segTab <- segTab %>%

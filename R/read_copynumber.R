@@ -355,7 +355,7 @@ read_copynumber <- function(input,
   data_df$end <- as.numeric(data_df$end)
 
   if (join_adj_seg) {
-    data_df <- helper_join_segments(data_df)
+    data_df <- helper_join_segments2(data_df)
     send_success("Adjacent segments with same copy number value joined")
   }
   # order by segment start position by each chromosome in each sample
