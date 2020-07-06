@@ -55,6 +55,7 @@ Imports:
     methods,
     NMF,
     purrr,
+    Rcpp,
     rlang (>= 0.1.2),
     stats,
     tidyr
@@ -86,6 +87,8 @@ Suggests:
     roxygen2,
     testthat,
     tibble
+LinkingTo: 
+    Rcpp
 VignetteBuilder: 
     knitr
 biocViews:

@@ -161,17 +161,9 @@ get_sig_similarity <- function(Signature, Ref = NULL,
     }
   }
 
-
-  corMat <- c()
-  for (i in 1:ncol(w)) {
-    sig <- w[, i]
-    corMat <- rbind(corMat, apply(sigs, 2, function(x) {
-      round(crossprod(sig, x) / sqrt(crossprod(x) * crossprod(sig)),
-            digits = 3
-      )
-    }))
-  }
+  corMat <- round(cosineMatrix(w, sigs), digits = 3)
   rownames(corMat) <- colnames(w)
+  colnames(corMat) <- colnames(sigs)
 
   RssMat <- c()
   for (i in 1:ncol(w)) {
@@ -181,6 +173,7 @@ get_sig_similarity <- function(Signature, Ref = NULL,
     }))
   }
   rownames(RssMat) <- colnames(w)
+  colnames(RssMat) <- colnames(sigs)
 
   if (!exists("aetiology")) {
     aetiology <- NULL

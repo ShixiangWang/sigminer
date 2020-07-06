@@ -1,5 +1,6 @@
 # sigminer 1.0.8
 
+- Added `cosine()` function.
 - Added and exported `get_sig_db()` to let users directly load signature database.
 - Added `sigprofiler_extract()` and `sigprofiler_import()` to call SigProfiler and import results.
 - Added `read_vcf()` for simply reading VCF files.

@@ -142,13 +142,7 @@ is.wholenumber <- function(x, tol = .Machine$double.eps) {
   abs(x - round(x)) < tol
 }
 
-## https://stats.stackexchange.com/questions/31565/is-there-an-r-function-that-will-compute-the-cosine-dissimilarity-matrix
-calc_cosine <- function(x) {
-  M <- as.matrix(x)
-  sim <- M / sqrt(rowSums(M * M))
-  sim <- sim %*% t(sim)
-  sim
-}
+
 
 # Signals ----------------------------------------------------------------
 
