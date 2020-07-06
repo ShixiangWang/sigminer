@@ -32,3 +32,15 @@ test_that("Function get_sig_similarity() @ L62", {
   expect_equal(length(s4), 4L)
 })
 
+
+test_that("Function get_sig_db() @ L269", {
+  
+  s1 <- get_sig_db()
+  s2 <- get_sig_db("DBS")
+  s1
+  s2
+  
+  expect_s3_class(s1, "list")
+  expect_s3_class(s2, "list")
+})
+

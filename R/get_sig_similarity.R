@@ -97,29 +97,9 @@ get_sig_similarity <- function(Signature, Ref = NULL,
   method <- match.arg(arg = method, choices = c("cosine"))
 
   if (is.null(Ref)) {
-    db_file <- switch(
-      sig_db,
-      legacy = system.file("extdata", "legacy_signatures.RDs",
-        package = "maftools", mustWork = TRUE
-      ),
-      SBS = system.file("extdata", "SBS_signatures.RDs",
-        package = "maftools", mustWork = TRUE
-      ),
-      DBS = system.file("extdata", "DBS_signatures.rds",
-        package = "sigminer", mustWork = TRUE
-      ),
-      ID = system.file("extdata", "ID_signatures.rds",
-        package = "sigminer", mustWork = TRUE
-      ),
-      TSB = system.file("extdata", "TSB_signatures.rds",
-        package = "sigminer", mustWork = TRUE
-      )
-    )
-    sigs_db <- readRDS(file = db_file)
+    sigs_db <- get_sig_db(sig_db)
     sigs <- sigs_db$db
     aetiology <- sigs_db$aetiology
-
-    sigs <- apply(sigs, 2, function(x) x / sum(x))
 
     ## Some extra processing
     if (sig_db == "legacy" & db_type == "human-genome") {
@@ -187,7 +167,7 @@ get_sig_similarity <- function(Signature, Ref = NULL,
     sig <- w[, i]
     corMat <- rbind(corMat, apply(sigs, 2, function(x) {
       round(crossprod(sig, x) / sqrt(crossprod(x) * crossprod(sig)),
-        digits = 3
+            digits = 3
       )
     }))
   }
@@ -236,15 +216,15 @@ get_sig_similarity <- function(Signature, Ref = NULL,
           max(corMat[i, ]), "]"
         )
         message("--Found ", rownames(corMat)[i], " most similar to ",
-          names(which(corMat[i, ] == max(corMat[i, ]))),
-          sep = ""
+                names(which(corMat[i, ] == max(corMat[i, ]))),
+                sep = ""
         )
         message(paste0("   ", ae))
       } else {
         message("--Found ", rownames(corMat)[i], " most similar to ",
-          names(which(corMat[i, ] == max(corMat[i, ]))),
-          paste0(" [similarity: ", max(corMat[i, ]), "]"),
-          sep = ""
+                names(which(corMat[i, ] == max(corMat[i, ]))),
+                paste0(" [similarity: ", max(corMat[i, ]), "]"),
+                sep = ""
         )
       }
     }
@@ -261,4 +241,52 @@ get_sig_similarity <- function(Signature, Ref = NULL,
   class(res) <- c("similarity", class(res))
 
   invisible(res)
+}
+
+
+# Get Reference Signature Database ----------------------------------------
+
+#' Obtain Reference Signatures
+#'
+#' The signatures and their aetiologies mainly obtained from COSMIC database and cleaned before saving into
+#' **sigminer** package.
+#'
+#' @inheritParams get_sig_similarity
+#'
+#' @return a `list`.
+#' @export
+#' @seealso [get_sig_similarity], [sig_fit] and [show_cosmic_sig_profile].
+#'
+#' @examples
+#' s1 <- get_sig_db()
+#' s2 <- get_sig_db("DBS")
+#' s1
+#' s2
+#'
+#' @testexamples
+#' expect_s3_class(s1, "list")
+#' expect_s3_class(s2, "list")
+get_sig_db <- function(sig_db = "legacy") {
+  db_file <- switch(
+    sig_db,
+    legacy = system.file("extdata", "legacy_signatures.RDs",
+                         package = "maftools", mustWork = TRUE
+    ),
+    SBS = system.file("extdata", "SBS_signatures.RDs",
+                      package = "maftools", mustWork = TRUE
+    ),
+    DBS = system.file("extdata", "DBS_signatures.rds",
+                      package = "sigminer", mustWork = TRUE
+    ),
+    ID = system.file("extdata", "ID_signatures.rds",
+                     package = "sigminer", mustWork = TRUE
+    ),
+    TSB = system.file("extdata", "TSB_signatures.rds",
+                      package = "sigminer", mustWork = TRUE
+    )
+  )
+  sigs_db <- readRDS(file = db_file)
+  ## Make sure column-sum is 1, i.e. normalized
+  sigs_db$db <- apply(sigs_db$db, 2, function(x) x / sum(x))
+  sigs_db
 }

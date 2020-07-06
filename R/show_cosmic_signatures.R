@@ -24,30 +24,9 @@ show_cosmic_sig_profile <- function(sig_index = NULL, show_index = TRUE, sig_db 
     return(invisible())
   }
 
-  db_file <- switch(
-    sig_db,
-    legacy = system.file("extdata", "legacy_signatures.RDs",
-      package = "maftools", mustWork = TRUE
-    ),
-    SBS = system.file("extdata", "SBS_signatures.RDs",
-      package = "maftools", mustWork = TRUE
-    ),
-    DBS = system.file("extdata", "DBS_signatures.rds",
-      package = "sigminer", mustWork = TRUE
-    ),
-    ID = system.file("extdata", "ID_signatures.rds",
-      package = "sigminer", mustWork = TRUE
-    ),
-    TSB = system.file("extdata", "TSB_signatures.rds",
-      package = "sigminer", mustWork = TRUE
-    ),
-    send_stop("Invalid parameter passing to {.code sig_db}.")
-  )
-  sigs_db <- readRDS(file = db_file)
+  sigs_db <- get_sig_db(sig_db)
   sigs <- sigs_db$db
   aetiology <- sigs_db$aetiology
-
-  sigs <- apply(sigs, 2, function(x) x / sum(x))
 
   avail_index <- switch(
     sig_db,
