@@ -124,6 +124,7 @@ sig_tally <- function(object, ...) {
 }
 
 #' @describeIn sig_tally Returns copy number features, components and component-by-sample matrix
+#' @param indices integer vector indicating segments to keep.
 #' @param method method for feature classfication, can be one of "Macintyre" ("M"),
 #' "Wang" ("W").
 #' @param feature_setting a `data.frame` used for classification.
@@ -175,6 +176,7 @@ sig_tally <- function(object, ...) {
 sig_tally.CopyNumber <- function(object,
                                  method = "Wang",
                                  ignore_chrs = NULL,
+                                 indices = NULL,
                                  feature_setting = sigminer::CN.features,
                                  type = c("probability", "count"),
                                  reference_components = FALSE,
@@ -300,7 +302,7 @@ sig_tally.CopyNumber <- function(object,
     send_success("Classified and combined.")
 
     send_info("Step: generating components by sample matrix.")
-    cn_matrix_list <- get_matrix_mutex(cn_components)
+    cn_matrix_list <- get_matrix_mutex(cn_components, indices = indices)
     cn_matrix <- cn_matrix_list$s_mat
 
     if (keep_only_matrix) {

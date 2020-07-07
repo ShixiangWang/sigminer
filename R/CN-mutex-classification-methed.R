@@ -271,8 +271,13 @@ call_component <- function(f_dt, f_name) {
 
 # Get matrix --------------------------------------------------------------
 
-get_matrix_mutex <- function(CN_components) {
+get_matrix_mutex <- function(CN_components, indices = NULL) {
   merged_dt <- purrr::reduce(CN_components, merge, by = c("sample", "Index"), all = TRUE)
+
+  if (!is.null(indices)) {
+    merged_dt <- merged_dt[merged_dt$Index %in% indices]
+  }
+
   ## Standard Classificiations
   ## Complex Classifications
   dt_s <- merged_dt[, colnames(merged_dt) == "sample" | startsWith(colnames(merged_dt), "S_"), with = FALSE]

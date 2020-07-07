@@ -12,6 +12,7 @@ sig_tally(object, ...)
   object,
   method = "Wang",
   ignore_chrs = NULL,
+  indices = NULL,
   feature_setting = sigminer::CN.features,
   type = c("probability", "count"),
   reference_components = FALSE,
@@ -50,6 +51,8 @@ corresponding class (e.g. \code{CopyNumber}).}
 "Wang" ("W").}
 
 \item{ignore_chrs}{Chromsomes to ignore from analysis. e.g. chrX and chrY.}
+
+\item{indices}{integer vector indicating segments to keep.}
 
 \item{feature_setting}{a \code{data.frame} used for classification.
 \strong{Only used when method is "Wang" ("W")}.
