@@ -213,33 +213,28 @@ one measure.</p></td>
 <span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_tally_M.RData"</span>,
   <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 ))
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>NMF</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required package: pkgmaker</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: registry</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘pkgmaker’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:R.utils’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    isPackageInstalled</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: rngtools</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: cluster</span></div><div class='output co'>#&gt; <span class='message'>NMF - BioConductor layer [OK] | Shared memory capabilities [NO: windows] | Cores 7/8</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘NMF’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:testthat’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    compare</span></div><div class='input'><span class='no'>cn_estimate</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sig_estimate.html'>sig_estimate</a></span>(<span class='no'>cn_tally_M</span>$<span class='no'>nmf_matrix</span>,
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>NMF</span>)
+<span class='no'>cn_estimate</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sig_estimate.html'>sig_estimate</a></span>(<span class='no'>cn_tally_M</span>$<span class='no'>nmf_matrix</span>,
   <span class='kw'>cores</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>nrun</span> <span class='kw'>=</span> <span class='fl'>5</span>,
   <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 )</div><div class='output co'>#&gt; Compute NMF rank= 2  ... + measures ... OK
 #&gt; Compute NMF rank= 3  ... + measures ... OK
 #&gt; Compute NMF rank= 4  ... + measures ... OK
 #&gt; Compute NMF rank= 5  ... + measures ... OK</div><div class='output co'>#&gt; <span class='message'>Estimation of rank based on observed data.</span></div><div class='output co'>#&gt;   method   seed rng metric rank sparseness.basis sparseness.coef       rss
-#&gt; 2 brunet random   4     KL    2        0.7933301       0.3740900 1077.2818
-#&gt; 3 brunet random   1     KL    3        0.8013736       0.5563004  266.8213
-#&gt; 4 brunet random   2     KL    4        0.7643534       0.4896913  206.6819
-#&gt; 5 brunet random   3     KL    5        0.7585459       0.3933881  118.4537
-#&gt;        evar silhouette.coef silhouette.basis residuals niter cpu cpu.all nrun
-#&gt; 2 0.9987289       1.0000000        1.0000000 34.438742   600  NA      NA    5
-#&gt; 3 0.9996852       0.5606215        0.7061678 16.921841   820  NA      NA    5
-#&gt; 4 0.9997561       0.4993998        0.6935852  9.939645   900  NA      NA    5
-#&gt; 5 0.9998602       0.2854482        0.2672162  6.210363  1770  NA      NA    5
+#&gt; 2 brunet random   2     KL    2        0.7931424       0.3520048 1077.4280
+#&gt; 3 brunet random   3     KL    3        0.7413722       0.4008569  274.2391
+#&gt; 4 brunet random   1     KL    4        0.7513321       0.4519870  203.3494
+#&gt; 5 brunet random   4     KL    5        0.7915950       0.4413905  120.2693
+#&gt;        evar silhouette.coef silhouette.basis residuals niter   cpu cpu.all nrun
+#&gt; 2 0.9987288       1.0000000        1.0000000 34.443128   520 0.053  10.569    5
+#&gt; 3 0.9996764       0.7608363        0.7624204 16.869207   800 0.057   4.012    5
+#&gt; 4 0.9997601       0.5192666        0.5091383 10.022368   620 0.046   3.962    5
+#&gt; 5 0.9998581       0.3421886        0.4701766  6.200343   790 0.055   3.841    5
 #&gt;   cophenetic dispersion silhouette.consensus
-#&gt; 2  0.9843197     0.7760            0.9028871
-#&gt; 3  0.9982742     0.9232            0.8550000
-#&gt; 4  0.9095337     0.5904            0.5395238
-#&gt; 5  0.8774860     0.5904            0.5200000</div><div class='input'>
+#&gt; 2  0.9836628     0.8272            0.8933333
+#&gt; 3  0.9133654     0.5264            0.6458333
+#&gt; 4  0.9532174     0.5776            0.4983537
+#&gt; 5  0.9217369     0.5264            0.4949451</div><div class='input'>
 <span class='co'># Show two measures</span>
 <span class='fu'>show_sig_number_survey</span>(<span class='no'>cn_estimate</span>)</div><div class='img'><img src='show_sig_number_survey-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># Show one measure</span>
 <span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>show_sig_number_survey</span>(<span class='no'>cn_estimate</span>, <span class='kw'>right_y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
@@ -248,20 +243,20 @@ one measure.</p></td>
 <span class='co'># Show data from a data.frame</span>
 <span class='fu'>show_sig_number_survey</span>(<span class='no'>cn_estimate</span>$<span class='no'>survey</span>)</div><div class='img'><img src='show_sig_number_survey-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># Show other measures</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>cn_estimate</span>$<span class='no'>survey</span>)</div><div class='output co'>#&gt;   method   seed rng metric rank sparseness.basis sparseness.coef       rss
-#&gt; 2 brunet random   4     KL    2        0.7933301       0.3740900 1077.2818
-#&gt; 3 brunet random   1     KL    3        0.8013736       0.5563004  266.8213
-#&gt; 4 brunet random   2     KL    4        0.7643534       0.4896913  206.6819
-#&gt; 5 brunet random   3     KL    5        0.7585459       0.3933881  118.4537
-#&gt;        evar silhouette.coef silhouette.basis residuals niter cpu cpu.all nrun
-#&gt; 2 0.9987289       1.0000000        1.0000000 34.438742   600  NA      NA    5
-#&gt; 3 0.9996852       0.5606215        0.7061678 16.921841   820  NA      NA    5
-#&gt; 4 0.9997561       0.4993998        0.6935852  9.939645   900  NA      NA    5
-#&gt; 5 0.9998602       0.2854482        0.2672162  6.210363  1770  NA      NA    5
+#&gt; 2 brunet random   2     KL    2        0.7931424       0.3520048 1077.4280
+#&gt; 3 brunet random   3     KL    3        0.7413722       0.4008569  274.2391
+#&gt; 4 brunet random   1     KL    4        0.7513321       0.4519870  203.3494
+#&gt; 5 brunet random   4     KL    5        0.7915950       0.4413905  120.2693
+#&gt;        evar silhouette.coef silhouette.basis residuals niter   cpu cpu.all nrun
+#&gt; 2 0.9987288       1.0000000        1.0000000 34.443128   520 0.053  10.569    5
+#&gt; 3 0.9996764       0.7608363        0.7624204 16.869207   800 0.057   4.012    5
+#&gt; 4 0.9997601       0.5192666        0.5091383 10.022368   620 0.046   3.962    5
+#&gt; 5 0.9998581       0.3421886        0.4701766  6.200343   790 0.055   3.841    5
 #&gt;   cophenetic dispersion silhouette.consensus
-#&gt; 2  0.9843197     0.7760            0.9028871
-#&gt; 3  0.9982742     0.9232            0.8550000
-#&gt; 4  0.9095337     0.5904            0.5395238
-#&gt; 5  0.8774860     0.5904            0.5200000</div><div class='input'><span class='fu'>show_sig_number_survey</span>(<span class='no'>cn_estimate</span>$<span class='no'>survey</span>,
+#&gt; 2  0.9836628     0.8272            0.8933333
+#&gt; 3  0.9133654     0.5264            0.6458333
+#&gt; 4  0.9532174     0.5776            0.4983537
+#&gt; 5  0.9217369     0.5264            0.4949451</div><div class='input'><span class='fu'>show_sig_number_survey</span>(<span class='no'>cn_estimate</span>$<span class='no'>survey</span>,
   <span class='kw'>right_y</span> <span class='kw'>=</span> <span class='st'>"dispersion"</span>,
   <span class='kw'>right_name</span> <span class='kw'>=</span> <span class='st'>"dispersion"</span>
 )</div><div class='img'><img src='show_sig_number_survey-5.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>show_sig_number_survey</span>(<span class='no'>cn_estimate</span>$<span class='no'>survey</span>,

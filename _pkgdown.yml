@@ -94,6 +94,7 @@ reference:
   - title: Helpers
     desc: Helper functions used in the sigminer package.
     contents:
+    - get_sig_db
     - sig_convert
     - get_genome_annotation
     - get_bayesian_result
@@ -102,6 +103,7 @@ reference:
     - use_color_style
     - add_h_arrow
     - add_labels
+    - cosine
   - title: Copy number analysis and visualization
     desc: Functions for analyzing copy number data and visualization.
     contents:

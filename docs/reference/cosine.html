@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Read VCF files as MAF object — read_vcf • sigminer</title>
+<title>Calculate Cosine Measures — cosine • sigminer</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Read VCF files as MAF object — read_vcf" />
-<meta property="og:description" content="Read VCF files as MAF object" />
+<meta property="og:title" content="Calculate Cosine Measures — cosine" />
+<meta property="og:description" content="Calculate Cosine Measures" />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -122,70 +122,42 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Read VCF files as MAF object</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ShixiangWang/sigminer/blob/master/R/read_vcf.R'><code>R/read_vcf.R</code></a></small>
-    <div class="hidden name"><code>read_vcf.Rd</code></div>
+    <h1>Calculate Cosine Measures</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ShixiangWang/sigminer/blob/master/R/cosine.R'><code>R/cosine.R</code></a></small>
+    <div class="hidden name"><code>cosine.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Read VCF files as MAF object</p>
+    <p>Calculate Cosine Measures</p>
     </div>
 
-    <pre class="usage"><span class='fu'>read_vcf</span>(
-  <span class='no'>vcfs</span>,
-  <span class='kw'>samples</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>genome_build</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"hg19"</span>, <span class='st'>"hg38"</span>),
-  <span class='kw'>keep_only_pass</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>cosine</span>(<span class='no'>x</span>, <span class='no'>y</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>vcfs</th>
-      <td><p>VCF file paths.</p></td>
+      <th>x</th>
+      <td><p>a numeric vector or matrix.</p></td>
     </tr>
     <tr>
-      <th>samples</th>
-      <td><p>sample names for VCF files.</p></td>
-    </tr>
-    <tr>
-      <th>genome_build</th>
-      <td><p>genome build version like "hg19".</p></td>
-    </tr>
-    <tr>
-      <th>keep_only_pass</th>
-      <td><p>if <code>TRUE</code>, keep only 'PASS' mutation for analysis.</p></td>
-    </tr>
-    <tr>
-      <th>verbose</th>
-      <td><p>if <code>TRUE</code>, print extra info.</p></td>
+      <th>y</th>
+      <td><p>must be same format as <code>x</code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a <a href='MAF-class.html'>MAF</a>.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><a href='read_maf.html'>read_maf</a>, <a href='read_copynumber.html'>read_copynumber</a></p></div>
+    <p>a numeric value or <code>matrix</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>vcfs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>list.files</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>), <span class='st'>"*.vcf"</span>, <span class='kw'>full.names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>maf</span> <span class='kw'>&lt;-</span> <span class='fu'>read_vcf</span>(<span class='no'>vcfs</span>)</div><div class='output co'>#&gt; <span class='message'>Reading file(s): /private/var/folders/mx/rfkl27z90c96wbmn3_kjk8c80000gn/T/Rtmp1RUomz/temp_libpath69883a50584d/sigminer/extdata/test1.vcf, /private/var/folders/mx/rfkl27z90c96wbmn3_kjk8c80000gn/T/Rtmp1RUomz/temp_libpath69883a50584d/sigminer/extdata/test2.vcf, /private/var/folders/mx/rfkl27z90c96wbmn3_kjk8c80000gn/T/Rtmp1RUomz/temp_libpath69883a50584d/sigminer/extdata/test3.vcf</span></div><div class='output co'>#&gt; <span class='message'>Annotating Variant Type...</span></div><div class='output co'>#&gt; <span class='message'>Annotating mutations to first matched gene based on database /private/var/folders/mx/rfkl27z90c96wbmn3_kjk8c80000gn/T/Rtmp1RUomz/temp_libpath69883a50584d/sigminer/extdata/human_hg19_gene_info.rds...</span></div><div class='output co'>#&gt; <span class='message'>Transforming into a MAF object...</span></div><div class='output co'>#&gt; -Validating
-#&gt; --Non MAF specific values in Variant_Classification column:
-#&gt;   Unknown
-#&gt; -Summarizing
-#&gt; -Processing clinical data
-#&gt; --Missing clinical data
-#&gt; -Finished in 0.045s elapsed (0.042s cpu) </div><div class='input'><span class='no'>maf</span> <span class='kw'>&lt;-</span> <span class='fu'>read_vcf</span>(<span class='no'>vcfs</span>, <span class='kw'>keep_only_pass</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='message'>Reading file(s): /private/var/folders/mx/rfkl27z90c96wbmn3_kjk8c80000gn/T/Rtmp1RUomz/temp_libpath69883a50584d/sigminer/extdata/test1.vcf, /private/var/folders/mx/rfkl27z90c96wbmn3_kjk8c80000gn/T/Rtmp1RUomz/temp_libpath69883a50584d/sigminer/extdata/test2.vcf, /private/var/folders/mx/rfkl27z90c96wbmn3_kjk8c80000gn/T/Rtmp1RUomz/temp_libpath69883a50584d/sigminer/extdata/test3.vcf</span></div><div class='output co'>#&gt; <span class='message'>Annotating Variant Type...</span></div><div class='output co'>#&gt; <span class='message'>Annotating mutations to first matched gene based on database /private/var/folders/mx/rfkl27z90c96wbmn3_kjk8c80000gn/T/Rtmp1RUomz/temp_libpath69883a50584d/sigminer/extdata/human_hg19_gene_info.rds...</span></div><div class='output co'>#&gt; <span class='message'>Transforming into a MAF object...</span></div><div class='output co'>#&gt; -Validating
-#&gt; --Non MAF specific values in Variant_Classification column:
-#&gt;   Unknown
-#&gt; -Summarizing
-#&gt; -Processing clinical data
-#&gt; --Missing clinical data
-#&gt; -Finished in 0.030s elapsed (0.029s cpu) </div></pre>
+    <pre class="examples"><div class='input'><span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>( <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span> )
+<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>( <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span> )
+<span class='no'>z1</span> <span class='kw'>&lt;-</span> <span class='fu'>cosine</span>(<span class='no'>x</span>, <span class='no'>y</span>)
+<span class='no'>z1</span></div><div class='output co'>#&gt; [1] 0.2357023</div><div class='input'><span class='no'>z2</span> <span class='kw'>&lt;-</span> <span class='fu'>cosine</span>(<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='no'>x</span>), <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='no'>y</span>))
+<span class='no'>z2</span></div><div class='output co'>#&gt;           [,1]
+#&gt; [1,] 0.2357023</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
