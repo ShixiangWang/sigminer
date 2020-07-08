@@ -2,7 +2,7 @@
 # data.table implementation 20% speed up ----------------------------------
 
 helper_join_segments2 <- function(segTab) {
-  segTab <- data.table::copy(segTab)
+  segTab <- segTab[order(segTab$start)]
   final_orders <- c("chromosome", "start", "end", "segVal", "sample")
   cls_cols <- setdiff(colnames(segTab), c(final_orders, "segVal2"))
   segTab$segVal2 <- segTab$segVal
