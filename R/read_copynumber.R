@@ -18,6 +18,8 @@
 #' same copy number value. This is helpful for precisely count the number of breakpoint.
 #' When set `use_all=TRUE`, the mean function will be applied to extra numeric columns
 #' and unique string columns will be pasted by comma for joined records.
+#' @param skip_annotation if `TRUE`, skip annotation step, it may affect some analysis
+#' and visualization functionality, but speed up reading data.
 #' @param use_all default is `FALSE`. If `True`, use all columns from raw input.
 #' @param min_segnum minimal number of copy number segments within a sample.
 #' @param max_copynumber bigger copy number within a sample will be reset to this value.
@@ -60,6 +62,7 @@ read_copynumber <- function(input,
                             seg_cols = c("Chromosome", "Start.bp", "End.bp", "modal_cn"),
                             samp_col = "sample",
                             join_adj_seg = TRUE,
+                            skip_annotation = FALSE,
                             use_all = FALSE,
                             min_segnum = 0L,
                             max_copynumber = 20L,
@@ -371,13 +374,19 @@ read_copynumber <- function(input,
 
   send_success("Segmental table cleaned.")
 
-  send_info("Annotating.")
-  annot <- get_LengthFraction(data_df,
-    genome_build = genome_build,
-    seg_cols = new_cols[1:4],
-    samp_col = new_cols[5]
-  )
-  send_success("Annotation done.")
+  if (skip_annotation) {
+    annot <- data.table::data.table()
+    send_info("Annotation skipped.")
+  } else {
+    send_info("Annotating.")
+    annot <- get_LengthFraction(data_df,
+                                genome_build = genome_build,
+                                seg_cols = new_cols[1:4],
+                                samp_col = new_cols[5]
+    )
+    send_success("Annotation done.")
+  }
+
 
   send_info("Summarizing per sample.")
   sum_sample <- get_cnsummary_sample(data_df,

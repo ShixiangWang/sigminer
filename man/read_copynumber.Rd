@@ -11,6 +11,7 @@ read_copynumber(
   seg_cols = c("Chromosome", "Start.bp", "End.bp", "modal_cn"),
   samp_col = "sample",
   join_adj_seg = TRUE,
+  skip_annotation = FALSE,
   use_all = FALSE,
   min_segnum = 0L,
   max_copynumber = 20L,
@@ -40,6 +41,9 @@ is a directory and cannot find \code{samp_col}, sample names will use file names
 same copy number value. This is helpful for precisely count the number of breakpoint.
 When set \code{use_all=TRUE}, the mean function will be applied to extra numeric columns
 and unique string columns will be pasted by comma for joined records.}
+
+\item{skip_annotation}{if \code{TRUE}, skip annotation step, it may affect some analysis
+and visualization functionality, but speed up reading data.}
 
 \item{use_all}{default is \code{FALSE}. If \code{True}, use all columns from raw input.}
 
