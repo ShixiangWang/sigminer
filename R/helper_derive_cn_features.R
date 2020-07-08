@@ -382,6 +382,7 @@ handle_sex <- function(abs_profiles) {
       dplyr::as_tibble() %>%
       dplyr::left_join(sex, by = "sample") %>%
       dplyr::mutate(
+        sex = tolower(.data$sex),
         segVal = dplyr::case_when(
           .data$sex == "male" & .data$chromosome %in% c("chrX", "chrY") ~ 2L * .data$segVal,
           TRUE ~ .data$segVal
