@@ -224,7 +224,7 @@ call_component <- function(f_dt, f_name) {
     f_dt$C_CN <- f_dt$S_CN
   } else if (f_name == "SS") {
     f_dt$S_SS <- cut(f_dt$value,
-      breaks = c(-Inf, 50000L, 5000000L, Inf),
+      breaks = c(-Inf, 50000L, 500000L, Inf),
       labels = c("S", "M", "L")
     )
     f_dt$C_SS <- cut(floor(log10(f_dt$value)),
