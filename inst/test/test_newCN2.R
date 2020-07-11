@@ -1,150 +1,33 @@
-load(system.file("extdata", "toy_copynumber.RData",
-                 package = "sigminer", mustWork = TRUE
-))
+pcawg_cn <- readRDS(file = "../CNSigs/data/pcawg_copynumber.rds")
+cn_obj = read_copynumber(pcawg_cn[!Chromosome %in% c("X", "Y")], max_copynumber = 1000L,
+                          genome_build = "hg19", complement = FALSE,
+                          genome_measure = "called", skip_annotation = TRUE)
 
-# debug(sig_tally)
-# cn_tally_W <- sig_tally(cn, method = "W")
-
-cnlist <- sigminer:::get_cnlist(cn, add_index = TRUE)
-
-features <- c("BP10MB", "CNCP", "OsCN")
-for (feature in features) {
-  if (feature == "BP10MB") {
-    getPC_BP10MB(cnlist)
-  }else if(feature == "CNCP"){
-    getPC_CNCP_Max(cnlist)
-  }else if(feature == "OsCN"){
-    getPC_OsCN(cnlist)
+extract_seq_dt = function(x) {
+  if (inherits(x, "CopyNumber")) {
+    x <- x@data
+  } else {
+    x <- data.table::setDT(x)
   }
+
+  x[, `:=`(
+    lenVal = end - start + 1L,
+    segVal = ifelse(segVal > 5, 5, segVal) %>% as.integer()  ## Set max value
+  )]
+  x[, lenVal := cut(lenVal,
+                    breaks = c(-Inf, 5e4, 5e5, 5e6, Inf),
+                    labels = c("1", "2", "3", "4"),
+                    right = FALSE) %>% as.integer()]
+
+  x[, ID := paste(sample, chromosome, sep = "-")]
+  x
 }
 
-# abs_profiles <- cnlist
-get_PC10MB <- function(abs_profiles) {
-  y = purrr::map_df(abs_profiles, function(x){
 
-    x_cp = data.table::copy(x)
-    x_cp[, `:=`(
-      region_start = start - 5e+06,
-      region_end = start + 5e+06
-    )][, region_start := ifelse(region_start <= 0, 1, region_start)]
-    x_cp$start = NULL
-    x_cp$end = NULL
-    x_cp$segVal = NULL
-
-    setkey(x_cp, "chromosome", "region_start", "region_end")
-    x_overlap <- data.table::foverlaps(x, x_cp,
-                                       by.x = c("chromosome", "start", "end"),
-                                       type = "any")
-    x %>%
-      dplyr::as_tibble() %>%
-      dplyr::full_join(
-        x_overlap %>%
-          dplyr::as_tibble() %>%
-          dplyr::group_by(.data$Index) %>%
-          dplyr::summarise(
-            value = dplyr::n() - 1L
-          ),
-        by = c("Index")
-      ) %>%
-      dplyr::select(c("sample", "value", "Index"))
-  }) %>%
-    data.table::as.data.table()
-
-  y[order(y$Index)]
-
-}
-
-getPC_CNCP_Left <- function(abs_profiles) {
-  y = purrr::map_df(abs_profiles, function(x){
-
-    x_cp = data.table::copy(x)
-
-    x_cp <- x_cp %>%
-      dplyr::as_tibble() %>%
-      dplyr::group_by(chromosome)
-    x_cp <- x_cp %>% dplyr::mutate(value = abs(c(0, diff(segVal)))) %>%
-      dplyr::select(c("sample", "value", "Index"))
-  }) %>%
-    data.table::as.data.table()
-  y[order(y$Index)]
-
-}
-# c(0, diff(1:3))
-# rev(c(0, diff(rev(1:3))))
-
-getPC_CNCP_Right <- function(abs_profiles){
-  y = purrr::map_df(abs_profiles, function(x){
-    x_cp = data.table::copy(x)
-
-    x_cp <- x_cp %>%
-      dplyr::as_tibble() %>%
-      dplyr::group_by(chromosome) %>%
-      dplyr::mutate(value = abs(rev(c(0, diff(rev(segVal)))))) %>%
-      dplyr::select(c("sample", "value", "Index"))
-  }) %>%
-    data.table::as.data.table()
-  y[order(y$Index)]
-}
-
-getPC_CNCP_Max <- function(abs_profiles){
-  Right_df <- getPC_CNCP_Right(abs_profiles)
-  Left_df <- getPC_CNCP_Left(abs_profiles) %>%
-    dplyr::rename("left_value" = value)
-  y = purrr::map_df(abs_profiles, function(x){
-    max_df <- dplyr::left_join(Right_df, Left_df) %>%
-      dplyr::mutate(value = ifelse(value > left_value, value, left_value)) %>%
-      dplyr::select(c("sample", "value", "Index"))
-
-  }) %>%
-    data.table::as.data.table() %>%
-    unique()
-  y[order(y$Index)]
-}
-
-# getPC_OsCN <- function(abs_profiles){
-#   y = purrr::map_df(abs_profiles, function(x){
-#     x_cp <- data.table::copy(x)
-#     x_cp <- x_cp %>%
-#       dplyr::as_tibble() %>%
-#       dplyr::group_by(chromosome) %>%
-#       dplyr::mutate(value = function(z){
-#         count = 0
-#         for(i in 1:`dplyr::n(z)`){
-#           if(i < 3){
-#             0
-#           }else{
-#             number <- x_cp[,i]$segVal - x_cp[,i-2]$segVal
-#             number <- ifelse(number = 0, count+1, count)
-#           }
-#         }
-#       })
-#     # length = dplyr::n()
-#
-#
-#     # %>%
-#     #   dplyr::mutate(value = function(n){
-#     #
-#     #   })
-#   }) %>%
-#     data.table::as.data.table()
-#   y[order(y$Index)]
-# }
-
-
-
-# sigminer:::getChangepointCN(cnlist)
-
-# purely count
-## outputing columns "ID", "value"
-getPC_BP10MB
-getPC_CNCP_Left
-getPC_CNCP_Right
-getPC_CNCP_Max
-# getPC_CNCP_type
-getPC_OsCN
-
-
-
-
-
-
+## 4 letters as a group for short, mid, long, long long segments
+# A B C D for copy number 0
+# E F G H for copy number 1
+# I J K L for copy number 2
+# M N O P for copy number 3
+# Q R S T for copy number 4
+# U V W X for copy number 5+
