@@ -163,8 +163,9 @@ read_copynumber <- function(input,
         ignore.case = TRUE
       )]
       temp$chromosome <- ifelse(startsWith(temp$chromosome, "chr"),
-                                temp$chromosome,
-                                paste0("chr", temp$chromosome))
+        temp$chromosome,
+        paste0("chr", temp$chromosome)
+      )
       temp[, chromosome := sub(
         pattern = "x",
         replacement = "X",
@@ -357,17 +358,20 @@ read_copynumber <- function(input,
   data_df$start <- as.numeric(data_df$start)
   data_df$end <- as.numeric(data_df$end)
 
+  data.table::setorderv(data_df, c("sample", "chromosome", "start"))
+  send_success("Segments sorted.")
+
   if (join_adj_seg) {
+    send_info("Joining adjacent segments with same copy number value. Be patient...")
     data_df <- helper_join_segments2(data_df)
-    send_success("Adjacent segments with same copy number value joined")
+    send_success(nrow(data_df), " segments left after joining.")
+  } else {
+    send_info("Skipped joining adjacent segments with same copy number value.")
   }
   # order by segment start position by each chromosome in each sample
-  data_df <- data_df[, .SD[order(.SD$start, decreasing = FALSE)], by = c("sample", "chromosome")]
-  all_cols <- colnames(data_df)
-  data.table::setcolorder(data_df, neworder = c(
-    c("chromosome", "start", "end", "segVal", "sample"),
-    setdiff(all_cols, c("chromosome", "start", "end", "segVal", "sample"))
-  ))
+  data.table::setorderv(data_df, c("sample", "chromosome", "start"))
+  data.table::setcolorder(data_df, c("chromosome", "start", "end", "segVal", "sample"))
+
   if ("groups" %in% names(attributes(data_df))) {
     attr(data_df, "groups") <- NULL
   }
@@ -380,9 +384,9 @@ read_copynumber <- function(input,
   } else {
     send_info("Annotating.")
     annot <- get_LengthFraction(data_df,
-                                genome_build = genome_build,
-                                seg_cols = new_cols[1:4],
-                                samp_col = new_cols[5]
+      genome_build = genome_build,
+      seg_cols = new_cols[1:4],
+      samp_col = new_cols[5]
     )
     send_success("Annotation done.")
   }
