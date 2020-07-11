@@ -1,8 +1,67 @@
 
-# data.table implementation 20% speed up ----------------------------------
+# data.table implementation ~2x speed up ----------------------------------
 
 helper_join_segments2 <- function(segTab) {
-  segTab <- segTab[order(segTab$start)]
+  x <- segTab # This is just a alias, not a copy, modify inplace will save memory
+  index <- seq(1, nrow(x))
+  x$index <- index
+  x$dval <- c(NA, diff(x$segVal))
+  i_eq <- x[, list(index = .SD[-1]$index[.SD[-1]$dval == 0]),
+    by = list(sample, chromosome)
+  ]$index
+
+  x$index <- NULL
+  x$dval <- NULL
+
+  if (length(i_eq) > 0) {
+    ## Split joining segments into differnet groups
+    i_join <- sort(union(i_eq - 1L, i_eq))
+    # z <- split(i_eq, findInterval(i_eq, i_eq[diff(i_eq) > 1] + 2L)) ## the first element is not included
+    # grp <- rep(names(z), sapply(z, length) + 1L)
+    ## Use rle to improve performance
+    z <- rle(findInterval(i_eq, i_eq[diff(i_eq) > 1] + 2L))
+    z$lengths <- z$lengths + 1L
+    z$values <- as.character(z$values)
+    dt_join <- x[i_join][,
+      .collapse_segTab(.SD, cols = setdiff(
+        colnames(x),
+        c("chromosome", "start", "end", "segVal", "sample")
+      )),
+      by = list(.grp = inverse.rle(z))
+    ]
+    dt_join$.grp <- NULL
+
+    x <- data.table::rbindlist(
+      list(x[setdiff(index, i_join)], dt_join)
+    )
+  }
+
+  return(x)
+}
+
+.collapse_segTab <- function(dt, cols = NULL) {
+  x <- data.table::data.table(
+    chromosome = dt[1]$chromosome,
+    start = dt[1]$start,
+    end = dt[.N]$end,
+    segVal = dt[1]$segVal,
+    sample = dt[1]$sample
+  )
+
+  if (length(cols) > 0) {
+    x[, (cols) := lapply(dt[, cols, with = FALSE], function(x) {
+      if (is.numeric(x)) {
+        mean(x, na.rm = TRUE)
+      } else {
+        paste0(unique(na.omit(x)), collapse = ",")
+      }
+    })]
+  }
+  return(x)
+}
+
+helper_join_segments2_old <- function(segTab) {
+  # segTab <- segTab[order(segTab$start)]
   final_orders <- c("chromosome", "start", "end", "segVal", "sample")
   cls_cols <- setdiff(colnames(segTab), c(final_orders, "segVal2"))
   segTab$segVal2 <- segTab$segVal
@@ -17,18 +76,18 @@ helper_join_segments2 <- function(segTab) {
 
 .groupby_collapse <- function(dt, cols = NULL) {
   if (length(cols) > 0) {
-    dt <- dt[, collapse_top2bottom(.SD, cols = cols),
+    dt <- dt[, .collapse_top2bottom(.SD, cols = cols),
       by = data.table::rleid(segVal)
     ]
   } else {
-    dt <- dt[, collapse_top2bottom(.SD),
+    dt <- dt[, .collapse_top2bottom(.SD),
       by = data.table::rleid(segVal)
     ]
   }
   dt
 }
 
-collapse_top2bottom <- function(dt, cols = NULL) {
+.collapse_top2bottom <- function(dt, cols = NULL) {
   x <- data.table::data.table(
     start = dt[1]$start,
     end = dt[.N]$end,
