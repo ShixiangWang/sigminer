@@ -29,10 +29,54 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// pairScoreVector
+int pairScoreVector(NumericVector x, NumericVector y, int x_max, int y_max);
+RcppExport SEXP _sigminer_pairScoreVector(SEXP xSEXP, SEXP ySEXP, SEXP x_maxSEXP, SEXP y_maxSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type y(ySEXP);
+    Rcpp::traits::input_parameter< int >::type x_max(x_maxSEXP);
+    Rcpp::traits::input_parameter< int >::type y_max(y_maxSEXP);
+    rcpp_result_gen = Rcpp::wrap(pairScoreVector(x, y, x_max, y_max));
+    return rcpp_result_gen;
+END_RCPP
+}
+// pairScoreMatrix
+NumericMatrix pairScoreMatrix(NumericMatrix x, NumericMatrix y, int x_max, int y_max);
+RcppExport SEXP _sigminer_pairScoreMatrix(SEXP xSEXP, SEXP ySEXP, SEXP x_maxSEXP, SEXP y_maxSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type y(ySEXP);
+    Rcpp::traits::input_parameter< int >::type x_max(x_maxSEXP);
+    Rcpp::traits::input_parameter< int >::type y_max(y_maxSEXP);
+    rcpp_result_gen = Rcpp::wrap(pairScoreMatrix(x, y, x_max, y_max));
+    return rcpp_result_gen;
+END_RCPP
+}
+// getMatchScoreMatirx
+RObject getMatchScoreMatirx(Function f, StringVector x, NumericMatrix sub);
+RcppExport SEXP _sigminer_getMatchScoreMatirx(SEXP fSEXP, SEXP xSEXP, SEXP subSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Function >::type f(fSEXP);
+    Rcpp::traits::input_parameter< StringVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type sub(subSEXP);
+    rcpp_result_gen = Rcpp::wrap(getMatchScoreMatirx(f, x, sub));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_sigminer_cosineVector", (DL_FUNC) &_sigminer_cosineVector, 2},
     {"_sigminer_cosineMatrix", (DL_FUNC) &_sigminer_cosineMatrix, 2},
+    {"_sigminer_pairScoreVector", (DL_FUNC) &_sigminer_pairScoreVector, 4},
+    {"_sigminer_pairScoreMatrix", (DL_FUNC) &_sigminer_pairScoreMatrix, 4},
+    {"_sigminer_getMatchScoreMatirx", (DL_FUNC) &_sigminer_getMatchScoreMatirx, 3},
     {NULL, NULL, 0}
 };
 
