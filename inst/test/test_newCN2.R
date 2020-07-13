@@ -66,19 +66,27 @@ score_pairwise_strings <- function(x, y, sub_mat) {
   sub_mat[x, y] %>% diag() %>% sum()
 }
 
-get_score_matrix <- function(x, sub_mat, verbose = TRUE) {
+get_score_matrix <- function(x, sub_mat, method = c("base", "ff", "bigmemory"), verbose = TRUE) {
+  method = match.arg(method)
   n <- length(x)
-  #mat <- matrix(nrow = n, ncol = n, byrow = TRUE)
-  mat <- ff::ff(NA_integer_,
-                dim = c(n, n), vmode = "byte")  ## Byte from -128 ~ 127
+
+  if (method == "base") {
+    mat <- matrix(NA_integer_, nrow = n, ncol = n)
+  } else if (method == "ff") {
+    mat <- ff::ff(NA_integer_,
+                  dim = c(n, n), vmode = "byte")  ## Byte from -128 ~ 127
+  } else {
+    options(bigmemory.allow.dimnames = TRUE, bigmemory.typecast.warning = FALSE)
+    mat <- bigmemory::big.matrix(n, n, type = "integer")
+  }
   # Matrix column is faster than row
 
   i <- j <- 1
   for (i in seq_len(n)) {
     if (verbose) message("Handling sequence: ", x[i])
-    j_vals <- vector(mode = "integer", length = i) #ff::ff(NA_integer_, length = i, vmode = "byte")
+    j_vals <- vector(mode = "integer", length = i)
     for (j in seq_len(i)) {
-       j_vals[j] <- score_pairwise_strings(x[i], x[j], sub_mat = sub_mat)
+       j_vals[j] <- score_pairwise_strings(x[i], x[j], sub_mat = sub_mat) %>% as.integer()
     }
     mat[1:length(j_vals), i] <- j_vals
   }
@@ -134,6 +142,14 @@ system.time(
 system.time(
   score_mat2 <- get_score_matrix(seqs$keep, sub_list$mat, verbose = FALSE)
 )
+
+system.time(
+  score_mat3 <- get_score_matrix(seqs$keep[1:1000], sub_list$mat, method = "bigmemory")
+)
+
+get_score_matrix(seqs$keep[1:10], sub_list$mat, method = "base") %>% typeof()
+get_score_matrix(seqs$keep[1:10], sub_list$mat, method = "ff")
+get_score_matrix(seqs$keep[1:10], sub_list$mat, method = "bigmemory")[] %>% class() # Return class as base
 
 for (i in LETTERS[1:24]) {
   message("Number of seqs starts with ", i, ": #", sum(startsWith(seqs$keep, i)))

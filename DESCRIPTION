@@ -86,7 +86,9 @@ Suggests:
     rmarkdown,
     roxygen2,
     testthat,
-    tibble
+    tibble,
+    ff,
+    bigmemory
 LinkingTo: 
     Rcpp
 VignetteBuilder: 
