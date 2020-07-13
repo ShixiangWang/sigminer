@@ -47,48 +47,6 @@ build_sub_matrix <- function() {
 
 }
 
-score_pairwise_strings <- function(x, y, sub_mat) {
-  ## For length-1 string "ABCD"
-  ## or vector c("A", "B", "C", "D")
-  if (length(x) == 1) {
-    x <- strsplit(x, "")[[1]]
-  }
-  if (length(y) == 1) {
-    y <- strsplit(y, "")[[1]]
-  }
-  sub_mat[x, y] %>% diag() %>% sum()
-}
-
-get_score_matrix <- function(x, sub_mat, method = c("base", "ff", "bigmemory"), verbose = TRUE) {
-  method = match.arg(method)
-  n <- length(x)
-
-  if (method == "base") {
-    mat <- matrix(NA_integer_, nrow = n, ncol = n)
-  } else if (method == "ff") {
-    mat <- ff::ff(NA_integer_,
-                  dim = c(n, n), vmode = "byte")  ## Byte from -128 ~ 127
-  } else {
-    options(bigmemory.allow.dimnames = TRUE, bigmemory.typecast.warning = FALSE)
-    mat <- bigmemory::big.matrix(n, n, type = "integer")
-  }
-  # Matrix column is faster than row
-
-  i <- j <- 1
-  for (i in seq_len(n)) {
-    if (verbose) message("Handling sequence: ", x[i])
-    j_vals <- vector(mode = "integer", length = i)
-    for (j in seq_len(i)) {
-      j_vals[j] <- score_pairwise_strings(x[i], x[j], sub_mat = sub_mat) %>% as.integer()
-    }
-    mat[1:length(j_vals), i] <- j_vals
-  }
-
-  rownames(mat) <- colnames(mat) <- x
-  return(mat)
-}
-
-
 collapse_shift_seqs <- function(x, len = 5L, step = 1L) {
   if (length(x) <= len) {
     return(paste(x, collapse = ""))
@@ -119,6 +77,47 @@ extract_sequences <- function(dt, len = 5L, step = 2L, return_dt = FALSE) {
     keep = sort(all_seqs[keep]),
     drop = sort(all_seqs[!keep])
   )
+}
+
+score_pairwise_strings <- function(x, y, sub_mat) {
+  ## For length-1 string "ABCD"
+  ## or vector c("A", "B", "C", "D")
+  if (length(x) == 1) {
+    x <- strsplit(x, "")[[1]]
+  }
+  if (length(y) == 1) {
+    y <- strsplit(y, "")[[1]]
+  }
+  sub_mat[x, y] %>% diag() %>% sum()
+}
+
+get_score_matrix <- function(x, sub_mat, method = c("base", "ff", "bigmemory"), verbose = TRUE) {
+  method <- match.arg(method)
+  n <- length(x)
+
+  if (method == "base") {
+    mat <- matrix(NA_integer_, nrow = n, ncol = n)
+  } else if (method == "ff") {
+    mat <- ff::ff(NA_integer_,
+                  dim = c(n, n), vmode = "byte")  ## Byte from -128 ~ 127
+  } else {
+    options(bigmemory.allow.dimnames = TRUE, bigmemory.typecast.warning = FALSE)
+    mat <- bigmemory::big.matrix(n, n, type = "integer")
+  }
+  # Matrix column is faster than row
+
+  i <- j <- 1
+  for (i in seq_len(n)) {
+    if (verbose) message("Handling sequence: ", x[i])
+    j_vals <- vector(mode = "integer", length = i)
+    for (j in seq_len(i)) {
+      j_vals[j] <- score_pairwise_strings(x[i], x[j], sub_mat = sub_mat) %>% as.integer()
+    }
+    mat[seq_len(j_vals), i] <- j_vals
+  }
+
+  rownames(mat) <- colnames(mat) <- x
+  return(mat)
 }
 
 
