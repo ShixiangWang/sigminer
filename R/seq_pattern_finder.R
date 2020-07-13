@@ -120,3 +120,8 @@ extract_sequences <- function(dt, len = 5L, step = 2L, return_dt = FALSE) {
     drop = sort(all_seqs[!keep])
   )
 }
+
+
+show_segment_code <- function(x) {
+
+}
