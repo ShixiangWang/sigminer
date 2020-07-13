@@ -18,8 +18,6 @@ extract_seq_dt = function(x) {
   x
 }
 
-x <- extract_seq_dt(cn_obj)
-
 ## 4 letters as a group for short, mid, long, long long segments
 # A B C D for copy number 0
 # E F G H for copy number 1
