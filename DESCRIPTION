@@ -88,7 +88,8 @@ Suggests:
     testthat,
     tibble,
     ff,
-    bigmemory
+    bigmemory,
+    scales
 LinkingTo: 
     Rcpp
 VignetteBuilder: 

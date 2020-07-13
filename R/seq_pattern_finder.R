@@ -121,6 +121,36 @@ get_score_matrix <- function(x, sub_mat, method = c("base", "ff", "bigmemory"), 
 }
 
 
-show_segment_code <- function(x) {
+show_segment_code <- function(x, map = NULL, x_lab = "Estimated segment length", y_lab = "Copy number") {
 
+  if (!requireNamespace("scales", quietly = TRUE)) {
+    stop("Package 'scales' is required, please install it firstly!")
+  }
+
+  if (is.null(map)) {
+    map <- LETTERS[1:24]
+    names(map) <- vector_to_combination(1:4, 0:5)
+  }
+
+  map_df <- data.frame(
+    lenVal = strsplit(names(map), split = "") %>% purrr::map_int(~as.integer(.[1])),
+    segVal = strsplit(names(map), split = "") %>% purrr::map_int(~as.integer(.[2])),
+    stringsAsFactors = FALSE
+  )
+  rownames(map_df) <- as.character(map)
+
+  ## test data
+  df <- map_df[unlist(strsplit(x, split = "")), ]
+  df$x_end = cumsum(df$lenVal)
+  df$x = dplyr::lag(df$x_end, default = 0)
+  df$color = ifelse(df$segVal > 2, "red",
+                    ifelse(df$segVal < 2, "blue",
+                           "black"))
+
+  ggplot(df, aes_string(x = "x", y = "segVal", xend = "x_end", yend = "segVal")) +
+    geom_segment(color = df$color)  +
+    scale_y_continuous(breaks = 0:5, labels = c(0:4, "5+"), limits = c(0, 5)) +
+    scale_x_continuous(breaks = scales::pretty_breaks()) +
+    labs(x = x_lab, y = y_lab) +
+    cowplot::theme_cowplot()
 }
