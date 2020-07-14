@@ -41,11 +41,14 @@ for (i in LETTERS[1:24]) {
 }
 
 set.seed(123)
-x <- sapply(1:5, function(x) {
+x <- sapply(1:1000, function(x) {
   paste(sample(LETTERS[1:24], 5, replace = TRUE), collapse = "")
 })
 y1 <- get_score_matrix(x, sub_list$mat)
 
-y2 <- get_score_matrix2(x, sub_list$mat, verbose = FALSE)
+y2 <- get_score_matrix2(x, sub_list$mat, verbose = TRUE)
 
 all.equal(y1, y2)
+
+
+y3 <- get_score_matrix2(x, sub_list$mat, verbose = TRUE, block_size = 3)

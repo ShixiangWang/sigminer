@@ -129,8 +129,9 @@ get_score_matrix <- function(x, sub_mat, method = c("base", "ff", "bigmemory"), 
 }
 
 get_score_matrix2 <- function(x, sub_mat, block_size = NULL, verbose = TRUE) {
-  map <- seq_len(24L) - 1L # to 0 based index
+  map <- seq_len(24L)
   names(map) <- LETTERS[map]
+  map <- map - 1L # to 0 based index
 
   ## Checking input
   if (any(grepl("[^A-X]", x, ignore.case = FALSE))) {
