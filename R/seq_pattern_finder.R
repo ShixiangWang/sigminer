@@ -1,4 +1,4 @@
-extract_seq_dt = function(x) {
+extract_seq_dt <- function(x) {
   if (inherits(x, "CopyNumber")) {
     x <- x@data
   } else {
@@ -7,12 +7,13 @@ extract_seq_dt = function(x) {
 
   x[, `:=`(
     lenVal = end - start + 1L,
-    segVal = ifelse(segVal > 5, 5, segVal) %>% as.integer()  ## Set max value
+    segVal = ifelse(segVal > 5, 5, segVal) %>% as.integer() ## Set max value
   )]
   x[, lenVal := cut(lenVal,
-                    breaks = c(-Inf, 5e4, 5e5, 5e6, Inf),
-                    labels = c("1", "2", "3", "4"),
-                    right = FALSE) %>% as.integer()]
+    breaks = c(-Inf, 5e4, 5e5, 5e6, Inf),
+    labels = c("1", "2", "3", "4"),
+    right = FALSE
+  ) %>% as.integer()]
 
   x[, ID := paste(sample, chromosome, sep = "-")]
   x
@@ -44,7 +45,6 @@ build_sub_matrix <- function() {
     map = map,
     mat = score_mat
   ))
-
 }
 
 collapse_shift_seqs <- function(x, len = 5L, step = 1L) {
@@ -64,7 +64,8 @@ collapse_shift_seqs <- function(x, len = 5L, step = 1L) {
 extract_sequences <- function(dt, len = 5L, step = 2L, return_dt = FALSE) {
   dt <- dt[, c("ID", "Seqs")]
   dt <- dt[, list(Seqs = collapse_shift_seqs(Seqs, len = len, step = step)),
-           by = "ID"]
+    by = "ID"
+  ]
 
   if (return_dt) {
     return(dt)
@@ -88,7 +89,9 @@ score_pairwise_strings <- function(x, y, sub_mat) {
   if (length(y) == 1) {
     y <- strsplit(y, "")[[1]]
   }
-  sub_mat[x, y] %>% diag() %>% sum()
+  sub_mat[x, y] %>%
+    diag() %>%
+    sum()
 }
 
 get_score_matrix <- function(x, sub_mat, method = c("base", "ff", "bigmemory"), verbose = TRUE) {
@@ -99,7 +102,8 @@ get_score_matrix <- function(x, sub_mat, method = c("base", "ff", "bigmemory"), 
     mat <- matrix(NA_integer_, nrow = n, ncol = n)
   } else if (method == "ff") {
     mat <- ff::ff(NA_integer_,
-                  dim = c(n, n), vmode = "byte")  ## Byte from -128 ~ 127
+      dim = c(n, n), vmode = "byte"
+    ) ## Byte from -128 ~ 127
   } else {
     options(bigmemory.allow.dimnames = TRUE, bigmemory.typecast.warning = FALSE)
     mat <- bigmemory::big.matrix(n, n, type = "integer")
@@ -120,9 +124,30 @@ get_score_matrix <- function(x, sub_mat, method = c("base", "ff", "bigmemory"), 
   return(mat)
 }
 
+get_score_matrix2 <- function(x, sub_mat, verbose = TRUE) {
+  map <- seq_len(24L)
+  names(map) <- LETTERS[map]
+
+  ## Checking input
+  if (any(grepl("[^A-X]", x, ignore.case = FALSE))) {
+    stop("The input sequences should contain only A->X, any other letters are invalid.")
+  }
+
+  m <- matrix(NA_integer_, ncol = length(x), nrow = nchar(x[1]))
+
+  for (i in seq_len(ncol(m))) {
+    s <- unlist(strsplit(x[i], split = ""))
+    m[, i] <- map[s] %>% as.integer()
+  }
+
+  m <- t(m)
+  y <- getScoreMatrix(m, sub_mat, verbose = verbose)
+  colnames(y) <- rownames(y) <- x
+
+  return(y)
+}
 
 show_segment_code <- function(x, map = NULL, x_lab = "Estimated segment length", y_lab = "Copy number") {
-
   if (!requireNamespace("scales", quietly = TRUE)) {
     stop("Package 'scales' is required, please install it firstly!")
   }
@@ -133,22 +158,24 @@ show_segment_code <- function(x, map = NULL, x_lab = "Estimated segment length",
   }
 
   map_df <- data.frame(
-    lenVal = strsplit(names(map), split = "") %>% purrr::map_int(~as.integer(.[1])),
-    segVal = strsplit(names(map), split = "") %>% purrr::map_int(~as.integer(.[2])),
+    lenVal = strsplit(names(map), split = "") %>% purrr::map_int(~ as.integer(.[1])),
+    segVal = strsplit(names(map), split = "") %>% purrr::map_int(~ as.integer(.[2])),
     stringsAsFactors = FALSE
   )
   rownames(map_df) <- as.character(map)
 
   ## test data
   df <- map_df[unlist(strsplit(x, split = "")), ]
-  df$x_end = cumsum(df$lenVal)
-  df$x = dplyr::lag(df$x_end, default = 0)
-  df$color = ifelse(df$segVal > 2, "red",
-                    ifelse(df$segVal < 2, "blue",
-                           "black"))
+  df$x_end <- cumsum(df$lenVal)
+  df$x <- dplyr::lag(df$x_end, default = 0)
+  df$color <- ifelse(df$segVal > 2, "red",
+    ifelse(df$segVal < 2, "blue",
+      "black"
+    )
+  )
 
   ggplot(df, aes_string(x = "x", y = "segVal", xend = "x_end", yend = "segVal")) +
-    geom_segment(color = df$color)  +
+    geom_segment(color = df$color) +
     scale_y_continuous(breaks = 0:5, labels = c(0:4, "5+"), limits = c(0, 5)) +
     scale_x_continuous(breaks = scales::pretty_breaks()) +
     labs(x = x_lab, y = y_lab) +

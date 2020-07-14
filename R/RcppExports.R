@@ -17,7 +17,7 @@ pairScoreMatrix <- function(x, y, x_max, y_max) {
     .Call(`_sigminer_pairScoreMatrix`, x, y, x_max, y_max)
 }
 
-getScoreMatrix <- function(indexMat, subMat) {
-    .Call(`_sigminer_getScoreMatrix`, indexMat, subMat)
+getScoreMatrix <- function(indexMat, subMat, verbose) {
+    .Call(`_sigminer_getScoreMatrix`, indexMat, subMat, verbose)
 }
 
