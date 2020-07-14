@@ -129,6 +129,10 @@ get_score_matrix <- function(x, sub_mat, method = c("base", "ff", "bigmemory"), 
 }
 
 get_score_matrix2 <- function(x, sub_mat, block_size = NULL, verbose = TRUE) {
+  if (anyNA(sub_mat)) {
+    stop("Input substitution matrix cannot contain 'NA' values!")
+  }
+
   map <- seq_len(24L)
   names(map) <- LETTERS[map]
   map <- map - 1L # to 0 based index

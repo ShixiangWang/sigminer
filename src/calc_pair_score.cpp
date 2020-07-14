@@ -48,10 +48,10 @@ IntegerMatrix getScoreMatrix(IntegerMatrix indexMat, IntegerMatrix subMat, int b
           Rcpp::Rcout << "Handling index pair (" << i+1 << "," << j+1 << ")." << std::endl;
         }
         for (int k = 0; k < size; k++) {
-          if (verbose) {
-            Rcpp::Rcout << "  substitution matrix index to plus:" << indexMat(i, k)+1 << "," << indexMat(j, k)+1 << std::endl;
-            Rcpp::Rcout << "  score to plus:" << subMat(indexMat(i, k), indexMat(j, k)) << std::endl;
-          }
+          // if (verbose) {
+          //   Rcpp::Rcout << "  substitution matrix index to plus:" << indexMat(i, k)+1 << "," << indexMat(j, k)+1 << std::endl;
+          //   Rcpp::Rcout << "  score to plus:" << subMat(indexMat(i, k), indexMat(j, k)) << std::endl;
+          // }
           score += subMat(indexMat(i, k), indexMat(j, k));
         }
         out(i, j) = score;
