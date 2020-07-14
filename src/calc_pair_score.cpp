@@ -31,27 +31,75 @@ NumericMatrix pairScoreMatrix(NumericMatrix x, NumericMatrix y, int x_max, int y
 }
 
 // [[Rcpp::export]]
-IntegerMatrix getScoreMatrix(IntegerMatrix indexMat, IntegerMatrix subMat, bool verbose) {
+IntegerMatrix getScoreMatrix(IntegerMatrix indexMat, IntegerMatrix subMat, int bSize, bool verbose) {
   // indexMat: each row represent the index in subMat (0-based)
   // subMat: a matrix stores match score
+  // bSize: block size to aggregrate
   int n = indexMat.nrow(), size = indexMat.ncol();
-  IntegerMatrix out(n);
   int score = 0;
 
-  for (int i = 0; i < n; i++) {
-    for (int j = 0; j <= i; j++) {
-      score = 0;
-      if (verbose) {
-        Rcpp::Rcout << "Handling index pair (" << i+1 << "," << j+1 << ")." << std::endl;
-      }
-      for (int k = 0; k < size; k++) {
-        // Rcpp::Rcout << "  score index to plus:" << indexMat(i, k) << "," << indexMat(j, k) << std::endl;
-        // Rcpp::Rcout << "  score to plus:" << subMat(indexMat(i, k), indexMat(j, k)) << std::endl;
-        score += subMat(indexMat(i, k), indexMat(j, k));
-      }
-      out(i, j) = out(j, i) = score;
-    }
-  }
+  if (bSize == 1) {
+    IntegerMatrix out(n);
 
-  return out;
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j <= i; j++) {
+        score = 0;
+        if (verbose) {
+          Rcpp::Rcout << "Handling index pair (" << i+1 << "," << j+1 << ")." << std::endl;
+        }
+        for (int k = 0; k < size; k++) {
+          // Rcpp::Rcout << "  score index to plus:" << indexMat(i, k) << "," << indexMat(j, k) << std::endl;
+          // Rcpp::Rcout << "  score to plus:" << subMat(indexMat(i, k), indexMat(j, k)) << std::endl;
+          score += subMat(indexMat(i, k), indexMat(j, k));
+        }
+        out(i, j) = score;
+        if (i != j) {
+          out(j, i) = score;
+        }
+      }
+    }
+
+    return out;
+  } else {
+    int chunkSize = (n / bSize) + 1;
+    IntegerMatrix out(chunkSize);
+    int blockScore = 0;
+    int eCounter = 0; // element counter to aggregrate
+
+    if (verbose) {
+      Rcpp::Rcout << "Running with block size: " << bSize << std::endl;
+    }
+    // Use ii & jj to represent block index
+    // Use i & j to represent matrix (indexMat) index
+    for (int ii = 0; ii < chunkSize; ii++) {
+      for (int jj = 0; jj <= ii; jj++) {
+        if (verbose) {
+          Rcpp::Rcout << "Handling block pair (" << ii+1 << "," << jj+1 << ")." << std::endl;
+        }
+        // Each block
+        // NOTE the indices of last block
+        blockScore = 0;
+        eCounter = 0;
+        for (int i = 0 + ii * bSize; i < std::min((ii + 1) * bSize, n); i++) {
+          for (int j = 0 + jj * bSize; j < std::min((jj + 1) * bSize, n); j++) {
+            // Each element
+            score = 0;
+            for (int k = 0; k < size; k++) {
+              score += subMat(indexMat(i, k), indexMat(j, k));
+            }
+            blockScore += score;
+            eCounter++;
+          }
+        }
+
+        // Calculate the mean
+        out(ii, jj) = std::round(blockScore / float(eCounter));
+        if (ii != jj) {
+          out(jj, ii) = std::round(blockScore / float(eCounter));
+        }
+      }
+    }
+
+    return out;
+  }
 }

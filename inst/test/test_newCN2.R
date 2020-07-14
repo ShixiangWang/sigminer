@@ -39,3 +39,13 @@ get_score_matrix(seqs$keep[1:10], sub_list$mat, method = "bigmemory")[] %>% clas
 for (i in LETTERS[1:24]) {
   message("Number of seqs starts with ", i, ": #", sum(startsWith(seqs$keep, i)))
 }
+
+set.seed(123)
+x <- sapply(1:5, function(x) {
+  paste(sample(LETTERS[1:24], 5, replace = TRUE), collapse = "")
+})
+y1 <- get_score_matrix(x, sub_list$mat)
+
+y2 <- get_score_matrix2(x, sub_list$mat, verbose = FALSE)
+
+all.equal(y1, y2)

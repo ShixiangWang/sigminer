@@ -120,12 +120,16 @@ get_score_matrix <- function(x, sub_mat, method = c("base", "ff", "bigmemory"), 
     mat[seq_along(j_vals), i] <- j_vals
   }
 
+  mat <- mat[]
+  ## NOTE the t() operation
+  ## cannot just assign upper to lower triangle matrix
+  mat[lower.tri(mat)] <- t(mat)[lower.tri(mat)]
   rownames(mat) <- colnames(mat) <- x
   return(mat)
 }
 
-get_score_matrix2 <- function(x, sub_mat, verbose = TRUE) {
-  map <- seq_len(24L)
+get_score_matrix2 <- function(x, sub_mat, block_size = NULL, verbose = TRUE) {
+  map <- seq_len(24L) - 1L # to 0 based index
   names(map) <- LETTERS[map]
 
   ## Checking input
@@ -139,10 +143,21 @@ get_score_matrix2 <- function(x, sub_mat, verbose = TRUE) {
     s <- unlist(strsplit(x[i], split = ""))
     m[, i] <- map[s] %>% as.integer()
   }
-
   m <- t(m)
-  y <- getScoreMatrix(m, sub_mat, verbose = verbose)
-  colnames(y) <- rownames(y) <- x
+
+  if (!is.null(block_size)) {
+    stopifnot(block_size > 1)
+  } else {
+    block_size = 1
+  }
+
+  y <- getScoreMatrix(m, sub_mat, block_size, verbose)
+
+  if (block_size == 1) {
+    colnames(y) <- rownames(y) <- x
+  } else {
+    colnames(y) <- rownames(y) <- paste0("block", seq_len(nrow(y)))
+  }
 
   return(y)
 }
