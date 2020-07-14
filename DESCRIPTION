@@ -89,7 +89,8 @@ Suggests:
     tibble,
     ff,
     bigmemory,
-    scales
+    scales,
+    ggseqlogo
 LinkingTo: 
     Rcpp
 VignetteBuilder: 

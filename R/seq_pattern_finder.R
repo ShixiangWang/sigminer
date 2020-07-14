@@ -167,7 +167,7 @@ get_score_matrix2 <- function(x, sub_mat, block_size = NULL, verbose = TRUE) {
   return(y)
 }
 
-show_segment_code <- function(x, map = NULL, x_lab = "Estimated segment length", y_lab = "Copy number") {
+show_seq_shape <- function(x, map = NULL, x_lab = "Estimated segment length", y_lab = "Copy number") {
   if (!requireNamespace("scales", quietly = TRUE)) {
     stop("Package 'scales' is required, please install it firstly!")
   }
@@ -200,4 +200,41 @@ show_segment_code <- function(x, map = NULL, x_lab = "Estimated segment length",
     scale_x_continuous(breaks = scales::pretty_breaks()) +
     labs(x = x_lab, y = y_lab) +
     cowplot::theme_cowplot()
+}
+
+show_seq_logo <- function(x, method = c("prob", "bits"), ncol = NULL, nrow = NULL, ...) {
+  method <- match.arg(method)
+
+  if (!requireNamespace("ggseqlogo", quietly = TRUE)) {
+    stop("Package 'ggseqlogo' is required, please install it firstly!")
+  }
+
+  ## copy from utils.R
+  reds <- sapply(list(c(252, 138, 106), c(241, 68, 50), c(188, 25, 26)),
+                 FUN = function(x) rgb2hex(x[1], x[2], x[3])) %>% as.character()
+  blues <- sapply(list(c(74, 152, 201), c(23, 100, 171)),
+                 FUN = function(x) rgb2hex(x[1], x[2], x[3])) %>% as.character()
+
+  cs = ggseqlogo::make_col_scheme(chars = LETTERS[1:24],
+                                  groups = c(rep("2 copy DEL", 4),
+                                             rep("1 copy DEL", 4),
+                                             rep("Normal", 4),
+                                             rep("1 copy AMP", 4),
+                                             rep("2 copy AMP", 4),
+                                             rep("3+ copy AMP", 4)),
+                                  cols = c(rep("blue", 4),
+                                           rep(blues[1], 4),
+                                           rep("black", 4),
+                                           rep(reds[1], 4),
+                                           rep(reds[2], 4),
+                                           rep(reds[3], 4)),
+                                  name = "Segment type")
+
+  ggseqlogo::ggseqlogo(x,
+                       ncol = ncol,
+                       nrow = nrow,
+                       method = method,
+                       namespace = LETTERS[1:24],
+                       col_scheme = cs,
+                       ...)
 }
