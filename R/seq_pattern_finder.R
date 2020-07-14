@@ -117,7 +117,7 @@ get_score_matrix <- function(x, sub_mat, method = c("base", "ff", "bigmemory"), 
     for (j in seq_len(i)) {
       j_vals[j] <- score_pairwise_strings(x[i], x[j], sub_mat = sub_mat) %>% as.integer()
     }
-    mat[seq_len(j_vals), i] <- j_vals
+    mat[seq_along(j_vals), i] <- j_vals
   }
 
   rownames(mat) <- colnames(mat) <- x
