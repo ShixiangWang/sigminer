@@ -21,3 +21,7 @@ getScoreMatrix <- function(indexMat, subMat, bSize, verbose) {
     .Call(`_sigminer_getScoreMatrix`, indexMat, subMat, bSize, verbose)
 }
 
+getScoreMatrixRect <- function(indexMat1, indexMat2, subMat, verbose) {
+    .Call(`_sigminer_getScoreMatrixRect`, indexMat1, indexMat2, subMat, verbose)
+}
+

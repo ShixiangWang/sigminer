@@ -128,7 +128,9 @@ get_score_matrix <- function(x, sub_mat, method = c("base", "ff", "bigmemory"), 
   return(mat)
 }
 
-get_score_matrix2 <- function(x, sub_mat, block_size = NULL, verbose = TRUE) {
+get_score_matrix2 <- function(x, sub_mat, block_size = NULL, verbose = TRUE, cores = 1L) {
+  stopifnot(is.numeric(cores))
+
   if (anyNA(sub_mat)) {
     stop("Input substitution matrix cannot contain 'NA' values!")
   }
@@ -156,12 +158,61 @@ get_score_matrix2 <- function(x, sub_mat, block_size = NULL, verbose = TRUE) {
     block_size = 1
   }
 
-  y <- getScoreMatrix(m, sub_mat, block_size, verbose)
+  if (cores == 1) {
+    y <- getScoreMatrix(m, sub_mat, block_size, verbose)
 
-  if (block_size == 1) {
-    colnames(y) <- rownames(y) <- x
+    if (block_size == 1) {
+      colnames(y) <- rownames(y) <- x
+    } else {
+      colnames(y) <- rownames(y) <- paste0("block", seq_len(nrow(y)))
+    }
   } else {
-    colnames(y) <- rownames(y) <- paste0("block", seq_len(nrow(y)))
+
+    if (block_size > 1) {
+      stop("In parallel mode, 'block_size' can only be one!")
+    }
+
+    if (nrow(m) < 10000) {
+      warning("For data <1000, set cores > 1 is not recommended.", immediate. = TRUE)
+    }
+
+    if (cores <= 0 | cores > future::availableCores()) {
+      cores <- future::availableCores() %>% as.integer()
+    }
+
+    ngrp <- ceiling(nrow(m) / 1000)
+    grp_list <- chunk2(seq_len(nrow(m)), ngrp)
+
+    #y <- matrix(NA_integer_, ncol = nrow(m), nrow = nrow(m))
+
+    doFuture::registerDoFuture()
+    future::plan("multiprocess", workers = cores)
+
+    # getScoreMatrixRect2 <- function(x1, x2, y, z) {
+    #   getScoreMatrixRect(x1, x2, y, z)
+    # }
+
+    y <- foreach(
+      i = seq_along(grp_list),
+      .combine = "cbind",
+      .packages = "sigminer",
+      .export = c("m", "grp_list", "sub_mat", "verbose", "getScoreMatrixRect"),
+      .verbose = FALSE
+    ) %dopar% {
+      getScoreMatrixRect(m, m[grp_list[[i]], ], sub_mat, verbose)
+    }
+
+    # for (i in seq_along(grp_list)) {
+    #   y[, grp_list[[i]]] <- getScoreMatrixRect(m, m[grp_list[[i]], ], sub_mat, verbose)
+    # }
+
+    # y_list <- mclapply(grp_list, function(x) {
+    #   getScoreMatrixRect(m, m[x, ], sub_mat, verbose)
+    # }, mc.cores = cores)
+    #
+    # y <- purrr::reduce(y_list, cbind)
+    colnames(y) <- rownames(y) <- x
+
   }
 
   return(y)

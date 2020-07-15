@@ -41,7 +41,7 @@ for (i in LETTERS[1:24]) {
 }
 
 set.seed(123)
-x <- sapply(1:1000, function(x) {
+x <- sapply(1:10000, function(x) {
   paste(sample(LETTERS[1:24], 5, replace = TRUE), collapse = "")
 })
 y1 <- get_score_matrix(x, sub_list$mat)
@@ -50,9 +50,29 @@ y2 <- get_score_matrix2(x, sub_list$mat, verbose = TRUE)
 
 all.equal(y1, y2)
 
-
 y3 <- get_score_matrix2(x, sub_list$mat, verbose = TRUE, block_size = 3)
 
+z = get_score_matrix2(x, sub_list$mat, cores = 4)
+z2 = get_score_matrix2(x, sub_list$mat, cores = 1, verbose = FALSE)
+z3 = get_score_matrix(x, sub_list$mat, verbose = FALSE)
+
+all.equal(z2, z3)
+all.equal(z, z2)
+all.equal(z[, 1:10], z2[, 1:10])
+all.equal(z[, 991:1000], z2[, 991:1000])
+
+tr <- sapply(chunk2(1:1000, 100), function(x) {
+  all.equal(z[, x], z2[, x])
+})
+
+tr
+
+l <- chunk2(1:1000, 100)
+
+z[1:10, l[[11]]]
+z2[1:10, l[[11]]]
+
+sum(z) - sum(z2)
 
 require(ggplot2)
 require(ggseqlogo)

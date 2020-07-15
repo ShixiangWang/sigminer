@@ -105,3 +105,32 @@ IntegerMatrix getScoreMatrix(IntegerMatrix indexMat, IntegerMatrix subMat, int b
     return out;
   }
 }
+
+// [[Rcpp::export]]
+IntegerMatrix getScoreMatrixRect(IntegerMatrix indexMat1, IntegerMatrix indexMat2, IntegerMatrix subMat, bool verbose) {
+  // For not equal matrices, indexMat1 should be a bigger matrix than indexMat2
+  // indexMat: each row represent the index in subMat (0-based)
+  // subMat: a matrix stores match score
+  int m = indexMat1.nrow(), n = indexMat2.nrow();
+  int size = indexMat1.ncol();
+  int score = 0;
+  IntegerMatrix out(m, n);
+
+  for (int i = 0; i < m; i++) {
+    for (int j = 0; j < n; j++) {
+      score = 0;
+      if (verbose) {
+        Rcpp::Rcout << "Handling index pair (" << i+1 << "," << j+1 << ")." << std::endl;
+      }
+      for (int k = 0; k < size; k++) {
+        score += subMat(indexMat1(i, k), indexMat2(j, k));
+      }
+      out(i, j) = score;
+      // if (i != j && i < n) {
+      //   out(j, i) = score;
+      // }
+    }
+  }
+
+  return out;
+}
