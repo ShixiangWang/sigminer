@@ -173,7 +173,7 @@ get_score_matrix2 <- function(x, sub_mat, block_size = NULL, verbose = TRUE, cor
     }
 
     if (nrow(m) < 10000) {
-      warning("For data <1000, set cores > 1 is not recommended.", immediate. = TRUE)
+      warning("For data <10000, set cores > 1 is not recommended.", immediate. = TRUE)
     }
 
     if (cores <= 0 | cores > future::availableCores()) {
@@ -187,10 +187,6 @@ get_score_matrix2 <- function(x, sub_mat, block_size = NULL, verbose = TRUE, cor
 
     doFuture::registerDoFuture()
     future::plan("multiprocess", workers = cores)
-
-    # getScoreMatrixRect2 <- function(x1, x2, y, z) {
-    #   getScoreMatrixRect(x1, x2, y, z)
-    # }
 
     y <- foreach(
       i = seq_along(grp_list),
@@ -206,11 +202,6 @@ get_score_matrix2 <- function(x, sub_mat, block_size = NULL, verbose = TRUE, cor
     #   y[, grp_list[[i]]] <- getScoreMatrixRect(m, m[grp_list[[i]], ], sub_mat, verbose)
     # }
 
-    # y_list <- mclapply(grp_list, function(x) {
-    #   getScoreMatrixRect(m, m[x, ], sub_mat, verbose)
-    # }, mc.cores = cores)
-    #
-    # y <- purrr::reduce(y_list, cbind)
     colnames(y) <- rownames(y) <- x
 
   }

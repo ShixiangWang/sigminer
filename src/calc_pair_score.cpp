@@ -126,9 +126,6 @@ IntegerMatrix getScoreMatrixRect(IntegerMatrix indexMat1, IntegerMatrix indexMat
         score += subMat(indexMat1(i, k), indexMat2(j, k));
       }
       out(i, j) = score;
-      // if (i != j && i < n) {
-      //   out(j, i) = score;
-      // }
     }
   }
 
