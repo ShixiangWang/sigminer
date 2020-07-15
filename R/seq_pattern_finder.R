@@ -94,7 +94,7 @@ score_pairwise_strings <- function(x, y, sub_mat) {
     sum()
 }
 
-get_score_matrix <- function(x, sub_mat, method = c("base", "ff", "bigmemory"), verbose = TRUE) {
+get_score_matrix <- function(x, sub_mat, method = c("base", "ff", "bigmemory"), verbose = FALSE) {
   method <- match.arg(method)
   n <- length(x)
 
@@ -128,7 +128,8 @@ get_score_matrix <- function(x, sub_mat, method = c("base", "ff", "bigmemory"), 
   return(mat)
 }
 
-get_score_matrix2 <- function(x, sub_mat, block_size = NULL, verbose = TRUE, cores = 1L) {
+get_score_matrix2 <- function(x, sub_mat, block_size = NULL, verbose = FALSE, cores = 1L,
+                              parallel_method = c("doParallel", "doFuture")) {
   stopifnot(is.numeric(cores))
 
   if (anyNA(sub_mat)) {
@@ -155,7 +156,7 @@ get_score_matrix2 <- function(x, sub_mat, block_size = NULL, verbose = TRUE, cor
   if (!is.null(block_size)) {
     stopifnot(block_size > 1)
   } else {
-    block_size = 1
+    block_size <- 1
   }
 
   if (cores == 1) {
@@ -167,7 +168,7 @@ get_score_matrix2 <- function(x, sub_mat, block_size = NULL, verbose = TRUE, cor
       colnames(y) <- rownames(y) <- paste0("block", seq_len(nrow(y)))
     }
   } else {
-
+    parallel_method <- match.arg(parallel_method)
     if (block_size > 1) {
       stop("In parallel mode, 'block_size' can only be one!")
     }
@@ -183,10 +184,27 @@ get_score_matrix2 <- function(x, sub_mat, block_size = NULL, verbose = TRUE, cor
     ngrp <- ceiling(nrow(m) / 1000)
     grp_list <- chunk2(seq_len(nrow(m)), ngrp)
 
-    #y <- matrix(NA_integer_, ncol = nrow(m), nrow = nrow(m))
+    # y <- matrix(NA_integer_, ncol = nrow(m), nrow = nrow(m))
 
-    doFuture::registerDoFuture()
-    future::plan("multiprocess", workers = cores)
+    if (parallel_method == "doFuture") {
+      if (!requireNamespace("doParallel", quietly = TRUE)) {
+        stop("Package 'doFuture' is required to go through this parallel method.")
+      }
+
+      doFuture::registerDoFuture()
+      future::plan("multiprocess", workers = cores)
+    } else {
+      if (!requireNamespace("doParallel", quietly = TRUE)) {
+        stop("Package 'doParallel' is required to go through this parallel method.")
+      }
+
+      if (Sys.info()[["sysname"]] == "Windows") {
+        cl <- parallel::makeCluster(cores)
+        doParallel::registerDoParallel(cl)
+      } else {
+        doParallel::registerDoParallel(cores = cores)
+      }
+    }
 
     y <- foreach(
       i = seq_along(grp_list),
@@ -203,7 +221,6 @@ get_score_matrix2 <- function(x, sub_mat, block_size = NULL, verbose = TRUE, cor
     # }
 
     colnames(y) <- rownames(y) <- x
-
   }
 
   return(y)
@@ -253,30 +270,39 @@ show_seq_logo <- function(x, method = c("prob", "bits"), ncol = NULL, nrow = NUL
 
   ## copy from utils.R
   reds <- sapply(list(c(252, 138, 106), c(241, 68, 50), c(188, 25, 26)),
-                 FUN = function(x) rgb2hex(x[1], x[2], x[3])) %>% as.character()
+    FUN = function(x) rgb2hex(x[1], x[2], x[3])
+  ) %>% as.character()
   blues <- sapply(list(c(74, 152, 201), c(23, 100, 171)),
-                 FUN = function(x) rgb2hex(x[1], x[2], x[3])) %>% as.character()
+    FUN = function(x) rgb2hex(x[1], x[2], x[3])
+  ) %>% as.character()
 
-  cs = ggseqlogo::make_col_scheme(chars = LETTERS[1:24],
-                                  groups = c(rep("2 copy DEL", 4),
-                                             rep("1 copy DEL", 4),
-                                             rep("Normal", 4),
-                                             rep("1 copy AMP", 4),
-                                             rep("2 copy AMP", 4),
-                                             rep("3+ copy AMP", 4)),
-                                  cols = c(rep("blue", 4),
-                                           rep(blues[1], 4),
-                                           rep("black", 4),
-                                           rep(reds[1], 4),
-                                           rep(reds[2], 4),
-                                           rep(reds[3], 4)),
-                                  name = "Segment type")
+  cs <- ggseqlogo::make_col_scheme(
+    chars = LETTERS[1:24],
+    groups = c(
+      rep("2 copy DEL", 4),
+      rep("1 copy DEL", 4),
+      rep("Normal", 4),
+      rep("1 copy AMP", 4),
+      rep("2 copy AMP", 4),
+      rep("3+ copy AMP", 4)
+    ),
+    cols = c(
+      rep("blue", 4),
+      rep(blues[1], 4),
+      rep("black", 4),
+      rep(reds[1], 4),
+      rep(reds[2], 4),
+      rep(reds[3], 4)
+    ),
+    name = "Segment type"
+  )
 
   ggseqlogo::ggseqlogo(x,
-                       ncol = ncol,
-                       nrow = nrow,
-                       method = method,
-                       namespace = LETTERS[1:24],
-                       col_scheme = cs,
-                       ...)
+    ncol = ncol,
+    nrow = nrow,
+    method = method,
+    namespace = LETTERS[1:24],
+    col_scheme = cs,
+    ...
+  )
 }

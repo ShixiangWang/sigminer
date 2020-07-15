@@ -90,7 +90,9 @@ Suggests:
     ff,
     bigmemory,
     scales,
-    ggseqlogo
+    ggseqlogo,
+    parallel,
+    doParallel
 LinkingTo: 
     Rcpp
 VignetteBuilder: 
