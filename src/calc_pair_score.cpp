@@ -14,7 +14,7 @@ int pairScoreVector(NumericVector x, NumericVector y, int x_max, int y_max) {
       // In this case, switch copy number 0 and 2 to
       // avoid result of copy number 0 is greater than
       // copy number 2
-      Rcpp::Rcout << x[1] << "," << y[1] << ";";
+      //Rcpp::Rcout << x[1] << "," << y[1] << ";";
       if (x[1] == 0) {
         x[1] = 2;
       } else if (x[1] == 2) {
@@ -25,7 +25,7 @@ int pairScoreVector(NumericVector x, NumericVector y, int x_max, int y_max) {
       } else if (y[1] == 2) {
         y[1] = 0;
       }
-      Rcpp::Rcout << x[1] << "," << y[1] << std::endl;
+      //Rcpp::Rcout << x[1] << "," << y[1] << std::endl;
     }
     return flag * (x_max - abs(x[0] - y[0])) * (y_max - abs(x[1] - y[1]));
   }
