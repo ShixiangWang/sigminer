@@ -27,14 +27,16 @@ extract_seq_dt <- function(x) {
 # Q R S T for copy number 4
 # U V W X for copy number 5+
 
-build_sub_matrix <- function() {
+build_sub_matrix <- function(max_len_score = 8L) {
+  stopifnot(max_len_score >= 4)
+
   l <- 1:4
   v <- 0:5
   k <- LETTERS[1:24]
   map <- k
   names(map) <- vector_to_combination(1:4, 0:5)
 
-  max_l <- length(l)
+  max_l <- max_len_score
   max_v <- length(v)
   pair_mat <- expand.grid(l, v, KEEP.OUT.ATTRS = FALSE) %>% as.matrix()
 
