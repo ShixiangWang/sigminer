@@ -263,7 +263,8 @@ show_seq_shape <- function(x, map = NULL, x_lab = "Estimated segment length", y_
     cowplot::theme_cowplot()
 }
 
-show_seq_logo <- function(x, method = c("prob", "bits"), ncol = NULL, nrow = NULL, ...) {
+show_seq_logo <- function(x, method = c("prob", "bits"), ncol = NULL, nrow = NULL,
+                          recode = FALSE, indicator = NULL, ...) {
   method <- match.arg(method)
 
   if (!requireNamespace("ggseqlogo", quietly = TRUE)) {
@@ -299,12 +300,26 @@ show_seq_logo <- function(x, method = c("prob", "bits"), ncol = NULL, nrow = NUL
     name = "Segment type"
   )
 
-  ggseqlogo::ggseqlogo(x,
-    ncol = ncol,
-    nrow = nrow,
-    method = method,
-    namespace = LETTERS[1:24],
-    col_scheme = cs,
-    ...
+  if (recode) {
+    if (is.null(indicator)) {
+      indicator <- rep(as.character(1:4), 6)
+      names(indicator) <- LETTERS[1:24]
+    } else {
+      if (is.null(names(indicator))) {
+        stop("The indicator should have names to map.")
+      }
+    }
+  } else {
+    indicator <- NULL
+  }
+
+  ggseqlogo2(x,
+             ncol = ncol,
+             nrow = nrow,
+             method = method,
+             namespace = LETTERS[1:24],
+             col_scheme = cs,
+             idor = indicator,
+             ...
   )
 }

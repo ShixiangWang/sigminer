@@ -69,34 +69,6 @@ tr
 
 l <- chunk2(1:1000, 100)
 
-z[1:10, l[[11]]]
-z2[1:10, l[[11]]]
-
-sum(z) - sum(z2)
-
-require(ggplot2)
-require(ggseqlogo)
-
-# Some sample data
-data(ggseqlogo_sample)
-
-require(ggplot2)
-require(ggseqlogo)
-
-# Some sample data
-data(ggseqlogo_sample)
-
-p1 = ggseqlogo( seqs_dna$MA0001.1, method = 'bits' )
-p1
-
-seqs_numeric = chartr('ATGC','1234', seqs_dna$MA0001.1)
-ggseqlogo(seqs_numeric, method='p', namespace=1:4)
-
-ggseqlogo(x[1:10])
-
-
-cs1 = make_col_scheme(chars=c('A', 'T', 'C', 'G'), groups=c('gr1', 'gr1', 'gr2', 'gr2'),
-                      cols=c('purple', 'purple', 'blue', 'blue'))
-
-# Generate sequence logo
-ggseqlogo(seqs_dna$MA0001.1, col_scheme=cs1)
+q = show_seq_logo(sapply(split(LETTERS[1:24], 1:4), function(x) paste0(x, collapse = "")))
+q
+show_seq_logo(sapply(split(LETTERS[1:24], 1:4), function(x) paste0(x, collapse = "")))
