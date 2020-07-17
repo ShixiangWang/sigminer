@@ -86,13 +86,7 @@ Suggests:
     rmarkdown,
     roxygen2,
     testthat,
-    tibble,
-    ff,
-    bigmemory,
-    scales,
-    ggseqlogo,
-    parallel,
-    doParallel
+    tibble
 LinkingTo: 
     Rcpp
 VignetteBuilder: 

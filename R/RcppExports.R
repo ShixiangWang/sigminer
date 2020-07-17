@@ -9,19 +9,3 @@ cosineMatrix <- function(x, y) {
     .Call(`_sigminer_cosineMatrix`, x, y)
 }
 
-pairScoreVector <- function(x, y, x_max, y_max) {
-    .Call(`_sigminer_pairScoreVector`, x, y, x_max, y_max)
-}
-
-pairScoreMatrix <- function(x, y, x_max, y_max) {
-    .Call(`_sigminer_pairScoreMatrix`, x, y, x_max, y_max)
-}
-
-getScoreMatrix <- function(indexMat, subMat, bSize, verbose) {
-    .Call(`_sigminer_getScoreMatrix`, indexMat, subMat, bSize, verbose)
-}
-
-getScoreMatrixRect <- function(indexMat1, indexMat2, subMat, verbose) {
-    .Call(`_sigminer_getScoreMatrixRect`, indexMat1, indexMat2, subMat, verbose)
-}
-
