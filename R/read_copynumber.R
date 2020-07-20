@@ -8,7 +8,7 @@
 #' @param pattern an optional regular expression used to select part of files if
 #' `input` is a directory, more detail please see [list.files] function.
 #' @param ignore_case logical. Should pattern-matching be case-insensitive?
-#' @param seg_cols four characters used to specify chromosome, start position,
+#' @param seg_cols four strings used to specify chromosome, start position,
 #'  end position and copy number value in `input`, respectively.
 #'  Default use names from ABSOLUTE calling result.
 #' @param samp_col a character used to specify the sample column name. If `input`

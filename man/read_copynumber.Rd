@@ -29,7 +29,7 @@ read_copynumber(
 
 \item{ignore_case}{logical. Should pattern-matching be case-insensitive?}
 
-\item{seg_cols}{four characters used to specify chromosome, start position,
+\item{seg_cols}{four strings used to specify chromosome, start position,
 end position and copy number value in \code{input}, respectively.
 Default use names from ABSOLUTE calling result.}
 
