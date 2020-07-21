@@ -176,7 +176,12 @@ get_groups <- function(Signature,
       tibble::column_to_rownames("sample")
     n_cluster <- ifelse(is.null(n_cluster), ncol(contrib), n_cluster)
     send_info("Running k-means with ", n_cluster, " clusters...")
-    contrib.km <- kmeans(x = contrib, centers = n_cluster)
+    contrib.km <- tryCatch(
+      kmeans(x = contrib, centers = n_cluster),
+      error = function(e) {
+        stop("A improper cluster number is set!", call. = FALSE)
+      }
+    )
     sil_width <- cluster::silhouette(contrib.km$cluster, cluster::daisy(contrib))
     send_info("Generating a table of group and signature contribution (stored in 'map_table' attr):")
     ztable <- contrib.km$centers

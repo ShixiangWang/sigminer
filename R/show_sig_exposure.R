@@ -56,7 +56,6 @@ show_sig_exposure <- function(Signature,
                               hide_samps = TRUE,
                               legend_position = "top") {
 
-  # TODO: add group (#108)
   if (class(Signature) == "Signature") {
     h <- Signature$Exposure
   } else if (is.matrix(Signature)) {
@@ -76,6 +75,13 @@ show_sig_exposure <- function(Signature,
   style <- match.arg(style)
 
   h.norm <- apply(h, 2, function(x) x / sum(x))
+  h.norm[is.na(h.norm)] <- 0
+
+  if (nrow(h) == 1) {
+    h.norm <- as.matrix(h.norm) %>% t()
+    rownames(h.norm) <- rownames(h)
+  }
+
   h <- as.data.frame(h)
   h.norm <- as.data.frame(h.norm)
 
