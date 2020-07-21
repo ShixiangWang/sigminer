@@ -170,7 +170,7 @@ sig_estimate <-
         paste0(plot_basename, "_survey.pdf"),
         bg = "white",
         pointsize = 9,
-        width = 6,
+        width = 6 + abs((nrow(nmf.sum) - 6) / 3),
         height = 6,
         paper = "special"
       )

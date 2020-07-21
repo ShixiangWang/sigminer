@@ -150,12 +150,13 @@ sig_auto_extract <- function(nmf_matrix = NULL,
     # Find stable K
     best <- names(sort(table(summary.run$K), decreasing = TRUE))[1] %>%
       as.integer()
-    # Get optimal run for stable K
-    best_row <- dplyr::filter(summary.run, .data$K == best) %>%
-      head(1)
+    best <- max(1, best, na.rm = TRUE)
   } else {
-    best_row <- head(summary.run, 1)
+    best <- max(1, summary.run$K[1], na.rm = TRUE)
   }
+
+  best_row <- dplyr::filter(summary.run, .data$K == best) %>%
+    head(1)
 
   message("Select Run ", best_row$Run, ", which K = ", best_row$K, " as best solution.")
   best_solution <- get_bayesian_result(best_row)
