@@ -1,3 +1,5 @@
+# sigminer 1.0.10
+
 # sigminer 1.0.9
 
 - Tried to speed up joining adjacent segments in `read_copynumber()`, got 200% improvement.
