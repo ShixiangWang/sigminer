@@ -247,21 +247,22 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
         class = factor(class, levels = colnames(Sig))
       )
     } else {
-      ## Tao & Wang
-      if (any(nchar(mat$context) > 6)) {
+      ## Ziyu Tao & Tao Wu & Wang
+      if (any(nchar(mat$context) > 7)) {
         send_stop("Wrong 'method' option or unsupported components.")
       }
-      mat$base <- sub("^([A-Z]:[A-Z]):[0-9]\\+?$", "\\1", mat$context)
-      mat$context <- sub("^[A-Z]:[A-Z]:([0-9]\\+?)$", "\\1", mat$context)
+      mat$base <- sub("^([A-Z]:[A-Z]{2}):[0-9]\\+?$", "\\1", mat$context)
+      mat$context <- sub("^[A-Z]:[A-Z]{2}:([0-9]\\+?)$", "\\1", mat$context)
+      # mat$context <- sub("^[A-Z]:[A-Z]{2}:", "", mat$context)
       mat <- tidyr::gather(mat, class, signature, -c("context", "base"))
 
       mat <- dplyr::mutate(mat,
         context = factor(.data$context),
         base = factor(.data$base, levels = c(
-          "O:S", "O:M", "O:L",
-          "R:S", "R:M", "R:L",
-          "F:S", "F:M", "F:L",
-          "N:S", "N:M", "N:L"
+          "S:HH", "S:HL", "S:LH", "S:LL",
+          "M:HH", "M:HL", "M:LH", "M:LL",
+          "L:HH", "L:HL", "L:LH", "L:LL",
+          "E:HH", "E:HL", "E:LH", "E:LL"
         )),
         class = factor(class, levels = colnames(Sig))
       )
