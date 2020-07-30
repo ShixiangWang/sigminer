@@ -13,4 +13,4 @@ load(system.file("extdata", "toy_copynumber.RData",
 cn_tally <- sig_tally(cn, method = "T")
 
 cn_tally$nmf_matrix %>% colnames()
-show_catalogue(cn_tally, mode = "copynumber", method = "T")
+show_catalogue(cn_tally, mode = "copynumber", method = "T", style = "cosmic")
