@@ -1,7 +1,5 @@
 # Load copy number object
-load(system.file("extdata", "toy_copynumber.RData",
-                 package = "sigminer", mustWork = TRUE
-))
+cn <- readRDS("D:/data/pcawg_cn_obj.rds")
 
 cn_tally <- sig_tally(cn, method = "T")
 

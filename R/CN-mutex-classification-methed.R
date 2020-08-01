@@ -12,7 +12,7 @@ get_features_mutex <- function(CN_data,
   on.exit(future::plan(oplan), add = TRUE)
 
   # features <- unique(feature_setting$feature)
-  features <- c("BP10MB", "CN", "SS", "CS")
+  features <- c("BP10MB", "CN", "SS", "CS", "AB")
 
   send_info("NOTE: this method derives features for each segment. Be patient...")
 
@@ -31,6 +31,9 @@ get_features_mutex <- function(CN_data,
     } else if (i == "CS") {
       send_info("Getting context change shape based on left and right sides of each segment...")
       getCS(CN_data)
+    } else if (i == "AB") {
+      send_info("Getting change extent on left and right sides of each segment...")
+      getAB(CN_data)
     }
   }
 
@@ -121,6 +124,32 @@ getCS <- function(abs_profiles) {
   y[order(y$Index)]
 }
 
+## Get left and right CN change cut off
+## (left&right):AA, AB, BA, BB (A <= 2, B >2)
+getAB <- function(abs_profiles) {
+  y <- purrr::map_df(abs_profiles, function(x) {
+    x %>%
+      dplyr::as_tibble() %>%
+      dplyr::group_by(.data$chromosome) %>%
+      dplyr::mutate(
+        lv = abs(diff(c(2L, .data$segVal))),
+        rv = abs(-diff(c(.data$segVal, 2L)))
+      ) %>%
+      dplyr::mutate(
+        value = dplyr::case_when(
+          .data$lv <= 2 & .data$rv <= 2 ~ "AA",
+          .data$lv < 2 & .data$rv > 2 ~ "AB",
+          .data$lv > 2 & .data$rv < 2 ~ "BA",
+          .data$lv >= 2 & .data$rv >= 2 ~ "BB"
+        )
+      ) %>%
+      dplyr::ungroup() %>%
+      dplyr::select(c("sample", "value", "Index"))
+  }) %>%
+    data.table::as.data.table()
+
+  y[order(y$Index)]
+}
 # Get components ----------------------------------------------------------
 
 ## Use two classification systems:
@@ -160,6 +189,8 @@ call_component <- function(f_dt, f_name) {
     )
   } else if (f_name == "CS") {
     f_dt$S_CS <- f_dt$C_CS <- factor(f_dt$value)
+  } else if (f_name == "AB") {
+    f_dt$S_AB <- f_dt$C_AB <- factor(f_dt$value)
   }
   f_dt$value <- NULL
   f_dt
@@ -181,9 +212,8 @@ get_matrix_mutex <- function(CN_components, indices = NULL) {
   dt_c <- merged_dt[, colnames(merged_dt) == "sample" | startsWith(colnames(merged_dt), "C_"), with = FALSE]
 
   ## 1. handle standard way
-
-  s_class_levels <- vector_to_combination(levels(dt_s$S_SS), levels(dt_s$S_CS), levels(dt_s$S_CN), c_string = ":")
-  dt_s$s_class <- paste(dt_s$S_SS, dt_s$S_CS, dt_s$S_CN, sep = ":")
+  s_class_levels <- vector_to_combination(levels(dt_s$S_SS), levels(dt_s$S_CS), levels(dt_s$S_CN), levels(dt_s$S_AB), c_string = ":")
+  dt_s$s_class <- paste(dt_s$S_SS, dt_s$S_CS, dt_s$S_CN, dt_s$S_AB, sep = ":")
   dt_s$s_class <- factor(dt_s$s_class, levels = s_class_levels)
   s_mat <- classDT2Matrix(dt_s, samp_col = "sample", component_col = "s_class")
 
