@@ -19,8 +19,8 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/slate/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9.99</span>
       </span>
     </div>
 
@@ -203,7 +203,7 @@ more than 10 times for more than 100 samples.</p></td>
     <div class='dont-index'><p><a href='sig_fit.html'>sig_fit</a>, <a href='sig_fit_bootstrap.html'>sig_fit_bootstrap</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>W</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>), <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+    <pre class="examples"><span class='no'>W</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>), <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>W</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sig1"</span>, <span class='st'>"sig2"</span>)
 <span class='no'>W</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span>(<span class='no'>W</span>, <span class='fl'>2</span>, <span class='kw'>function</span>(<span class='no'>x</span>) <span class='no'>x</span> / <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='no'>x</span>))
 
@@ -211,164 +211,12 @@ more than 10 times for more than 100 samples.</p></td>
 <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>H</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"samp"</span>, <span class='fl'>1</span>:<span class='fl'>4</span>)
 
 <span class='no'>V</span> <span class='kw'>&lt;-</span> <span class='no'>W</span> <span class='kw'>%*%</span> <span class='no'>H</span>
-<span class='no'>V</span></div><div class='output co'>#&gt;         samp1 samp2    samp3 samp4
-#&gt; [1,] 1.666667   2.1 2.566667   0.7
-#&gt; [2,] 2.333333   3.0 3.333333   1.0
-#&gt; [3,] 3.000000   3.9 4.100000   1.3</div><div class='input'>
+<span class='no'>V</span>
+
 <span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"quadprog"</span>)) {
   <span class='no'>z10</span> <span class='kw'>&lt;-</span> <span class='fu'>sig_fit_bootstrap_batch</span>(<span class='no'>V</span>, <span class='kw'>sig</span> <span class='kw'>=</span> <span class='no'>W</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>10</span>)
   <span class='no'>z10</span>
-}</div><div class='output co'>#&gt; <span class='message'><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:28]: </span><span style='color: #0000BB;font-weight: bold;'>Batch Bootstrap Signature Exposure Analysis Started.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:28]: </span><span style='color: #0000BB;font-weight: bold;'>Samples to be filtered out: </span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:28]: </span><span style='color: #0000BB;font-weight: bold;'>Finding optimal exposures (&amp;errors) for different methods.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:28]: </span><span style='color: #0000BB;font-weight: bold;'>Calling method </span><span style='color: #000000;background-color: #BBBBBB;font-weight: bold;'>`QP`</span><span style='font-weight: bold;'>.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:28]: </span><span style='color: #0000BB;font-weight: bold;'>Started.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:28]: </span><span style='color: #00BB00;font-weight: bold;'>Signature matrix detected.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:28]: </span><span style='color: #00BB00;font-weight: bold;'>Database and index checked.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:28]: </span><span style='color: #00BB00;font-weight: bold;'>Signature normalized.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:28]: </span><span style='color: #0000BB;font-weight: bold;'>Checking row number for catalog matrix and signature matrix.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:28]: </span><span style='color: #00BB00;font-weight: bold;'>Checked.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:28]: </span><span style='color: #00BB00;font-weight: bold;'>Method 'QP' detected.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:28]: </span><span style='color: #00BB00;font-weight: bold;'>Corresponding function generated.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:28]: </span><span style='color: #0000BB;font-weight: bold;'>Calling function.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:28]: </span><span style='color: #00BB00;font-weight: bold;'>Done.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:28]: </span><span style='color: #0000BB;font-weight: bold;'>Generating output signature exposures.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:28]: </span><span style='color: #00BB00;font-weight: bold;'>Done.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:28]: </span><span style='color: #0000BB;font-weight: bold;'>Calculating errors (Frobenius Norm).</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:28]: </span><span style='color: #00BB00;font-weight: bold;'>Done.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:28]: </span><span style='color: #0000BB;font-weight: bold;'>0.044 secs elapsed.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:28]: </span><span style='color: #0000BB;font-weight: bold;'>Getting bootstrap exposures (&amp;errors) for different methods.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:28]: </span><span style='color: #0000BB;font-weight: bold;'>This step is time consuming, please be patient.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:28]: </span><span style='color: #0000BB;font-weight: bold;'>Processing sample </span><span style='color: #000000;background-color: #BBBBBB;font-weight: bold;'>`samp1`</span><span style='font-weight: bold;'>.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:28]: </span><span style='color: #0000BB;font-weight: bold;'>Started.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:28]: </span><span style='color: #0000BB;font-weight: bold;'>Checking catalog.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:28]: </span><span style='color: #00BB00;font-weight: bold;'>Done.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:28]: </span><span style='color: #0000BB;font-weight: bold;'>About to start bootstrap.</span><span></span></div><div class='output co'>#&gt; <span class='message'>→ Bootstrapping 10 times.</span></div><div class='output co'>#&gt; <span class='message'>→ Total 10 times, starting no.1.</span></div><div class='output co'>#&gt; <span class='message'>→ Total 10 times, starting no.2.</span></div><div class='output co'>#&gt; <span class='message'>→ Total 10 times, starting no.3.</span></div><div class='output co'>#&gt; <span class='message'>→ Total 10 times, starting no.4.</span></div><div class='output co'>#&gt; <span class='message'>→ Total 10 times, starting no.5.</span></div><div class='output co'>#&gt; <span class='message'>→ Total 10 times, starting no.6.</span></div><div class='output co'>#&gt; <span class='message'>→ Total 10 times, starting no.7.</span></div><div class='output co'>#&gt; <span class='message'>→ Total 10 times, starting no.8.</span></div><div class='output co'>#&gt; <span class='message'>→ Total 10 times, starting no.9.</span></div><div class='output co'>#&gt; <span class='message'>→ Total 10 times, starting no.10.</span></div><div class='output co'>#&gt; <span class='message'>                                  </span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:29]: </span><span style='color: #00BB00;font-weight: bold;'>Bootstrap done.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:29]: </span><span style='color: #00BB00;font-weight: bold;'>Signature exposures collected.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:29]: </span><span style='color: #00BB00;font-weight: bold;'>Errors collected.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:29]: </span><span style='color: #00BB00;font-weight: bold;'>Done.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:29]: </span><span style='color: #0000BB;font-weight: bold;'>0.526 secs elapsed.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:29]: </span><span style='color: #0000BB;font-weight: bold;'>Processing sample </span><span style='color: #000000;background-color: #BBBBBB;font-weight: bold;'>`samp2`</span><span style='font-weight: bold;'>.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:29]: </span><span style='color: #0000BB;font-weight: bold;'>Started.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:29]: </span><span style='color: #0000BB;font-weight: bold;'>Checking catalog.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:29]: </span><span style='color: #00BB00;font-weight: bold;'>Done.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:29]: </span><span style='color: #0000BB;font-weight: bold;'>About to start bootstrap.</span><span></span></div><div class='output co'>#&gt; <span class='message'>→ Bootstrapping 10 times.</span></div><div class='output co'>#&gt; <span class='message'>→ Total 10 times, starting no.1.</span></div><div class='output co'>#&gt; <span class='message'>→ Total 10 times, starting no.2.</span></div><div class='output co'>#&gt; <span class='message'>→ Total 10 times, starting no.3.</span></div><div class='output co'>#&gt; <span class='message'>→ Total 10 times, starting no.4.</span></div><div class='output co'>#&gt; <span class='message'>→ Total 10 times, starting no.5.</span></div><div class='output co'>#&gt; <span class='message'>→ Total 10 times, starting no.6.</span></div><div class='output co'>#&gt; <span class='message'>→ Total 10 times, starting no.7.</span></div><div class='output co'>#&gt; <span class='message'>→ Total 10 times, starting no.8.</span></div><div class='output co'>#&gt; <span class='message'>→ Total 10 times, starting no.9.</span></div><div class='output co'>#&gt; <span class='message'>→ Total 10 times, starting no.10.</span></div><div class='output co'>#&gt; <span class='message'>                                  </span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:30]: </span><span style='color: #00BB00;font-weight: bold;'>Bootstrap done.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:30]: </span><span style='color: #00BB00;font-weight: bold;'>Signature exposures collected.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:30]: </span><span style='color: #00BB00;font-weight: bold;'>Errors collected.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:30]: </span><span style='color: #00BB00;font-weight: bold;'>Done.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:30]: </span><span style='color: #0000BB;font-weight: bold;'>0.503 secs elapsed.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:30]: </span><span style='color: #0000BB;font-weight: bold;'>Processing sample </span><span style='color: #000000;background-color: #BBBBBB;font-weight: bold;'>`samp3`</span><span style='font-weight: bold;'>.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:30]: </span><span style='color: #0000BB;font-weight: bold;'>Started.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:30]: </span><span style='color: #0000BB;font-weight: bold;'>Checking catalog.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:30]: </span><span style='color: #00BB00;font-weight: bold;'>Done.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:30]: </span><span style='color: #0000BB;font-weight: bold;'>About to start bootstrap.</span><span></span></div><div class='output co'>#&gt; <span class='message'>→ Bootstrapping 10 times.</span></div><div class='output co'>#&gt; <span class='message'>→ Total 10 times, starting no.1.</span></div><div class='output co'>#&gt; <span class='message'>→ Total 10 times, starting no.2.</span></div><div class='output co'>#&gt; <span class='message'>→ Total 10 times, starting no.3.</span></div><div class='output co'>#&gt; <span class='message'>→ Total 10 times, starting no.4.</span></div><div class='output co'>#&gt; <span class='message'>→ Total 10 times, starting no.5.</span></div><div class='output co'>#&gt; <span class='message'>→ Total 10 times, starting no.6.</span></div><div class='output co'>#&gt; <span class='message'>→ Total 10 times, starting no.7.</span></div><div class='output co'>#&gt; <span class='message'>→ Total 10 times, starting no.8.</span></div><div class='output co'>#&gt; <span class='message'>→ Total 10 times, starting no.9.</span></div><div class='output co'>#&gt; <span class='message'>→ Total 10 times, starting no.10.</span></div><div class='output co'>#&gt; <span class='message'>                                  </span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:31]: </span><span style='color: #00BB00;font-weight: bold;'>Bootstrap done.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:31]: </span><span style='color: #00BB00;font-weight: bold;'>Signature exposures collected.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:31]: </span><span style='color: #00BB00;font-weight: bold;'>Errors collected.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:31]: </span><span style='color: #00BB00;font-weight: bold;'>Done.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:31]: </span><span style='color: #0000BB;font-weight: bold;'>0.505 secs elapsed.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:32]: </span><span style='color: #0000BB;font-weight: bold;'>Processing sample </span><span style='color: #000000;background-color: #BBBBBB;font-weight: bold;'>`samp4`</span><span style='font-weight: bold;'>.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:32]: </span><span style='color: #0000BB;font-weight: bold;'>Started.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:32]: </span><span style='color: #0000BB;font-weight: bold;'>Checking catalog.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:32]: </span><span style='color: #00BB00;font-weight: bold;'>Done.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:32]: </span><span style='color: #0000BB;font-weight: bold;'>About to start bootstrap.</span><span></span></div><div class='output co'>#&gt; <span class='message'>→ Bootstrapping 10 times.</span></div><div class='output co'>#&gt; <span class='message'>→ Total 10 times, starting no.1.</span></div><div class='output co'>#&gt; <span class='message'>→ Total 10 times, starting no.2.</span></div><div class='output co'>#&gt; <span class='message'>→ Total 10 times, starting no.3.</span></div><div class='output co'>#&gt; <span class='message'>→ Total 10 times, starting no.4.</span></div><div class='output co'>#&gt; <span class='message'>→ Total 10 times, starting no.5.</span></div><div class='output co'>#&gt; <span class='message'>→ Total 10 times, starting no.6.</span></div><div class='output co'>#&gt; <span class='message'>→ Total 10 times, starting no.7.</span></div><div class='output co'>#&gt; <span class='message'>→ Total 10 times, starting no.8.</span></div><div class='output co'>#&gt; <span class='message'>→ Total 10 times, starting no.9.</span></div><div class='output co'>#&gt; <span class='message'>→ Total 10 times, starting no.10.</span></div><div class='output co'>#&gt; <span class='message'>                                  </span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:32]: </span><span style='color: #00BB00;font-weight: bold;'>Bootstrap done.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:32]: </span><span style='color: #00BB00;font-weight: bold;'>Signature exposures collected.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:32]: </span><span style='color: #00BB00;font-weight: bold;'>Errors collected.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:32]: </span><span style='color: #00BB00;font-weight: bold;'>Done.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:32]: </span><span style='color: #0000BB;font-weight: bold;'>0.502 secs elapsed.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:33]: </span><span style='color: #00BB00;font-weight: bold;'>Gotten.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:33]: </span><span style='color: #0000BB;font-weight: bold;'>Reporting p values...</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:33]: </span><span style='color: #0000BB;font-weight: bold;'>Started.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:33]: </span><span style='color: #00BB00;font-weight: bold;'>Batch mode enabled.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:33]: </span><span style='color: #00BB00;font-weight: bold;'>Done.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:33]: </span><span style='color: #0000BB;font-weight: bold;'>0.006 secs elapsed.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:33]: </span><span style='color: #0000BB;font-weight: bold;'>Started.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:33]: </span><span style='color: #00BB00;font-weight: bold;'>Batch mode enabled.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:33]: </span><span style='color: #00BB00;font-weight: bold;'>Done.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:33]: </span><span style='color: #0000BB;font-weight: bold;'>0.006 secs elapsed.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:33]: </span><span style='color: #0000BB;font-weight: bold;'>Started.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:33]: </span><span style='color: #00BB00;font-weight: bold;'>Batch mode enabled.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:33]: </span><span style='color: #00BB00;font-weight: bold;'>Done.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:33]: </span><span style='color: #0000BB;font-weight: bold;'>0.006 secs elapsed.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:33]: </span><span style='color: #0000BB;font-weight: bold;'>Started.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:33]: </span><span style='color: #00BB00;font-weight: bold;'>Batch mode enabled.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:33]: </span><span style='color: #00BB00;font-weight: bold;'>Done.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:33]: </span><span style='color: #0000BB;font-weight: bold;'>0.006 secs elapsed.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:33]: </span><span style='color: #00BB00;font-weight: bold;'>Done.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:33]: </span><span style='color: #0000BB;font-weight: bold;'>Cleaning results...</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:33]: </span><span style='color: #00BB00;font-weight: bold;'>Outputing.</span><span></span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='font-weight: bold;'>[2020-07-07 16:50:33]: </span><span style='color: #0000BB;font-weight: bold;'>Total 4.914 secs elapsed.</span><span></span></div><div class='output co'>#&gt; $expo
-#&gt;     method sample  sig exposure    type
-#&gt;  1:     QP  samp1 sig1    2.000 optimal
-#&gt;  2:     QP  samp2 sig1    3.000 optimal
-#&gt;  3:     QP  samp3 sig1    1.000 optimal
-#&gt;  4:     QP  samp4 sig1    1.000 optimal
-#&gt;  5:     QP  samp1 sig2    5.000 optimal
-#&gt;  6:     QP  samp2 sig2    6.000 optimal
-#&gt;  7:     QP  samp3 sig2    9.000 optimal
-#&gt;  8:     QP  samp4 sig2    2.000 optimal
-#&gt;  9:     QP  samp1 sig1    7.000   Rep_1
-#&gt; 10:     QP  samp1 sig2    0.000   Rep_1
-#&gt; 11:     QP  samp1 sig1    5.333   Rep_2
-#&gt; 12:     QP  samp1 sig2    1.667   Rep_2
-#&gt; 13:     QP  samp1 sig1    0.333   Rep_3
-#&gt; 14:     QP  samp1 sig2    6.667   Rep_3
-#&gt; 15:     QP  samp1 sig1    7.000   Rep_4
-#&gt; 16:     QP  samp1 sig2    0.000   Rep_4
-#&gt; 17:     QP  samp1 sig1    5.333   Rep_5
-#&gt; 18:     QP  samp1 sig2    1.667   Rep_5
-#&gt; 19:     QP  samp1 sig1    7.000   Rep_6
-#&gt; 20:     QP  samp1 sig2    0.000   Rep_6
-#&gt; 21:     QP  samp1 sig1    5.333   Rep_7
-#&gt; 22:     QP  samp1 sig2    1.667   Rep_7
-#&gt; 23:     QP  samp1 sig1    0.000   Rep_8
-#&gt; 24:     QP  samp1 sig2    7.000   Rep_8
-#&gt; 25:     QP  samp1 sig1    0.333   Rep_9
-#&gt; 26:     QP  samp1 sig2    6.667   Rep_9
-#&gt; 27:     QP  samp1 sig1    7.000  Rep_10
-#&gt; 28:     QP  samp1 sig2    0.000  Rep_10
-#&gt; 29:     QP  samp2 sig1    9.000   Rep_1
-#&gt; 30:     QP  samp2 sig2    0.000   Rep_1
-#&gt; 31:     QP  samp2 sig1    9.000   Rep_2
-#&gt; 32:     QP  samp2 sig2    0.000   Rep_2
-#&gt; 33:     QP  samp2 sig1    0.000   Rep_3
-#&gt; 34:     QP  samp2 sig2    9.000   Rep_3
-#&gt; 35:     QP  samp2 sig1    9.000   Rep_4
-#&gt; 36:     QP  samp2 sig2    0.000   Rep_4
-#&gt; 37:     QP  samp2 sig1    9.000   Rep_5
-#&gt; 38:     QP  samp2 sig2    0.000   Rep_5
-#&gt; 39:     QP  samp2 sig1    9.000   Rep_6
-#&gt; 40:     QP  samp2 sig2    0.000   Rep_6
-#&gt; 41:     QP  samp2 sig1    0.000   Rep_7
-#&gt; 42:     QP  samp2 sig2    9.000   Rep_7
-#&gt; 43:     QP  samp2 sig1    0.000   Rep_8
-#&gt; 44:     QP  samp2 sig2    9.000   Rep_8
-#&gt; 45:     QP  samp2 sig1    0.000   Rep_9
-#&gt; 46:     QP  samp2 sig2    9.000   Rep_9
-#&gt; 47:     QP  samp2 sig1    0.000  Rep_10
-#&gt; 48:     QP  samp2 sig2    9.000  Rep_10
-#&gt; 49:     QP  samp3 sig1    0.000   Rep_1
-#&gt; 50:     QP  samp3 sig2   10.000   Rep_1
-#&gt; 51:     QP  samp3 sig1    0.000   Rep_2
-#&gt; 52:     QP  samp3 sig2   10.000   Rep_2
-#&gt; 53:     QP  samp3 sig1    0.000   Rep_3
-#&gt; 54:     QP  samp3 sig2   10.000   Rep_3
-#&gt; 55:     QP  samp3 sig1    8.333   Rep_4
-#&gt; 56:     QP  samp3 sig2    1.667   Rep_4
-#&gt; 57:     QP  samp3 sig1    0.000   Rep_5
-#&gt; 58:     QP  samp3 sig2   10.000   Rep_5
-#&gt; 59:     QP  samp3 sig1    8.333   Rep_6
-#&gt; 60:     QP  samp3 sig2    1.667   Rep_6
-#&gt; 61:     QP  samp3 sig1    3.333   Rep_7
-#&gt; 62:     QP  samp3 sig2    6.667   Rep_7
-#&gt; 63:     QP  samp3 sig1    0.000   Rep_8
-#&gt; 64:     QP  samp3 sig2   10.000   Rep_8
-#&gt; 65:     QP  samp3 sig1   10.000   Rep_9
-#&gt; 66:     QP  samp3 sig2    0.000   Rep_9
-#&gt; 67:     QP  samp3 sig1    8.333  Rep_10
-#&gt; 68:     QP  samp3 sig2    1.667  Rep_10
-#&gt; 69:     QP  samp4 sig1    0.000   Rep_1
-#&gt; 70:     QP  samp4 sig2    3.000   Rep_1
-#&gt; 71:     QP  samp4 sig1    0.000   Rep_2
-#&gt; 72:     QP  samp4 sig2    3.000   Rep_2
-#&gt; 73:     QP  samp4 sig1    0.000   Rep_3
-#&gt; 74:     QP  samp4 sig2    3.000   Rep_3
-#&gt; 75:     QP  samp4 sig1    3.000   Rep_4
-#&gt; 76:     QP  samp4 sig2    0.000   Rep_4
-#&gt; 77:     QP  samp4 sig1    0.000   Rep_5
-#&gt; 78:     QP  samp4 sig2    3.000   Rep_5
-#&gt; 79:     QP  samp4 sig1    0.000   Rep_6
-#&gt; 80:     QP  samp4 sig2    3.000   Rep_6
-#&gt; 81:     QP  samp4 sig1    3.000   Rep_7
-#&gt; 82:     QP  samp4 sig2    0.000   Rep_7
-#&gt; 83:     QP  samp4 sig1    3.000   Rep_8
-#&gt; 84:     QP  samp4 sig2    0.000   Rep_8
-#&gt; 85:     QP  samp4 sig1    3.000   Rep_9
-#&gt; 86:     QP  samp4 sig2    0.000   Rep_9
-#&gt; 87:     QP  samp4 sig1    0.000  Rep_10
-#&gt; 88:     QP  samp4 sig2    3.000  Rep_10
-#&gt;     method sample  sig exposure    type
-#&gt; 
-#&gt; $error
-#&gt;     method sample errors    type
-#&gt;  1:     QP  samp1  0.000 optimal
-#&gt;  2:     QP  samp2  0.000 optimal
-#&gt;  3:     QP  samp3  0.000 optimal
-#&gt;  4:     QP  samp4  0.000 optimal
-#&gt;  5:     QP  samp1  0.707   Rep_1
-#&gt;  6:     QP  samp1  0.471   Rep_2
-#&gt;  7:     QP  samp1  0.236   Rep_3
-#&gt;  8:     QP  samp1  0.707   Rep_4
-#&gt;  9:     QP  samp1  0.471   Rep_5
-#&gt; 10:     QP  samp1  0.707   Rep_6
-#&gt; 11:     QP  samp1  0.471   Rep_7
-#&gt; 12:     QP  samp1  0.283   Rep_8
-#&gt; 13:     QP  samp1  0.236   Rep_9
-#&gt; 14:     QP  samp1  0.707  Rep_10
-#&gt; 15:     QP  samp2  0.849   Rep_1
-#&gt; 16:     QP  samp2  0.849   Rep_2
-#&gt; 17:     QP  samp2  0.424   Rep_3
-#&gt; 18:     QP  samp2  0.849   Rep_4
-#&gt; 19:     QP  samp2  0.849   Rep_5
-#&gt; 20:     QP  samp2  0.849   Rep_6
-#&gt; 21:     QP  samp2  0.424   Rep_7
-#&gt; 22:     QP  samp2  0.424   Rep_8
-#&gt; 23:     QP  samp2  0.424   Rep_9
-#&gt; 24:     QP  samp2  0.424  Rep_10
-#&gt; 25:     QP  samp3  0.141   Rep_1
-#&gt; 26:     QP  samp3  0.141   Rep_2
-#&gt; 27:     QP  samp3  0.141   Rep_3
-#&gt; 28:     QP  samp3  1.037   Rep_4
-#&gt; 29:     QP  samp3  0.141   Rep_5
-#&gt; 30:     QP  samp3  1.037   Rep_6
-#&gt; 31:     QP  samp3  0.330   Rep_7
-#&gt; 32:     QP  samp3  0.141   Rep_8
-#&gt; 33:     QP  samp3  1.273   Rep_9
-#&gt; 34:     QP  samp3  1.037  Rep_10
-#&gt; 35:     QP  samp4  0.141   Rep_1
-#&gt; 36:     QP  samp4  0.141   Rep_2
-#&gt; 37:     QP  samp4  0.141   Rep_3
-#&gt; 38:     QP  samp4  0.283   Rep_4
-#&gt; 39:     QP  samp4  0.141   Rep_5
-#&gt; 40:     QP  samp4  0.141   Rep_6
-#&gt; 41:     QP  samp4  0.283   Rep_7
-#&gt; 42:     QP  samp4  0.283   Rep_8
-#&gt; 43:     QP  samp4  0.283   Rep_9
-#&gt; 44:     QP  samp4  0.141  Rep_10
-#&gt;     method sample errors    type
-#&gt; 
-#&gt; $p_val
-#&gt;    sample method threshold  sig p_value
-#&gt; 1:  samp1     QP      0.05 sig1     0.3
-#&gt; 2:  samp1     QP      0.05 sig2     0.4
-#&gt; 3:  samp2     QP      0.05 sig1     0.5
-#&gt; 4:  samp2     QP      0.05 sig2     0.5
-#&gt; 5:  samp3     QP      0.05 sig1     0.5
-#&gt; 6:  samp3     QP      0.05 sig2     0.1
-#&gt; 7:  samp4     QP      0.05 sig1     0.6
-#&gt; 8:  samp4     QP      0.05 sig2     0.4
-#&gt; </div></span></pre>
+}</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

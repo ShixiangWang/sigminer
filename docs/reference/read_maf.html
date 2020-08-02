@@ -19,8 +19,8 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/slate/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
@@ -84,7 +84,7 @@ positive strand format." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9.99</span>
       </span>
     </div>
 
@@ -159,47 +159,13 @@ positive strand format.</p>
     <div class='dont-index'><p><a href='read_copynumber.html'>read_copynumber</a> for reading copy number data to <a href='CopyNumber-class.html'>CopyNumber</a> object.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>laml.maf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"tcga_laml.maf.gz"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"maftools"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+    <pre class="examples"><span class='no'>laml.maf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"tcga_laml.maf.gz"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"maftools"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='kw'>if</span> (!<span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='st'>"R.utils"</span>)) {
   <span class='fu'><a href='https://rdrr.io/r/base/message.html'>message</a></span>(<span class='st'>"Please install 'R.utils' package firstly"</span>)
 } <span class='kw'>else</span> {
   <span class='no'>laml</span> <span class='kw'>&lt;-</span> <span class='fu'>read_maf</span>(<span class='kw'>maf</span> <span class='kw'>=</span> <span class='no'>laml.maf</span>)
   <span class='no'>laml</span>
-}</div><div class='output co'>#&gt; <span class='message'>载入需要的程辑包：R.utils</span></div><div class='output co'>#&gt; <span class='message'>载入需要的程辑包：R.oo</span></div><div class='output co'>#&gt; <span class='message'>载入需要的程辑包：R.methodsS3</span></div><div class='output co'>#&gt; <span class='message'>R.methodsS3 v1.8.0 (2020-02-14 07:10:20 UTC) successfully loaded. See ?R.methodsS3 for help.</span></div><div class='output co'>#&gt; <span class='message'>R.oo v1.23.0 successfully loaded. See ?R.oo for help.</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>载入程辑包：‘R.oo’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:R.methodsS3’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    throw</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:methods’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    getClasses, getMethods</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    attach, detach, load, save</span></div><div class='output co'>#&gt; <span class='message'>R.utils v2.9.2 successfully loaded. See ?R.utils for help.</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>载入程辑包：‘R.utils’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:pkgmaker’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    isPackageInstalled</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:utils’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    timestamp</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    cat, commandArgs, getOption, inherits, isOpen, nullfile, parse,</span>
-#&gt; <span class='message'>    warnings</span></div><div class='output co'>#&gt; -Reading
-#&gt; -Validating
-#&gt; -Silent variants: 475 
-#&gt; -Summarizing
-#&gt; -Processing clinical data
-#&gt; --Missing clinical data
-#&gt; -Finished in 0.508s elapsed (0.487s cpu) </div><div class='output co'>#&gt; An object of class  MAF 
-#&gt;                    ID          summary  Mean Median
-#&gt;  1:        NCBI_Build               37    NA     NA
-#&gt;  2:            Center genome.wustl.edu    NA     NA
-#&gt;  3:           Samples              193    NA     NA
-#&gt;  4:            nGenes             1241    NA     NA
-#&gt;  5:   Frame_Shift_Del               52 0.269      0
-#&gt;  6:   Frame_Shift_Ins               91 0.472      0
-#&gt;  7:      In_Frame_Del               10 0.052      0
-#&gt;  8:      In_Frame_Ins               42 0.218      0
-#&gt;  9: Missense_Mutation             1342 6.953      7
-#&gt; 10: Nonsense_Mutation              103 0.534      0
-#&gt; 11:       Splice_Site               92 0.477      0
-#&gt; 12:             total             1732 8.974      9</div></pre>
+}</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

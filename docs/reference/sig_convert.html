@@ -19,8 +19,8 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/slate/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
@@ -81,7 +81,7 @@ Currently, only SBS signature is supported." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9.99</span>
       </span>
     </div>
 
@@ -168,7 +168,7 @@ signature database v2 and v3.</p>
     <p><code>convert_signatures</code> function from sigfit package.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Load SBS signature</span>
+    <pre class="examples"><span class='co'># Load SBS signature</span>
 <span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_mutational_signature.RData"</span>,
   <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 ))
@@ -177,104 +177,10 @@ signature database v2 and v3.</p>
   <span class='kw'>from</span> <span class='kw'>=</span> <span class='st'>"human-exome"</span>,
   <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"human-genome"</span>
 )
-<span class='no'>sig_converted</span></div><div class='output co'>#&gt;                  Sig1          Sig2          Sig3
-#&gt; A[C&gt;A]A  0.000000e+00  1.283652e-02 2.354578e-204
-#&gt; A[C&gt;A]C  0.000000e+00  1.866572e-02  0.000000e+00
-#&gt; A[C&gt;A]G  0.000000e+00  1.618700e-03  0.000000e+00
-#&gt; A[C&gt;A]T  0.000000e+00  7.572233e-03  0.000000e+00
-#&gt; C[C&gt;A]A  0.000000e+00  1.209076e-02  0.000000e+00
-#&gt; C[C&gt;A]C  0.000000e+00  7.032249e-03 1.170400e-133
-#&gt; C[C&gt;A]G  0.000000e+00  3.839313e-03 1.165310e-269
-#&gt; C[C&gt;A]T  0.000000e+00  1.166974e-02  0.000000e+00
-#&gt; G[C&gt;A]A  0.000000e+00  1.025669e-02  4.089543e-15
-#&gt; G[C&gt;A]C 2.975389e-296  4.002311e-03  0.000000e+00
-#&gt; G[C&gt;A]G  4.796114e-02 4.527374e-117  0.000000e+00
-#&gt; G[C&gt;A]T  0.000000e+00  5.994876e-03 1.669814e-131
-#&gt; T[C&gt;A]A  0.000000e+00  3.324941e-96  7.673114e-02
-#&gt; T[C&gt;A]C  0.000000e+00  1.467589e-02 9.720402e-229
-#&gt; T[C&gt;A]G  0.000000e+00  3.199454e-03  0.000000e+00
-#&gt; T[C&gt;A]T  0.000000e+00  2.338506e-02  0.000000e+00
-#&gt; A[C&gt;G]A  0.000000e+00  1.198076e-02 1.210238e-153
-#&gt; A[C&gt;G]C  0.000000e+00  3.999796e-03  0.000000e+00
-#&gt; A[C&gt;G]G  9.976549e-02  7.184837e-58  0.000000e+00
-#&gt; A[C&gt;G]T  0.000000e+00  7.572233e-03 9.731662e-108
-#&gt; C[C&gt;G]A  0.000000e+00  8.732217e-03  1.472610e-34
-#&gt; C[C&gt;G]C  0.000000e+00  1.875266e-03  0.000000e+00
-#&gt; C[C&gt;G]G  0.000000e+00  4.429976e-03  1.144811e-70
-#&gt; C[C&gt;G]T  1.398527e-01  1.003533e-19  0.000000e+00
-#&gt; G[C&gt;G]A 1.227107e-293  7.521572e-03 2.969058e-285
-#&gt; G[C&gt;G]C  0.000000e+00  3.001734e-03 2.665595e-168
-#&gt; G[C&gt;G]G  0.000000e+00  2.178881e-03  0.000000e+00
-#&gt; G[C&gt;G]T  0.000000e+00  3.996584e-03  0.000000e+00
-#&gt; T[C&gt;G]A  0.000000e+00  4.493267e-03 2.338585e-311
-#&gt; T[C&gt;G]C  0.000000e+00  5.336688e-03 1.100445e-248
-#&gt; T[C&gt;G]G  0.000000e+00  5.027714e-03 2.505791e-283
-#&gt; T[C&gt;G]T  0.000000e+00  8.094828e-03  4.211703e-12
-#&gt; A[C&gt;T]A  0.000000e+00  4.278842e-02 6.186711e-285
-#&gt; A[C&gt;T]C  0.000000e+00  3.266500e-02 4.009287e-180
-#&gt; A[C&gt;T]G  0.000000e+00  8.943317e-02 1.936180e-271
-#&gt; A[C&gt;T]T  0.000000e+00  2.366323e-02  0.000000e+00
-#&gt; C[C&gt;T]A  0.000000e+00  2.552494e-02  0.000000e+00
-#&gt; C[C&gt;T]C  0.000000e+00  1.406450e-02 1.334078e-226
-#&gt; C[C&gt;T]G  0.000000e+00  5.463637e-02 9.737288e-158
-#&gt; C[C&gt;T]T  0.000000e+00  3.695418e-02 4.246509e-172
-#&gt; G[C&gt;T]A  0.000000e+00 1.550033e-134  1.379990e-01
-#&gt; G[C&gt;T]C  0.000000e+00  2.401387e-02 9.655208e-197
-#&gt; G[C&gt;T]G  0.000000e+00  5.665090e-02 1.322415e-193
-#&gt; G[C&gt;T]T  0.000000e+00  3.197267e-02 1.483309e-124
-#&gt; T[C&gt;T]A  0.000000e+00  3.504749e-02 1.602583e-125
-#&gt; T[C&gt;T]C  0.000000e+00  2.868470e-02 2.192251e-133
-#&gt; T[C&gt;T]G  0.000000e+00  5.607061e-45  3.725237e-01
-#&gt; T[C&gt;T]T  0.000000e+00  2.248563e-02 5.991874e-150
-#&gt; A[T&gt;A]A  0.000000e+00 8.169022e-163 4.909543e-207
-#&gt; A[T&gt;A]C  0.000000e+00  9.451235e-03 9.169290e-161
-#&gt; A[T&gt;A]G  0.000000e+00 1.860257e-209  3.781700e-02
-#&gt; A[T&gt;A]T  0.000000e+00  3.646724e-03  0.000000e+00
-#&gt; C[T&gt;A]A  0.000000e+00  9.626354e-63 1.877035e-152
-#&gt; C[T&gt;A]C  0.000000e+00  4.098575e-03  8.954807e-03
-#&gt; C[T&gt;A]G  0.000000e+00  7.584736e-03  1.779246e-46
-#&gt; C[T&gt;A]T  0.000000e+00  4.886651e-03  0.000000e+00
-#&gt; G[T&gt;A]A  0.000000e+00 1.923466e-257  1.645056e-02
-#&gt; G[T&gt;A]C  0.000000e+00  5.990275e-03 2.816093e-138
-#&gt; G[T&gt;A]G  0.000000e+00  2.491146e-03 5.966918e-137
-#&gt; G[T&gt;A]T  1.780073e-01 1.470587e-107  0.000000e+00
-#&gt; T[T&gt;A]A  0.000000e+00  0.000000e+00  1.576605e-78
-#&gt; T[T&gt;A]C  0.000000e+00 3.652510e-193  3.025830e-02
-#&gt; T[T&gt;A]G  0.000000e+00  0.000000e+00  3.102984e-02
-#&gt; T[T&gt;A]T  0.000000e+00  5.570191e-03 2.661350e-186
-#&gt; A[T&gt;C]A  0.000000e+00  3.673499e-02 2.037390e-236
-#&gt; A[T&gt;C]C  0.000000e+00  4.875997e-80  8.069896e-02
-#&gt; A[T&gt;C]G  0.000000e+00  2.533400e-02 4.653276e-300
-#&gt; A[T&gt;C]T  0.000000e+00  3.403610e-02 1.137147e-235
-#&gt; C[T&gt;C]A  0.000000e+00  7.619558e-03  1.273356e-94
-#&gt; C[T&gt;C]C  0.000000e+00  1.116095e-02 1.501723e-122
-#&gt; C[T&gt;C]G  0.000000e+00  9.506418e-50  9.321794e-02
-#&gt; C[T&gt;C]T  0.000000e+00  1.172796e-02  1.679251e-87
-#&gt; G[T&gt;C]A  0.000000e+00  4.585040e-03  5.536247e-03
-#&gt; G[T&gt;C]C  0.000000e+00 5.073564e-255  4.133148e-02
-#&gt; G[T&gt;C]G  0.000000e+00  6.850650e-03  0.000000e+00
-#&gt; G[T&gt;C]T  3.036787e-50  1.058999e-02 7.624782e-161
-#&gt; T[T&gt;C]A  0.000000e+00 1.774320e-183  1.917769e-02
-#&gt; T[T&gt;C]C 3.471970e-224  7.796288e-03  0.000000e+00
-#&gt; T[T&gt;C]G  0.000000e+00  9.993850e-03  0.000000e+00
-#&gt; T[T&gt;C]T  0.000000e+00  2.116673e-02 4.729625e-249
-#&gt; A[T&gt;G]A  0.000000e+00  6.559820e-03  0.000000e+00
-#&gt; A[T&gt;G]C  0.000000e+00 8.576821e-159  1.467254e-02
-#&gt; A[T&gt;G]G  0.000000e+00  1.544237e-03  3.140069e-03
-#&gt; A[T&gt;G]T  0.000000e+00  3.646724e-03  0.000000e+00
-#&gt; C[T&gt;G]A  0.000000e+00  1.088508e-03  0.000000e+00
-#&gt; C[T&gt;G]C  0.000000e+00  5.252213e-03 5.352907e-111
-#&gt; C[T&gt;G]G  0.000000e+00  6.320613e-03  0.000000e+00
-#&gt; C[T&gt;G]T  1.505897e-01  2.544085e-94 2.345935e-218
-#&gt; G[T&gt;G]A  9.796461e-02  2.199487e-93 1.446688e-154
-#&gt; G[T&gt;G]C  0.000000e+00  1.996758e-03  0.000000e+00
-#&gt; G[T&gt;G]G  0.000000e+00  3.736718e-03  0.000000e+00
-#&gt; G[T&gt;G]T  0.000000e+00  3.701349e-72  1.494581e-02
-#&gt; T[T&gt;G]A  1.142049e-01 5.198170e-158  0.000000e+00
-#&gt; T[T&gt;G]C  0.000000e+00  4.872680e-03  0.000000e+00
-#&gt; T[T&gt;G]G  0.000000e+00  1.798724e-19  1.551492e-02
-#&gt; T[T&gt;G]T  1.716541e-01  1.775134e-54  0.000000e+00</div><div class='input'>
-<span class='fu'><a href='show_sig_profile.html'>show_sig_profile</a></span>(<span class='no'>sig2</span>, <span class='kw'>style</span> <span class='kw'>=</span> <span class='st'>"cosmic"</span>)</div><div class='img'><img src='sig_convert-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='show_sig_profile.html'>show_sig_profile</a></span>(<span class='no'>sig_converted</span>, <span class='kw'>style</span> <span class='kw'>=</span> <span class='st'>"cosmic"</span>)</div><div class='img'><img src='sig_convert-2.png' alt='' width='700' height='433' /></div></pre>
+<span class='no'>sig_converted</span>
+
+<span class='fu'><a href='show_sig_profile.html'>show_sig_profile</a></span>(<span class='no'>sig2</span>, <span class='kw'>style</span> <span class='kw'>=</span> <span class='st'>"cosmic"</span>)
+<span class='fu'><a href='show_sig_profile.html'>show_sig_profile</a></span>(<span class='no'>sig_converted</span>, <span class='kw'>style</span> <span class='kw'>=</span> <span class='st'>"cosmic"</span>)</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

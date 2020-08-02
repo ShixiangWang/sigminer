@@ -19,8 +19,8 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/slate/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9.99</span>
       </span>
     </div>
 
@@ -322,13 +322,14 @@ a matrix, i.e., all signatures (colnames) must start with 'Sig'.</p></td>
     <p>a <code>ggplot</code> object</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Load SBS signature</span>
+    <pre class="examples"><span class='co'># Load SBS signature</span>
 <span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_mutational_signature.RData"</span>,
   <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 ))
 <span class='co'># Show signature profile</span>
 <span class='no'>p1</span> <span class='kw'>&lt;-</span> <span class='fu'>show_sig_profile</span>(<span class='no'>sig2</span>, <span class='kw'>mode</span> <span class='kw'>=</span> <span class='st'>"SBS"</span>)
-<span class='no'>p1</span></div><div class='img'><img src='show_sig_profile-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>p1</span>
+
 <span class='co'># Load copy number signature from method "W"</span>
 <span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_signature_by_W.RData"</span>,
   <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
@@ -340,7 +341,8 @@ a matrix, i.e., all signatures (colnames) must start with 'Sig'.</p></td>
   <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"W"</span>,
   <span class='kw'>normalize</span> <span class='kw'>=</span> <span class='st'>"feature"</span>
 )
-<span class='no'>p2</span></div><div class='img'><img src='show_sig_profile-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>p2</span>
+
 <span class='co'># Load copy number signature from method "M"</span>
 <span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_signature_by_M.RData"</span>,
   <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
@@ -353,7 +355,8 @@ a matrix, i.e., all signatures (colnames) must start with 'Sig'.</p></td>
   <span class='kw'>mode</span> <span class='kw'>=</span> <span class='st'>"copynumber"</span>,
   <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"M"</span>, <span class='kw'>normalize</span> <span class='kw'>=</span> <span class='st'>"column"</span>
 )
-<span class='no'>p3</span></div><div class='img'><img src='show_sig_profile-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>p3</span>
+
 <span class='co'># Add params label</span>
 <span class='co'># =================</span>
 <span class='co'># Load copy number prepare object</span>
@@ -366,7 +369,7 @@ a matrix, i.e., all signatures (colnames) must start with 'Sig'.</p></td>
   <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"M"</span>, <span class='kw'>normalize</span> <span class='kw'>=</span> <span class='st'>"column"</span>,
   <span class='kw'>params</span> <span class='kw'>=</span> <span class='no'>params</span>, <span class='kw'>y_expand</span> <span class='kw'>=</span> <span class='fl'>2</span>
 )
-<span class='no'>p4</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' λ=2.6e-16'出错：&lt;ce&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' λ=2.6e-16'出错：&lt;bb&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' λ=1'出错：&lt;ce&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' λ=1'出错：&lt;bb&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' λ=0.027'出错：&lt;ce&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' λ=0.027'出错：&lt;bb&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' λ=2.5'出错：&lt;ce&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' λ=2.5'出错：&lt;bb&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=0.62'出错：&lt;ce&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=0.62'出错：&lt;bc&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=5'出错：&lt;ce&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=5'出错：&lt;bc&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=1.9'出错：&lt;ce&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=1.9'出错：&lt;bc&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=3.8'出错：&lt;ce&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=3.8'出错：&lt;bc&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' λ=8.9e-11'出错：&lt;ce&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' λ=8.9e-11'出错：&lt;bb&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' λ=1.4'出错：&lt;ce&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' λ=1.4'出错：&lt;bb&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=410000'出错：&lt;ce&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=410000'出错：&lt;bc&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=7900000'出错：&lt;ce&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=7900000'出错：&lt;bc&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=3.2e+07'出错：&lt;ce&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=3.2e+07'出错：&lt;bc&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=4.5e+07'出错：&lt;ce&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=4.5e+07'出错：&lt;bc&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=8.4e+07'出错：&lt;ce&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=8.4e+07'出错：&lt;bc&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=1.1e+08'出错：&lt;ce&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=1.1e+08'出错：&lt;bc&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=1.3e+08'出错：&lt;ce&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=1.3e+08'出错：&lt;bc&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=1.5e+08'出错：&lt;ce&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=1.5e+08'出错：&lt;bc&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=1.8e+08'出错：&lt;ce&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=1.8e+08'出错：&lt;bc&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=2.4e+08'出错：&lt;ce&gt;代替了dot</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'mbcsToSbcs'里转换' μ=2.4e+08'出错：&lt;bc&gt;代替了dot</span></div><div class='img'><img src='show_sig_profile-4.png' alt='' width='700' height='433' /></div></pre>
+<span class='no'>p4</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

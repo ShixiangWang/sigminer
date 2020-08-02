@@ -19,8 +19,8 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/slate/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
@@ -82,7 +82,7 @@ this problem." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9.99</span>
       </span>
     </div>
 
@@ -199,40 +199,35 @@ see all available options.</p></td>
     <p>More info see <code><a href='https://rdrr.io/pkg/ggpubr/man/compare_means.html'>ggpubr::compare_means()</a></code>, <code><a href='https://rdrr.io/pkg/ggpubr/man/stat_compare_means.html'>ggpubr::stat_compare_means()</a></code> and <code><a href='https://rdrr.io/r/stats/p.adjust.html'>stats::p.adjust()</a></code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>ggpubr</span>)</div><div class='output co'>#&gt; <span class='message'>载入需要的程辑包：ggplot2</span></div><div class='input'><span class='co'># T-test</span>
+    <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>ggpubr</span>)
+<span class='co'># T-test</span>
 <span class='no'>stat.test</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/ggpubr/man/compare_means.html'>compare_means</a></span>(
   <span class='no'>len</span> ~ <span class='no'>dose</span>,
   <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>ToothGrowth</span>,
   <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"t.test"</span>,
   <span class='kw'>p.adjust.method</span> <span class='kw'>=</span> <span class='st'>"fdr"</span>
 )
-<span class='no'>stat.test</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 3 x 8</span><span>
-#&gt;   .y.   group1 group2        p    p.adj p.format p.signif method
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> 
-#&gt; </span><span style='color: #555555;'>1</span><span> len   0.5    1      1.27</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>- 7</span><span> 1.90</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>- 7</span><span> 1.3e-07  ****     T-test
-#&gt; </span><span style='color: #555555;'>2</span><span> len   0.5    2      4.40</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-14</span><span> 1.30</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-13</span><span> 4.4e-14  ****     T-test
-#&gt; </span><span style='color: #555555;'>3</span><span> len   1      2      1.91</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>- 5</span><span> 1.90</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>- 5</span><span> 1.9e-05  ****     T-test</div><div class='input'><span class='co'># Create a simple box plot</span>
+<span class='no'>stat.test</span>
+<span class='co'># Create a simple box plot</span>
 <span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/ggpubr/man/ggboxplot.html'>ggboxplot</a></span>(<span class='no'>ToothGrowth</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>)
-<span class='no'>p</span></div><div class='img'><img src='get_adj_p-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>p</span>
+
 <span class='co'># Add p values</span>
 <span class='no'>my_comparisons</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"0.5"</span>, <span class='st'>"1"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1"</span>, <span class='st'>"2"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"0.5"</span>, <span class='st'>"2"</span>))
-<span class='no'>p</span> + <span class='fu'><a href='https://rdrr.io/pkg/ggpubr/man/stat_compare_means.html'>stat_compare_means</a></span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"t.test"</span>, <span class='kw'>comparisons</span> <span class='kw'>=</span> <span class='no'>my_comparisons</span>)</div><div class='img'><img src='get_adj_p-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>p</span> + <span class='fu'><a href='https://rdrr.io/pkg/ggpubr/man/stat_compare_means.html'>stat_compare_means</a></span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"t.test"</span>, <span class='kw'>comparisons</span> <span class='kw'>=</span> <span class='no'>my_comparisons</span>)
+
 <span class='co'># Try adding adjust p values</span>
 <span class='co'># proposed by author of ggpubr</span>
 <span class='co'># however it does not work</span>
-<span class='no'>p</span> + <span class='fu'><a href='https://rdrr.io/pkg/ggpubr/man/stat_compare_means.html'>stat_compare_means</a></span>(<span class='fu'>aes</span>(<span class='kw'>label</span> <span class='kw'>=</span> <span class='no'>..p.adj..</span>), <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"t.test"</span>, <span class='kw'>comparisons</span> <span class='kw'>=</span> <span class='no'>my_comparisons</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Using `as.character()` on a quosure is deprecated as of rlang 0.3.0.</span>
-#&gt; <span class='warning'>Please use `as_label()` or `as_name()` instead.</span>
-#&gt; <span class='warning'></span><span style='color: #555555;'>This warning is displayed once per session.</span><span></span></div><div class='img'><img src='get_adj_p-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>p</span> + <span class='fu'><a href='https://rdrr.io/pkg/ggpubr/man/stat_compare_means.html'>stat_compare_means</a></span>(<span class='fu'>aes</span>(<span class='kw'>label</span> <span class='kw'>=</span> <span class='no'>..p.adj..</span>), <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"t.test"</span>, <span class='kw'>comparisons</span> <span class='kw'>=</span> <span class='no'>my_comparisons</span>)
+
 <span class='co'># Solution:</span>
 <span class='co'># calculate adjust p values and their location</span>
 <span class='co'># then use stat_pvalue_manual() function</span>
 <span class='no'>p_adj</span> <span class='kw'>&lt;-</span> <span class='fu'>get_adj_p</span>(<span class='no'>ToothGrowth</span>, <span class='kw'>.col</span> <span class='kw'>=</span> <span class='st'>"len"</span>, <span class='kw'>.grp</span> <span class='kw'>=</span> <span class='st'>"dose"</span>)
-<span class='no'>p_adj</span></div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 3 x 9</span><span>
-#&gt;   .y.   group1 group2            p p.adj   p.format p.signif method   y.position
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>         </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>         </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> len   0.5    1      0.000</span><span style='text-decoration: underline;'>007</span><span>02   1.1e-05 7.0e-06  ****     Wilcoxon       37.3
-#&gt; </span><span style='color: #555555;'>2</span><span> len   0.5    2      0.000</span><span style='text-decoration: underline;'>000</span><span>084</span><span style='text-decoration: underline;'>1</span><span> 2.5e-07 8.4e-08  ****     Wilcoxon       40.7
-#&gt; </span><span style='color: #555555;'>3</span><span> len   1      2      0.000</span><span style='text-decoration: underline;'>177</span><span>     0.00018 0.00018  ***      Wilcoxon       44.1</div><div class='input'><span class='no'>p</span> + <span class='fu'><a href='https://rdrr.io/pkg/ggpubr/man/stat_pvalue_manual.html'>stat_pvalue_manual</a></span>(<span class='no'>p_adj</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"p.adj"</span>)</div><div class='img'><img src='get_adj_p-4.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>p_adj</span>
+<span class='no'>p</span> + <span class='fu'><a href='https://rdrr.io/pkg/ggpubr/man/stat_pvalue_manual.html'>stat_pvalue_manual</a></span>(<span class='no'>p_adj</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"p.adj"</span>)
+
 <span class='co'># Show selected comparisons</span>
 <span class='co'># Of note, p value is ajusted</span>
 <span class='co'># for three comparisons, but only</span>
@@ -241,7 +236,7 @@ see all available options.</p></td>
   <span class='kw'>.col</span> <span class='kw'>=</span> <span class='st'>"len"</span>, <span class='kw'>.grp</span> <span class='kw'>=</span> <span class='st'>"dose"</span>,
   <span class='kw'>comparisons</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"0.5"</span>, <span class='st'>"1"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1"</span>, <span class='st'>"2"</span>))
 )
-<span class='no'>p</span> + <span class='fu'><a href='https://rdrr.io/pkg/ggpubr/man/stat_pvalue_manual.html'>stat_pvalue_manual</a></span>(<span class='no'>p_adj</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"p.adj"</span>)</div><div class='img'><img src='get_adj_p-5.png' alt='' width='700' height='433' /></div></span></pre>
+<span class='no'>p</span> + <span class='fu'><a href='https://rdrr.io/pkg/ggpubr/man/stat_pvalue_manual.html'>stat_pvalue_manual</a></span>(<span class='no'>p_adj</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"p.adj"</span>)</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

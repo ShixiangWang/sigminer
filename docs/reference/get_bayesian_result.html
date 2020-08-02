@@ -19,8 +19,8 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/slate/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
@@ -81,7 +81,7 @@ This function is designed for this purpose." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9.99</span>
       </span>
     </div>
 
@@ -149,14 +149,15 @@ This function is designed for this purpose.</p>
     <p>a <code>list</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_tally_W.RData"</span>,
+    <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_tally_W.RData"</span>,
   <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 ))
 
-<span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sig_auto_extract.html'>sig_auto_extract</a></span>(<span class='no'>cn_tally_W</span>$<span class='no'>nmf_matrix</span>, <span class='kw'>result_prefix</span> <span class='kw'>=</span> <span class='st'>"Test_copynumber"</span>, <span class='kw'>nrun</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: [ONE-TIME WARNING] Forked processing ('multicore') is disabled in future (&gt;= 1.13.0) when running R from RStudio, because it is considered unstable. Because of this, plan("multicore") will fall back to plan("sequential"), and plan("multiprocess") will fall back to plan("multisession") - not plan("multicore") as in the past. For more details, how to control forked processing or not, and how to silence this warning in future R sessions, see ?future::supportsMulticore</span></div><div class='output co'>#&gt; <span class='message'>Select Run 1, which K = 2 as best solution.</span></div><div class='input'>
+<span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sig_auto_extract.html'>sig_auto_extract</a></span>(<span class='no'>cn_tally_W</span>$<span class='no'>nmf_matrix</span>, <span class='kw'>result_prefix</span> <span class='kw'>=</span> <span class='st'>"Test_copynumber"</span>, <span class='kw'>nrun</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+
 <span class='co'># All run info are stored in res$Raw$summary_run</span>
 <span class='co'># Obtain result of run 1</span>
-<span class='no'>res_run1</span> <span class='kw'>&lt;-</span> <span class='fu'>get_bayesian_result</span>(<span class='no'>res</span>$<span class='no'>Raw</span>$<span class='no'>summary_run</span>[<span class='fl'>1</span>, ])</div></pre>
+<span class='no'>res_run1</span> <span class='kw'>&lt;-</span> <span class='fu'>get_bayesian_result</span>(<span class='no'>res</span>$<span class='no'>Raw</span>$<span class='no'>summary_run</span>[<span class='fl'>1</span>, ])</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

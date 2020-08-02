@@ -19,8 +19,8 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/slate/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9.99</span>
       </span>
     </div>
 
@@ -172,20 +172,9 @@
     <div class='dont-index'><p><a href='read_maf.html'>read_maf</a>, <a href='read_copynumber.html'>read_copynumber</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>vcfs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>list.files</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>), <span class='st'>"*.vcf"</span>, <span class='kw'>full.names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>maf</span> <span class='kw'>&lt;-</span> <span class='fu'>read_vcf</span>(<span class='no'>vcfs</span>)</div><div class='output co'>#&gt; <span class='message'>Reading file(s): /private/var/folders/mx/rfkl27z90c96wbmn3_kjk8c80000gn/T/Rtmp1RUomz/temp_libpath69883a50584d/sigminer/extdata/test1.vcf, /private/var/folders/mx/rfkl27z90c96wbmn3_kjk8c80000gn/T/Rtmp1RUomz/temp_libpath69883a50584d/sigminer/extdata/test2.vcf, /private/var/folders/mx/rfkl27z90c96wbmn3_kjk8c80000gn/T/Rtmp1RUomz/temp_libpath69883a50584d/sigminer/extdata/test3.vcf</span></div><div class='output co'>#&gt; <span class='message'>Annotating Variant Type...</span></div><div class='output co'>#&gt; <span class='message'>Annotating mutations to first matched gene based on database /private/var/folders/mx/rfkl27z90c96wbmn3_kjk8c80000gn/T/Rtmp1RUomz/temp_libpath69883a50584d/sigminer/extdata/human_hg19_gene_info.rds...</span></div><div class='output co'>#&gt; <span class='message'>Transforming into a MAF object...</span></div><div class='output co'>#&gt; -Validating
-#&gt; --Non MAF specific values in Variant_Classification column:
-#&gt;   Unknown
-#&gt; -Summarizing
-#&gt; -Processing clinical data
-#&gt; --Missing clinical data
-#&gt; -Finished in 0.045s elapsed (0.042s cpu) </div><div class='input'><span class='no'>maf</span> <span class='kw'>&lt;-</span> <span class='fu'>read_vcf</span>(<span class='no'>vcfs</span>, <span class='kw'>keep_only_pass</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='message'>Reading file(s): /private/var/folders/mx/rfkl27z90c96wbmn3_kjk8c80000gn/T/Rtmp1RUomz/temp_libpath69883a50584d/sigminer/extdata/test1.vcf, /private/var/folders/mx/rfkl27z90c96wbmn3_kjk8c80000gn/T/Rtmp1RUomz/temp_libpath69883a50584d/sigminer/extdata/test2.vcf, /private/var/folders/mx/rfkl27z90c96wbmn3_kjk8c80000gn/T/Rtmp1RUomz/temp_libpath69883a50584d/sigminer/extdata/test3.vcf</span></div><div class='output co'>#&gt; <span class='message'>Annotating Variant Type...</span></div><div class='output co'>#&gt; <span class='message'>Annotating mutations to first matched gene based on database /private/var/folders/mx/rfkl27z90c96wbmn3_kjk8c80000gn/T/Rtmp1RUomz/temp_libpath69883a50584d/sigminer/extdata/human_hg19_gene_info.rds...</span></div><div class='output co'>#&gt; <span class='message'>Transforming into a MAF object...</span></div><div class='output co'>#&gt; -Validating
-#&gt; --Non MAF specific values in Variant_Classification column:
-#&gt;   Unknown
-#&gt; -Summarizing
-#&gt; -Processing clinical data
-#&gt; --Missing clinical data
-#&gt; -Finished in 0.030s elapsed (0.029s cpu) </div></pre>
+    <pre class="examples"><span class='no'>vcfs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>list.files</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>), <span class='st'>"*.vcf"</span>, <span class='kw'>full.names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='no'>maf</span> <span class='kw'>&lt;-</span> <span class='fu'>read_vcf</span>(<span class='no'>vcfs</span>)
+<span class='no'>maf</span> <span class='kw'>&lt;-</span> <span class='fu'>read_vcf</span>(<span class='no'>vcfs</span>, <span class='kw'>keep_only_pass</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

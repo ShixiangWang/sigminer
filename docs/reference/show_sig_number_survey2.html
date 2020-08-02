@@ -19,8 +19,8 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/slate/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
@@ -81,7 +81,7 @@ better help users to explore survey of signature number." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9.99</span>
       </span>
     </div>
 
@@ -194,7 +194,7 @@ It specifies which measure must be plotted (what='all' plots all the measures).<
     <p>a <code>ggplot</code> object</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
+    <pre class="examples"><span class='co'># \donttest{</span>
 <span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_tally_M.RData"</span>,
   <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 ))
@@ -203,29 +203,16 @@ It specifies which measure must be plotted (what='all' plots all the measures).<
   <span class='kw'>cores</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>nrun</span> <span class='kw'>=</span> <span class='fl'>5</span>,
   <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>keep_nmfObj</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)</div><div class='output co'>#&gt; Compute NMF rank= 2  ... + measures ... OK
-#&gt; Compute NMF rank= 3  ... + measures ... OK
-#&gt; Compute NMF rank= 4  ... + measures ... OK
-#&gt; Compute NMF rank= 5  ... + measures ... OK</div><div class='output co'>#&gt; <span class='message'>Estimation of rank based on observed data.</span></div><div class='output co'>#&gt;   method   seed rng metric rank sparseness.basis sparseness.coef       rss
-#&gt; 2 brunet random   2     KL    2        0.7931424       0.3520048 1077.4280
-#&gt; 3 brunet random   3     KL    3        0.7413722       0.4008569  274.2391
-#&gt; 4 brunet random   1     KL    4        0.7513321       0.4519870  203.3494
-#&gt; 5 brunet random   4     KL    5        0.7915950       0.4413905  120.2693
-#&gt;        evar silhouette.coef silhouette.basis residuals niter   cpu cpu.all nrun
-#&gt; 2 0.9987288       1.0000000        1.0000000 34.443128   520 0.047   3.937    5
-#&gt; 3 0.9996764       0.7608363        0.7624204 16.869207   800 0.053   3.853    5
-#&gt; 4 0.9997601       0.5192666        0.5091383 10.022368   620 0.056  10.461    5
-#&gt; 5 0.9998581       0.3421886        0.4701766  6.200343   790 0.062   4.692    5
-#&gt;   cophenetic dispersion silhouette.consensus
-#&gt; 2  0.9836628     0.8272            0.8933333
-#&gt; 3  0.9133654     0.5264            0.6458333
-#&gt; 4  0.9532174     0.5776            0.4983537
-#&gt; 5  0.9217369     0.5264            0.4949451</div><div class='input'>
+)
+
 <span class='co'># Show from data.frame obtained by sig_estimate()</span>
-<span class='fu'>show_sig_number_survey2</span>(<span class='no'>cn_estimate</span>$<span class='no'>survey</span>)</div><div class='img'><img src='show_sig_number_survey2-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>show_sig_number_survey2</span>(<span class='no'>cn_estimate</span>$<span class='no'>survey</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>cn_estimate</span>$<span class='no'>survey.random</span>)</div><div class='img'><img src='show_sig_number_survey2-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>show_sig_number_survey2</span>(<span class='no'>cn_estimate</span>$<span class='no'>survey</span>)
+<span class='fu'>show_sig_number_survey2</span>(<span class='no'>cn_estimate</span>$<span class='no'>survey</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>cn_estimate</span>$<span class='no'>survey.random</span>)
+
 <span class='co'># Show directly from NMF.rank object</span>
-<span class='fu'>show_sig_number_survey2</span>(<span class='no'>cn_estimate</span>$<span class='no'>nmfEstimate</span>)</div><div class='img'><img src='show_sig_number_survey2-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>show_sig_number_survey2</span>(<span class='no'>cn_estimate</span>$<span class='no'>nmfEstimate</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>cn_estimate</span>$<span class='no'>nmfEstimate.random</span>)</div><div class='img'><img src='show_sig_number_survey2-4.png' alt='' width='700' height='433' /></div><div class='input'># }
-</div></pre>
+<span class='fu'>show_sig_number_survey2</span>(<span class='no'>cn_estimate</span>$<span class='no'>nmfEstimate</span>)
+<span class='fu'>show_sig_number_survey2</span>(<span class='no'>cn_estimate</span>$<span class='no'>nmfEstimate</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>cn_estimate</span>$<span class='no'>nmfEstimate.random</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

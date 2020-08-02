@@ -19,8 +19,8 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/slate/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9.99</span>
       </span>
     </div>
 
@@ -188,20 +188,25 @@ If data argument is a <code>data.frame</code>, a column called sample must exist
     <p>a circos plot</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber.RData"</span>,
+    <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber.RData"</span>,
   <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 ))
 <span class='co'># \donttest{</span>
-<span class='fu'>show_cn_circos</span>(<span class='no'>cn</span>, <span class='kw'>samples</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='img'><img src='show_cn_circos-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>show_cn_circos</span>(<span class='no'>cn</span>, <span class='kw'>samples</span> <span class='kw'>=</span> <span class='st'>"TCGA-99-7458-01A-11D-2035-01"</span>)</div><div class='img'><img src='show_cn_circos-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>show_cn_circos</span>(<span class='no'>cn</span>, <span class='kw'>samples</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+<span class='fu'>show_cn_circos</span>(<span class='no'>cn</span>, <span class='kw'>samples</span> <span class='kw'>=</span> <span class='st'>"TCGA-99-7458-01A-11D-2035-01"</span>)
+
 <span class='co'>## Remove title</span>
-<span class='fu'>show_cn_circos</span>(<span class='no'>cn</span>, <span class='kw'>samples</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>show_title</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='img'><img src='show_cn_circos-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>show_cn_circos</span>(<span class='no'>cn</span>, <span class='kw'>samples</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>show_title</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+
 <span class='co'>## Subset chromosomes</span>
-<span class='fu'>show_cn_circos</span>(<span class='no'>cn</span>, <span class='kw'>samples</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>chrs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"chr1"</span>, <span class='st'>"chr2"</span>, <span class='st'>"chr3"</span>))</div><div class='img'><img src='show_cn_circos-4.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>show_cn_circos</span>(<span class='no'>cn</span>, <span class='kw'>samples</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>chrs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"chr1"</span>, <span class='st'>"chr2"</span>, <span class='st'>"chr3"</span>))
+
 <span class='co'>## Arrange plots</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/layout.html'>layout</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fl'>1</span>:<span class='fl'>4</span>, <span class='fl'>2</span>, <span class='fl'>2</span>))
-<span class='fu'>show_cn_circos</span>(<span class='no'>cn</span>, <span class='kw'>samples</span> <span class='kw'>=</span> <span class='fl'>4</span>)</div><div class='img'><img src='show_cn_circos-5.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>show_cn_circos</span>(<span class='no'>cn</span>, <span class='kw'>samples</span> <span class='kw'>=</span> <span class='fl'>4</span>)
+
 <span class='fu'><a href='https://rdrr.io/r/graphics/layout.html'>layout</a></span>(<span class='fl'>1</span>) <span class='co'># reset layout</span>
-<span class='co'># }</span></div></pre>
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

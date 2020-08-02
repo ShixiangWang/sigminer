@@ -19,8 +19,8 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/slate/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
@@ -81,7 +81,7 @@ from show_sig_profile." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9.99</span>
       </span>
     </div>
 
@@ -198,7 +198,7 @@ according to <code>y</code> and <code>y_end</code>.</p></td>
     <p>a <code>ggplot</code> object.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Load mutational signature</span>
+    <pre class="examples"><span class='co'># Load mutational signature</span>
 <span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_mutational_signature.RData"</span>,
   <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 ))
@@ -210,19 +210,22 @@ according to <code>y</code> and <code>y_end</code>.</p></td>
   <span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>0.75</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='fl'>0.3</span>, <span class='kw'>y_end</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>n_label</span> <span class='kw'>=</span> <span class='fl'>3</span>,
   <span class='kw'>labels</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"text"</span>, <span class='fl'>1</span>:<span class='fl'>3</span>)
 )
-<span class='no'>p1</span></div><div class='img'><img src='add_labels-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>p1</span>
+
 <span class='co'># Method 2</span>
 <span class='no'>p2</span> <span class='kw'>&lt;-</span> <span class='fu'>add_labels</span>(<span class='no'>p</span>,
   <span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.15</span>, <span class='fl'>0.6</span>, <span class='fl'>0.75</span>), <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.3</span>, <span class='fl'>0.6</span>, <span class='fl'>0.9</span>),
   <span class='kw'>labels</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"text"</span>, <span class='fl'>1</span>:<span class='fl'>3</span>)
 )
-<span class='no'>p2</span></div><div class='img'><img src='add_labels-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>p2</span>
+
 <span class='co'># Method 3</span>
-<span class='no'>sim</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_sig_similarity.html'>get_sig_similarity</a></span>(<span class='no'>sig2</span>)</div><div class='output co'>#&gt; <span class='message'>-Comparing against COSMIC signatures</span></div><div class='output co'>#&gt; <span class='message'>------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>--Found Sig1 most similar to COSMIC_28</span></div><div class='output co'>#&gt; <span class='message'>   Aetiology: Unknown [similarity: 0.393]</span></div><div class='output co'>#&gt; <span class='message'>--Found Sig2 most similar to COSMIC_1</span></div><div class='output co'>#&gt; <span class='message'>   Aetiology: spontaneous deamination of 5-methylcytosine [similarity: 0.913]</span></div><div class='output co'>#&gt; <span class='message'>--Found Sig3 most similar to COSMIC_10</span></div><div class='output co'>#&gt; <span class='message'>   Aetiology: defects in polymerase POLE [similarity: 0.531]</span></div><div class='output co'>#&gt; <span class='message'>------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>Return result invisiblely.</span></div><div class='input'><span class='no'>p3</span> <span class='kw'>&lt;-</span> <span class='fu'>add_labels</span>(<span class='no'>p</span>,
+<span class='no'>sim</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_sig_similarity.html'>get_sig_similarity</a></span>(<span class='no'>sig2</span>)
+<span class='no'>p3</span> <span class='kw'>&lt;-</span> <span class='fu'>add_labels</span>(<span class='no'>p</span>,
   <span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.15</span>, <span class='fl'>0.6</span>, <span class='fl'>0.75</span>), <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.3</span>, <span class='fl'>0.6</span>, <span class='fl'>0.9</span>),
   <span class='kw'>labels</span> <span class='kw'>=</span> <span class='no'>sim</span>, <span class='kw'>font_size</span> <span class='kw'>=</span> <span class='fl'>2</span>
 )
-<span class='no'>p3</span></div><div class='img'><img src='add_labels-3.png' alt='' width='700' height='433' /></div></pre>
+<span class='no'>p3</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

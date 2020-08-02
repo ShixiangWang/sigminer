@@ -19,8 +19,8 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/slate/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
@@ -87,7 +87,7 @@ Of note, for copy number signatures, only components of feature CN was used for 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9.99</span>
       </span>
     </div>
 
@@ -182,35 +182,15 @@ same parameter in <a href='sig_fit.html'>sig_fit</a>.</p></td>
 Nature genetics 48.6 (2016): 600.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Load mutational signature</span>
+    <pre class="examples"><span class='co'># Load mutational signature</span>
 <span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_mutational_signature.RData"</span>,
   <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 ))
 <span class='co'># Get signature exposure</span>
 <span class='no'>expo1</span> <span class='kw'>&lt;-</span> <span class='fu'>get_sig_exposure</span>(<span class='no'>sig2</span>)
-<span class='no'>expo1</span></div><div class='output co'>#&gt;            sample      Sig1      Sig2      Sig3
-#&gt;   1: TCGA-AB-2802 0.0000000  7.602352 1.2566069
-#&gt;   2: TCGA-AB-2803 0.0000000 12.007936 0.7412961
-#&gt;   3: TCGA-AB-2804 0.0000000  4.838900 0.0000000
-#&gt;   4: TCGA-AB-2805 0.2000784 12.007936 0.0000000
-#&gt;   5: TCGA-AB-2806 0.2923331 10.273787 0.0000000
-#&gt;  ---                                           
-#&gt; 184: TCGA-AB-3007 0.0000000  6.691893 0.0000000
-#&gt; 185: TCGA-AB-3008 0.2000784  2.940509 0.0000000
-#&gt; 186: TCGA-AB-3009 0.0000000 25.388449 2.4198934
-#&gt; 187: TCGA-AB-3011 0.0000000  4.838900 0.0000000
-#&gt; 188: TCGA-AB-3012 0.0000000  5.770868 0.0000000</div><div class='input'><span class='no'>expo2</span> <span class='kw'>&lt;-</span> <span class='fu'>get_sig_exposure</span>(<span class='no'>sig2</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"relative"</span>)</div><div class='output co'>#&gt; <span class='message'>Filtering the samples with no signature exposure:</span></div><div class='output co'>#&gt; <span class='message'>TCGA-AB-2834 TCGA-AB-2883</span></div><div class='input'><span class='no'>expo2</span></div><div class='output co'>#&gt;            sample       Sig1      Sig2       Sig3
-#&gt;   1: TCGA-AB-2802 0.00000000 0.8581541 0.14184589
-#&gt;   2: TCGA-AB-2803 0.00000000 0.9418556 0.05814437
-#&gt;   3: TCGA-AB-2804 0.00000000 1.0000000 0.00000000
-#&gt;   4: TCGA-AB-2805 0.01638910 0.9836109 0.00000000
-#&gt;   5: TCGA-AB-2806 0.02766703 0.9723330 0.00000000
-#&gt;  ---                                             
-#&gt; 182: TCGA-AB-3007 0.00000000 1.0000000 0.00000000
-#&gt; 183: TCGA-AB-3008 0.06370731 0.9362927 0.00000000
-#&gt; 184: TCGA-AB-3009 0.00000000 0.9129796 0.08702041
-#&gt; 185: TCGA-AB-3011 0.00000000 1.0000000 0.00000000
-#&gt; 186: TCGA-AB-3012 0.00000000 1.0000000 0.00000000</div></pre>
+<span class='no'>expo1</span>
+<span class='no'>expo2</span> <span class='kw'>&lt;-</span> <span class='fu'>get_sig_exposure</span>(<span class='no'>sig2</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"relative"</span>)
+<span class='no'>expo2</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

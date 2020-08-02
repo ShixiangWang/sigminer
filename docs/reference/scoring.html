@@ -19,8 +19,8 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/slate/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
@@ -85,7 +85,7 @@ result scores." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9.99</span>
       </span>
     </div>
 
@@ -205,79 +205,16 @@ where \(N_{OsCN}\) is the number of oscillating copy number pattern "2-1-2" for 
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Load copy number object</span>
+    <pre class="examples"><span class='co'># Load copy number object</span>
 <span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber.RData"</span>,
   <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 ))
 
 <span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='fu'>scoring</span>(<span class='no'>cn</span>)
-<span class='no'>d</span></div><div class='output co'>#&gt;                           sample cnaBurden cnaLoad MACN weightedMACN Ploidy
-#&gt;  1: TCGA-DF-A2KN-01A-11D-A17U-01     0.000    2.81 2.83         2.98   2.00
-#&gt;  2: TCGA-B6-A0X5-01A-21D-A107-01     0.087    3.17 2.00         1.94   1.99
-#&gt;  3: TCGA-19-2621-01B-01D-0911-01     0.099    3.17 4.62         1.10   1.91
-#&gt;  4: TCGA-A8-A07S-01A-11D-A036-01     0.112    3.58 1.45         2.17   2.02
-#&gt;  5: TCGA-26-6174-01A-21D-1842-01     0.119    3.81 2.08         2.60   2.07
-#&gt;  6: TCGA-06-0644-01A-02D-0310-01     0.165    4.32 1.47         2.10   2.02
-#&gt;  7: TCGA-CV-7432-01A-11D-2128-01     0.198    4.09 2.69         2.02   2.00
-#&gt;  8: TCGA-99-7458-01A-11D-2035-01     0.318    4.75 2.27         1.63   1.88
-#&gt;  9: TCGA-A5-A0G2-01A-11D-A042-01     0.393    4.46 1.29         1.62   1.85
-#&gt; 10: TCGA-05-4417-01A-22D-1854-01     0.654    5.25 3.89         3.53   3.00
-#&gt;     TD_count       TDP      sTDP      lTDP TDP_size sTDP_size lTDP_size
-#&gt;  1:        5 0.5188679 0.4313725 0.4647887 0.790283  0.103883  0.686400
-#&gt;  2:        3 0.4459459 0.0000000 0.4459459 1.812822  0.000000  1.812822
-#&gt;  3:        5 0.4954955 0.0000000 0.4954955 4.189389  0.000000  4.189389
-#&gt;  4:        0 0.0000000 0.0000000 0.0000000 0.000000  0.000000  0.000000
-#&gt;  5:        6 0.5840708 0.3437500 0.5445545 2.285822  0.095838  2.189984
-#&gt;  6:        1 0.3437500 0.0000000 0.3437500 0.101453  0.000000  0.101453
-#&gt;  7:        1 0.3437500 0.0000000 0.3437500 0.846245  0.000000  0.846245
-#&gt;  8:        6 0.5840708 0.0000000 0.5840708 5.223909  0.000000  5.223909
-#&gt;  9:        1 0.3437500 0.3437500 0.0000000 0.091632  0.091632  0.000000
-#&gt; 10:        2 0.4313725 0.0000000 0.4313725 0.452862  0.000000  0.452862
-#&gt;      TDP_pnas Chromoth_state
-#&gt;  1: -1.727273              1
-#&gt;  2: -1.909091              0
-#&gt;  3: -1.818182              3
-#&gt;  4:       NaN             34
-#&gt;  5: -1.545455              9
-#&gt;  6: -1.909091             13
-#&gt;  7: -1.909091              7
-#&gt;  8: -1.545455             10
-#&gt;  9: -1.909091              6
-#&gt; 10: -1.818182              0</div><div class='input'>
+<span class='no'>d</span>
+
 <span class='no'>d2</span> <span class='kw'>&lt;-</span> <span class='fu'>scoring</span>(<span class='no'>cn</span>, <span class='kw'>TD_cn_cutoff</span> <span class='kw'>=</span> <span class='fl'>4L</span>)
-<span class='no'>d2</span></div><div class='output co'>#&gt;                           sample cnaBurden cnaLoad MACN weightedMACN Ploidy
-#&gt;  1: TCGA-DF-A2KN-01A-11D-A17U-01     0.000    2.81 2.83         2.98   2.00
-#&gt;  2: TCGA-B6-A0X5-01A-21D-A107-01     0.087    3.17 2.00         1.94   1.99
-#&gt;  3: TCGA-19-2621-01B-01D-0911-01     0.099    3.17 4.62         1.10   1.91
-#&gt;  4: TCGA-A8-A07S-01A-11D-A036-01     0.112    3.58 1.45         2.17   2.02
-#&gt;  5: TCGA-26-6174-01A-21D-1842-01     0.119    3.81 2.08         2.60   2.07
-#&gt;  6: TCGA-06-0644-01A-02D-0310-01     0.165    4.32 1.47         2.10   2.02
-#&gt;  7: TCGA-CV-7432-01A-11D-2128-01     0.198    4.09 2.69         2.02   2.00
-#&gt;  8: TCGA-99-7458-01A-11D-2035-01     0.318    4.75 2.27         1.63   1.88
-#&gt;  9: TCGA-A5-A0G2-01A-11D-A042-01     0.393    4.46 1.29         1.62   1.85
-#&gt; 10: TCGA-05-4417-01A-22D-1854-01     0.654    5.25 3.89         3.53   3.00
-#&gt;     TD_count       TDP      sTDP      lTDP TDP_size sTDP_size lTDP_size
-#&gt;  1:        5 0.5188679 0.4313725 0.4647887 0.790283  0.103883  0.686400
-#&gt;  2:        3 0.4459459 0.0000000 0.4459459 1.812822  0.000000  1.812822
-#&gt;  3:        3 0.4647887 0.0000000 0.4647887 2.272032  0.000000  2.272032
-#&gt;  4:        0 0.0000000 0.0000000 0.0000000 0.000000  0.000000  0.000000
-#&gt;  5:        6 0.5840708 0.3437500 0.5445545 2.285822  0.095838  2.189984
-#&gt;  6:        1 0.3437500 0.0000000 0.3437500 0.101453  0.000000  0.101453
-#&gt;  7:        1 0.3437500 0.0000000 0.3437500 0.846245  0.000000  0.846245
-#&gt;  8:        4 0.5301205 0.0000000 0.5301205 2.555474  0.000000  2.555474
-#&gt;  9:        1 0.3437500 0.3437500 0.0000000 0.091632  0.091632  0.000000
-#&gt; 10:        0 0.0000000 0.0000000 0.0000000 0.000000  0.000000  0.000000
-#&gt;      TDP_pnas Chromoth_state
-#&gt;  1: -1.727273              1
-#&gt;  2: -1.909091              0
-#&gt;  3: -1.818182              3
-#&gt;  4:       NaN             34
-#&gt;  5: -1.545455              9
-#&gt;  6: -1.909091             13
-#&gt;  7: -1.909091              7
-#&gt;  8: -1.636364             10
-#&gt;  9: -1.909091              6
-#&gt; 10:       NaN              0</div></pre>
+<span class='no'>d2</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
