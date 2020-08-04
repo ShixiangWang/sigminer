@@ -28,7 +28,7 @@ sigprofiler_import(output, type = c("suggest", "all"))
 
 \item{range}{signature number range, i.e. \code{2:5}.}
 
-\item{nrun}{the number of iteration to be performed to extract each number signature.}
+\item{nrun}{the number of iteration to be performed to extract each signature number.}
 
 \item{is_exome}{if \code{TRUE}, the exomes will be extracted.}
 
