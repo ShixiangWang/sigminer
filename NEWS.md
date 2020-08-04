@@ -1,5 +1,8 @@
 # sigminer 1.0.10
 
+- Some updates.
+- Compatible with SigProfiler 1.0.15
+
 # sigminer 1.0.9
 
 - Tried to speed up joining adjacent segments in `read_copynumber()`, got 200% improvement.

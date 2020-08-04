@@ -105,7 +105,7 @@ sigprofiler_extract <- function(nmf_matrix, output, range = 2:5, nrun = 10L,
 
   if (!reticulate::py_module_available("SigProfilerExtractor")) {
     message("Python module 'SigProfilerExtractor' not found, try installing it...")
-    reticulate::py_install("SigProfilerExtractor", pip = TRUE)
+    reticulate::py_install("SigProfilerExtractor==1.0.15", pip = TRUE)
   }
 
   init_method <- match.arg(init_method)
@@ -138,15 +138,6 @@ sigprofiler_extract <- function(nmf_matrix, output, range = 2:5, nrun = 10L,
 
   ## The newst version
   ## https://github.com/AlexandrovLab/SigProfilerExtractor
-  # sigProfilerExtractor(input_type, out_put, input_data, reference_genome="GRCh37",
-  #                      opportunity_genome = "GRCh37", context_type = "default",
-  #                      exome = False, minimum_signatures=1, maximum_signatures=10,
-  #                      nmf_replicates=100, resample = True, batch_size=1, cpu=-1,
-  #                      gpu=False, nmf_init="alexandrov-lab-custom", precision= "single",
-  #                      matrix_normalization= "100X", seeds= "none",
-  #                      min_nmf_iterations= 10000, max_nmf_iterations=1000000,
-  #                      nmf_test_conv= 10000, nmf_tolerance= 1e-15, nnls_penalty=0.05,
-  #                      get_all_signature_matrices= False)
   tryCatch(
     {
       sigpro$sigProfilerExtractor(
@@ -159,6 +150,7 @@ sigprofiler_extract <- function(nmf_matrix, output, range = 2:5, nrun = 10L,
         nmf_replicates = nrun,
         exome = is_exome,
         nmf_init = init_method,
+        refit_denovo_signatures = FALSE,
         cpu = cores
       )
       sys$stdout$flush()
@@ -183,6 +175,7 @@ sigprofiler_extract <- function(nmf_matrix, output, range = 2:5, nrun = 10L,
         quote_opt(nrun, opt = "nmf_replicates", rm_quote = TRUE),
         quote_opt(ifelse(is_exome, "True", "False"), opt = "exome", rm_quote = TRUE),
         quote_opt(init_method, opt = "nmf_init"),
+        quote_opt("False", opt = "refit_denovo_signatures", rm_quote = TRUE),
         quote_opt(cores, opt = "cpu", rm_quote = TRUE),
         sep = ","
       )
@@ -261,7 +254,8 @@ sigprofiler_import <- function(output, type = c("suggest", "all")) {
   message("NOTE: signature(A,B,C)... will be renamed to Sig(1,2,3)...")
 
   if (type == "suggest") {
-    solution_path <- file.path(result_dir, "Suggested_Solution/De_Novo_Solution")
+    solution_path <- file.path(result_dir, "Suggested_Solution")
+    solution_path <- list.files(solution_path, pattern = "De_Novo_Solution$", full.names = TRUE)
     message("Reading suggested solution...")
 
     solution <- read_sigprofiler_solution(solution_path)
@@ -287,9 +281,12 @@ sigprofiler_import <- function(output, type = c("suggest", "all")) {
 }
 
 read_sigprofiler_solution <- function(x) {
-  expo_path <- list.files(x, pattern = "Activities.txt", recursive = TRUE, full.names = TRUE, ignore.case = TRUE)
+  expo_path <- list.files(x, pattern = "Activities.*.txt", recursive = TRUE, full.names = TRUE, ignore.case = TRUE)
+  if (length(expo_path) > 1) {
+    expo_path <- expo_path[!grepl("error", expo_path, ignore.case = TRUE)]
+  }
   sigs_path <- list.files(x, pattern = "Signatures.txt", recursive = TRUE, full.names = TRUE, ignore.case = TRUE)
-  stat_samp_path <- list.files(x, pattern = "Samples_Stats.txt", recursive = TRUE, full.names = TRUE, ignore.case = TRUE)
+  stat_samp_path <- list.files(x, pattern = "Samples_Stats.*.txt", recursive = TRUE, full.names = TRUE, ignore.case = TRUE)
   stat_sigs_path <- list.files(x, pattern = "Signatures_Stats.txt", recursive = TRUE, full.names = TRUE, ignore.case = TRUE)
 
   expo <- data.table::fread(expo_path)
