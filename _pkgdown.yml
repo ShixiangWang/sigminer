@@ -1,6 +1,6 @@
 template:
   params:
-    bootswatch: slate
+    bootswatch: united
 destination: docs
 
 authors:
