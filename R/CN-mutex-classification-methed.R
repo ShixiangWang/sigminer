@@ -138,9 +138,9 @@ getAB <- function(abs_profiles) {
       dplyr::mutate(
         value = dplyr::case_when(
           .data$lv <= 2 & .data$rv <= 2 ~ "AA",
-          .data$lv < 2 & .data$rv > 2 ~ "AB",
-          .data$lv > 2 & .data$rv < 2 ~ "BA",
-          .data$lv >= 2 & .data$rv >= 2 ~ "BB"
+          .data$lv <= 2 & .data$rv > 2 ~ "AB",
+          .data$lv > 2 & .data$rv <= 2 ~ "BA",
+          .data$lv > 2 & .data$rv > 2 ~ "BB"
         )
       ) %>%
       dplyr::ungroup() %>%
@@ -198,7 +198,6 @@ call_component <- function(f_dt, f_name) {
 
 
 # Get matrix --------------------------------------------------------------
-
 get_matrix_mutex <- function(CN_components, indices = NULL) {
   merged_dt <- purrr::reduce(CN_components, merge, by = c("sample", "Index"), all = TRUE)
 
@@ -208,11 +207,19 @@ get_matrix_mutex <- function(CN_components, indices = NULL) {
 
   ## Standard Classificiations
   ## Complex Classifications
-  dt_s <- merged_dt[, colnames(merged_dt) == "sample" | startsWith(colnames(merged_dt), "S_"), with = FALSE]
+  dt_s <- merged_dt[, colnames(merged_dt) == "sample" | startsWith(colnames(merged_dt), "S_"), with = FALSE] %>%
+    filter(!(S_CN == 0 & S_CS %in% c("LH","HL","LL")) &
+    !(S_CN == 1 | S_CN ==2 & S_CS %in% c("LH","HL","LL") & S_AB %in% c("AB","BA","BB")))
   dt_c <- merged_dt[, colnames(merged_dt) == "sample" | startsWith(colnames(merged_dt), "C_"), with = FALSE]
 
   ## 1. handle standard way
   s_class_levels <- vector_to_combination(levels(dt_s$S_SS), levels(dt_s$S_CS), levels(dt_s$S_CN), levels(dt_s$S_AB), c_string = ":")
+  grep_level <- c(s_class_levels[grep(":(L[A-Z]:0)|([A-Z]L:0)", s_class_levels)], # 0&L
+                  s_class_levels[grep("(LL|HL|LH):[1-2]:BB", s_class_levels)], # (LL,LH,HL)&BB
+                  s_class_levels[grep("(HL|LL):[1-2]:AB", s_class_levels)], # (HL,LL)&AB
+                  s_class_levels[grep("(LH|LL):[1-2]:BA", s_class_levels)] # (LH,HH)&BA
+                  )
+  s_class_levels <- subset(s_class_levels, !s_class_levels %in% grep_level)
   dt_s$s_class <- paste(dt_s$S_SS, dt_s$S_CS, dt_s$S_CN, dt_s$S_AB, sep = ":")
   dt_s$s_class <- factor(dt_s$s_class, levels = s_class_levels)
   s_mat <- classDT2Matrix(dt_s, samp_col = "sample", component_col = "s_class")
