@@ -112,6 +112,7 @@
 #' expect_s3_class(p2, "ggplot")
 #' expect_s3_class(p3, "ggplot")
 #' expect_s3_class(p4, "ggplot")
+# Signature <- s_mat
 show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID"),
                              method = "Wang",
                              normalize = c("row", "column", "raw", "feature"),
@@ -248,13 +249,13 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
       )
     } else {
       ## Ziyu Tao & Tao Wu & Wang
-      if (any(nchar(mat$context) > 10)) {
+      if (any(nchar(mat$context) > 12)) {
         send_stop("Wrong 'method' option or unsupported components.")
       }
       # mat$base <- sub("^([A-Z]:[A-Z]{2}):[0-9]\\+?:([A-Z]{2})$", "\\1:\\2", mat$context)
       # mat$context <- sub("^[A-Z]:[A-Z]{2}:([0-9]\\+?):[A-Z]{2}$", "\\1", mat$context)
       mat$base <- sub("^([A-Z]:[A-Z]{2}):[0-9]\\+?:[A-Z]{2}$", "\\1", mat$context)
-      mat$context <- sub("^[A-Z]:[A-Z]{2}:([0-9]\\+?:[A-Z]{2})$", "\\1", mat$context)
+      mat$context <- sub("^[A-Z]:[A-Z]{2}:([0-9]\\+?:[A-Z]{2}$)", "\\1", mat$context)
       # mat$context <- sub("^[A-Z]:[A-Z]{2}:", "", mat$context)
       mat <- tidyr::gather(mat, class, signature, -c("context", "base"))
 
@@ -268,28 +269,7 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
         )),
         class = factor(class, levels = colnames(Sig))
       )
-      # mat <- dplyr::mutate(mat,
-      #                      context = factor(.data$context),
-      #                      base = factor(.data$base, levels = c(
-      #                        "S:HH:AA", "S:HH:AB", "S:HH:BA", "S:HH:BB",
-      #                        "S:HL:AA", "S:HL:AB", "S:HL:BA", "S:HL:BB",
-      #                        "S:LH:AA", "S:LH:AB", "S:LH:BA", "S:LH:BB",
-      #                        "S:LL:AA", "S:LL:AB", "S:LL:BA", "S:LL:BB",
-      #                        "M:HH:AA", "M:HH:AB", "M:HH:BA", "M:HH:BB",
-      #                        "M:HL:AA", "M:HL:AB", "M:HL:BA", "M:HL:BB",
-      #                        "M:LH:AA", "M:LH:AB", "M:LH:BA", "M:LH:BB",
-      #                        "M:LL:AA", "M:LL:AB", "M:LL:BA", "M:LL:BB",
-      #                        "L:HH:AA", "L:HH:AB", "L:HH:BA", "L:HH:BB",
-      #                        "L:HL:AA", "L:HL:AB", "L:HL:BA", "L:HL:BB",
-      #                        "L:LH:AA", "L:LH:AB", "L:LH:BA", "L:LH:BB",
-      #                        "L:LL:AA", "L:LL:AB", "L:LL:BA", "L:LL:BB",
-      #                        "E:HH:AA", "E:HH:AB", "E:HH:BA", "E:HH:BB",
-      #                        "E:HL:AA", "E:HL:AB", "E:HL:BA", "E:HL:BB",
-      #                        "E:LH:AA", "E:LH:AB", "E:LH:BA", "E:LH:BB",
-      #                        "E:LL:AA", "E:LL:AB", "E:LL:BA", "E:LL:BB"
-      #                      )),
-      #                      class = factor(class, levels = colnames(Sig))
-      # )
+
     }
   } else if (mode == "SBS") {
     mat$base <- sub("[ACGT]\\[(.*)\\][ACGT]", "\\1", mat$context)

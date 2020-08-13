@@ -126,6 +126,7 @@ getCS <- function(abs_profiles) {
 
 ## Get left and right CN change cut off
 ## (left&right):AA, AB, BA, BB (A <= 2, B >2)
+# abs_profiles <- sigminer::get_cnlist(cn, add_index = TRUE)
 getAB <- function(abs_profiles) {
   y <- purrr::map_df(abs_profiles, function(x) {
     x %>%
@@ -188,9 +189,9 @@ call_component <- function(f_dt, f_name) {
       labels = c("2-", as.character(3:7), "8+")
     )
   } else if (f_name == "CS") {
-    f_dt$S_CS <- f_dt$C_CS <- factor(f_dt$value)
+    f_dt$S_CS <- f_dt$C_CS <- factor(f_dt$value, levels = c("HH", "HL", "LH", "LL"))
   } else if (f_name == "AB") {
-    f_dt$S_AB <- f_dt$C_AB <- factor(f_dt$value)
+    f_dt$S_AB <- f_dt$C_AB <- factor(f_dt$value, levels = c("AA", "AB", "BA", "BB"))
   }
   f_dt$value <- NULL
   f_dt
@@ -198,6 +199,7 @@ call_component <- function(f_dt, f_name) {
 
 
 # Get matrix --------------------------------------------------------------
+# CN_components <- cn_tally$components
 get_matrix_mutex <- function(CN_components, indices = NULL) {
   merged_dt <- purrr::reduce(CN_components, merge, by = c("sample", "Index"), all = TRUE)
 
@@ -207,23 +209,120 @@ get_matrix_mutex <- function(CN_components, indices = NULL) {
 
   ## Standard Classificiations
   ## Complex Classifications
-  dt_s <- merged_dt[, colnames(merged_dt) == "sample" | startsWith(colnames(merged_dt), "S_"), with = FALSE] %>%
-    filter(!(S_CN == 0 & S_CS %in% c("LH","HL","LL")) &
-    !(S_CN == 1 | S_CN ==2 & S_CS %in% c("LH","HL","LL") & S_AB %in% c("AB","BA","BB")))
+  dt_s <- merged_dt[, colnames(merged_dt) == "sample" | startsWith(colnames(merged_dt), "S_"), with = FALSE]
   dt_c <- merged_dt[, colnames(merged_dt) == "sample" | startsWith(colnames(merged_dt), "C_"), with = FALSE]
 
   ## 1. handle standard way
-  s_class_levels <- vector_to_combination(levels(dt_s$S_SS), levels(dt_s$S_CS), levels(dt_s$S_CN), levels(dt_s$S_AB), c_string = ":")
-  grep_level <- c(s_class_levels[grep(":(L[A-Z]:0)|([A-Z]L:0)", s_class_levels)], # 0&L
-                  s_class_levels[grep("(LL|HL|LH):[1-2]:BB", s_class_levels)], # (LL,LH,HL)&BB
-                  s_class_levels[grep("(HL|LL):[1-2]:AB", s_class_levels)], # (HL,LL)&AB
-                  s_class_levels[grep("(LH|LL):[1-2]:BA", s_class_levels)] # (LH,HH)&BA
-                  )
-  s_class_levels <- subset(s_class_levels, !s_class_levels %in% grep_level)
+  s_class_levels <- vector_to_combination(levels(dt_s$S_SS), levels(dt_s$S_CS),
+                                          levels(dt_s$S_CN), levels(dt_s$S_AB), c_string = ":")
+
+
   dt_s$s_class <- paste(dt_s$S_SS, dt_s$S_CS, dt_s$S_CN, dt_s$S_AB, sep = ":")
   dt_s$s_class <- factor(dt_s$s_class, levels = s_class_levels)
-  s_mat <- classDT2Matrix(dt_s, samp_col = "sample", component_col = "s_class")
+  s_mat <- classDT2Matrix(dt_s, samp_col = "sample", component_col = "s_class") %>%
+    data.table::as.data.table()
 
+  ## code of summarizing AB|BA|BB need simplify
+  # sum_SU <- function(s_mat, x){
+  #   apply(s_mat[,x], 1, sum)
+  # }
+
+  s_mat$`S:HH:0:SU` <- apply(s_mat[,c("S:HH:0:AB", "S:HH:0:BA", "S:HH:0:BB")], 1, sum)
+
+  s_mat$`S:HL:1:SU` <- apply(s_mat[,c("S:HL:1:AB", "S:HL:1:BA", "S:HL:1:BB")], 1, sum)
+  s_mat$`S:HL:2:SU` <- apply(s_mat[,c("S:HL:2:AB", "S:HL:2:BA", "S:HL:2:BB")], 1, sum)
+  s_mat$`S:HL:3:SU` <- apply(s_mat[,c("S:HL:3:AB", "S:HL:3:BA", "S:HL:3:BB")], 1, sum)
+  s_mat$`S:HL:4:SU` <- apply(s_mat[,c("S:HL:4:AB", "S:HL:4:BA", "S:HL:4:BB")], 1, sum)
+
+  s_mat$`S:LH:1:SU` <- apply(s_mat[,c("S:LH:1:AB", "S:LH:1:BA", "S:LH:1:BB")], 1, sum)
+  s_mat$`S:LH:2:SU` <- apply(s_mat[,c("S:LH:2:AB", "S:LH:2:BA", "S:LH:2:BB")], 1, sum)
+  s_mat$`S:LH:3:SU` <- apply(s_mat[,c("S:LH:3:AB", "S:LH:3:BA", "S:LH:3:BB")], 1, sum)
+  s_mat$`S:LH:4:SU` <- apply(s_mat[,c("S:LH:4:AB", "S:LH:4:BA", "S:LH:4:BB")], 1, sum)
+
+  s_mat$`S:LL:3:SU` <- apply(s_mat[,c("S:LL:3:AB", "S:LL:3:BA", "S:LL:3:BB")], 1, sum)
+  s_mat$`S:LL:4:SU` <- apply(s_mat[,c("S:LL:4:AB", "S:LL:4:BA", "S:LL:4:BB")], 1, sum)
+
+  s_mat$`M:HH:0:SU` <- apply(s_mat[,c("M:HH:0:AB", "M:HH:0:BA", "M:HH:0:BB")], 1, sum)
+  s_mat$`M:HH:1:SU` <- apply(s_mat[,c("M:HH:1:AB", "M:HH:1:BA", "M:HH:1:BB")], 1, sum)
+
+  s_mat$`M:HL:1:SU` <- apply(s_mat[,c("M:HL:1:AB", "M:HL:1:BA", "M:HL:1:BB")], 1, sum)
+  s_mat$`M:HL:2:SU` <- apply(s_mat[,c("M:HL:2:AB", "M:HL:2:BA", "M:HL:2:BB")], 1, sum)
+  s_mat$`M:HL:3:SU` <- apply(s_mat[,c("M:HL:3:AB", "M:HL:3:BA", "M:HL:3:BB")], 1, sum)
+  s_mat$`M:HL:4:SU` <- apply(s_mat[,c("M:HL:4:AB", "M:HL:4:BA", "M:HL:4:BB")], 1, sum)
+
+  s_mat$`M:LH:1:SU` <- apply(s_mat[,c("M:LH:1:AB", "M:LH:1:BA", "M:LH:1:BB")], 1, sum)
+  s_mat$`M:LH:2:SU` <- apply(s_mat[,c("M:LH:2:AB", "M:LH:2:BA", "M:LH:2:BB")], 1, sum)
+  s_mat$`M:LH:3:SU` <- apply(s_mat[,c("M:LH:3:AB", "M:LH:3:BA", "M:LH:3:BB")], 1, sum)
+  s_mat$`M:LH:4:SU` <- apply(s_mat[,c("M:LH:4:AB", "M:LH:4:BA", "M:LH:4:BB")], 1, sum)
+
+  s_mat$`M:LL:3:SU` <- apply(s_mat[,c("M:LL:3:AB", "M:LL:3:BA", "M:LL:3:BB")], 1, sum)
+  s_mat$`M:LL:4:SU` <- apply(s_mat[,c("M:LL:4:AB", "M:LL:4:BA", "M:LL:4:BB")], 1, sum)
+
+  s_mat$`L:HH:0:SU` <- apply(s_mat[,c("L:HH:0:AB", "L:HH:0:BA", "L:HH:0:BB")], 1, sum)
+  s_mat$`L:HH:1:SU` <- apply(s_mat[,c("L:HH:1:AB", "L:HH:1:BA", "L:HH:1:BB")], 1, sum)
+  s_mat$`L:HH:2:SU` <- apply(s_mat[,c("L:HH:2:AB", "L:HH:2:BA", "L:HH:2:BB")], 1, sum)
+  s_mat$`L:HH:3:SU` <- apply(s_mat[,c("L:HH:3:AB", "L:HH:3:BA", "L:HH:3:BB")], 1, sum)
+  s_mat$`L:HH:4:SU` <- apply(s_mat[,c("L:HH:4:AB", "L:HH:4:BA", "L:HH:4:BB")], 1, sum)
+  s_mat$`L:HH:5+:SU` <- apply(s_mat[,c("L:HH:5+:AB", "L:HH:5+:BA", "L:HH:5+:BB")], 1, sum)
+
+  s_mat$`L:HL:1:SU` <- apply(s_mat[,c("L:HL:1:AB", "L:HL:1:BA", "L:HL:1:BB")], 1, sum)
+  s_mat$`L:HL:2:SU` <- apply(s_mat[,c("L:HL:2:AB", "L:HL:2:BA", "L:HL:2:BB")], 1, sum)
+  s_mat$`L:HL:3:SU` <- apply(s_mat[,c("L:HL:3:AB", "L:HL:3:BA", "L:HL:3:BB")], 1, sum)
+  s_mat$`L:HL:4:SU` <- apply(s_mat[,c("L:HL:4:AB", "L:HL:4:BA", "L:HL:4:BB")], 1, sum)
+
+  s_mat$`L:LH:1:SU` <- apply(s_mat[,c("L:LH:1:AB", "L:LH:1:BA", "L:LH:1:BB")], 1, sum)
+  s_mat$`L:LH:2:SU` <- apply(s_mat[,c("L:LH:2:AB", "L:LH:2:BA", "L:LH:2:BB")], 1, sum)
+  s_mat$`L:LH:3:SU` <- apply(s_mat[,c("L:LH:3:AB", "L:LH:3:BA", "L:LH:3:BB")], 1, sum)
+  s_mat$`L:LH:4:SU` <- apply(s_mat[,c("L:LH:4:AB", "L:LH:4:BA", "L:LH:4:BB")], 1, sum)
+
+  s_mat$`L:LL:3:SU` <- apply(s_mat[,c("L:LL:3:AB", "L:LL:3:BA", "L:LL:3:BB")], 1, sum)
+  s_mat$`L:LL:4:SU` <- apply(s_mat[,c("L:LL:4:AB", "L:LL:4:BA", "L:LL:4:BB")], 1, sum)
+
+  s_mat$`E:HH:0:SU` <- apply(s_mat[,c("E:HH:0:AB", "E:HH:0:BA", "E:HH:0:BB")], 1, sum)
+  s_mat$`E:HH:1:SU` <- apply(s_mat[,c("E:HH:1:AB", "E:HH:1:BA", "E:HH:1:BB")], 1, sum)
+  s_mat$`E:HH:2:SU` <- apply(s_mat[,c("E:HH:2:AB", "E:HH:2:BA", "E:HH:2:BB")], 1, sum)
+  s_mat$`E:HH:3:SU` <- apply(s_mat[,c("E:HH:3:AB", "E:HH:3:BA", "E:HH:3:BB")], 1, sum)
+  s_mat$`E:HH:4:SU` <- apply(s_mat[,c("E:HH:4:AB", "E:HH:4:BA", "E:HH:4:BB")], 1, sum)
+  s_mat$`E:HH:5+:SU` <- apply(s_mat[,c("E:HH:5+:AB", "E:HH:5+:BA", "E:HH:5+:BB")], 1, sum)
+
+  s_mat$`E:HL:1:SU` <- apply(s_mat[,c("E:HL:1:AB", "E:HL:1:BA", "E:HL:1:BB")], 1, sum)
+  s_mat$`E:HL:2:SU` <- apply(s_mat[,c("E:HL:2:AB", "E:HL:2:BA", "E:HL:2:BB")], 1, sum)
+  s_mat$`E:HL:3:SU` <- apply(s_mat[,c("E:HL:3:AB", "E:HL:3:BA", "E:HL:3:BB")], 1, sum)
+  s_mat$`E:HL:4:SU` <- apply(s_mat[,c("E:HL:4:AB", "E:HL:4:BA", "E:HL:4:BB")], 1, sum)
+
+  s_mat$`E:LH:1:SU` <- apply(s_mat[,c("E:LH:1:AB", "E:LH:1:BA", "E:LH:1:BB")], 1, sum)
+  s_mat$`E:LH:2:SU` <- apply(s_mat[,c("E:LH:2:AB", "E:LH:2:BA", "E:LH:2:BB")], 1, sum)
+  s_mat$`E:LH:3:SU` <- apply(s_mat[,c("E:LH:3:AB", "E:LH:3:BA", "E:LH:3:BB")], 1, sum)
+  s_mat$`E:LH:4:SU` <- apply(s_mat[,c("E:LH:4:AB", "E:LH:4:BA", "E:LH:4:BB")], 1, sum)
+
+  s_mat$`E:LL:3:SU` <- apply(s_mat[,c("E:LL:3:AB", "E:LL:3:BA", "E:LL:3:BB")], 1, sum)
+  s_mat$`E:LL:4:SU` <- apply(s_mat[,c("E:LL:4:AB", "E:LL:4:BA", "E:LL:4:BB")], 1, sum)
+
+  ## sum AB|BA
+  s_mat$`S:HH:1:MI` <- apply(s_mat[,c("S:HH:1:AB", "S:HH:1:BA")], 1, sum)
+  s_mat$`S:HH:3:MI` <- apply(s_mat[,c("S:HH:3:AB", "S:HH:3:BA")], 1, sum)
+  s_mat$`S:HH:4:MI` <- apply(s_mat[,c("S:HH:4:AB", "S:HH:4:BA")], 1, sum)
+  s_mat$`S:HH:5+:MI` <- apply(s_mat[,c("S:HH:5+:AB", "S:HH:5+:BA")], 1, sum)
+  s_mat$`S:LL:5+:MI` <- apply(s_mat[,c("S:LL:5+:AB", "S:LL:5+:BA")], 1, sum)
+  s_mat$`M:HH:2:MI` <- apply(s_mat[,c("M:HH:2:AB", "M:HH:2:BA")], 1, sum)
+  s_mat$`M:HH:3:MI` <- apply(s_mat[,c("M:HH:3:AB", "M:HH:3:BA")], 1, sum)
+  s_mat$`M:HH:4:MI` <- apply(s_mat[,c("M:HH:4:AB", "M:HH:4:BA")], 1, sum)
+  s_mat$`M:HH:5+:MI` <- apply(s_mat[,c("M:HH:5+:AB", "M:HH:5+:BA")], 1, sum)
+  s_mat$`M:LL:5+:MI` <- apply(s_mat[,c("M:LL:5+:AB", "M:LL:5+:BA")], 1, sum)
+
+  # remove AB|BA sum classification
+  s_mat <- dplyr::select(s_mat, -c(s_class_levels[grep("S:HH:(1|3|4|5\\+):(AB|BA)", s_class_levels)],
+                                   s_class_levels[grep("(S|M):(LL):(5\\+):(AB|BA)", s_class_levels)],
+                                   s_class_levels[grep("M:HH:(2|3|4|5\\+):(AB|BA)", s_class_levels)]))
+  # remove AB|BA|BB sum classification
+  s_mat <- dplyr::select(s_mat, -c(s_class_levels[grep("(S|M|L|E):HH:(0):(AB|BA|BB)", s_class_levels)],
+                                   s_class_levels[grep("(S|M|L|E):(HL|LH):(1|2|3|4):(AB|BA|BB)", s_class_levels)],
+                                   s_class_levels[grep("(S|M|L|E):LL:(3|4):(AB|BA|BB)", s_class_levels)],
+                                   s_class_levels[grep("M:HH:1:(AB|BA|BB)", s_class_levels)],
+                                   s_class_levels[grep("(L|E):HH:(1|2|3|4|5\\+):(AB|BA|BB)", s_class_levels)]))
+  # delete 0 classification
+  s_sum <- apply(s_mat, 2, sum)
+  s_mat <- dplyr::select(s_mat,-c(names(s_sum[which(s_sum == 0)])))
   ## 2. hanlde complex way
   c_class_levels <- vector_to_combination(levels(dt_c$C_SS), levels(dt_c$C_CS), levels(dt_c$C_CN),
     paste0("P", levels(dt_c$C_BP10MB)),
