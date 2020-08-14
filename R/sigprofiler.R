@@ -257,7 +257,7 @@ sigprofiler_import <- function(output, type = c("suggest", "all")) {
 
   if (type == "suggest") {
     solution_path <- file.path(result_dir, "Suggested_Solution")
-    solution_path <- list.files(solution_path, pattern = "De_Novo_Solution$", full.names = TRUE)
+    solution_path <- list.files(solution_path, pattern = "Novo", full.names = TRUE)
     message("Reading suggested solution...")
 
     solution <- read_sigprofiler_solution(solution_path)
