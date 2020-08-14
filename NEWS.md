@@ -1,3 +1,7 @@
+# sigminer 1.0.11
+
+- Added option to control the SigProfilerExtractor to avoid issue in docker image build.
+
 # sigminer 1.0.10
 
 - Some updates.

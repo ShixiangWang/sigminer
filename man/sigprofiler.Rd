@@ -16,7 +16,8 @@ sigprofiler_extract(
   cores = -1L,
   genome_build = c("hg19", "hg38", "mm10"),
   use_conda = FALSE,
-  py_path = NULL
+  py_path = NULL,
+  sigprofiler_version = "1.0.15"
 )
 
 sigprofiler_import(output, type = c("suggest", "all"))
@@ -43,6 +44,8 @@ in case it is useful.}
 \item{use_conda}{if \code{TRUE}, create an independent conda environment to run SigProfiler.}
 
 \item{py_path}{path to Python executable file, e.g. '/Users/wsx/anaconda3/bin/python'.}
+
+\item{sigprofiler_version}{version of \code{SigProfilerExtractor}.}
 
 \item{type}{one of 'suggest' (for suggested solution) or 'all' (for all solutions).}
 }

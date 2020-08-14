@@ -82,7 +82,7 @@ Typically, a reference genome is not required because the input is a matrix (my 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.11</span>
       </span>
     </div>
 
@@ -145,7 +145,8 @@ Typically, a reference genome is not required because the input is a matrix (my 
   <span class='kw'>cores</span> <span class='kw'>=</span> -<span class='fl'>1L</span>,
   <span class='kw'>genome_build</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"hg19"</span>, <span class='st'>"hg38"</span>, <span class='st'>"mm10"</span>),
   <span class='kw'>use_conda</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>py_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+  <span class='kw'>py_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>sigprofiler_version</span> <span class='kw'>=</span> <span class='st'>"1.0.15"</span>
 )
 
 <span class='fu'>sigprofiler_import</span>(<span class='no'>output</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"suggest"</span>, <span class='st'>"all"</span>))</pre>
@@ -194,6 +195,10 @@ in case it is useful.</p></td>
     <tr>
       <th>py_path</th>
       <td><p>path to Python executable file, e.g. '/Users/wsx/anaconda3/bin/python'.</p></td>
+    </tr>
+    <tr>
+      <th>sigprofiler_version</th>
+      <td><p>version of <code>SigProfilerExtractor</code>.</p></td>
     </tr>
     <tr>
       <th>type</th>

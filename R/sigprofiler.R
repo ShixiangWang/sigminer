@@ -18,6 +18,7 @@
 #' in case it is useful.
 #' @param use_conda if `TRUE`, create an independent conda environment to run SigProfiler.
 #' @param py_path path to Python executable file, e.g. '/Users/wsx/anaconda3/bin/python'.
+#' @param sigprofiler_version version of `SigProfilerExtractor`.
 #'
 #' @return For `sigprofiler_extract()`, returns nothing. See `output` directory.
 #' @export
@@ -44,7 +45,8 @@ sigprofiler_extract <- function(nmf_matrix, output, range = 2:5, nrun = 10L,
                                 cores = -1L,
                                 genome_build = c("hg19", "hg38", "mm10"),
                                 use_conda = FALSE,
-                                py_path = NULL) {
+                                py_path = NULL,
+                                sigprofiler_version = "1.0.15") {
   output <- path.expand(output)
   genome_build <- match.arg(genome_build)
 
@@ -80,7 +82,7 @@ sigprofiler_extract <- function(nmf_matrix, output, range = 2:5, nrun = 10L,
         message("Installing packages, be patient...")
         message("======")
         reticulate::conda_install("sigminer_sigprofiler",
-          packages = "SigProfilerExtractor",
+          packages = paste0("SigProfilerExtractor==", sigprofiler_version),
           pip = TRUE
         )
         reticulate::use_condaenv("sigminer_sigprofiler", required = TRUE)
@@ -105,7 +107,7 @@ sigprofiler_extract <- function(nmf_matrix, output, range = 2:5, nrun = 10L,
 
   if (!reticulate::py_module_available("SigProfilerExtractor")) {
     message("Python module 'SigProfilerExtractor' not found, try installing it...")
-    reticulate::py_install("SigProfilerExtractor==1.0.15", pip = TRUE)
+    reticulate::py_install(paste0("SigProfilerExtractor==", sigprofiler_version), pip = TRUE)
   }
 
   init_method <- match.arg(init_method)
