@@ -112,6 +112,7 @@
 #' expect_s3_class(p2, "ggplot")
 #' expect_s3_class(p3, "ggplot")
 #' expect_s3_class(p4, "ggplot")
+# Signature <- s_mat
 show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID"),
                              method = "Wang",
                              normalize = c("row", "column", "raw", "feature"),
@@ -248,11 +249,13 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
       )
     } else {
       ## Ziyu Tao & Tao Wu & Wang
-      if (any(nchar(mat$context) > 7)) {
+      if (any(nchar(mat$context) > 12)) {
         send_stop("Wrong 'method' option or unsupported components.")
       }
-      mat$base <- sub("^([A-Z]:[A-Z]{2}):[0-9]\\+?$", "\\1", mat$context)
-      mat$context <- sub("^[A-Z]:[A-Z]{2}:([0-9]\\+?)$", "\\1", mat$context)
+      # mat$base <- sub("^([A-Z]:[A-Z]{2}):[0-9]\\+?:([A-Z]{2})$", "\\1:\\2", mat$context)
+      # mat$context <- sub("^[A-Z]:[A-Z]{2}:([0-9]\\+?):[A-Z]{2}$", "\\1", mat$context)
+      mat$base <- sub("^([A-Z]:[A-Z]{2}):[0-9]\\+?:[A-Z]{2}$", "\\1", mat$context)
+      mat$context <- sub("^[A-Z]:[A-Z]{2}:([0-9]\\+?:[A-Z]{2}$)", "\\1", mat$context)
       # mat$context <- sub("^[A-Z]:[A-Z]{2}:", "", mat$context)
       mat <- tidyr::gather(mat, class, signature, -c("context", "base"))
 
@@ -266,6 +269,7 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
         )),
         class = factor(class, levels = colnames(Sig))
       )
+
     }
   } else if (mode == "SBS") {
     mat$base <- sub("[ACGT]\\[(.*)\\][ACGT]", "\\1", mat$context)
