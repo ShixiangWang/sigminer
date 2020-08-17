@@ -127,8 +127,8 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
                              bar_border_color = ifelse(style == "default", "grey50", "white"),
                              bar_width = 0.7,
                              paint_axis_text = TRUE,
-                             x_label_angle = ifelse(mode == "copynumber", 60, 90),
-                             x_label_vjust = 1,
+                             x_label_angle = ifelse(mode == "copynumber" & !startsWith(method, "T"), 60, 90),
+                             x_label_vjust = ifelse(mode == "copynumber" & !startsWith(method, "T"), 1, 0.5),
                              x_label_hjust = 1,
                              x_lab = "Components",
                              y_lab = "auto",
@@ -254,8 +254,8 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
       }
       # mat$base <- sub("^([A-Z]:[A-Z]{2}):[0-9]\\+?:([A-Z]{2})$", "\\1:\\2", mat$context)
       # mat$context <- sub("^[A-Z]:[A-Z]{2}:([0-9]\\+?):[A-Z]{2}$", "\\1", mat$context)
-      mat$base <- sub("^([A-Z]:[A-Z]{2}):[0-9]\\+?:[A-Z]{2}$", "\\1", mat$context)
-      mat$context <- sub("^[A-Z]:[A-Z]{2}:([0-9]\\+?:[A-Z]{2}$)", "\\1", mat$context)
+      mat$base <- sub("^([A-Z]:[A-Z]{2}):[0-9]\\+?:[A-Z0-9]{2}$", "\\1", mat$context)
+      mat$context <- sub("^[A-Z]:[A-Z]{2}:([0-9]\\+?:[A-Z0-9]{2}$)", "\\1", mat$context)
       # mat$context <- sub("^[A-Z]:[A-Z]{2}:", "", mat$context)
       mat <- tidyr::gather(mat, class, signature, -c("context", "base"))
 
