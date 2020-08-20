@@ -1,6 +1,7 @@
 # sigminer 1.0.12
 
 - `sig_orders` option in `show_sig_profile()` function now can select and order signatures to plot.
+- Added `show_sig_profile_loop()` for better signature profile visualization.
 
 # sigminer 1.0.11
 

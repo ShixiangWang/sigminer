@@ -181,6 +181,9 @@ p4 <- show_sig_profile(sig,
 )
 p4
 }
+\seealso{
+\link{show_sig_profile_loop}, \link{show_sig_profile_heatmap}
+}
 \author{
 Shixiang Wang
 }

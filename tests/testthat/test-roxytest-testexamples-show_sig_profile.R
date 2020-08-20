@@ -2,7 +2,7 @@
 
 context("File R/show_sig_profile.R: @testexamples")
 
-test_that("Function show_sig_profile() @ L117", {
+test_that("Function show_sig_profile() @ L118", {
   
   # Load SBS signature
   load(system.file("extdata", "toy_mutational_signature.RData",

@@ -263,3 +263,16 @@ sigprofiler_extract(cn_tally_M$nmf_matrix, "~/test/test_sigminer", use_conda = F
 sigprofiler_extract(cn_tally_M$nmf_matrix, "~/test/test_sigminer", use_conda = FALSE,
                     py_path = "C:\\Tools\\miniconda3\\envs\\learn\\python.exe",
                     is_exome = TRUE)
+
+
+# Test enhancement of show_sig_profile ------------------------------------
+
+load(system.file("extdata", "toy_mutational_signature.RData",
+                 package = "sigminer", mustWork = TRUE
+))
+# Show signature profile
+p1 <- show_sig_profile(sig2, mode = "SBS", sig_orders = 1)
+p2 <- show_sig_profile(sig2, mode = "SBS", sig_orders = 2)
+
+show_sig_profile_loop(sig2, mode = "SBS")
+show_sig_profile_loop(sig2, mode = "SBS", style = "cosmic", sig_names = c("A", "B", "C"))

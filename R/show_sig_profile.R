@@ -59,6 +59,7 @@
 #' @inheritParams sig_tally
 #' @return a `ggplot` object
 #' @export
+#' @seealso [show_sig_profile_loop], [show_sig_profile_heatmap]
 #' @examples
 #' # Load SBS signature
 #' load(system.file("extdata", "toy_mutational_signature.RData",
@@ -139,7 +140,7 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
                              digits = 2, base_size = 12, font_scale = 1,
                              sig_names = NULL, sig_orders = NULL,
                              check_sig_names = TRUE) {
-  stopifnot(all(!is.na(sig_names)), is.character(x_lab), is.character(y_lab))
+  stopifnot(all(!is.na(sig_names)))
 
   if (inherits(Signature, "Signature")) {
     Sig <- Signature$Signature
