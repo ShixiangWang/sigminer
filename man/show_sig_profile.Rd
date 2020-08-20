@@ -119,7 +119,8 @@ data.}
 Default is \code{NULL}, prefix 'Sig_' plus number is used.}
 
 \item{sig_orders}{set order of signatures, can be a character vector.
-Default is \code{NULL}, the signatures are ordered by alphabetical order.}
+Default is \code{NULL}, the signatures are ordered by alphabetical order.
+If an integer vector set, only specified signatures are plotted.}
 
 \item{check_sig_names}{if \code{TRUE}, check signature names when input is
 a matrix, i.e., all signatures (colnames) must start with 'Sig'.}

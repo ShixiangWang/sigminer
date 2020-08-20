@@ -52,6 +52,7 @@
 #' Default is `NULL`, prefix 'Sig_' plus number is used.
 #' @param sig_orders set order of signatures, can be a character vector.
 #' Default is `NULL`, the signatures are ordered by alphabetical order.
+#' If an integer vector set, only specified signatures are plotted.
 #' @param check_sig_names if `TRUE`, check signature names when input is
 #' a matrix, i.e., all signatures (colnames) must start with 'Sig'.
 #' @author Shixiang Wang
@@ -183,6 +184,10 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
     has_labels <- TRUE
   } else {
     has_labels <- FALSE
+  }
+
+  if (is.numeric(sig_orders)) {
+    Sig <- Sig[, sig_orders, drop = FALSE]
   }
 
   # >>>>>>>>>>>>>>>>> identify mode and do data transformation
@@ -410,7 +415,7 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
     mat[["class"]] <- sig_names[mat[["class"]]]
   }
 
-  if (!is.null(sig_orders)) {
+  if (!is.null(sig_orders) & !is.numeric(sig_orders)) {
     mat[["class"]] <- factor(mat[["class"]], levels = sig_orders)
   } else {
     mat[["class"]] <- factor(mat[["class"]])

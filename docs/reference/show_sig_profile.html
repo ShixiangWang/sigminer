@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.12</span>
       </span>
     </div>
 
@@ -147,8 +147,8 @@
   <span class='kw'>bar_border_color</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='no'>style</span> <span class='kw'>==</span> <span class='st'>"default"</span>, <span class='st'>"grey50"</span>, <span class='st'>"white"</span>),
   <span class='kw'>bar_width</span> <span class='kw'>=</span> <span class='fl'>0.7</span>,
   <span class='kw'>paint_axis_text</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>x_label_angle</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='no'>mode</span> <span class='kw'>==</span> <span class='st'>"copynumber"</span>, <span class='fl'>60</span>, <span class='fl'>90</span>),
-  <span class='kw'>x_label_vjust</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>x_label_angle</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='no'>mode</span> <span class='kw'>==</span> <span class='st'>"copynumber"</span> <span class='kw'>&amp;</span> !<span class='fu'><a href='https://rdrr.io/r/base/startsWith.html'>startsWith</a></span>(<span class='no'>method</span>, <span class='st'>"T"</span>), <span class='fl'>60</span>, <span class='fl'>90</span>),
+  <span class='kw'>x_label_vjust</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='no'>mode</span> <span class='kw'>==</span> <span class='st'>"copynumber"</span> <span class='kw'>&amp;</span> !<span class='fu'><a href='https://rdrr.io/r/base/startsWith.html'>startsWith</a></span>(<span class='no'>method</span>, <span class='st'>"T"</span>), <span class='fl'>1</span>, <span class='fl'>0.5</span>),
   <span class='kw'>x_label_hjust</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>x_lab</span> <span class='kw'>=</span> <span class='st'>"Components"</span>,
   <span class='kw'>y_lab</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
@@ -308,7 +308,8 @@ Default is <code>NULL</code>, prefix 'Sig_' plus number is used.</p></td>
     <tr>
       <th>sig_orders</th>
       <td><p>set order of signatures, can be a character vector.
-Default is <code>NULL</code>, the signatures are ordered by alphabetical order.</p></td>
+Default is <code>NULL</code>, the signatures are ordered by alphabetical order.
+If an integer vector set, only specified signatures are plotted.</p></td>
     </tr>
     <tr>
       <th>check_sig_names</th>

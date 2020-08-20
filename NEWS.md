@@ -1,3 +1,7 @@
+# sigminer 1.0.12
+
+- `sig_orders` option in `show_sig_profile()` function now can select and order signatures to plot.
+
 # sigminer 1.0.11
 
 - Added option to control the SigProfilerExtractor to avoid issue in docker image build.

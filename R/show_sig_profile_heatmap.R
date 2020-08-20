@@ -99,6 +99,10 @@ show_sig_profile_heatmap <- function(Signature, mode = c("SBS", "DBS"),
     has_labels <- FALSE
   }
 
+  if (is.numeric(sig_orders)) {
+    Sig <- Sig[, sig_orders, drop = FALSE]
+  }
+
   # >>>>>>>>>>>>>>>>> identify mode and do data transformation
   mat <- as.data.frame(Sig)
   mat$context <- rownames(mat)
@@ -226,7 +230,7 @@ show_sig_profile_heatmap <- function(Signature, mode = c("SBS", "DBS"),
     mat[["class"]] <- sig_names[mat[["class"]]]
   }
 
-  if (!is.null(sig_orders)) {
+  if (!is.null(sig_orders) & !is.numeric(sig_orders)) {
     mat[["class"]] <- factor(mat[["class"]], levels = sig_orders)
   } else {
     mat[["class"]] <- factor(mat[["class"]])
