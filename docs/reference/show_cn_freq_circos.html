@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Show Signature Fit Result — show_sig_fit • sigminer</title>
+<title>Show Copy Number Variation Frequency Profile with Circos — show_cn_freq_circos • sigminer</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Show Signature Fit Result — show_sig_fit" />
-<meta property="og:description" content="See sig_fit for examples." />
+<meta property="og:title" content="Show Copy Number Variation Frequency Profile with Circos — show_cn_freq_circos" />
+<meta property="og:description" content="Show Copy Number Variation Frequency Profile with Circos" />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -122,29 +122,23 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Show Signature Fit Result</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ShixiangWang/sigminer/blob/master/R/show_sig_fit.R'><code>R/show_sig_fit.R</code></a></small>
-    <div class="hidden name"><code>show_sig_fit.Rd</code></div>
+    <h1>Show Copy Number Variation Frequency Profile with Circos</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ShixiangWang/sigminer/blob/master/R/show_cn_freq_circos.R'><code>R/show_cn_freq_circos.R</code></a></small>
+    <div class="hidden name"><code>show_cn_freq_circos.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>See <a href='sig_fit.html'>sig_fit</a> for examples.</p>
+    <p>Show Copy Number Variation Frequency Profile with Circos</p>
     </div>
 
-    <pre class="usage"><span class='fu'>show_sig_fit</span>(
-  <span class='no'>fit_result</span>,
-  <span class='kw'>samples</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>signatures</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>plot_fun</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"boxplot"</span>, <span class='st'>"violin"</span>, <span class='st'>"scatter"</span>),
-  <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"aaas"</span>,
-  <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"Signature exposure"</span>,
-  <span class='kw'>legend</span> <span class='kw'>=</span> <span class='st'>"none"</span>,
-  <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>0.3</span>,
-  <span class='kw'>outlier.shape</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"jitter"</span>,
-  <span class='kw'>add.params</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.3</span>),
+    <pre class="usage"><span class='fu'>show_cn_freq_circos</span>(
+  <span class='no'>data</span>,
+  <span class='kw'>groups</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>cutoff</span> <span class='kw'>=</span> <span class='fl'>2L</span>,
+  <span class='kw'>title</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"AMP"</span>, <span class='st'>"DEL"</span>),
+  <span class='kw'>chrs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"chr"</span>, <span class='fl'>1</span>:<span class='fl'>22</span>),
+  <span class='kw'>genome_build</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"hg19"</span>, <span class='st'>"hg38"</span>),
+  <span class='kw'>cols</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='no'>...</span>
 )</pre>
 
@@ -152,89 +146,53 @@
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>fit_result</th>
-      <td><p>result object from <a href='sig_fit.html'>sig_fit</a>.</p></td>
+      <th>data</th>
+      <td><p>a <code>CopyNumber</code> object or a data.frame containing
+at least 'chromosome', 'start', 'end', 'segVal', 'sample' these columns.</p></td>
     </tr>
     <tr>
-      <th>samples</th>
-      <td><p>samples to show, if <code>NULL</code>, all samples are used.</p></td>
+      <th>groups</th>
+      <td><p>a named list or a column name for specifying groups.</p></td>
     </tr>
     <tr>
-      <th>signatures</th>
-      <td><p>signatures to show.</p></td>
-    </tr>
-    <tr>
-      <th>plot_fun</th>
-      <td><p>set the plot function.</p></td>
-    </tr>
-    <tr>
-      <th>palette</th>
-      <td><p>the color palette to be used for coloring or filling by groups.
-Allowed values include "grey" for grey color palettes; brewer palettes e.g.
-"RdBu", "Blues", ...; or custom color palette e.g. c("blue", "red"); and
-scientific journal palettes from ggsci R package, e.g.: "npg", "aaas",
-"lancet", "jco", "ucscgb", "uchicago", "simpsons" and "rickandmorty".</p></td>
+      <th>cutoff</th>
+      <td><p>copy number value cutoff for splitting data into AMP and DEL.
+The values equal to cutoff are discarded. Default is <code>2</code>.</p></td>
     </tr>
     <tr>
       <th>title</th>
-      <td><p>plot main title.</p></td>
+      <td><p>length-2 titles for AMP and DEL.</p></td>
     </tr>
     <tr>
-      <th>xlab</th>
-      <td><p>character vector specifying x axis labels. Use xlab = FALSE to
-hide xlab.</p></td>
+      <th>chrs</th>
+      <td><p>chromosomes start with 'chr'.</p></td>
     </tr>
     <tr>
-      <th>ylab</th>
-      <td><p>character vector specifying y axis labels. Use ylab = FALSE to
-hide ylab.</p></td>
+      <th>genome_build</th>
+      <td><p>genome build version, used when <code>data</code> is a <code>data.frame</code>, should be 'hg19' or 'hg38'.</p></td>
     </tr>
     <tr>
-      <th>legend</th>
-      <td><p>character specifying legend position. Allowed values are one of
-c("top", "bottom", "left", "right", "none"). To remove the legend use
-legend = "none". Legend position can be also specified using a numeric
-vector c(x, y); see details section.</p></td>
-    </tr>
-    <tr>
-      <th>width</th>
-      <td><p>numeric value between 0 and 1 specifying box width.</p></td>
-    </tr>
-    <tr>
-      <th>outlier.shape</th>
-      <td><p>point shape of outlier. Default is 19. To hide outlier,
-specify <code>outlier.shape = NA</code>. When jitter is added, then outliers will
-be automatically hidden.</p></td>
-    </tr>
-    <tr>
-      <th>add</th>
-      <td><p>character vector for adding another plot element (e.g.: dot plot or
-error bars). Allowed values are one or the combination of: "none",
-"dotplot", "jitter", "boxplot", "point", "mean", "mean_se", "mean_sd",
-"mean_ci", "mean_range", "median", "median_iqr", "median_hilow",
-"median_q1q3", "median_mad", "median_range"; see ?desc_statby for more
-details.</p></td>
-    </tr>
-    <tr>
-      <th>add.params</th>
-      <td><p>parameters (color, shape, size, fill, linetype) for the
-argument 'add'; e.g.: add.params = list(color = "red").</p></td>
+      <th>cols</th>
+      <td><p>length-2 colors for AMP and DEL.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>other arguments to be passed to
-<code><a href='https://ggplot2.tidyverse.org/reference/geom_boxplot.html'>geom_boxplot</a></code>, <code><a href='https://rdrr.io/pkg/ggpubr/man/ggpar.html'>ggpar</a></code> and
-<code><a href='https://rdrr.io/pkg/ggpubr/man/facet.html'>facet</a></code>.</p></td>
+      <td><p>other parameters passing to <a href='https://rdrr.io/pkg/circlize/man/circos.genomicLines.html'>circlize::circos.genomicLines</a>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a <code>ggplot</code> object.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <p>Nothing.</p>
 
-    <div class='dont-index'><p><a href='sig_fit.html'>sig_fit</a>, <a href='show_sig_bootstrap.html'>show_sig_bootstrap_exposure</a>, <a href='sig_fit_bootstrap.html'>sig_fit_bootstrap</a>, <a href='sig_fit_bootstrap_batch.html'>sig_fit_bootstrap_batch</a></p></div>
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber.RData"</span>,
+  <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+))
 
+<span class='fu'>show_cn_freq_circos</span>(<span class='no'>cn</span>)
+<span class='no'>ss</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span>(<span class='no'>cn</span>@<span class='kw'>data</span>$<span class='no'>sample</span>)
+<span class='fu'>show_cn_freq_circos</span>(<span class='no'>cn</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='no'>ss</span>[<span class='fl'>1</span>:<span class='fl'>5</span>], <span class='kw'>b</span> <span class='kw'>=</span> <span class='no'>ss</span>[<span class='fl'>6</span>:<span class='fl'>10</span>]), <span class='kw'>cols</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"red"</span>, <span class='st'>"green"</span>))</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

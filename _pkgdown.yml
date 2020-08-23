@@ -108,12 +108,14 @@ reference:
     - add_h_arrow
     - add_labels
     - cosine
+    - get_cn_freq_table
   - title: Copy number analysis and visualization
     desc: Functions for analyzing copy number data and visualization.
     contents:
     - get_cn_ploidy
     - scoring
     - show_cn_profile
+    - show_cn_freq_circos
     - show_cn_circos
     - show_cn_distribution
     - show_cn_features
