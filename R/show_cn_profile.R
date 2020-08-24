@@ -15,7 +15,6 @@
 #' @param nrow number of rows in the plot grid when multiple samples are selected.
 #' @param ncol number of columns in the plot grid when multiple samples are selected.
 #' @param return_plotlist default is `FALSE`, if `TRUE`, return a plot list instead of a combined plot.
-#' @param .call User should not use it.
 #'
 #' @return a `ggplot` object or a `list`
 #' @export
@@ -33,7 +32,7 @@
 show_cn_profile <- function(data, samples = NULL, show_n = NULL, show_title = FALSE,
                             chrs = paste0("chr", 1:22),
                             genome_build = c("hg19", "hg38"),
-                            nrow = NULL, ncol = NULL, return_plotlist = FALSE, .call = FALSE) {
+                            nrow = NULL, ncol = NULL, return_plotlist = FALSE) {
   stopifnot(is.data.frame(data) | inherits(data, "CopyNumber"))
   if (is.data.frame(data)) {
     if (is.null(samples)) {
@@ -50,8 +49,9 @@ show_cn_profile <- function(data, samples = NULL, show_n = NULL, show_title = FA
   if (inherits(data, "CopyNumber")) {
     genome_build <- data@genome_build
     data <- data@data
+  } else {
+    data <- data.table::as.data.table(data)
   }
-  data.table::setDT(data)
 
   # Filter data
   if (!is.null(samples)) {
@@ -60,8 +60,8 @@ show_cn_profile <- function(data, samples = NULL, show_n = NULL, show_title = FA
   }
 
   data$chromosome <- ifelse(startsWith(data$chromosome, prefix = "chr"),
-    data$chromosome,
-    paste0("chr", data$chromosome)
+                            data$chromosome,
+                            paste0("chr", data$chromosome)
   )
 
   data <- data[data$chromosome %in% chrs]
@@ -82,74 +82,17 @@ show_cn_profile <- function(data, samples = NULL, show_n = NULL, show_title = FA
       )
     )
 
-
-  plot_cn_profile <- function(plot_df, coord_df) {
-    ggplot() +
-      geom_segment(aes(
-        x = .data$start, xend = .data$end,
-        y = .data$segVal, yend = .data$segVal,
-        color = .data$segType
-      ), data = plot_df) +
-      geom_vline(aes(xintercept = .data$x_start), linetype = "dotted", data = coord_df) +
-      geom_vline(xintercept = coord_df$x_end[nrow(coord_df)], linetype = "dotted") +
-      scale_x_continuous(breaks = coord_df$lab_loc, labels = coord_df$labels) +
-      scale_color_manual(values = c("Amp" = "red", "Normal" = "black", "Del" = "blue")) +
-      labs(x = "Chromosome", y = "Copy number") +
-      cowplot::theme_cowplot() +
-      theme(
-        legend.position = "none",
-        axis.text.x = element_text(angle = 60, hjust = 1, size = 9)
-      )
-  }
-
-  plot_cn_summary <- function(plot_df, coord_df) {
-    plot_df <- dplyr::bind_rows(
-      plot_df %>%
-        dplyr::select(c("start", "segVal", "segType")) %>%
-        dplyr::rename(x = .data$start),
-      plot_df %>%
-        dplyr::select(c("end", "segVal", "segType")) %>%
-        dplyr::rename(x = .data$end)
-    ) %>%
-      dplyr::mutate(segVal = .data$segVal - 2)
-    data_amp <- plot_df %>%
-      dplyr::filter(.data$segType %in% c("Amp", "Normal"))
-    data_del <- plot_df %>%
-      dplyr::filter(.data$segType %in% c("Del", "Normal"))
-
-    ggplot() +
-      geom_area(aes_string(x = "x", y = "segVal"), fill = "red", data = data_amp) +
-      geom_area(aes_string(x = "x", y = "segVal"), fill = "blue", data = data_del) +
-      geom_line() +
-      geom_hline(yintercept = 0) +
-      geom_vline(aes(xintercept = .data$x_start), linetype = "dotted", data = coord_df) +
-      geom_vline(xintercept = coord_df$x_end[nrow(coord_df)], linetype = "dotted") +
-      scale_x_continuous(breaks = coord_df$lab_loc, labels = coord_df$labels) +
-      labs(x = "Chromosome", y = "Copy number variation") +
-      cowplot::theme_cowplot() +
-      theme(
-        legend.position = "none",
-        axis.text.x = element_text(angle = 60, hjust = 1, size = 9)
-      )
-  }
-
-
   if (!"sample" %in% colnames(merge_df)) {
-    if (.call) {
-      # Plot summary profile
-      gg <- plot_cn_summary(merge_df, coord_df)
-    } else {
-      # Plot as a single sample
-      gg <- plot_cn_profile(merge_df, coord_df)
-    }
+    # Plot as a single sample
+    gg <- plot_cn_profile(merge_df, coord_df)
   } else {
     # Plot mutiple samples
     gg_df <- merge_df %>%
       dplyr::group_by(.data$sample) %>%
       tidyr::nest() %>%
       dplyr::mutate(gg = purrr::map(.data$data,
-        plot_cn_profile,
-        coord_df = coord_df
+                                    plot_cn_profile,
+                                    coord_df = coord_df
       ))
 
     ## group_by does not maintain sample order
@@ -194,8 +137,27 @@ build_chrom_coordinate <- function(genome_build, chrs) {
   # Set lab location as middle of chromosome
   chr_len %>%
     dplyr::mutate(lab_loc = chr_len %>%
-      dplyr::rowwise() %>%
-      dplyr::do(lab_loc = mean(c(.$x_start, .$x_end))) %>%
-      dplyr::summarise(lab_loc = round(.data$lab_loc)) %>%
-      dplyr::pull(.data$lab_loc))
+                    dplyr::rowwise() %>%
+                    dplyr::do(lab_loc = mean(c(.$x_start, .$x_end))) %>%
+                    dplyr::summarise(lab_loc = round(.data$lab_loc)) %>%
+                    dplyr::pull(.data$lab_loc))
+}
+
+plot_cn_profile <- function(plot_df, coord_df) {
+  ggplot() +
+    geom_segment(aes(
+      x = .data$start, xend = .data$end,
+      y = .data$segVal, yend = .data$segVal,
+      color = .data$segType
+    ), data = plot_df) +
+    geom_vline(aes(xintercept = .data$x_start), linetype = "dotted", data = coord_df) +
+    geom_vline(xintercept = coord_df$x_end[nrow(coord_df)], linetype = "dotted") +
+    scale_x_continuous(breaks = coord_df$lab_loc, labels = coord_df$labels) +
+    scale_color_manual(values = c("Amp" = "red", "Normal" = "black", "Del" = "blue")) +
+    labs(x = "Chromosome", y = "Copy number") +
+    cowplot::theme_cowplot() +
+    theme(
+      legend.position = "none",
+      axis.text.x = element_text(angle = 60, hjust = 1, size = 9)
+    )
 }

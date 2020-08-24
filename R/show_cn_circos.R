@@ -67,8 +67,9 @@ show_cn_circos <- function(data, samples = NULL,
   if (inherits(data, "CopyNumber")) {
     genome_build <- data@genome_build
     data <- data@data
+  } else {
+    data <- data.table::as.data.table(data)
   }
-  data.table::setDT(data)
 
   # Filter data
   if (!is.null(samples)) {

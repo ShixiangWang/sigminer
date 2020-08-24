@@ -31,8 +31,12 @@ get_cn_freq_table <- function(data, genome_build = "hg19", cutoff = 2L) {
   merge_dt <- data.table::foverlaps(data, annot,
     by.x = c("chromosome", "start", "end")
   )
-  merge_dt$AMP <- merge_dt$segVal > cutoff
-  merge_dt$DEL <- merge_dt$segVal < cutoff
+
+  if (length(cutoff) == 1) {
+    cutoff = c(cutoff, cutoff)
+  }
+  merge_dt$AMP <- merge_dt$segVal > cutoff[2]
+  merge_dt$DEL <- merge_dt$segVal < cutoff[1]
 
   res <- merge_dt[, list(
     freq_AMP = length(unique(sample[AMP])) / total_samps,

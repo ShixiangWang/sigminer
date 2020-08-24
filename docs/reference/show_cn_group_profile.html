@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Show Sample Copy Number Profile — show_cn_profile • sigminer</title>
+<title>Show Summary Copy Number Profile for Sample Groups — show_cn_group_profile • sigminer</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,10 +46,8 @@
 
 
 
-<meta property="og:title" content="Show Sample Copy Number Profile — show_cn_profile" />
-<meta property="og:description" content="Sometimes it is very useful to check details about copy number profile for one or multiple
-samples. This function is designed to do this job and can be further modified by ggplot2
-related packages." />
+<meta property="og:title" content="Show Summary Copy Number Profile for Sample Groups — show_cn_group_profile" />
+<meta property="og:description" content="Show Summary Copy Number Profile for Sample Groups" />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -124,24 +122,24 @@ related packages." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Show Sample Copy Number Profile</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ShixiangWang/sigminer/blob/master/R/show_cn_profile.R'><code>R/show_cn_profile.R</code></a></small>
-    <div class="hidden name"><code>show_cn_profile.Rd</code></div>
+    <h1>Show Summary Copy Number Profile for Sample Groups</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ShixiangWang/sigminer/blob/master/R/show_cn_group_profile.R'><code>R/show_cn_group_profile.R</code></a></small>
+    <div class="hidden name"><code>show_cn_group_profile.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Sometimes it is very useful to check details about copy number profile for one or multiple
-samples. This function is designed to do this job and can be further modified by <strong>ggplot2</strong>
-related packages.</p>
+    <p>Show Summary Copy Number Profile for Sample Groups</p>
     </div>
 
-    <pre class="usage"><span class='fu'>show_cn_profile</span>(
+    <pre class="usage"><span class='fu'>show_cn_group_profile</span>(
   <span class='no'>data</span>,
-  <span class='kw'>samples</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>show_n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>show_title</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>chrs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"chr"</span>, <span class='fl'>1</span>:<span class='fl'>22</span>),
+  <span class='kw'>groups</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>fill_area</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>cols</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>chrs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"chr"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>:<span class='fl'>22</span>, <span class='st'>"X"</span>)),
   <span class='kw'>genome_build</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"hg19"</span>, <span class='st'>"hg38"</span>),
+  <span class='kw'>cutoff</span> <span class='kw'>=</span> <span class='fl'>2L</span>,
+  <span class='kw'>force_y_limit</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>return_plotlist</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
@@ -152,21 +150,20 @@ related packages.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>a <a href='CopyNumber-class.html'>CopyNumber</a> object or a <code>data.frame</code> containing at least 'chromosome', 'start',
-'end', 'segVal' these columns.</p></td>
+      <td><p>a <code>CopyNumber</code> object or a data.frame containing
+at least 'chromosome', 'start', 'end', 'segVal', 'sample' these columns.</p></td>
     </tr>
     <tr>
-      <th>samples</th>
-      <td><p>default is NULL, can be a chracter vector representing multiple samples. If <code>data</code> argument
-is a <code>data.frame</code>, a column called <code>sample</code> must exist.</p></td>
+      <th>groups</th>
+      <td><p>a named list or a column name for specifying groups.</p></td>
     </tr>
     <tr>
-      <th>show_n</th>
-      <td><p>number of samples to show, this is used for checking.</p></td>
+      <th>fill_area</th>
+      <td><p>default is <code>TRUE</code>, fill area with colors.</p></td>
     </tr>
     <tr>
-      <th>show_title</th>
-      <td><p>if <code>TRUE</code>, show title for multiple samples.</p></td>
+      <th>cols</th>
+      <td><p>length-2 colors for AMP and DEL.</p></td>
     </tr>
     <tr>
       <th>chrs</th>
@@ -175,6 +172,17 @@ is a <code>data.frame</code>, a column called <code>sample</code> must exist.</p
     <tr>
       <th>genome_build</th>
       <td><p>genome build version, used when <code>data</code> is a <code>data.frame</code>, should be 'hg19' or 'hg38'.</p></td>
+    </tr>
+    <tr>
+      <th>cutoff</th>
+      <td><p>copy number value cutoff for splitting data into AMP and DEL.
+The values equal to cutoff are discarded. Default is <code>2</code>, you can also set
+a length-2 vector, e.g. <code><a href='https://rdrr.io/r/base/c.html'>c(2, 2)</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>force_y_limit</th>
+      <td><p>default is <code>TRUE</code>, force multiple plots
+have same y ranges. You can also set a length-2 numeric value.</p></td>
     </tr>
     <tr>
       <th>nrow</th>
@@ -192,16 +200,29 @@ is a <code>data.frame</code>, a column called <code>sample</code> must exist.</p
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a <code>ggplot</code> object or a <code>list</code></p>
+    <p>a (list of) <code>ggplot</code> object.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># Load copy number object</span>
-<span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber.RData"</span>,
+    <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber.RData"</span>,
   <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 ))
 
-<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>show_cn_profile</span>(<span class='no'>cn</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>1</span>)
-<span class='no'>p</span></pre>
+<span class='no'>p1</span> <span class='kw'>&lt;-</span> <span class='fu'>show_cn_group_profile</span>(<span class='no'>cn</span>)
+<span class='no'>p1</span>
+<span class='no'>ss</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span>(<span class='no'>cn</span>@<span class='kw'>data</span>$<span class='no'>sample</span>)
+<span class='no'>p2</span> <span class='kw'>&lt;-</span> <span class='fu'>show_cn_group_profile</span>(<span class='no'>cn</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='no'>ss</span>[<span class='fl'>1</span>:<span class='fl'>5</span>], <span class='kw'>b</span> <span class='kw'>=</span> <span class='no'>ss</span>[<span class='fl'>6</span>:<span class='fl'>10</span>]))
+<span class='no'>p2</span>
+<span class='no'>p3</span> <span class='kw'>&lt;-</span> <span class='fu'>show_cn_group_profile</span>(<span class='no'>cn</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>g1</span> <span class='kw'>=</span> <span class='no'>ss</span>[<span class='fl'>1</span>:<span class='fl'>5</span>], <span class='kw'>g2</span> <span class='kw'>=</span> <span class='no'>ss</span>[<span class='fl'>6</span>:<span class='fl'>10</span>]),
+                            <span class='kw'>force_y_limit</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>1</span>, <span class='fl'>1</span>), <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+<span class='no'>p3</span>
+
+<span class='co'>## Set custom cutoff for custom data</span>
+<span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='no'>cn</span>@<span class='kw'>data</span>
+<span class='no'>data</span>$<span class='no'>segVal</span> <span class='kw'>&lt;-</span> <span class='no'>data</span>$<span class='no'>segVal</span> - <span class='fl'>2L</span>
+<span class='no'>p4</span> <span class='kw'>&lt;-</span> <span class='fu'>show_cn_group_profile</span>(<span class='no'>data</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>g1</span> <span class='kw'>=</span> <span class='no'>ss</span>[<span class='fl'>1</span>:<span class='fl'>5</span>], <span class='kw'>g2</span> <span class='kw'>=</span> <span class='no'>ss</span>[<span class='fl'>6</span>:<span class='fl'>10</span>]),
+                            <span class='kw'>force_y_limit</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>1</span>, <span class='fl'>1</span>), <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+                            <span class='kw'>cutoff</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>0</span>))
+<span class='no'>p4</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

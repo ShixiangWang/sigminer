@@ -115,8 +115,9 @@ reference:
     - get_cn_ploidy
     - scoring
     - show_cn_profile
-    - show_cn_freq_circos
     - show_cn_circos
+    - show_cn_group_profile
+    - show_cn_freq_circos
     - show_cn_distribution
     - show_cn_features
     - show_cn_components

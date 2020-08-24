@@ -2,7 +2,7 @@
 
 context("File R/show_cn_profile.R: @testexamples")
 
-test_that("Function show_cn_profile() @ L33", {
+test_that("Function show_cn_profile() @ L32", {
   
   # Load copy number object
   load(system.file("extdata", "toy_copynumber.RData",

@@ -13,7 +13,8 @@ at least 'chromosome', 'start', 'end', 'segVal', 'sample' these columns.}
 \item{genome_build}{genome build version, used when \code{data} is a \code{data.frame}, should be 'hg19' or 'hg38'.}
 
 \item{cutoff}{copy number value cutoff for splitting data into AMP and DEL.
-The values equal to cutoff are discarded. Default is \code{2}.}
+The values equal to cutoff are discarded. Default is \code{2}, you can also set
+a length-2 vector, e.g. \code{c(2, 2)}.}
 }
 \value{
 a \code{data.table}.

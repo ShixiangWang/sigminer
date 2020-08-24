@@ -25,7 +25,8 @@ at least 'chromosome', 'start', 'end', 'segVal', 'sample' these columns.}
 \item{groups}{a named list or a column name for specifying groups.}
 
 \item{cutoff}{copy number value cutoff for splitting data into AMP and DEL.
-The values equal to cutoff are discarded. Default is \code{2}.}
+The values equal to cutoff are discarded. Default is \code{2}, you can also set
+a length-2 vector, e.g. \code{c(2, 2)}.}
 
 \item{title}{length-2 titles for AMP and DEL.}
 

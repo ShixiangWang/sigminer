@@ -5,7 +5,8 @@
 #' at least 'chromosome', 'start', 'end', 'segVal', 'sample' these columns.
 #' @param groups a named list or a column name for specifying groups.
 #' @param cutoff copy number value cutoff for splitting data into AMP and DEL.
-#' The values equal to cutoff are discarded. Default is `2`.
+#' The values equal to cutoff are discarded. Default is `2`, you can also set
+#' a length-2 vector, e.g. `c(2, 2)`.
 #' @param title length-2 titles for AMP and DEL.
 #' @param cols length-2 colors for AMP and DEL.
 #' @param plot_ideogram default is `TRUE`, show ideogram.
@@ -55,8 +56,9 @@ show_cn_freq_circos <- function(data,
   if (inherits(data, "CopyNumber")) {
     genome_build <- data@genome_build
     data <- data@data
+  } else {
+    data <- data.table::as.data.table(data)
   }
-  data.table::setDT(data)
 
   # The 'Groups' can be either a list of name index
   # or the column name
