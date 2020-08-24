@@ -8,6 +8,9 @@
 #' The values equal to cutoff are discarded. Default is `2`.
 #' @param title length-2 titles for AMP and DEL.
 #' @param cols length-2 colors for AMP and DEL.
+#' @param plot_ideogram default is `TRUE`, show ideogram.
+#' @param track_height track height in `mm` unit.
+#' @param ideogram_height ideogram height in `mm` unit.
 #' @param ... other parameters passing to [circlize::circos.genomicLines].
 #'
 #' @return Nothing.
@@ -28,6 +31,9 @@ show_cn_freq_circos <- function(data,
                                 chrs = paste0("chr", 1:22),
                                 genome_build = c("hg19", "hg38"),
                                 cols = NULL,
+                                plot_ideogram = TRUE,
+                                track_height = 0.5,
+                                ideogram_height = 1,
                                 ...) {
   if (!requireNamespace("circlize", quietly = TRUE)) {
     send_stop("Please install 'circlize' package firstly.")
@@ -103,6 +109,9 @@ show_cn_freq_circos <- function(data,
     species = genome_build, chrs = chrs,
     cols = cols,
     title = title,
+    plot_ideogram = plot_ideogram,
+    track_height = track_height,
+    ideogram_height = ideogram_height,
     ...
   )
 }
@@ -111,7 +120,11 @@ show_cn_freq_circos <- function(data,
 # Plot density circles
 plot_cn_circos_density <- function(bed_list, species, chrs,
                                    cols = c("#FF000080", "#0000FF80"),
-                                   title = c("AMP", "DEL"), ...) {
+                                   title = c("AMP", "DEL"),
+                                   plot_ideogram = TRUE,
+                                   track_height = 0.5,
+                                   ideogram_height = 2,
+                                   ...) {
   layout(matrix(1:2, 1, 2))
   on.exit(layout(1))
   on.exit(circlize::circos.clear())
@@ -127,7 +140,10 @@ plot_cn_circos_density <- function(bed_list, species, chrs,
   message("Plotting AMP")
   circlize::circos.initializeWithIdeogram(
     species = species,
-    chromosome.index = chrs
+    chromosome.index = chrs,
+    plotType = if (plot_ideogram) c("ideogram", "axis", "labels") else c("axis", "labels"),
+    track.height = circlize::convert_height(track_height, "mm"),
+    ideogram.height = circlize::convert_height(ideogram_height, "mm")
   )
   j <- 1
   for (bed in bed_list1) {
@@ -166,7 +182,10 @@ plot_cn_circos_density <- function(bed_list, species, chrs,
   message("Plotting DEL")
   circlize::circos.initializeWithIdeogram(
     species = species,
-    chromosome.index = chrs
+    chromosome.index = chrs,
+    plotType = if (plot_ideogram) c("ideogram", "axis", "labels") else c("axis", "labels"),
+    track.height = circlize::convert_height(track_height, "mm"),
+    ideogram.height = circlize::convert_height(ideogram_height, "mm")
   )
   j <- 1
   for (bed in bed_list2) {

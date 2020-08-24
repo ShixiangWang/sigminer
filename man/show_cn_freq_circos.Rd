@@ -12,6 +12,9 @@ show_cn_freq_circos(
   chrs = paste0("chr", 1:22),
   genome_build = c("hg19", "hg38"),
   cols = NULL,
+  plot_ideogram = TRUE,
+  track_height = 0.5,
+  ideogram_height = 1,
   ...
 )
 }
@@ -31,6 +34,12 @@ The values equal to cutoff are discarded. Default is \code{2}.}
 \item{genome_build}{genome build version, used when \code{data} is a \code{data.frame}, should be 'hg19' or 'hg38'.}
 
 \item{cols}{length-2 colors for AMP and DEL.}
+
+\item{plot_ideogram}{default is \code{TRUE}, show ideogram.}
+
+\item{track_height}{track height in \code{mm} unit.}
+
+\item{ideogram_height}{ideogram height in \code{mm} unit.}
 
 \item{...}{other parameters passing to \link[circlize:circos.genomicLines]{circlize::circos.genomicLines}.}
 }

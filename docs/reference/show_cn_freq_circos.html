@@ -139,6 +139,9 @@
   <span class='kw'>chrs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"chr"</span>, <span class='fl'>1</span>:<span class='fl'>22</span>),
   <span class='kw'>genome_build</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"hg19"</span>, <span class='st'>"hg38"</span>),
   <span class='kw'>cols</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>plot_ideogram</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>track_height</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
+  <span class='kw'>ideogram_height</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='no'>...</span>
 )</pre>
 
@@ -174,6 +177,18 @@ The values equal to cutoff are discarded. Default is <code>2</code>.</p></td>
     <tr>
       <th>cols</th>
       <td><p>length-2 colors for AMP and DEL.</p></td>
+    </tr>
+    <tr>
+      <th>plot_ideogram</th>
+      <td><p>default is <code>TRUE</code>, show ideogram.</p></td>
+    </tr>
+    <tr>
+      <th>track_height</th>
+      <td><p>track height in <code>mm</code> unit.</p></td>
+    </tr>
+    <tr>
+      <th>ideogram_height</th>
+      <td><p>ideogram height in <code>mm</code> unit.</p></td>
     </tr>
     <tr>
       <th>...</th>

@@ -202,18 +202,23 @@ vector c(x, y); see details section.</p></td>
     </tr>
     <tr>
       <th>outlier.shape</th>
-      <td><p>point shape of outlier. Default is 19. To hide outlier,
-specify <code>outlier.shape = NA</code>. When jitter is added, then outliers will
-be automatically hidden.</p></td>
+      <td><p>Default aesthetics for outliers. Set to <code>NULL</code> to inherit from the
+aesthetics used for the box.</p>
+<p>In the unlikely event you specify both US and UK spellings of colour, the
+US spelling will take precedence.</p>
+<p>Sometimes it can be useful to hide the outliers, for example when overlaying
+the raw data points on top of the boxplot. Hiding the outliers can be achieved
+by setting <code>outlier.shape = NA</code>. Importantly, this does not remove the outliers,
+it only hides them, so the range calculated for the y-axis will be the
+same with outliers shown and outliers hidden.</p></td>
     </tr>
     <tr>
       <th>add</th>
       <td><p>character vector for adding another plot element (e.g.: dot plot or
 error bars). Allowed values are one or the combination of: "none",
 "dotplot", "jitter", "boxplot", "point", "mean", "mean_se", "mean_sd",
-"mean_ci", "mean_range", "median", "median_iqr", "median_hilow",
-"median_q1q3", "median_mad", "median_range"; see ?desc_statby for more
-details.</p></td>
+"mean_ci", "mean_range", "median", "median_iqr", "median_mad",
+"median_range"; see ?desc_statby for more details.</p></td>
     </tr>
     <tr>
       <th>add.params</th>
