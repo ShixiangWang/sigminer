@@ -19,16 +19,20 @@
 #' ss <- unique(cn@data$sample)
 #' p2 <- show_cn_group_profile(cn, groups = list(a = ss[1:5], b = ss[6:10]))
 #' p2
-#' p3 <- show_cn_group_profile(cn, groups = list(g1 = ss[1:5], g2 = ss[6:10]),
-#'                             force_y_limit = c(-1, 1), nrow = 2)
+#' p3 <- show_cn_group_profile(cn,
+#'   groups = list(g1 = ss[1:5], g2 = ss[6:10]),
+#'   force_y_limit = c(-1, 1), nrow = 2
+#' )
 #' p3
 #'
 #' ## Set custom cutoff for custom data
 #' data <- cn@data
 #' data$segVal <- data$segVal - 2L
-#' p4 <- show_cn_group_profile(data, groups = list(g1 = ss[1:5], g2 = ss[6:10]),
-#'                             force_y_limit = c(-1, 1), nrow = 2,
-#'                             cutoff = c(0, 0))
+#' p4 <- show_cn_group_profile(data,
+#'   groups = list(g1 = ss[1:5], g2 = ss[6:10]),
+#'   force_y_limit = c(-1, 1), nrow = 2,
+#'   cutoff = c(0, 0)
+#' )
 #' p4
 #' @testexamples
 #' expect_s3_class(p1, "ggplot")
@@ -42,6 +46,7 @@ show_cn_group_profile <- function(data,
                                   chrs = paste0("chr", c(1:22, "X")),
                                   genome_build = c("hg19", "hg38"),
                                   cutoff = 2L,
+                                  resolution_factor = 1L,
                                   force_y_limit = TRUE,
                                   nrow = NULL, ncol = NULL,
                                   return_plotlist = FALSE) {
@@ -82,7 +87,7 @@ show_cn_group_profile <- function(data,
   } else if (is.character(groups)) {
     if (length(groups) != 1) {
       stop("When 'groups' is character type, it represents one column name.",
-           call. = FALSE
+        call. = FALSE
       )
     }
     samples <- unique(data$sample)
@@ -95,20 +100,21 @@ show_cn_group_profile <- function(data,
   data$sample <- factor(data$sample, levels = samples)
 
   data$chromosome <- ifelse(startsWith(data$chromosome, prefix = "chr"),
-                            data$chromosome,
-                            paste0("chr", data$chromosome)
+    data$chromosome,
+    paste0("chr", data$chromosome)
   )
 
   data <- data[data$chromosome %in% chrs]
 
   if (length(cutoff) == 1) {
-    cutoff = c(cutoff, cutoff)
+    cutoff <- c(cutoff, cutoff)
   }
   ## Construct CNV frequency data
   ## for AMP/DEL and each group
   data_freq <- data[, get_cn_freq_table(.SD,
-                                        genome_build = genome_build,
-                                        cutoff = cutoff
+    genome_build = genome_build,
+    cutoff = cutoff,
+    resolution_factor = resolution_factor
   ), by = "grp_name"]
   data.table::setcolorder(data_freq, c(
     "chromosome", "start", "end",
@@ -125,16 +131,18 @@ show_cn_group_profile <- function(data,
       start = .data$x_start + .data$start - 1,
       end = .data$x_start + .data$end
     )
-  merge_df$freq_DEL = -merge_df$freq_DEL
+  merge_df$freq_DEL <- -merge_df$freq_DEL
 
-  grp_data = dplyr::group_split(merge_df, .data$grp_name)
+  grp_data <- dplyr::group_split(merge_df, .data$grp_name)
 
   if (length(grp_data) == 1) {
     gg <- plot_cn_summary(grp_data[[1]], coord_df, fill_area = fill_area, cols = cols)
   } else {
-    gglist = purrr::map(grp_data,
-                        ~plot_cn_summary(., coord_df, fill_area = fill_area, cols = cols) +
-                          ggplot2::labs(title = .$grp_name[1]))
+    gglist <- purrr::map(
+      grp_data,
+      ~ plot_cn_summary(., coord_df, fill_area = fill_area, cols = cols) +
+        ggplot2::labs(title = .$grp_name[1])
+    )
 
     if (isTRUE(force_y_limit)) {
       ylim <- range(c(range(merge_df$freq_AMP), range(merge_df$freq_DEL)))
@@ -142,7 +150,7 @@ show_cn_group_profile <- function(data,
       ylim <- force_y_limit
     }
 
-    gglist = purrr::map(gglist, ~.+ggplot2::ylim(ylim))
+    gglist <- purrr::map(gglist, ~ . + ggplot2::ylim(ylim))
 
     if (return_plotlist) {
       return(gglist)
@@ -185,16 +193,18 @@ plot_cn_summary <- function(plot_df, coord_df, fill_area = TRUE, cols = c("red",
   #                             dplyr::rename(x = .data$end)
   #                         })
 
-  data_amp <- plot_df %>% dplyr::select(c("x", "freq_AMP")) %>%
+  data_amp <- plot_df %>%
+    dplyr::select(c("x", "freq_AMP")) %>%
     purrr::set_names(c("x", "freq"))
-  data_del <- plot_df %>% dplyr::select(c("x", "freq_DEL")) %>%
+  data_del <- plot_df %>%
+    dplyr::select(c("x", "freq_DEL")) %>%
     purrr::set_names(c("x", "freq"))
 
   if (!fill_area) {
-    fill_amp_col = fill_del_col = "white"
+    fill_amp_col <- fill_del_col <- "white"
   } else {
-    fill_amp_col = cols[1]
-    fill_del_col = cols[2]
+    fill_amp_col <- cols[1]
+    fill_del_col <- cols[2]
   }
 
   ggplot() +

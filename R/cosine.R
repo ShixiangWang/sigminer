@@ -7,13 +7,12 @@
 #' @export
 #'
 #' @examples
-#' x <- c( 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
-#' y <- c( 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0 )
+#' x <- c(1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+#' y <- c(0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0)
 #' z1 <- cosine(x, y)
 #' z1
 #' z2 <- cosine(matrix(x), matrix(y))
 #' z2
-#'
 #' @testexamples
 #' expect_equal(typeof(z1), typeof(1.0))
 #' expect_equal(typeof(z1), typeof(matrix(1.0)))

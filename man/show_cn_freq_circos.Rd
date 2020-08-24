@@ -8,6 +8,7 @@ show_cn_freq_circos(
   data,
   groups = NULL,
   cutoff = 2L,
+  resolution_factor = 1L,
   title = c("AMP", "DEL"),
   chrs = paste0("chr", 1:22),
   genome_build = c("hg19", "hg38"),
@@ -27,6 +28,10 @@ at least 'chromosome', 'start', 'end', 'segVal', 'sample' these columns.}
 \item{cutoff}{copy number value cutoff for splitting data into AMP and DEL.
 The values equal to cutoff are discarded. Default is \code{2}, you can also set
 a length-2 vector, e.g. \code{c(2, 2)}.}
+
+\item{resolution_factor}{an integer to control the resolution.
+When it is \code{1} (default), compute frequency in each cytoband.
+When it is \code{2}, use compute frequency in each half cytoband.}
 
 \item{title}{length-2 titles for AMP and DEL.}
 

@@ -23,7 +23,6 @@ s1 <- get_sig_db()
 s2 <- get_sig_db("DBS")
 s1
 s2
-
 }
 \seealso{
 \link{get_sig_similarity}, \link{sig_fit} and \link{show_cosmic_sig_profile}.

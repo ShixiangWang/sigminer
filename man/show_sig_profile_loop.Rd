@@ -34,7 +34,6 @@ p1 <- show_sig_profile_loop(sig2, mode = "SBS")
 p1
 p2 <- show_sig_profile_loop(sig2, mode = "SBS", style = "cosmic", sig_names = c("A", "B", "C"))
 p2
-
 }
 \seealso{
 \link{show_sig_profile}

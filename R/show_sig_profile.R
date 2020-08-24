@@ -275,7 +275,6 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
         )),
         class = factor(class, levels = colnames(Sig))
       )
-
     }
   } else if (mode == "SBS") {
     mat$base <- sub("[ACGT]\\[(.*)\\][ACGT]", "\\1", mat$context)

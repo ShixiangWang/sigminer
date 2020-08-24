@@ -18,11 +18,10 @@ a numeric value or \code{matrix}.
 Calculate Cosine Measures
 }
 \examples{
-x <- c( 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 )
-y <- c( 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0 )
+x <- c(1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+y <- c(0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0)
 z1 <- cosine(x, y)
 z1
 z2 <- cosine(matrix(x), matrix(y))
 z2
-
 }

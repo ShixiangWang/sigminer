@@ -60,8 +60,8 @@ show_cn_profile <- function(data, samples = NULL, show_n = NULL, show_title = FA
   }
 
   data$chromosome <- ifelse(startsWith(data$chromosome, prefix = "chr"),
-                            data$chromosome,
-                            paste0("chr", data$chromosome)
+    data$chromosome,
+    paste0("chr", data$chromosome)
   )
 
   data <- data[data$chromosome %in% chrs]
@@ -91,8 +91,8 @@ show_cn_profile <- function(data, samples = NULL, show_n = NULL, show_title = FA
       dplyr::group_by(.data$sample) %>%
       tidyr::nest() %>%
       dplyr::mutate(gg = purrr::map(.data$data,
-                                    plot_cn_profile,
-                                    coord_df = coord_df
+        plot_cn_profile,
+        coord_df = coord_df
       ))
 
     ## group_by does not maintain sample order
@@ -137,10 +137,10 @@ build_chrom_coordinate <- function(genome_build, chrs) {
   # Set lab location as middle of chromosome
   chr_len %>%
     dplyr::mutate(lab_loc = chr_len %>%
-                    dplyr::rowwise() %>%
-                    dplyr::do(lab_loc = mean(c(.$x_start, .$x_end))) %>%
-                    dplyr::summarise(lab_loc = round(.data$lab_loc)) %>%
-                    dplyr::pull(.data$lab_loc))
+      dplyr::rowwise() %>%
+      dplyr::do(lab_loc = mean(c(.$x_start, .$x_end))) %>%
+      dplyr::summarise(lab_loc = round(.data$lab_loc)) %>%
+      dplyr::pull(.data$lab_loc))
 }
 
 plot_cn_profile <- function(plot_df, coord_df) {

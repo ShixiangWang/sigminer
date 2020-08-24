@@ -74,8 +74,10 @@ read_vcf <- function(vcfs, samples = NULL, genome_build = c("hg19", "hg38"), kee
   dt <- gene_dt[, c("chrom", "start", "end", "gene_name")]
   data.table::setkey(dt, "chrom", "start", "end")
 
-  match_dt <- data.table::foverlaps(vcfs, dt, by.x = c("Chromosome", "Start_Position", "End_Position"),
-                                    which = TRUE, nomatch = NULL)
+  match_dt <- data.table::foverlaps(vcfs, dt,
+    by.x = c("Chromosome", "Start_Position", "End_Position"),
+    which = TRUE, nomatch = NULL
+  )
   ## Keep only the first gene index
   match_dt <- match_dt[!duplicated(match_dt$xid)]
   vcfs$Hugo_Symbol[match_dt$xid] <- dt$gene_name[match_dt$yid]

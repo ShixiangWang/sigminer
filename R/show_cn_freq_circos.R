@@ -7,6 +7,9 @@
 #' @param cutoff copy number value cutoff for splitting data into AMP and DEL.
 #' The values equal to cutoff are discarded. Default is `2`, you can also set
 #' a length-2 vector, e.g. `c(2, 2)`.
+#' @param resolution_factor an integer to control the resolution.
+#' When it is `1` (default), compute frequency in each cytoband.
+#' When it is `2`, use compute frequency in each half cytoband.
 #' @param title length-2 titles for AMP and DEL.
 #' @param cols length-2 colors for AMP and DEL.
 #' @param plot_ideogram default is `TRUE`, show ideogram.
@@ -28,6 +31,7 @@
 show_cn_freq_circos <- function(data,
                                 groups = NULL,
                                 cutoff = 2L,
+                                resolution_factor = 1L,
                                 title = c("AMP", "DEL"),
                                 chrs = paste0("chr", 1:22),
                                 genome_build = c("hg19", "hg38"),
@@ -100,7 +104,8 @@ show_cn_freq_circos <- function(data,
   ## for AMP/DEL and each group
   data_freq <- data[, get_cn_freq_table(.SD,
     genome_build = genome_build,
-    cutoff = cutoff
+    cutoff = cutoff,
+    resolution_factor = resolution_factor
   ), by = "grp_name"]
   data.table::setcolorder(data_freq, c(
     "chromosome", "start", "end",

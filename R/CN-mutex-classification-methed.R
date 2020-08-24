@@ -214,7 +214,9 @@ get_matrix_mutex <- function(CN_components, indices = NULL) {
 
   ## 1. handle standard way
   s_class_levels <- vector_to_combination(levels(dt_s$S_SS), levels(dt_s$S_CS),
-                                          levels(dt_s$S_CN), levels(dt_s$S_AB), c_string = ":")
+    levels(dt_s$S_CN), levels(dt_s$S_AB),
+    c_string = ":"
+  )
 
 
   dt_s$s_class <- paste(dt_s$S_SS, dt_s$S_CS, dt_s$S_CN, dt_s$S_AB, sep = ":")
@@ -224,33 +226,37 @@ get_matrix_mutex <- function(CN_components, indices = NULL) {
 
   ## Code to combine catagories with very few counts
   ## for AB|BA|BB
-  TM_set <- c("S:HH:0:",
-              "S:HL:1:", "S:HL:2:", "S:HL:3:", "S:HL:4:",
-              "S:LH:1:", "S:LH:2:", "S:LH:3:", "S:LH:4:",
-              "S:LL:3:", "S:LL:4:",
-              "M:HH:0:", "M:HH:1:",
-              "M:HL:1:", "M:HL:2:", "M:HL:3:", "M:HL:4:",
-              "M:LH:1:", "M:LH:2:", "M:LH:3:", "M:LH:4:",
-              "M:LL:3:", "M:LL:4:",
-              "L:HH:0:", "L:HH:1:", "L:HH:2:", "L:HH:3:", "L:HH:4:", "L:HH:5+:",
-              "L:HL:1:", "L:HL:2:", "L:HL:3:", "L:HL:4:",
-              "L:LH:1:", "L:LH:2:", "L:LH:3:", "L:LH:4:",
-              "L:LL:3:", "L:LL:4:",
-              "E:HH:0:", "E:HH:1:", "E:HH:2:", "E:HH:3:", "E:HH:4:", "E:HH:5+:",
-              "E:HL:1:", "E:HL:2:", "E:HL:3:", "E:HL:4:",
-              "E:LH:1:", "E:LH:2:", "E:LH:3:", "E:LH:4:",
-              "E:LL:3:", "E:LL:4:")
+  TM_set <- c(
+    "S:HH:0:",
+    "S:HL:1:", "S:HL:2:", "S:HL:3:", "S:HL:4:",
+    "S:LH:1:", "S:LH:2:", "S:LH:3:", "S:LH:4:",
+    "S:LL:3:", "S:LL:4:",
+    "M:HH:0:", "M:HH:1:",
+    "M:HL:1:", "M:HL:2:", "M:HL:3:", "M:HL:4:",
+    "M:LH:1:", "M:LH:2:", "M:LH:3:", "M:LH:4:",
+    "M:LL:3:", "M:LL:4:",
+    "L:HH:0:", "L:HH:1:", "L:HH:2:", "L:HH:3:", "L:HH:4:", "L:HH:5+:",
+    "L:HL:1:", "L:HL:2:", "L:HL:3:", "L:HL:4:",
+    "L:LH:1:", "L:LH:2:", "L:LH:3:", "L:LH:4:",
+    "L:LL:3:", "L:LL:4:",
+    "E:HH:0:", "E:HH:1:", "E:HH:2:", "E:HH:3:", "E:HH:4:", "E:HH:5+:",
+    "E:HL:1:", "E:HL:2:", "E:HL:3:", "E:HL:4:",
+    "E:LH:1:", "E:LH:2:", "E:LH:3:", "E:LH:4:",
+    "E:LL:3:", "E:LL:4:"
+  )
 
   for (i in TM_set) {
     s_mat[[paste0(i, "3C")]] <- s_mat[[paste0(i, "AB")]] + s_mat[[paste0(i, "BA")]] + s_mat[[paste0(i, "BB")]]
-    s_mat[[paste0(i, "AB")]] <- s_mat[[paste0(i, "BA")]] <-  s_mat[[paste0(i, "BB")]] <- NULL
+    s_mat[[paste0(i, "AB")]] <- s_mat[[paste0(i, "BA")]] <- s_mat[[paste0(i, "BB")]] <- NULL
   }
 
   ## for AB|BA
-  DM_set <- c("S:HH:1:", "S:HH:3:", "S:HH:4:", "S:HH:5+:",
-              "S:LL:5+:",
-              "M:HH:2:", "M:HH:3:", "M:HH:4:", "M:HH:5+:",
-              "M:LL:5+:")
+  DM_set <- c(
+    "S:HH:1:", "S:HH:3:", "S:HH:4:", "S:HH:5+:",
+    "S:LL:5+:",
+    "M:HH:2:", "M:HH:3:", "M:HH:4:", "M:HH:5+:",
+    "M:LL:5+:"
+  )
 
   for (i in DM_set) {
     s_mat[[paste0(i, "2C")]] <- s_mat[[paste0(i, "AB")]] + s_mat[[paste0(i, "BA")]]
@@ -259,30 +265,32 @@ get_matrix_mutex <- function(CN_components, indices = NULL) {
 
   ## Delete 0 count classifications
   ## some classes have already been deleted in the previous step
-  s_mat[,
-        c("E:HL:0:AA", "E:HL:0:AB", "E:HL:0:BA", "E:HL:0:BB", "E:HL:1:AB",
-          "E:HL:1:BB", "E:HL:2:AB", "E:HL:2:BB", "E:LH:0:AA", "E:LH:0:AB",
-          "E:LH:0:BA", "E:LH:0:BB", "E:LH:1:BA", "E:LH:1:BB", "E:LH:2:BA",
-          "E:LH:2:BB", "E:LL:0:AA", "E:LL:0:AB", "E:LL:0:BA", "E:LL:0:BB",
-          "E:LL:1:AB", "E:LL:1:BA", "E:LL:1:BB", "E:LL:2:AB", "E:LL:2:BA",
-          "E:LL:2:BB", "L:HL:0:AA", "L:HL:0:AB", "L:HL:0:BA", "L:HL:0:BB",
-          "L:HL:1:AB", "L:HL:1:BB", "L:HL:2:AB", "L:HL:2:BB", "L:LH:0:AA",
-          "L:LH:0:AB", "L:LH:0:BA", "L:LH:0:BB", "L:LH:1:BA", "L:LH:1:BB",
-          "L:LH:2:BA", "L:LH:2:BB", "L:LL:0:AA", "L:LL:0:AB", "L:LL:0:BA",
-          "L:LL:0:BB", "L:LL:1:AB", "L:LL:1:BA", "L:LL:1:BB", "L:LL:2:AB",
-          "L:LL:2:BA", "L:LL:2:BB", "M:HL:0:AA", "M:HL:0:AB", "M:HL:0:BA",
-          "M:HL:0:BB", "M:HL:1:AB", "M:HL:1:BB", "M:HL:2:AB", "M:HL:2:BB",
-          "M:LH:0:AA", "M:LH:0:AB", "M:LH:0:BA", "M:LH:0:BB", "M:LH:1:BA",
-          "M:LH:1:BB", "M:LH:2:BA", "M:LH:2:BB", "M:LL:0:AA", "M:LL:0:AB",
-          "M:LL:0:BA", "M:LL:0:BB", "M:LL:1:AB", "M:LL:1:BA", "M:LL:1:BB",
-          "M:LL:2:AB", "M:LL:2:BA", "M:LL:2:BB", "S:HL:0:AA", "S:HL:0:AB",
-          "S:HL:0:BA", "S:HL:0:BB", "S:HL:1:AB", "S:HL:1:BB", "S:HL:2:AB",
-          "S:HL:2:BB", "S:HL:3:BB", "S:LH:0:AA", "S:LH:0:AB", "S:LH:0:BA",
-          "S:LH:0:BB", "S:LH:1:BA", "S:LH:1:BB", "S:LH:2:BA", "S:LH:2:BB",
-          "S:LL:0:AA", "S:LL:0:AB", "S:LL:0:BA", "S:LL:0:BB", "S:LL:1:AB",
-          "S:LL:1:BA", "S:LL:1:BB", "S:LL:2:AB", "S:LL:2:BA", "S:LL:2:BB"
-        )
-        ] = NULL
+  s_mat[
+    ,
+    c(
+      "E:HL:0:AA", "E:HL:0:AB", "E:HL:0:BA", "E:HL:0:BB", "E:HL:1:AB",
+      "E:HL:1:BB", "E:HL:2:AB", "E:HL:2:BB", "E:LH:0:AA", "E:LH:0:AB",
+      "E:LH:0:BA", "E:LH:0:BB", "E:LH:1:BA", "E:LH:1:BB", "E:LH:2:BA",
+      "E:LH:2:BB", "E:LL:0:AA", "E:LL:0:AB", "E:LL:0:BA", "E:LL:0:BB",
+      "E:LL:1:AB", "E:LL:1:BA", "E:LL:1:BB", "E:LL:2:AB", "E:LL:2:BA",
+      "E:LL:2:BB", "L:HL:0:AA", "L:HL:0:AB", "L:HL:0:BA", "L:HL:0:BB",
+      "L:HL:1:AB", "L:HL:1:BB", "L:HL:2:AB", "L:HL:2:BB", "L:LH:0:AA",
+      "L:LH:0:AB", "L:LH:0:BA", "L:LH:0:BB", "L:LH:1:BA", "L:LH:1:BB",
+      "L:LH:2:BA", "L:LH:2:BB", "L:LL:0:AA", "L:LL:0:AB", "L:LL:0:BA",
+      "L:LL:0:BB", "L:LL:1:AB", "L:LL:1:BA", "L:LL:1:BB", "L:LL:2:AB",
+      "L:LL:2:BA", "L:LL:2:BB", "M:HL:0:AA", "M:HL:0:AB", "M:HL:0:BA",
+      "M:HL:0:BB", "M:HL:1:AB", "M:HL:1:BB", "M:HL:2:AB", "M:HL:2:BB",
+      "M:LH:0:AA", "M:LH:0:AB", "M:LH:0:BA", "M:LH:0:BB", "M:LH:1:BA",
+      "M:LH:1:BB", "M:LH:2:BA", "M:LH:2:BB", "M:LL:0:AA", "M:LL:0:AB",
+      "M:LL:0:BA", "M:LL:0:BB", "M:LL:1:AB", "M:LL:1:BA", "M:LL:1:BB",
+      "M:LL:2:AB", "M:LL:2:BA", "M:LL:2:BB", "S:HL:0:AA", "S:HL:0:AB",
+      "S:HL:0:BA", "S:HL:0:BB", "S:HL:1:AB", "S:HL:1:BB", "S:HL:2:AB",
+      "S:HL:2:BB", "S:HL:3:BB", "S:LH:0:AA", "S:LH:0:AB", "S:LH:0:BA",
+      "S:LH:0:BB", "S:LH:1:BA", "S:LH:1:BB", "S:LH:2:BA", "S:LH:2:BB",
+      "S:LL:0:AA", "S:LL:0:AB", "S:LL:0:BA", "S:LL:0:BB", "S:LL:1:AB",
+      "S:LL:1:BA", "S:LL:1:BB", "S:LL:2:AB", "S:LL:2:BA", "S:LL:2:BB"
+    )
+  ] <- NULL
 
   s_mat <- as.matrix(s_mat[, sort(colnames(s_mat))])
 

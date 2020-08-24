@@ -2,7 +2,7 @@
 
 context("File R/show_cn_group_profile.R: @testexamples")
 
-test_that("Function show_cn_group_profile() @ L38", {
+test_that("Function show_cn_group_profile() @ L42", {
   
   load(system.file("extdata", "toy_copynumber.RData",
     package = "sigminer", mustWork = TRUE
@@ -13,16 +13,20 @@ test_that("Function show_cn_group_profile() @ L38", {
   ss <- unique(cn@data$sample)
   p2 <- show_cn_group_profile(cn, groups = list(a = ss[1:5], b = ss[6:10]))
   p2
-  p3 <- show_cn_group_profile(cn, groups = list(g1 = ss[1:5], g2 = ss[6:10]),
-                              force_y_limit = c(-1, 1), nrow = 2)
+  p3 <- show_cn_group_profile(cn,
+    groups = list(g1 = ss[1:5], g2 = ss[6:10]),
+    force_y_limit = c(-1, 1), nrow = 2
+  )
   p3
   
   ## Set custom cutoff for custom data
   data <- cn@data
   data$segVal <- data$segVal - 2L
-  p4 <- show_cn_group_profile(data, groups = list(g1 = ss[1:5], g2 = ss[6:10]),
-                              force_y_limit = c(-1, 1), nrow = 2,
-                              cutoff = c(0, 0))
+  p4 <- show_cn_group_profile(data,
+    groups = list(g1 = ss[1:5], g2 = ss[6:10]),
+    force_y_limit = c(-1, 1), nrow = 2,
+    cutoff = c(0, 0)
+  )
   p4
   expect_s3_class(p1, "ggplot")
   expect_s3_class(p2, "ggplot")

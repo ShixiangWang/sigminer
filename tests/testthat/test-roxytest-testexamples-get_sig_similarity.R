@@ -33,13 +33,12 @@ test_that("Function get_sig_similarity() @ L62", {
 })
 
 
-test_that("Function get_sig_db() @ L262", {
+test_that("Function get_sig_db() @ L261", {
   
   s1 <- get_sig_db()
   s2 <- get_sig_db("DBS")
   s1
   s2
-  
   expect_is(s1, "list")
   expect_is(s2, "list")
 })

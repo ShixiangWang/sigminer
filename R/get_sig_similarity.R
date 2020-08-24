@@ -209,15 +209,15 @@ get_sig_similarity <- function(Signature, Ref = NULL,
           max(corMat[i, ]), "]"
         )
         message("--Found ", rownames(corMat)[i], " most similar to ",
-                names(which(corMat[i, ] == max(corMat[i, ]))),
-                sep = ""
+          names(which(corMat[i, ] == max(corMat[i, ]))),
+          sep = ""
         )
         message(paste0("   ", ae))
       } else {
         message("--Found ", rownames(corMat)[i], " most similar to ",
-                names(which(corMat[i, ] == max(corMat[i, ]))),
-                paste0(" [similarity: ", max(corMat[i, ]), "]"),
-                sep = ""
+          names(which(corMat[i, ] == max(corMat[i, ]))),
+          paste0(" [similarity: ", max(corMat[i, ]), "]"),
+          sep = ""
         )
       }
     }
@@ -255,7 +255,6 @@ get_sig_similarity <- function(Signature, Ref = NULL,
 #' s2 <- get_sig_db("DBS")
 #' s1
 #' s2
-#'
 #' @testexamples
 #' expect_is(s1, "list")
 #' expect_is(s2, "list")
@@ -263,19 +262,19 @@ get_sig_db <- function(sig_db = "legacy") {
   db_file <- switch(
     sig_db,
     legacy = system.file("extdata", "legacy_signatures.RDs",
-                         package = "maftools", mustWork = TRUE
+      package = "maftools", mustWork = TRUE
     ),
     SBS = system.file("extdata", "SBS_signatures.RDs",
-                      package = "maftools", mustWork = TRUE
+      package = "maftools", mustWork = TRUE
     ),
     DBS = system.file("extdata", "DBS_signatures.rds",
-                      package = "sigminer", mustWork = TRUE
+      package = "sigminer", mustWork = TRUE
     ),
     ID = system.file("extdata", "ID_signatures.rds",
-                     package = "sigminer", mustWork = TRUE
+      package = "sigminer", mustWork = TRUE
     ),
     TSB = system.file("extdata", "TSB_signatures.rds",
-                      package = "sigminer", mustWork = TRUE
+      package = "sigminer", mustWork = TRUE
     )
   )
   sigs_db <- readRDS(file = db_file)

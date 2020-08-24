@@ -12,6 +12,7 @@ show_cn_group_profile(
   chrs = paste0("chr", c(1:22, "X")),
   genome_build = c("hg19", "hg38"),
   cutoff = 2L,
+  resolution_factor = 1L,
   force_y_limit = TRUE,
   nrow = NULL,
   ncol = NULL,
@@ -35,6 +36,10 @@ at least 'chromosome', 'start', 'end', 'segVal', 'sample' these columns.}
 \item{cutoff}{copy number value cutoff for splitting data into AMP and DEL.
 The values equal to cutoff are discarded. Default is \code{2}, you can also set
 a length-2 vector, e.g. \code{c(2, 2)}.}
+
+\item{resolution_factor}{an integer to control the resolution.
+When it is \code{1} (default), compute frequency in each cytoband.
+When it is \code{2}, use compute frequency in each half cytoband.}
 
 \item{force_y_limit}{default is \code{TRUE}, force multiple plots
 have same y ranges. You can also set a length-2 numeric value.}
@@ -61,15 +66,19 @@ p1
 ss <- unique(cn@data$sample)
 p2 <- show_cn_group_profile(cn, groups = list(a = ss[1:5], b = ss[6:10]))
 p2
-p3 <- show_cn_group_profile(cn, groups = list(g1 = ss[1:5], g2 = ss[6:10]),
-                            force_y_limit = c(-1, 1), nrow = 2)
+p3 <- show_cn_group_profile(cn,
+  groups = list(g1 = ss[1:5], g2 = ss[6:10]),
+  force_y_limit = c(-1, 1), nrow = 2
+)
 p3
 
 ## Set custom cutoff for custom data
 data <- cn@data
 data$segVal <- data$segVal - 2L
-p4 <- show_cn_group_profile(data, groups = list(g1 = ss[1:5], g2 = ss[6:10]),
-                            force_y_limit = c(-1, 1), nrow = 2,
-                            cutoff = c(0, 0))
+p4 <- show_cn_group_profile(data,
+  groups = list(g1 = ss[1:5], g2 = ss[6:10]),
+  force_y_limit = c(-1, 1), nrow = 2,
+  cutoff = c(0, 0)
+)
 p4
 }

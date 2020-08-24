@@ -55,7 +55,6 @@ show_sig_exposure <- function(Signature,
                               rm_panel_border = FALSE,
                               hide_samps = TRUE,
                               legend_position = "top") {
-
   if (class(Signature) == "Signature") {
     h <- Signature$Exposure
   } else if (is.matrix(Signature)) {

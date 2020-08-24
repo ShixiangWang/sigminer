@@ -18,7 +18,6 @@
 #' p1
 #' p2 <- show_sig_profile_loop(sig2, mode = "SBS", style = "cosmic", sig_names = c("A", "B", "C"))
 #' p2
-#'
 #' @testexamples
 #' expect_s3_class(p1, "ggplot")
 #' expect_s3_class(p2, "ggplot")

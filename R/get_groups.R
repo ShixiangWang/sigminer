@@ -194,7 +194,7 @@ get_groups <- function(Signature,
     colnames(cluster_df)[1] <- "group"
     data <- as.data.frame(contrib.km$cluster)
     colnames(data)[1] <- "group"
-    data$silhouette_width = signif(sil_width[, "sil_width"], 3)
+    data$silhouette_width <- signif(sil_width[, "sil_width"], 3)
     data.table::setDT(data, keep.rownames = TRUE)
     colnames(data)[1] <- "sample"
     data$group <- as.character(data$group)
