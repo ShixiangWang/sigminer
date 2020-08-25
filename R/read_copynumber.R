@@ -263,6 +263,10 @@ read_copynumber <- function(input,
 
     send_success("Column order set.")
 
+    if (is.factor(temp$sample)) {
+      temp$sample <- as.character(temp$sample)
+    }
+
     if (any(is.na(temp$segVal))) {
       temp <- temp[!is.na(temp$segVal)]
       send_success("Rows with NA copy number removed.")
