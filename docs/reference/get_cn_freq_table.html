@@ -131,7 +131,12 @@
     <p>Get CNV Frequency Table</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_cn_freq_table</span>(<span class='no'>data</span>, <span class='kw'>genome_build</span> <span class='kw'>=</span> <span class='st'>"hg19"</span>, <span class='kw'>cutoff</span> <span class='kw'>=</span> <span class='fl'>2L</span>)</pre>
+    <pre class="usage"><span class='fu'>get_cn_freq_table</span>(
+  <span class='no'>data</span>,
+  <span class='kw'>genome_build</span> <span class='kw'>=</span> <span class='st'>"hg19"</span>,
+  <span class='kw'>cutoff</span> <span class='kw'>=</span> <span class='fl'>2L</span>,
+  <span class='kw'>resolution_factor</span> <span class='kw'>=</span> <span class='fl'>1L</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -150,6 +155,12 @@ at least 'chromosome', 'start', 'end', 'segVal', 'sample' these columns.</p></td
       <td><p>copy number value cutoff for splitting data into AMP and DEL.
 The values equal to cutoff are discarded. Default is <code>2</code>, you can also set
 a length-2 vector, e.g. <code><a href='https://rdrr.io/r/base/c.html'>c(2, 2)</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>resolution_factor</th>
+      <td><p>an integer to control the resolution.
+When it is <code>1</code> (default), compute frequency in each cytoband.
+When it is <code>2</code>, use compute frequency in each half cytoband.</p></td>
     </tr>
     </table>
 

@@ -1,5 +1,6 @@
 # sigminer 1.0.12
 
+- Added `transform_seg_table()`.
 - Added `show_cn_group_profile()`.
 - Added `show_cn_freq_circos()`.
 - `sig_orders` option in `show_sig_profile()` function now can select and order signatures to plot.

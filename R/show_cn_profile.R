@@ -31,7 +31,7 @@
 #' expect_s3_class(p, "ggplot")
 show_cn_profile <- function(data, samples = NULL, show_n = NULL, show_title = FALSE,
                             chrs = paste0("chr", 1:22),
-                            genome_build = c("hg19", "hg38"),
+                            genome_build = c("hg19", "hg38", "mm10"),
                             nrow = NULL, ncol = NULL, return_plotlist = FALSE) {
   stopifnot(is.data.frame(data) | inherits(data, "CopyNumber"))
   if (is.data.frame(data)) {

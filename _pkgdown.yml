@@ -112,6 +112,7 @@ reference:
   - title: Copy number analysis and visualization
     desc: Functions for analyzing copy number data and visualization.
     contents:
+    - transform_seg_table
     - get_cn_ploidy
     - scoring
     - show_cn_profile

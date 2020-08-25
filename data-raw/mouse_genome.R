@@ -101,4 +101,19 @@ mm10$width <- NULL
 transcript.mm10 <- mm10
 usethis::use_data(transcript.mm10, overwrite = TRUE)
 
-## Currently, I don't use gene location data, so don't generate it for now.
+# Gene --------------------------------------------------------------------
+
+## mm10 gene
+gtf_mm10 <- data.table::fread("data-raw/mm10.annotation.gtf.gz", skip = 5, sep = "\t", header = FALSE)
+
+gtf_mm10[, `:=`(
+  gene_name = extract_col(V9, "gene_name"),
+  gene_id = extract_col(V9, "gene_id"),
+  gene_type = extract_col(V9, "gene_type")
+)]
+
+gene_mm10 <- gtf_mm10[V3 == "gene", .(V1, V4, V5, V7, gene_name, gene_id, gene_type)]
+colnames(gene_mm10)[1:4] <- c("chrom", "start", "end", "strand")
+
+## Save to extdata
+saveRDS(gene_mm10, file = "inst/extdata/mouse_mm10_gene_info.rds")

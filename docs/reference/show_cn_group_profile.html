@@ -137,8 +137,9 @@
   <span class='kw'>fill_area</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>cols</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>chrs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"chr"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>:<span class='fl'>22</span>, <span class='st'>"X"</span>)),
-  <span class='kw'>genome_build</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"hg19"</span>, <span class='st'>"hg38"</span>),
+  <span class='kw'>genome_build</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"hg19"</span>, <span class='st'>"hg38"</span>, <span class='st'>"mm10"</span>),
   <span class='kw'>cutoff</span> <span class='kw'>=</span> <span class='fl'>2L</span>,
+  <span class='kw'>resolution_factor</span> <span class='kw'>=</span> <span class='fl'>1L</span>,
   <span class='kw'>force_y_limit</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -180,6 +181,12 @@ The values equal to cutoff are discarded. Default is <code>2</code>, you can als
 a length-2 vector, e.g. <code><a href='https://rdrr.io/r/base/c.html'>c(2, 2)</a></code>.</p></td>
     </tr>
     <tr>
+      <th>resolution_factor</th>
+      <td><p>an integer to control the resolution.
+When it is <code>1</code> (default), compute frequency in each cytoband.
+When it is <code>2</code>, use compute frequency in each half cytoband.</p></td>
+    </tr>
+    <tr>
       <th>force_y_limit</th>
       <td><p>default is <code>TRUE</code>, force multiple plots
 have same y ranges. You can also set a length-2 numeric value.</p></td>
@@ -212,16 +219,20 @@ have same y ranges. You can also set a length-2 numeric value.</p></td>
 <span class='no'>ss</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span>(<span class='no'>cn</span>@<span class='kw'>data</span>$<span class='no'>sample</span>)
 <span class='no'>p2</span> <span class='kw'>&lt;-</span> <span class='fu'>show_cn_group_profile</span>(<span class='no'>cn</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='no'>ss</span>[<span class='fl'>1</span>:<span class='fl'>5</span>], <span class='kw'>b</span> <span class='kw'>=</span> <span class='no'>ss</span>[<span class='fl'>6</span>:<span class='fl'>10</span>]))
 <span class='no'>p2</span>
-<span class='no'>p3</span> <span class='kw'>&lt;-</span> <span class='fu'>show_cn_group_profile</span>(<span class='no'>cn</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>g1</span> <span class='kw'>=</span> <span class='no'>ss</span>[<span class='fl'>1</span>:<span class='fl'>5</span>], <span class='kw'>g2</span> <span class='kw'>=</span> <span class='no'>ss</span>[<span class='fl'>6</span>:<span class='fl'>10</span>]),
-                            <span class='kw'>force_y_limit</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>1</span>, <span class='fl'>1</span>), <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+<span class='no'>p3</span> <span class='kw'>&lt;-</span> <span class='fu'>show_cn_group_profile</span>(<span class='no'>cn</span>,
+  <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>g1</span> <span class='kw'>=</span> <span class='no'>ss</span>[<span class='fl'>1</span>:<span class='fl'>5</span>], <span class='kw'>g2</span> <span class='kw'>=</span> <span class='no'>ss</span>[<span class='fl'>6</span>:<span class='fl'>10</span>]),
+  <span class='kw'>force_y_limit</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>1</span>, <span class='fl'>1</span>), <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>
+)
 <span class='no'>p3</span>
 
 <span class='co'>## Set custom cutoff for custom data</span>
 <span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='no'>cn</span>@<span class='kw'>data</span>
 <span class='no'>data</span>$<span class='no'>segVal</span> <span class='kw'>&lt;-</span> <span class='no'>data</span>$<span class='no'>segVal</span> - <span class='fl'>2L</span>
-<span class='no'>p4</span> <span class='kw'>&lt;-</span> <span class='fu'>show_cn_group_profile</span>(<span class='no'>data</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>g1</span> <span class='kw'>=</span> <span class='no'>ss</span>[<span class='fl'>1</span>:<span class='fl'>5</span>], <span class='kw'>g2</span> <span class='kw'>=</span> <span class='no'>ss</span>[<span class='fl'>6</span>:<span class='fl'>10</span>]),
-                            <span class='kw'>force_y_limit</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>1</span>, <span class='fl'>1</span>), <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-                            <span class='kw'>cutoff</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>0</span>))
+<span class='no'>p4</span> <span class='kw'>&lt;-</span> <span class='fu'>show_cn_group_profile</span>(<span class='no'>data</span>,
+  <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>g1</span> <span class='kw'>=</span> <span class='no'>ss</span>[<span class='fl'>1</span>:<span class='fl'>5</span>], <span class='kw'>g2</span> <span class='kw'>=</span> <span class='no'>ss</span>[<span class='fl'>6</span>:<span class='fl'>10</span>]),
+  <span class='kw'>force_y_limit</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>1</span>, <span class='fl'>1</span>), <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>cutoff</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>0</span>)
+)
 <span class='no'>p4</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

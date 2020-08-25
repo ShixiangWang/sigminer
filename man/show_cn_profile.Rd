@@ -10,7 +10,7 @@ show_cn_profile(
   show_n = NULL,
   show_title = FALSE,
   chrs = paste0("chr", 1:22),
-  genome_build = c("hg19", "hg38"),
+  genome_build = c("hg19", "hg38", "mm10"),
   nrow = NULL,
   ncol = NULL,
   return_plotlist = FALSE
