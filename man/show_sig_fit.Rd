@@ -51,23 +51,16 @@ vector c(x, y); see details section.}
 
 \item{width}{numeric value between 0 and 1 specifying box width.}
 
-\item{outlier.shape}{Default aesthetics for outliers. Set to \code{NULL} to inherit from the
-aesthetics used for the box.
-
-In the unlikely event you specify both US and UK spellings of colour, the
-US spelling will take precedence.
-
-Sometimes it can be useful to hide the outliers, for example when overlaying
-the raw data points on top of the boxplot. Hiding the outliers can be achieved
-by setting \code{outlier.shape = NA}. Importantly, this does not remove the outliers,
-it only hides them, so the range calculated for the y-axis will be the
-same with outliers shown and outliers hidden.}
+\item{outlier.shape}{point shape of outlier. Default is 19. To hide outlier,
+specify \code{outlier.shape = NA}. When jitter is added, then outliers will
+be automatically hidden.}
 
 \item{add}{character vector for adding another plot element (e.g.: dot plot or
 error bars). Allowed values are one or the combination of: "none",
 "dotplot", "jitter", "boxplot", "point", "mean", "mean_se", "mean_sd",
-"mean_ci", "mean_range", "median", "median_iqr", "median_mad",
-"median_range"; see ?desc_statby for more details.}
+"mean_ci", "mean_range", "median", "median_iqr", "median_hilow",
+"median_q1q3", "median_mad", "median_range"; see ?desc_statby for more
+details.}
 
 \item{add.params}{parameters (color, shape, size, fill, linetype) for the
 argument 'add'; e.g.: add.params = list(color = "red").}

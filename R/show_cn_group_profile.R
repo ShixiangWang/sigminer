@@ -16,6 +16,7 @@
 #'
 #' p1 <- show_cn_group_profile(cn)
 #' p1
+#' \donttest{
 #' ss <- unique(cn@data$sample)
 #' p2 <- show_cn_group_profile(cn, groups = list(a = ss[1:5], b = ss[6:10]))
 #' p2
@@ -34,6 +35,7 @@
 #'   cutoff = c(0, 0)
 #' )
 #' p4
+#' }
 #' @testexamples
 #' expect_s3_class(p1, "ggplot")
 #' expect_s3_class(p2, "ggplot")

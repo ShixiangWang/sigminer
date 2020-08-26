@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.12</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.13</span>
       </span>
     </div>
 
@@ -216,6 +216,7 @@ have same y ranges. You can also set a length-2 numeric value.</p></td>
 
 <span class='no'>p1</span> <span class='kw'>&lt;-</span> <span class='fu'>show_cn_group_profile</span>(<span class='no'>cn</span>)
 <span class='no'>p1</span>
+<span class='co'># \donttest{</span>
 <span class='no'>ss</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span>(<span class='no'>cn</span>@<span class='kw'>data</span>$<span class='no'>sample</span>)
 <span class='no'>p2</span> <span class='kw'>&lt;-</span> <span class='fu'>show_cn_group_profile</span>(<span class='no'>cn</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='no'>ss</span>[<span class='fl'>1</span>:<span class='fl'>5</span>], <span class='kw'>b</span> <span class='kw'>=</span> <span class='no'>ss</span>[<span class='fl'>6</span>:<span class='fl'>10</span>]))
 <span class='no'>p2</span>
@@ -233,7 +234,8 @@ have same y ranges. You can also set a length-2 numeric value.</p></td>
   <span class='kw'>force_y_limit</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>1</span>, <span class='fl'>1</span>), <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>,
   <span class='kw'>cutoff</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>0</span>)
 )
-<span class='no'>p4</span></pre>
+<span class='no'>p4</span>
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

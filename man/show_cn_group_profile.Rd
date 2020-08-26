@@ -63,6 +63,7 @@ load(system.file("extdata", "toy_copynumber.RData",
 
 p1 <- show_cn_group_profile(cn)
 p1
+\donttest{
 ss <- unique(cn@data$sample)
 p2 <- show_cn_group_profile(cn, groups = list(a = ss[1:5], b = ss[6:10]))
 p2
@@ -81,4 +82,5 @@ p4 <- show_cn_group_profile(data,
   cutoff = c(0, 0)
 )
 p4
+}
 }

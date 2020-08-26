@@ -56,6 +56,7 @@ Nothing.
 Show Copy Number Variation Frequency Profile with Circos
 }
 \examples{
+\donttest{
 load(system.file("extdata", "toy_copynumber.RData",
   package = "sigminer", mustWork = TRUE
 ))
@@ -63,4 +64,5 @@ load(system.file("extdata", "toy_copynumber.RData",
 show_cn_freq_circos(cn)
 ss <- unique(cn@data$sample)
 show_cn_freq_circos(cn, groups = list(a = ss[1:5], b = ss[6:10]), cols = c("red", "green"))
+}
 }

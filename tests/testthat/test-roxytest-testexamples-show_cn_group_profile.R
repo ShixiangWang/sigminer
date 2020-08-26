@@ -2,7 +2,7 @@
 
 context("File R/show_cn_group_profile.R: @testexamples")
 
-test_that("Function show_cn_group_profile() @ L42", {
+test_that("Function show_cn_group_profile() @ L44", {
   
   load(system.file("extdata", "toy_copynumber.RData",
     package = "sigminer", mustWork = TRUE
@@ -10,6 +10,7 @@ test_that("Function show_cn_group_profile() @ L42", {
   
   p1 <- show_cn_group_profile(cn)
   p1
+  
   ss <- unique(cn@data$sample)
   p2 <- show_cn_group_profile(cn, groups = list(a = ss[1:5], b = ss[6:10]))
   p2
@@ -28,6 +29,7 @@ test_that("Function show_cn_group_profile() @ L42", {
     cutoff = c(0, 0)
   )
   p4
+  
   expect_s3_class(p1, "ggplot")
   expect_s3_class(p2, "ggplot")
   expect_s3_class(p3, "ggplot")
