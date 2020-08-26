@@ -1,3 +1,8 @@
+# sigminer 1.0.13
+
+- Fixed bug in extract numeric signature names and signature orderings in `show_sig_exposure()`.
+- Added `letter_colors` as an unexported discrete palette.
+
 # sigminer 1.0.12
 
 - Added `transform_seg_table()`.

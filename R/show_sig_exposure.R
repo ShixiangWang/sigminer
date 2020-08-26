@@ -132,7 +132,7 @@ show_sig_exposure <- function(Signature,
 
   if (is.null(sig_names)) {
     # chop Signature off
-    rownames(h.norm) <- rownames(h) <- sub(".*[^\\d+](\\d+)$", "\\1", rownames(h))
+    rownames(h.norm) <- rownames(h) <- gsub("[^0-9]", "",  rownames(h))
   } else {
     rownames(h.norm) <- rownames(h) <- sig_names
   }
@@ -152,6 +152,9 @@ show_sig_exposure <- function(Signature,
   if (!is.null(sig_names)) {
     x1$Signature <- factor(x1$Signature, levels = sig_names)
     x2$Signature <- factor(x2$Signature, levels = sig_names)
+  } else {
+    x1$Signature <- factor(x1$Signature, levels = rownames(h))
+    x2$Signature <- factor(x2$Signature, levels = rownames(h))
   }
 
   x1$class0 <- "Est_Counts"

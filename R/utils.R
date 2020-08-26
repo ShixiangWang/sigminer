@@ -124,6 +124,14 @@ use_color_style <- function(style, mode = c("SBS", "copynumber", "DBS", "ID"), m
   palette
 }
 
+# https://en.wikipedia.org/wiki/Help:Distinguishable_colors
+letter_colors <- c("#FF5005", "#FFFF80", "#990000", "#740AFF", "#E0FF66",
+                   "#00998F", "#5EF1F2", "#FF0010", "#426600", "#FFA8BB",
+                   "#FFA405", "#003380", "#C20088", "#9DCC00", "#8F7C00",
+                   "#94FFB5", "#94FFB5", "#FFCC99", "#2BCE48", "#005C31",
+                   "#191919", "#4C005C", "#993F00", "#0075DC", "#F0A3FF",
+                   "#000000", "#FFFFFF")
+
 
 # https://stackoverflow.com/questions/34096162/dplyr-mutate-replace-several-columns-on-a-subset-of-rows
 mutate_cond <- function(.data, condition, ..., envir = parent.frame()) {
