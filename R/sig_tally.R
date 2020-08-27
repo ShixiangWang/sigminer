@@ -465,13 +465,6 @@ sig_tally.MAF <- function(object, mode = c("SBS", "DBS", "ID", "ALL"),
     ignore.case = TRUE
   )
 
-  query$Chromosome <- sub(
-    pattern = "MT",
-    replacement = "M",
-    x = as.character(query$Chromosome),
-    ignore.case = TRUE
-  )
-
   # detect and transform chromosome 23 to "X"
   query$Chromosome <- sub("23", "X", query$Chromosome)
   # detect and transform chromosome 24 to "Y"
@@ -487,6 +480,20 @@ sig_tally.MAF <- function(object, mode = c("SBS", "DBS", "ID", "ALL"),
   query_seq_lvls <- query[, .N, Chromosome]
   ref_seqs_lvls <- BSgenome::seqnames(x = ref_genome)
   query_seq_lvls_missing <- query_seq_lvls[!Chromosome %in% ref_seqs_lvls]
+
+  if (nrow(query_seq_lvls_missing) > 3) {
+    ## Some reference genome builds have no 'chr' prefix
+    send_warning("Too many chromosome names cannot match reference genome. Try dropping 'chr' prefix to fix it...")
+    query$Chromosome <- sub(
+      pattern = "chr",
+      replacement = "",
+      x = as.character(query$Chromosome),
+      ignore.case = TRUE
+    )
+    query_seq_lvls <- query[, .N, Chromosome]
+    query_seq_lvls_missing <- query_seq_lvls[!Chromosome %in% ref_seqs_lvls]
+    send_info("Dropped.")
+  }
 
   if (nrow(query_seq_lvls_missing) > 0) {
     send_warning(paste0(

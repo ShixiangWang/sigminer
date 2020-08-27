@@ -1,5 +1,7 @@
 # sigminer 1.0.13
 
+- Supported `BSgenome.Hsapiens.1000genomes.hs37d5` in `sig_tally()`.
+- Remove changing `MT` to `M` in mutation data.
 - Fixed bug in extract numeric signature names and signature orderings in `show_sig_exposure()`.
 - Added `letter_colors` as an unexported discrete palette.
 
