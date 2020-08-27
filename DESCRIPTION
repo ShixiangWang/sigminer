@@ -1,7 +1,7 @@
 Package: sigminer
 Title: Extract, Analyze and Visualize Signatures for Genomic
     Variations
-Version: 1.0.13
+Version: 1.0.14
 Date: 2020-08-14
 Authors@R: 
     c(person(given = "Shixiang",
@@ -76,14 +76,14 @@ Suggests:
     ggplotify,
     IRanges,
     knitr,
+    markdown,
+    nnls,
     patchwork,
     pheatmap,
-    pracma,
     quadprog,
     R.utils,
     RColorBrewer,
     reticulate,
-    markdown,
     rmarkdown,
     roxygen2,
     testthat,

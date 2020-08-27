@@ -229,8 +229,8 @@ sig_fit <- function(catalogue_matrix,
   send_success("Method '", method, "' detected.")
   f_fit <- switch(method,
     NNLS = {
-      if (!requireNamespace("pracma", quietly = TRUE)) {
-        send_stop("Please install 'pracma' package firstly.")
+      if (!requireNamespace("nnls", quietly = TRUE)) {
+        send_stop("Please install 'nnls' package firstly.")
       }
       decompose_NNLS
     },
@@ -360,8 +360,9 @@ sig_fit <- function(catalogue_matrix,
 # }
 
 decompose_NNLS <- function(x, y, sig_matrix, type = "absolute", ...) {
-  ## lsqnonneg solve nonnegative least-squares constraints problem.
-  expo <- pracma::lsqnonneg(sig_matrix, x)$x
+  ## nnls/lsqnonneg solve nonnegative least-squares constraints problem.
+  ##expo <- pracma::lsqnonneg(sig_matrix, x)$x
+  expo <- stats::coef(nnls::nnls(sig_matrix, x))
 
   expo <- expo / sum(expo)
   return_expo(expo = expo, y, type, total = sum(x))

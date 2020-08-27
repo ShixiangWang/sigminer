@@ -1,3 +1,7 @@
+# sigminer 1.0.14
+
+- Used package `nnls` instead of `pracma` for NNLS implementation in `sig_fit()`.
+
 # sigminer 1.0.13
 
 - Supported `BSgenome.Hsapiens.1000genomes.hs37d5` in `sig_tally()`.
