@@ -18,7 +18,7 @@ citEntry(
 #  volume   = 145,
 #  number   = 10,
 #  pages    = "2840--2849",
-  url      = "https://www.medrxiv.org/content/early/2020/04/29/2020.04.27.20082404",
+  url      = "https://www.medrxiv.org/content/10.1101/2020.04.27.20082404v1",
   textVersion = paste(
     "Wang, Shixiang, et al. \"Copy number signature analyses in prostate cancer reveal distinct etiologies and clinical outcomes\"",
     "medRxiv (2020)."
