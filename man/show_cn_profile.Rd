@@ -9,8 +9,11 @@ show_cn_profile(
   samples = NULL,
   show_n = NULL,
   show_title = FALSE,
+  show_labels = NULL,
   chrs = paste0("chr", 1:22),
+  position = NULL,
   genome_build = c("hg19", "hg38", "mm10"),
+  ylim = NULL,
   nrow = NULL,
   ncol = NULL,
   return_plotlist = FALSE
@@ -27,7 +30,13 @@ is a \code{data.frame}, a column called \code{sample} must exist.}
 
 \item{show_title}{if \code{TRUE}, show title for multiple samples.}
 
+\item{show_labels}{one of \code{NULL}, "s" (for labelling short segments < 1e7)
+or "a" (all segments).}
+
 \item{chrs}{chromosomes start with 'chr'.}
+
+\item{position}{a position range, e.g. \code{"chr1:3218923-116319008"}. Only data
+overlaps with this range will be shown.}
 
 \item{genome_build}{genome build version, used when \code{data} is a \code{data.frame}, should be 'hg19' or 'hg38'.}
 
@@ -53,4 +62,7 @@ load(system.file("extdata", "toy_copynumber.RData",
 
 p <- show_cn_profile(cn, nrow = 2, ncol = 1)
 p
+p2 <- show_cn_profile(cn, nrow = 2, ncol = 1,
+                      position = "chr1:3218923-116319008")
+p2
 }
