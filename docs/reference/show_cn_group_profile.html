@@ -141,6 +141,7 @@
   <span class='kw'>cutoff</span> <span class='kw'>=</span> <span class='fl'>2L</span>,
   <span class='kw'>resolution_factor</span> <span class='kw'>=</span> <span class='fl'>1L</span>,
   <span class='kw'>force_y_limit</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>highlight_genes</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>return_plotlist</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
@@ -188,7 +189,11 @@ When it is <code>2</code>, use compute frequency in each half cytoband.</p></td>
     </tr>
     <tr>
       <th>force_y_limit</th>
-      <td><p>default is <code>TRUE</code>, force multiple plots
+      <td><p>default is <code>TRUE</code>, force multiple plots</p></td>
+    </tr>
+    <tr>
+      <th>highlight_genes</th>
+      <td><p>gene list to highlight.
 have same y ranges. You can also set a length-2 numeric value.</p></td>
     </tr>
     <tr>
@@ -235,6 +240,10 @@ have same y ranges. You can also set a length-2 numeric value.</p></td>
   <span class='kw'>cutoff</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>0</span>)
 )
 <span class='no'>p4</span>
+
+<span class='co'>## Add highlight gene</span>
+<span class='no'>p5</span> <span class='kw'>&lt;-</span> <span class='fu'>show_cn_group_profile</span>(<span class='no'>cn</span>, <span class='kw'>highlight_genes</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"TP53"</span>, <span class='st'>"EGFR"</span>))
+<span class='no'>p5</span>
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

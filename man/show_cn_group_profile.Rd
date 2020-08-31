@@ -14,6 +14,7 @@ show_cn_group_profile(
   cutoff = 2L,
   resolution_factor = 1L,
   force_y_limit = TRUE,
+  highlight_genes = NULL,
   nrow = NULL,
   ncol = NULL,
   return_plotlist = FALSE
@@ -41,7 +42,9 @@ a length-2 vector, e.g. \code{c(2, 2)}.}
 When it is \code{1} (default), compute frequency in each cytoband.
 When it is \code{2}, use compute frequency in each half cytoband.}
 
-\item{force_y_limit}{default is \code{TRUE}, force multiple plots
+\item{force_y_limit}{default is \code{TRUE}, force multiple plots}
+
+\item{highlight_genes}{gene list to highlight.
 have same y ranges. You can also set a length-2 numeric value.}
 
 \item{nrow}{number of rows in the plot grid when multiple samples are selected.}
@@ -82,5 +85,9 @@ p4 <- show_cn_group_profile(data,
   cutoff = c(0, 0)
 )
 p4
+
+## Add highlight gene
+p5 <- show_cn_group_profile(cn, highlight_genes = c("TP53", "EGFR"))
+p5
 }
 }

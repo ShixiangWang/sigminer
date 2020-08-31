@@ -4,6 +4,7 @@
 #' @inheritParams show_cn_profile
 #' @param fill_area default is `TRUE`, fill area with colors.
 #' @param force_y_limit default is `TRUE`, force multiple plots
+#' @param highlight_genes gene list to highlight.
 #' have same y ranges. You can also set a length-2 numeric value.
 #'
 #' @return a (list of) `ggplot` object.
@@ -35,12 +36,17 @@
 #'   cutoff = c(0, 0)
 #' )
 #' p4
+#'
+#' ## Add highlight gene
+#' p5 <- show_cn_group_profile(cn, highlight_genes = c("TP53", "EGFR"))
+#' p5
 #' }
 #' @testexamples
 #' expect_s3_class(p1, "ggplot")
 #' expect_s3_class(p2, "ggplot")
 #' expect_s3_class(p3, "ggplot")
 #' expect_s3_class(p4, "ggplot")
+#' expect_s3_class(p5, "ggplot")
 show_cn_group_profile <- function(data,
                                   groups = NULL,
                                   fill_area = TRUE,
@@ -50,6 +56,7 @@ show_cn_group_profile <- function(data,
                                   cutoff = 2L,
                                   resolution_factor = 1L,
                                   force_y_limit = TRUE,
+                                  highlight_genes = NULL,
                                   nrow = NULL, ncol = NULL,
                                   return_plotlist = FALSE) {
   stopifnot(is.data.frame(data) | inherits(data, "CopyNumber"))
@@ -123,6 +130,35 @@ show_cn_group_profile <- function(data,
     "freq_AMP", "freq_DEL"
   ))
 
+  if (!is.null(highlight_genes)) {
+    if (genome_build == "mm10") {
+      gene_dt = readRDS(system.file("extdata", "mouse_mm10_gene_info.rds",
+                                    package = "sigminer"))
+    } else {
+      gene_dt = readRDS(
+        system.file("extdata", paste0("human_", genome_build, "_gene_info.rds"),
+                    package = "sigminer"))
+    }
+    gene_dt <- gene_dt[gene_dt$gene_name %in% highlight_genes][
+      , c("chrom", "start", "end", "gene_name")
+    ]
+
+    if (nrow(gene_dt) < 1) {
+      stop(paste("No gene matched in", genome_build))
+    }
+
+    colnames(gene_dt) <-  c("chromosome", "i.start", "i.end", "gene_name")
+    data_freq <- merge(data_freq, gene_dt, by = "chromosome", all.x = TRUE)
+    data_freq$highlight = data.table::fifelse(
+      data_freq$i.end <= data_freq$end & data_freq$i.start >= data_freq$start,
+      data_freq$gene_name, NA_character_
+    )
+    data_freq$i.start <- data_freq$i.end <- data_freq$gene_name <- NULL
+
+  } else {
+    data_freq$highlight <- NA_character_
+  }
+
   coord_df <- build_chrom_coordinate(genome_build, chrs) %>%
     dplyr::mutate(labels = sub("chr", "", .data$chrom))
 
@@ -168,6 +204,9 @@ show_cn_group_profile <- function(data,
 
 
 plot_cn_summary <- function(plot_df, coord_df, fill_area = TRUE, cols = c("red", "blue")) {
+
+  h_df = na.omit(plot_df)
+
   plot_df <- dplyr::bind_rows(
     plot_df %>%
       dplyr::select(c("start", "freq_AMP", "freq_DEL")) %>%
@@ -178,22 +217,6 @@ plot_cn_summary <- function(plot_df, coord_df, fill_area = TRUE, cols = c("red",
       dplyr::mutate(x = .data$x - 1)
   ) %>%
     na.omit()
-  # plot_df <- plot_df %>%
-  #   dplyr::select(c("start", "end", "freq_AMP", "freq_DEL", "chromosome")) %>%
-  #   #dplyr::rename(x = .data$end) %>%
-  #   na.omit()
-  #
-  # plot_df = purrr::map_df(dplyr::group_split(plot_df, .data$chromosome),
-  #                         function(x) {
-  #                           x <- dplyr::bind_rows(
-  #                             head(x, 1L),
-  #                             x
-  #                           )
-  #                           x$end[1] = x$start[1]
-  #                           x %>%
-  #                             dplyr::select(c("end", "freq_AMP", "freq_DEL")) %>%
-  #                             dplyr::rename(x = .data$end)
-  #                         })
 
   data_amp <- plot_df %>%
     dplyr::select(c("x", "freq_AMP")) %>%
@@ -209,13 +232,28 @@ plot_cn_summary <- function(plot_df, coord_df, fill_area = TRUE, cols = c("red",
     fill_del_col <- cols[2]
   }
 
-  ggplot() +
-    geom_area(aes_string(x = "x", y = "freq"), fill = fill_amp_col, color = cols[1], data = data_amp) +
-    geom_area(aes_string(x = "x", y = "freq"), fill = fill_del_col, color = cols[2], data = data_del) +
-    geom_line() +
+  p <- ggplot() +
+    geom_area(aes_string(x = "x", y = "freq"),
+              fill = fill_amp_col, color = cols[1], data = data_amp) +
+    geom_area(aes_string(x = "x", y = "freq"),
+              fill = fill_del_col, color = cols[2], data = data_del)
+
+  if (nrow(h_df) > 0) {
+    p <- p + ggrepel::geom_text_repel(
+      aes( x = (.data$start + .data$end) / 2,
+           y = max(data_amp$freq) - 0.02,
+           label= .data$highlight), size = 2, color = "black",
+      data = h_df)
+  }
+
+  p <- p +
     geom_hline(yintercept = 0) +
-    geom_vline(aes(xintercept = .data$x_start), linetype = "dotted", data = coord_df) +
-    geom_vline(xintercept = coord_df$x_end[nrow(coord_df)], linetype = "dotted") +
+    geom_vline(aes(xintercept = .data$x_start),
+               alpha = 0.5,
+               linetype = "dotted", data = coord_df) +
+    geom_vline(xintercept = coord_df$x_end[nrow(coord_df)],
+               alpha = 0.5,
+               linetype = "dotted") +
     scale_x_continuous(breaks = coord_df$lab_loc, labels = coord_df$labels) +
     labs(x = "Chromosome", y = "Variation frequency") +
     cowplot::theme_cowplot() +

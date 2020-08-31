@@ -1,5 +1,6 @@
 # sigminer 1.0.14
 
+- Added option `highlight_genes` in `show_cn_group_profile()` to show gene labels.
 - Added `get_sig_cancer_type_index()` to get reference signature index.
 - Added `show_group_distribution()` to show group distribution.
 - Added options in `show_cn_profile()` to show specified ranges and add copy number value labels.

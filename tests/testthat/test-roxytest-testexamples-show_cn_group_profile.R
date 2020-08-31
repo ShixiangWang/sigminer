@@ -2,7 +2,7 @@
 
 context("File R/show_cn_group_profile.R: @testexamples")
 
-test_that("Function show_cn_group_profile() @ L44", {
+test_that("Function show_cn_group_profile() @ L50", {
   
   load(system.file("extdata", "toy_copynumber.RData",
     package = "sigminer", mustWork = TRUE
@@ -30,9 +30,14 @@ test_that("Function show_cn_group_profile() @ L44", {
   )
   p4
   
+  ## Add highlight gene
+  p5 <- show_cn_group_profile(cn, highlight_genes = c("TP53", "EGFR"))
+  p5
+  
   expect_s3_class(p1, "ggplot")
   expect_s3_class(p2, "ggplot")
   expect_s3_class(p3, "ggplot")
   expect_s3_class(p4, "ggplot")
+  expect_s3_class(p5, "ggplot")
 })
 
