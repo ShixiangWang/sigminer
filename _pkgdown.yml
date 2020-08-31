@@ -35,6 +35,7 @@ reference:
     contents:
     - sig_tally
     - handle_hyper_mutation
+    - get_sig_cancer_type_index
     - sig_fit
     - sig_fit_bootstrap
     - sig_fit_bootstrap_batch
