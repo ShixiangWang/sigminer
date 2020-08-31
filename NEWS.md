@@ -1,5 +1,6 @@
 # sigminer 1.0.14
 
+- Added `show_group_distribution()` to show group distribution.
 - Added options in `show_cn_profile()` to show specified ranges and add copy number value labels.
 - Used package `nnls` instead of `pracma` for NNLS implementation in `sig_fit()`.
 

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Show Sample Copy Number Profile — show_cn_profile • sigminer</title>
+<title>Show Groupped Variable Distribution — show_group_distribution • sigminer</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,10 +46,8 @@
 
 
 
-<meta property="og:title" content="Show Sample Copy Number Profile — show_cn_profile" />
-<meta property="og:description" content="Sometimes it is very useful to check details about copy number profile for one or multiple
-samples. This function is designed to do this job and can be further modified by ggplot2
-related packages." />
+<meta property="og:title" content="Show Groupped Variable Distribution — show_group_distribution" />
+<meta property="og:description" content="This is a general function, it can be used in any proper analysis." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -124,30 +122,23 @@ related packages." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Show Sample Copy Number Profile</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ShixiangWang/sigminer/blob/master/R/show_cn_profile.R'><code>R/show_cn_profile.R</code></a></small>
-    <div class="hidden name"><code>show_cn_profile.Rd</code></div>
+    <h1>Show Groupped Variable Distribution</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ShixiangWang/sigminer/blob/master/R/show_group_distribution.R'><code>R/show_group_distribution.R</code></a></small>
+    <div class="hidden name"><code>show_group_distribution.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Sometimes it is very useful to check details about copy number profile for one or multiple
-samples. This function is designed to do this job and can be further modified by <strong>ggplot2</strong>
-related packages.</p>
+    <p>This is a general function, it can be used in any proper analysis.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>show_cn_profile</span>(
+    <pre class="usage"><span class='fu'>show_group_distribution</span>(
   <span class='no'>data</span>,
-  <span class='kw'>samples</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>show_n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>show_title</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>show_labels</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>chrs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"chr"</span>, <span class='fl'>1</span>:<span class='fl'>22</span>),
-  <span class='kw'>position</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>genome_build</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"hg19"</span>, <span class='st'>"hg38"</span>, <span class='st'>"mm10"</span>),
-  <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>return_plotlist</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+  <span class='no'>gvar</span>,
+  <span class='no'>dvar</span>,
+  <span class='kw'>g_label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>background_color</span> <span class='kw'>=</span> <span class='st'>"#DBD7D2"</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -155,69 +146,46 @@ related packages.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>a <a href='CopyNumber-class.html'>CopyNumber</a> object or a <code>data.frame</code> containing at least 'chromosome', 'start',
-'end', 'segVal' these columns.</p></td>
+      <td><p>a <code>data.frame</code>.</p></td>
     </tr>
     <tr>
-      <th>samples</th>
-      <td><p>default is NULL, can be a chracter vector representing multiple samples. If <code>data</code> argument
-is a <code>data.frame</code>, a column called <code>sample</code> must exist.</p></td>
+      <th>gvar</th>
+      <td><p>a group variable name/index.</p></td>
     </tr>
     <tr>
-      <th>show_n</th>
-      <td><p>number of samples to show, this is used for checking.</p></td>
+      <th>dvar</th>
+      <td><p>a distribution variable name/index.</p></td>
     </tr>
     <tr>
-      <th>show_title</th>
-      <td><p>if <code>TRUE</code>, show title for multiple samples.</p></td>
+      <th>g_label</th>
+      <td><p>a named vector to set facet labels, default is <code>NULL</code>.</p></td>
     </tr>
     <tr>
-      <th>show_labels</th>
-      <td><p>one of <code>NULL</code>, "s" (for labelling short segments &lt; 1e7)
-or "a" (all segments).</p></td>
+      <th>xlab</th>
+      <td><p>title for x axis.</p></td>
     </tr>
     <tr>
-      <th>chrs</th>
-      <td><p>chromosomes start with 'chr'.</p></td>
+      <th>ylab</th>
+      <td><p>title for y axis.</p></td>
     </tr>
     <tr>
-      <th>position</th>
-      <td><p>a position range, e.g. <code>"chr1:3218923-116319008"</code>. Only data
-overlaps with this range will be shown.</p></td>
-    </tr>
-    <tr>
-      <th>genome_build</th>
-      <td><p>genome build version, used when <code>data</code> is a <code>data.frame</code>, should be 'hg19' or 'hg38'.</p></td>
-    </tr>
-    <tr>
-      <th>nrow</th>
-      <td><p>number of rows in the plot grid when multiple samples are selected.</p></td>
-    </tr>
-    <tr>
-      <th>ncol</th>
-      <td><p>number of columns in the plot grid when multiple samples are selected.</p></td>
-    </tr>
-    <tr>
-      <th>return_plotlist</th>
-      <td><p>default is <code>FALSE</code>, if <code>TRUE</code>, return a plot list instead of a combined plot.</p></td>
+      <th>background_color</th>
+      <td><p>background color for plot panel.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a <code>ggplot</code> object or a <code>list</code></p>
+    <p>a <code>ggplot</code> object.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># Load copy number object</span>
-<span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber.RData"</span>,
-  <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-))
-
-<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>show_cn_profile</span>(<span class='no'>cn</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>1</span>)
-<span class='no'>p</span>
-<span class='no'>p2</span> <span class='kw'>&lt;-</span> <span class='fu'>show_cn_profile</span>(<span class='no'>cn</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-                      <span class='kw'>position</span> <span class='kw'>=</span> <span class='st'>"chr1:3218923-116319008"</span>)
-<span class='no'>p2</span></pre>
+    <pre class="examples"><span class='fu'>set.sed</span>(<span class='fl'>1234</span>)
+<span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(
+  <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>120</span>),
+  <span class='kw'>g</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>"A"</span>, <span class='fl'>50</span>), <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>"B"</span>, <span class='fl'>40</span>), <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>"C"</span>, <span class='fl'>30</span>))
+)
+<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>show_group_distribution</span>(<span class='no'>data</span>, <span class='kw'>gvar</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>dvar</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>background_color</span> <span class='kw'>=</span> <span class='st'>"grey"</span>)
+<span class='no'>p</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
