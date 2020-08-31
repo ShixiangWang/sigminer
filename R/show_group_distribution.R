@@ -33,6 +33,7 @@ show_group_distribution <- function(data, gvar, dvar,
   data$.gvar <- data[[gvar]]
   data$.dvar <- data[[dvar]]
   d <- data %>%
+    dplyr::mutate(.order = dplyr::row_number()) %>%
     dplyr::group_by(.data$.gvar) %>%
     dplyr::arrange(.data$.dvar) %>%
     dplyr::mutate(x = seq_len(dplyr::n())) %>%
@@ -58,7 +59,7 @@ show_group_distribution <- function(data, gvar, dvar,
   g_label <- ds$label
   names(g_label) <- ds$g
 
-  ggplot(d, aes_string(x = "x", y = "y")) +
+  p <- ggplot(d, aes_string(x = "x", y = "y")) +
     geom_point(alpha = 0.8) +
     geom_segment(aes_string(x = "x", xend = "xend", y = "y", yend = "yend"),
       data = ds,
@@ -84,4 +85,7 @@ show_group_distribution <- function(data, gvar, dvar,
       panel.background = element_rect(fill = background_color)
     ) +
     labs(x = xlab, y = ylab)
+  p$sampleOrder <- d$.order
+  p
+
 }
