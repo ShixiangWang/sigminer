@@ -132,12 +132,15 @@ show_cn_group_profile <- function(data,
 
   if (!is.null(highlight_genes)) {
     if (genome_build == "mm10") {
-      gene_dt = readRDS(system.file("extdata", "mouse_mm10_gene_info.rds",
-                                    package = "sigminer"))
+      gene_dt <- readRDS(system.file("extdata", "mouse_mm10_gene_info.rds",
+        package = "sigminer"
+      ))
     } else {
-      gene_dt = readRDS(
+      gene_dt <- readRDS(
         system.file("extdata", paste0("human_", genome_build, "_gene_info.rds"),
-                    package = "sigminer"))
+          package = "sigminer"
+        )
+      )
     }
     gene_dt <- gene_dt[gene_dt$gene_name %in% highlight_genes][
       , c("chrom", "start", "end", "gene_name")
@@ -147,14 +150,13 @@ show_cn_group_profile <- function(data,
       stop(paste("No gene matched in", genome_build))
     }
 
-    colnames(gene_dt) <-  c("chromosome", "i.start", "i.end", "gene_name")
+    colnames(gene_dt) <- c("chromosome", "i.start", "i.end", "gene_name")
     data_freq <- merge(data_freq, gene_dt, by = "chromosome", all.x = TRUE)
-    data_freq$highlight = data.table::fifelse(
+    data_freq$highlight <- data.table::fifelse(
       data_freq$i.end <= data_freq$end & data_freq$i.start >= data_freq$start,
       data_freq$gene_name, NA_character_
     )
     data_freq$i.start <- data_freq$i.end <- data_freq$gene_name <- NULL
-
   } else {
     data_freq$highlight <- NA_character_
   }
@@ -204,8 +206,7 @@ show_cn_group_profile <- function(data,
 
 
 plot_cn_summary <- function(plot_df, coord_df, fill_area = TRUE, cols = c("red", "blue")) {
-
-  h_df = na.omit(plot_df)
+  h_df <- na.omit(plot_df)
 
   plot_df <- dplyr::bind_rows(
     plot_df %>%
@@ -234,26 +235,35 @@ plot_cn_summary <- function(plot_df, coord_df, fill_area = TRUE, cols = c("red",
 
   p <- ggplot() +
     geom_area(aes_string(x = "x", y = "freq"),
-              fill = fill_amp_col, color = cols[1], data = data_amp) +
+      fill = fill_amp_col, color = cols[1], data = data_amp
+    ) +
     geom_area(aes_string(x = "x", y = "freq"),
-              fill = fill_del_col, color = cols[2], data = data_del)
+      fill = fill_del_col, color = cols[2], data = data_del
+    )
 
   if (nrow(h_df) > 0) {
     p <- p + ggrepel::geom_text_repel(
-      aes( x = (.data$start + .data$end) / 2,
-           y = max(data_amp$freq) - 0.02,
-           label= .data$highlight), size = 2, color = "black",
-      data = h_df)
+      aes(
+        x = (.data$start + .data$end) / 2,
+        y = max(data_amp$freq) - 0.02,
+        label = .data$highlight
+      ),
+      size = 2, color = "black",
+      data = h_df
+    )
   }
 
   p <- p +
     geom_hline(yintercept = 0) +
     geom_vline(aes(xintercept = .data$x_start),
-               alpha = 0.5,
-               linetype = "dotted", data = coord_df) +
-    geom_vline(xintercept = coord_df$x_end[nrow(coord_df)],
-               alpha = 0.5,
-               linetype = "dotted") +
+      alpha = 0.5,
+      linetype = "dotted", data = coord_df
+    ) +
+    geom_vline(
+      xintercept = coord_df$x_end[nrow(coord_df)],
+      alpha = 0.5,
+      linetype = "dotted"
+    ) +
     scale_x_continuous(breaks = coord_df$lab_loc, labels = coord_df$labels) +
     labs(x = "Chromosome", y = "Variation frequency") +
     cowplot::theme_cowplot() +

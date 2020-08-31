@@ -209,8 +209,12 @@ plot_cn_profile <- function(plot_df, coord_df, show_labels = NULL) {
         nudge_y = 0.3)
   }
   p +
-    geom_vline(aes(xintercept = .data$x_start), linetype = "dotted", data = coord_df) +
-    geom_vline(xintercept = coord_df$x_end[nrow(coord_df)], linetype = "dotted") +
+    geom_vline(aes(xintercept = .data$x_start),
+               alpha = 0.5,
+               linetype = "dotted", data = coord_df) +
+    geom_vline(xintercept = coord_df$x_end[nrow(coord_df)],
+               alpha = 0.5,
+               linetype = "dotted") +
     scale_x_continuous(breaks = coord_df$lab_loc, labels = coord_df$labels) +
     scale_color_manual(values = c("Amp" = "red", "Normal" = "black", "Del" = "blue")) +
     labs(x = "Chromosome", y = "Copy number") +
