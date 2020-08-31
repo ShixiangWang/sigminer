@@ -36,7 +36,7 @@ a \code{ggplot} object.
 This is a general function, it can be used in any proper analysis.
 }
 \examples{
-set.sed(1234)
+set.seed(1234)
 data <- data.frame(
   y = rnorm(120),
   g = c(rep("A", 50), rep("B", 40), rep("C", 30))
