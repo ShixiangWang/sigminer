@@ -2,12 +2,12 @@
 
 context("File R/show_group_distribution.R: @testexamples")
 
-test_that("Function show_group_distribution() @ L26", {
+test_that("Function show_group_distribution() @ L27", {
   
   set.seed(1234)
   data <- data.frame(
     y = rnorm(120),
-    g = c(rep("A", 50), rep("B", 40), rep("C", 30))
+    gr = c(rep("A", 50), rep("B", 40), rep("C", 30))
   )
   p <- show_group_distribution(data, gvar = 2, dvar = 1, background_color = "grey")
   p

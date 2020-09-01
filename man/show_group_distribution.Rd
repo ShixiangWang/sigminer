@@ -9,8 +9,10 @@ show_group_distribution(
   gvar,
   dvar,
   g_label = NULL,
+  angle_label = 0,
   xlab = NULL,
   ylab = NULL,
+  nrow = 1L,
   background_color = "#DBD7D2"
 )
 }
@@ -27,6 +29,8 @@ show_group_distribution(
 
 \item{ylab}{title for y axis.}
 
+\item{nrow}{number of row.}
+
 \item{background_color}{background color for plot panel.}
 }
 \value{
@@ -39,7 +43,7 @@ This is a general function, it can be used in any proper analysis.
 set.seed(1234)
 data <- data.frame(
   y = rnorm(120),
-  g = c(rep("A", 50), rep("B", 40), rep("C", 30))
+  gr = c(rep("A", 50), rep("B", 40), rep("C", 30))
 )
 p <- show_group_distribution(data, gvar = 2, dvar = 1, background_color = "grey")
 p

@@ -8,6 +8,7 @@
 #' @param g_label a named vector to set facet labels, default is `NULL`.
 #' @param xlab title for x axis.
 #' @param ylab title for y axis.
+#' @param nrow number of row.
 #' @param background_color background color for plot panel.
 #'
 #' @return a `ggplot` object.
@@ -17,7 +18,7 @@
 #' set.seed(1234)
 #' data <- data.frame(
 #'   y = rnorm(120),
-#'   g = c(rep("A", 50), rep("B", 40), rep("C", 30))
+#'   gr = c(rep("A", 50), rep("B", 40), rep("C", 30))
 #' )
 #' p <- show_group_distribution(data, gvar = 2, dvar = 1, background_color = "grey")
 #' p
@@ -25,8 +26,10 @@
 #' expect_is(p, "ggplot")
 show_group_distribution <- function(data, gvar, dvar,
                                     g_label = NULL,
+                                    angle_label = 0,
                                     xlab = NULL,
                                     ylab = NULL,
+                                    nrow = 1L,
                                     background_color = "#DBD7D2") {
   stopifnot(length(gvar) == 1L, length(dvar) == 1L)
 
@@ -59,14 +62,15 @@ show_group_distribution <- function(data, gvar, dvar,
   g_label <- ds$label
   names(g_label) <- ds$g
 
-  p <- ggplot(d, aes_string(x = "x", y = "y")) +
+  p <- ggplot(d, aes_string(x = "x", y = ".dvar")) +
     geom_point(alpha = 0.8) +
     geom_segment(aes_string(x = "x", xend = "xend", y = "y", yend = "yend"),
       data = ds,
       color = "red",
       size = 2
     ) +
-    facet_wrap(~g,
+    facet_wrap(~.gvar,
+      nrow = nrow,
       scales = "free_x",
       labeller = labeller(g = g_label)
     ) +
