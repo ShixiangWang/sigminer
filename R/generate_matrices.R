@@ -280,9 +280,9 @@ generate_matrix_SBS <- function(query, ref_genome, genome_build = "hg19", add_tr
 generate_matrix_DBS <- function(query, ref_genome, genome_build = "hg19", add_trans_bias = FALSE) {
   send_info("DBS matrix generation - start.")
 
-  query <- query[query$Variant_Type == "SNP"]
+  query <- query[query$Variant_Type %in% c("SNP", "DNP")]
   if (nrow(query) == 0) {
-    send_stop("Zero SNPs to analyze!")
+    send_stop("Zero SNP/DNPs to analyze!")
   }
 
   ## Generate DBS catalogues
@@ -320,7 +320,8 @@ generate_matrix_DBS <- function(query, ref_genome, genome_build = "hg19", add_tr
   ## Search for DBS
   send_info("Searching DBS records...")
   query_DNP <- query[query$Variant_Type == "DNP",
-                     c("Hugo_Symbol", "Chromosome", "Start_Position", "Reference_Allele", "Tumor_Seq_Allele2")]
+                     c("Tumor_Sample_Barcode", "Hugo_Symbol", "Chromosome",
+                       "Start_Position", "Reference_Allele", "Tumor_Seq_Allele2")]
   query <- query[, search_DBS(.SD), by = Tumor_Sample_Barcode]
   query <- rbind(query, query_DNP, fill = TRUE)
   send_success("Done.")
@@ -453,7 +454,7 @@ search_DBS <- function(x) {
 generate_matrix_INDEL <- function(query, ref_genome, genome_build = "hg19", add_trans_bias = FALSE) {
   send_info("INDEL matrix generation - start.")
 
-  query <- query[query$Variant_Type != "SNP"]
+  query <- query[query$Variant_Type %in% c("INS", "DEL")]
   if (nrow(query) == 0) {
     send_stop("Zero INDELs to analyze!")
   }
