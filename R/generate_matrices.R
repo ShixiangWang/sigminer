@@ -319,7 +319,10 @@ generate_matrix_DBS <- function(query, ref_genome, genome_build = "hg19", add_tr
 
   ## Search for DBS
   send_info("Searching DBS records...")
+  query_DNP <- query[query$Variant_Type == "DNP",
+                     c("Hugo_Symbol", "Chromosome", "Start_Position", "Reference_Allele", "Tumor_Seq_Allele2")]
   query <- query[, search_DBS(.SD), by = Tumor_Sample_Barcode]
+  query <- rbind(query, query_DNP, fill = TRUE)
   send_success("Done.")
 
   if (nrow(query) == 0) {
