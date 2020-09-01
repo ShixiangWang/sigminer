@@ -421,7 +421,7 @@ sig_tally.MAF <- function(object, mode = c("SBS", "DBS", "ID", "ALL"),
 
   query <- maftools::subsetMaf(
     maf = object,
-    query = "Variant_Type %in% c('SNP', 'INS', 'DEL')", fields = "Chromosome",
+    query = "Variant_Type %in% c('SNP', 'DNP', 'INS', 'DEL')", fields = "Chromosome",
     includeSyn = use_syn, mafObj = FALSE
   )
   send_success("Variants from MAF object queried.")
