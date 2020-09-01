@@ -5,7 +5,11 @@
 #' @param data a `data.frame`.
 #' @param gvar a group variable name/index.
 #' @param dvar a distribution variable name/index.
+#' @param alpha alpha for points, range from 0 to 1.
 #' @param g_label a named vector to set facet labels, default is `NULL`.
+#' @param g_angle angle for facet labels, default is `0`.
+#' @param g_position position for facet labels, default is 'top', can also
+#' be 'bottom'.
 #' @param xlab title for x axis.
 #' @param ylab title for y axis.
 #' @param nrow number of row.
@@ -17,16 +21,24 @@
 #' @examples
 #' set.seed(1234)
 #' data <- data.frame(
-#'   y = rnorm(120),
+#'   yval = rnorm(120),
 #'   gr = c(rep("A", 50), rep("B", 40), rep("C", 30))
 #' )
-#' p <- show_group_distribution(data, gvar = 2, dvar = 1, background_color = "grey")
+#' p <- show_group_distribution(data, gvar = 2, dvar = 1,
+#'                              background_color = "grey")
 #' p
+#' p2 <- show_group_distribution(data, gvar = "gr", dvar = "yval",
+#'                               g_position = "bottom",
+#'                               alpha = 0.3)
+#' p2
 #' @testexamples
 #' expect_is(p, "ggplot")
+#' expect_is(p, "ggplot")
 show_group_distribution <- function(data, gvar, dvar,
+                                    alpha = 0.8,
                                     g_label = NULL,
-                                    angle_label = 0,
+                                    g_angle = 0,
+                                    g_position = "top",
                                     xlab = NULL,
                                     ylab = NULL,
                                     nrow = 1L,
@@ -51,19 +63,19 @@ show_group_distribution <- function(data, gvar, dvar,
       .groups = "drop"
     ) %>%
     dplyr::transmute(
-      g = .data$.gvar,
+      .gvar = .data$.gvar,
       x = .data$x_m - round(.data$n / 3),
       xend = .data$x_m + round(.data$n / 3),
       y = .data$y_m,
       yend = .data$y_m,
-      label = paste0(.data$g, "\n(n=", .data$n, ")")
+      label = paste0(.data$.gvar, "\n(n=", .data$n, ")")
     )
 
   g_label <- ds$label
-  names(g_label) <- ds$g
+  names(g_label) <- ds$.gvar
 
   p <- ggplot(d, aes_string(x = "x", y = ".dvar")) +
-    geom_point(alpha = 0.8) +
+    geom_point(alpha = alpha) +
     geom_segment(aes_string(x = "x", xend = "xend", y = "y", yend = "yend"),
       data = ds,
       color = "red",
@@ -72,7 +84,8 @@ show_group_distribution <- function(data, gvar, dvar,
     facet_wrap(~.gvar,
       nrow = nrow,
       scales = "free_x",
-      labeller = labeller(g = g_label)
+      strip.position = g_position,
+      labeller = labeller(.gvar = g_label)
     ) +
     theme_bw(base_size = 14) +
     theme(
@@ -81,7 +94,8 @@ show_group_distribution <- function(data, gvar, dvar,
       strip.background.x = element_rect(color = "white", fill = "white"),
       strip.text.x = element_text(
         color = "black",
-        face = "bold"
+        face = "bold",
+        angle = g_angle
       ),
       panel.grid.major = element_blank(),
       panel.grid.minor = element_blank(),

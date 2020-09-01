@@ -2,15 +2,21 @@
 
 context("File R/show_group_distribution.R: @testexamples")
 
-test_that("Function show_group_distribution() @ L27", {
+test_that("Function show_group_distribution() @ L37", {
   
   set.seed(1234)
   data <- data.frame(
-    y = rnorm(120),
+    yval = rnorm(120),
     gr = c(rep("A", 50), rep("B", 40), rep("C", 30))
   )
-  p <- show_group_distribution(data, gvar = 2, dvar = 1, background_color = "grey")
+  p <- show_group_distribution(data, gvar = 2, dvar = 1,
+                               background_color = "grey")
   p
+  p2 <- show_group_distribution(data, gvar = "gr", dvar = "yval",
+                                g_position = "bottom",
+                                alpha = 0.3)
+  p2
+  expect_is(p, "ggplot")
   expect_is(p, "ggplot")
 })
 

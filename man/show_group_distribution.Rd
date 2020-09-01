@@ -8,8 +8,10 @@ show_group_distribution(
   data,
   gvar,
   dvar,
+  alpha = 0.8,
   g_label = NULL,
-  angle_label = 0,
+  g_angle = 0,
+  g_position = "top",
   xlab = NULL,
   ylab = NULL,
   nrow = 1L,
@@ -23,7 +25,14 @@ show_group_distribution(
 
 \item{dvar}{a distribution variable name/index.}
 
+\item{alpha}{alpha for points, range from 0 to 1.}
+
 \item{g_label}{a named vector to set facet labels, default is \code{NULL}.}
+
+\item{g_angle}{angle for facet labels, default is \code{0}.}
+
+\item{g_position}{position for facet labels, default is 'top', can also
+be 'bottom'.}
 
 \item{xlab}{title for x axis.}
 
@@ -42,9 +51,14 @@ This is a general function, it can be used in any proper analysis.
 \examples{
 set.seed(1234)
 data <- data.frame(
-  y = rnorm(120),
+  yval = rnorm(120),
   gr = c(rep("A", 50), rep("B", 40), rep("C", 30))
 )
-p <- show_group_distribution(data, gvar = 2, dvar = 1, background_color = "grey")
+p <- show_group_distribution(data, gvar = 2, dvar = 1,
+                             background_color = "grey")
 p
+p2 <- show_group_distribution(data, gvar = "gr", dvar = "yval",
+                              g_position = "bottom",
+                              alpha = 0.3)
+p2
 }
