@@ -27,13 +27,17 @@
 #'   yval = rnorm(120),
 #'   gr = c(rep("A", 50), rep("B", 40), rep("C", 30))
 #' )
-#' p <- show_group_distribution(data, gvar = 2, dvar = 1,
-#'                              background_color = "grey")
+#' p <- show_group_distribution(data,
+#'   gvar = 2, dvar = 1,
+#'   background_color = "grey"
+#' )
 #' p
-#' p2 <- show_group_distribution(data, gvar = "gr", dvar = "yval",
-#'                               g_position = "bottom",
-#'                               order_by_fun = TRUE,
-#'                               alpha = 0.3)
+#' p2 <- show_group_distribution(data,
+#'   gvar = "gr", dvar = "yval",
+#'   g_position = "bottom",
+#'   order_by_fun = TRUE,
+#'   alpha = 0.3
+#' )
 #' p2
 #' @testexamples
 #' expect_is(p, "ggplot")
@@ -48,7 +52,7 @@ show_group_distribution <- function(data, gvar, dvar,
                                     xlab = NULL,
                                     ylab = NULL,
                                     nrow = 1L,
-                                    background_color = "#DBD7D2") {
+                                    background_color = c("#DBD7D2", "white")) {
   stopifnot(length(gvar) == 1L, length(dvar) == 1L)
 
   data$.gvar <- data[[gvar]]
@@ -77,23 +81,58 @@ show_group_distribution <- function(data, gvar, dvar,
       label = paste0(.data$.gvar, "\n(n=", .data$n, ")")
     )
 
+  ## Use area fill colors to set panel colors
+  dp <- d %>%
+    dplyr::group_by(.data$.gvar) %>%
+    dplyr::summarise(
+      xmin = min(.data$x, na.rm = TRUE),
+      xmax = max(.data$x, na.rm = TRUE),
+      ymin = min(.data$.dvar, na.rm = TRUE),
+      ymax = max(.data$.dvar, na.rm = TRUE),
+      .groups = "drop"
+    ) %>%
+    dplyr::mutate(
+      xmin = .data$xmin - (.data$xmax - .data$xmin) * 0.03,
+      xmax = .data$xmax + (.data$xmax - .data$xmin) * 0.03,
+      ymin = min(.data$ymin) - (.data$ymax - .data$ymin) * 0.01,
+      ymax = max(.data$ymax) + (.data$ymax - .data$ymin) * 0.01,
+      ymin = min(.data$ymin),
+      ymax = max(.data$ymax)
+    )
+
   if (order_by_fun) {
     ds <- ds %>%
       dplyr::arrange(.data$y) %>%
       dplyr::mutate(.gvar = factor(.data$.gvar, levels = .data$.gvar))
     d$.gvar <- factor(d$.gvar, levels = levels(ds$.gvar))
+    dp$.gvar <- factor(dp$.gvar, levels = levels(ds$.gvar))
   }
+
+  b_colors <- rep(background_color, ceiling(nrow(dp) / length(background_color)))
+  dp$b_colors <- b_colors[1:nrow(dp)]
+  dp$b_colors <- factor(dp$b_colors, levels = background_color)
 
   g_label <- ds$label
   names(g_label) <- ds$.gvar
 
-  p <- ggplot(d, aes_string(x = "x", y = ".dvar")) +
-    geom_point(alpha = alpha) +
+  p <- ggplot() +
+    geom_rect(aes_string(
+      xmin = "xmin", xmax = "xmax",
+      ymin = "ymin", ymax = "ymax",
+      fill = "b_colors", color = "b_colors"
+    ),
+    data = dp
+    ) +
+    geom_point(aes_string(x = "x", y = ".dvar"), alpha = alpha, data = d) +
     geom_segment(aes_string(x = "x", xend = "xend", y = "y", yend = "yend"),
       data = ds,
       color = "red",
       size = 2
     ) +
+    scale_x_continuous(expand = expansion(mult = c(0, 0))) +
+    scale_y_continuous(expand = expansion(mult = c(0, 0))) +
+    scale_fill_manual(values = background_color) +
+    scale_color_manual(values = background_color) +
     facet_wrap(~.gvar,
       nrow = nrow,
       scales = "free_x",
@@ -102,6 +141,7 @@ show_group_distribution <- function(data, gvar, dvar,
     ) +
     theme_bw(base_size = 14) +
     theme(
+      legend.position = "none",
       axis.ticks.x = element_blank(),
       axis.text.x = element_blank(),
       strip.background.x = element_rect(color = "white", fill = "white"),
@@ -112,11 +152,10 @@ show_group_distribution <- function(data, gvar, dvar,
       ),
       panel.grid.major = element_blank(),
       panel.grid.minor = element_blank(),
-      panel.spacing.x = unit(0, "line"),
-      panel.background = element_rect(fill = background_color)
+      panel.spacing.x = unit(0, "line")
+      # panel.background = element_rect(fill = background_color)
     ) +
     labs(x = xlab, y = ylab)
   p$sampleOrder <- d$.order
   p
-
 }
