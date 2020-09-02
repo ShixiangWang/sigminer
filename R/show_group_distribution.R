@@ -18,6 +18,7 @@
 #' @param nrow number of row.
 #' @param background_color background color for plot panel.
 #'
+#' @author Shixiang Wang <w_shixiang@163.com>
 #' @return a `ggplot` object.
 #' @export
 #'

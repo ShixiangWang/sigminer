@@ -17,7 +17,7 @@ show_group_distribution(
   xlab = NULL,
   ylab = NULL,
   nrow = 1L,
-  background_color = "#DBD7D2"
+  background_color = c("#DBD7D2", "white")
 )
 }
 \arguments{
@@ -61,12 +61,19 @@ data <- data.frame(
   yval = rnorm(120),
   gr = c(rep("A", 50), rep("B", 40), rep("C", 30))
 )
-p <- show_group_distribution(data, gvar = 2, dvar = 1,
-                             background_color = "grey")
+p <- show_group_distribution(data,
+  gvar = 2, dvar = 1,
+  background_color = "grey"
+)
 p
-p2 <- show_group_distribution(data, gvar = "gr", dvar = "yval",
-                              g_position = "bottom",
-                              order_by_fun = TRUE,
-                              alpha = 0.3)
+p2 <- show_group_distribution(data,
+  gvar = "gr", dvar = "yval",
+  g_position = "bottom",
+  order_by_fun = TRUE,
+  alpha = 0.3
+)
 p2
+}
+\author{
+Shixiang Wang \href{mailto:w_shixiang@163.com}{w_shixiang@163.com}
 }
