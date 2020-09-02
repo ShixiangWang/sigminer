@@ -61,7 +61,7 @@ show_group_distribution <- function(data, gvar, dvar,
   d <- data %>%
     dplyr::mutate(.order = dplyr::row_number()) %>%
     dplyr::group_by(.data$.gvar) %>%
-    dplyr::arrange(.data$.dvar) %>%
+    dplyr::arrange(.data$.gvar, .data$.dvar) %>%
     dplyr::mutate(x = seq_len(dplyr::n())) %>%
     dplyr::ungroup()
 
@@ -116,7 +116,7 @@ show_group_distribution <- function(data, gvar, dvar,
   g_label <- ds$label
   names(g_label) <- ds$.gvar
 
-  p <- ggplot() +
+  p <- ggplot(d) +
     geom_rect(aes_string(
       xmin = "xmin", xmax = "xmax",
       ymin = "ymin", ymax = "ymax",
