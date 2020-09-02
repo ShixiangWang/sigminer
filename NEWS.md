@@ -1,5 +1,6 @@
 # sigminer 1.0.14
 
+- Supported signature index separated by `,` in `sig_fit()` and `sig_fit_bootstrap*` functions.
 - Added `output_*` functions from [sigflow](https://github.com/ShixiangWang/sigminer.workflow).
 - Enhanced DBS search and error handling in `sig_tally()`.
 - Added option `highlight_genes` in `show_cn_group_profile()` to show gene labels.

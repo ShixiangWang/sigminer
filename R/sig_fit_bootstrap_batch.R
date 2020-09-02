@@ -1,5 +1,7 @@
 #' Exposure Instability Analysis of Signature Exposures with Bootstrapping
 #'
+#' Read [sig_fit_bootstrap] for more option setting.
+#'
 #' @inheritParams sig_fit
 #' @inheritParams sig_fit_bootstrap
 #' @param methods a subset of `c("NNLS", "QP", "SA")`.

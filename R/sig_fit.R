@@ -112,6 +112,7 @@ sig_fit <- function(catalogue_matrix,
   on.exit(send_elapsed_time(timer))
 
   if (is.null(sig_index)) {
+    send_info("Signature index not detected.")
     if (inherits(sig, "Signature")) {
       send_success("Signature object detected.")
       sig_matrix <- sig$Signature
@@ -165,6 +166,13 @@ sig_fit <- function(catalogue_matrix,
 
     if ("ALL" %in% sig_index) {
       sig_index <- avail_index
+    }
+
+    if (length(sig_index) == 1) {
+      if (grepl(",", sig_index)) {
+        send_success("Signature indices separated by comma are detected.")
+        sig_index <- split_seq(sig_index)
+      }
     }
 
     if (!all(sig_index %in% avail_index)) {
