@@ -10,7 +10,8 @@
 #' @param output output directory.
 #' @param range signature number range, i.e. `2:5`.
 #' @param nrun the number of iteration to be performed to extract each signature number.
-#' @param refit if `TRUE`, then refit the denovo signatures with nnls.
+#' @param refit if `TRUE`, then refit the denovo signatures with nnls. Same
+#' meaning as `optimize` option in [sig_extract] or [sig_auto_extract].
 #' @param is_exome if `TRUE`, the exomes will be extracted.
 #' @param init_method the initialization algorithm for W and H matrix of NMF.
 #' Options are 'random', 'nndsvd', 'nndsvda', 'nndsvdar', 'alexandrov-lab-custom'

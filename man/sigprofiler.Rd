@@ -33,7 +33,8 @@ sigprofiler_import(output, type = c("suggest", "all"))
 
 \item{nrun}{the number of iteration to be performed to extract each signature number.}
 
-\item{refit}{if \code{TRUE}, then refit the denovo signatures with nnls.}
+\item{refit}{if \code{TRUE}, then refit the denovo signatures with nnls. Same
+meaning as \code{optimize} option in \link{sig_extract} or \link{sig_auto_extract}.}
 
 \item{is_exome}{if \code{TRUE}, the exomes will be extracted.}
 

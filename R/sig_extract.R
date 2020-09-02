@@ -4,7 +4,7 @@
 #'
 #' @inheritParams sig_estimate
 #' @param n_sig number of signature. Please run [sig_estimate] to select a suitable value.
-#' @param optimize logical, for exposure optimization, especially useful for copy number signature.
+#' @param optimize if `TRUE`, then refit the denovo signatures with nnls.
 #' @param ... other arguments passed to [NMF::nmf()].
 #' @author Shixiang Wang
 #' @references Gaujoux, Renaud, and Cathal Seoighe. "A flexible R package for nonnegative matrix factorization." BMC bioinformatics 11.1 (2010): 367.
@@ -69,6 +69,7 @@ sig_extract <- function(nmf_matrix,
   Exposure <- scal_res$Exposure
 
   if (optimize) {
+    message("Refit the denovo signatures with NNLS.")
     ## Optimize signature exposure
     if (any(has_cn)) {
       mat_cn <- mat[has_cn, ]
@@ -76,10 +77,18 @@ sig_extract <- function(nmf_matrix,
       W_cn <- apply(W_cn, 2, function(x) x / sum(x))
 
       ## Call LCD
-      Exposure <- sig_fit(catalogue_matrix = mat_cn, sig = W_cn, mode = "copynumber")
+      Exposure <- sig_fit(
+        catalogue_matrix = mat_cn,
+        sig = W_cn,
+        method = "NNLS",
+        mode = "copynumber")
     } else {
       ## Call LCD
-      Exposure <- sig_fit(catalogue_matrix = mat, sig = apply(Signature, 2, function(x) x / sum(x)))
+      Exposure <- sig_fit(
+        catalogue_matrix = mat,
+        sig = apply(Signature, 2, function(x) x / sum(x)),
+        method = "NNLS"
+        )
     }
   }
 
