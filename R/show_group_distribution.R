@@ -53,7 +53,7 @@ show_group_distribution <- function(data, gvar, dvar,
                                     xlab = NULL,
                                     ylab = NULL,
                                     nrow = 1L,
-                                    background_color = c("#DBD7D2", "white")) {
+                                    background_color = c("#ECECEC", "#FAFAFA")) {
   stopifnot(length(gvar) == 1L, length(dvar) == 1L)
 
   data$.gvar <- data[[gvar]]
@@ -75,17 +75,20 @@ show_group_distribution <- function(data, gvar, dvar,
     ) %>%
     dplyr::transmute(
       .gvar = .data$.gvar,
-      x = .data$x_m - round(.data$n / 3),
-      xend = .data$x_m + round(.data$n / 3),
+      x = ifelse(.data$n > 3, .data$x_m - round(.data$n / 3),
+                 .data$x_m - .data$n / 3),
+      xend = ifelse(.data$n > 3, .data$x_m + round(.data$n / 3),
+                    .data$x_m + .data$n / 3),
       y = .data$y_m,
       yend = .data$y_m,
       label = paste0(.data$.gvar, "\n(n=", .data$n, ")")
     )
 
-  ## Use area fill colors to set panel colors
+  ## Use rect fill colors to set panel colors
   dp <- d %>%
     dplyr::group_by(.data$.gvar) %>%
     dplyr::summarise(
+      n = dplyr::n(),
       xmin = min(.data$x, na.rm = TRUE),
       xmax = max(.data$x, na.rm = TRUE),
       ymin = min(.data$.dvar, na.rm = TRUE),
@@ -93,10 +96,12 @@ show_group_distribution <- function(data, gvar, dvar,
       .groups = "drop"
     ) %>%
     dplyr::mutate(
-      xmin = .data$xmin - (.data$xmax - .data$xmin) * 0.03,
-      xmax = .data$xmax + (.data$xmax - .data$xmin) * 0.03,
-      ymin = min(.data$ymin) - (.data$ymax - .data$ymin) * 0.01,
-      ymax = max(.data$ymax) + (.data$ymax - .data$ymin) * 0.01,
+      xmin = ifelse(.data$n > 3, .data$xmin - (.data$xmax - .data$xmin) * 0.05,
+                    .data$xmin - 0.5),
+      xmax = ifelse(.data$n > 3, .data$xmax + (.data$xmax - .data$xmin) * 0.05,
+                    .data$xmax + 0.5),
+      ymin = min(.data$ymin) - (.data$ymax - .data$ymin) * 0.015,
+      ymax = max(.data$ymax) + (.data$ymax - .data$ymin) * 0.015,
       ymin = min(.data$ymin),
       ymax = max(.data$ymax)
     )
@@ -110,6 +115,11 @@ show_group_distribution <- function(data, gvar, dvar,
   }
 
   b_colors <- rep(background_color, ceiling(nrow(dp) / length(background_color)))
+
+  if (is.factor(d$.gvar)) {
+    dp <- dp %>% dplyr::arrange(.data$.gvar)
+  }
+
   dp$b_colors <- b_colors[1:nrow(dp)]
   dp$b_colors <- factor(dp$b_colors, levels = background_color)
 

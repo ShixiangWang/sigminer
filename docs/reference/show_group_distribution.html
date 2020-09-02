@@ -135,10 +135,16 @@
   <span class='no'>data</span>,
   <span class='no'>gvar</span>,
   <span class='no'>dvar</span>,
+  <span class='kw'>fun</span> <span class='kw'>=</span> <span class='kw pkg'>stats</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/r/stats/median.html'>median</a></span>,
+  <span class='kw'>order_by_fun</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.8</span>,
   <span class='kw'>g_label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>g_angle</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>g_position</span> <span class='kw'>=</span> <span class='st'>"top"</span>,
   <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>background_color</span> <span class='kw'>=</span> <span class='st'>"#DBD7D2"</span>
+  <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>1L</span>,
+  <span class='kw'>background_color</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"#DBD7D2"</span>, <span class='st'>"white"</span>)
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -157,8 +163,30 @@
       <td><p>a distribution variable name/index.</p></td>
     </tr>
     <tr>
+      <th>fun</th>
+      <td><p>a function to summarize, default is <a href='https://rdrr.io/r/stats/median.html'>stats::median</a>, can also be <a href='https://rdrr.io/r/base/mean.html'>mean</a>.</p></td>
+    </tr>
+    <tr>
+      <th>order_by_fun</th>
+      <td><p>if <code>TRUE</code>, reorder the groups by summary measure computed
+by argument <code>fun</code>.</p></td>
+    </tr>
+    <tr>
+      <th>alpha</th>
+      <td><p>alpha for points, range from 0 to 1.</p></td>
+    </tr>
+    <tr>
       <th>g_label</th>
       <td><p>a named vector to set facet labels, default is <code>NULL</code>.</p></td>
+    </tr>
+    <tr>
+      <th>g_angle</th>
+      <td><p>angle for facet labels, default is <code>0</code>.</p></td>
+    </tr>
+    <tr>
+      <th>g_position</th>
+      <td><p>position for facet labels, default is 'top', can also
+be 'bottom'.</p></td>
     </tr>
     <tr>
       <th>xlab</th>
@@ -167,6 +195,10 @@
     <tr>
       <th>ylab</th>
       <td><p>title for y axis.</p></td>
+    </tr>
+    <tr>
+      <th>nrow</th>
+      <td><p>number of row.</p></td>
     </tr>
     <tr>
       <th>background_color</th>
@@ -181,11 +213,21 @@
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>1234</span>)
 <span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(
-  <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>120</span>),
-  <span class='kw'>g</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>"A"</span>, <span class='fl'>50</span>), <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>"B"</span>, <span class='fl'>40</span>), <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>"C"</span>, <span class='fl'>30</span>))
+  <span class='kw'>yval</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>120</span>),
+  <span class='kw'>gr</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>"A"</span>, <span class='fl'>50</span>), <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>"B"</span>, <span class='fl'>40</span>), <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>"C"</span>, <span class='fl'>30</span>))
 )
-<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>show_group_distribution</span>(<span class='no'>data</span>, <span class='kw'>gvar</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>dvar</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>background_color</span> <span class='kw'>=</span> <span class='st'>"grey"</span>)
-<span class='no'>p</span></pre>
+<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>show_group_distribution</span>(<span class='no'>data</span>,
+  <span class='kw'>gvar</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>dvar</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>background_color</span> <span class='kw'>=</span> <span class='st'>"grey"</span>
+)
+<span class='no'>p</span>
+<span class='no'>p2</span> <span class='kw'>&lt;-</span> <span class='fu'>show_group_distribution</span>(<span class='no'>data</span>,
+  <span class='kw'>gvar</span> <span class='kw'>=</span> <span class='st'>"gr"</span>, <span class='kw'>dvar</span> <span class='kw'>=</span> <span class='st'>"yval"</span>,
+  <span class='kw'>g_position</span> <span class='kw'>=</span> <span class='st'>"bottom"</span>,
+  <span class='kw'>order_by_fun</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.3</span>
+)
+<span class='no'>p2</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

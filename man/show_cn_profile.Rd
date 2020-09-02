@@ -40,6 +40,8 @@ overlaps with this range will be shown.}
 
 \item{genome_build}{genome build version, used when \code{data} is a \code{data.frame}, should be 'hg19' or 'hg38'.}
 
+\item{ylim}{limites for y axis.}
+
 \item{nrow}{number of rows in the plot grid when multiple samples are selected.}
 
 \item{ncol}{number of columns in the plot grid when multiple samples are selected.}

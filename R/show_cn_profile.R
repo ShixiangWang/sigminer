@@ -16,6 +16,7 @@
 #' @param position a position range, e.g. `"chr1:3218923-116319008"`. Only data
 #' overlaps with this range will be shown.
 #' @param genome_build genome build version, used when `data` is a `data.frame`, should be 'hg19' or 'hg38'.
+#' @param ylim limites for y axis.
 #' @param nrow number of rows in the plot grid when multiple samples are selected.
 #' @param ncol number of columns in the plot grid when multiple samples are selected.
 #' @param return_plotlist default is `FALSE`, if `TRUE`, return a plot list instead of a combined plot.
