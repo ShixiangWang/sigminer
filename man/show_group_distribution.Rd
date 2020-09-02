@@ -17,7 +17,7 @@ show_group_distribution(
   xlab = NULL,
   ylab = NULL,
   nrow = 1L,
-  background_color = c("#DBD7D2", "white")
+  background_color = c("#ECECEC", "#FAFAFA")
 )
 }
 \arguments{

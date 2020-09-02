@@ -57,6 +57,13 @@ reference:
     - show_sig_bootstrap_exposure
     - show_sig_bootstrap_error
     - show_sig_bootstrap_stability
+  - title: Output analysis results to local machine
+    desc: Save results and plots as files. For automatic analysis, please use [sigflow](https://github.com/ShixiangWang/sigminer.workflow).
+    contents:
+    - output_tally
+    - output_sig
+    - output_fit
+    - output_bootstrap
   - title: Signature object operation
     desc: Obtain or modify `Signature` object information.
     contents:
