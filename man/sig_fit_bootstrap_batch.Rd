@@ -48,7 +48,7 @@ more than 10 times for more than 100 samples.}
 a \code{list} of \code{data.table}.
 }
 \description{
-Exposure Instability Analysis of Signature Exposures with Bootstrapping
+Read \link{sig_fit_bootstrap} for more option setting.
 }
 \examples{
 W <- matrix(c(1, 2, 3, 4, 5, 6), ncol = 2)

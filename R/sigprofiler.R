@@ -10,15 +10,19 @@
 #' @param output output directory.
 #' @param range signature number range, i.e. `2:5`.
 #' @param nrun the number of iteration to be performed to extract each signature number.
+#' @param refit if `TRUE`, then refit the denovo signatures with nnls.
 #' @param is_exome if `TRUE`, the exomes will be extracted.
 #' @param init_method the initialization algorithm for W and H matrix of NMF.
-#' Options are 'random', 'nndsvd', 'nndsvda', 'nndsvdar' and 'alexandrov-lab-custom'.
+#' Options are 'random', 'nndsvd', 'nndsvda', 'nndsvdar', 'alexandrov-lab-custom'
+#' and 'nndsvd_min'.
 #' @param cores number of cores used for computation.
 #' @param genome_build I think this option is useless when input is `matrix`, keep it
 #' in case it is useful.
 #' @param use_conda if `TRUE`, create an independent conda environment to run SigProfiler.
 #' @param py_path path to Python executable file, e.g. '/Users/wsx/anaconda3/bin/python'.
-#' @param sigprofiler_version version of `SigProfilerExtractor`.
+#' @param sigprofiler_version version of `SigProfilerExtractor`. If this
+#' package is not installed, the specified package will be installed.
+#' If this package is installed, this option is useless.
 #'
 #' @return For `sigprofiler_extract()`, returns nothing. See `output` directory.
 #' @export
@@ -40,8 +44,11 @@
 #'   )
 #' }
 sigprofiler_extract <- function(nmf_matrix, output, range = 2:5, nrun = 10L,
+                                refit = FALSE,
                                 is_exome = TRUE,
-                                init_method = c("random", "alexandrov-lab-custom", "nndsvd", "nndsvda", "nndsvdar"),
+                                init_method = c("nndsvd_min", "random",
+                                                "alexandrov-lab-custom",
+                                                "nndsvd", "nndsvda", "nndsvdar"),
                                 cores = -1L,
                                 genome_build = c("hg19", "hg38", "mm10"),
                                 use_conda = FALSE,
@@ -146,13 +153,14 @@ sigprofiler_extract <- function(nmf_matrix, output, range = 2:5, nrun = 10L,
         "matrix",
         output,
         tmp_file,
-        reference_genome = genome_build, opportunity_genome = genome_build,
+        reference_genome = genome_build,
+        opportunity_genome = genome_build,
         minimum_signatures = sig_ranges[1],
         maximum_signatures = sig_ranges[2],
         nmf_replicates = nrun,
         exome = is_exome,
         nmf_init = init_method,
-        refit_denovo_signatures = FALSE,
+        refit_denovo_signatures = refit,
         cpu = cores
       )
       sys$stdout$flush()
@@ -177,7 +185,7 @@ sigprofiler_extract <- function(nmf_matrix, output, range = 2:5, nrun = 10L,
         quote_opt(nrun, opt = "nmf_replicates", rm_quote = TRUE),
         quote_opt(ifelse(is_exome, "True", "False"), opt = "exome", rm_quote = TRUE),
         quote_opt(init_method, opt = "nmf_init"),
-        quote_opt("False", opt = "refit_denovo_signatures", rm_quote = TRUE),
+        quote_opt(ifelse(refit, "True", "False"), opt = "refit_denovo_signatures", rm_quote = TRUE),
         quote_opt(cores, opt = "cpu", rm_quote = TRUE),
         sep = ","
       )

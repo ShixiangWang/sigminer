@@ -11,8 +11,10 @@ sigprofiler_extract(
   output,
   range = 2:5,
   nrun = 10L,
+  refit = FALSE,
   is_exome = TRUE,
-  init_method = c("random", "alexandrov-lab-custom", "nndsvd", "nndsvda", "nndsvdar"),
+  init_method = c("nndsvd_min", "random", "alexandrov-lab-custom", "nndsvd", "nndsvda",
+    "nndsvdar"),
   cores = -1L,
   genome_build = c("hg19", "hg38", "mm10"),
   use_conda = FALSE,
@@ -31,10 +33,13 @@ sigprofiler_import(output, type = c("suggest", "all"))
 
 \item{nrun}{the number of iteration to be performed to extract each signature number.}
 
+\item{refit}{if \code{TRUE}, then refit the denovo signatures with nnls.}
+
 \item{is_exome}{if \code{TRUE}, the exomes will be extracted.}
 
 \item{init_method}{the initialization algorithm for W and H matrix of NMF.
-Options are 'random', 'nndsvd', 'nndsvda', 'nndsvdar' and 'alexandrov-lab-custom'.}
+Options are 'random', 'nndsvd', 'nndsvda', 'nndsvdar', 'alexandrov-lab-custom'
+and 'nndsvd_min'.}
 
 \item{cores}{number of cores used for computation.}
 
@@ -45,7 +50,9 @@ in case it is useful.}
 
 \item{py_path}{path to Python executable file, e.g. '/Users/wsx/anaconda3/bin/python'.}
 
-\item{sigprofiler_version}{version of \code{SigProfilerExtractor}.}
+\item{sigprofiler_version}{version of \code{SigProfilerExtractor}. If this
+package is not installed, the specified package will be installed.
+If this package is installed, this option is useless.}
 
 \item{type}{one of 'suggest' (for suggested solution) or 'all' (for all solutions).}
 }
