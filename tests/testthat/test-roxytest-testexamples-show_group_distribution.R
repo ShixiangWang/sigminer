@@ -2,7 +2,7 @@
 
 context("File R/show_group_distribution.R: @testexamples")
 
-test_that("Function show_group_distribution() @ L37", {
+test_that("Function show_group_distribution() @ L41", {
   
   set.seed(1234)
   data <- data.frame(
@@ -14,6 +14,7 @@ test_that("Function show_group_distribution() @ L37", {
   p
   p2 <- show_group_distribution(data, gvar = "gr", dvar = "yval",
                                 g_position = "bottom",
+                                order_by_fun = TRUE,
                                 alpha = 0.3)
   p2
   expect_is(p, "ggplot")

@@ -5,6 +5,9 @@
 #' @param data a `data.frame`.
 #' @param gvar a group variable name/index.
 #' @param dvar a distribution variable name/index.
+#' @param fun a function to summarize, default is [stats::median], can also be [mean].
+#' @param order_by_fun if `TRUE`, reorder the groups by summary measure computed
+#' by argument `fun`.
 #' @param alpha alpha for points, range from 0 to 1.
 #' @param g_label a named vector to set facet labels, default is `NULL`.
 #' @param g_angle angle for facet labels, default is `0`.
@@ -29,12 +32,15 @@
 #' p
 #' p2 <- show_group_distribution(data, gvar = "gr", dvar = "yval",
 #'                               g_position = "bottom",
+#'                               order_by_fun = TRUE,
 #'                               alpha = 0.3)
 #' p2
 #' @testexamples
 #' expect_is(p, "ggplot")
 #' expect_is(p, "ggplot")
 show_group_distribution <- function(data, gvar, dvar,
+                                    fun = stats::median,
+                                    order_by_fun = FALSE,
                                     alpha = 0.8,
                                     g_label = NULL,
                                     g_angle = 0,
@@ -58,7 +64,7 @@ show_group_distribution <- function(data, gvar, dvar,
     dplyr::group_by(.data$.gvar) %>%
     dplyr::summarise(
       x_m = median(.data$x, na.rm = TRUE),
-      y_m = median(.data$.dvar, na.rm = TRUE),
+      y_m = fun(.data$.dvar, na.rm = TRUE),
       n = sum(!is.na(.data$.dvar)),
       .groups = "drop"
     ) %>%
@@ -70,6 +76,13 @@ show_group_distribution <- function(data, gvar, dvar,
       yend = .data$y_m,
       label = paste0(.data$.gvar, "\n(n=", .data$n, ")")
     )
+
+  if (order_by_fun) {
+    ds <- ds %>%
+      dplyr::arrange(.data$y) %>%
+      dplyr::mutate(.gvar = factor(.data$.gvar, levels = .data$.gvar))
+    d$.gvar <- factor(d$.gvar, levels = levels(ds$.gvar))
+  }
 
   g_label <- ds$label
   names(g_label) <- ds$.gvar

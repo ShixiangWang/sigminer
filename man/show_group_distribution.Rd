@@ -8,6 +8,8 @@ show_group_distribution(
   data,
   gvar,
   dvar,
+  fun = stats::median,
+  order_by_fun = FALSE,
   alpha = 0.8,
   g_label = NULL,
   g_angle = 0,
@@ -24,6 +26,11 @@ show_group_distribution(
 \item{gvar}{a group variable name/index.}
 
 \item{dvar}{a distribution variable name/index.}
+
+\item{fun}{a function to summarize, default is \link[stats:median]{stats::median}, can also be \link{mean}.}
+
+\item{order_by_fun}{if \code{TRUE}, reorder the groups by summary measure computed
+by argument \code{fun}.}
 
 \item{alpha}{alpha for points, range from 0 to 1.}
 
@@ -59,6 +66,7 @@ p <- show_group_distribution(data, gvar = 2, dvar = 1,
 p
 p2 <- show_group_distribution(data, gvar = "gr", dvar = "yval",
                               g_position = "bottom",
+                              order_by_fun = TRUE,
                               alpha = 0.3)
 p2
 }
