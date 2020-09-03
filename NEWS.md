@@ -1,5 +1,6 @@
 # sigminer 1.0.15
 
+- Supported importing refit results from SigProfiler.
 - Set `optimize` option in `sig_extract()` and `sig_auto_extract()`.
 
 # sigminer 1.0.14

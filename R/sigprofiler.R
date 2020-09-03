@@ -240,12 +240,12 @@ quote_opt <- function(value, opt = NULL, rm_quote = FALSE) {
 #' Import SigProfiler Results into R
 #'
 #' @inheritParams sigprofiler
-#' @param type one of 'suggest' (for suggested solution) or 'all' (for all solutions).
+#' @param type one of 'suggest' (for suggested solution), 'refit' (for refit solution) or 'all' (for all solutions).
 #'
 #' @return For `sigprofiler_import()`, a `list` containing `Signature` object.
 #' @export
 #' @rdname sigprofiler
-sigprofiler_import <- function(output, type = c("suggest", "all")) {
+sigprofiler_import <- function(output, type = c("suggest", "refit", "all")) {
   stopifnot(dir.exists(output))
   type <- match.arg(type)
 
@@ -264,10 +264,19 @@ sigprofiler_import <- function(output, type = c("suggest", "all")) {
 
   message("NOTE: signature(A,B,C)... will be renamed to Sig(1,2,3)...")
 
-  if (type == "suggest") {
+  if (type %in% c("suggest", "refit")) {
     solution_path <- file.path(result_dir, "Suggested_Solution")
-    solution_path <- list.files(solution_path, pattern = "Novo", full.names = TRUE)
-    message("Reading suggested solution...")
+    if (type == "suggest") {
+      solution_path <- list.files(solution_path, pattern = "Novo", full.names = TRUE)
+      message("Reading suggested solution...")
+    } else {
+      solution_path <- list.files(solution_path, pattern = "Decomposed", full.names = TRUE)
+      message("Reading suggested solution...")
+    }
+
+    if (length(solution_path) != 1) {
+      stop("No solution path or more than 1 solution path found, please check!")
+    }
 
     solution <- read_sigprofiler_solution(solution_path)
 
@@ -299,17 +308,28 @@ read_sigprofiler_solution <- function(x) {
   sigs_path <- list.files(x, pattern = "Signatures.txt", recursive = TRUE, full.names = TRUE, ignore.case = TRUE)
   stat_samp_path <- list.files(x, pattern = "Samples_Stats.*.txt", recursive = TRUE, full.names = TRUE, ignore.case = TRUE)
   stat_sigs_path <- list.files(x, pattern = "Signatures_Stats.txt", recursive = TRUE, full.names = TRUE, ignore.case = TRUE)
+  if (length(stat_sigs_path) < 1) {
+    message("No Signatures_Stats.txt found, try finding *map_to_COSMIC* file.")
+    stat_sigs_path <- list.files(x, pattern = "map_to_COSMIC", recursive = TRUE, full.names = TRUE, ignore.case = TRUE)
+    refit <- TRUE
+  } else {
+    refit <- FALSE
+  }
 
-  expo <- data.table::fread(expo_path)
-  sigs <- data.table::fread(sigs_path)
-  stat_samp <- data.table::fread(stat_samp_path)
-  stat_sigs <- data.table::fread(stat_sigs_path)
+  expo <- data.table::fread(expo_path, header = TRUE)
+  sigs <- data.table::fread(sigs_path, header = TRUE)
+  stat_samp <- data.table::fread(stat_samp_path, header = TRUE)
+  stat_sigs <- data.table::fread(stat_sigs_path, header = TRUE)
 
   K <- ncol(expo) - 1L
 
   colnames(expo) <- c("sample", paste0("Sig", seq_len(K)))
   colnames(sigs) <- c("component", paste0("Sig", seq_len(K)))
-  colnames(stat_sigs)[1] <- "Signatures"
+  if (refit) {
+    colnames(stat_sigs)[2] <- "Signatures"
+  } else {
+    colnames(stat_sigs)[1] <- "Signatures"
+  }
   stat_sigs$Signatures <- colnames(expo)[-1]
   colnames(stat_samp)[1] <- "Samples"
 

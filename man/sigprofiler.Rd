@@ -22,7 +22,7 @@ sigprofiler_extract(
   sigprofiler_version = "1.0.17"
 )
 
-sigprofiler_import(output, type = c("suggest", "all"))
+sigprofiler_import(output, type = c("suggest", "refit", "all"))
 }
 \arguments{
 \item{nmf_matrix}{a \code{matrix} used for NMF decomposition with rows indicate samples and columns indicate components.}
@@ -55,7 +55,7 @@ in case it is useful.}
 package is not installed, the specified package will be installed.
 If this package is installed, this option is useless.}
 
-\item{type}{one of 'suggest' (for suggested solution) or 'all' (for all solutions).}
+\item{type}{one of 'suggest' (for suggested solution), 'refit' (for refit solution) or 'all' (for all solutions).}
 }
 \value{
 For \code{sigprofiler_extract()}, returns nothing. See \code{output} directory.
