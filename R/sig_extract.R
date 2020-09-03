@@ -4,7 +4,7 @@
 #'
 #' @inheritParams sig_estimate
 #' @param n_sig number of signature. Please run [sig_estimate] to select a suitable value.
-#' @param optimize if `TRUE`, then refit the denovo signatures with nnls.
+#' @param optimize if `TRUE`, then refit the denovo signatures with QP method, see [sig_fit].
 #' @param ... other arguments passed to [NMF::nmf()].
 #' @author Shixiang Wang
 #' @references Gaujoux, Renaud, and Cathal Seoighe. "A flexible R package for nonnegative matrix factorization." BMC bioinformatics 11.1 (2010): 367.
@@ -80,14 +80,14 @@ sig_extract <- function(nmf_matrix,
       Exposure <- sig_fit(
         catalogue_matrix = mat_cn,
         sig = W_cn,
-        method = "NNLS",
+        method = "QP",
         mode = "copynumber")
     } else {
       ## Call LCD
       Exposure <- sig_fit(
         catalogue_matrix = mat,
         sig = apply(Signature, 2, function(x) x / sum(x)),
-        method = "NNLS"
+        method = "QP"
         )
     }
   }

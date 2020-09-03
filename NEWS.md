@@ -1,3 +1,7 @@
+# sigminer 1.0.15
+
+- Set `optimize` option in `sig_extract()` and `sig_auto_extract()`.
+
 # sigminer 1.0.14
 
 - Supported signature index separated by `,` in `sig_fit()` and `sig_fit_bootstrap*` functions.

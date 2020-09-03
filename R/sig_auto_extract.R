@@ -164,7 +164,7 @@ sig_auto_extract <- function(nmf_matrix = NULL,
   has_cn <- grepl("^CN[^C]", rownames(best_solution$Signature)) | startsWith(rownames(best_solution$Signature), "copynumber")
   mat <- nmf_matrix
   if (optimize) {
-    message("Refit the denovo signatures with NNLS.")
+    message("Refit the denovo signatures with QP.")
     ## Optimize signature exposure
     if (any(has_cn)) {
       mat_cn <- mat[has_cn, ]
@@ -175,7 +175,7 @@ sig_auto_extract <- function(nmf_matrix = NULL,
       best_solution$Exposure <- sig_fit(
         catalogue_matrix = mat_cn,
         sig = W_cn,
-        method = "NNLS",
+        method = "QP",
         mode = "copynumber")
       best_solution$Exposure.norm <- apply(best_solution$Exposure, 2,
                                            function(x) x / sum(x, na.rm = TRUE))
@@ -185,7 +185,7 @@ sig_auto_extract <- function(nmf_matrix = NULL,
         catalogue_matrix = mat,
         sig = apply(best_solution$Signature,
                     2, function(x) x / sum(x)),
-        method = "NNLS")
+        method = "QP")
       best_solution$Exposure.norm <- apply(best_solution$Exposure, 2,
                                            function(x) x / sum(x, na.rm = TRUE))
     }

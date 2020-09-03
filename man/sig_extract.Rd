@@ -29,7 +29,7 @@ enough to achieve robust result.}
 \item{method}{specification of the NMF algorithm. Use 'brunet' as default.
 Available methods for nmf decompositions are 'brunet', 'lee', 'ls-nmf', 'nsNMF', 'offset'.}
 
-\item{optimize}{if \code{TRUE}, then refit the denovo signatures with nnls.}
+\item{optimize}{if \code{TRUE}, then refit the denovo signatures with QP method, see \link{sig_fit}.}
 
 \item{pConstant}{A small positive value (like 1e-9) to add to the matrix.
 Use it ONLY if the functions throws

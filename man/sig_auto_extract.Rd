@@ -47,7 +47,7 @@ If you want select other solution, please check \link{get_bayesian_result}.}
 
 \item{cores}{number of cpu cores to run NMF.}
 
-\item{optimize}{if \code{TRUE}, then refit the denovo signatures with nnls.}
+\item{optimize}{if \code{TRUE}, then refit the denovo signatures with QP method, see \link{sig_fit}.}
 
 \item{skip}{if \code{TRUE}, it will skip running a previous stored result. This can be used to
 extend run times, e.g. you try running 10 times firstly and then you want to extend it to
