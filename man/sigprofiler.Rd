@@ -22,7 +22,11 @@ sigprofiler_extract(
   sigprofiler_version = "1.0.17"
 )
 
-sigprofiler_import(output, type = c("suggest", "refit", "all"))
+sigprofiler_import(
+  output,
+  order_by_expo = FALSE,
+  type = c("suggest", "refit", "all")
+)
 }
 \arguments{
 \item{nmf_matrix}{a \code{matrix} used for NMF decomposition with rows indicate samples and columns indicate components.}
@@ -54,6 +58,9 @@ in case it is useful.}
 \item{sigprofiler_version}{version of \code{SigProfilerExtractor}. If this
 package is not installed, the specified package will be installed.
 If this package is installed, this option is useless.}
+
+\item{order_by_expo}{if \code{TRUE}, order the import signatures by their exposures, e.g. the signature
+contributed the most exposure in all samples will be named as \code{Sig1}.}
 
 \item{type}{one of 'suggest' (for suggested solution), 'refit' (for refit solution) or 'all' (for all solutions).}
 }

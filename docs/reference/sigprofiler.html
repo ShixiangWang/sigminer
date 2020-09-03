@@ -82,7 +82,7 @@ Typically, a reference genome is not required because the input is a matrix (my 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.14</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.15</span>
       </span>
     </div>
 
@@ -151,7 +151,11 @@ Typically, a reference genome is not required because the input is a matrix (my 
   <span class='kw'>sigprofiler_version</span> <span class='kw'>=</span> <span class='st'>"1.0.17"</span>
 )
 
-<span class='fu'>sigprofiler_import</span>(<span class='no'>output</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"suggest"</span>, <span class='st'>"all"</span>))</pre>
+<span class='fu'>sigprofiler_import</span>(
+  <span class='no'>output</span>,
+  <span class='kw'>order_by_expo</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"suggest"</span>, <span class='st'>"refit"</span>, <span class='st'>"all"</span>)
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -211,8 +215,13 @@ package is not installed, the specified package will be installed.
 If this package is installed, this option is useless.</p></td>
     </tr>
     <tr>
+      <th>order_by_expo</th>
+      <td><p>if <code>TRUE</code>, order the import signatures by their exposures, e.g. the signature
+contributed the most exposure in all samples will be named as <code>Sig1</code>.</p></td>
+    </tr>
+    <tr>
       <th>type</th>
-      <td><p>one of 'suggest' (for suggested solution) or 'all' (for all solutions).</p></td>
+      <td><p>one of 'suggest' (for suggested solution), 'refit' (for refit solution) or 'all' (for all solutions).</p></td>
     </tr>
     </table>
 

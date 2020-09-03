@@ -240,12 +240,16 @@ quote_opt <- function(value, opt = NULL, rm_quote = FALSE) {
 #' Import SigProfiler Results into R
 #'
 #' @inheritParams sigprofiler
+#' @param order_by_expo if `TRUE`, order the import signatures by their exposures, e.g. the signature
+#' contributed the most exposure in all samples will be named as `Sig1`.
 #' @param type one of 'suggest' (for suggested solution), 'refit' (for refit solution) or 'all' (for all solutions).
 #'
 #' @return For `sigprofiler_import()`, a `list` containing `Signature` object.
 #' @export
 #' @rdname sigprofiler
-sigprofiler_import <- function(output, type = c("suggest", "refit", "all")) {
+sigprofiler_import <- function(output,
+                               order_by_expo = FALSE,
+                               type = c("suggest", "refit", "all")) {
   stopifnot(dir.exists(output))
   type <- match.arg(type)
 
@@ -278,7 +282,7 @@ sigprofiler_import <- function(output, type = c("suggest", "refit", "all")) {
       stop("No solution path or more than 1 solution path found, please check!")
     }
 
-    solution <- read_sigprofiler_solution(solution_path)
+    solution <- read_sigprofiler_solution(solution_path, order_by_expo = order_by_expo)
 
     message("Done.")
     return(list(
@@ -289,7 +293,7 @@ sigprofiler_import <- function(output, type = c("suggest", "refit", "all")) {
     solution_path <- file.path(result_dir, "All_Solutions")
     message("Reading all solutions...")
     solutions_path <- list.dirs(solution_path, full.names = TRUE, recursive = FALSE)
-    solutions <- purrr::map(solutions_path, read_sigprofiler_solution)
+    solutions <- purrr::map(solutions_path, read_sigprofiler_solution, order_by_expo = order_by_expo)
     names(solutions) <- paste0("S", sub("[^_]+_(.+)_[^_]+", "\\1", basename(solutions_path)))
 
     message("Done.")
@@ -300,7 +304,7 @@ sigprofiler_import <- function(output, type = c("suggest", "refit", "all")) {
   }
 }
 
-read_sigprofiler_solution <- function(x) {
+read_sigprofiler_solution <- function(x, order_by_expo = FALSE) {
   expo_path <- list.files(x, pattern = "Activities.*.txt", recursive = TRUE, full.names = TRUE, ignore.case = TRUE)
   if (length(expo_path) > 1) {
     expo_path <- expo_path[!grepl("error", expo_path, ignore.case = TRUE)]
@@ -356,6 +360,19 @@ read_sigprofiler_solution <- function(x) {
   Signature <- Signature.norm
   for (j in seq_len(K)) {
     Signature[, j] <- Signature[, j] * rowSums(Exposure)[j]
+  }
+
+  if (order_by_expo) {
+    sig_orders <- sort(rowSums(Exposure), decreasing = TRUE) %>% names()
+    if (!identical(rownames(Exposure), sig_orders)) {
+      Exposure <- Exposure[sig_orders, , drop = FALSE]
+      Exposure.norm <- Exposure.norm[sig_orders, , drop = FALSE]
+      Signature <- Signature[, sig_orders, drop = FALSE]
+      Signature.norm <- Signature.norm[, sig_orders, drop = FALSE]
+      rownames(Exposure) <- rownames(Exposure.norm) <-
+        colnames(Signature) <- colnames(Signature.norm) <- paste0("Sig", seq_along(sig_orders))
+      stat_sigs$Signatures <- sig_orders
+    }
   }
 
   res <- list(
