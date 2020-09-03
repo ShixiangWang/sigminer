@@ -8,12 +8,19 @@
 #' @return Nothing.
 #' @export
 output_tally <- function(x, result_dir, mut_type = "SBS") {
+  if (!dir.exists(result_dir)) {
+    dir.create(result_dir, recursive = TRUE)
+  }
   ## output all samples in bar plots
   message("Outputing tally results for ", mut_type)
 
   if (is.list(x)) {
     x <- x$nmf_matrix %>% t()
   }
+
+  data.table::fwrite(x %>% as.data.frame() %>% data.table::setDT(keep.rownames = TRUE),
+                     sep = ",",
+                     file = file.path(result_dir, paste0(mut_type, "_tally.csv")))
 
   samps <- colnames(x)
 
@@ -63,6 +70,9 @@ output_tally <- function(x, result_dir, mut_type = "SBS") {
 #' @return Nothing.
 #' @export
 output_sig <- function(sig, result_dir, mut_type = "SBS") {
+  if (!dir.exists(result_dir)) {
+    dir.create(result_dir, recursive = TRUE)
+  }
   message("Outputing signature results for ", mut_type, "\n==")
 
   stopifnot(inherits(sig, "Signature"))
@@ -157,6 +167,9 @@ output_sig <- function(sig, result_dir, mut_type = "SBS") {
 #' @return Nothing.
 #' @export
 output_fit <- function(x, result_dir, mut_type = "SBS") {
+  if (!dir.exists(result_dir)) {
+    dir.create(result_dir, recursive = TRUE)
+  }
   message("Outputing signature fitting results for ", mut_type)
 
   expo <- x$expo
@@ -231,6 +244,9 @@ output_fit <- function(x, result_dir, mut_type = "SBS") {
 #' @return Nothing.
 #' @export
 output_bootstrap <- function(x, result_dir, mut_type = "SBS") {
+  if (!dir.exists(result_dir)) {
+    dir.create(result_dir, recursive = TRUE)
+  }
   message("Outputing signature bootstrap fitting results for ", mut_type)
 
   data.table::fwrite(x$expo, file = file.path(result_dir, paste0(mut_type, "_bootstrap_absolute_exposure.csv")))
