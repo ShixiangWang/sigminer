@@ -44,8 +44,8 @@ get_bayesian_result <- function(run_info) {
   # Handle hyper mutant samples
   hyper_index <- grepl("_\\[hyper\\]_", colnames(Exposure))
   if (sum(hyper_index) > 0) {
-    H.hyper <- Exposure[, hyper_index]
-    H.nonhyper <- Exposure[, !hyper_index]
+    H.hyper <- Exposure[, hyper_index, drop = FALSE]
+    H.nonhyper <- Exposure[, !hyper_index, drop = FALSE]
     sample.hyper <- sapply(
       colnames(H.hyper),
       function(x) strsplit(x, "_\\[hyper\\]_")[[1]][[1]]
@@ -54,7 +54,7 @@ get_bayesian_result <- function(run_info) {
     n.hyper <- length(unique.hyper)
     x.hyper <- array(0, dim = c(nrow(H.hyper), n.hyper))
     for (i in 1:n.hyper) {
-      x.hyper[, i] <- rowSums(H.hyper[, sample.hyper %in% unique.hyper[i]])
+      x.hyper[, i] <- rowSums(H.hyper[, sample.hyper %in% unique.hyper[i], drop = FALSE])
     }
     colnames(x.hyper) <- unique.hyper
     rownames(x.hyper) <- rownames(Exposure)

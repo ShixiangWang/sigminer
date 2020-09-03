@@ -70,6 +70,13 @@ sig_estimate <-
            verbose = FALSE) {
     mat <- t(nmf_matrix)
 
+    ii <- colSums(mat) < 0.01
+    if (any(ii)) {
+      message("The follow samples dropped due to null catalogue:\n\t",
+              paste0(colnames(mat)[ii], collapse = ", "))
+      mat <- mat[, !ii, drop = FALSE]
+    }
+
     # To avoid error due to non-conformable arrays
     if (!is.null(pConstant)) {
       if (pConstant < 0 | pConstant == 0) {

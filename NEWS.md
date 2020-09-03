@@ -1,5 +1,6 @@
 # sigminer 1.0.15
 
+- Handled null catalogue.
 - Supported ordering the signatures for results from SigProfiler.
 - Supported importing refit results from SigProfiler.
 - Set `optimize` option in `sig_extract()` and `sig_auto_extract()`.

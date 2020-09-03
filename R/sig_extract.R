@@ -37,6 +37,13 @@ sig_extract <- function(nmf_matrix,
   # transpose matrix
   mat <- t(nmf_matrix)
 
+  ii <- colSums(mat) < 0.01
+  if (any(ii)) {
+    message("The follow samples dropped due to null catalogue:\n\t",
+            paste0(colnames(mat)[ii], collapse = ", "))
+    mat <- mat[, !ii, drop = FALSE]
+  }
+
   # To avoid error due to non-conformable arrays
   if (!is.null(pConstant)) {
     if (pConstant < 0 | pConstant == 0) {
@@ -63,13 +70,14 @@ sig_extract <- function(nmf_matrix,
   # Signature number
   K <- ncol(W)
 
+  ## has_cn just used for method 'W' and 'M' in copy number signature
   has_cn <- grepl("^CN[^C]", rownames(W)) | startsWith(rownames(W), "copynumber")
   scal_res <- helper_scale_nmf_matrix(W, H, K, handle_cn = any(has_cn))
   Signature <- scal_res$Signature
   Exposure <- scal_res$Exposure
 
   if (optimize) {
-    message("Refit the denovo signatures with NNLS.")
+    message("Refit the denovo signatures with QP.")
     ## Optimize signature exposure
     if (any(has_cn)) {
       mat_cn <- mat[has_cn, ]
@@ -95,8 +103,8 @@ sig_extract <- function(nmf_matrix,
   # Handle hyper mutant samples
   hyper_index <- grepl("_\\[hyper\\]_", colnames(Exposure))
   if (sum(hyper_index) > 0) {
-    H.hyper <- Exposure[, hyper_index]
-    H.nonhyper <- Exposure[, !hyper_index]
+    H.hyper <- Exposure[, hyper_index, drop = FALSE]
+    H.nonhyper <- Exposure[, !hyper_index, drop = FALSE]
     sample.hyper <- sapply(
       colnames(H.hyper),
       function(x) strsplit(x, "_\\[hyper\\]_")[[1]][[1]]
@@ -105,7 +113,7 @@ sig_extract <- function(nmf_matrix,
     n.hyper <- length(unique.hyper)
     x.hyper <- array(0, dim = c(nrow(H.hyper), n.hyper))
     for (i in 1:n.hyper) {
-      x.hyper[, i] <- rowSums(H.hyper[, sample.hyper %in% unique.hyper[i]])
+      x.hyper[, i] <- rowSums(H.hyper[, sample.hyper %in% unique.hyper[i], drop = FALSE])
     }
     colnames(x.hyper) <- unique.hyper
     rownames(x.hyper) <- rownames(Exposure)
@@ -114,6 +122,15 @@ sig_extract <- function(nmf_matrix,
 
   Signature.norm <- apply(Signature, 2, function(x) x / sum(x, na.rm = TRUE))
   Exposure.norm <- apply(Exposure, 2, function(x) x / sum(x, na.rm = TRUE))
+
+  if (optimize) {
+    ## Scale the result
+    if (any(has_cn)) {
+      Signature <- Signature.norm * sum(mat, na.rm = TRUE)
+    } else {
+      Signature <- Signature.norm * sum(Exposure, na.rm = TRUE)
+    }
+  }
 
   # When only one signature
   if (!is.matrix(Exposure.norm)) {
