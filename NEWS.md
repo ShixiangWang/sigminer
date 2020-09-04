@@ -1,3 +1,8 @@
+# sigminer 1.0.16
+
+- Modified the default theme for signature profile in COSMIC style.
+- Updated the copy number classification method.
+
 # sigminer 1.0.15
 
 - Handled null catalogue.

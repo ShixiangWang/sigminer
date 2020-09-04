@@ -125,7 +125,7 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
                              set_gradient_color = FALSE,
                              free_space = "free_x",
                              rm_panel_border = style == "cosmic",
-                             rm_grid_line = FALSE,
+                             rm_grid_line = style == "cosmic",
                              bar_border_color = ifelse(style == "default", "grey50", "white"),
                              bar_width = 0.7,
                              paint_axis_text = TRUE,
@@ -576,6 +576,15 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
   # if (style == "cosmic") {
   #   p <- p + scale_y_continuous(sec.axis = sec_axis(~.))
   # }
+  if (style == "cosmic") {
+    p <- p + annotate(
+      geom = 'segment',
+      y = -Inf,
+      yend = -Inf,
+      x = -Inf,
+      xend = Inf
+    )
+  }
 
   # <<<<<<<<<<<<<<<<< Setting theme
 

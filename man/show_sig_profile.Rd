@@ -16,7 +16,7 @@ show_sig_profile(
   set_gradient_color = FALSE,
   free_space = "free_x",
   rm_panel_border = style == "cosmic",
-  rm_grid_line = FALSE,
+  rm_grid_line = style == "cosmic",
   bar_border_color = ifelse(style == "default", "grey50", "white"),
   bar_width = 0.7,
   paint_axis_text = TRUE,
