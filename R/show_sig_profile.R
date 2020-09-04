@@ -523,7 +523,6 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
     base_family = "sans"
   ) +
     theme(
-      axis.line = element_line(size = 0.3, colour = "black"),
       axis.text.x = element_text(
         angle = x_label_angle, vjust = x_label_vjust,
         hjust = x_label_hjust, size = (base_size - 4) * scale,
@@ -542,6 +541,7 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
 
   if (style == "cosmic") {
     .theme_ss <- .theme_ss + theme(
+      axis.line = element_line(size = 0.3, colour = "black"),
       panel.spacing.x = unit(0, "line"),
       strip.background.x = element_rect(color = "white"),
       strip.background.y = element_blank(),
@@ -571,6 +571,12 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
       panel.grid.minor = element_blank()
     )
   }
+
+  # Cannot assign the second axis to right panel border.
+  # if (style == "cosmic") {
+  #   p <- p + scale_y_continuous(sec.axis = sec_axis(~.))
+  # }
+
   # <<<<<<<<<<<<<<<<< Setting theme
 
   p <- p +
