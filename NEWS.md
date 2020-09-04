@@ -1,5 +1,6 @@
 # sigminer 1.0.16
 
+- Updated background color in `show_group_distribution()`.
 - Modified the default theme for signature profile in COSMIC style.
 - Updated the copy number classification method.
 

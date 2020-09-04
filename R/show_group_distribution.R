@@ -53,7 +53,7 @@ show_group_distribution <- function(data, gvar, dvar,
                                     xlab = NULL,
                                     ylab = NULL,
                                     nrow = 1L,
-                                    background_color = c("#ECECEC", "#FAFAFA")) {
+                                    background_color = c("#DCDCDC","#F5F5F5")) {
   stopifnot(length(gvar) == 1L, length(dvar) == 1L)
 
   data$.gvar <- data[[gvar]]
