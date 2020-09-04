@@ -333,6 +333,7 @@ sig_tally.CopyNumber <- function(object,
         parameters = para_df,
         nmf_matrix = cn_matrix,
         all_matrices = list(
+          simplified_matrix = cn_matrix_list$ss_mat,
           standard_matrix = cn_matrix_list$s_mat,
           complex_matrix = cn_matrix_list$c_mat
         )

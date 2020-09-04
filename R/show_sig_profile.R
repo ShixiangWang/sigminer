@@ -265,14 +265,29 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
       # mat$context <- sub("^[A-Z]:[A-Z]{2}:", "", mat$context)
       mat <- tidyr::gather(mat, class, signature, -c("context", "base"))
 
+
+      len_base <- length(unique(mat$base))
+      if (len_base == 12) {
+        palette <- palette[c(2:4, 6:8, 10:12, 14:16)]
+      }
+
       mat <- dplyr::mutate(mat,
         context = factor(.data$context),
-        base = factor(.data$base, levels = c(
-          "S:HH", "S:HL", "S:LH", "S:LL",
-          "M:HH", "M:HL", "M:LH", "M:LL",
-          "L:HH", "L:HL", "L:LH", "L:LL",
-          "E:HH", "E:HL", "E:LH", "E:LL"
-        )),
+        base = factor(.data$base, levels = if (len_base == 12) {
+          c(
+            "S:HH", "S:LD", "S:LL",
+            "M:HH", "M:LD", "M:LL",
+            "L:HH", "L:LD", "L:LL",
+            "E:HH", "E:LD", "E:LL"
+          )
+        } else {
+          c(
+            "S:HH", "S:HL", "S:LH", "S:LL",
+            "M:HH", "M:HL", "M:LH", "M:LL",
+            "L:HH", "L:HL", "L:LH", "L:LL",
+            "E:HH", "E:HL", "E:LH", "E:LL"
+          )
+        }),
         class = factor(class, levels = colnames(Sig))
       )
     }
@@ -508,6 +523,7 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
     base_family = "sans"
   ) +
     theme(
+      axis.line = element_line(size = 0.3, colour = "black"),
       axis.text.x = element_text(
         angle = x_label_angle, vjust = x_label_vjust,
         hjust = x_label_hjust, size = (base_size - 4) * scale,

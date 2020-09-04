@@ -293,6 +293,36 @@ get_matrix_mutex <- function(CN_components, indices = NULL) {
   ] <- NULL
 
   s_mat <- as.matrix(s_mat[, sort(colnames(s_mat))])
+  ## Generated a simplified matrix, suggested by Prof. Liu
+  ## HL and LH will be combined, named as LD (LadDer)
+  ss_mat <- s_mat %>%
+    dplyr::as_tibble(rownames = "sample") %>%
+    tidyr::pivot_longer(cols = colnames(.)[-1],
+                        names_to = "component", values_to = "count") %>%
+    tidyr::separate(col = "component",
+                    into = c("len", "type", "cn", "type2"),
+                    sep = ":",
+                    remove = FALSE) %>%
+    dplyr::filter(.data$type %in% c("HL", "LH")) %>%
+    dplyr::group_by(.data$sample, .data$len, .data$cn, .data$type2) %>%
+    dplyr::summarise(count = sum(.data$count, na.rm = TRUE),
+                     .groups = "drop") %>%
+    dplyr::mutate(
+      component = paste(.data$len, "LD", .data$cn, .data$type2, sep = ":")
+    ) %>%
+    dplyr::select(c("sample", "component", "count")) %>%
+    tidyr::pivot_wider(id_cols = "sample",
+                       names_from = "component",
+                       values_from = "count",
+                       values_fill = 0L) %>%
+    tibble::column_to_rownames("sample") %>%
+    as.matrix()
+
+  ss_mat <- cbind(
+    ss_mat,
+    s_mat[rownames(ss_mat), !grepl("(LH)|(HL)", colnames(s_mat)), drop = FALSE]
+  )
+  ss_mat <- ss_mat[, sort(colnames(ss_mat))]
 
   ## 2. hanlde complex way
   c_class_levels <- vector_to_combination(levels(dt_c$C_SS), levels(dt_c$C_CS), levels(dt_c$C_CN),
@@ -306,7 +336,7 @@ get_matrix_mutex <- function(CN_components, indices = NULL) {
   dt_c$c_class <- factor(dt_c$c_class, levels = c_class_levels)
   c_mat <- classDT2Matrix(dt_c, samp_col = "sample", component_col = "c_class")
 
-  return(list(s_mat = s_mat, c_mat = c_mat))
+  return(list(s_mat = s_mat, c_mat = c_mat, ss_mat = ss_mat))
 }
 
 
