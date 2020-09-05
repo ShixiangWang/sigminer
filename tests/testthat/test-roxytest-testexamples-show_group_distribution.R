@@ -2,7 +2,7 @@
 
 context("File R/show_group_distribution.R: @testexamples")
 
-test_that("Function show_group_distribution() @ L46", {
+test_that("Function show_group_distribution() @ L47", {
   
   set.seed(1234)
   data <- data.frame(

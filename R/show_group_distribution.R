@@ -13,6 +13,7 @@
 #' @param g_angle angle for facet labels, default is `0`.
 #' @param g_position position for facet labels, default is 'top', can also
 #' be 'bottom'.
+#' @param point_size size of point.
 #' @param xlab title for x axis.
 #' @param ylab title for y axis.
 #' @param nrow number of row.
@@ -50,6 +51,7 @@ show_group_distribution <- function(data, gvar, dvar,
                                     g_label = NULL,
                                     g_angle = 0,
                                     g_position = "top",
+                                    point_size = 1L,
                                     xlab = NULL,
                                     ylab = NULL,
                                     nrow = 1L,
@@ -134,7 +136,8 @@ show_group_distribution <- function(data, gvar, dvar,
     ),
     data = dp
     ) +
-    geom_point(aes_string(x = "x", y = ".dvar"), alpha = alpha, data = d) +
+    geom_point(aes_string(x = "x", y = ".dvar"),
+               alpha = alpha, data = d, size = point_size) +
     geom_segment(aes_string(x = "x", xend = "xend", y = "y", yend = "yend"),
       data = ds,
       color = "red",

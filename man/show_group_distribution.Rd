@@ -14,6 +14,7 @@ show_group_distribution(
   g_label = NULL,
   g_angle = 0,
   g_position = "top",
+  point_size = 1L,
   xlab = NULL,
   ylab = NULL,
   nrow = 1L,
@@ -40,6 +41,8 @@ by argument \code{fun}.}
 
 \item{g_position}{position for facet labels, default is 'top', can also
 be 'bottom'.}
+
+\item{point_size}{size of point.}
 
 \item{xlab}{title for x axis.}
 
