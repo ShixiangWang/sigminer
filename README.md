@@ -25,6 +25,9 @@ alteration spectra, called ‘signature’. This package helps users to
 extract, analyze and visualize signatures from genomic alteration
 records, thus providing new insight into cancer study.
 
+For pipeline tool, please see its co-evolutionary CLI
+[sigflow](https://github.com/ShixiangWang/sigflow).
+
 **SBS signatures**:
 
 <img src="man/figures/README-unnamed-chunk-1-1.png" width="100%" />
