@@ -84,18 +84,19 @@ output_sig <- function(sig, result_dir, mut_type = "SBS") {
   ## Output data
   if (mut_type != "CN") {
     data.table::fwrite(sig_signature(sig) %>% data.table::as.data.table(keep.rownames = "component"),
-                       file = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_signature.csv"))
-    )
+                       file = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_signature.csv")))
   } else {
     data.table::fwrite(sig_signature(sig, normalize = "feature") %>% data.table::as.data.table(keep.rownames = "component"),
-                       file = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_signature.csv"))
-    )
+                       file = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_signature.csv")))
   }
+  data.table::fwrite(get_sig_exposure(sig, type = "relative"),
+                     file = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_relative_exposure.csv"))
+  )
   data.table::fwrite(get_sig_exposure(sig),
-                     file = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_exposure.csv"))
+                     file = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_absolute_exposure.csv"))
   )
 
-  message("Outputing sample clusters based on signature contribution.")
+  message("Outputing sample clusters based on relative signature exposures.")
   if (sig$K > 1) {
     message("=> Running k-means clustering.")
     grp <- tryCatch(
@@ -115,7 +116,7 @@ output_sig <- function(sig, result_dir, mut_type = "SBS") {
     show_groups(grp)
     dev.off()
   } else {
-    message("Skip clustering only one signatures.")
+    message("Skip clustering only one signature.")
   }
 
   ## Output plots
