@@ -12,7 +12,7 @@ sigprofiler_extract(
   range = 2:5,
   nrun = 10L,
   refit = FALSE,
-  is_exome = TRUE,
+  is_exome = FALSE,
   init_method = c("nndsvd_min", "random", "alexandrov-lab-custom", "nndsvd", "nndsvda",
     "nndsvdar"),
   cores = -1L,
