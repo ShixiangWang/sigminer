@@ -1,5 +1,6 @@
 # sigminer 1.0.16
 
+- Outputed legacy COSMIC similarity for SBS signatures.
 - Added new option in `sigprofiler_extract()` to reduce failure in when `refit` is enabled.
 - Outputed both relative and absolute signature exposure in `output_sig()`.
 - Updated background color in `show_group_distribution()`.

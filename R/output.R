@@ -157,6 +157,22 @@ output_sig <- function(sig, result_dir, mut_type = "SBS") {
     )
   }
 
+  if (mut_type == "SBS") {
+    ## Append COSMIC v2 results
+    sim <- get_sig_similarity(sig, sig_db = "legacy")
+    data.table::fwrite(sim$similarity %>% data.table::as.data.table(keep.rownames = "sig"),
+                       file = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_legacy_similarity.csv"))
+    )
+    pheatmap::pheatmap(sim$similarity,
+                       cluster_cols = TRUE, cluster_rows = FALSE,
+                       filename = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_legacy_similarity.pdf")),
+                       cellheight = 15, fontsize = 7
+    )
+    data.table::fwrite(sim$best_match %>% data.table::as.data.table(),
+                       file = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_legacy_COSMIC_best_match.csv"))
+    )
+  }
+
   return(invisible(NULL))
 }
 
