@@ -12,6 +12,9 @@
 #' @param nrun the number of iteration to be performed to extract each signature number.
 #' @param refit if `TRUE`, then refit the denovo signatures with nnls. Same
 #' meaning as `optimize` option in [sig_extract] or [sig_auto_extract].
+#' @param refit_plot if `TRUE`, SigProfiler will make
+#' denovo to COSMIC sigantures decompostion plots. However, this may fail due
+#' to some matrix cannot be identified by SigProfiler plot program.
 #' @param is_exome if `TRUE`, the exomes will be extracted.
 #' @param init_method the initialization algorithm for W and H matrix of NMF.
 #' Options are 'random', 'nndsvd', 'nndsvda', 'nndsvdar', 'alexandrov-lab-custom'
@@ -46,6 +49,7 @@
 #' }
 sigprofiler_extract <- function(nmf_matrix, output, range = 2:5, nrun = 10L,
                                 refit = FALSE,
+                                refit_plot = FALSE,
                                 is_exome = FALSE,
                                 init_method = c("nndsvd_min", "random",
                                                 "alexandrov-lab-custom",
@@ -170,6 +174,7 @@ sigprofiler_extract <- function(nmf_matrix, output, range = 2:5, nrun = 10L,
         exome = is_exome,
         nmf_init = init_method,
         refit_denovo_signatures = refit,
+        make_decomposition_plots = refit_plot,
         cpu = cores
       )
       sys$stdout$flush()
@@ -195,6 +200,7 @@ sigprofiler_extract <- function(nmf_matrix, output, range = 2:5, nrun = 10L,
         quote_opt(ifelse(is_exome, "True", "False"), opt = "exome", rm_quote = TRUE),
         quote_opt(init_method, opt = "nmf_init"),
         quote_opt(ifelse(refit, "True", "False"), opt = "refit_denovo_signatures", rm_quote = TRUE),
+        quote_opt(ifelse(refit_plot, "True", "False"), opt = "make_decomposition_plots", rm_quote = TRUE),
         quote_opt(cores, opt = "cpu", rm_quote = TRUE),
         sep = ","
       )

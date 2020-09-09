@@ -141,7 +141,8 @@ Typically, a reference genome is not required because the input is a matrix (my 
   <span class='kw'>range</span> <span class='kw'>=</span> <span class='fl'>2</span>:<span class='fl'>5</span>,
   <span class='kw'>nrun</span> <span class='kw'>=</span> <span class='fl'>10L</span>,
   <span class='kw'>refit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>is_exome</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>refit_plot</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>is_exome</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>init_method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"nndsvd_min"</span>, <span class='st'>"random"</span>, <span class='st'>"alexandrov-lab-custom"</span>, <span class='st'>"nndsvd"</span>, <span class='st'>"nndsvda"</span>,
     <span class='st'>"nndsvdar"</span>),
   <span class='kw'>cores</span> <span class='kw'>=</span> -<span class='fl'>1L</span>,
@@ -180,6 +181,12 @@ Typically, a reference genome is not required because the input is a matrix (my 
       <th>refit</th>
       <td><p>if <code>TRUE</code>, then refit the denovo signatures with nnls. Same
 meaning as <code>optimize</code> option in <a href='sig_extract.html'>sig_extract</a> or <a href='sig_auto_extract.html'>sig_auto_extract</a>.</p></td>
+    </tr>
+    <tr>
+      <th>refit_plot</th>
+      <td><p>if <code>TRUE</code>, SigProfiler will make
+denovo to COSMIC sigantures decompostion plots. However, this may fail due
+to some matrix cannot be identified by SigProfiler plot program.</p></td>
     </tr>
     <tr>
       <th>is_exome</th>

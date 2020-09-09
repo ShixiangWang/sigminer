@@ -12,6 +12,7 @@ sigprofiler_extract(
   range = 2:5,
   nrun = 10L,
   refit = FALSE,
+  refit_plot = FALSE,
   is_exome = FALSE,
   init_method = c("nndsvd_min", "random", "alexandrov-lab-custom", "nndsvd", "nndsvda",
     "nndsvdar"),
@@ -39,6 +40,10 @@ sigprofiler_import(
 
 \item{refit}{if \code{TRUE}, then refit the denovo signatures with nnls. Same
 meaning as \code{optimize} option in \link{sig_extract} or \link{sig_auto_extract}.}
+
+\item{refit_plot}{if \code{TRUE}, SigProfiler will make
+denovo to COSMIC sigantures decompostion plots. However, this may fail due
+to some matrix cannot be identified by SigProfiler plot program.}
 
 \item{is_exome}{if \code{TRUE}, the exomes will be extracted.}
 
