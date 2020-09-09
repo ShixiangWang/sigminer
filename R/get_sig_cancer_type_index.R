@@ -1,5 +1,6 @@
 #' Obtain Signature Index for Cancer Types
 #'
+#' @param keyword keyword to search in the signature index database.
 #' @param sig_type signature type.
 #' @param seq_type sequencing type.
 #' @param source data source.
@@ -9,21 +10,64 @@
 #'
 #' @examples
 #' l1 <- get_sig_cancer_type_index()
-#' l2 <- get_sig_cancer_type_index("SBS")
-#' l3 <- get_sig_cancer_type_index("DBS", source = "PCAWG", seq_type = "WGS")
-#' l4 <- get_sig_cancer_type_index("ID")
+#' l2 <- get_sig_cancer_type_index(sig_type = "SBS")
+#' l3 <- get_sig_cancer_type_index(sig_type = "DBS", source = "PCAWG", seq_type = "WGS")
+#' l4 <- get_sig_cancer_type_index(sig_type = "ID")
+#' l5 <- get_sig_cancer_type_index(keyword = "breast")
 #' l1
 #' l2
 #' l3
 #' l4
+#' l5
 #' @testexamples
 #' expect_is(l1, "list")
 #' expect_is(l2, "list")
 #' expect_is(l3, "list")
 #' expect_is(l4, "list")
-get_sig_cancer_type_index <- function(sig_type = c("legacy", "SBS", "DBS", "ID"),
-                                      seq_type = c("WGS", "WES"),
-                                      source = c("PCAWG", "TCGA", "nonPCAWG")) {
+#' expect_null(l5)
+get_sig_cancer_type_index <- function(
+  sig_type = c("legacy", "SBS", "DBS", "ID"),
+  seq_type = c("WGS", "WES"),
+  source = c("PCAWG", "TCGA", "nonPCAWG"),
+  keyword = NULL) {
+
+  if (!is.null(keyword)) {
+    df1 <- readRDS(system.file("extdata", "cosmic2_record_by_cancer.rds", package = "sigminer"))
+    df2 <- readRDS(system.file("extdata", "signature_record_by_cancer.rds", package = "sigminer"))
+    colnames(df1)[1] <- "name"
+    colnames(df2)[1] <- "name"
+
+    stopifnot(length(keyword) == 1L)
+
+    keyword <- as.character(keyword)
+    df1 <- subset(df1, grepl(keyword, df1$name, ignore.case = TRUE))
+    df2 <- subset(df2, grepl(keyword, df2$name, ignore.case = TRUE))
+
+    if (nrow(df1) > 0) {
+      message("Info found in COSMIC v2 database:")
+      colnames(df1) <- c("cancer type", "signature index")
+      print(df1)
+    } else {
+      message("Nothing found in COSMIC v2 database.")
+    }
+
+    if (nrow(df2) > 0) {
+      message("Info found in COSMIC v3 database:")
+      colnames(df2)[1] <- "cancer type"
+      df2 <- df2 %>%
+        tidyr::pivot_longer(cols = c("SBS list", "DBS list", "ID list"),
+                            names_to = "signature type",
+                            values_to = "signature index") %>%
+        as.data.frame()
+      df2[["signature type"]] <- sub(" list", "", df2[["signature type"]])
+      print(df2)
+    } else {
+      message("Nothing found in COSMIC v3 database.")
+    }
+
+    return(invisible(NULL))
+  }
+
   sig_type <- match.arg(sig_type)
   seq_type <- match.arg(seq_type)
   data_source <- match.arg(source)

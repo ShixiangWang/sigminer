@@ -2,19 +2,22 @@
 
 context("File R/get_sig_cancer_type_index.R: @testexamples")
 
-test_that("Function get_sig_cancer_type_index() @ L24", {
+test_that("Function get_sig_cancer_type_index() @ L28", {
   
   l1 <- get_sig_cancer_type_index()
-  l2 <- get_sig_cancer_type_index("SBS")
-  l3 <- get_sig_cancer_type_index("DBS", source = "PCAWG", seq_type = "WGS")
-  l4 <- get_sig_cancer_type_index("ID")
+  l2 <- get_sig_cancer_type_index(sig_type = "SBS")
+  l3 <- get_sig_cancer_type_index(sig_type = "DBS", source = "PCAWG", seq_type = "WGS")
+  l4 <- get_sig_cancer_type_index(sig_type = "ID")
+  l5 <- get_sig_cancer_type_index(keyword = "breast")
   l1
   l2
   l3
   l4
+  l5
   expect_is(l1, "list")
   expect_is(l2, "list")
   expect_is(l3, "list")
   expect_is(l4, "list")
+  expect_null(l5)
 })
 

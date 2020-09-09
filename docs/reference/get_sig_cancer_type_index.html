@@ -134,7 +134,8 @@
     <pre class="usage"><span class='fu'>get_sig_cancer_type_index</span>(
   <span class='kw'>sig_type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"legacy"</span>, <span class='st'>"SBS"</span>, <span class='st'>"DBS"</span>, <span class='st'>"ID"</span>),
   <span class='kw'>seq_type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"WGS"</span>, <span class='st'>"WES"</span>),
-  <span class='kw'>source</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"PCAWG"</span>, <span class='st'>"TCGA"</span>, <span class='st'>"nonPCAWG"</span>)
+  <span class='kw'>source</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"PCAWG"</span>, <span class='st'>"TCGA"</span>, <span class='st'>"nonPCAWG"</span>),
+  <span class='kw'>keyword</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -152,6 +153,10 @@
       <th>source</th>
       <td><p>data source.</p></td>
     </tr>
+    <tr>
+      <th>keyword</th>
+      <td><p>keyword to search in the signature index database.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -160,13 +165,15 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='no'>l1</span> <span class='kw'>&lt;-</span> <span class='fu'>get_sig_cancer_type_index</span>()
-<span class='no'>l2</span> <span class='kw'>&lt;-</span> <span class='fu'>get_sig_cancer_type_index</span>(<span class='st'>"SBS"</span>)
-<span class='no'>l3</span> <span class='kw'>&lt;-</span> <span class='fu'>get_sig_cancer_type_index</span>(<span class='st'>"DBS"</span>, <span class='kw'>source</span> <span class='kw'>=</span> <span class='st'>"PCAWG"</span>, <span class='kw'>seq_type</span> <span class='kw'>=</span> <span class='st'>"WGS"</span>)
-<span class='no'>l4</span> <span class='kw'>&lt;-</span> <span class='fu'>get_sig_cancer_type_index</span>(<span class='st'>"ID"</span>)
+<span class='no'>l2</span> <span class='kw'>&lt;-</span> <span class='fu'>get_sig_cancer_type_index</span>(<span class='kw'>sig_type</span> <span class='kw'>=</span> <span class='st'>"SBS"</span>)
+<span class='no'>l3</span> <span class='kw'>&lt;-</span> <span class='fu'>get_sig_cancer_type_index</span>(<span class='kw'>sig_type</span> <span class='kw'>=</span> <span class='st'>"DBS"</span>, <span class='kw'>source</span> <span class='kw'>=</span> <span class='st'>"PCAWG"</span>, <span class='kw'>seq_type</span> <span class='kw'>=</span> <span class='st'>"WGS"</span>)
+<span class='no'>l4</span> <span class='kw'>&lt;-</span> <span class='fu'>get_sig_cancer_type_index</span>(<span class='kw'>sig_type</span> <span class='kw'>=</span> <span class='st'>"ID"</span>)
+<span class='no'>l5</span> <span class='kw'>&lt;-</span> <span class='fu'>get_sig_cancer_type_index</span>(<span class='kw'>keyword</span> <span class='kw'>=</span> <span class='st'>"breast"</span>)
 <span class='no'>l1</span>
 <span class='no'>l2</span>
 <span class='no'>l3</span>
-<span class='no'>l4</span></pre>
+<span class='no'>l4</span>
+<span class='no'>l5</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

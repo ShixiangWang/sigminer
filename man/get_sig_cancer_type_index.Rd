@@ -7,7 +7,8 @@
 get_sig_cancer_type_index(
   sig_type = c("legacy", "SBS", "DBS", "ID"),
   seq_type = c("WGS", "WES"),
-  source = c("PCAWG", "TCGA", "nonPCAWG")
+  source = c("PCAWG", "TCGA", "nonPCAWG"),
+  keyword = NULL
 )
 }
 \arguments{
@@ -16,6 +17,8 @@ get_sig_cancer_type_index(
 \item{seq_type}{sequencing type.}
 
 \item{source}{data source.}
+
+\item{keyword}{keyword to search in the signature index database.}
 }
 \value{
 a \code{list}.
@@ -25,11 +28,13 @@ Obtain Signature Index for Cancer Types
 }
 \examples{
 l1 <- get_sig_cancer_type_index()
-l2 <- get_sig_cancer_type_index("SBS")
-l3 <- get_sig_cancer_type_index("DBS", source = "PCAWG", seq_type = "WGS")
-l4 <- get_sig_cancer_type_index("ID")
+l2 <- get_sig_cancer_type_index(sig_type = "SBS")
+l3 <- get_sig_cancer_type_index(sig_type = "DBS", source = "PCAWG", seq_type = "WGS")
+l4 <- get_sig_cancer_type_index(sig_type = "ID")
+l5 <- get_sig_cancer_type_index(keyword = "breast")
 l1
 l2
 l3
 l4
+l5
 }
