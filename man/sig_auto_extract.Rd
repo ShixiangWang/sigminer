@@ -9,7 +9,7 @@ sig_auto_extract(
   result_prefix = "BayesNMF",
   destdir = tempdir(),
   method = c("L1W.L2H", "L1KL", "L2KL"),
-  strategy = c("stable", "optimal"),
+  strategy = c("optimal", "stable"),
   K0 = 25,
   nrun = 10,
   niter = 2e+05,
