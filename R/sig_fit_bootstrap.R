@@ -66,6 +66,7 @@ sig_fit_bootstrap <- function(catalog,
                               db_type = c("", "human-exome", "human-genome"),
                               show_index = TRUE,
                               method = c("QP", "NNLS", "SA"),
+                              auto_reduce = FALSE,
                               SA_not_bootstrap = FALSE,
                               type = c("absolute", "relative"),
                               rel_threshold = 0,
@@ -162,6 +163,7 @@ sig_fit_bootstrap <- function(catalog,
     db_type = db_type,
     show_index = show_index,
     method = method,
+    auto_reduce = auto_reduce,
     type = type,
     return_class = "matrix",
     return_error = TRUE,
@@ -196,25 +198,6 @@ sig_fit_bootstrap <- function(catalog,
     suppressMessages(
       base::do.call("sig_fit", args = Args)
     )
-
-    # suppressMessages(
-    #   sig_fit(
-    #     catalogue_matrix = catalog_mat,
-    #     sig = sig,
-    #     sig_index = sig_index,
-    #     sig_db = sig_db,
-    #     db_type = db_type,
-    #     show_index = show_index,
-    #     method = method,
-    #     type = type,
-    #     return_class = "matrix",
-    #     return_error = TRUE,
-    #     rel_threshold = rel_threshold,
-    #     mode = mode,
-    #     true_catalog = catalog,
-    #     unlist(c(list(...), threshold.stop = suboptimal_factor * suboptimal_ref_error))
-    #   )
-    # )
   })
 
   cli::cli_status_clear(sb)

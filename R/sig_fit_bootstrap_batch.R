@@ -14,8 +14,8 @@
 #' will be saved to local machine location defined by `result_dir`. This is very useful for running
 #' more than 10 times for more than 100 samples.
 #' @param result_dir see above, default is temp directory defined by R.
-#' @param ... other common parameters passing to [sig_fit_bootstrap], including `sig`, `sig_index`,
-#' `sig_db`, `db_type`, `mode`, etc.
+#' @param ... other common parameters passing to [sig_fit_bootstrap], including
+#'  `sig`, `sig_index`, `sig_db`, `db_type`, `mode`, `auto_reduce` etc.
 #'
 #' @return a `list` of `data.table`.
 #' @export

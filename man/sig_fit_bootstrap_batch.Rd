@@ -41,8 +41,8 @@ more than 10 times for more than 100 samples.}
 
 \item{result_dir}{see above, default is temp directory defined by R.}
 
-\item{...}{other common parameters passing to \link{sig_fit_bootstrap}, including \code{sig}, \code{sig_index},
-\code{sig_db}, \code{db_type}, \code{mode}, etc.}
+\item{...}{other common parameters passing to \link{sig_fit_bootstrap}, including
+\code{sig}, \code{sig_index}, \code{sig_db}, \code{db_type}, \code{mode}, \code{auto_reduce} etc.}
 }
 \value{
 a \code{list} of \code{data.table}.

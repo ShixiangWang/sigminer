@@ -271,7 +271,11 @@ sig_fit <- function(catalogue_matrix,
   # )
   expo <- purrr::pmap(list(as.data.frame(catalogue_matrix),
                            rel_threshold,
-                           colnames(catalogue_matrix)),
+                           if (is.null(colnames(catalogue_matrix))) {
+                             NA_character_
+                           } else {
+                             colnames(catalogue_matrix)
+                           } ),
                       f_fit,
                       sig_matrix,
                       type = type,
@@ -367,7 +371,7 @@ sig_fit <- function(catalogue_matrix,
 ## type: type of signature contribution to return
 
 decompose_NNLS <- function(x, y, z, sig_matrix, type = "absolute", auto_reduce = FALSE, ...) {
-  send_info("Fitting sample: ", z)
+  if (is.na(z)) send_info("Fitting sample: ", z)
 
   if (sum(x) != 0) {
     ## nnls/lsqnonneg solve nonnegative least-squares constraints problem.
@@ -379,6 +383,7 @@ decompose_NNLS <- function(x, y, z, sig_matrix, type = "absolute", auto_reduce =
       rec <- (expo %*% t(sig_matrix) * sum(x))[1, ]
       sim <- cosine(rec, x)
       if (sim < 0.99) {
+        sim_old <- sim
         # continue to optimize
         send_info("Start optimizing...")
         for (i in seq(0.001, 0.501, 0.01)) {
@@ -397,6 +402,7 @@ decompose_NNLS <- function(x, y, z, sig_matrix, type = "absolute", auto_reduce =
                      i, ", ",
                      sum(expo_low),
                      " signatures dropped.")
+        send_info("Cosine similarity with ", round(abs(sim - sim_old), 6), " improved.")
 
         out_expo <- vector("numeric", length = length(expo))
         ## Correctly assign the exposure
@@ -420,7 +426,7 @@ decompose_NNLS <- function(x, y, z, sig_matrix, type = "absolute", auto_reduce =
 # P is same as sig_matrix
 
 decompose_QP <- function(x, y, z, P, type = "absolute", auto_reduce = FALSE, ...) {
-  send_info("Fitting sample: ", z)
+  if (is.na(z)) send_info("Fitting sample: ", z)
 
   if (sum(x) != 0) {
     m <- x / sum(x)
@@ -449,6 +455,7 @@ decompose_QP <- function(x, y, z, P, type = "absolute", auto_reduce = FALSE, ...
       rec <- (expo %*% t(sig_matrix) * sum(x))[1, ]
       sim <- cosine(rec, x)
       if (sim < 0.99) {
+        sim_old <- sim
         # continue to optimize
         send_info("Start optimizing...")
         for (i in seq(0.001, 0.501, 0.01)) {
@@ -467,6 +474,7 @@ decompose_QP <- function(x, y, z, P, type = "absolute", auto_reduce = FALSE, ...
                      i, ", ",
                      sum(expo_low),
                      " signatures dropped.")
+        send_info("Cosine similarity with ", round(abs(sim - sim_old), 6), " improved.")
 
         out_expo <- vector("numeric", length = length(expo))
         ## Correctly assign the exposure
@@ -489,7 +497,7 @@ decompose_QP <- function(x, y, z, P, type = "absolute", auto_reduce = FALSE, ...
 
 
 decompose_SA <- function(x, y, z, P, type = "absolute", auto_reduce = FALSE, ...) {
-  send_info("Fitting sample: ", z)
+  if (is.na(z)) send_info("Fitting sample: ", z)
 
   if (sum(x) != 0) {
     control <- list(...)
@@ -517,6 +525,7 @@ decompose_SA <- function(x, y, z, P, type = "absolute", auto_reduce = FALSE, ...
       rec <- (expo %*% t(sig_matrix) * sum(x))[1, ]
       sim <- cosine(rec, x)
       if (sim < 0.99) {
+        sim_old <- sim
         # continue to optimize
         send_info("Start optimizing...")
         for (i in seq(0.001, 0.501, 0.01)) {
@@ -535,6 +544,7 @@ decompose_SA <- function(x, y, z, P, type = "absolute", auto_reduce = FALSE, ...
                      i, ", ",
                      sum(expo_low),
                      " signatures dropped.")
+        send_info("Cosine similarity with ", round(abs(sim - sim_old), 6), " improved.")
 
         out_expo <- vector("numeric", length = length(expo))
         ## Correctly assign the exposure
