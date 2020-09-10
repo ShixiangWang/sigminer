@@ -12,6 +12,7 @@ sig_fit(
   db_type = c("", "human-exome", "human-genome"),
   show_index = TRUE,
   method = c("QP", "NNLS", "SA"),
+  auto_reduce = FALSE,
   type = c("absolute", "relative"),
   return_class = c("matrix", "data.table"),
   return_error = FALSE,
@@ -45,6 +46,9 @@ Currently only works for 'SBS'.}
 
 \item{method}{method to solve the minimazation problem.
 'NNLS' for nonnegative least square; 'QP' for quadratic programming; 'SA' for simulated annealing.}
+
+\item{auto_reduce}{if \code{TRUE}, try reducing the input reference signatures to increase
+the cosine similarity of reconstructed profile to observed profile.}
 
 \item{type}{'absolute' for signature exposure and 'relative' for signature relative exposure.}
 
