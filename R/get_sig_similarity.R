@@ -111,7 +111,7 @@ get_sig_similarity <- function(Signature, Ref = NULL,
       sigs <- sig_convert(sig = sigs, from = "human-genome", to = "human-exome")
     }
   } else {
-    if (class(Ref) == "Signature") {
+    if (inherits(Ref, "Signature")) {
       sigs <- Ref$Signature.norm
     } else if (is.matrix(Ref)) {
       sigs <- Ref
