@@ -51,9 +51,11 @@ sigprofiler_extract <- function(nmf_matrix, output, range = 2:5, nrun = 10L,
                                 refit = FALSE,
                                 refit_plot = FALSE,
                                 is_exome = FALSE,
-                                init_method = c("nndsvd_min", "random",
-                                                "alexandrov-lab-custom",
-                                                "nndsvd", "nndsvda", "nndsvdar"),
+                                init_method = c(
+                                  "nndsvd_min", "random",
+                                  "alexandrov-lab-custom",
+                                  "nndsvd", "nndsvda", "nndsvdar"
+                                ),
                                 cores = -1L,
                                 genome_build = c("hg19", "hg38", "mm10"),
                                 use_conda = FALSE,
@@ -136,8 +138,10 @@ sigprofiler_extract <- function(nmf_matrix, output, range = 2:5, nrun = 10L,
 
   ii <- colSums(nmf_matrix) < 0.01
   if (any(ii)) {
-    message("The follow samples dropped due to null catalogue:\n\t",
-            paste0(colnames(nmf_matrix)[ii], collapse = ", "))
+    message(
+      "The follow samples dropped due to null catalogue:\n\t",
+      paste0(colnames(nmf_matrix)[ii], collapse = ", ")
+    )
     nmf_matrix <- nmf_matrix[, !ii, drop = FALSE]
   }
 

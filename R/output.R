@@ -19,8 +19,9 @@ output_tally <- function(x, result_dir, mut_type = "SBS") {
   }
 
   data.table::fwrite(x %>% as.data.frame() %>% data.table::setDT(keep.rownames = TRUE),
-                     sep = ",",
-                     file = file.path(result_dir, paste0(mut_type, "_tally.csv")))
+    sep = ",",
+    file = file.path(result_dir, paste0(mut_type, "_tally.csv"))
+  )
 
   samps <- colnames(x)
 
@@ -31,7 +32,7 @@ output_tally <- function(x, result_dir, mut_type = "SBS") {
   }
 
   ggsave(file.path(result_dir, paste0(mut_type, "_tally_total.pdf")),
-         plot = p_total, width = 12, height = 3
+    plot = p_total, width = 12, height = 3
   )
 
   samp_dir <- file.path(result_dir, paste0(mut_type, "_tally_per_sample"))
@@ -43,19 +44,19 @@ output_tally <- function(x, result_dir, mut_type = "SBS") {
     message("Plotting mutation catalog of sample: ", i)
     if (mut_type != "CN") {
       p <- show_catalogue(x,
-                          style = "cosmic", mode = mut_type,
-                          samples = i,
-                          x_label_angle = 90, x_label_vjust = 0.5
+        style = "cosmic", mode = mut_type,
+        samples = i,
+        x_label_angle = 90, x_label_vjust = 0.5
       )
     } else {
       p <- show_catalogue(x,
-                          style = "cosmic", mode = "copynumber",
-                          normalize = "feature",
-                          samples = i
+        style = "cosmic", mode = "copynumber",
+        normalize = "feature",
+        samples = i
       )
     }
     ggsave(file.path(samp_dir, paste0(i, ".pdf")),
-           plot = p, width = 12, height = 2, limitsize = FALSE
+      plot = p, width = 12, height = 2, limitsize = FALSE
     )
   }
 
@@ -84,16 +85,18 @@ output_sig <- function(sig, result_dir, mut_type = "SBS") {
   ## Output data
   if (mut_type != "CN") {
     data.table::fwrite(sig_signature(sig) %>% data.table::as.data.table(keep.rownames = "component"),
-                       file = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_signature.csv")))
+      file = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_signature.csv"))
+    )
   } else {
     data.table::fwrite(sig_signature(sig, normalize = "feature") %>% data.table::as.data.table(keep.rownames = "component"),
-                       file = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_signature.csv")))
+      file = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_signature.csv"))
+    )
   }
   data.table::fwrite(get_sig_exposure(sig, type = "relative"),
-                     file = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_relative_exposure.csv"))
+    file = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_relative_exposure.csv"))
   )
   data.table::fwrite(get_sig_exposure(sig),
-                     file = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_absolute_exposure.csv"))
+    file = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_absolute_exposure.csv"))
   )
 
   message("Outputing sample clusters based on relative signature exposures.")
@@ -107,7 +110,7 @@ output_sig <- function(sig, result_dir, mut_type = "SBS") {
       }
     )
     data.table::fwrite(grp,
-                       file = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_kmeans_cluster.csv"))
+      file = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_kmeans_cluster.csv"))
     )
     pdf(
       file = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_kmeans_cluster.pdf")),
@@ -127,7 +130,7 @@ output_sig <- function(sig, result_dir, mut_type = "SBS") {
     p <- show_sig_profile(sig, mode = "copynumber", normalize = "feature", style = "cosmic")
   }
   ggsave(file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_signature_profile.pdf")),
-         plot = p, width = 12, height = 2 * sig$K
+    plot = p, width = 12, height = 2 * sig$K
   )
 
   message("Outputing signature exposure plot.")
@@ -137,7 +140,7 @@ output_sig <- function(sig, result_dir, mut_type = "SBS") {
     p <- show_sig_exposure(sig, style = "cosmic", hide_samps = TRUE, rm_space = TRUE)
   }
   cowplot::save_plot(file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_exposure_profile.pdf")),
-                     plot = p
+    plot = p
   )
 
   ## Similar analysis and output
@@ -145,15 +148,15 @@ output_sig <- function(sig, result_dir, mut_type = "SBS") {
     message("Outputing signature similarity analysis results.")
     sim <- get_sig_similarity(sig, sig_db = mut_type)
     data.table::fwrite(sim$similarity %>% data.table::as.data.table(keep.rownames = "sig"),
-                       file = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_similarity.csv"))
+      file = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_similarity.csv"))
     )
     pheatmap::pheatmap(sim$similarity,
-                       cluster_cols = TRUE, cluster_rows = FALSE,
-                       filename = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_similarity.pdf")),
-                       cellheight = 15, fontsize = 7
+      cluster_cols = TRUE, cluster_rows = FALSE,
+      filename = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_similarity.pdf")),
+      cellheight = 15, fontsize = 7
     )
     data.table::fwrite(sim$best_match %>% data.table::as.data.table(),
-                       file = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_COSMIC_best_match.csv"))
+      file = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_COSMIC_best_match.csv"))
     )
   }
 
@@ -161,15 +164,15 @@ output_sig <- function(sig, result_dir, mut_type = "SBS") {
     ## Append COSMIC v2 results
     sim <- get_sig_similarity(sig, sig_db = "legacy")
     data.table::fwrite(sim$similarity %>% data.table::as.data.table(keep.rownames = "sig"),
-                       file = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_legacy_similarity.csv"))
+      file = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_legacy_similarity.csv"))
     )
     pheatmap::pheatmap(sim$similarity,
-                       cluster_cols = TRUE, cluster_rows = FALSE,
-                       filename = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_legacy_similarity.pdf")),
-                       cellheight = 15, fontsize = 7
+      cluster_cols = TRUE, cluster_rows = FALSE,
+      filename = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_legacy_similarity.pdf")),
+      cellheight = 15, fontsize = 7
     )
     data.table::fwrite(sim$best_match %>% data.table::as.data.table(),
-                       file = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_legacy_COSMIC_best_match.csv"))
+      file = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_legacy_COSMIC_best_match.csv"))
     )
   }
 
@@ -240,16 +243,16 @@ output_fit <- function(x, result_dir, mut_type = "SBS") {
   }
 
   ggsave(file.path(result_dir, paste0(mut_type, "_fitting_absolute_exposure_boxplot.pdf")),
-         plot = p1, width = width, height = height
+    plot = p1, width = width, height = height
   )
   ggsave(file.path(result_dir, paste0(mut_type, "_fitting_absolute_exposure_violin.pdf")),
-         plot = p2, width = width, height = height
+    plot = p2, width = width, height = height
   )
   ggsave(file.path(result_dir, paste0(mut_type, "_fitting_relative_exposure_boxplot.pdf")),
-         plot = p3, width = width, height = height
+    plot = p3, width = width, height = height
   )
   ggsave(file.path(result_dir, paste0(mut_type, "_fitting_relative_exposure_violin.pdf")),
-         plot = p4, width = width, height = height
+    plot = p4, width = width, height = height
   )
 }
 
@@ -301,10 +304,10 @@ output_bootstrap <- function(x, result_dir, mut_type = "SBS") {
   }
 
   ggsave(file.path(result_dir, paste0(mut_type, "_bootstrap_signature_instability_boxplot.pdf")),
-         plot = p1, width = width, height = height
+    plot = p1, width = width, height = height
   )
   ggsave(file.path(result_dir, paste0(mut_type, "_bootstrap_absolute_exposure_boxplot.pdf")),
-         plot = p2, width = width, height = height
+    plot = p2, width = width, height = height
   )
 
   samps <- unique(x$expo$sample)
@@ -320,7 +323,7 @@ output_bootstrap <- function(x, result_dir, mut_type = "SBS") {
       p <- show_sig_bootstrap_exposure(x, sample = i) + theme(legend.position = "none") + ggpubr::rotate_x_text()
     }
     ggsave(file.path(samp_dir, paste0(i, ".pdf")),
-           plot = p, width = width, height = height
+      plot = p, width = width, height = height
     )
   }
 }

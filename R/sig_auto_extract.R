@@ -110,8 +110,10 @@ sig_auto_extract <- function(nmf_matrix = NULL,
 
     ii <- colSums(nmf_matrix) < 0.01
     if (any(ii)) {
-      message("The follow samples dropped due to null catalogue:\n\t",
-              paste0(colnames(nmf_matrix)[ii], collapse = ", "))
+      message(
+        "The follow samples dropped due to null catalogue:\n\t",
+        paste0(colnames(nmf_matrix)[ii], collapse = ", ")
+      )
       nmf_matrix <- nmf_matrix[, !ii, drop = FALSE]
     }
 
@@ -183,14 +185,18 @@ sig_auto_extract <- function(nmf_matrix = NULL,
         catalogue_matrix = mat_cn,
         sig = W_cn,
         method = "QP",
-        mode = "copynumber")
+        mode = "copynumber"
+      )
     } else {
       ## Call LCD
       best_solution$Exposure <- sig_fit(
         catalogue_matrix = mat,
-        sig = apply(best_solution$Signature,
-                    2, function(x) x / sum(x)),
-        method = "QP")
+        sig = apply(
+          best_solution$Signature,
+          2, function(x) x / sum(x)
+        ),
+        method = "QP"
+      )
     }
 
     Exposure <- best_solution$Exposure
@@ -215,13 +221,16 @@ sig_auto_extract <- function(nmf_matrix = NULL,
       best_solution$Exposure <- Exposure
     }
 
-    best_solution$Exposure.norm <- apply(best_solution$Exposure, 2,
-                                         function(x) x / sum(x, na.rm = TRUE))
+    best_solution$Exposure.norm <- apply(
+      best_solution$Exposure, 2,
+      function(x) x / sum(x, na.rm = TRUE)
+    )
     # When only one signature
     if (!is.matrix(best_solution$Exposure.norm)) {
       best_solution$Exposure.norm <- matrix(best_solution$Exposure.norm,
-                                            nrow = 1,
-                                            dimnames = list(NULL, names(best_solution$Exposure.norm)))
+        nrow = 1,
+        dimnames = list(NULL, names(best_solution$Exposure.norm))
+      )
     }
     ## Scale the result
     if (any(has_cn)) {

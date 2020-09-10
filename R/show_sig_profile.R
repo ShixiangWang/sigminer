@@ -578,7 +578,7 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
   # }
   if (style == "cosmic") {
     p <- p + annotate(
-      geom = 'segment',
+      geom = "segment",
       y = -Inf,
       yend = -Inf,
       x = -Inf,

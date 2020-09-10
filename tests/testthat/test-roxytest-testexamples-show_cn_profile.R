@@ -2,7 +2,7 @@
 
 context("File R/show_cn_profile.R: @testexamples")
 
-test_that("Function show_cn_profile() @ L41", {
+test_that("Function show_cn_profile() @ L43", {
   
   # Load copy number object
   load(system.file("extdata", "toy_copynumber.RData",
@@ -11,8 +11,10 @@ test_that("Function show_cn_profile() @ L41", {
   
   p <- show_cn_profile(cn, nrow = 2, ncol = 1)
   p
-  p2 <- show_cn_profile(cn, nrow = 2, ncol = 1,
-                        position = "chr1:3218923-116319008")
+  p2 <- show_cn_profile(cn,
+    nrow = 2, ncol = 1,
+    position = "chr1:3218923-116319008"
+  )
   p2
   expect_s3_class(p, "ggplot")
   expect_s3_class(p2, "ggplot")

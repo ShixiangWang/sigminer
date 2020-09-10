@@ -55,7 +55,7 @@ show_group_distribution <- function(data, gvar, dvar,
                                     xlab = NULL,
                                     ylab = NULL,
                                     nrow = 1L,
-                                    background_color = c("#DCDCDC","#F5F5F5")) {
+                                    background_color = c("#DCDCDC", "#F5F5F5")) {
   stopifnot(length(gvar) == 1L, length(dvar) == 1L)
 
   data$.gvar <- data[[gvar]]
@@ -78,9 +78,11 @@ show_group_distribution <- function(data, gvar, dvar,
     dplyr::transmute(
       .gvar = .data$.gvar,
       x = ifelse(.data$n > 3, .data$x_m - round(.data$n / 3),
-                 .data$x_m - .data$n / 3),
+        .data$x_m - .data$n / 3
+      ),
       xend = ifelse(.data$n > 3, .data$x_m + round(.data$n / 3),
-                    .data$x_m + .data$n / 3),
+        .data$x_m + .data$n / 3
+      ),
       y = .data$y_m,
       yend = .data$y_m,
       label = paste0(.data$.gvar, "\n(n=", .data$n, ")")
@@ -99,9 +101,11 @@ show_group_distribution <- function(data, gvar, dvar,
     ) %>%
     dplyr::mutate(
       xmin = ifelse(.data$n > 3, .data$xmin - (.data$xmax - .data$xmin) * 0.05,
-                    .data$xmin - 0.5),
+        .data$xmin - 0.5
+      ),
       xmax = ifelse(.data$n > 3, .data$xmax + (.data$xmax - .data$xmin) * 0.05,
-                    .data$xmax + 0.5),
+        .data$xmax + 0.5
+      ),
       ymin = min(.data$ymin) - (.data$ymax - .data$ymin) * 0.015,
       ymax = max(.data$ymax) + (.data$ymax - .data$ymin) * 0.015,
       ymin = min(.data$ymin),
@@ -137,7 +141,8 @@ show_group_distribution <- function(data, gvar, dvar,
     data = dp
     ) +
     geom_point(aes_string(x = "x", y = ".dvar"),
-               alpha = alpha, data = d, size = point_size) +
+      alpha = alpha, data = d, size = point_size
+    ) +
     geom_segment(aes_string(x = "x", xend = "xend", y = "y", yend = "yend"),
       data = ds,
       color = "red",

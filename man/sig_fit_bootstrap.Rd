@@ -116,6 +116,6 @@ if (requireNamespace("quadprog", quietly = TRUE)) {
 Huang X, Wojtowicz D, Przytycka TM. Detecting presence of mutational signatures in cancer with confidence. Bioinformatics. 2018;34(2):330–337. doi:10.1093/bioinformatics/btx604
 }
 \seealso{
-\link{sig_fit}, \link{sig_fit_bootstrap_batch}
+\link{report_bootstrap_p_value}, \link{sig_fit}, \link{sig_fit_bootstrap_batch}
 }
 \keyword{bootstrap}

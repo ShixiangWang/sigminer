@@ -23,7 +23,8 @@
 #' @param method method to solve the minimazation problem.
 #' 'NNLS' for nonnegative least square; 'QP' for quadratic programming; 'SA' for simulated annealing.
 #' @param return_class string, 'matrix' or 'data.table'.
-#' @param return_error if `TRUE`, also return method error (Frobenius norm). NOTE:
+#' @param return_error if `TRUE`, also return sample error (Frobenius norm) and cosine
+#' similarity between observed sample profile (asa. spectrum) and reconstructed profile. NOTE:
 #' it is better to obtain the error when the type is 'absolute', because the error is
 #' affected by relative exposure accuracy.
 #' @param rel_threshold numeric vector, a relative exposure lower than this value will be set to 0.
@@ -327,13 +328,19 @@ sig_fit <- function(catalogue_matrix,
         errors <- sapply(seq(ncol(expo_mat)), function(i) FrobeniusNorm(true_catalog, sig_matrix, expo_mat[, i]))
       }
     }
-    names(errors) <- colnames(catalogue_matrix)
+
+    sim <- diag(cosine(sig_matrix %*% expo_mat, catalogue_matrix))
+    names(sim) <- names(errors) <- colnames(catalogue_matrix)
+
+    # Set precision
     errors <- round(errors, digits = 3)
+    sim <- round(sim, digits = 6)
 
     send_success("Done.")
     return(list(
       expo = expo,
-      errors = errors
+      errors = errors,
+      cosine = sim
     ))
   }
 
@@ -369,7 +376,7 @@ sig_fit <- function(catalogue_matrix,
 
 decompose_NNLS <- function(x, y, sig_matrix, type = "absolute", ...) {
   ## nnls/lsqnonneg solve nonnegative least-squares constraints problem.
-  ##expo <- pracma::lsqnonneg(sig_matrix, x)$x
+  ## expo <- pracma::lsqnonneg(sig_matrix, x)$x
   expo <- stats::coef(nnls::nnls(sig_matrix, x))
 
   expo <- expo / sum(expo)

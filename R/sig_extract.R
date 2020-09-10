@@ -39,8 +39,10 @@ sig_extract <- function(nmf_matrix,
 
   ii <- colSums(mat) < 0.01
   if (any(ii)) {
-    message("The follow samples dropped due to null catalogue:\n\t",
-            paste0(colnames(mat)[ii], collapse = ", "))
+    message(
+      "The follow samples dropped due to null catalogue:\n\t",
+      paste0(colnames(mat)[ii], collapse = ", ")
+    )
     mat <- mat[, !ii, drop = FALSE]
   }
 
@@ -89,14 +91,15 @@ sig_extract <- function(nmf_matrix,
         catalogue_matrix = mat_cn,
         sig = W_cn,
         method = "QP",
-        mode = "copynumber")
+        mode = "copynumber"
+      )
     } else {
       ## Call LCD
       Exposure <- sig_fit(
         catalogue_matrix = mat,
         sig = apply(Signature, 2, function(x) x / sum(x)),
         method = "QP"
-        )
+      )
     }
   }
 

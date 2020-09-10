@@ -72,8 +72,10 @@ sig_estimate <-
 
     ii <- colSums(mat) < 0.01
     if (any(ii)) {
-      message("The follow samples dropped due to null catalogue:\n\t",
-              paste0(colnames(mat)[ii], collapse = ", "))
+      message(
+        "The follow samples dropped due to null catalogue:\n\t",
+        paste0(colnames(mat)[ii], collapse = ", ")
+      )
       mat <- mat[, !ii, drop = FALSE]
     }
 

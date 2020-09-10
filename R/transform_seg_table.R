@@ -25,9 +25,9 @@ transform_seg_table <- function(data,
                                 ref_type = c("cytoband", "gene"),
                                 values_fill = NA,
                                 values_fn = function(x, ...) {
-                                  round(mean(x, ...))},
+                                  round(mean(x, ...))
+                                },
                                 resolution_factor = 1L) {
-
   stopifnot(is.data.frame(data) | inherits(data, "CopyNumber"))
   if (is.data.frame(data)) {
     nc_cols <- c("chromosome", "start", "end", "segVal", "sample")
@@ -46,10 +46,11 @@ transform_seg_table <- function(data,
 
   ref_type <- match.arg(ref_type)
 
-  #data$sample <- factor(data$sample, levels = unique(data$sample))
+  # data$sample <- factor(data$sample, levels = unique(data$sample))
   data$chromosome <- ifelse(startsWith(data$chromosome, prefix = "chr"),
-                            data$chromosome,
-                            paste0("chr", data$chromosome))
+    data$chromosome,
+    paste0("chr", data$chromosome)
+  )
 
   if (ref_type == "cytoband") {
     annot <- get_genome_annotation(
@@ -61,10 +62,12 @@ transform_seg_table <- function(data,
     if (genome_build == "mm10") {
       # Not support for now
       annot_file <- system.file("extdata", "mouse_mm10_gene_info.rds",
-                                package = "sigminer", mustWork = TRUE)
+        package = "sigminer", mustWork = TRUE
+      )
     } else {
       annot_file <- system.file("extdata", paste0("human_", genome_build, "_gene_info.rds"),
-                                package = "sigminer", mustWork = TRUE)
+        package = "sigminer", mustWork = TRUE
+      )
     }
 
     annot <- readRDS(annot_file)
@@ -78,9 +81,9 @@ transform_seg_table <- function(data,
   if (resolution_factor > 1) {
     f <- function(x, y, n, chrom, band) {
       helper_create_chunks(x, y,
-                           n = n,
-                           chrom = chrom,
-                           band = paste(band, seq_len(n), sep = "-chunk-")
+        n = n,
+        chrom = chrom,
+        band = paste(band, seq_len(n), sep = "-chunk-")
       )
     }
     annot <- purrr::pmap_df(
@@ -98,14 +101,16 @@ transform_seg_table <- function(data,
   }
   data.table::setkey(annot, chrom, start, end)
   merge_dt <- data.table::foverlaps(data, annot,
-                                    by.x = c("chromosome", "start", "end")
+    by.x = c("chromosome", "start", "end")
   )
   merge_dt <- merge_dt %>%
     dplyr::as_tibble() %>%
     dplyr::select(-c("i.start", "i.end")) %>%
     na.omit() %>%
-    tidyr::pivot_wider(names_from = "sample", values_from = "segVal",
-                       values_fill = values_fill, values_fn = values_fn)
+    tidyr::pivot_wider(
+      names_from = "sample", values_from = "segVal",
+      values_fill = values_fill, values_fn = values_fn
+    )
   colnames(merge_dt)[4] <- "label"
   merge_dt %>% data.table::as.data.table()
 }

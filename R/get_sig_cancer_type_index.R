@@ -26,11 +26,10 @@
 #' expect_is(l4, "list")
 #' expect_null(l5)
 get_sig_cancer_type_index <- function(
-  sig_type = c("legacy", "SBS", "DBS", "ID"),
-  seq_type = c("WGS", "WES"),
-  source = c("PCAWG", "TCGA", "nonPCAWG"),
-  keyword = NULL) {
-
+                                      sig_type = c("legacy", "SBS", "DBS", "ID"),
+                                      seq_type = c("WGS", "WES"),
+                                      source = c("PCAWG", "TCGA", "nonPCAWG"),
+                                      keyword = NULL) {
   if (!is.null(keyword)) {
     df1 <- readRDS(system.file("extdata", "cosmic2_record_by_cancer.rds", package = "sigminer"))
     df2 <- readRDS(system.file("extdata", "signature_record_by_cancer.rds", package = "sigminer"))
@@ -55,9 +54,11 @@ get_sig_cancer_type_index <- function(
       message("Info found in COSMIC v3 database:")
       colnames(df2)[1] <- "cancer type"
       df2 <- df2 %>%
-        tidyr::pivot_longer(cols = c("SBS list", "DBS list", "ID list"),
-                            names_to = "signature type",
-                            values_to = "signature index") %>%
+        tidyr::pivot_longer(
+          cols = c("SBS list", "DBS list", "ID list"),
+          names_to = "signature type",
+          values_to = "signature index"
+        ) %>%
         as.data.frame()
       df2[["signature type"]] <- sub(" list", "", df2[["signature type"]])
       print(df2)

@@ -1,5 +1,6 @@
 # sigminer 1.0.16
 
+- Return cosine similarity for sample profile in `sig_fit()`.
 - Set default strategy in `sig_auto_extract()` to 'optimal'.
 - Supported search reference signature index in `get_sig_cancer_type_index()`.
 - Outputed legacy COSMIC similarity for SBS signatures.

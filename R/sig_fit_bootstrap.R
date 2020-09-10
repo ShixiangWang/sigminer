@@ -20,7 +20,7 @@
 #' @return a `list`
 #' @export
 #' @keywords bootstrap
-#' @seealso [sig_fit], [sig_fit_bootstrap_batch]
+#' @seealso [report_bootstrap_p_value], [sig_fit], [sig_fit_bootstrap_batch]
 #' @examples
 #' W <- matrix(c(1, 2, 3, 4, 5, 6), ncol = 2)
 #' colnames(W) <- c("sig1", "sig2")
@@ -227,12 +227,13 @@ sig_fit_bootstrap <- function(catalog,
   send_success("Signature exposures collected.")
 
   errors <- sapply(res[2, ], c)
-  names(errors) <- colnames(expo) <- paste0("Rep_", seq(n))
-  send_success("Errors collected.")
+  cosine <- sapply(res[3, ], c)
+  names(cosine) <- names(errors) <- colnames(expo) <- paste0("Rep_", seq(n))
+  send_success("Errors and similarity collected.")
 
   send_success("Done.")
 
-  return(list(expo = expo, errors = errors))
+  return(list(expo = expo, errors = errors, cosine = cosine))
 }
 
 

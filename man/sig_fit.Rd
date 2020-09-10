@@ -50,7 +50,8 @@ Currently only works for 'SBS'.}
 
 \item{return_class}{string, 'matrix' or 'data.table'.}
 
-\item{return_error}{if \code{TRUE}, also return method error (Frobenius norm). NOTE:
+\item{return_error}{if \code{TRUE}, also return sample error (Frobenius norm) and cosine
+similarity between observed sample profile (asa. spectrum) and reconstructed profile. NOTE:
 it is better to obtain the error when the type is 'absolute', because the error is
 affected by relative exposure accuracy.}
 

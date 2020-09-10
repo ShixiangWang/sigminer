@@ -297,24 +297,32 @@ get_matrix_mutex <- function(CN_components, indices = NULL) {
   ## HL and LH will be combined, named as LD (LadDer)
   ss_mat <- s_mat %>%
     dplyr::as_tibble(rownames = "sample") %>%
-    tidyr::pivot_longer(cols = colnames(.)[-1],
-                        names_to = "component", values_to = "count") %>%
-    tidyr::separate(col = "component",
-                    into = c("len", "type", "cn", "type2"),
-                    sep = ":",
-                    remove = FALSE) %>%
+    tidyr::pivot_longer(
+      cols = colnames(.)[-1],
+      names_to = "component", values_to = "count"
+    ) %>%
+    tidyr::separate(
+      col = "component",
+      into = c("len", "type", "cn", "type2"),
+      sep = ":",
+      remove = FALSE
+    ) %>%
     dplyr::filter(.data$type %in% c("HL", "LH")) %>%
     dplyr::group_by(.data$sample, .data$len, .data$cn, .data$type2) %>%
-    dplyr::summarise(count = sum(.data$count, na.rm = TRUE),
-                     .groups = "drop") %>%
+    dplyr::summarise(
+      count = sum(.data$count, na.rm = TRUE),
+      .groups = "drop"
+    ) %>%
     dplyr::mutate(
       component = paste(.data$len, "LD", .data$cn, .data$type2, sep = ":")
     ) %>%
     dplyr::select(c("sample", "component", "count")) %>%
-    tidyr::pivot_wider(id_cols = "sample",
-                       names_from = "component",
-                       values_from = "count",
-                       values_fill = 0L) %>%
+    tidyr::pivot_wider(
+      id_cols = "sample",
+      names_from = "component",
+      values_from = "count",
+      values_fill = 0L
+    ) %>%
     tibble::column_to_rownames("sample") %>%
     as.matrix()
 

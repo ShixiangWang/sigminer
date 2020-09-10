@@ -32,8 +32,10 @@
 #'
 #' p <- show_cn_profile(cn, nrow = 2, ncol = 1)
 #' p
-#' p2 <- show_cn_profile(cn, nrow = 2, ncol = 1,
-#'                       position = "chr1:3218923-116319008")
+#' p2 <- show_cn_profile(cn,
+#'   nrow = 2, ncol = 1,
+#'   position = "chr1:3218923-116319008"
+#' )
 #' p2
 #' @testexamples
 #' expect_s3_class(p, "ggplot")
@@ -195,9 +197,11 @@ plot_cn_profile <- function(plot_df, coord_df, show_labels = NULL) {
   if (!is.null(show_labels)) {
     p <- p +
       ggrepel::geom_label_repel(
-        aes(x = (.data$start + .data$end) / 2,
-            y = .data$segVal + 0.05,
-            label = .data$segVal),
+        aes(
+          x = (.data$start + .data$end) / 2,
+          y = .data$segVal + 0.05,
+          label = .data$segVal
+        ),
         size = 2,
         data = if (show_labels == "s") {
           plot_df %>%
@@ -207,15 +211,19 @@ plot_cn_profile <- function(plot_df, coord_df, show_labels = NULL) {
         },
         label.padding = unit(0.1, "lines"),
         point.padding = NA,
-        nudge_y = 0.3)
+        nudge_y = 0.3
+      )
   }
   p +
     geom_vline(aes(xintercept = .data$x_start),
-               alpha = 0.5,
-               linetype = "dotted", data = coord_df) +
-    geom_vline(xintercept = coord_df$x_end[nrow(coord_df)],
-               alpha = 0.5,
-               linetype = "dotted") +
+      alpha = 0.5,
+      linetype = "dotted", data = coord_df
+    ) +
+    geom_vline(
+      xintercept = coord_df$x_end[nrow(coord_df)],
+      alpha = 0.5,
+      linetype = "dotted"
+    ) +
     scale_x_continuous(breaks = coord_df$lab_loc, labels = coord_df$labels) +
     scale_color_manual(values = c("Amp" = "red", "Normal" = "black", "Del" = "blue")) +
     labs(x = "Chromosome", y = "Copy number") +

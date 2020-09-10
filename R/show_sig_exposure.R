@@ -132,7 +132,7 @@ show_sig_exposure <- function(Signature,
 
   if (is.null(sig_names)) {
     # chop Signature off
-    rownames(h.norm) <- rownames(h) <- gsub("[^0-9]", "",  rownames(h))
+    rownames(h.norm) <- rownames(h) <- gsub("[^0-9]", "", rownames(h))
   } else {
     rownames(h.norm) <- rownames(h) <- sig_names
   }
