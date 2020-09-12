@@ -32,11 +32,13 @@
 #'
 #' p <- show_cn_profile(cn, nrow = 2, ncol = 1)
 #' p
+#' \donttest{
 #' p2 <- show_cn_profile(cn,
 #'   nrow = 2, ncol = 1,
 #'   position = "chr1:3218923-116319008"
 #' )
 #' p2
+#' }
 #' @testexamples
 #' expect_s3_class(p, "ggplot")
 #' expect_s3_class(p2, "ggplot")
