@@ -1,3 +1,7 @@
+# sigminer 1.0.17
+
+- Fixed default y axis title in `show_sig_bootstrap_error()`, now it is "Reconstruction error (L2 norm)"
+
 # sigminer 1.0.16
 
 - Added `auto_reduce` option in `sig_fit*` functions to improve signature fitting.

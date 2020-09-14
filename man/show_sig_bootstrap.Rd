@@ -39,7 +39,7 @@ show_sig_bootstrap_error(
   palette = "aaas",
   title = NULL,
   xlab = FALSE,
-  ylab = "Reconstruction error (F2 norm)",
+  ylab = "Reconstruction error (L2 norm)",
   width = 0.3,
   dodge_width = 0.8,
   outlier.shape = NA,
