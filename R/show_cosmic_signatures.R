@@ -57,6 +57,12 @@ show_cosmic_sig_profile <- function(sig_index = NULL, show_index = TRUE, sig_db 
     if ("ALL" %in% sig_index) {
       sig_index <- avail_index
     }
+
+    if (length(sig_index) == 1) {
+      if (grepl(",", sig_index)) {
+        sig_index <- unique(split_seq(sig_index))
+      }
+    }
   }
 
   if (!all(sig_index %in% avail_index)) {
