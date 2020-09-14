@@ -2,7 +2,7 @@
 
 context("File R/get_sig_similarity.R: @testexamples")
 
-test_that("Function get_sig_similarity() @ L62", {
+test_that("Function get_sig_similarity() @ L68", {
   
   # Load mutational signature
   load(system.file("extdata", "toy_mutational_signature.RData",
@@ -17,23 +17,28 @@ test_that("Function get_sig_similarity() @ L62", {
   s3 <- get_sig_similarity(sig2, sig_db = "SBS")
   s3
   
+  # Set order for result similarity matrix
+  s4 <- get_sig_similarity(sig2, sig_db = "SBS", set_order = TRUE)
+  s4
+  
   ## Remove some components
   ## in similarity calculation
-  s4 <- get_sig_similarity(sig2,
+  s5 <- get_sig_similarity(sig2,
     Ref = sig2,
     pattern_to_rm = c("T[T>G]C", "T[T>G]G", "T[T>G]T")
   )
-  s4
+  s5
   
   ## Same to DBS and ID signatures
   expect_equal(length(s1), 4L)
   expect_equal(length(s2), 4L)
   expect_equal(length(s3), 4L)
   expect_equal(length(s4), 4L)
+  expect_equal(length(s5), 4L)
 })
 
 
-test_that("Function get_sig_db() @ L261", {
+test_that("Function get_sig_db() @ L279", {
   
   s1 <- get_sig_db()
   s2 <- get_sig_db("DBS")

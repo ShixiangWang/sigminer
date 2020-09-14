@@ -21,6 +21,7 @@
 #' @param normalize one of "row" and "feature". "row" is typically used
 #' for common mutational signatures. "feature" is designed by me to use when input
 #' are copy number signatures.
+#' @param set_order if `TRUE`, order the return similarity matrix.
 #' @param pattern_to_rm patterns for removing some features/components in similarity
 #' calculation. A vector of component name is also accepted.
 #' The remove operation will be done after normalization. Default is `NULL`.
@@ -45,13 +46,17 @@
 #' s3 <- get_sig_similarity(sig2, sig_db = "SBS")
 #' s3
 #'
+#' # Set order for result similarity matrix
+#' s4 <- get_sig_similarity(sig2, sig_db = "SBS", set_order = TRUE)
+#' s4
+#'
 #' ## Remove some components
 #' ## in similarity calculation
-#' s4 <- get_sig_similarity(sig2,
+#' s5 <- get_sig_similarity(sig2,
 #'   Ref = sig2,
 #'   pattern_to_rm = c("T[T>G]C", "T[T>G]G", "T[T>G]T")
 #' )
-#' s4
+#' s5
 #'
 #' ## Same to DBS and ID signatures
 #' @testexamples
@@ -59,12 +64,14 @@
 #' expect_equal(length(s2), 4L)
 #' expect_equal(length(s3), 4L)
 #' expect_equal(length(s4), 4L)
+#' expect_equal(length(s5), 4L)
 get_sig_similarity <- function(Signature, Ref = NULL,
                                sig_db = "legacy",
                                db_type = c("", "human-exome", "human-genome"),
                                method = "cosine",
                                normalize = c("row", "feature"),
                                feature_setting = sigminer::CN.features,
+                               set_order = TRUE,
                                pattern_to_rm = NULL,
                                verbose = TRUE) {
   if (inherits(Signature, "Signature")) {
@@ -201,21 +208,27 @@ get_sig_similarity <- function(Signature, Ref = NULL,
       message("-Comparing against Custom signatures")
     }
     message("------------------------------------")
+
+    all_matches <- c()
     for (i in 1:nrow(corMat)) {
+      .to_match <- rownames(corMat)[i]
+      .be_match <- names(which(corMat[i, ] == max(corMat[i, ])))
+      all_matches <- c(all_matches, .be_match)
+
       if (is.null(Ref)) {
-        ae <- aetiology[names(which(corMat[i, ] == max(corMat[i, ]))), ]
+        ae <- aetiology[.be_match, ]
         ae <- paste0(
           "Aetiology: ", ae, " [similarity: ",
           max(corMat[i, ]), "]"
         )
-        message("--Found ", rownames(corMat)[i], " most similar to ",
-          names(which(corMat[i, ] == max(corMat[i, ]))),
+        message("--Found ", .to_match,
+                " most similar to ", .be_match,
           sep = ""
         )
         message(paste0("   ", ae))
       } else {
-        message("--Found ", rownames(corMat)[i], " most similar to ",
-          names(which(corMat[i, ] == max(corMat[i, ]))),
+        message("--Found ", .to_match,
+                " most similar to ", .be_match,
           paste0(" [similarity: ", max(corMat[i, ]), "]"),
           sep = ""
         )
@@ -223,6 +236,11 @@ get_sig_similarity <- function(Signature, Ref = NULL,
     }
     message("------------------------------------")
     message("Return result invisiblely.")
+  }
+
+  if (set_order) {
+    all_matches <- unique(all_matches)
+    corMat <- corMat[, c(all_matches, setdiff(colnames(corMat), all_matches))]
   }
 
   res <- list(

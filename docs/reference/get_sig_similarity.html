@@ -84,7 +84,7 @@ from compareSignatures() in maftools package." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.17</span>
       </span>
     </div>
 
@@ -147,6 +147,7 @@ from <code>compareSignatures()</code> in <strong>maftools</strong> package.</p>
   <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"cosine"</span>,
   <span class='kw'>normalize</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"row"</span>, <span class='st'>"feature"</span>),
   <span class='kw'>feature_setting</span> <span class='kw'>=</span> <span class='kw pkg'>sigminer</span><span class='kw ns'>::</span><span class='no'><a href='CN.features.html'>CN.features</a></span>,
+  <span class='kw'>set_order</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>pattern_to_rm</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 )</pre>
@@ -196,6 +197,10 @@ Default is <a href='CN.features.html'>CN.features</a>. Users can also set custom
 <code><a href='https://rdrr.io/r/base/unique.html'>unique(CN.features$feature)</a></code>.</p></td>
     </tr>
     <tr>
+      <th>set_order</th>
+      <td><p>if <code>TRUE</code>, order the return similarity matrix.</p></td>
+    </tr>
+    <tr>
       <th>pattern_to_rm</th>
       <td><p>patterns for removing some features/components in similarity
 calculation. A vector of component name is also accepted.
@@ -225,13 +230,17 @@ The remove operation will be done after normalization. Default is <code>NULL</co
 <span class='no'>s3</span> <span class='kw'>&lt;-</span> <span class='fu'>get_sig_similarity</span>(<span class='no'>sig2</span>, <span class='kw'>sig_db</span> <span class='kw'>=</span> <span class='st'>"SBS"</span>)
 <span class='no'>s3</span>
 
+<span class='co'># Set order for result similarity matrix</span>
+<span class='no'>s4</span> <span class='kw'>&lt;-</span> <span class='fu'>get_sig_similarity</span>(<span class='no'>sig2</span>, <span class='kw'>sig_db</span> <span class='kw'>=</span> <span class='st'>"SBS"</span>, <span class='kw'>set_order</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='no'>s4</span>
+
 <span class='co'>## Remove some components</span>
 <span class='co'>## in similarity calculation</span>
-<span class='no'>s4</span> <span class='kw'>&lt;-</span> <span class='fu'>get_sig_similarity</span>(<span class='no'>sig2</span>,
+<span class='no'>s5</span> <span class='kw'>&lt;-</span> <span class='fu'>get_sig_similarity</span>(<span class='no'>sig2</span>,
   <span class='kw'>Ref</span> <span class='kw'>=</span> <span class='no'>sig2</span>,
   <span class='kw'>pattern_to_rm</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"T[T&gt;G]C"</span>, <span class='st'>"T[T&gt;G]G"</span>, <span class='st'>"T[T&gt;G]T"</span>)
 )
-<span class='no'>s4</span>
+<span class='no'>s5</span>
 
 <span class='co'>## Same to DBS and ID signatures</span></pre>
   </div>

@@ -12,6 +12,7 @@ get_sig_similarity(
   method = "cosine",
   normalize = c("row", "feature"),
   feature_setting = sigminer::CN.features,
+  set_order = TRUE,
   pattern_to_rm = NULL,
   verbose = TRUE
 )
@@ -44,6 +45,8 @@ Default is \link{CN.features}. Users can also set custom input with "feature",
 "min" and "max" columns available. Valid features can be printed by
 \code{unique(CN.features$feature)}.}
 
+\item{set_order}{if \code{TRUE}, order the return similarity matrix.}
+
 \item{pattern_to_rm}{patterns for removing some features/components in similarity
 calculation. A vector of component name is also accepted.
 The remove operation will be done after normalization. Default is \code{NULL}.}
@@ -74,13 +77,17 @@ s2
 s3 <- get_sig_similarity(sig2, sig_db = "SBS")
 s3
 
+# Set order for result similarity matrix
+s4 <- get_sig_similarity(sig2, sig_db = "SBS", set_order = TRUE)
+s4
+
 ## Remove some components
 ## in similarity calculation
-s4 <- get_sig_similarity(sig2,
+s5 <- get_sig_similarity(sig2,
   Ref = sig2,
   pattern_to_rm = c("T[T>G]C", "T[T>G]G", "T[T>G]T")
 )
-s4
+s5
 
 ## Same to DBS and ID signatures
 }
