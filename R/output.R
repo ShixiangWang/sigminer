@@ -176,6 +176,24 @@ output_sig <- function(sig, result_dir, mut_type = "SBS") {
     )
   }
 
+  if (attr(sig, "call_method") == "BayesianNMF") {
+    data.table::fwrite(
+      sig$Raw$summary_run,
+      file = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_signature_number_survey.csv"))
+    )
+  }
+
+  if (attr(sig, "call_method") == "SigProfiler") {
+    data.table::fwrite(
+      sig$Stats$samples,
+      file = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_sample_stats.csv"))
+    )
+    data.table::fwrite(
+      sig$Stats$signatures,
+      file = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_signature_stats.csv"))
+    )
+  }
+
   return(invisible(NULL))
 }
 
