@@ -175,7 +175,7 @@ sig_fit <- function(catalogue_matrix,
     if (length(sig_index) == 1) {
       if (grepl(",", sig_index)) {
         send_success("Signature indices separated by comma are detected.")
-        sig_index <- split_seq(sig_index)
+        sig_index <- unique(split_seq(sig_index))
       }
     }
 
