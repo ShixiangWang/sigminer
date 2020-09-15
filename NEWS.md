@@ -1,5 +1,6 @@
 # sigminer 1.0.18
 
+- Fixed bugs when outputing only 1 signatures.
 - Fixed label inverse bug in `add_labels()`, thanks to TaoTao for reporting.
 
 # sigminer 1.0.17

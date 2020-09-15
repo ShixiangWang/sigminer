@@ -240,7 +240,7 @@ get_sig_similarity <- function(Signature, Ref = NULL,
 
   if (set_order) {
     all_matches <- unique(all_matches)
-    corMat <- corMat[, c(all_matches, setdiff(colnames(corMat), all_matches))]
+    corMat <- corMat[, c(all_matches, setdiff(colnames(corMat), all_matches)), drop = FALSE]
   }
 
   res <- list(

@@ -65,6 +65,10 @@ get_sig_exposure <- function(Signature,
     return(h)
   } else {
     h.norm <- apply(h, 2, function(x) x / sum(x))
+    if (nrow(h) == 1L) {
+      h.norm <- t(as.matrix(h.norm))
+      rownames(h.norm) <- rownames(h)
+    }
     h.norm <- t(h.norm) %>%
       as.data.frame() %>%
       tibble::rownames_to_column(var = "sample") %>%
