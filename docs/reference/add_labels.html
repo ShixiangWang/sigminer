@@ -81,7 +81,7 @@ from show_sig_profile." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.16</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.18</span>
       </span>
     </div>
 
@@ -140,6 +140,7 @@ from <a href='show_sig_profile.html'>show_sig_profile</a>.</p>
   <span class='kw'>y_end</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>n_label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>labels</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>revert_order</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>font_size</span> <span class='kw'>=</span> <span class='fl'>5</span>,
   <span class='kw'>font_family</span> <span class='kw'>=</span> <span class='st'>"serif"</span>,
   <span class='kw'>font_face</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"plain"</span>, <span class='st'>"bold"</span>, <span class='st'>"italic"</span>),
@@ -189,7 +190,7 @@ according to <code>y</code> and <code>y_end</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>other parameters passing to <a href='https://ggplot2.tidyverse.org/reference/annotate.html'>ggplot2::annotate</a>.</p></td>
+      <td><p>other parameters passing to <a href='https://rdrr.io/pkg/ggplot2/man/annotate.html'>ggplot2::annotate</a>.</p></td>
     </tr>
     </table>
 
@@ -222,7 +223,7 @@ according to <code>y</code> and <code>y_end</code>.</p></td>
 <span class='co'># Method 3</span>
 <span class='no'>sim</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_sig_similarity.html'>get_sig_similarity</a></span>(<span class='no'>sig2</span>)
 <span class='no'>p3</span> <span class='kw'>&lt;-</span> <span class='fu'>add_labels</span>(<span class='no'>p</span>,
-  <span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.15</span>, <span class='fl'>0.6</span>, <span class='fl'>0.75</span>), <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.3</span>, <span class='fl'>0.6</span>, <span class='fl'>0.9</span>),
+  <span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.15</span>, <span class='fl'>0.6</span>, <span class='fl'>0.75</span>), <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.25</span>, <span class='fl'>0.55</span>, <span class='fl'>0.8</span>),
   <span class='kw'>labels</span> <span class='kw'>=</span> <span class='no'>sim</span>, <span class='kw'>font_size</span> <span class='kw'>=</span> <span class='fl'>2</span>
 )
 <span class='no'>p3</span></pre>

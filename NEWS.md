@@ -1,3 +1,7 @@
+# sigminer 1.0.18
+
+- Fixed label inverse bug in `add_labels()`, thanks to TaoTao for reporting.
+
 # sigminer 1.0.17
 
 - Handled `,` seperated indices in show_cosmic_signatures.

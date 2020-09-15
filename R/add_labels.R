@@ -39,7 +39,7 @@
 #' # Method 3
 #' sim <- get_sig_similarity(sig2)
 #' p3 <- add_labels(p,
-#'   x = c(0.15, 0.6, 0.75), y = c(0.3, 0.6, 0.9),
+#'   x = c(0.15, 0.6, 0.75), y = c(0.25, 0.55, 0.8),
 #'   labels = sim, font_size = 2
 #' )
 #' p3
@@ -51,6 +51,7 @@
 add_labels <- function(p, x, y, y_end = NULL,
                        n_label = NULL,
                        labels = NULL,
+                       revert_order = FALSE,
                        font_size = 5,
                        font_family = "serif",
                        font_face = c("plain", "bold", "italic"),
@@ -70,6 +71,8 @@ add_labels <- function(p, x, y, y_end = NULL,
   }
 
   font_face <- match.arg(font_face)
+
+  if (!revert_order) labels <- rev(labels)
 
   p + annotate(
     geom = "text",

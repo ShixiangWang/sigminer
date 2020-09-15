@@ -28,7 +28,7 @@ test_that("Function add_labels() @ L51", {
   # Method 3
   sim <- get_sig_similarity(sig2)
   p3 <- add_labels(p,
-    x = c(0.15, 0.6, 0.75), y = c(0.3, 0.6, 0.9),
+    x = c(0.15, 0.6, 0.75), y = c(0.25, 0.55, 0.8),
     labels = sim, font_size = 2
   )
   p3
