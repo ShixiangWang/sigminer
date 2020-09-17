@@ -1,3 +1,7 @@
+# sigminer 1.0.19
+
+- Added options in `show_group_distribution()` to control segments.
+
 # sigminer 1.0.18
 
 - Fixed bugs when outputing only 1 signatures.

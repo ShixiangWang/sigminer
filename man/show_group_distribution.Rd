@@ -15,6 +15,8 @@ show_group_distribution(
   g_angle = 0,
   g_position = "top",
   point_size = 1L,
+  segment_size = 1L,
+  segment_color = "red",
   xlab = NULL,
   ylab = NULL,
   nrow = 1L,
@@ -43,6 +45,10 @@ by argument \code{fun}.}
 be 'bottom'.}
 
 \item{point_size}{size of point.}
+
+\item{segment_size}{size of segment.}
+
+\item{segment_color}{color of segment.}
 
 \item{xlab}{title for x axis.}
 
