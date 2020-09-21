@@ -72,8 +72,10 @@ Suggests:
     GenomicRanges,
     GenSA,
     ggalluvial,
+    ggcorrplot,
     ggfittext,
     ggplotify,
+    ggrepel,
     IRanges,
     knitr,
     markdown,
@@ -87,8 +89,7 @@ Suggests:
     rmarkdown,
     roxygen2,
     testthat,
-    tibble,
-    ggrepel
+    tibble
 LinkingTo: 
     Rcpp
 VignetteBuilder: 

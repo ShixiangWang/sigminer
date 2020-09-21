@@ -80,6 +80,7 @@ reference:
     - get_sig_exposure
     - get_sig_feature_association
     - get_tidy_association
+    - show_cor
     - show_sig_feature_corrplot
     - show_groups
     - get_groups
