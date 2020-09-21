@@ -28,7 +28,7 @@
 #' p2 <- show_cor(mtcars,
 #'                x_vars = colnames(mtcars)[1:4],
 #'                y_vars = colnames(mtcars)[5:8])
-#' p3 <- show_cor(mtcars, method = "circle", p_adj = "fdr")
+#' p3 <- show_cor(mtcars, vis_method = "circle", p_adj = "fdr")
 #' p1
 #' p1$cor
 #' p2

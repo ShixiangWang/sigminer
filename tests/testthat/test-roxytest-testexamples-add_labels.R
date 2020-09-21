@@ -2,7 +2,7 @@
 
 context("File R/add_labels.R: @testexamples")
 
-test_that("Function add_labels() @ L51", {
+test_that("Function add_labels() @ L52", {
   
   # Load mutational signature
   load(system.file("extdata", "toy_mutational_signature.RData",

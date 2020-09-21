@@ -9,6 +9,7 @@
 #' the position of labels at y axis is auto-generated
 #' according to `y` and `y_end`.
 #' @param labels text labels or a `similarity` object from [get_sig_similarity].
+#' @param revert_order if `TRUE`, revert label order.
 #' @param ... other parameters passing to [ggplot2::annotate].
 #'
 #' @return a `ggplot` object.

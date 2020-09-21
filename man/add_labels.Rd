@@ -33,6 +33,8 @@ according to \code{y} and \code{y_end}.}
 
 \item{labels}{text labels or a \code{similarity} object from \link{get_sig_similarity}.}
 
+\item{revert_order}{if \code{TRUE}, revert label order.}
+
 \item{font_size}{font size.}
 
 \item{font_family}{font family.}
