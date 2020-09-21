@@ -9,6 +9,7 @@
 #' If missing, all features will be used.
 #' @param sort_features default is `FALSE`, use feature order obtained from the previous
 #' step. If `TRUE`, sort features as `feature_list`.
+#' @param sig_orders signature levels for ordering.
 #' @param return_plotlist if `TRUE`, return as a list of `ggplot` objects.
 #' @param p_val p value threshold. If p value larger than this threshold,
 #' the result becomes blank white.
@@ -39,6 +40,7 @@
 #' @seealso [get_tidy_association] and [get_sig_feature_association]
 show_sig_feature_corrplot <- function(tidy_cor, feature_list,
                                       sort_features = FALSE,
+                                      sig_orders = NULL,
                                       drop = TRUE,
                                       return_plotlist = FALSE,
                                       p_val = 0.05,
@@ -72,7 +74,9 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
     data <- tidy_cor %>%
       dplyr::mutate(
         Samples = .data$count,
-        signature = factor(.data$signature)
+        signature = factor(
+          .data$signature,
+          levels = if(is.null(sig_orders)) unique(.data$signature) else sig_orders)
       ) %>%
       dplyr::filter(.data$feature %in% feature_list)
 
@@ -80,7 +84,9 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
   } else if (any(is.na(breaks_count))) {
     data <- tidy_cor %>%
       dplyr::mutate(
-        signature = factor(.data$signature)
+        signature = factor(
+          .data$signature,
+          levels = if(is.null(sig_orders)) unique(.data$signature) else sig_orders)
       ) %>%
       dplyr::filter(.data$feature %in% feature_list)
   } else {
@@ -89,7 +95,9 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
         Samples = cut(.data$count,
           breaks = breaks_count
         ),
-        signature = factor(.data$signature)
+        signature = factor(
+          .data$signature,
+          levels = if(is.null(sig_orders)) unique(.data$signature) else sig_orders)
       ) %>%
       dplyr::filter(.data$feature %in% feature_list)
   }
@@ -172,7 +180,8 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
   gglist <- purrr::map2(gglist, names(gglist), function(p,
                                                         type) {
     p <- p + cowplot::theme_cowplot() +
-      ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45)) +
+      ggplot2::theme(axis.text.x = element_text(
+        angle = 90, vjust = 0.5, hjust = 1)) +
       ggplot2::labs(x = xlab, y = ylab)
     if (type == "co") {
       p <- p + labs(color = "Correlation\ncoefficient")

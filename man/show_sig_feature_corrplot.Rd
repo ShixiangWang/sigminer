@@ -8,6 +8,7 @@ show_sig_feature_corrplot(
   tidy_cor,
   feature_list,
   sort_features = FALSE,
+  sig_orders = NULL,
   drop = TRUE,
   return_plotlist = FALSE,
   p_val = 0.05,
@@ -28,6 +29,8 @@ If missing, all features will be used.}
 
 \item{sort_features}{default is \code{FALSE}, use feature order obtained from the previous
 step. If \code{TRUE}, sort features as \code{feature_list}.}
+
+\item{sig_orders}{signature levels for ordering.}
 
 \item{drop}{if \code{TRUE}, when a feature has no association with all signatures
 (p value larger than threshold set by \code{p_val}), this feature will be removed

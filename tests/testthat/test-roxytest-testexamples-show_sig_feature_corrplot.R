@@ -2,7 +2,7 @@
 
 context("File R/show_sig_feature_corrplot.R: @testexamples")
 
-test_that("Function show_sig_feature_corrplot() @ L40", {
+test_that("Function show_sig_feature_corrplot() @ L41", {
   
   
   # The data is generated from Wang, Shixiang et al.
