@@ -141,7 +141,8 @@ This is basically a wrapper of R package
   <span class='no'>data</span>,
   <span class='kw'>x_vars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>data</span>),
   <span class='kw'>y_vars</span> <span class='kw'>=</span> <span class='no'>x_vars</span>,
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"square"</span>,
+  <span class='kw'>cor_method</span> <span class='kw'>=</span> <span class='st'>"spearman"</span>,
+  <span class='kw'>vis_method</span> <span class='kw'>=</span> <span class='st'>"square"</span>,
   <span class='kw'>lab</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>hc_order</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>p_adj</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -164,7 +165,11 @@ This is basically a wrapper of R package
       <td><p>variables/column names shown in y axis.</p></td>
     </tr>
     <tr>
-      <th>method</th>
+      <th>cor_method</th>
+      <td><p>method for correlation, default is 'spearman'.</p></td>
+    </tr>
+    <tr>
+      <th>vis_method</th>
       <td><p>visualization method, default is 'square',
 can also be 'circle'.</p></td>
     </tr>

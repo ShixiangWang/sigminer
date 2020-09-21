@@ -8,7 +8,8 @@ show_cor(
   data,
   x_vars = colnames(data),
   y_vars = x_vars,
-  method = "square",
+  cor_method = "spearman",
+  vis_method = "square",
   lab = TRUE,
   hc_order = FALSE,
   p_adj = NULL,
@@ -22,7 +23,9 @@ show_cor(
 
 \item{y_vars}{variables/column names shown in y axis.}
 
-\item{method}{visualization method, default is 'square',
+\item{cor_method}{method for correlation, default is 'spearman'.}
+
+\item{vis_method}{visualization method, default is 'square',
 can also be 'circle'.}
 
 \item{lab}{logical value. If TRUE, add correlation coefficient on the plot.}

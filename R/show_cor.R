@@ -8,7 +8,8 @@
 #' @param data a `data.frame`.
 #' @param x_vars variables/column names shown in x axis.
 #' @param y_vars variables/column names shown in y axis.
-#' @param method visualization method, default is 'square',
+#' @param cor_method method for correlation, default is 'spearman'.
+#' @param vis_method visualization method, default is 'square',
 #' can also be 'circle'.
 #' @param lab logical value. If TRUE, add correlation coefficient on the plot.
 #' @param hc_order logical value. If `TRUE`,
@@ -37,7 +38,8 @@
 #' expect_is(p2, "ggplot")
 #' expect_is(p3, "ggplot")
 show_cor <- function(data, x_vars = colnames(data), y_vars = x_vars,
-                     method = "square",
+                     cor_method = "spearman",
+                     vis_method = "square",
                      lab = TRUE,
                      hc_order = FALSE,
                      p_adj = NULL,
@@ -53,7 +55,9 @@ show_cor <- function(data, x_vars = colnames(data), y_vars = x_vars,
     dplyr::as_tibble() %>%
     dplyr::select(all_vars)
 
-  corr <- round(stats::cor(data), 2)
+  corr <- round(stats::cor(data,
+                           use = "pairwise.complete.obs",
+                           method = cor_method), 2)
   p_mat <- ggcorrplot::cor_pmat(data)
 
   if (!is.null(p_adj)) {
@@ -68,7 +72,7 @@ show_cor <- function(data, x_vars = colnames(data), y_vars = x_vars,
 
   p <- ggcorrplot::ggcorrplot(
     corr,
-    method = method,
+    method = vis_method,
     hc.order = hc_order,
     lab = TRUE,
     p.mat = p_mat,

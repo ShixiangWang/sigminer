@@ -2,7 +2,7 @@
 
 context("File R/show_cor.R: @testexamples")
 
-test_that("Function show_cor() @ L39", {
+test_that("Function show_cor() @ L40", {
   
   data("mtcars")
   p1 <- show_cor(mtcars)
