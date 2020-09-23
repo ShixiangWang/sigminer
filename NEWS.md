@@ -1,5 +1,6 @@
 # sigminer 1.0.19
 
+- Updated `output_sig()` to output signature exposure distribution ([#280](https://github.com/ShixiangWang/sigminer/issues/280)).
 - Added `show_cor()` for general association analysis.
 - Added options in `show_group_distribution()` to control segments.
 
