@@ -11,6 +11,7 @@ show_cor(
   cor_method = "spearman",
   vis_method = "square",
   lab = TRUE,
+  test = TRUE,
   hc_order = FALSE,
   p_adj = NULL,
   ...
@@ -29,6 +30,8 @@ show_cor(
 can also be 'circle'.}
 
 \item{lab}{logical value. If TRUE, add correlation coefficient on the plot.}
+
+\item{test}{if \code{TRUE}, run test for correlation and mark significance.}
 
 \item{hc_order}{logical value. If \code{TRUE},
 correlation matrix will be hc.ordered using \code{hclust} function.}
@@ -57,6 +60,11 @@ p1
 p1$cor
 p2
 p3
+
+## Auto detect problem variables
+mtcars$xx <- 0L
+p4 <- show_cor(mtcars)
+p4
 }
 \seealso{
 \link{show_sig_feature_corrplot} for specific and more powerful

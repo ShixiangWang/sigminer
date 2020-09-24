@@ -12,6 +12,7 @@
 #' @param vis_method visualization method, default is 'square',
 #' can also be 'circle'.
 #' @param lab logical value. If TRUE, add correlation coefficient on the plot.
+#' @param test if `TRUE`, run test for correlation and mark significance.
 #' @param hc_order logical value. If `TRUE`,
 #' correlation matrix will be hc.ordered using `hclust` function.
 #' @param p_adj p adjust method, see [stats::p.adjust] for details.
@@ -33,14 +34,21 @@
 #' p1$cor
 #' p2
 #' p3
+#'
+#' ## Auto detect problem variables
+#' mtcars$xx <- 0L
+#' p4 <- show_cor(mtcars)
+#' p4
 #' @testexamples
 #' expect_is(p1, "ggplot")
 #' expect_is(p2, "ggplot")
 #' expect_is(p3, "ggplot")
+#' expect_is(p4, "ggplot")
 show_cor <- function(data, x_vars = colnames(data), y_vars = x_vars,
                      cor_method = "spearman",
                      vis_method = "square",
                      lab = TRUE,
+                     test = TRUE,
                      hc_order = FALSE,
                      p_adj = NULL,
                      ...) {
@@ -55,32 +63,54 @@ show_cor <- function(data, x_vars = colnames(data), y_vars = x_vars,
     dplyr::as_tibble() %>%
     dplyr::select(all_vars)
 
+  ## Check variables
+  problem_vars <- sapply(all_vars, function(x) {
+    stats::sd(data[[x]], na.rm = TRUE) == 0
+  })
+
+  if (any(problem_vars)) {
+    problem_vars <- all_vars[problem_vars]
+    message(paste("Problem variables with sd=0 detected:", paste(problem_vars, collapse = ",")))
+    message("They will be removed.")
+    all_vars <- setdiff(all_vars, problem_vars)
+    if (length(all_vars) < 1) stop("No variable left.")
+    x_vars <- setdiff(x_vars, problem_vars)
+    if (length(x_vars) < 1) stop("No variable in x axis left.")
+    y_vars <- setdiff(y_vars, problem_vars)
+    if (length(y_vars) < 1) stop("No variable in x axis left.")
+    data <- data %>%
+      dplyr::select(all_vars)
+  }
+
   corr <- round(stats::cor(data,
                            use = "pairwise.complete.obs",
                            method = cor_method), 2)
-  p_mat <- ggcorrplot::cor_pmat(data)
-
-  if (!is.null(p_adj)) {
-    pa <- stats::p.adjust(p_mat, method = p_adj)
-    p_mat <- matrix(pa, nrow = nrow(p_mat), ncol = ncol(p_mat),
-                    dimnames = list(rownames(p_mat),
-                                    colnames(p_mat)))
-  }
 
   corr <- corr[x_vars, y_vars, drop = FALSE]
-  p_mat <- p_mat[x_vars, y_vars, drop = FALSE]
+
+  if (test) {
+    p_mat <- ggcorrplot::cor_pmat(data)
+
+    if (!is.null(p_adj)) {
+      pa <- stats::p.adjust(p_mat, method = p_adj)
+      p_mat <- matrix(pa, nrow = nrow(p_mat), ncol = ncol(p_mat),
+                      dimnames = list(rownames(p_mat),
+                                      colnames(p_mat)))
+    }
+    p_mat <- p_mat[x_vars, y_vars, drop = FALSE]
+  }
 
   p <- ggcorrplot::ggcorrplot(
     corr,
     method = vis_method,
     hc.order = hc_order,
     lab = TRUE,
-    p.mat = p_mat,
+    p.mat = if (!test) NULL else p_mat,
     ...
   )
   p$cor <- list()
   p$cor$cor_mat <- corr
-  p$cor$p_mat <- p_mat
+  if (test) p$cor$p_mat <- p_mat
 
   return(p)
 }
