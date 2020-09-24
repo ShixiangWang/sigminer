@@ -11,7 +11,7 @@ show_group_distribution(
   fun = stats::median,
   order_by_fun = FALSE,
   alpha = 0.8,
-  g_label = NULL,
+  g_label = "label",
   g_angle = 0,
   g_position = "top",
   point_size = 1L,
@@ -37,7 +37,8 @@ by argument \code{fun}.}
 
 \item{alpha}{alpha for points, range from 0 to 1.}
 
-\item{g_label}{a named vector to set facet labels, default is \code{NULL}.}
+\item{g_label}{a string 'label' (default) for labeling with sample size,
+or 'norm' to show just group name, or a named vector to set facet labels.}
 
 \item{g_angle}{angle for facet labels, default is \code{0}.}
 
@@ -72,6 +73,7 @@ data <- data.frame(
 )
 p <- show_group_distribution(data,
   gvar = 2, dvar = 1,
+  g_label = "norm",
   background_color = "grey"
 )
 p
@@ -82,6 +84,13 @@ p2 <- show_group_distribution(data,
   alpha = 0.3
 )
 p2
+
+# Set custom group names
+p3 <- show_group_distribution(data,
+                        gvar = 2, dvar = 1,
+                        g_label = c("A"="X", "B"="Y", "C"="Z")
+)
+p3
 }
 \author{
 Shixiang Wang \href{mailto:w_shixiang@163.com}{w_shixiang@163.com}
