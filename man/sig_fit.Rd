@@ -28,7 +28,7 @@ columns representing samples, typically you can get \code{nmf_matrix} from \code
 transpose it by \code{t()}.}
 
 \item{sig}{a \code{Signature} object obtained either from \link{sig_extract} or \link{sig_auto_extract},
-or just a raw signature matrix with row representing components (motifs) and
+or just a raw signature matrix/\code{data.frame} with row representing components (motifs) and
 column representing signatures.}
 
 \item{sig_index}{a vector for signature index. "ALL" for all signatures.}

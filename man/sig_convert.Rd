@@ -8,7 +8,7 @@ sig_convert(sig, from = "human-genome", to = "human-exome")
 }
 \arguments{
 \item{sig}{a \code{Signature} object obtained either from \link{sig_extract} or \link{sig_auto_extract},
-or just a raw signature matrix with row representing components (motifs) and
+or just a raw signature matrix/\code{data.frame} with row representing components (motifs) and
 column representing signatures.}
 
 \item{from}{either one of "human-genome" and "human-exome" or an opportunity matrix

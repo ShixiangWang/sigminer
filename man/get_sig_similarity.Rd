@@ -18,8 +18,9 @@ get_sig_similarity(
 )
 }
 \arguments{
-\item{Signature}{a \code{Signature} object or a component-by-signature matrix (sum of each column is 1)
-or a normalized component-by-sample matirx (sum of each column is 1).
+\item{Signature}{a \code{Signature} object or a component-by-signature matrix/\code{data.frame}
+(sum of each column is 1) or a normalized component-by-sample matrix/\code{data.frame}
+(sum of each column is 1).
 More please see examples.}
 
 \item{Ref}{default is \code{NULL}, can be a same object as \code{Signature}.}

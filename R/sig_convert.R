@@ -42,7 +42,8 @@ sig_convert <- function(sig, from = "human-genome", to = "human-exome") {
 
   if (inherits(sig, "Signature")) {
     sig_mat <- sig$Signature.norm
-  } else if (is.matrix(sig)) {
+  } else if (is.matrix(sig) | is.data.frame(sig)) {
+    sig <- as.matrix(sig)
     sig_mat <- apply(sig, 2, function(x) x / sum(x))
   } else {
     stop("Invalid input for 'sig'", call. = FALSE)

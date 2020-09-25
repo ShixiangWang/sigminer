@@ -18,7 +18,7 @@
 #' @inheritParams get_sig_exposure
 #' @inheritParams get_sig_similarity
 #' @param sig a `Signature` object obtained either from [sig_extract] or [sig_auto_extract],
-#' or just a raw signature matrix with row representing components (motifs) and
+#' or just a raw signature matrix/`data.frame` with row representing components (motifs) and
 #' column representing signatures.
 #' @param method method to solve the minimazation problem.
 #' 'NNLS' for nonnegative least square; 'QP' for quadratic programming; 'SA' for simulated annealing.
@@ -120,9 +120,9 @@ sig_fit <- function(catalogue_matrix,
     if (inherits(sig, "Signature")) {
       send_success("Signature object detected.")
       sig_matrix <- sig$Signature
-    } else if (is.matrix(sig)) {
-      send_success("Signature matrix detected.")
-      sig_matrix <- sig
+    } else if (is.matrix(sig) | is.data.frame(sig)) {
+      send_success("Signature matrix/data.frame detected.")
+      sig_matrix <- as.matrix(sig)
     } else {
       send_error("Invalid input for 'sig'.")
       send_stop("Exit.")

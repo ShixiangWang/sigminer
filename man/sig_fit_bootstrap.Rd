@@ -29,7 +29,7 @@ sig_fit_bootstrap(
 N is the number of component, 1 is the sample.}
 
 \item{sig}{a \code{Signature} object obtained either from \link{sig_extract} or \link{sig_auto_extract},
-or just a raw signature matrix with row representing components (motifs) and
+or just a raw signature matrix/\code{data.frame} with row representing components (motifs) and
 column representing signatures.}
 
 \item{n}{the number of bootstrap replicates.}

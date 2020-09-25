@@ -1,5 +1,6 @@
 # sigminer 1.0.19
 
+- Supported `data.frame` as input object for `sig` in `get_sig_similarity()` and `sig_fit()`.
 - Modified `g_label` option in `show_group_distribution()` to better control group names. 
 - Added `test` option and variable checking in `show_cor()`.
 - Updated `output_sig()` to output signature exposure distribution ([#280](https://github.com/ShixiangWang/sigminer/issues/280)).

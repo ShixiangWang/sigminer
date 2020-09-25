@@ -6,8 +6,9 @@
 #' and "SBS" - which includes updated/refined 65 signatures. This function is modified
 #' from `compareSignatures()` in **maftools** package.
 #'
-#' @param Signature a `Signature` object or a component-by-signature matrix (sum of each column is 1)
-#' or a normalized component-by-sample matirx (sum of each column is 1).
+#' @param Signature a `Signature` object or a component-by-signature matrix/`data.frame`
+#' (sum of each column is 1) or a normalized component-by-sample matrix/`data.frame`
+#' (sum of each column is 1).
 #' More please see examples.
 #' @param Ref default is `NULL`, can be a same object as `Signature`.
 #' @param sig_db can be 'legacy' (for COSMIC v2 'SBS'),
@@ -76,8 +77,8 @@ get_sig_similarity <- function(Signature, Ref = NULL,
                                verbose = TRUE) {
   if (inherits(Signature, "Signature")) {
     w <- Signature$Signature.norm
-  } else if (is.matrix(Signature)) {
-    w <- Signature
+  } else if (is.matrix(Signature) | is.data.frame(Signature)) {
+    w <- as.matrix(Signature)
     if (!all(round(colSums(w)) == 1)) {
       stop("If Signature is a matrix, sum of each column is 1!", call. = FALSE)
     }
@@ -120,8 +121,8 @@ get_sig_similarity <- function(Signature, Ref = NULL,
   } else {
     if (inherits(Ref, "Signature")) {
       sigs <- Ref$Signature.norm
-    } else if (is.matrix(Ref)) {
-      sigs <- Ref
+    } else if (is.matrix(Ref) | is.data.frame(Ref)) {
+      sigs <- as.matrix(Ref)
       if (!all(round(colSums(sigs)) == 1)) {
         stop("If Ref is a matrix, sum of each column is 1!", call. = FALSE)
       }
@@ -204,10 +205,11 @@ get_sig_similarity <- function(Signature, Ref = NULL,
   if (verbose) {
     if (is.null(Ref)) {
       message("-Comparing against COSMIC signatures")
+      message("------------------------------------")
     } else {
-      message("-Comparing against Custom signatures")
+      message("-Comparing against Custom signatures/profiles")
+      message("---------------------------------------------")
     }
-    message("------------------------------------")
 
     all_matches <- c()
     for (i in 1:nrow(corMat)) {
