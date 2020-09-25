@@ -32,21 +32,6 @@ test_that("Function sig_fit() @ L95", {
     show_groups(z)
   }
   
-  if (requireNamespace("GenSA", quietly = TRUE)) {
-    H_infer <- sig_fit(V, W, method = "SA")
-    H_infer
-    H
-  
-    H_dt <- sig_fit(V, W, method = "SA", return_class = "data.table")
-    H_dt
-  
-    ## Modify arguments to method
-    sig_fit(V, W, method = "SA", maxit = 10, temperature = 100)
-  
-    ## Show results
-    show_sig_fit(H_infer)
-    show_sig_fit(H_dt)
-  }
   expect_is(H_infer, "matrix")
   expect_is(H_dt, "data.table")
 })

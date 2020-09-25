@@ -28,15 +28,7 @@ test_that("Function sig_fit_bootstrap() @ L61", {
     ## Input a list
     report_bootstrap_p_value(list(samp1 = H_bootstrap, samp2 = H_bootstrap))
   
-    ## Find suboptimal decomposition
-    H_suboptimal <- sig_fit_bootstrap(V[, 1], W,
-      n = 10,
-      type = "absolute",
-      method = "SA",
-      find_suboptimal = TRUE
-    )
   }
   expect_is(H_bootstrap, "list")
-  expect_is(H_suboptimal, "list")
 })
 
