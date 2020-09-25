@@ -1,7 +1,109 @@
 library(tidyverse)
 ## This has been stored in Maftools
-## SBS = vroom::vroom("data-raw/SigProfiler Signatures/SigProfiler reference signatures/SigProfiler reference whole-genome signatures/sigProfiler_SBS_signatures_2018_03_28.csv")
-##
+download.file("https://raw.githubusercontent.com/AlexandrovLab/SigProfilerExtractor/master/SigProfilerExtractor/data/sigProfiler_SBS_signatures_2018_03_28.csv",
+              "data-raw/sigProfiler_SBS_signatures_2018_03_28.csv")
+SBS = readr::read_csv("data-raw/sigProfiler_SBS_signatures_2018_03_28.csv")
+SBS = SBS %>%
+  dplyr::mutate(
+    Type = paste0(
+      substr(SubType, 1, 1),
+      "[",
+      Type,
+      "]",
+      substr(SubType, 3, 3)
+    )
+  ) %>%
+  dplyr::select(-SubType) %>%
+  tibble::column_to_rownames("Type")
+
+sbs = get_sig_db("SBS")
+get_sig_similarity(as.matrix(SBS), sbs$db)
+get_sig_similarity(SBS, sbs$db)
+get_sig_similarity(SBS, as.data.frame(sbs$db))
+# No need to update this data
+
+## SBS for different genomes
+sbs_list <- list()
+sbs_list$hg19 <- readxl::read_excel("data-raw/SBS_signatures_genome_builds.xlsx") %>%
+  dplyr::mutate(
+    Type = paste0(
+      substr(Subtype, 1, 1),
+      "[",
+      Type,
+      "]",
+      substr(Subtype, 3, 3)
+    )
+  ) %>%
+  dplyr::select(-Subtype) %>%
+  tibble::column_to_rownames("Type") %>%
+  as.matrix()
+
+sbs_list$hg38 <- readxl::read_excel("data-raw/SBS_signatures_genome_builds.xlsx", sheet = 2) %>%
+  dplyr::mutate(
+    Type = paste0(
+      substr(Subtype, 1, 1),
+      "[",
+      Type,
+      "]",
+      substr(Subtype, 3, 3)
+    )
+  ) %>%
+  dplyr::select(-Subtype) %>%
+  tibble::column_to_rownames("Type") %>%
+  as.matrix()
+sbs_list$mm9 <- readxl::read_excel("data-raw/SBS_signatures_genome_builds.xlsx", sheet = 3) %>%
+  dplyr::mutate(
+    Type = paste0(
+      substr(Subtype, 1, 1),
+      "[",
+      Type,
+      "]",
+      substr(Subtype, 3, 3)
+    )
+  ) %>%
+  dplyr::select(-Subtype) %>%
+  tibble::column_to_rownames("Type") %>%
+  as.matrix()
+sbs_list$mm10 <- readxl::read_excel("data-raw/SBS_signatures_genome_builds.xlsx", sheet = 4) %>%
+  dplyr::mutate(
+    Type = paste0(
+      substr(Subtype, 1, 1),
+      "[",
+      Type,
+      "]",
+      substr(Subtype, 3, 3)
+    )
+  ) %>%
+  dplyr::select(-Subtype) %>%
+  tibble::column_to_rownames("Type") %>%
+  as.matrix()
+
+sbs = get_sig_db("SBS")
+sbs_list$aetiology = sbs$aetiology
+sbs_list$date = "2020/09/25"
+
+saveRDS(sbs_list, file = "inst/extdata/SBS_signatures_list.rds")
+
+## DBS for different genomes
+dbs_list <- list()
+dbs_list$hg19 <- readxl::read_excel("data-raw/DBS_signatures_genome_builds.xlsx") %>%
+  tibble::column_to_rownames("Type") %>%
+  as.matrix()
+dbs_list$hg38 <- readxl::read_excel("data-raw/DBS_signatures_genome_builds.xlsx", sheet = 2) %>%
+  tibble::column_to_rownames("Type") %>%
+  as.matrix()
+dbs_list$mm9 <- readxl::read_excel("data-raw/DBS_signatures_genome_builds.xlsx", sheet = 3) %>%
+  tibble::column_to_rownames("Type") %>%
+  as.matrix()
+dbs_list$mm10 <- readxl::read_excel("data-raw/DBS_signatures_genome_builds.xlsx", sheet = 4) %>%
+  tibble::column_to_rownames("Type") %>%
+  as.matrix()
+
+dbs = get_sig_db("DBS")
+dbs_list$aetiology = dbs$aetiology
+dbs_list$date = "2020/09/25"
+
+saveRDS(dbs_list, file = "inst/extdata/DBS_signatures_list.rds")
 
 ## DBS
 DBS <- readr::read_csv("data-raw/SigProfiler Signatures/SigProfiler reference signatures/SigProfiler reference whole-genome signatures/sigProfiler_DBS_signatures.csv")
