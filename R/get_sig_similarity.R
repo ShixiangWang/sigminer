@@ -5,15 +5,20 @@
 #' Two COSMIC databases are used for comparisons - "legacy" which includes 30 signaures,
 #' and "SBS" - which includes updated/refined 65 signatures. This function is modified
 #' from `compareSignatures()` in **maftools** package.
+#' **NOTE**: all reference signatures are generated from gold standard tool:
+#' SigProfiler.
 #'
 #' @param Signature a `Signature` object or a component-by-signature matrix/`data.frame`
 #' (sum of each column is 1) or a normalized component-by-sample matrix/`data.frame`
 #' (sum of each column is 1).
 #' More please see examples.
 #' @param Ref default is `NULL`, can be a same object as `Signature`.
-#' @param sig_db can be 'legacy' (for COSMIC v2 'SBS'),
+#' @param sig_db default 'legacy', it can be 'legacy' (for COSMIC v2 'SBS'),
 #' 'SBS', 'DBS', 'ID' and 'TSB' (for SBS transcriptional strand bias signatures).
-#' Default 'legacy'.
+#' For more specific details, it can also be 'SBS_hg19', 'SBS_hg38',
+#' 'SBS_mm9', 'SBS_mm10', 'DBS_hg19', 'DBS_hg38', 'DBS_mm9', 'DBS_mm10'.
+#' But the signature profile for different genome builds are basically same.
+#'
 #' @param db_type only used when `sig_db` is enabled.
 #' "" for keeping default, "human-exome" for transforming to exome frequency of component,
 #' and "human-genome" for transforming to whole genome frequency of component.
@@ -60,12 +65,17 @@
 #' s5
 #'
 #' ## Same to DBS and ID signatures
+#' x1 <- get_sig_db("DBS_hg19")
+#' x2 <- get_sig_db("DBS_hg38")
+#' s6 <- get_sig_similarity(x1$db, x2$db)
+#' s6
 #' @testexamples
 #' expect_equal(length(s1), 4L)
 #' expect_equal(length(s2), 4L)
 #' expect_equal(length(s3), 4L)
 #' expect_equal(length(s4), 4L)
 #' expect_equal(length(s5), 4L)
+#' expect_is(s6, "list")
 get_sig_similarity <- function(Signature, Ref = NULL,
                                sig_db = "legacy",
                                db_type = c("", "human-exome", "human-genome"),
@@ -101,7 +111,10 @@ get_sig_similarity <- function(Signature, Ref = NULL,
     }
   }
 
-  sig_db <- match.arg(arg = sig_db, choices = c("legacy", "SBS", "DBS", "ID", "TSB"))
+  sig_db <- match.arg(arg = sig_db,
+                      choices = c("legacy", "SBS", "DBS", "ID", "TSB",
+                                  "SBS_hg19", "SBS_hg38", "SBS_mm9", "SBS_mm10",
+                                  "DBS_hg19", "DBS_hg38", "DBS_mm9", "DBS_mm10"))
   method <- match.arg(arg = method, choices = c("cosine"))
 
   if (is.null(Ref)) {
@@ -261,7 +274,8 @@ get_sig_similarity <- function(Signature, Ref = NULL,
 
 #' Obtain Reference Signatures
 #'
-#' The signatures and their aetiologies mainly obtained from COSMIC database and cleaned before saving into
+#' The signatures and their aetiologies mainly obtained from COSMIC database
+#' (SigProfiler results) and cleaned before saving into
 #' **sigminer** package.
 #'
 #' @inheritParams get_sig_similarity
@@ -273,11 +287,14 @@ get_sig_similarity <- function(Signature, Ref = NULL,
 #' @examples
 #' s1 <- get_sig_db()
 #' s2 <- get_sig_db("DBS")
+#' s3 <- get_sig_db("DBS_mm10")
 #' s1
 #' s2
+#' s3
 #' @testexamples
 #' expect_is(s1, "list")
 #' expect_is(s2, "list")
+#' expect_is(s3, "list")
 get_sig_db <- function(sig_db = "legacy") {
   db_file <- switch(
     sig_db,
@@ -295,9 +312,26 @@ get_sig_db <- function(sig_db = "legacy") {
     ),
     TSB = system.file("extdata", "TSB_signatures.rds",
       package = "sigminer", mustWork = TRUE
-    )
+    ),
+    {
+      if (startsWith(sig_db, "SBS")) {
+        system.file("extdata", "SBS_signatures_list.rds",
+                    package = "sigminer", mustWork = TRUE
+        )
+      } else if (startsWith(sig_db, "DBS")) {
+        system.file("extdata", "DBS_signatures_list.rds",
+                    package = "sigminer", mustWork = TRUE
+        )
+      } else {
+        stop("Bad input for option 'sig_db'!")
+      }
+    }
   )
   sigs_db <- readRDS(file = db_file)
+  if (!"db" %in% names(sigs_db)) {
+    sigs_db$db <- sigs_db[[sub(".*_", "", sig_db)]]
+    sigs_db <- sigs_db[c("db", "aetiology", "date")]
+  }
   ## Make sure column-sum is 1, i.e. normalized
   sigs_db$db <- apply(sigs_db$db, 2, function(x) x / sum(x))
   sigs_db

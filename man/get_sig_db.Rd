@@ -7,22 +7,27 @@
 get_sig_db(sig_db = "legacy")
 }
 \arguments{
-\item{sig_db}{can be 'legacy' (for COSMIC v2 'SBS'),
+\item{sig_db}{default 'legacy', it can be 'legacy' (for COSMIC v2 'SBS'),
 'SBS', 'DBS', 'ID' and 'TSB' (for SBS transcriptional strand bias signatures).
-Default 'legacy'.}
+For more specific details, it can also be 'SBS_hg19', 'SBS_hg38',
+'SBS_mm9', 'SBS_mm10', 'DBS_hg19', 'DBS_hg38', 'DBS_mm9', 'DBS_mm10'.
+But the signature profile for different genome builds are basically same.}
 }
 \value{
 a \code{list}.
 }
 \description{
-The signatures and their aetiologies mainly obtained from COSMIC database and cleaned before saving into
+The signatures and their aetiologies mainly obtained from COSMIC database
+(SigProfiler results) and cleaned before saving into
 \strong{sigminer} package.
 }
 \examples{
 s1 <- get_sig_db()
 s2 <- get_sig_db("DBS")
+s3 <- get_sig_db("DBS_mm10")
 s1
 s2
+s3
 }
 \seealso{
 \link{get_sig_similarity}, \link{sig_fit} and \link{show_cosmic_sig_profile}.

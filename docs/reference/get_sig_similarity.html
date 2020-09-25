@@ -51,7 +51,9 @@
 or known COSMIC signatures specified by sig_db argument.
 Two COSMIC databases are used for comparisons - &quot;legacy&quot; which includes 30 signaures,
 and &quot;SBS&quot; - which includes updated/refined 65 signatures. This function is modified
-from compareSignatures() in maftools package." />
+from compareSignatures() in maftools package.
+NOTE: all reference signatures are generated from gold standard tool:
+SigProfiler." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -136,7 +138,9 @@ from compareSignatures() in maftools package." />
 or known COSMIC signatures specified by <code>sig_db</code> argument.
 Two COSMIC databases are used for comparisons - "legacy" which includes 30 signaures,
 and "SBS" - which includes updated/refined 65 signatures. This function is modified
-from <code>compareSignatures()</code> in <strong>maftools</strong> package.</p>
+from <code>compareSignatures()</code> in <strong>maftools</strong> package.
+<strong>NOTE</strong>: all reference signatures are generated from gold standard tool:
+SigProfiler.</p>
     </div>
 
     <pre class="usage"><span class='fu'>get_sig_similarity</span>(
@@ -168,9 +172,11 @@ More please see examples.</p></td>
     </tr>
     <tr>
       <th>sig_db</th>
-      <td><p>can be 'legacy' (for COSMIC v2 'SBS'),
+      <td><p>default 'legacy', it can be 'legacy' (for COSMIC v2 'SBS'),
 'SBS', 'DBS', 'ID' and 'TSB' (for SBS transcriptional strand bias signatures).
-Default 'legacy'.</p></td>
+For more specific details, it can also be 'SBS_hg19', 'SBS_hg38',
+'SBS_mm9', 'SBS_mm10', 'DBS_hg19', 'DBS_hg38', 'DBS_mm9', 'DBS_mm10'.
+But the signature profile for different genome builds are basically same.</p></td>
     </tr>
     <tr>
       <th>db_type</th>
@@ -243,7 +249,11 @@ The remove operation will be done after normalization. Default is <code>NULL</co
 )
 <span class='no'>s5</span>
 
-<span class='co'>## Same to DBS and ID signatures</span></pre>
+<span class='co'>## Same to DBS and ID signatures</span>
+<span class='no'>x1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_sig_db.html'>get_sig_db</a></span>(<span class='st'>"DBS_hg19"</span>)
+<span class='no'>x2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_sig_db.html'>get_sig_db</a></span>(<span class='st'>"DBS_hg38"</span>)
+<span class='no'>s6</span> <span class='kw'>&lt;-</span> <span class='fu'>get_sig_similarity</span>(<span class='no'>x1</span>$<span class='no'>db</span>, <span class='no'>x2</span>$<span class='no'>db</span>)
+<span class='no'>s6</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

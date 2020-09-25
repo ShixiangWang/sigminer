@@ -1,5 +1,6 @@
 # sigminer 1.0.19
 
+- Added more specific reference signatures from SigProfiler, e.g. `SBS_mm9`.
 - Supported `data.frame` as input object for `sig` in `get_sig_similarity()` and `sig_fit()`.
 - Modified `g_label` option in `show_group_distribution()` to better control group names. 
 - Added `test` option and variable checking in `show_cor()`.

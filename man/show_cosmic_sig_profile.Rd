@@ -16,9 +16,11 @@ show_cosmic_sig_profile(
 
 \item{show_index}{if \code{TRUE}, show valid indices.}
 
-\item{sig_db}{can be 'legacy' (for COSMIC v2 'SBS'),
+\item{sig_db}{default 'legacy', it can be 'legacy' (for COSMIC v2 'SBS'),
 'SBS', 'DBS', 'ID' and 'TSB' (for SBS transcriptional strand bias signatures).
-Default 'legacy'.}
+For more specific details, it can also be 'SBS_hg19', 'SBS_hg38',
+'SBS_mm9', 'SBS_mm10', 'DBS_hg19', 'DBS_hg38', 'DBS_mm9', 'DBS_mm10'.
+But the signature profile for different genome builds are basically same.}
 
 \item{...}{other arguments passing to \link{show_sig_profile}.}
 }
