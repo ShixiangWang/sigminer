@@ -3,8 +3,10 @@
 #' Currently support copy number signatures and mutational signatures.
 #' @inheritParams show_sig_profile
 #' @param Signature a `Signature` object obtained either from [sig_extract] or [sig_auto_extract],
-#' or just a raw exposure matrix with column representing samples (patients) and row
-#' representing signatures (row names must start with 'Sig').
+#' or just a raw **absolute** exposure matrix with column representing samples (patients) and row
+#' representing signatures (signature names must end with different digital numbers,
+#' e.g. Sig1, Sig10, x12). If you named signatures with letters,
+#' you can specify them by `sig_names` parameter.
 #' @param sig_names set name of signatures, can be a character vector.
 #' @param groups sample groups, default is `NULL`.
 #' @param grp_order order of groups, default is `NULL`.
@@ -55,12 +57,9 @@ show_sig_exposure <- function(Signature,
                               rm_panel_border = FALSE,
                               hide_samps = TRUE,
                               legend_position = "top") {
-  if (class(Signature) == "Signature") {
+  if (inherits(Signature, "Signature")) {
     h <- Signature$Exposure
   } else if (is.matrix(Signature)) {
-    if (!all(startsWith(rownames(Signature), "Sig"))) {
-      stop("If Signature is a matrix, column names must start with 'Sig'!", call. = FALSE)
-    }
     h <- Signature
   } else {
     stop("Invalid input for 'Signature'", call. = FALSE)

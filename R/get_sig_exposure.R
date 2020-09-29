@@ -13,10 +13,9 @@
 #' or just a raw exposure matrix with column representing samples (patients) and row
 #' representing signatures.
 #' @param type 'absolute' for signature exposure and 'relative' for signature relative exposure.
-#' @param rel_threshold used when type is 'relative', relative exposure less
-#' than this value will be set to 0 and the remaining signature exposure will be scaled
-#' to make sum as 1 accordingly. Of note, this is a little different from the
-#' same parameter in [sig_fit].
+#' @param rel_threshold only used when type is 'relative', relative exposure less
+#' than (`<=`) this value will be set to 0 and thus all signature exposures
+#' may not sum to 1. This is similar to this argument in [sig_fit].
 #' @return a `data.table`
 #' @references
 #' Kim, Jaegil, et al. "Somatic ERCC2 mutations are associated with a distinct genomic signature in urothelial tumors."
@@ -40,7 +39,7 @@
 get_sig_exposure <- function(Signature,
                              type = c("absolute", "relative"),
                              rel_threshold = 0.01) {
-  if (class(Signature) == "Signature") {
+  if (inherits(Signature, "Signature")) {
     h <- Signature$Exposure
   } else if (is.matrix(Signature)) {
     if (!all(startsWith(rownames(Signature), "Sig"))) {
@@ -74,20 +73,14 @@ get_sig_exposure <- function(Signature,
       tibble::rownames_to_column(var = "sample") %>%
       dplyr::mutate_at(
         dplyr::vars(dplyr::starts_with("Sig")),
-        ~ ifelse(. < rel_threshold, 0, .)
-      ) %>%
-      dplyr::mutate(sum = rowSums(.[-1])) %>%
-      dplyr::mutate_at(
-        dplyr::vars(dplyr::starts_with("Sig")),
-        ~ . / .data$sum
-      ) %>%
-      dplyr::select(-.data$sum)
+        ~ ifelse(. <= rel_threshold, 0, .)
+      )
 
     na_data <- h.norm %>%
       dplyr::filter(is.na(.data$Sig1))
 
     if (nrow(na_data) > 0) {
-      message("Filtering the samples with no signature exposure:")
+      message("Filtering out the samples with no signature exposure:")
       message(paste(na_data$sample, collapse = " "))
     }
 

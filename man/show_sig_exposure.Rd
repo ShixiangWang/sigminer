@@ -24,8 +24,10 @@ show_sig_exposure(
 }
 \arguments{
 \item{Signature}{a \code{Signature} object obtained either from \link{sig_extract} or \link{sig_auto_extract},
-or just a raw exposure matrix with column representing samples (patients) and row
-representing signatures (row names must start with 'Sig').}
+or just a raw \strong{absolute} exposure matrix with column representing samples (patients) and row
+representing signatures (signature names must end with different digital numbers,
+e.g. Sig1, Sig10, x12). If you named signatures with letters,
+you can specify them by \code{sig_names} parameter.}
 
 \item{sig_names}{set name of signatures, can be a character vector.}
 

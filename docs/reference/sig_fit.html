@@ -135,23 +135,23 @@ catalogue <code>V</code> with known signatures <code>W</code> by solving the min
 <code>min(||W*H - V||)</code> where W and V are known.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>sig_fit</span>(
-  <span class='kw'>catalogue_matrix</span>,
-  <span class='kw'>sig</span>,
-  sig_index = <span class='kw'>NULL</span>,
-  sig_db = <span class='st'>"legacy"</span>,
-  db_type = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>""</span>, <span class='st'>"human-exome"</span>, <span class='st'>"human-genome"</span>),
-  show_index = <span class='fl'>TRUE</span>,
-  method = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"QP"</span>, <span class='st'>"NNLS"</span>, <span class='st'>"SA"</span>),
-  auto_reduce = <span class='fl'>FALSE</span>,
-  type = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"absolute"</span>, <span class='st'>"relative"</span>),
-  return_class = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"matrix"</span>, <span class='st'>"data.table"</span>),
-  return_error = <span class='fl'>FALSE</span>,
-  rel_threshold = <span class='fl'>0</span>,
-  mode = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"SBS"</span>, <span class='st'>"DBS"</span>, <span class='st'>"ID"</span>, <span class='st'>"copynumber"</span>),
-  true_catalog = <span class='kw'>NULL</span>,
-  <span class='kw'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>sig_fit</span><span class='op'>(</span>
+  <span class='va'>catalogue_matrix</span>,
+  <span class='va'>sig</span>,
+  sig_index <span class='op'>=</span> <span class='cn'>NULL</span>,
+  sig_db <span class='op'>=</span> <span class='st'>"legacy"</span>,
+  db_type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>""</span>, <span class='st'>"human-exome"</span>, <span class='st'>"human-genome"</span><span class='op'>)</span>,
+  show_index <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"QP"</span>, <span class='st'>"NNLS"</span>, <span class='st'>"SA"</span><span class='op'>)</span>,
+  auto_reduce <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"absolute"</span>, <span class='st'>"relative"</span><span class='op'>)</span>,
+  return_class <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"matrix"</span>, <span class='st'>"data.table"</span><span class='op'>)</span>,
+  return_error <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  rel_threshold <span class='op'>=</span> <span class='fl'>0</span>,
+  mode <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"SBS"</span>, <span class='st'>"DBS"</span>, <span class='st'>"ID"</span>, <span class='st'>"copynumber"</span><span class='op'>)</span>,
+  true_catalog <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -197,7 +197,7 @@ Currently only works for 'SBS'.</p></td>
     <tr>
       <th>method</th>
       <td><p>method to solve the minimazation problem.
-'NNLS' for nonnegative least square; 'QP' for quadratic programming; 'SA' for simulated annealing.</p></td>
+'NNLS' for non-negative least square; 'QP' for quadratic programming; 'SA' for simulated annealing.</p></td>
     </tr>
     <tr>
       <th>auto_reduce</th>
@@ -221,8 +221,10 @@ affected by relative exposure accuracy.</p></td>
     </tr>
     <tr>
       <th>rel_threshold</th>
-      <td><p>numeric vector, a relative exposure lower than this value will be set to 0.
-Of note, this is a little different from the same parameter in <a href='get_sig_exposure.html'>get_sig_exposure</a>.</p></td>
+      <td><p>numeric vector, a signature with relative exposure
+lower than (equal is included, i.e. <code>&lt;=</code>) this value will be set to 0
+(both absolute exposure and relative exposure).
+In this case, sum of signature contribution may not equal to 1.</p></td>
     </tr>
     <tr>
       <th>mode</th>
@@ -260,33 +262,33 @@ Nature genetics 48.6 (2016): 600.</p>
     <div class='dont-index'><p><a href='sig_extract.html'>sig_extract</a>, <a href='sig_auto_extract.html'>sig_auto_extract</a>, <a href='sig_fit_bootstrap.html'>sig_fit_bootstrap</a>, <a href='sig_fit_bootstrap_batch.html'>sig_fit_bootstrap_batch</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='kw'>W</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>), ncol = <span class='fl'>2</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='kw'>W</span>) <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sig1"</span>, <span class='st'>"sig2"</span>)
-<span class='kw'>W</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span>(<span class='kw'>W</span>, <span class='fl'>2</span>, <span class='fu'>function</span>(<span class='kw'>x</span>) <span class='kw'>x</span> <span class='op'>/</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='kw'>x</span>))
+    <pre class="examples"><span class='va'>W</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span><span class='op'>)</span>, ncol <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>W</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"sig1"</span>, <span class='st'>"sig2"</span><span class='op'>)</span>
+<span class='va'>W</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span><span class='op'>(</span><span class='va'>W</span>, <span class='fl'>2</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='va'>x</span> <span class='op'>/</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='kw'>H</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>, <span class='fl'>5</span>, <span class='fl'>3</span>, <span class='fl'>6</span>, <span class='fl'>1</span>, <span class='fl'>9</span>, <span class='fl'>1</span>, <span class='fl'>2</span>), ncol = <span class='fl'>4</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='kw'>H</span>) <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"samp"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>)
+<span class='va'>H</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>5</span>, <span class='fl'>3</span>, <span class='fl'>6</span>, <span class='fl'>1</span>, <span class='fl'>9</span>, <span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>, ncol <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>H</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"samp"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>)</span>
 
-<span class='kw'>V</span> <span class='op'>&lt;-</span> <span class='kw'>W</span> <span class='op'>%*%</span> <span class='kw'>H</span>
-<span class='kw'>V</span>
+<span class='va'>V</span> <span class='op'>&lt;-</span> <span class='va'>W</span> <span class='op'>%*%</span> <span class='va'>H</span>
+<span class='va'>V</span>
 
-<span class='co'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"quadprog"</span>, quietly = <span class='fl'>TRUE</span>)) {
-  <span class='kw'>H_infer</span> <span class='op'>&lt;-</span> <span class='fu'>sig_fit</span>(<span class='kw'>V</span>, <span class='kw'>W</span>, method = <span class='st'>"QP"</span>)
-  <span class='kw'>H_infer</span>
-  <span class='kw'>H</span>
+<span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span><span class='op'>(</span><span class='st'>"quadprog"</span>, quietly <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='va'>H_infer</span> <span class='op'>&lt;-</span> <span class='fu'>sig_fit</span><span class='op'>(</span><span class='va'>V</span>, <span class='va'>W</span>, method <span class='op'>=</span> <span class='st'>"QP"</span><span class='op'>)</span>
+  <span class='va'>H_infer</span>
+  <span class='va'>H</span>
 
-  <span class='kw'>H_dt</span> <span class='op'>&lt;-</span> <span class='fu'>sig_fit</span>(<span class='kw'>V</span>, <span class='kw'>W</span>, method = <span class='st'>"QP"</span>, return_class = <span class='st'>"data.table"</span>)
-  <span class='kw'>H_dt</span>
+  <span class='va'>H_dt</span> <span class='op'>&lt;-</span> <span class='fu'>sig_fit</span><span class='op'>(</span><span class='va'>V</span>, <span class='va'>W</span>, method <span class='op'>=</span> <span class='st'>"QP"</span>, return_class <span class='op'>=</span> <span class='st'>"data.table"</span><span class='op'>)</span>
+  <span class='va'>H_dt</span>
 
   <span class='co'>## Show results</span>
-  <span class='fu'><a href='show_sig_fit.html'>show_sig_fit</a></span>(<span class='kw'>H_infer</span>)
-  <span class='fu'><a href='show_sig_fit.html'>show_sig_fit</a></span>(<span class='kw'>H_dt</span>)
+  <span class='fu'><a href='show_sig_fit.html'>show_sig_fit</a></span><span class='op'>(</span><span class='va'>H_infer</span><span class='op'>)</span>
+  <span class='fu'><a href='show_sig_fit.html'>show_sig_fit</a></span><span class='op'>(</span><span class='va'>H_dt</span><span class='op'>)</span>
 
   <span class='co'>## Get clusters/groups</span>
-  <span class='kw'>H_dt_rel</span> <span class='op'>&lt;-</span> <span class='fu'>sig_fit</span>(<span class='kw'>V</span>, <span class='kw'>W</span>, return_class = <span class='st'>"data.table"</span>, type = <span class='st'>"relative"</span>)
-  <span class='kw'>z</span> <span class='op'>&lt;-</span> <span class='fu'><a href='get_groups.html'>get_groups</a></span>(<span class='kw'>H_dt_rel</span>, method = <span class='st'>"k-means"</span>)
-  <span class='fu'><a href='show_groups.html'>show_groups</a></span>(<span class='kw'>z</span>)
-}
+  <span class='va'>H_dt_rel</span> <span class='op'>&lt;-</span> <span class='fu'>sig_fit</span><span class='op'>(</span><span class='va'>V</span>, <span class='va'>W</span>, return_class <span class='op'>=</span> <span class='st'>"data.table"</span>, type <span class='op'>=</span> <span class='st'>"relative"</span><span class='op'>)</span>
+  <span class='va'>z</span> <span class='op'>&lt;-</span> <span class='fu'><a href='get_groups.html'>get_groups</a></span><span class='op'>(</span><span class='va'>H_dt_rel</span>, method <span class='op'>=</span> <span class='st'>"k-means"</span><span class='op'>)</span>
+  <span class='fu'><a href='show_groups.html'>show_groups</a></span><span class='op'>(</span><span class='va'>z</span><span class='op'>)</span>
+<span class='op'>}</span>
 
 </pre>
   </div>

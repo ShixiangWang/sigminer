@@ -17,10 +17,9 @@ representing signatures.}
 
 \item{type}{'absolute' for signature exposure and 'relative' for signature relative exposure.}
 
-\item{rel_threshold}{used when type is 'relative', relative exposure less
-than this value will be set to 0 and the remaining signature exposure will be scaled
-to make sum as 1 accordingly. Of note, this is a little different from the
-same parameter in \link{sig_fit}.}
+\item{rel_threshold}{only used when type is 'relative', relative exposure less
+than (\code{<=}) this value will be set to 0 and thus all signature exposures
+may not sum to 1. This is similar to this argument in \link{sig_fit}.}
 }
 \value{
 a \code{data.table}

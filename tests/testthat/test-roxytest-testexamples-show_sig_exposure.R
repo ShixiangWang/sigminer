@@ -2,7 +2,7 @@
 
 context("File R/show_sig_exposure.R: @testexamples")
 
-test_that("Function show_sig_exposure() @ L43", {
+test_that("Function show_sig_exposure() @ L45", {
   
   # Load mutational signature
   load(system.file("extdata", "toy_mutational_signature.RData",

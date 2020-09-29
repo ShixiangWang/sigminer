@@ -1,6 +1,8 @@
 # sigminer 1.1.0
 
-- Update all COSMIC signatures to v3.1 and their aetiologies.
+- Changed argument `rel_threshold` behavior in `sig_fit()` and `get_sig_exposure()`.
+Made them more consistent and allowed un-assigned signature contribution (#285).
+- Updated all COSMIC signatures to v3.1 and their aetiologies (#287).
 
 # sigminer 1.0.19
 

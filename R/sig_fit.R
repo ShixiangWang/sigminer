@@ -21,7 +21,7 @@
 #' or just a raw signature matrix/`data.frame` with row representing components (motifs) and
 #' column representing signatures.
 #' @param method method to solve the minimazation problem.
-#' 'NNLS' for nonnegative least square; 'QP' for quadratic programming; 'SA' for simulated annealing.
+#' 'NNLS' for non-negative least square; 'QP' for quadratic programming; 'SA' for simulated annealing.
 #' @param auto_reduce if `TRUE`, try reducing the input reference signatures to increase
 #' the cosine similarity of reconstructed profile to observed profile.
 #' @param return_class string, 'matrix' or 'data.table'.
@@ -29,8 +29,10 @@
 #' similarity between observed sample profile (asa. spectrum) and reconstructed profile. NOTE:
 #' it is better to obtain the error when the type is 'absolute', because the error is
 #' affected by relative exposure accuracy.
-#' @param rel_threshold numeric vector, a relative exposure lower than this value will be set to 0.
-#' Of note, this is a little different from the same parameter in [get_sig_exposure].
+#' @param rel_threshold numeric vector, a signature with relative exposure
+#' lower than (equal is included, i.e. `<=`) this value will be set to 0
+#' (both absolute exposure and relative exposure).
+#' In this case, sum of signature contribution may not equal to 1.
 #' @param true_catalog used by [sig_fit_bootstrap], user never use it.
 #' @param ... control parameters passing to argument `control` in `GenSA` function when use method 'SA'.
 #'
@@ -371,7 +373,7 @@ sig_fit <- function(catalogue_matrix,
 ## type: type of signature contribution to return
 
 decompose_NNLS <- function(x, y, z, sig_matrix, type = "absolute", auto_reduce = FALSE, ...) {
-  if (is.na(z)) send_info("Fitting sample: ", z)
+  if (!is.na(z)) send_info("Fitting sample: ", z)
 
   if (sum(x) != 0) {
     ## nnls/lsqnonneg solve nonnegative least-squares constraints problem.
@@ -426,7 +428,7 @@ decompose_NNLS <- function(x, y, z, sig_matrix, type = "absolute", auto_reduce =
 # P is same as sig_matrix
 
 decompose_QP <- function(x, y, z, P, type = "absolute", auto_reduce = FALSE, ...) {
-  if (is.na(z)) send_info("Fitting sample: ", z)
+  if (!is.na(z)) send_info("Fitting sample: ", z)
 
   if (sum(x) != 0) {
     m <- x / sum(x)
@@ -497,7 +499,7 @@ decompose_QP <- function(x, y, z, P, type = "absolute", auto_reduce = FALSE, ...
 
 
 decompose_SA <- function(x, y, z, P, type = "absolute", auto_reduce = FALSE, ...) {
-  if (is.na(z)) send_info("Fitting sample: ", z)
+  if (!is.na(z)) send_info("Fitting sample: ", z)
 
   if (sum(x) != 0) {
     control <- list(...)
@@ -566,13 +568,11 @@ decompose_SA <- function(x, y, z, P, type = "absolute", auto_reduce = FALSE, ...
 }
 
 ## total is used to set the total exposure in a sample
-## for method QP and SA
 return_expo <- function(expo, y, type = "absolute", total = NULL) {
-  rel_expo <- expo
-  expo <- expo * total
-  expo[rel_expo < y] <- 0
-  if (type == "relative") {
-    expo <- expo / sum(expo)
+  # Remove a signature if its relative exposure lower than a cutoff y
+  expo[expo <= y] <- 0
+  if (type == "absolute") {
+    expo <- expo * total
   }
   expo <- round(expo, digits = 6)
   expo

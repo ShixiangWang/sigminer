@@ -50,7 +50,7 @@ Currently only works for 'SBS'.}
 \item{show_index}{if \code{TRUE}, show valid indices.}
 
 \item{method}{method to solve the minimazation problem.
-'NNLS' for nonnegative least square; 'QP' for quadratic programming; 'SA' for simulated annealing.}
+'NNLS' for non-negative least square; 'QP' for quadratic programming; 'SA' for simulated annealing.}
 
 \item{auto_reduce}{if \code{TRUE}, try reducing the input reference signatures to increase
 the cosine similarity of reconstructed profile to observed profile.}
@@ -64,8 +64,10 @@ similarity between observed sample profile (asa. spectrum) and reconstructed pro
 it is better to obtain the error when the type is 'absolute', because the error is
 affected by relative exposure accuracy.}
 
-\item{rel_threshold}{numeric vector, a relative exposure lower than this value will be set to 0.
-Of note, this is a little different from the same parameter in \link{get_sig_exposure}.}
+\item{rel_threshold}{numeric vector, a signature with relative exposure
+lower than (equal is included, i.e. \code{<=}) this value will be set to 0
+(both absolute exposure and relative exposure).
+In this case, sum of signature contribution may not equal to 1.}
 
 \item{mode}{signature type for plotting, now supports 'copynumber', 'SBS', 'DBS' and 'ID'.}
 

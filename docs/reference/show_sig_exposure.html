@@ -131,23 +131,23 @@
     <p>Currently support copy number signatures and mutational signatures.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>show_sig_exposure</span>(
-  <span class='kw'>Signature</span>,
-  sig_names = <span class='kw'>NULL</span>,
-  groups = <span class='kw'>NULL</span>,
-  grp_order = <span class='kw'>NULL</span>,
-  grp_size = <span class='kw'>NULL</span>,
-  cutoff = <span class='kw'>NULL</span>,
-  style = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"default"</span>, <span class='st'>"cosmic"</span>),
-  palette = <span class='fu'><a href='use_color_style.html'>use_color_style</a></span>(<span class='kw'>style</span>),
-  base_size = <span class='fl'>12</span>,
-  font_scale = <span class='fl'>1</span>,
-  rm_space = <span class='fl'>FALSE</span>,
-  rm_grid_line = <span class='fl'>TRUE</span>,
-  rm_panel_border = <span class='fl'>FALSE</span>,
-  hide_samps = <span class='fl'>TRUE</span>,
-  legend_position = <span class='st'>"top"</span>
-)</pre>
+    <pre class="usage"><span class='fu'>show_sig_exposure</span><span class='op'>(</span>
+  <span class='va'>Signature</span>,
+  sig_names <span class='op'>=</span> <span class='cn'>NULL</span>,
+  groups <span class='op'>=</span> <span class='cn'>NULL</span>,
+  grp_order <span class='op'>=</span> <span class='cn'>NULL</span>,
+  grp_size <span class='op'>=</span> <span class='cn'>NULL</span>,
+  cutoff <span class='op'>=</span> <span class='cn'>NULL</span>,
+  style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"default"</span>, <span class='st'>"cosmic"</span><span class='op'>)</span>,
+  palette <span class='op'>=</span> <span class='fu'><a href='use_color_style.html'>use_color_style</a></span><span class='op'>(</span><span class='va'>style</span><span class='op'>)</span>,
+  base_size <span class='op'>=</span> <span class='fl'>12</span>,
+  font_scale <span class='op'>=</span> <span class='fl'>1</span>,
+  rm_space <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  rm_grid_line <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  rm_panel_border <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  hide_samps <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  legend_position <span class='op'>=</span> <span class='st'>"top"</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -155,8 +155,10 @@
     <tr>
       <th>Signature</th>
       <td><p>a <code>Signature</code> object obtained either from <a href='sig_extract.html'>sig_extract</a> or <a href='sig_auto_extract.html'>sig_auto_extract</a>,
-or just a raw exposure matrix with column representing samples (patients) and row
-representing signatures (row names must start with 'Sig').</p></td>
+or just a raw <strong>absolute</strong> exposure matrix with column representing samples (patients) and row
+representing signatures (signature names must end with different digital numbers,
+e.g. Sig1, Sig10, x12). If you named signatures with letters,
+you can specify them by <code>sig_names</code> parameter.</p></td>
     </tr>
     <tr>
       <th>sig_names</th>
@@ -229,20 +231,20 @@ remove panel border to keep plot tight.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># Load mutational signature</span>
-<span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_mutational_signature.RData"</span>,
-  package = <span class='st'>"sigminer"</span>, mustWork = <span class='fl'>TRUE</span>
-))
+<span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"toy_mutational_signature.RData"</span>,
+  package <span class='op'>=</span> <span class='st'>"sigminer"</span>, mustWork <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span><span class='op'>)</span>
 <span class='co'># Show signature exposure</span>
-<span class='kw'>p1</span> <span class='op'>&lt;-</span> <span class='fu'>show_sig_exposure</span>(<span class='kw'>sig2</span>)
-<span class='kw'>p1</span>
+<span class='va'>p1</span> <span class='op'>&lt;-</span> <span class='fu'>show_sig_exposure</span><span class='op'>(</span><span class='va'>sig2</span><span class='op'>)</span>
+<span class='va'>p1</span>
 
 <span class='co'># Load copy number signature</span>
-<span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_signature_by_M.RData"</span>,
-  package = <span class='st'>"sigminer"</span>, mustWork = <span class='fl'>TRUE</span>
-))
+<span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_signature_by_M.RData"</span>,
+  package <span class='op'>=</span> <span class='st'>"sigminer"</span>, mustWork <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span><span class='op'>)</span>
 <span class='co'># Show signature exposure</span>
-<span class='kw'>p2</span> <span class='op'>&lt;-</span> <span class='fu'>show_sig_exposure</span>(<span class='kw'>sig</span>)
-<span class='kw'>p2</span>
+<span class='va'>p2</span> <span class='op'>&lt;-</span> <span class='fu'>show_sig_exposure</span><span class='op'>(</span><span class='va'>sig</span><span class='op'>)</span>
+<span class='va'>p2</span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
