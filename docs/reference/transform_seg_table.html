@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.19</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -132,12 +132,12 @@
     </div>
 
     <pre class="usage"><span class='fu'>transform_seg_table</span>(
-  <span class='no'>data</span>,
-  <span class='kw'>genome_build</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"hg19"</span>, <span class='st'>"hg38"</span>, <span class='st'>"mm10"</span>),
-  <span class='kw'>ref_type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"cytoband"</span>, <span class='st'>"gene"</span>),
-  <span class='kw'>values_fill</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>values_fn</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>, <span class='no'>...</span>) {     <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='no'>x</span>, <span class='no'>...</span>)) },
-  <span class='kw'>resolution_factor</span> <span class='kw'>=</span> <span class='fl'>1L</span>
+  <span class='kw'>data</span>,
+  genome_build = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"hg19"</span>, <span class='st'>"hg38"</span>, <span class='st'>"mm10"</span>),
+  ref_type = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"cytoband"</span>, <span class='st'>"gene"</span>),
+  values_fill = <span class='fl'>NA</span>,
+  values_fn = <span class='fu'>function</span>(<span class='kw'>x</span>, <span class='kw'>...</span>) {     <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(<span class='kw'>x</span>, <span class='kw'>...</span>)) },
+  resolution_factor = <span class='fl'>1L</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -185,14 +185,15 @@ When it is <code>2</code>, use compute frequency in each half cytoband.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber.RData"</span>,
-  <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  package = <span class='st'>"sigminer"</span>, mustWork = <span class='fl'>TRUE</span>
 ))
 <span class='co'># Compute the mean segVal in each cytoband</span>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>transform_seg_table</span>(<span class='no'>cn</span>, <span class='kw'>resolution_factor</span> <span class='kw'>=</span> <span class='fl'>1</span>)
-<span class='no'>x</span>
+<span class='kw'>x</span> <span class='op'>&lt;-</span> <span class='fu'>transform_seg_table</span>(<span class='kw'>cn</span>, resolution_factor = <span class='fl'>1</span>)
+<span class='kw'>x</span>
 <span class='co'># Compute the mean segVal in each half-cytoband</span>
-<span class='no'>x2</span> <span class='kw'>&lt;-</span> <span class='fu'>transform_seg_table</span>(<span class='no'>cn</span>, <span class='kw'>resolution_factor</span> <span class='kw'>=</span> <span class='fl'>2</span>)
-<span class='no'>x2</span></pre>
+<span class='kw'>x2</span> <span class='op'>&lt;-</span> <span class='fu'>transform_seg_table</span>(<span class='kw'>cn</span>, resolution_factor = <span class='fl'>2</span>)
+<span class='kw'>x2</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -208,7 +209,7 @@ When it is <code>2</code>, use compute frequency in each half cytoband.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

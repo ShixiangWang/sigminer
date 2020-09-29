@@ -25,11 +25,14 @@ More please see examples.}
 
 \item{Ref}{default is \code{NULL}, can be a same object as \code{Signature}.}
 
-\item{sig_db}{default 'legacy', it can be 'legacy' (for COSMIC v2 'SBS'),
-'SBS', 'DBS', 'ID' and 'TSB' (for SBS transcriptional strand bias signatures).
+\item{sig_db}{default 'legacy', it can be 'legacy' (for \href{https://cancer.sanger.ac.uk/cosmic/signatures_v2.tt/}{COSMIC v2 'SBS'}),
+'SBS', 'DBS', 'ID' and 'TSB' (for \href{https://cancer.sanger.ac.uk/cosmic/signatures/}{COSMIV v3.1 signatures}).
 For more specific details, it can also be 'SBS_hg19', 'SBS_hg38',
-'SBS_mm9', 'SBS_mm10', 'DBS_hg19', 'DBS_hg38', 'DBS_mm9', 'DBS_mm10'.
-But the signature profile for different genome builds are basically same.}
+'SBS_mm9', 'SBS_mm10', 'DBS_hg19', 'DBS_hg38', 'DBS_mm9', 'DBS_mm10' to use
+COSMIC v3 reference signatures from Alexandrov, Ludmil B., et al. (2020).
+\strong{Note}: the signature profile for different genome builds are basically same.
+And specific database (e.g. 'SBS_mm10') contains less signatures than all COSMIC
+signatures (because some signatures are not detected from Alexandrov, Ludmil B., et al. (2020)).}
 
 \item{db_type}{only used when \code{sig_db} is enabled.
 "" for keeping default, "human-exome" for transforming to exome frequency of component,
@@ -99,6 +102,9 @@ x1 <- get_sig_db("DBS_hg19")
 x2 <- get_sig_db("DBS_hg38")
 s6 <- get_sig_similarity(x1$db, x2$db)
 s6
+}
+\references{
+Alexandrov, Ludmil B., et al. "The repertoire of mutational signatures in human cancer." Nature 578.7793 (2020): 94-101.
 }
 \author{
 Shixiang Wang \href{mailto:w_shixiang@163.com}{w_shixiang@163.com}

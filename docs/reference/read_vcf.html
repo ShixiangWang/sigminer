@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.19</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -132,11 +132,11 @@
     </div>
 
     <pre class="usage"><span class='fu'>read_vcf</span>(
-  <span class='no'>vcfs</span>,
-  <span class='kw'>samples</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>genome_build</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"hg19"</span>, <span class='st'>"hg38"</span>),
-  <span class='kw'>keep_only_pass</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  <span class='kw'>vcfs</span>,
+  samples = <span class='kw'>NULL</span>,
+  genome_build = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"hg19"</span>, <span class='st'>"hg38"</span>),
+  keep_only_pass = <span class='fl'>TRUE</span>,
+  verbose = <span class='fl'>TRUE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -172,9 +172,10 @@
     <div class='dont-index'><p><a href='read_maf.html'>read_maf</a>, <a href='read_copynumber.html'>read_copynumber</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='no'>vcfs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>list.files</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>), <span class='st'>"*.vcf"</span>, <span class='kw'>full.names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>maf</span> <span class='kw'>&lt;-</span> <span class='fu'>read_vcf</span>(<span class='no'>vcfs</span>)
-<span class='no'>maf</span> <span class='kw'>&lt;-</span> <span class='fu'>read_vcf</span>(<span class='no'>vcfs</span>, <span class='kw'>keep_only_pass</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="examples"><span class='kw'>vcfs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>list.files</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, package = <span class='st'>"sigminer"</span>), <span class='st'>"*.vcf"</span>, full.names = <span class='fl'>TRUE</span>)
+<span class='kw'>maf</span> <span class='op'>&lt;-</span> <span class='fu'>read_vcf</span>(<span class='kw'>vcfs</span>)
+<span class='kw'>maf</span> <span class='op'>&lt;-</span> <span class='fu'>read_vcf</span>(<span class='kw'>vcfs</span>, keep_only_pass = <span class='fl'>FALSE</span>)
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -190,7 +191,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

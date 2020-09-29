@@ -83,7 +83,7 @@ exported to users for extra usage." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.19</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -137,7 +137,7 @@ This function is used by <a href='sig_tally.html'>sig_tally</a> function and
 exported to users for extra usage.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_tidy_parameter</span>(<span class='no'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>get_tidy_parameter</span>(<span class='kw'>x</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -154,14 +154,15 @@ exported to users for extra usage.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_tally_M.RData"</span>,
-  <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  package = <span class='st'>"sigminer"</span>, mustWork = <span class='fl'>TRUE</span>
 ))
 <span class='co'># Get all parameters</span>
-<span class='no'>d1</span> <span class='kw'>&lt;-</span> <span class='fu'>get_tidy_parameter</span>(<span class='no'>cn_tally_M</span>$<span class='no'>components</span>)
-<span class='no'>d1</span>
+<span class='kw'>d1</span> <span class='op'>&lt;-</span> <span class='fu'>get_tidy_parameter</span>(<span class='kw'>cn_tally_M</span><span class='op'>$</span><span class='kw'>components</span>)
+<span class='kw'>d1</span>
 <span class='co'># Get parameters for segsize feature</span>
-<span class='no'>d2</span> <span class='kw'>&lt;-</span> <span class='fu'>get_tidy_parameter</span>(<span class='no'>cn_tally_M</span>$<span class='no'>components</span>$<span class='no'>segsize</span>)
-<span class='no'>d2</span></pre>
+<span class='kw'>d2</span> <span class='op'>&lt;-</span> <span class='fu'>get_tidy_parameter</span>(<span class='kw'>cn_tally_M</span><span class='op'>$</span><span class='kw'>components</span><span class='op'>$</span><span class='kw'>segsize</span>)
+<span class='kw'>d2</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -177,7 +178,7 @@ exported to users for extra usage.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

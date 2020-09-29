@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.19</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -132,14 +132,14 @@
     </div>
 
     <pre class="usage"><span class='fu'>show_cn_circos</span>(
-  <span class='no'>data</span>,
-  <span class='kw'>samples</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>show_title</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>chrs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"chr"</span>, <span class='fl'>1</span>:<span class='fl'>22</span>),
-  <span class='kw'>genome_build</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"hg19"</span>, <span class='st'>"hg38"</span>, <span class='st'>"mm10"</span>),
-  <span class='kw'>col</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>side</span> <span class='kw'>=</span> <span class='st'>"inside"</span>,
-  <span class='no'>...</span>
+  <span class='kw'>data</span>,
+  samples = <span class='kw'>NULL</span>,
+  show_title = <span class='fl'>TRUE</span>,
+  chrs = <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"chr"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>22</span>),
+  genome_build = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"hg19"</span>, <span class='st'>"hg38"</span>, <span class='st'>"mm10"</span>),
+  col = <span class='kw'>NULL</span>,
+  side = <span class='st'>"inside"</span>,
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -189,24 +189,25 @@ If data argument is a <code>data.frame</code>, a column called sample must exist
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber.RData"</span>,
-  <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  package = <span class='st'>"sigminer"</span>, mustWork = <span class='fl'>TRUE</span>
 ))
 <span class='co'># \donttest{</span>
-<span class='fu'>show_cn_circos</span>(<span class='no'>cn</span>, <span class='kw'>samples</span> <span class='kw'>=</span> <span class='fl'>1</span>)
-<span class='fu'>show_cn_circos</span>(<span class='no'>cn</span>, <span class='kw'>samples</span> <span class='kw'>=</span> <span class='st'>"TCGA-99-7458-01A-11D-2035-01"</span>)
+<span class='fu'>show_cn_circos</span>(<span class='kw'>cn</span>, samples = <span class='fl'>1</span>)
+<span class='fu'>show_cn_circos</span>(<span class='kw'>cn</span>, samples = <span class='st'>"TCGA-99-7458-01A-11D-2035-01"</span>)
 
 <span class='co'>## Remove title</span>
-<span class='fu'>show_cn_circos</span>(<span class='no'>cn</span>, <span class='kw'>samples</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>show_title</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>show_cn_circos</span>(<span class='kw'>cn</span>, samples = <span class='fl'>1</span>, show_title = <span class='fl'>FALSE</span>)
 
 <span class='co'>## Subset chromosomes</span>
-<span class='fu'>show_cn_circos</span>(<span class='no'>cn</span>, <span class='kw'>samples</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>chrs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"chr1"</span>, <span class='st'>"chr2"</span>, <span class='st'>"chr3"</span>))
+<span class='fu'>show_cn_circos</span>(<span class='kw'>cn</span>, samples = <span class='fl'>1</span>, chrs = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"chr1"</span>, <span class='st'>"chr2"</span>, <span class='st'>"chr3"</span>))
 
 <span class='co'>## Arrange plots</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/layout.html'>layout</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fl'>1</span>:<span class='fl'>4</span>, <span class='fl'>2</span>, <span class='fl'>2</span>))
-<span class='fu'>show_cn_circos</span>(<span class='no'>cn</span>, <span class='kw'>samples</span> <span class='kw'>=</span> <span class='fl'>4</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/layout.html'>layout</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>, <span class='fl'>2</span>, <span class='fl'>2</span>))
+<span class='fu'>show_cn_circos</span>(<span class='kw'>cn</span>, samples = <span class='fl'>4</span>)
 
 <span class='fu'><a href='https://rdrr.io/r/graphics/layout.html'>layout</a></span>(<span class='fl'>1</span>) <span class='co'># reset layout</span>
-<span class='co'># }</span></pre>
+<span class='co'># }</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -222,7 +223,7 @@ If data argument is a <code>data.frame</code>, a column called sample must exist
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

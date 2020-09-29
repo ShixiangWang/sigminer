@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.19</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -132,21 +132,21 @@
     </div>
 
     <pre class="usage"><span class='fu'>show_sig_exposure</span>(
-  <span class='no'>Signature</span>,
-  <span class='kw'>sig_names</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>groups</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>grp_order</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>grp_size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>cutoff</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>style</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"default"</span>, <span class='st'>"cosmic"</span>),
-  <span class='kw'>palette</span> <span class='kw'>=</span> <span class='fu'><a href='use_color_style.html'>use_color_style</a></span>(<span class='no'>style</span>),
-  <span class='kw'>base_size</span> <span class='kw'>=</span> <span class='fl'>12</span>,
-  <span class='kw'>font_scale</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>rm_space</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>rm_grid_line</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>rm_panel_border</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>hide_samps</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>legend_position</span> <span class='kw'>=</span> <span class='st'>"top"</span>
+  <span class='kw'>Signature</span>,
+  sig_names = <span class='kw'>NULL</span>,
+  groups = <span class='kw'>NULL</span>,
+  grp_order = <span class='kw'>NULL</span>,
+  grp_size = <span class='kw'>NULL</span>,
+  cutoff = <span class='kw'>NULL</span>,
+  style = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"default"</span>, <span class='st'>"cosmic"</span>),
+  palette = <span class='fu'><a href='use_color_style.html'>use_color_style</a></span>(<span class='kw'>style</span>),
+  base_size = <span class='fl'>12</span>,
+  font_scale = <span class='fl'>1</span>,
+  rm_space = <span class='fl'>FALSE</span>,
+  rm_grid_line = <span class='fl'>TRUE</span>,
+  rm_panel_border = <span class='fl'>FALSE</span>,
+  hide_samps = <span class='fl'>TRUE</span>,
+  legend_position = <span class='st'>"top"</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -223,23 +223,27 @@ remove panel border to keep plot tight.</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>a <code>ggplot</code> object</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Shixiang Wang</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># Load mutational signature</span>
 <span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_mutational_signature.RData"</span>,
-  <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  package = <span class='st'>"sigminer"</span>, mustWork = <span class='fl'>TRUE</span>
 ))
 <span class='co'># Show signature exposure</span>
-<span class='no'>p1</span> <span class='kw'>&lt;-</span> <span class='fu'>show_sig_exposure</span>(<span class='no'>sig2</span>)
-<span class='no'>p1</span>
+<span class='kw'>p1</span> <span class='op'>&lt;-</span> <span class='fu'>show_sig_exposure</span>(<span class='kw'>sig2</span>)
+<span class='kw'>p1</span>
 
 <span class='co'># Load copy number signature</span>
 <span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_signature_by_M.RData"</span>,
-  <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  package = <span class='st'>"sigminer"</span>, mustWork = <span class='fl'>TRUE</span>
 ))
 <span class='co'># Show signature exposure</span>
-<span class='no'>p2</span> <span class='kw'>&lt;-</span> <span class='fu'>show_sig_exposure</span>(<span class='no'>sig</span>)
-<span class='no'>p2</span></pre>
+<span class='kw'>p2</span> <span class='op'>&lt;-</span> <span class='fu'>show_sig_exposure</span>(<span class='kw'>sig</span>)
+<span class='kw'>p2</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -255,7 +259,7 @@ remove panel border to keep plot tight.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -86,7 +86,7 @@ Users can also set custom measures to show." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.19</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -144,17 +144,17 @@ Users can also set custom measures to show.</p>
     </div>
 
     <pre class="usage"><span class='fu'>show_sig_number_survey</span>(
-  <span class='no'>object</span>,
-  <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"rank"</span>,
-  <span class='kw'>left_y</span> <span class='kw'>=</span> <span class='st'>"cophenetic"</span>,
-  <span class='kw'>right_y</span> <span class='kw'>=</span> <span class='st'>"rss"</span>,
-  <span class='kw'>left_name</span> <span class='kw'>=</span> <span class='no'>left_y</span>,
-  <span class='kw'>right_name</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/chartr.html'>toupper</a></span>(<span class='no'>right_y</span>),
-  <span class='kw'>left_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
-  <span class='kw'>right_color</span> <span class='kw'>=</span> <span class='st'>"red"</span>,
-  <span class='kw'>left_shape</span> <span class='kw'>=</span> <span class='fl'>16</span>,
-  <span class='kw'>right_shape</span> <span class='kw'>=</span> <span class='fl'>18</span>,
-  <span class='kw'>shape_size</span> <span class='kw'>=</span> <span class='fl'>4</span>
+  <span class='kw'>object</span>,
+  x = <span class='st'>"rank"</span>,
+  left_y = <span class='st'>"cophenetic"</span>,
+  right_y = <span class='st'>"rss"</span>,
+  left_name = <span class='kw'>left_y</span>,
+  right_name = <span class='fu'><a href='https://rdrr.io/r/base/chartr.html'>toupper</a></span>(<span class='kw'>right_y</span>),
+  left_color = <span class='st'>"black"</span>,
+  right_color = <span class='st'>"red"</span>,
+  left_shape = <span class='fl'>16</span>,
+  right_shape = <span class='fl'>18</span>,
+  shape_size = <span class='fl'>4</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -211,35 +211,36 @@ one measure.</p></td>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># \donttest{</span>
 <span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_tally_M.RData"</span>,
-  <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  package = <span class='st'>"sigminer"</span>, mustWork = <span class='fl'>TRUE</span>
 ))
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>NMF</span>)
-<span class='no'>cn_estimate</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sig_estimate.html'>sig_estimate</a></span>(<span class='no'>cn_tally_M</span>$<span class='no'>nmf_matrix</span>,
-  <span class='kw'>cores</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>nrun</span> <span class='kw'>=</span> <span class='fl'>5</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='http://renozao.github.io/NMF'>NMF</a></span>)
+<span class='kw'>cn_estimate</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sig_estimate.html'>sig_estimate</a></span>(<span class='kw'>cn_tally_M</span><span class='op'>$</span><span class='kw'>nmf_matrix</span>,
+  cores = <span class='fl'>1</span>, nrun = <span class='fl'>5</span>,
+  verbose = <span class='fl'>TRUE</span>
 )
 
 <span class='co'># Show two measures</span>
-<span class='fu'>show_sig_number_survey</span>(<span class='no'>cn_estimate</span>)
+<span class='fu'>show_sig_number_survey</span>(<span class='kw'>cn_estimate</span>)
 <span class='co'># Show one measure</span>
-<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>show_sig_number_survey</span>(<span class='no'>cn_estimate</span>, <span class='kw'>right_y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
-<span class='no'>p</span>
-<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='add_h_arrow.html'>add_h_arrow</a></span>(<span class='no'>p</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>4.1</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='fl'>0.953</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"selected number"</span>)
-<span class='no'>p</span>
+<span class='kw'>p</span> <span class='op'>&lt;-</span> <span class='fu'>show_sig_number_survey</span>(<span class='kw'>cn_estimate</span>, right_y = <span class='kw'>NULL</span>)
+<span class='kw'>p</span>
+<span class='kw'>p</span> <span class='op'>&lt;-</span> <span class='fu'><a href='add_h_arrow.html'>add_h_arrow</a></span>(<span class='kw'>p</span>, x = <span class='fl'>4.1</span>, y = <span class='fl'>0.953</span>, label = <span class='st'>"selected number"</span>)
+<span class='kw'>p</span>
 
 <span class='co'># Show data from a data.frame</span>
-<span class='fu'>show_sig_number_survey</span>(<span class='no'>cn_estimate</span>$<span class='no'>survey</span>)
+<span class='fu'>show_sig_number_survey</span>(<span class='kw'>cn_estimate</span><span class='op'>$</span><span class='kw'>survey</span>)
 <span class='co'># Show other measures</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>cn_estimate</span>$<span class='no'>survey</span>)
-<span class='fu'>show_sig_number_survey</span>(<span class='no'>cn_estimate</span>$<span class='no'>survey</span>,
-  <span class='kw'>right_y</span> <span class='kw'>=</span> <span class='st'>"dispersion"</span>,
-  <span class='kw'>right_name</span> <span class='kw'>=</span> <span class='st'>"dispersion"</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='kw'>cn_estimate</span><span class='op'>$</span><span class='kw'>survey</span>)
+<span class='fu'>show_sig_number_survey</span>(<span class='kw'>cn_estimate</span><span class='op'>$</span><span class='kw'>survey</span>,
+  right_y = <span class='st'>"dispersion"</span>,
+  right_name = <span class='st'>"dispersion"</span>
 )
-<span class='fu'>show_sig_number_survey</span>(<span class='no'>cn_estimate</span>$<span class='no'>survey</span>,
-  <span class='kw'>right_y</span> <span class='kw'>=</span> <span class='st'>"evar"</span>,
-  <span class='kw'>right_name</span> <span class='kw'>=</span> <span class='st'>"evar"</span>
+<span class='fu'>show_sig_number_survey</span>(<span class='kw'>cn_estimate</span><span class='op'>$</span><span class='kw'>survey</span>,
+  right_y = <span class='st'>"evar"</span>,
+  right_name = <span class='st'>"evar"</span>
 )
-<span class='co'># }</span></pre>
+<span class='co'># }</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -255,7 +256,7 @@ one measure.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

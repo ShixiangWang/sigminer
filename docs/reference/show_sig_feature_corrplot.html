@@ -82,7 +82,7 @@ of association results under p value threshold." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.19</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -136,20 +136,20 @@ of association results under p value threshold.</p>
     </div>
 
     <pre class="usage"><span class='fu'>show_sig_feature_corrplot</span>(
-  <span class='no'>tidy_cor</span>,
-  <span class='no'>feature_list</span>,
-  <span class='kw'>sort_features</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>sig_orders</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>drop</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>return_plotlist</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>p_val</span> <span class='kw'>=</span> <span class='fl'>0.05</span>,
-  <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Signatures"</span>,
-  <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"Features"</span>,
-  <span class='kw'>co_gradient_colors</span> <span class='kw'>=</span> <span class='fu'>scale_color_gradient2</span>(<span class='kw'>low</span> <span class='kw'>=</span> <span class='st'>"blue"</span>, <span class='kw'>mid</span> <span class='kw'>=</span> <span class='st'>"white"</span>, <span class='kw'>high</span> <span class='kw'>=</span> <span class='st'>"red"</span>,
-    <span class='kw'>midpoint</span> <span class='kw'>=</span> <span class='fl'>0</span>),
-  <span class='kw'>ca_gradient_colors</span> <span class='kw'>=</span> <span class='no'>co_gradient_colors</span>,
-  <span class='kw'>plot_ratio</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
-  <span class='kw'>breaks_count</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0L</span>, <span class='fl'>200L</span>, <span class='fl'>400L</span>, <span class='fl'>600L</span>, <span class='fl'>800L</span>, <span class='fl'>1020L</span>)
+  <span class='kw'>tidy_cor</span>,
+  <span class='kw'>feature_list</span>,
+  sort_features = <span class='fl'>FALSE</span>,
+  sig_orders = <span class='kw'>NULL</span>,
+  drop = <span class='fl'>TRUE</span>,
+  return_plotlist = <span class='fl'>FALSE</span>,
+  p_val = <span class='fl'>0.05</span>,
+  xlab = <span class='st'>"Signatures"</span>,
+  ylab = <span class='st'>"Features"</span>,
+  co_gradient_colors = <span class='fu'>scale_color_gradient2</span>(low = <span class='st'>"blue"</span>, mid = <span class='st'>"white"</span>, high = <span class='st'>"red"</span>,
+    midpoint = <span class='fl'>0</span>),
+  ca_gradient_colors = <span class='kw'>co_gradient_colors</span>,
+  plot_ratio = <span class='st'>"auto"</span>,
+  breaks_count = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0L</span>, <span class='fl'>200L</span>, <span class='fl'>400L</span>, <span class='fl'>600L</span>, <span class='fl'>800L</span>, <span class='fl'>1020L</span>)
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -227,11 +227,12 @@ breaks. If set it to <code>NA</code>, <code>aes</code> for sample will be not us
     <pre class="examples">
 <span class='co'># The data is generated from Wang, Shixiang et al.</span>
 <span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"asso_data.RData"</span>,
-  <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  package = <span class='st'>"sigminer"</span>, mustWork = <span class='fl'>TRUE</span>
 ))
 
-<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>show_sig_feature_corrplot</span>(<span class='no'>tidy_data.seqz.feature</span>, <span class='kw'>p_val</span> <span class='kw'>=</span> <span class='fl'>0.05</span>)
-<span class='no'>p</span></pre>
+<span class='kw'>p</span> <span class='op'>&lt;-</span> <span class='fu'>show_sig_feature_corrplot</span>(<span class='kw'>tidy_data.seqz.feature</span>, p_val = <span class='fl'>0.05</span>)
+<span class='kw'>p</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -247,7 +248,7 @@ breaks. If set it to <code>NA</code>, <code>aes</code> for sample will be not us
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -82,7 +82,7 @@ sigminer package." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.19</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -135,18 +135,21 @@ sigminer package." />
 <strong>sigminer</strong> package.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_sig_db</span>(<span class='kw'>sig_db</span> <span class='kw'>=</span> <span class='st'>"legacy"</span>)</pre>
+    <pre class="usage"><span class='fu'>get_sig_db</span>(sig_db = <span class='st'>"legacy"</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>sig_db</th>
-      <td><p>default 'legacy', it can be 'legacy' (for COSMIC v2 'SBS'),
-'SBS', 'DBS', 'ID' and 'TSB' (for SBS transcriptional strand bias signatures).
+      <td><p>default 'legacy', it can be 'legacy' (for <a href='https://cancer.sanger.ac.uk/cosmic/signatures_v2.tt/'>COSMIC v2 'SBS'</a>),
+'SBS', 'DBS', 'ID' and 'TSB' (for <a href='https://cancer.sanger.ac.uk/cosmic/signatures/'>COSMIV v3.1 signatures</a>).
 For more specific details, it can also be 'SBS_hg19', 'SBS_hg38',
-'SBS_mm9', 'SBS_mm10', 'DBS_hg19', 'DBS_hg38', 'DBS_mm9', 'DBS_mm10'.
-But the signature profile for different genome builds are basically same.</p></td>
+'SBS_mm9', 'SBS_mm10', 'DBS_hg19', 'DBS_hg38', 'DBS_mm9', 'DBS_mm10' to use
+COSMIC v3 reference signatures from Alexandrov, Ludmil B., et al. (2020).
+<strong>Note</strong>: the signature profile for different genome builds are basically same.
+And specific database (e.g. 'SBS_mm10') contains less signatures than all COSMIC
+signatures (because some signatures are not detected from Alexandrov, Ludmil B., et al. (2020)).</p></td>
     </tr>
     </table>
 
@@ -158,12 +161,13 @@ But the signature profile for different genome builds are basically same.</p></t
     <div class='dont-index'><p><a href='get_sig_similarity.html'>get_sig_similarity</a>, <a href='sig_fit.html'>sig_fit</a> and <a href='show_cosmic_sig_profile.html'>show_cosmic_sig_profile</a>.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='no'>s1</span> <span class='kw'>&lt;-</span> <span class='fu'>get_sig_db</span>()
-<span class='no'>s2</span> <span class='kw'>&lt;-</span> <span class='fu'>get_sig_db</span>(<span class='st'>"DBS"</span>)
-<span class='no'>s3</span> <span class='kw'>&lt;-</span> <span class='fu'>get_sig_db</span>(<span class='st'>"DBS_mm10"</span>)
-<span class='no'>s1</span>
-<span class='no'>s2</span>
-<span class='no'>s3</span></pre>
+    <pre class="examples"><span class='kw'>s1</span> <span class='op'>&lt;-</span> <span class='fu'>get_sig_db</span>()
+<span class='kw'>s2</span> <span class='op'>&lt;-</span> <span class='fu'>get_sig_db</span>(<span class='st'>"DBS"</span>)
+<span class='kw'>s3</span> <span class='op'>&lt;-</span> <span class='fu'>get_sig_db</span>(<span class='st'>"DBS_mm10"</span>)
+<span class='kw'>s1</span>
+<span class='kw'>s2</span>
+<span class='kw'>s3</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -179,7 +183,7 @@ But the signature profile for different genome builds are basically same.</p></t
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

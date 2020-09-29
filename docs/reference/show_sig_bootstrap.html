@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.19</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -132,62 +132,62 @@
     </div>
 
     <pre class="usage"><span class='fu'>show_sig_bootstrap_exposure</span>(
-  <span class='no'>bt_result</span>,
-  <span class='kw'>sample</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>signatures</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>methods</span> <span class='kw'>=</span> <span class='st'>"QP"</span>,
-  <span class='kw'>plot_fun</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"boxplot"</span>, <span class='st'>"violin"</span>),
-  <span class='kw'>agg_fun</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"mean"</span>, <span class='st'>"median"</span>, <span class='st'>"min"</span>, <span class='st'>"max"</span>),
-  <span class='kw'>highlight</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
-  <span class='kw'>highlight_size</span> <span class='kw'>=</span> <span class='fl'>4</span>,
-  <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"aaas"</span>,
-  <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"Signature exposure"</span>,
-  <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>0.3</span>,
-  <span class='kw'>dodge_width</span> <span class='kw'>=</span> <span class='fl'>0.8</span>,
-  <span class='kw'>outlier.shape</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"jitter"</span>,
-  <span class='kw'>add.params</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.3</span>),
-  <span class='no'>...</span>
+  <span class='kw'>bt_result</span>,
+  sample = <span class='kw'>NULL</span>,
+  signatures = <span class='kw'>NULL</span>,
+  methods = <span class='st'>"QP"</span>,
+  plot_fun = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"boxplot"</span>, <span class='st'>"violin"</span>),
+  agg_fun = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"mean"</span>, <span class='st'>"median"</span>, <span class='st'>"min"</span>, <span class='st'>"max"</span>),
+  highlight = <span class='st'>"auto"</span>,
+  highlight_size = <span class='fl'>4</span>,
+  palette = <span class='st'>"aaas"</span>,
+  title = <span class='kw'>NULL</span>,
+  xlab = <span class='fl'>FALSE</span>,
+  ylab = <span class='st'>"Signature exposure"</span>,
+  width = <span class='fl'>0.3</span>,
+  dodge_width = <span class='fl'>0.8</span>,
+  outlier.shape = <span class='fl'>NA</span>,
+  add = <span class='st'>"jitter"</span>,
+  add.params = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(alpha = <span class='fl'>0.3</span>),
+  <span class='kw'>...</span>
 )
 
 <span class='fu'>show_sig_bootstrap_error</span>(
-  <span class='no'>bt_result</span>,
-  <span class='kw'>sample</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>methods</span> <span class='kw'>=</span> <span class='st'>"QP"</span>,
-  <span class='kw'>plot_fun</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"boxplot"</span>, <span class='st'>"violin"</span>),
-  <span class='kw'>agg_fun</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"mean"</span>, <span class='st'>"median"</span>),
-  <span class='kw'>highlight</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
-  <span class='kw'>highlight_size</span> <span class='kw'>=</span> <span class='fl'>4</span>,
-  <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"aaas"</span>,
-  <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"Reconstruction error (L2 norm)"</span>,
-  <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>0.3</span>,
-  <span class='kw'>dodge_width</span> <span class='kw'>=</span> <span class='fl'>0.8</span>,
-  <span class='kw'>outlier.shape</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"jitter"</span>,
-  <span class='kw'>add.params</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.3</span>),
-  <span class='kw'>legend</span> <span class='kw'>=</span> <span class='st'>"none"</span>,
-  <span class='no'>...</span>
+  <span class='kw'>bt_result</span>,
+  sample = <span class='kw'>NULL</span>,
+  methods = <span class='st'>"QP"</span>,
+  plot_fun = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"boxplot"</span>, <span class='st'>"violin"</span>),
+  agg_fun = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"mean"</span>, <span class='st'>"median"</span>),
+  highlight = <span class='st'>"auto"</span>,
+  highlight_size = <span class='fl'>4</span>,
+  palette = <span class='st'>"aaas"</span>,
+  title = <span class='kw'>NULL</span>,
+  xlab = <span class='fl'>FALSE</span>,
+  ylab = <span class='st'>"Reconstruction error (L2 norm)"</span>,
+  width = <span class='fl'>0.3</span>,
+  dodge_width = <span class='fl'>0.8</span>,
+  outlier.shape = <span class='fl'>NA</span>,
+  add = <span class='st'>"jitter"</span>,
+  add.params = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(alpha = <span class='fl'>0.3</span>),
+  legend = <span class='st'>"none"</span>,
+  <span class='kw'>...</span>
 )
 
 <span class='fu'>show_sig_bootstrap_stability</span>(
-  <span class='no'>bt_result</span>,
-  <span class='kw'>signatures</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>measure</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"RMSE"</span>, <span class='st'>"MAE"</span>, <span class='st'>"AbsDiff"</span>),
-  <span class='kw'>methods</span> <span class='kw'>=</span> <span class='st'>"QP"</span>,
-  <span class='kw'>plot_fun</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"boxplot"</span>, <span class='st'>"violin"</span>),
-  <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"aaas"</span>,
-  <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"Signature instability"</span>,
-  <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>0.3</span>,
-  <span class='kw'>outlier.shape</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"jitter"</span>,
-  <span class='kw'>add.params</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.3</span>),
-  <span class='no'>...</span>
+  <span class='kw'>bt_result</span>,
+  signatures = <span class='kw'>NULL</span>,
+  measure = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"RMSE"</span>, <span class='st'>"MAE"</span>, <span class='st'>"AbsDiff"</span>),
+  methods = <span class='st'>"QP"</span>,
+  plot_fun = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"boxplot"</span>, <span class='st'>"violin"</span>),
+  palette = <span class='st'>"aaas"</span>,
+  title = <span class='kw'>NULL</span>,
+  xlab = <span class='fl'>FALSE</span>,
+  ylab = <span class='st'>"Signature instability"</span>,
+  width = <span class='fl'>0.3</span>,
+  outlier.shape = <span class='fl'>NA</span>,
+  add = <span class='st'>"jitter"</span>,
+  add.params = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(alpha = <span class='fl'>0.3</span>),
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -320,59 +320,60 @@ the instability measure supports 3 types:</p><ul>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># \donttest{</span>
-<span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='st'>"BSgenome.Hsapiens.UCSC.hg19"</span>)) {
-  <span class='no'>laml.maf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"tcga_laml.maf.gz"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"maftools"</span>)
-  <span class='no'>laml</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='read_maf.html'>read_maf</a></span>(<span class='kw'>maf</span> <span class='kw'>=</span> <span class='no'>laml.maf</span>)
-  <span class='no'>mt_tally</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sig_tally.html'>sig_tally</a></span>(
-    <span class='no'>laml</span>,
-    <span class='kw'>ref_genome</span> <span class='kw'>=</span> <span class='st'>"BSgenome.Hsapiens.UCSC.hg19"</span>,
-    <span class='kw'>use_syn</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+<span class='co'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='st'>"BSgenome.Hsapiens.UCSC.hg19"</span>)) {
+  <span class='kw'>laml.maf</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"tcga_laml.maf.gz"</span>, package = <span class='st'>"maftools"</span>)
+  <span class='kw'>laml</span> <span class='op'>&lt;-</span> <span class='fu'><a href='read_maf.html'>read_maf</a></span>(maf = <span class='kw'>laml.maf</span>)
+  <span class='kw'>mt_tally</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sig_tally.html'>sig_tally</a></span>(
+    <span class='kw'>laml</span>,
+    ref_genome = <span class='st'>"BSgenome.Hsapiens.UCSC.hg19"</span>,
+    use_syn = <span class='fl'>TRUE</span>
   )
 
-  <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>NMF</span>)
-  <span class='no'>mt_sig</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sig_extract.html'>sig_extract</a></span>(<span class='no'>mt_tally</span>$<span class='no'>nmf_matrix</span>,
-    <span class='kw'>n_sig</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-    <span class='kw'>nrun</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-    <span class='kw'>cores</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-    <span class='kw'>pConstant</span> <span class='kw'>=</span> <span class='fl'>1e-13</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='http://renozao.github.io/NMF'>NMF</a></span>)
+  <span class='kw'>mt_sig</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sig_extract.html'>sig_extract</a></span>(<span class='kw'>mt_tally</span><span class='op'>$</span><span class='kw'>nmf_matrix</span>,
+    n_sig = <span class='fl'>3</span>,
+    nrun = <span class='fl'>2</span>,
+    cores = <span class='fl'>1</span>,
+    pConstant = <span class='fl'>1e-13</span>
   )
 
-  <span class='no'>mat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/t.html'>t</a></span>(<span class='no'>mt_tally</span>$<span class='no'>nmf_matrix</span>)
-  <span class='no'>mat</span> <span class='kw'>&lt;-</span> <span class='no'>mat</span>[, <span class='fu'><a href='https://rdrr.io/r/base/colSums.html'>colSums</a></span>(<span class='no'>mat</span>) <span class='kw'>&gt;</span> <span class='fl'>0</span>]
-  <span class='no'>bt_result</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sig_fit_bootstrap_batch.html'>sig_fit_bootstrap_batch</a></span>(<span class='no'>mat</span>, <span class='kw'>sig</span> <span class='kw'>=</span> <span class='no'>mt_sig</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+  <span class='kw'>mat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/t.html'>t</a></span>(<span class='kw'>mt_tally</span><span class='op'>$</span><span class='kw'>nmf_matrix</span>)
+  <span class='kw'>mat</span> <span class='op'>&lt;-</span> <span class='kw'>mat</span>[, <span class='fu'><a href='https://rdrr.io/r/base/colSums.html'>colSums</a></span>(<span class='kw'>mat</span>) <span class='op'>&gt;</span> <span class='fl'>0</span>]
+  <span class='kw'>bt_result</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sig_fit_bootstrap_batch.html'>sig_fit_bootstrap_batch</a></span>(<span class='kw'>mat</span>, sig = <span class='kw'>mt_sig</span>, n = <span class='fl'>10</span>)
   <span class='co'>## Parallel computation</span>
   <span class='co'>## bt_result = sig_fit_bootstrap_batch(mat, sig = mt_sig, n = 10, use_parallel = TRUE)</span>
 
   <span class='co'>## At default, mean bootstrap exposure for each sample has been calculated</span>
-  <span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>show_sig_bootstrap_exposure</span>(<span class='no'>bt_result</span>, <span class='kw'>methods</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"QP"</span>))
+  <span class='kw'>p</span> <span class='op'>&lt;-</span> <span class='fu'>show_sig_bootstrap_exposure</span>(<span class='kw'>bt_result</span>, methods = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"QP"</span>))
   <span class='co'>## Show bootstrap exposure (optimal exposure is shown as triangle)</span>
-  <span class='no'>p1</span> <span class='kw'>&lt;-</span> <span class='fu'>show_sig_bootstrap_exposure</span>(<span class='no'>bt_result</span>, <span class='kw'>methods</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"QP"</span>), <span class='kw'>sample</span> <span class='kw'>=</span> <span class='st'>"TCGA-AB-2802"</span>)
-  <span class='no'>p1</span>
-  <span class='no'>p2</span> <span class='kw'>&lt;-</span> <span class='fu'>show_sig_bootstrap_exposure</span>(<span class='no'>bt_result</span>,
-    <span class='kw'>methods</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"QP"</span>),
-    <span class='kw'>sample</span> <span class='kw'>=</span> <span class='st'>"TCGA-AB-3012"</span>,
-    <span class='kw'>signatures</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Sig1"</span>, <span class='st'>"Sig2"</span>)
+  <span class='kw'>p1</span> <span class='op'>&lt;-</span> <span class='fu'>show_sig_bootstrap_exposure</span>(<span class='kw'>bt_result</span>, methods = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"QP"</span>), sample = <span class='st'>"TCGA-AB-2802"</span>)
+  <span class='kw'>p1</span>
+  <span class='kw'>p2</span> <span class='op'>&lt;-</span> <span class='fu'>show_sig_bootstrap_exposure</span>(<span class='kw'>bt_result</span>,
+    methods = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"QP"</span>),
+    sample = <span class='st'>"TCGA-AB-3012"</span>,
+    signatures = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Sig1"</span>, <span class='st'>"Sig2"</span>)
   )
-  <span class='no'>p2</span>
+  <span class='kw'>p2</span>
 
   <span class='co'>## Show bootstrap error</span>
   <span class='co'>## Similar to exposure above</span>
-  <span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>show_sig_bootstrap_error</span>(<span class='no'>bt_result</span>, <span class='kw'>methods</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"QP"</span>))
-  <span class='no'>p</span>
-  <span class='no'>p3</span> <span class='kw'>&lt;-</span> <span class='fu'>show_sig_bootstrap_error</span>(<span class='no'>bt_result</span>, <span class='kw'>methods</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"QP"</span>), <span class='kw'>sample</span> <span class='kw'>=</span> <span class='st'>"TCGA-AB-2802"</span>)
-  <span class='no'>p3</span>
+  <span class='kw'>p</span> <span class='op'>&lt;-</span> <span class='fu'>show_sig_bootstrap_error</span>(<span class='kw'>bt_result</span>, methods = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"QP"</span>))
+  <span class='kw'>p</span>
+  <span class='kw'>p3</span> <span class='op'>&lt;-</span> <span class='fu'>show_sig_bootstrap_error</span>(<span class='kw'>bt_result</span>, methods = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"QP"</span>), sample = <span class='st'>"TCGA-AB-2802"</span>)
+  <span class='kw'>p3</span>
 
   <span class='co'>## Show exposure (in)stability</span>
-  <span class='no'>p4</span> <span class='kw'>&lt;-</span> <span class='fu'>show_sig_bootstrap_stability</span>(<span class='no'>bt_result</span>, <span class='kw'>methods</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"QP"</span>))
-  <span class='no'>p4</span>
-  <span class='no'>p5</span> <span class='kw'>&lt;-</span> <span class='fu'>show_sig_bootstrap_stability</span>(<span class='no'>bt_result</span>, <span class='kw'>methods</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"QP"</span>), <span class='kw'>measure</span> <span class='kw'>=</span> <span class='st'>"MAE"</span>)
-  <span class='no'>p5</span>
-  <span class='no'>p6</span> <span class='kw'>&lt;-</span> <span class='fu'>show_sig_bootstrap_stability</span>(<span class='no'>bt_result</span>, <span class='kw'>methods</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"QP"</span>), <span class='kw'>measure</span> <span class='kw'>=</span> <span class='st'>"AbsDiff"</span>)
-  <span class='no'>p6</span>
-} <span class='kw'>else</span> {
+  <span class='kw'>p4</span> <span class='op'>&lt;-</span> <span class='fu'>show_sig_bootstrap_stability</span>(<span class='kw'>bt_result</span>, methods = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"QP"</span>))
+  <span class='kw'>p4</span>
+  <span class='kw'>p5</span> <span class='op'>&lt;-</span> <span class='fu'>show_sig_bootstrap_stability</span>(<span class='kw'>bt_result</span>, methods = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"QP"</span>), measure = <span class='st'>"MAE"</span>)
+  <span class='kw'>p5</span>
+  <span class='kw'>p6</span> <span class='op'>&lt;-</span> <span class='fu'>show_sig_bootstrap_stability</span>(<span class='kw'>bt_result</span>, methods = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"QP"</span>), measure = <span class='st'>"AbsDiff"</span>)
+  <span class='kw'>p6</span>
+} <span class='co'>else</span> {
   <span class='fu'><a href='https://rdrr.io/r/base/message.html'>message</a></span>(<span class='st'>"Please install package 'BSgenome.Hsapiens.UCSC.hg19' firstly!"</span>)
 }
-<span class='co'># }</span></pre>
+<span class='co'># }</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -388,7 +389,7 @@ the instability measure supports 3 types:</p><ul>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

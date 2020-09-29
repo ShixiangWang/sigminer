@@ -86,7 +86,7 @@ The result of this function can be plotted by show_group_comparison()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.19</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -144,12 +144,12 @@ The result of this function can be plotted by <code><a href='show_group_comparis
     </div>
 
     <pre class="usage"><span class='fu'>get_group_comparison</span>(
-  <span class='no'>data</span>,
-  <span class='no'>col_group</span>,
-  <span class='no'>cols_to_compare</span>,
-  <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"ca"</span>,
-  <span class='kw'>NAs</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+  <span class='kw'>data</span>,
+  <span class='kw'>col_group</span>,
+  <span class='kw'>cols_to_compare</span>,
+  type = <span class='st'>"ca"</span>,
+  NAs = <span class='fl'>NA</span>,
+  verbose = <span class='fl'>FALSE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -188,35 +188,39 @@ Otherwise a value (either length 1 or length same as <code>cols_to_compare</code
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>a <code>list</code> contains data, summary, p value etc..</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Shixiang Wang <a href='mailto:w_shixiang@163.com'>w_shixiang@163.com</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># \donttest{</span>
 <span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_signature_by_M.RData"</span>,
-  <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  package = <span class='st'>"sigminer"</span>, mustWork = <span class='fl'>TRUE</span>
 ))
 
 <span class='co'># Assign samples to clusters</span>
-<span class='no'>groups</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_groups.html'>get_groups</a></span>(<span class='no'>sig</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"k-means"</span>)
+<span class='kw'>groups</span> <span class='op'>&lt;-</span> <span class='fu'><a href='get_groups.html'>get_groups</a></span>(<span class='kw'>sig</span>, method = <span class='st'>"k-means"</span>)
 
 <span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>1234</span>)
 
-<span class='no'>groups</span>$<span class='no'>prob</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>10</span>)
-<span class='no'>groups</span>$<span class='no'>new_group</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1"</span>, <span class='st'>"2"</span>, <span class='st'>"3"</span>, <span class='st'>"4"</span>, <span class='fl'>NA</span>), <span class='kw'>size</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>groups</span>), <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='kw'>groups</span><span class='op'>$</span><span class='kw'>prob</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>10</span>)
+<span class='kw'>groups</span><span class='op'>$</span><span class='kw'>new_group</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1"</span>, <span class='st'>"2"</span>, <span class='st'>"3"</span>, <span class='st'>"4"</span>, <span class='fl'>NA</span>), size = <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='kw'>groups</span>), replace = <span class='fl'>TRUE</span>)
 
 <span class='co'># Compare groups (filter NAs for categorical coloumns)</span>
-<span class='no'>groups.cmp</span> <span class='kw'>&lt;-</span> <span class='fu'>get_group_comparison</span>(<span class='no'>groups</span>[, -<span class='fl'>1</span>],
-  <span class='kw'>col_group</span> <span class='kw'>=</span> <span class='st'>"group"</span>,
-  <span class='kw'>cols_to_compare</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"prob"</span>, <span class='st'>"new_group"</span>),
-  <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"co"</span>, <span class='st'>"ca"</span>), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+<span class='kw'>groups.cmp</span> <span class='op'>&lt;-</span> <span class='fu'>get_group_comparison</span>(<span class='kw'>groups</span>[, <span class='op'>-</span><span class='fl'>1</span>],
+  col_group = <span class='st'>"group"</span>,
+  cols_to_compare = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"prob"</span>, <span class='st'>"new_group"</span>),
+  type = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"co"</span>, <span class='st'>"ca"</span>), verbose = <span class='fl'>TRUE</span>
 )
 
 <span class='co'># Compare groups (Set NAs of categorical columns to 'Rest')</span>
-<span class='no'>groups.cmp2</span> <span class='kw'>&lt;-</span> <span class='fu'>get_group_comparison</span>(<span class='no'>groups</span>[, -<span class='fl'>1</span>],
-  <span class='kw'>col_group</span> <span class='kw'>=</span> <span class='st'>"group"</span>,
-  <span class='kw'>cols_to_compare</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"prob"</span>, <span class='st'>"new_group"</span>),
-  <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"co"</span>, <span class='st'>"ca"</span>), <span class='kw'>NAs</span> <span class='kw'>=</span> <span class='st'>"Rest"</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+<span class='kw'>groups.cmp2</span> <span class='op'>&lt;-</span> <span class='fu'>get_group_comparison</span>(<span class='kw'>groups</span>[, <span class='op'>-</span><span class='fl'>1</span>],
+  col_group = <span class='st'>"group"</span>,
+  cols_to_compare = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"prob"</span>, <span class='st'>"new_group"</span>),
+  type = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"co"</span>, <span class='st'>"ca"</span>), NAs = <span class='st'>"Rest"</span>, verbose = <span class='fl'>TRUE</span>
 )
-<span class='co'># }</span></pre>
+<span class='co'># }</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -232,7 +236,7 @@ Otherwise a value (either length 1 or length same as <code>cols_to_compare</code
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

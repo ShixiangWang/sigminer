@@ -82,7 +82,7 @@ this problem." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.19</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -136,14 +136,14 @@ this problem.</p>
     </div>
 
     <pre class="usage"><span class='fu'>get_adj_p</span>(
-  <span class='no'>data</span>,
-  <span class='no'>.col</span>,
-  <span class='kw'>.grp</span> <span class='kw'>=</span> <span class='st'>"Sample"</span>,
-  <span class='kw'>comparisons</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"wilcox.test"</span>,
-  <span class='kw'>p.adjust.method</span> <span class='kw'>=</span> <span class='st'>"fdr"</span>,
-  <span class='kw'>p.digits</span> <span class='kw'>=</span> <span class='fl'>3L</span>,
-  <span class='no'>...</span>
+  <span class='kw'>data</span>,
+  <span class='kw'>.col</span>,
+  .grp = <span class='st'>"Sample"</span>,
+  comparisons = <span class='kw'>NULL</span>,
+  method = <span class='st'>"wilcox.test"</span>,
+  p.adjust.method = <span class='st'>"fdr"</span>,
+  p.digits = <span class='fl'>3L</span>,
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -199,44 +199,45 @@ see all available options.</p></td>
     <p>More info see <code><a href='https://rdrr.io/pkg/ggpubr/man/compare_means.html'>ggpubr::compare_means()</a></code>, <code><a href='https://rdrr.io/pkg/ggpubr/man/stat_compare_means.html'>ggpubr::stat_compare_means()</a></code> and <code><a href='https://rdrr.io/r/stats/p.adjust.html'>stats::p.adjust()</a></code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>ggpubr</span>)
+    <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://rpkgs.datanovia.com/ggpubr'>ggpubr</a></span>)
 <span class='co'># T-test</span>
-<span class='no'>stat.test</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/ggpubr/man/compare_means.html'>compare_means</a></span>(
-  <span class='no'>len</span> ~ <span class='no'>dose</span>,
-  <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>ToothGrowth</span>,
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"t.test"</span>,
-  <span class='kw'>p.adjust.method</span> <span class='kw'>=</span> <span class='st'>"fdr"</span>
+<span class='kw'>stat.test</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/ggpubr/man/compare_means.html'>compare_means</a></span>(
+  <span class='kw'>len</span> <span class='op'>~</span> <span class='kw'>dose</span>,
+  data = <span class='kw'>ToothGrowth</span>,
+  method = <span class='st'>"t.test"</span>,
+  p.adjust.method = <span class='st'>"fdr"</span>
 )
-<span class='no'>stat.test</span>
+<span class='kw'>stat.test</span>
 <span class='co'># Create a simple box plot</span>
-<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/ggpubr/man/ggboxplot.html'>ggboxplot</a></span>(<span class='no'>ToothGrowth</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"dose"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"len"</span>)
-<span class='no'>p</span>
+<span class='kw'>p</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/ggpubr/man/ggboxplot.html'>ggboxplot</a></span>(<span class='kw'>ToothGrowth</span>, x = <span class='st'>"dose"</span>, y = <span class='st'>"len"</span>)
+<span class='kw'>p</span>
 
 <span class='co'># Add p values</span>
-<span class='no'>my_comparisons</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"0.5"</span>, <span class='st'>"1"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1"</span>, <span class='st'>"2"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"0.5"</span>, <span class='st'>"2"</span>))
-<span class='no'>p</span> + <span class='fu'><a href='https://rdrr.io/pkg/ggpubr/man/stat_compare_means.html'>stat_compare_means</a></span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"t.test"</span>, <span class='kw'>comparisons</span> <span class='kw'>=</span> <span class='no'>my_comparisons</span>)
+<span class='kw'>my_comparisons</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"0.5"</span>, <span class='st'>"1"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1"</span>, <span class='st'>"2"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"0.5"</span>, <span class='st'>"2"</span>))
+<span class='kw'>p</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/pkg/ggpubr/man/stat_compare_means.html'>stat_compare_means</a></span>(method = <span class='st'>"t.test"</span>, comparisons = <span class='kw'>my_comparisons</span>)
 
 <span class='co'># Try adding adjust p values</span>
 <span class='co'># proposed by author of ggpubr</span>
 <span class='co'># however it does not work</span>
-<span class='no'>p</span> + <span class='fu'><a href='https://rdrr.io/pkg/ggpubr/man/stat_compare_means.html'>stat_compare_means</a></span>(<span class='fu'>aes</span>(<span class='kw'>label</span> <span class='kw'>=</span> <span class='no'>..p.adj..</span>), <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"t.test"</span>, <span class='kw'>comparisons</span> <span class='kw'>=</span> <span class='no'>my_comparisons</span>)
+<span class='kw'>p</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/pkg/ggpubr/man/stat_compare_means.html'>stat_compare_means</a></span>(<span class='fu'>aes</span>(label = <span class='kw'>..p.adj..</span>), method = <span class='st'>"t.test"</span>, comparisons = <span class='kw'>my_comparisons</span>)
 
 <span class='co'># Solution:</span>
 <span class='co'># calculate adjust p values and their location</span>
 <span class='co'># then use stat_pvalue_manual() function</span>
-<span class='no'>p_adj</span> <span class='kw'>&lt;-</span> <span class='fu'>get_adj_p</span>(<span class='no'>ToothGrowth</span>, <span class='kw'>.col</span> <span class='kw'>=</span> <span class='st'>"len"</span>, <span class='kw'>.grp</span> <span class='kw'>=</span> <span class='st'>"dose"</span>)
-<span class='no'>p_adj</span>
-<span class='no'>p</span> + <span class='fu'><a href='https://rdrr.io/pkg/ggpubr/man/stat_pvalue_manual.html'>stat_pvalue_manual</a></span>(<span class='no'>p_adj</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"p.adj"</span>)
+<span class='kw'>p_adj</span> <span class='op'>&lt;-</span> <span class='fu'>get_adj_p</span>(<span class='kw'>ToothGrowth</span>, .col = <span class='st'>"len"</span>, .grp = <span class='st'>"dose"</span>)
+<span class='kw'>p_adj</span>
+<span class='kw'>p</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/pkg/ggpubr/man/stat_pvalue_manual.html'>stat_pvalue_manual</a></span>(<span class='kw'>p_adj</span>, label = <span class='st'>"p.adj"</span>)
 
 <span class='co'># Show selected comparisons</span>
 <span class='co'># Of note, p value is ajusted</span>
 <span class='co'># for three comparisons, but only</span>
 <span class='co'># two are showed in figure</span>
-<span class='no'>p_adj</span> <span class='kw'>&lt;-</span> <span class='fu'>get_adj_p</span>(<span class='no'>ToothGrowth</span>,
-  <span class='kw'>.col</span> <span class='kw'>=</span> <span class='st'>"len"</span>, <span class='kw'>.grp</span> <span class='kw'>=</span> <span class='st'>"dose"</span>,
-  <span class='kw'>comparisons</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"0.5"</span>, <span class='st'>"1"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1"</span>, <span class='st'>"2"</span>))
+<span class='kw'>p_adj</span> <span class='op'>&lt;-</span> <span class='fu'>get_adj_p</span>(<span class='kw'>ToothGrowth</span>,
+  .col = <span class='st'>"len"</span>, .grp = <span class='st'>"dose"</span>,
+  comparisons = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"0.5"</span>, <span class='st'>"1"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1"</span>, <span class='st'>"2"</span>))
 )
-<span class='no'>p</span> + <span class='fu'><a href='https://rdrr.io/pkg/ggpubr/man/stat_pvalue_manual.html'>stat_pvalue_manual</a></span>(<span class='no'>p_adj</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"p.adj"</span>)</pre>
+<span class='kw'>p</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/pkg/ggpubr/man/stat_pvalue_manual.html'>stat_pvalue_manual</a></span>(<span class='kw'>p_adj</span>, label = <span class='st'>"p.adj"</span>)
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -252,7 +253,7 @@ see all available options.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

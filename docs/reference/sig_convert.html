@@ -81,7 +81,7 @@ Currently, only SBS signature is supported." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.19</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -133,7 +133,7 @@ Currently, only SBS signature is supported." />
 Currently, only SBS signature is supported.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>sig_convert</span>(<span class='no'>sig</span>, <span class='kw'>from</span> <span class='kw'>=</span> <span class='st'>"human-genome"</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"human-exome"</span>)</pre>
+    <pre class="usage"><span class='fu'>sig_convert</span>(<span class='kw'>sig</span>, from = <span class='st'>"human-genome"</span>, to = <span class='st'>"human-exome"</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -170,17 +170,18 @@ signature database v2 and v3.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># Load SBS signature</span>
 <span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_mutational_signature.RData"</span>,
-  <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  package = <span class='st'>"sigminer"</span>, mustWork = <span class='fl'>TRUE</span>
 ))
 <span class='co'># Exome-relative to Genome-relative</span>
-<span class='no'>sig_converted</span> <span class='kw'>&lt;-</span> <span class='fu'>sig_convert</span>(<span class='no'>sig2</span>,
-  <span class='kw'>from</span> <span class='kw'>=</span> <span class='st'>"human-exome"</span>,
-  <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"human-genome"</span>
+<span class='kw'>sig_converted</span> <span class='op'>&lt;-</span> <span class='fu'>sig_convert</span>(<span class='kw'>sig2</span>,
+  from = <span class='st'>"human-exome"</span>,
+  to = <span class='st'>"human-genome"</span>
 )
-<span class='no'>sig_converted</span>
+<span class='kw'>sig_converted</span>
 
-<span class='fu'><a href='show_sig_profile.html'>show_sig_profile</a></span>(<span class='no'>sig2</span>, <span class='kw'>style</span> <span class='kw'>=</span> <span class='st'>"cosmic"</span>)
-<span class='fu'><a href='show_sig_profile.html'>show_sig_profile</a></span>(<span class='no'>sig_converted</span>, <span class='kw'>style</span> <span class='kw'>=</span> <span class='st'>"cosmic"</span>)</pre>
+<span class='fu'><a href='show_sig_profile.html'>show_sig_profile</a></span>(<span class='kw'>sig2</span>, style = <span class='st'>"cosmic"</span>)
+<span class='fu'><a href='show_sig_profile.html'>show_sig_profile</a></span>(<span class='kw'>sig_converted</span>, style = <span class='st'>"cosmic"</span>)
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -196,7 +197,7 @@ signature database v2 and v3.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

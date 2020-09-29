@@ -83,7 +83,7 @@ ggcorrplot." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.19</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -138,16 +138,16 @@ This is basically a wrapper of R package
     </div>
 
     <pre class="usage"><span class='fu'>show_cor</span>(
-  <span class='no'>data</span>,
-  <span class='kw'>x_vars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>data</span>),
-  <span class='kw'>y_vars</span> <span class='kw'>=</span> <span class='no'>x_vars</span>,
-  <span class='kw'>cor_method</span> <span class='kw'>=</span> <span class='st'>"spearman"</span>,
-  <span class='kw'>vis_method</span> <span class='kw'>=</span> <span class='st'>"square"</span>,
-  <span class='kw'>lab</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>test</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>hc_order</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>p_adj</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>
+  <span class='kw'>data</span>,
+  x_vars = <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='kw'>data</span>),
+  y_vars = <span class='kw'>x_vars</span>,
+  cor_method = <span class='st'>"spearman"</span>,
+  vis_method = <span class='st'>"square"</span>,
+  lab = <span class='fl'>TRUE</span>,
+  test = <span class='fl'>TRUE</span>,
+  hc_order = <span class='fl'>FALSE</span>,
+  p_adj = <span class='kw'>NULL</span>,
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -207,20 +207,21 @@ association analysis and visualization.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"mtcars"</span>)
-<span class='no'>p1</span> <span class='kw'>&lt;-</span> <span class='fu'>show_cor</span>(<span class='no'>mtcars</span>)
-<span class='no'>p2</span> <span class='kw'>&lt;-</span> <span class='fu'>show_cor</span>(<span class='no'>mtcars</span>,
-               <span class='kw'>x_vars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>mtcars</span>)[<span class='fl'>1</span>:<span class='fl'>4</span>],
-               <span class='kw'>y_vars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>mtcars</span>)[<span class='fl'>5</span>:<span class='fl'>8</span>])
-<span class='no'>p3</span> <span class='kw'>&lt;-</span> <span class='fu'>show_cor</span>(<span class='no'>mtcars</span>, <span class='kw'>vis_method</span> <span class='kw'>=</span> <span class='st'>"circle"</span>, <span class='kw'>p_adj</span> <span class='kw'>=</span> <span class='st'>"fdr"</span>)
-<span class='no'>p1</span>
-<span class='no'>p1</span>$<span class='no'>cor</span>
-<span class='no'>p2</span>
-<span class='no'>p3</span>
+<span class='kw'>p1</span> <span class='op'>&lt;-</span> <span class='fu'>show_cor</span>(<span class='kw'>mtcars</span>)
+<span class='kw'>p2</span> <span class='op'>&lt;-</span> <span class='fu'>show_cor</span>(<span class='kw'>mtcars</span>,
+               x_vars = <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='kw'>mtcars</span>)[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>],
+               y_vars = <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='kw'>mtcars</span>)[<span class='fl'>5</span><span class='op'>:</span><span class='fl'>8</span>])
+<span class='kw'>p3</span> <span class='op'>&lt;-</span> <span class='fu'>show_cor</span>(<span class='kw'>mtcars</span>, vis_method = <span class='st'>"circle"</span>, p_adj = <span class='st'>"fdr"</span>)
+<span class='kw'>p1</span>
+<span class='kw'>p1</span><span class='op'>$</span><span class='kw'>cor</span>
+<span class='kw'>p2</span>
+<span class='kw'>p3</span>
 
 <span class='co'>## Auto detect problem variables</span>
-<span class='no'>mtcars</span>$<span class='no'>xx</span> <span class='kw'>&lt;-</span> <span class='fl'>0L</span>
-<span class='no'>p4</span> <span class='kw'>&lt;-</span> <span class='fu'>show_cor</span>(<span class='no'>mtcars</span>)
-<span class='no'>p4</span></pre>
+<span class='kw'>mtcars</span><span class='op'>$</span><span class='kw'>xx</span> <span class='op'>&lt;-</span> <span class='fl'>0L</span>
+<span class='kw'>p4</span> <span class='op'>&lt;-</span> <span class='fu'>show_cor</span>(<span class='kw'>mtcars</span>)
+<span class='kw'>p4</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -236,7 +237,7 @@ association analysis and visualization.</p></div>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

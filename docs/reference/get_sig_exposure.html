@@ -87,7 +87,7 @@ Of note, for copy number signatures, only components of feature CN was used for 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.19</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -146,9 +146,9 @@ Of note, for copy number signatures, only components of feature CN was used for 
     </div>
 
     <pre class="usage"><span class='fu'>get_sig_exposure</span>(
-  <span class='no'>Signature</span>,
-  <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"absolute"</span>, <span class='st'>"relative"</span>),
-  <span class='kw'>rel_threshold</span> <span class='kw'>=</span> <span class='fl'>0.01</span>
+  <span class='kw'>Signature</span>,
+  type = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"absolute"</span>, <span class='st'>"relative"</span>),
+  rel_threshold = <span class='fl'>0.01</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -180,17 +180,21 @@ same parameter in <a href='sig_fit.html'>sig_fit</a>.</p></td>
 
     <p>Kim, Jaegil, et al. "Somatic ERCC2 mutations are associated with a distinct genomic signature in urothelial tumors."
 Nature genetics 48.6 (2016): 600.</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Shixiang Wang <a href='mailto:w_shixiang@163.com'>w_shixiang@163.com</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># Load mutational signature</span>
 <span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_mutational_signature.RData"</span>,
-  <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  package = <span class='st'>"sigminer"</span>, mustWork = <span class='fl'>TRUE</span>
 ))
 <span class='co'># Get signature exposure</span>
-<span class='no'>expo1</span> <span class='kw'>&lt;-</span> <span class='fu'>get_sig_exposure</span>(<span class='no'>sig2</span>)
-<span class='no'>expo1</span>
-<span class='no'>expo2</span> <span class='kw'>&lt;-</span> <span class='fu'>get_sig_exposure</span>(<span class='no'>sig2</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"relative"</span>)
-<span class='no'>expo2</span></pre>
+<span class='kw'>expo1</span> <span class='op'>&lt;-</span> <span class='fu'>get_sig_exposure</span>(<span class='kw'>sig2</span>)
+<span class='kw'>expo1</span>
+<span class='kw'>expo2</span> <span class='op'>&lt;-</span> <span class='fu'>get_sig_exposure</span>(<span class='kw'>sig2</span>, type = <span class='st'>"relative"</span>)
+<span class='kw'>expo2</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -206,7 +210,7 @@ Nature genetics 48.6 (2016): 600.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

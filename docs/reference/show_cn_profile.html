@@ -82,7 +82,7 @@ related packages." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.19</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -136,18 +136,18 @@ related packages.</p>
     </div>
 
     <pre class="usage"><span class='fu'>show_cn_profile</span>(
-  <span class='no'>data</span>,
-  <span class='kw'>samples</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>show_n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>show_title</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>show_labels</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>chrs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"chr"</span>, <span class='fl'>1</span>:<span class='fl'>22</span>),
-  <span class='kw'>position</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>genome_build</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"hg19"</span>, <span class='st'>"hg38"</span>, <span class='st'>"mm10"</span>),
-  <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>return_plotlist</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+  <span class='kw'>data</span>,
+  samples = <span class='kw'>NULL</span>,
+  show_n = <span class='kw'>NULL</span>,
+  show_title = <span class='fl'>FALSE</span>,
+  show_labels = <span class='kw'>NULL</span>,
+  chrs = <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"chr"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>22</span>),
+  position = <span class='kw'>NULL</span>,
+  genome_build = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"hg19"</span>, <span class='st'>"hg38"</span>, <span class='st'>"mm10"</span>),
+  ylim = <span class='kw'>NULL</span>,
+  nrow = <span class='kw'>NULL</span>,
+  ncol = <span class='kw'>NULL</span>,
+  return_plotlist = <span class='fl'>FALSE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -214,18 +214,19 @@ overlaps with this range will be shown.</p></td>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># Load copy number object</span>
 <span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber.RData"</span>,
-  <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  package = <span class='st'>"sigminer"</span>, mustWork = <span class='fl'>TRUE</span>
 ))
 
-<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>show_cn_profile</span>(<span class='no'>cn</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>1</span>)
-<span class='no'>p</span>
+<span class='kw'>p</span> <span class='op'>&lt;-</span> <span class='fu'>show_cn_profile</span>(<span class='kw'>cn</span>, nrow = <span class='fl'>2</span>, ncol = <span class='fl'>1</span>)
+<span class='kw'>p</span>
 <span class='co'># \donttest{</span>
-<span class='no'>p2</span> <span class='kw'>&lt;-</span> <span class='fu'>show_cn_profile</span>(<span class='no'>cn</span>,
-  <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>position</span> <span class='kw'>=</span> <span class='st'>"chr1:3218923-116319008"</span>
+<span class='kw'>p2</span> <span class='op'>&lt;-</span> <span class='fu'>show_cn_profile</span>(<span class='kw'>cn</span>,
+  nrow = <span class='fl'>2</span>, ncol = <span class='fl'>1</span>,
+  position = <span class='st'>"chr1:3218923-116319008"</span>
 )
-<span class='no'>p2</span>
-<span class='co'># }</span></pre>
+<span class='kw'>p2</span>
+<span class='co'># }</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -241,7 +242,7 @@ overlaps with this range will be shown.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

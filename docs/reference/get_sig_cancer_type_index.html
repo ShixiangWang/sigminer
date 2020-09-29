@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.19</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -132,10 +132,10 @@
     </div>
 
     <pre class="usage"><span class='fu'>get_sig_cancer_type_index</span>(
-  <span class='kw'>sig_type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"legacy"</span>, <span class='st'>"SBS"</span>, <span class='st'>"DBS"</span>, <span class='st'>"ID"</span>),
-  <span class='kw'>seq_type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"WGS"</span>, <span class='st'>"WES"</span>),
-  <span class='kw'>source</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"PCAWG"</span>, <span class='st'>"TCGA"</span>, <span class='st'>"nonPCAWG"</span>),
-  <span class='kw'>keyword</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+  sig_type = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"legacy"</span>, <span class='st'>"SBS"</span>, <span class='st'>"DBS"</span>, <span class='st'>"ID"</span>),
+  seq_type = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"WGS"</span>, <span class='st'>"WES"</span>),
+  source = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"PCAWG"</span>, <span class='st'>"TCGA"</span>, <span class='st'>"nonPCAWG"</span>),
+  keyword = <span class='kw'>NULL</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -164,16 +164,17 @@
     <p>a <code>list</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='no'>l1</span> <span class='kw'>&lt;-</span> <span class='fu'>get_sig_cancer_type_index</span>()
-<span class='no'>l2</span> <span class='kw'>&lt;-</span> <span class='fu'>get_sig_cancer_type_index</span>(<span class='kw'>sig_type</span> <span class='kw'>=</span> <span class='st'>"SBS"</span>)
-<span class='no'>l3</span> <span class='kw'>&lt;-</span> <span class='fu'>get_sig_cancer_type_index</span>(<span class='kw'>sig_type</span> <span class='kw'>=</span> <span class='st'>"DBS"</span>, <span class='kw'>source</span> <span class='kw'>=</span> <span class='st'>"PCAWG"</span>, <span class='kw'>seq_type</span> <span class='kw'>=</span> <span class='st'>"WGS"</span>)
-<span class='no'>l4</span> <span class='kw'>&lt;-</span> <span class='fu'>get_sig_cancer_type_index</span>(<span class='kw'>sig_type</span> <span class='kw'>=</span> <span class='st'>"ID"</span>)
-<span class='no'>l5</span> <span class='kw'>&lt;-</span> <span class='fu'>get_sig_cancer_type_index</span>(<span class='kw'>keyword</span> <span class='kw'>=</span> <span class='st'>"breast"</span>)
-<span class='no'>l1</span>
-<span class='no'>l2</span>
-<span class='no'>l3</span>
-<span class='no'>l4</span>
-<span class='no'>l5</span></pre>
+    <pre class="examples"><span class='kw'>l1</span> <span class='op'>&lt;-</span> <span class='fu'>get_sig_cancer_type_index</span>()
+<span class='kw'>l2</span> <span class='op'>&lt;-</span> <span class='fu'>get_sig_cancer_type_index</span>(sig_type = <span class='st'>"SBS"</span>)
+<span class='kw'>l3</span> <span class='op'>&lt;-</span> <span class='fu'>get_sig_cancer_type_index</span>(sig_type = <span class='st'>"DBS"</span>, source = <span class='st'>"PCAWG"</span>, seq_type = <span class='st'>"WGS"</span>)
+<span class='kw'>l4</span> <span class='op'>&lt;-</span> <span class='fu'>get_sig_cancer_type_index</span>(sig_type = <span class='st'>"ID"</span>)
+<span class='kw'>l5</span> <span class='op'>&lt;-</span> <span class='fu'>get_sig_cancer_type_index</span>(keyword = <span class='st'>"breast"</span>)
+<span class='kw'>l1</span>
+<span class='kw'>l2</span>
+<span class='kw'>l3</span>
+<span class='kw'>l4</span>
+<span class='kw'>l5</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -189,7 +190,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

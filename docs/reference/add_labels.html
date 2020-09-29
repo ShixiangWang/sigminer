@@ -81,7 +81,7 @@ from show_sig_profile." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.19</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -134,17 +134,17 @@ from <a href='show_sig_profile.html'>show_sig_profile</a>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>add_labels</span>(
-  <span class='no'>p</span>,
-  <span class='no'>x</span>,
-  <span class='no'>y</span>,
-  <span class='kw'>y_end</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>n_label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>labels</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>revert_order</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>font_size</span> <span class='kw'>=</span> <span class='fl'>5</span>,
-  <span class='kw'>font_family</span> <span class='kw'>=</span> <span class='st'>"serif"</span>,
-  <span class='kw'>font_face</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"plain"</span>, <span class='st'>"bold"</span>, <span class='st'>"italic"</span>),
-  <span class='no'>...</span>
+  <span class='kw'>p</span>,
+  <span class='kw'>x</span>,
+  <span class='kw'>y</span>,
+  y_end = <span class='kw'>NULL</span>,
+  n_label = <span class='kw'>NULL</span>,
+  labels = <span class='kw'>NULL</span>,
+  revert_order = <span class='fl'>FALSE</span>,
+  font_size = <span class='fl'>5</span>,
+  font_family = <span class='st'>"serif"</span>,
+  font_face = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"plain"</span>, <span class='st'>"bold"</span>, <span class='st'>"italic"</span>),
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -205,32 +205,33 @@ according to <code>y</code> and <code>y_end</code>.</p></td>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># Load mutational signature</span>
 <span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_mutational_signature.RData"</span>,
-  <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  package = <span class='st'>"sigminer"</span>, mustWork = <span class='fl'>TRUE</span>
 ))
 <span class='co'># Show signature profile</span>
-<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='show_sig_profile.html'>show_sig_profile</a></span>(<span class='no'>sig2</span>, <span class='kw'>mode</span> <span class='kw'>=</span> <span class='st'>"SBS"</span>)
+<span class='kw'>p</span> <span class='op'>&lt;-</span> <span class='fu'><a href='show_sig_profile.html'>show_sig_profile</a></span>(<span class='kw'>sig2</span>, mode = <span class='st'>"SBS"</span>)
 
 <span class='co'># Method 1</span>
-<span class='no'>p1</span> <span class='kw'>&lt;-</span> <span class='fu'>add_labels</span>(<span class='no'>p</span>,
-  <span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>0.75</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='fl'>0.3</span>, <span class='kw'>y_end</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>n_label</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='kw'>labels</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"text"</span>, <span class='fl'>1</span>:<span class='fl'>3</span>)
+<span class='kw'>p1</span> <span class='op'>&lt;-</span> <span class='fu'>add_labels</span>(<span class='kw'>p</span>,
+  x = <span class='fl'>0.75</span>, y = <span class='fl'>0.3</span>, y_end = <span class='fl'>0.9</span>, n_label = <span class='fl'>3</span>,
+  labels = <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"text"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>)
 )
-<span class='no'>p1</span>
+<span class='kw'>p1</span>
 
 <span class='co'># Method 2</span>
-<span class='no'>p2</span> <span class='kw'>&lt;-</span> <span class='fu'>add_labels</span>(<span class='no'>p</span>,
-  <span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.15</span>, <span class='fl'>0.6</span>, <span class='fl'>0.75</span>), <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.3</span>, <span class='fl'>0.6</span>, <span class='fl'>0.9</span>),
-  <span class='kw'>labels</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"text"</span>, <span class='fl'>1</span>:<span class='fl'>3</span>)
+<span class='kw'>p2</span> <span class='op'>&lt;-</span> <span class='fu'>add_labels</span>(<span class='kw'>p</span>,
+  x = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.15</span>, <span class='fl'>0.6</span>, <span class='fl'>0.75</span>), y = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.3</span>, <span class='fl'>0.6</span>, <span class='fl'>0.9</span>),
+  labels = <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"text"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>)
 )
-<span class='no'>p2</span>
+<span class='kw'>p2</span>
 
 <span class='co'># Method 3</span>
-<span class='no'>sim</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_sig_similarity.html'>get_sig_similarity</a></span>(<span class='no'>sig2</span>)
-<span class='no'>p3</span> <span class='kw'>&lt;-</span> <span class='fu'>add_labels</span>(<span class='no'>p</span>,
-  <span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.15</span>, <span class='fl'>0.6</span>, <span class='fl'>0.75</span>), <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.25</span>, <span class='fl'>0.55</span>, <span class='fl'>0.8</span>),
-  <span class='kw'>labels</span> <span class='kw'>=</span> <span class='no'>sim</span>, <span class='kw'>font_size</span> <span class='kw'>=</span> <span class='fl'>2</span>
+<span class='kw'>sim</span> <span class='op'>&lt;-</span> <span class='fu'><a href='get_sig_similarity.html'>get_sig_similarity</a></span>(<span class='kw'>sig2</span>)
+<span class='kw'>p3</span> <span class='op'>&lt;-</span> <span class='fu'>add_labels</span>(<span class='kw'>p</span>,
+  x = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.15</span>, <span class='fl'>0.6</span>, <span class='fl'>0.75</span>), y = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.25</span>, <span class='fl'>0.55</span>, <span class='fl'>0.8</span>),
+  labels = <span class='kw'>sim</span>, font_size = <span class='fl'>2</span>
 )
-<span class='no'>p3</span></pre>
+<span class='kw'>p3</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -246,7 +247,7 @@ according to <code>y</code> and <code>y_end</code>.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

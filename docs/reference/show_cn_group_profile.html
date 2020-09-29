@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.19</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -132,19 +132,19 @@
     </div>
 
     <pre class="usage"><span class='fu'>show_cn_group_profile</span>(
-  <span class='no'>data</span>,
-  <span class='kw'>groups</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>fill_area</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>cols</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>chrs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"chr"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>:<span class='fl'>22</span>, <span class='st'>"X"</span>)),
-  <span class='kw'>genome_build</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"hg19"</span>, <span class='st'>"hg38"</span>, <span class='st'>"mm10"</span>),
-  <span class='kw'>cutoff</span> <span class='kw'>=</span> <span class='fl'>2L</span>,
-  <span class='kw'>resolution_factor</span> <span class='kw'>=</span> <span class='fl'>1L</span>,
-  <span class='kw'>force_y_limit</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>highlight_genes</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>return_plotlist</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+  <span class='kw'>data</span>,
+  groups = <span class='kw'>NULL</span>,
+  fill_area = <span class='fl'>TRUE</span>,
+  cols = <span class='kw'>NULL</span>,
+  chrs = <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"chr"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>22</span>, <span class='st'>"X"</span>)),
+  genome_build = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"hg19"</span>, <span class='st'>"hg38"</span>, <span class='st'>"mm10"</span>),
+  cutoff = <span class='fl'>2L</span>,
+  resolution_factor = <span class='fl'>1L</span>,
+  force_y_limit = <span class='fl'>TRUE</span>,
+  highlight_genes = <span class='kw'>NULL</span>,
+  nrow = <span class='kw'>NULL</span>,
+  ncol = <span class='kw'>NULL</span>,
+  return_plotlist = <span class='fl'>FALSE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -216,35 +216,36 @@ have same y ranges. You can also set a length-2 numeric value.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber.RData"</span>,
-  <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  package = <span class='st'>"sigminer"</span>, mustWork = <span class='fl'>TRUE</span>
 ))
 
-<span class='no'>p1</span> <span class='kw'>&lt;-</span> <span class='fu'>show_cn_group_profile</span>(<span class='no'>cn</span>)
-<span class='no'>p1</span>
+<span class='kw'>p1</span> <span class='op'>&lt;-</span> <span class='fu'>show_cn_group_profile</span>(<span class='kw'>cn</span>)
+<span class='kw'>p1</span>
 <span class='co'># \donttest{</span>
-<span class='no'>ss</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span>(<span class='no'>cn</span>@<span class='kw'>data</span>$<span class='no'>sample</span>)
-<span class='no'>p2</span> <span class='kw'>&lt;-</span> <span class='fu'>show_cn_group_profile</span>(<span class='no'>cn</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='no'>ss</span>[<span class='fl'>1</span>:<span class='fl'>5</span>], <span class='kw'>b</span> <span class='kw'>=</span> <span class='no'>ss</span>[<span class='fl'>6</span>:<span class='fl'>10</span>]))
-<span class='no'>p2</span>
-<span class='no'>p3</span> <span class='kw'>&lt;-</span> <span class='fu'>show_cn_group_profile</span>(<span class='no'>cn</span>,
-  <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>g1</span> <span class='kw'>=</span> <span class='no'>ss</span>[<span class='fl'>1</span>:<span class='fl'>5</span>], <span class='kw'>g2</span> <span class='kw'>=</span> <span class='no'>ss</span>[<span class='fl'>6</span>:<span class='fl'>10</span>]),
-  <span class='kw'>force_y_limit</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>1</span>, <span class='fl'>1</span>), <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>
+<span class='kw'>ss</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span>(<span class='kw'>cn</span><span class='op'>@</span>data<span class='op'>$</span><span class='kw'>sample</span>)
+<span class='kw'>p2</span> <span class='op'>&lt;-</span> <span class='fu'>show_cn_group_profile</span>(<span class='kw'>cn</span>, groups = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(a = <span class='kw'>ss</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>], b = <span class='kw'>ss</span>[<span class='fl'>6</span><span class='op'>:</span><span class='fl'>10</span>]))
+<span class='kw'>p2</span>
+<span class='kw'>p3</span> <span class='op'>&lt;-</span> <span class='fu'>show_cn_group_profile</span>(<span class='kw'>cn</span>,
+  groups = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(g1 = <span class='kw'>ss</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>], g2 = <span class='kw'>ss</span>[<span class='fl'>6</span><span class='op'>:</span><span class='fl'>10</span>]),
+  force_y_limit = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='op'>-</span><span class='fl'>1</span>, <span class='fl'>1</span>), nrow = <span class='fl'>2</span>
 )
-<span class='no'>p3</span>
+<span class='kw'>p3</span>
 
 <span class='co'>## Set custom cutoff for custom data</span>
-<span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='no'>cn</span>@<span class='kw'>data</span>
-<span class='no'>data</span>$<span class='no'>segVal</span> <span class='kw'>&lt;-</span> <span class='no'>data</span>$<span class='no'>segVal</span> - <span class='fl'>2L</span>
-<span class='no'>p4</span> <span class='kw'>&lt;-</span> <span class='fu'>show_cn_group_profile</span>(<span class='no'>data</span>,
-  <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>g1</span> <span class='kw'>=</span> <span class='no'>ss</span>[<span class='fl'>1</span>:<span class='fl'>5</span>], <span class='kw'>g2</span> <span class='kw'>=</span> <span class='no'>ss</span>[<span class='fl'>6</span>:<span class='fl'>10</span>]),
-  <span class='kw'>force_y_limit</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>1</span>, <span class='fl'>1</span>), <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>cutoff</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>0</span>)
+<span class='kw'>data</span> <span class='op'>&lt;-</span> <span class='kw'>cn</span><span class='op'>@</span>data
+<span class='kw'>data</span><span class='op'>$</span><span class='kw'>segVal</span> <span class='op'>&lt;-</span> <span class='kw'>data</span><span class='op'>$</span><span class='kw'>segVal</span> <span class='op'>-</span> <span class='fl'>2L</span>
+<span class='kw'>p4</span> <span class='op'>&lt;-</span> <span class='fu'>show_cn_group_profile</span>(<span class='kw'>data</span>,
+  groups = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(g1 = <span class='kw'>ss</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>], g2 = <span class='kw'>ss</span>[<span class='fl'>6</span><span class='op'>:</span><span class='fl'>10</span>]),
+  force_y_limit = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='op'>-</span><span class='fl'>1</span>, <span class='fl'>1</span>), nrow = <span class='fl'>2</span>,
+  cutoff = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>0</span>)
 )
-<span class='no'>p4</span>
+<span class='kw'>p4</span>
 
 <span class='co'>## Add highlight gene</span>
-<span class='no'>p5</span> <span class='kw'>&lt;-</span> <span class='fu'>show_cn_group_profile</span>(<span class='no'>cn</span>, <span class='kw'>highlight_genes</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"TP53"</span>, <span class='st'>"EGFR"</span>))
-<span class='no'>p5</span>
-<span class='co'># }</span></pre>
+<span class='kw'>p5</span> <span class='op'>&lt;-</span> <span class='fu'>show_cn_group_profile</span>(<span class='kw'>cn</span>, highlight_genes = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"TP53"</span>, <span class='st'>"EGFR"</span>))
+<span class='kw'>p5</span>
+<span class='co'># }</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -260,7 +261,7 @@ have same y ranges. You can also set a length-2 numeric value.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

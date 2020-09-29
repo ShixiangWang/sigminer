@@ -81,7 +81,7 @@ it in other similar situations." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.19</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -134,15 +134,15 @@ it in other similar situations.</p>
     </div>
 
     <pre class="usage"><span class='fu'>show_group_mapping</span>(
-  <span class='no'>data</span>,
-  <span class='no'>col_to_flow</span>,
-  <span class='no'>cols_to_map</span>,
-  <span class='kw'>include_sig</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>fill_na</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>custom_theme</span> <span class='kw'>=</span> <span class='kw pkg'>cowplot</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/cowplot/man/theme_minimal_grid.html'>theme_minimal_hgrid</a></span>()
+  <span class='kw'>data</span>,
+  <span class='kw'>col_to_flow</span>,
+  <span class='kw'>cols_to_map</span>,
+  include_sig = <span class='fl'>FALSE</span>,
+  fill_na = <span class='fl'>FALSE</span>,
+  title = <span class='kw'>NULL</span>,
+  xlab = <span class='kw'>NULL</span>,
+  ylab = <span class='kw'>NULL</span>,
+  custom_theme = <span class='kw'>cowplot</span>::<span class='fu'><a href='https://rdrr.io/pkg/cowplot/man/theme_minimal_grid.html'>theme_minimal_hgrid</a></span>()
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -191,19 +191,20 @@ it in other similar situations.</p>
     <p>a <code>ggplot</code> object</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/reexports.html'>tibble</a></span>(
-  <span class='kw'>Group1</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='no'>LETTERS</span>[<span class='fl'>1</span>:<span class='fl'>5</span>], <span class='kw'>each</span> <span class='kw'>=</span> <span class='fl'>10</span>),
-  <span class='kw'>Group2</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='no'>LETTERS</span>[<span class='fl'>6</span>:<span class='fl'>15</span>], <span class='kw'>each</span> <span class='kw'>=</span> <span class='fl'>5</span>),
-  <span class='kw'>zzzz</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>"xx"</span>, <span class='fl'>20</span>), <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>"yy"</span>, <span class='fl'>20</span>), <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>NA</span>, <span class='fl'>10</span>))
+    <pre class="examples"><span class='kw'>data</span> <span class='op'>&lt;-</span> <span class='kw'>dplyr</span>::<span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(
+  Group1 = <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='kw'>LETTERS</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>], each = <span class='fl'>10</span>),
+  Group2 = <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='kw'>LETTERS</span>[<span class='fl'>6</span><span class='op'>:</span><span class='fl'>15</span>], each = <span class='fl'>5</span>),
+  zzzz = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>"xx"</span>, <span class='fl'>20</span>), <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>"yy"</span>, <span class='fl'>20</span>), <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>NA</span>, <span class='fl'>10</span>))
 )
-<span class='no'>p1</span> <span class='kw'>&lt;-</span> <span class='fu'>show_group_mapping</span>(<span class='no'>data</span>, <span class='kw'>col_to_flow</span> <span class='kw'>=</span> <span class='st'>"Group1"</span>, <span class='kw'>cols_to_map</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>data</span>)[-<span class='fl'>1</span>])
-<span class='no'>p1</span>
+<span class='kw'>p1</span> <span class='op'>&lt;-</span> <span class='fu'>show_group_mapping</span>(<span class='kw'>data</span>, col_to_flow = <span class='st'>"Group1"</span>, cols_to_map = <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='kw'>data</span>)[<span class='op'>-</span><span class='fl'>1</span>])
+<span class='kw'>p1</span>
 
-<span class='no'>p2</span> <span class='kw'>&lt;-</span> <span class='fu'>show_group_mapping</span>(<span class='no'>data</span>,
-  <span class='kw'>col_to_flow</span> <span class='kw'>=</span> <span class='st'>"Group1"</span>, <span class='kw'>cols_to_map</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>data</span>)[-<span class='fl'>1</span>],
-  <span class='kw'>include_sig</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+<span class='kw'>p2</span> <span class='op'>&lt;-</span> <span class='fu'>show_group_mapping</span>(<span class='kw'>data</span>,
+  col_to_flow = <span class='st'>"Group1"</span>, cols_to_map = <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='kw'>data</span>)[<span class='op'>-</span><span class='fl'>1</span>],
+  include_sig = <span class='fl'>TRUE</span>
 )
-<span class='no'>p2</span></pre>
+<span class='kw'>p2</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -219,7 +220,7 @@ it in other similar situations.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

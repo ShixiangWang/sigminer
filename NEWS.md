@@ -1,3 +1,7 @@
+# sigminer 1.1.0
+
+- Update all COSMIC signatures to v3.1 and their aetiologies.
+
 # sigminer 1.0.19
 
 - Added more specific reference signatures from SigProfiler, e.g. `SBS_mm9`.

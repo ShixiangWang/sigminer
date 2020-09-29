@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.19</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -132,16 +132,16 @@
     </div>
 
     <pre class="usage"><span class='fu'>sig_fit_bootstrap_batch</span>(
-  <span class='no'>catalogue_matrix</span>,
-  <span class='kw'>methods</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"QP"</span>),
-  <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>100L</span>,
-  <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>1L</span>,
-  <span class='kw'>p_val_thresholds</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.05</span>),
-  <span class='kw'>use_parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>123456L</span>,
-  <span class='kw'>job_id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>result_dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>(),
-  <span class='no'>...</span>
+  <span class='kw'>catalogue_matrix</span>,
+  methods = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"QP"</span>),
+  n = <span class='fl'>100L</span>,
+  min_count = <span class='fl'>1L</span>,
+  p_val_thresholds = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.05</span>),
+  use_parallel = <span class='fl'>FALSE</span>,
+  seed = <span class='fl'>123456L</span>,
+  job_id = <span class='kw'>NULL</span>,
+  result_dir = <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>(),
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -203,20 +203,21 @@ more than 10 times for more than 100 samples.</p></td>
     <div class='dont-index'><p><a href='sig_fit.html'>sig_fit</a>, <a href='sig_fit_bootstrap.html'>sig_fit_bootstrap</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='no'>W</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>), <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>W</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sig1"</span>, <span class='st'>"sig2"</span>)
-<span class='no'>W</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span>(<span class='no'>W</span>, <span class='fl'>2</span>, <span class='kw'>function</span>(<span class='no'>x</span>) <span class='no'>x</span> / <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='no'>x</span>))
+    <pre class="examples"><span class='kw'>W</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>), ncol = <span class='fl'>2</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='kw'>W</span>) <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sig1"</span>, <span class='st'>"sig2"</span>)
+<span class='kw'>W</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span>(<span class='kw'>W</span>, <span class='fl'>2</span>, <span class='fu'>function</span>(<span class='kw'>x</span>) <span class='kw'>x</span> <span class='op'>/</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='kw'>x</span>))
 
-<span class='no'>H</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>, <span class='fl'>5</span>, <span class='fl'>3</span>, <span class='fl'>6</span>, <span class='fl'>1</span>, <span class='fl'>9</span>, <span class='fl'>1</span>, <span class='fl'>2</span>), <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>4</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>H</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"samp"</span>, <span class='fl'>1</span>:<span class='fl'>4</span>)
+<span class='kw'>H</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>, <span class='fl'>5</span>, <span class='fl'>3</span>, <span class='fl'>6</span>, <span class='fl'>1</span>, <span class='fl'>9</span>, <span class='fl'>1</span>, <span class='fl'>2</span>), ncol = <span class='fl'>4</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='kw'>H</span>) <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"samp"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>)
 
-<span class='no'>V</span> <span class='kw'>&lt;-</span> <span class='no'>W</span> <span class='kw'>%*%</span> <span class='no'>H</span>
-<span class='no'>V</span>
+<span class='kw'>V</span> <span class='op'>&lt;-</span> <span class='kw'>W</span> <span class='op'>%*%</span> <span class='kw'>H</span>
+<span class='kw'>V</span>
 
-<span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"quadprog"</span>)) {
-  <span class='no'>z10</span> <span class='kw'>&lt;-</span> <span class='fu'>sig_fit_bootstrap_batch</span>(<span class='no'>V</span>, <span class='kw'>sig</span> <span class='kw'>=</span> <span class='no'>W</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>10</span>)
-  <span class='no'>z10</span>
-}</pre>
+<span class='co'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"quadprog"</span>)) {
+  <span class='kw'>z10</span> <span class='op'>&lt;-</span> <span class='fu'>sig_fit_bootstrap_batch</span>(<span class='kw'>V</span>, sig = <span class='kw'>W</span>, n = <span class='fl'>10</span>)
+  <span class='kw'>z10</span>
+}
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -232,7 +233,7 @@ more than 10 times for more than 100 samples.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

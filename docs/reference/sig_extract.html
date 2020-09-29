@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.19</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -132,15 +132,15 @@
     </div>
 
     <pre class="usage"><span class='fu'>sig_extract</span>(
-  <span class='no'>nmf_matrix</span>,
-  <span class='no'>n_sig</span>,
-  <span class='kw'>nrun</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>cores</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"brunet"</span>,
-  <span class='kw'>optimize</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>pConstant</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>123456</span>,
-  <span class='no'>...</span>
+  <span class='kw'>nmf_matrix</span>,
+  <span class='kw'>n_sig</span>,
+  nrun = <span class='fl'>10</span>,
+  cores = <span class='fl'>1</span>,
+  method = <span class='st'>"brunet"</span>,
+  optimize = <span class='fl'>FALSE</span>,
+  pConstant = <span class='kw'>NULL</span>,
+  seed = <span class='fl'>123456</span>,
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -201,16 +201,20 @@ usually using data from the target matrix in order to provide a good guess.</p><
     <div class='dont-index'><p><a href='sig_tally.html'>sig_tally</a> for getting variation matrix,
 <a href='sig_estimate.html'>sig_estimate</a> for estimating signature number for sig_extract, <a href='sig_auto_extract.html'>sig_auto_extract</a> for
 extracting signatures using automatic relevance determination technique.</p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Shixiang Wang</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># \donttest{</span>
 <span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_tally_M.RData"</span>,
-  <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  package = <span class='st'>"sigminer"</span>, mustWork = <span class='fl'>TRUE</span>
 ))
 <span class='co'># Extract copy number signatures</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>NMF</span>)
-<span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>sig_extract</span>(<span class='no'>cn_tally_M</span>$<span class='no'>nmf_matrix</span>, <span class='fl'>2</span>, <span class='kw'>nrun</span> <span class='kw'>=</span> <span class='fl'>1</span>)
-<span class='co'># }</span></pre>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='http://renozao.github.io/NMF'>NMF</a></span>)
+<span class='kw'>res</span> <span class='op'>&lt;-</span> <span class='fu'>sig_extract</span>(<span class='kw'>cn_tally_M</span><span class='op'>$</span><span class='kw'>nmf_matrix</span>, <span class='fl'>2</span>, nrun = <span class='fl'>1</span>)
+<span class='co'># }</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -226,7 +230,7 @@ extracting signatures using automatic relevance determination technique.</p></di
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

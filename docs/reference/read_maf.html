@@ -84,7 +84,7 @@ positive strand format." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.19</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -139,7 +139,7 @@ All reference alleles and mutation alleles should be recorded in
 positive strand format.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>read_maf</span>(<span class='no'>maf</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>read_maf</span>(<span class='kw'>maf</span>, verbose = <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -159,13 +159,14 @@ positive strand format.</p>
     <div class='dont-index'><p><a href='read_copynumber.html'>read_copynumber</a> for reading copy number data to <a href='CopyNumber-class.html'>CopyNumber</a> object.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='no'>laml.maf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"tcga_laml.maf.gz"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"maftools"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='kw'>if</span> (!<span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='st'>"R.utils"</span>)) {
+    <pre class="examples"><span class='kw'>laml.maf</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"tcga_laml.maf.gz"</span>, package = <span class='st'>"maftools"</span>, mustWork = <span class='fl'>TRUE</span>)
+<span class='co'>if</span> (<span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='st'><a href='https://github.com/HenrikBengtsson/R.utils'>"R.utils"</a></span>)) {
   <span class='fu'><a href='https://rdrr.io/r/base/message.html'>message</a></span>(<span class='st'>"Please install 'R.utils' package firstly"</span>)
-} <span class='kw'>else</span> {
-  <span class='no'>laml</span> <span class='kw'>&lt;-</span> <span class='fu'>read_maf</span>(<span class='kw'>maf</span> <span class='kw'>=</span> <span class='no'>laml.maf</span>)
-  <span class='no'>laml</span>
-}</pre>
+} <span class='co'>else</span> {
+  <span class='kw'>laml</span> <span class='op'>&lt;-</span> <span class='fu'>read_maf</span>(maf = <span class='kw'>laml.maf</span>)
+  <span class='kw'>laml</span>
+}
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -181,7 +182,7 @@ positive strand format.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -13,11 +13,14 @@
 #' (sum of each column is 1).
 #' More please see examples.
 #' @param Ref default is `NULL`, can be a same object as `Signature`.
-#' @param sig_db default 'legacy', it can be 'legacy' (for COSMIC v2 'SBS'),
-#' 'SBS', 'DBS', 'ID' and 'TSB' (for SBS transcriptional strand bias signatures).
+#' @param sig_db default 'legacy', it can be 'legacy' (for [COSMIC v2 'SBS'](https://cancer.sanger.ac.uk/cosmic/signatures_v2.tt/)),
+#' 'SBS', 'DBS', 'ID' and 'TSB' (for [COSMIV v3.1 signatures](https://cancer.sanger.ac.uk/cosmic/signatures/)).
 #' For more specific details, it can also be 'SBS_hg19', 'SBS_hg38',
-#' 'SBS_mm9', 'SBS_mm10', 'DBS_hg19', 'DBS_hg38', 'DBS_mm9', 'DBS_mm10'.
-#' But the signature profile for different genome builds are basically same.
+#' 'SBS_mm9', 'SBS_mm10', 'DBS_hg19', 'DBS_hg38', 'DBS_mm9', 'DBS_mm10' to use
+#' COSMIC v3 reference signatures from Alexandrov, Ludmil B., et al. (2020).
+#' **Note**: the signature profile for different genome builds are basically same.
+#' And specific database (e.g. 'SBS_mm10') contains less signatures than all COSMIC
+#' signatures (because some signatures are not detected from Alexandrov, Ludmil B., et al. (2020)).
 #'
 #' @param db_type only used when `sig_db` is enabled.
 #' "" for keeping default, "human-exome" for transforming to exome frequency of component,
@@ -34,6 +37,8 @@
 #' @param verbose if `TRUE`, print extra info.
 #' @inheritParams sig_tally
 #' @author Shixiang Wang <w_shixiang@163.com>
+#' @references
+#' Alexandrov, Ludmil B., et al. "The repertoire of mutational signatures in human cancer." Nature 578.7793 (2020): 94-101.
 #'
 #' @return a `list` containing smilarities, aetiologies if available, best match and RSS.
 #' @export
@@ -301,8 +306,8 @@ get_sig_db <- function(sig_db = "legacy") {
     legacy = system.file("extdata", "legacy_signatures.RDs",
       package = "maftools", mustWork = TRUE
     ),
-    SBS = system.file("extdata", "SBS_signatures.RDs",
-      package = "maftools", mustWork = TRUE
+    SBS = system.file("extdata", "SBS_signatures.rds",
+      package = "sigminer", mustWork = TRUE
     ),
     DBS = system.file("extdata", "DBS_signatures.rds",
       package = "sigminer", mustWork = TRUE

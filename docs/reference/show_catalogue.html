@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.19</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -132,16 +132,16 @@
     </div>
 
     <pre class="usage"><span class='fu'>show_catalogue</span>(
-  <span class='no'>catalogue</span>,
-  <span class='kw'>mode</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"SBS"</span>, <span class='st'>"copynumber"</span>, <span class='st'>"DBS"</span>, <span class='st'>"ID"</span>),
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"Wang"</span>,
-  <span class='kw'>normalize</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"raw"</span>, <span class='st'>"row"</span>, <span class='st'>"feature"</span>),
-  <span class='kw'>style</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"default"</span>, <span class='st'>"cosmic"</span>),
-  <span class='kw'>samples</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>samples_name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>x_lab</span> <span class='kw'>=</span> <span class='st'>"Components"</span>,
-  <span class='kw'>y_lab</span> <span class='kw'>=</span> <span class='st'>"Counts"</span>,
-  <span class='no'>...</span>
+  <span class='kw'>catalogue</span>,
+  mode = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"SBS"</span>, <span class='st'>"copynumber"</span>, <span class='st'>"DBS"</span>, <span class='st'>"ID"</span>),
+  method = <span class='st'>"Wang"</span>,
+  normalize = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"raw"</span>, <span class='st'>"row"</span>, <span class='st'>"feature"</span>),
+  style = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"default"</span>, <span class='st'>"cosmic"</span>),
+  samples = <span class='kw'>NULL</span>,
+  samples_name = <span class='kw'>NULL</span>,
+  x_lab = <span class='st'>"Components"</span>,
+  y_lab = <span class='st'>"Counts"</span>,
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -199,13 +199,14 @@ If not <code>NULL</code>, show specified samples.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_tally_M.RData"</span>,
-  <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  package = <span class='st'>"sigminer"</span>, mustWork = <span class='fl'>TRUE</span>
 ))
-<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>show_catalogue</span>(<span class='no'>cn_tally_M</span>,
-  <span class='kw'>mode</span> <span class='kw'>=</span> <span class='st'>"copynumber"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"M"</span>,
-  <span class='kw'>style</span> <span class='kw'>=</span> <span class='st'>"cosmic"</span>, <span class='kw'>paint_axis_text</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+<span class='kw'>p</span> <span class='op'>&lt;-</span> <span class='fu'>show_catalogue</span>(<span class='kw'>cn_tally_M</span>,
+  mode = <span class='st'>"copynumber"</span>, method = <span class='st'>"M"</span>,
+  style = <span class='st'>"cosmic"</span>, paint_axis_text = <span class='fl'>FALSE</span>
 )
-<span class='no'>p</span></pre>
+<span class='kw'>p</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -221,7 +222,7 @@ If not <code>NULL</code>, show specified samples.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

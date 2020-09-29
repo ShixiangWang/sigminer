@@ -1,5 +1,7 @@
 library(tidyverse)
-## This has been stored in Maftools
+devtools::load_all()
+
+## SBS
 download.file("https://raw.githubusercontent.com/AlexandrovLab/SigProfilerExtractor/master/SigProfilerExtractor/data/sigProfiler_SBS_signatures_2018_03_28.csv",
               "data-raw/sigProfiler_SBS_signatures_2018_03_28.csv")
 SBS = readr::read_csv("data-raw/sigProfiler_SBS_signatures_2018_03_28.csv")
@@ -16,15 +18,8 @@ SBS = SBS %>%
   dplyr::select(-SubType) %>%
   tibble::column_to_rownames("Type")
 
-sbs = get_sig_db("SBS")
-get_sig_similarity(as.matrix(SBS), sbs$db)
-get_sig_similarity(SBS, sbs$db)
-get_sig_similarity(SBS, as.data.frame(sbs$db))
-# No need to update this data
-
-## SBS for different genomes
-sbs_list <- list()
-sbs_list$hg19 <- readxl::read_excel("data-raw/SBS_signatures_genome_builds.xlsx") %>%
+cosmic_v3.1 <- readxl::read_excel("data-raw/COSMIC_Mutational_Signatures_v3.1.xlsx", sheet = 1)
+cosmic_v3.1 = cosmic_v3.1 %>%
   dplyr::mutate(
     Type = paste0(
       substr(Subtype, 1, 1),
@@ -35,75 +30,106 @@ sbs_list$hg19 <- readxl::read_excel("data-raw/SBS_signatures_genome_builds.xlsx"
     )
   ) %>%
   dplyr::select(-Subtype) %>%
-  tibble::column_to_rownames("Type") %>%
-  as.matrix()
+  tibble::column_to_rownames("Type")
 
-sbs_list$hg38 <- readxl::read_excel("data-raw/SBS_signatures_genome_builds.xlsx", sheet = 2) %>%
-  dplyr::mutate(
-    Type = paste0(
-      substr(Subtype, 1, 1),
-      "[",
-      Type,
-      "]",
-      substr(Subtype, 3, 3)
-    )
-  ) %>%
-  dplyr::select(-Subtype) %>%
-  tibble::column_to_rownames("Type") %>%
-  as.matrix()
-sbs_list$mm9 <- readxl::read_excel("data-raw/SBS_signatures_genome_builds.xlsx", sheet = 3) %>%
-  dplyr::mutate(
-    Type = paste0(
-      substr(Subtype, 1, 1),
-      "[",
-      Type,
-      "]",
-      substr(Subtype, 3, 3)
-    )
-  ) %>%
-  dplyr::select(-Subtype) %>%
-  tibble::column_to_rownames("Type") %>%
-  as.matrix()
-sbs_list$mm10 <- readxl::read_excel("data-raw/SBS_signatures_genome_builds.xlsx", sheet = 4) %>%
-  dplyr::mutate(
-    Type = paste0(
-      substr(Subtype, 1, 1),
-      "[",
-      Type,
-      "]",
-      substr(Subtype, 3, 3)
-    )
-  ) %>%
-  dplyr::select(-Subtype) %>%
-  tibble::column_to_rownames("Type") %>%
-  as.matrix()
+get_sig_similarity(cosmic_v3.1, SBS)
+colSums(cosmic_v3.1)
 
-sbs = get_sig_db("SBS")
-sbs_list$aetiology = sbs$aetiology
-sbs_list$date = "2020/09/25"
+# sbs = get_sig_db("SBS")
+# get_sig_similarity(as.matrix(SBS), sbs$db)
+# get_sig_similarity(SBS, sbs$db)
+# get_sig_similarity(SBS, as.data.frame(sbs$db))
 
-saveRDS(sbs_list, file = "inst/extdata/SBS_signatures_list.rds")
+SBS = cosmic_v3.1
 
-## DBS for different genomes
-dbs_list <- list()
-dbs_list$hg19 <- readxl::read_excel("data-raw/DBS_signatures_genome_builds.xlsx") %>%
-  tibble::column_to_rownames("Type") %>%
-  as.matrix()
-dbs_list$hg38 <- readxl::read_excel("data-raw/DBS_signatures_genome_builds.xlsx", sheet = 2) %>%
-  tibble::column_to_rownames("Type") %>%
-  as.matrix()
-dbs_list$mm9 <- readxl::read_excel("data-raw/DBS_signatures_genome_builds.xlsx", sheet = 3) %>%
-  tibble::column_to_rownames("Type") %>%
-  as.matrix()
-dbs_list$mm10 <- readxl::read_excel("data-raw/DBS_signatures_genome_builds.xlsx", sheet = 4) %>%
-  tibble::column_to_rownames("Type") %>%
-  as.matrix()
+SBS_aetiology <- data.frame(
+  aetiology = c(
+    "Spontaneous deamination of 5-methylcytosine (clock-like signature)",
+    "Activity of APOBEC family of cytidine deaminases",
+    "Defective homologous recombination DNA damage repair",
+    "Tobacco smoking",
+    "Unknown (clock-like signature)",
+    "Defective DNA mismatch repair",
+    "Ultraviolet light exposure",
+    "Ultraviolet light exposure",
+    "Ultraviolet light exposure",
+    "Ultraviolet light exposure",
+    "Unknown",
+    "Polimerase eta somatic hypermutation activity",
+    "Polymerase epsilon exonuclease domain mutations",
+    "Polymerase epsilon exonuclease domain mutations",
+    "Temozolomide treatment",
+    "Unknown",
+    "Activity of APOBEC family of cytidine deaminases",
+    "Concurrent polymerase epsilon mutation and defective DNA mismatch repair",
+    "Defective DNA mismatch repair",
+    "Unknown",
+    "Unknown",
+    "Unknown",
+    "Damage by reactive oxygen species",
+    "Unknown",
+    "Concurrent POLD1 mutations and defective DNA mismatch repair",
+    "Defective DNA mismatch repair",
+    "Aristolochic acid exposure",
+    "Unknown",
+    "Aflatoxin exposure",
+    "Chemotherapy treatment",
+    "Defective DNA mismatch repair",
+    "Possible sequencing artefact",
+    "Unknown",
+    "Tobacco chewing",
+    "Defective DNA base excision repair due to NTHL1 mutations",
+    "Platinum chemotherapy treatment",
+    "Azathioprine treatment",
+    "Unknown",
+    "Unknown",
+    "Platinum chemotherapy treatment",
+    "Defective DNA base excision repair due to MUTYH mutations",
+    "Unknown",
+    "Indirect effect of ultraviolet light",
+    "Unknown",
+    "Unknown",
+    "Unknown",
+    "Haloalkane exposure",
+    "Possible sequencing artefact",
+    "Defective DNA mismatch repair",
+    "Possible sequencing artefact",
+    "Possible sequencing artefact",
+    "Possible sequencing artefact",
+    "Possible sequencing artefact",
+    "Possible sequencing artefact",
+    "Possible sequencing artefact",
+    "Possible sequencing artefact",
+    "Possible sequencing artefact",
+    "Possible sequencing artefact",
+    "Possible sequencing artefact",
+    "Possible sequencing artefact",
+    "Possible sequencing artefact",
+    "Possible sequencing artefact",
+    "Possible sequencing artefact",
+    "Possible sequencing artefact",
+    "Possible sequencing artefact",
+    "Activity of activation-induced cytidine deaminase (AID)",
+    "Indirect effects of activation-induced cytidine deaminase (AID)",
+    "Unknown chemotherapy treatment",
+    "Thiopurine chemotherapy treatment",
+    "Colibactin exposure (E.coli bacteria carrying pks pathogenicity island)",
+    "Unknown",
+    "Duocarmycin exposure"
+  )
+)
 
-dbs = get_sig_db("DBS")
-dbs_list$aetiology = dbs$aetiology
-dbs_list$date = "2020/09/25"
+rownames(SBS_aetiology) <- colnames(SBS)
 
-saveRDS(dbs_list, file = "inst/extdata/DBS_signatures_list.rds")
+SBS <- apply(SBS, 2, function(x) x / sum(x)) %>% as.data.frame()
+
+SBS_db <- list(
+  db = SBS,
+  aetiology = SBS_aetiology,
+  date = "2020/09/29"
+)
+
+saveRDS(SBS_db, file = "inst/extdata/SBS_signatures.rds")
 
 ## DBS
 DBS <- readr::read_csv("data-raw/SigProfiler Signatures/SigProfiler reference signatures/SigProfiler reference whole-genome signatures/sigProfiler_DBS_signatures.csv")
@@ -113,17 +139,17 @@ DBS <- DBS %>% column_to_rownames("Mutation Type")
 ## Ref link: https://cancer.sanger.ac.uk/cosmic/signatures/DBS
 DBS_aetiology <- data.frame(
   aetiology = c(
-    "UV exposure",
-    "exposure to tobacco (smoking) mutagens",
+    "Ultraviolet light exposure",
+    "Tobacco smoking and other mutagens",
     "Polymerase epsilon exonuclease domain mutations",
     "Unknown",
-    "Prior chemotherapy treatment with platinum drugs",
+    "Platinum chemotherapy treatment",
     "Unknown",
     "Defective DNA mismatch repair",
     "Unknown",
     "Unknown",
     "Defective DNA mismatch repair",
-    "Possibly related to APOBEC mutagenesis"
+    "Unknown (possibly related to APOBEC mutagenesis)"
   )
 )
 
@@ -134,7 +160,7 @@ DBS <- apply(DBS, 2, function(x) x / sum(x)) %>% as.data.frame()
 DBS_db <- list(
   db = DBS,
   aetiology = DBS_aetiology,
-  date = "2020/05/03"
+  date = "2020/09/29"
 )
 
 saveRDS(DBS_db, file = "inst/extdata/DBS_signatures.rds")
@@ -170,26 +196,37 @@ new_rownames <- map_dt %>%
 
 rownames(ID) <- new_rownames
 
+cosmic_v3.1 <- readxl::read_excel("data-raw/COSMIC_Mutational_Signatures_v3.1.xlsx", sheet = 3)
+cosmic_v3.1 <- cosmic_v3.1 %>% column_to_rownames("Type")
+rownames(cosmic_v3.1)
+
+cosmic_v3.1 <- cosmic_v3.1[rownames(ID), ]
+get_sig_similarity(cosmic_v3.1, ID)
+
+ID <- cosmic_v3.1
+colSums(ID)
+
 ## Ref link: https://cancer.sanger.ac.uk/cosmic/signatures/ID
 ID_aetiology <- data.frame(
   aetiology = c(
     "Slippage during DNA replication of the replicated DNA strand",
     "Slippage during DNA replication of the template DNA strand",
-    "Associated with tobacco smoking",
+    "Tobacco smoking",
     "Unknown",
     "Unknown",
-    "Defects in DNA-DSB repair by HR",
+    "Defective homologous recombination DNA damage repair",
     "Defective DNA mismatch repair",
-    "Unknown. DNA-DSB repair by NHEJ mechanisms",
+    "Repair of DNA double strand breaks by NHEJ mechanisms or mutations in topoisomerase TOP2A",
     "Unknown",
     "Unknown",
     "Unknown",
     "Unknown",
-    "UV exposure",
+    "Ultraviolet light exposure",
     "Unknown",
     "Unknown",
     "Unknown",
-    "Unknown"
+    "Mutations in topoisomerase TOP2A",
+    "Colibactin exposure (E.coli bacteria carrying pks pathogenicity island)"
   )
 )
 
@@ -199,7 +236,7 @@ ID <- apply(ID, 2, function(x) x / sum(x)) %>% as.data.frame()
 ID_db <- list(
   db = ID,
   aetiology = ID_aetiology,
-  date = "2020/05/03"
+  date = "2020/09/29"
 )
 
 saveRDS(ID_db, file = "inst/extdata/ID_signatures.rds")
@@ -223,22 +260,97 @@ TSB <- TSB %>%
   dplyr::select(-c("Strand", "Type", "Subtype")) %>%
   column_to_rownames("component")
 ## Ref link: https://cancer.sanger.ac.uk/cosmic/signatures/SBS
-sbs_file <- system.file("extdata", "SBS_signatures.RDs",
-  package = "maftools", mustWork = TRUE
-)
+sbs_file <- "inst/extdata/SBS_signatures.rds"
 sbs <- readRDS(sbs_file)
-rbind(colnames(sbs$db), colnames(TSB))
+rbind(colnames(sbs$db[, 1:65]), colnames(TSB))
 
 colnames(TSB) <- colnames(TSB) %>% str_remove("-E")
 
-TSB_aetiology <- sbs$aetiology[!rownames(sbs$aetiology) %in% c("SBS84", "SBS85"), , drop = FALSE]
+TSB_aetiology <- sbs$aetiology[rownames(sbs$aetiology) %in% colnames(TSB), , drop = FALSE]
 
 TSB <- apply(TSB, 2, function(x) x / sum(x)) %>% as.data.frame()
 
 TSB_db <- list(
   db = TSB,
   aetiology = TSB_aetiology,
-  date = "2020/05/25"
+  date = "2020/09/29"
 )
 
 saveRDS(TSB_db, file = "inst/extdata/TSB_signatures.rds")
+
+## SBS for different genomes
+sbs_list <- list()
+sbs_list$hg19 <- readxl::read_excel("data-raw/SBS_signatures_genome_builds.xlsx") %>%
+  dplyr::mutate(
+    Type = paste0(
+      substr(Subtype, 1, 1),
+      "[",
+      Type,
+      "]",
+      substr(Subtype, 3, 3)
+    )
+  ) %>%
+  dplyr::select(-Subtype) %>%
+  tibble::column_to_rownames("Type")
+
+sbs_list$hg38 <- readxl::read_excel("data-raw/SBS_signatures_genome_builds.xlsx", sheet = 2) %>%
+  dplyr::mutate(
+    Type = paste0(
+      substr(Subtype, 1, 1),
+      "[",
+      Type,
+      "]",
+      substr(Subtype, 3, 3)
+    )
+  ) %>%
+  dplyr::select(-Subtype) %>%
+  tibble::column_to_rownames("Type")
+sbs_list$mm9 <- readxl::read_excel("data-raw/SBS_signatures_genome_builds.xlsx", sheet = 3) %>%
+  dplyr::mutate(
+    Type = paste0(
+      substr(Subtype, 1, 1),
+      "[",
+      Type,
+      "]",
+      substr(Subtype, 3, 3)
+    )
+  ) %>%
+  dplyr::select(-Subtype) %>%
+  tibble::column_to_rownames("Type")
+sbs_list$mm10 <- readxl::read_excel("data-raw/SBS_signatures_genome_builds.xlsx", sheet = 4) %>%
+  dplyr::mutate(
+    Type = paste0(
+      substr(Subtype, 1, 1),
+      "[",
+      Type,
+      "]",
+      substr(Subtype, 3, 3)
+    )
+  ) %>%
+  dplyr::select(-Subtype) %>%
+  tibble::column_to_rownames("Type")
+
+sbs_file <- "inst/extdata/SBS_signatures.rds"
+sbs <- readRDS(sbs_file)
+sbs_list$aetiology = sbs$aetiology[rownames(sbs$aetiology) %in% colnames(sbs_list$hg19), , drop = FALSE]
+sbs_list$date = "2020/09/29"
+
+saveRDS(sbs_list, file = "inst/extdata/SBS_signatures_list.rds")
+
+## DBS for different genomes
+dbs_list <- list()
+dbs_list$hg19 <- readxl::read_excel("data-raw/DBS_signatures_genome_builds.xlsx") %>%
+  tibble::column_to_rownames("Type")
+dbs_list$hg38 <- readxl::read_excel("data-raw/DBS_signatures_genome_builds.xlsx", sheet = 2) %>%
+  tibble::column_to_rownames("Type")
+dbs_list$mm9 <- readxl::read_excel("data-raw/DBS_signatures_genome_builds.xlsx", sheet = 3) %>%
+  tibble::column_to_rownames("Type")
+dbs_list$mm10 <- readxl::read_excel("data-raw/DBS_signatures_genome_builds.xlsx", sheet = 4) %>%
+  tibble::column_to_rownames("Type")
+
+dbs_file <- "inst/extdata/DBS_signatures.rds"
+dbs <- readRDS(dbs_file)
+dbs_list$aetiology = dbs$aetiology
+dbs_list$date = "2020/09/29"
+
+saveRDS(dbs_list, file = "inst/extdata/DBS_signatures_list.rds")

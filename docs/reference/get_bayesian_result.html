@@ -81,7 +81,7 @@ This function is designed for this purpose." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.19</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -133,7 +133,7 @@ This function is designed for this purpose." />
 This function is designed for this purpose.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_bayesian_result</span>(<span class='no'>run_info</span>)</pre>
+    <pre class="usage"><span class='fu'>get_bayesian_result</span>(<span class='kw'>run_info</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -147,17 +147,21 @@ This function is designed for this purpose.</p>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>a <code>list</code>.</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Shixiang Wang</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_tally_W.RData"</span>,
-  <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sigminer"</span>, <span class='kw'>mustWork</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  package = <span class='st'>"sigminer"</span>, mustWork = <span class='fl'>TRUE</span>
 ))
 
-<span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sig_auto_extract.html'>sig_auto_extract</a></span>(<span class='no'>cn_tally_W</span>$<span class='no'>nmf_matrix</span>, <span class='kw'>result_prefix</span> <span class='kw'>=</span> <span class='st'>"Test_copynumber"</span>, <span class='kw'>nrun</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+<span class='kw'>res</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sig_auto_extract.html'>sig_auto_extract</a></span>(<span class='kw'>cn_tally_W</span><span class='op'>$</span><span class='kw'>nmf_matrix</span>, result_prefix = <span class='st'>"Test_copynumber"</span>, nrun = <span class='fl'>1</span>)
 
 <span class='co'># All run info are stored in res$Raw$summary_run</span>
 <span class='co'># Obtain result of run 1</span>
-<span class='no'>res_run1</span> <span class='kw'>&lt;-</span> <span class='fu'>get_bayesian_result</span>(<span class='no'>res</span>$<span class='no'>Raw</span>$<span class='no'>summary_run</span>[<span class='fl'>1</span>, ])</pre>
+<span class='kw'>res_run1</span> <span class='op'>&lt;-</span> <span class='fu'>get_bayesian_result</span>(<span class='kw'>res</span><span class='op'>$</span><span class='kw'>Raw</span><span class='op'>$</span><span class='kw'>summary_run</span>[<span class='fl'>1</span>, ])
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -173,7 +177,7 @@ This function is designed for this purpose.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
