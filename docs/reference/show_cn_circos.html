@@ -131,16 +131,16 @@
     <p>Another visualization method for copy number profile like <a href='show_cn_profile.html'>show_cn_profile</a>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>show_cn_circos</span>(
-  <span class='kw'>data</span>,
-  samples = <span class='kw'>NULL</span>,
-  show_title = <span class='fl'>TRUE</span>,
-  chrs = <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"chr"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>22</span>),
-  genome_build = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"hg19"</span>, <span class='st'>"hg38"</span>, <span class='st'>"mm10"</span>),
-  col = <span class='kw'>NULL</span>,
-  side = <span class='st'>"inside"</span>,
-  <span class='kw'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>show_cn_circos</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  samples <span class='op'>=</span> <span class='cn'>NULL</span>,
+  show_title <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  chrs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"chr"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>22</span><span class='op'>)</span>,
+  genome_build <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"hg19"</span>, <span class='st'>"hg38"</span>, <span class='st'>"mm10"</span><span class='op'>)</span>,
+  col <span class='op'>=</span> <span class='cn'>NULL</span>,
+  side <span class='op'>=</span> <span class='st'>"inside"</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -188,24 +188,24 @@ If data argument is a <code>data.frame</code>, a column called sample must exist
     <p>a circos plot</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber.RData"</span>,
-  package = <span class='st'>"sigminer"</span>, mustWork = <span class='fl'>TRUE</span>
-))
+    <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber.RData"</span>,
+  package <span class='op'>=</span> <span class='st'>"sigminer"</span>, mustWork <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span><span class='op'>)</span>
 <span class='co'># \donttest{</span>
-<span class='fu'>show_cn_circos</span>(<span class='kw'>cn</span>, samples = <span class='fl'>1</span>)
-<span class='fu'>show_cn_circos</span>(<span class='kw'>cn</span>, samples = <span class='st'>"TCGA-99-7458-01A-11D-2035-01"</span>)
+<span class='fu'>show_cn_circos</span><span class='op'>(</span><span class='va'>cn</span>, samples <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+<span class='fu'>show_cn_circos</span><span class='op'>(</span><span class='va'>cn</span>, samples <span class='op'>=</span> <span class='st'>"TCGA-99-7458-01A-11D-2035-01"</span><span class='op'>)</span>
 
 <span class='co'>## Remove title</span>
-<span class='fu'>show_cn_circos</span>(<span class='kw'>cn</span>, samples = <span class='fl'>1</span>, show_title = <span class='fl'>FALSE</span>)
+<span class='fu'>show_cn_circos</span><span class='op'>(</span><span class='va'>cn</span>, samples <span class='op'>=</span> <span class='fl'>1</span>, show_title <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 
 <span class='co'>## Subset chromosomes</span>
-<span class='fu'>show_cn_circos</span>(<span class='kw'>cn</span>, samples = <span class='fl'>1</span>, chrs = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"chr1"</span>, <span class='st'>"chr2"</span>, <span class='st'>"chr3"</span>))
+<span class='fu'>show_cn_circos</span><span class='op'>(</span><span class='va'>cn</span>, samples <span class='op'>=</span> <span class='fl'>1</span>, chrs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"chr1"</span>, <span class='st'>"chr2"</span>, <span class='st'>"chr3"</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'>## Arrange plots</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/layout.html'>layout</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>, <span class='fl'>2</span>, <span class='fl'>2</span>))
-<span class='fu'>show_cn_circos</span>(<span class='kw'>cn</span>, samples = <span class='fl'>4</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/layout.html'>layout</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>, <span class='fl'>2</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>show_cn_circos</span><span class='op'>(</span><span class='va'>cn</span>, samples <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span>
 
-<span class='fu'><a href='https://rdrr.io/r/graphics/layout.html'>layout</a></span>(<span class='fl'>1</span>) <span class='co'># reset layout</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/layout.html'>layout</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span> <span class='co'># reset layout</span>
 <span class='co'># }</span>
 </pre>
   </div>

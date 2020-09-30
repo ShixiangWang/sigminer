@@ -139,17 +139,17 @@ is performed to test for differences in signature exposure medians between the t
 See <a href='get_tidy_association.html'>get_tidy_association</a> for cleaning association result.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_sig_feature_association</span>(
-  <span class='kw'>data</span>,
-  <span class='kw'>cols_to_sigs</span>,
-  <span class='kw'>cols_to_features</span>,
-  type = <span class='st'>"ca"</span>,
-  method_co = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"spearman"</span>, <span class='st'>"pearson"</span>, <span class='st'>"kendall"</span>),
-  method_ca = <span class='kw'>stats</span>::<span class='kw'><a href='https://rdrr.io/r/stats/wilcox.test.html'>wilcox.test</a></span>,
-  min_n = <span class='fl'>0.01</span>,
-  verbose = <span class='fl'>FALSE</span>,
-  <span class='kw'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>get_sig_feature_association</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  <span class='va'>cols_to_sigs</span>,
+  <span class='va'>cols_to_features</span>,
+  type <span class='op'>=</span> <span class='st'>"ca"</span>,
+  method_co <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"spearman"</span>, <span class='st'>"pearson"</span>, <span class='st'>"kendall"</span><span class='op'>)</span>,
+  method_ca <span class='op'>=</span> <span class='fu'>stats</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/r/stats/wilcox.test.html'>wilcox.test</a></span>,
+  min_n <span class='op'>=</span> <span class='fl'>0.01</span>,
+  verbose <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

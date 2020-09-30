@@ -1,5 +1,6 @@
 # sigminer 1.1.0
 
+- Added `show_cosmic()` to support reading COSMIC signatures in web browser (#288).
 - Changed argument `rel_threshold` behavior in `sig_fit()` and `get_sig_exposure()`.
 Made them more consistent and allowed un-assigned signature contribution (#285).
 - Updated all COSMIC signatures to v3.1 and their aetiologies (#287).

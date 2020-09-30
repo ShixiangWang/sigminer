@@ -133,17 +133,17 @@ better help users to explore survey of signature number." />
 better help users to explore survey of signature number.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>show_sig_number_survey2</span>(
-  <span class='kw'>x</span>,
-  y = <span class='kw'>NULL</span>,
-  what = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"all"</span>, <span class='st'>"cophenetic"</span>, <span class='st'>"rss"</span>, <span class='st'>"residuals"</span>, <span class='st'>"dispersion"</span>, <span class='st'>"evar"</span>, <span class='st'>"sparseness"</span>,
+    <pre class="usage"><span class='fu'>show_sig_number_survey2</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  y <span class='op'>=</span> <span class='cn'>NULL</span>,
+  what <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"all"</span>, <span class='st'>"cophenetic"</span>, <span class='st'>"rss"</span>, <span class='st'>"residuals"</span>, <span class='st'>"dispersion"</span>, <span class='st'>"evar"</span>, <span class='st'>"sparseness"</span>,
     <span class='st'>"sparseness.basis"</span>, <span class='st'>"sparseness.coef"</span>, <span class='st'>"silhouette"</span>, <span class='st'>"silhouette.coef"</span>,
-    <span class='st'>"silhouette.basis"</span>, <span class='st'>"silhouette.consensus"</span>),
-  na.rm = <span class='fl'>FALSE</span>,
-  xlab = <span class='st'>"Number of signature"</span>,
-  ylab = <span class='st'>""</span>,
-  main = <span class='st'>"Signature number survey using NMF package"</span>
-)</pre>
+    <span class='st'>"silhouette.basis"</span>, <span class='st'>"silhouette.consensus"</span><span class='op'>)</span>,
+  na.rm <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  xlab <span class='op'>=</span> <span class='st'>"Number of signature"</span>,
+  ylab <span class='op'>=</span> <span class='st'>""</span>,
+  main <span class='op'>=</span> <span class='st'>"Signature number survey using NMF package"</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -195,23 +195,23 @@ It specifies which measure must be plotted (what='all' plots all the measures).<
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># \donttest{</span>
-<span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_tally_M.RData"</span>,
-  package = <span class='st'>"sigminer"</span>, mustWork = <span class='fl'>TRUE</span>
-))
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='http://renozao.github.io/NMF'>NMF</a></span>)
-<span class='kw'>cn_estimate</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sig_estimate.html'>sig_estimate</a></span>(<span class='kw'>cn_tally_M</span><span class='op'>$</span><span class='kw'>nmf_matrix</span>,
-  cores = <span class='fl'>1</span>, nrun = <span class='fl'>5</span>,
-  verbose = <span class='fl'>TRUE</span>,
-  keep_nmfObj = <span class='fl'>TRUE</span>
-)
+<span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_tally_M.RData"</span>,
+  package <span class='op'>=</span> <span class='st'>"sigminer"</span>, mustWork <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://renozao.github.io/NMF'>NMF</a></span><span class='op'>)</span>
+<span class='va'>cn_estimate</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sig_estimate.html'>sig_estimate</a></span><span class='op'>(</span><span class='va'>cn_tally_M</span><span class='op'>$</span><span class='va'>nmf_matrix</span>,
+  cores <span class='op'>=</span> <span class='fl'>1</span>, nrun <span class='op'>=</span> <span class='fl'>5</span>,
+  verbose <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  keep_nmfObj <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span>
 
 <span class='co'># Show from data.frame obtained by sig_estimate()</span>
-<span class='fu'>show_sig_number_survey2</span>(<span class='kw'>cn_estimate</span><span class='op'>$</span><span class='kw'>survey</span>)
-<span class='fu'>show_sig_number_survey2</span>(<span class='kw'>cn_estimate</span><span class='op'>$</span><span class='kw'>survey</span>, y = <span class='kw'>cn_estimate</span><span class='op'>$</span><span class='kw'>survey.random</span>)
+<span class='fu'>show_sig_number_survey2</span><span class='op'>(</span><span class='va'>cn_estimate</span><span class='op'>$</span><span class='va'>survey</span><span class='op'>)</span>
+<span class='fu'>show_sig_number_survey2</span><span class='op'>(</span><span class='va'>cn_estimate</span><span class='op'>$</span><span class='va'>survey</span>, y <span class='op'>=</span> <span class='va'>cn_estimate</span><span class='op'>$</span><span class='va'>survey.random</span><span class='op'>)</span>
 
 <span class='co'># Show directly from NMF.rank object</span>
-<span class='fu'>show_sig_number_survey2</span>(<span class='kw'>cn_estimate</span><span class='op'>$</span><span class='kw'>nmfEstimate</span>)
-<span class='fu'>show_sig_number_survey2</span>(<span class='kw'>cn_estimate</span><span class='op'>$</span><span class='kw'>nmfEstimate</span>, y = <span class='kw'>cn_estimate</span><span class='op'>$</span><span class='kw'>nmfEstimate.random</span>)
+<span class='fu'>show_sig_number_survey2</span><span class='op'>(</span><span class='va'>cn_estimate</span><span class='op'>$</span><span class='va'>nmfEstimate</span><span class='op'>)</span>
+<span class='fu'>show_sig_number_survey2</span><span class='op'>(</span><span class='va'>cn_estimate</span><span class='op'>$</span><span class='va'>nmfEstimate</span>, y <span class='op'>=</span> <span class='va'>cn_estimate</span><span class='op'>$</span><span class='va'>nmfEstimate.random</span><span class='op'>)</span>
 <span class='co'># }</span>
 </pre>
   </div>

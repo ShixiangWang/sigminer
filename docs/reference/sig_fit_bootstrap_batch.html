@@ -131,18 +131,18 @@
     <p>Read <a href='sig_fit_bootstrap.html'>sig_fit_bootstrap</a> for more option setting.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>sig_fit_bootstrap_batch</span>(
-  <span class='kw'>catalogue_matrix</span>,
-  methods = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"QP"</span>),
-  n = <span class='fl'>100L</span>,
-  min_count = <span class='fl'>1L</span>,
-  p_val_thresholds = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.05</span>),
-  use_parallel = <span class='fl'>FALSE</span>,
-  seed = <span class='fl'>123456L</span>,
-  job_id = <span class='kw'>NULL</span>,
-  result_dir = <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>(),
-  <span class='kw'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>sig_fit_bootstrap_batch</span><span class='op'>(</span>
+  <span class='va'>catalogue_matrix</span>,
+  methods <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"QP"</span><span class='op'>)</span>,
+  n <span class='op'>=</span> <span class='fl'>100L</span>,
+  min_count <span class='op'>=</span> <span class='fl'>1L</span>,
+  p_val_thresholds <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.05</span><span class='op'>)</span>,
+  use_parallel <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  seed <span class='op'>=</span> <span class='fl'>123456L</span>,
+  job_id <span class='op'>=</span> <span class='cn'>NULL</span>,
+  result_dir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -203,20 +203,20 @@ more than 10 times for more than 100 samples.</p></td>
     <div class='dont-index'><p><a href='sig_fit.html'>sig_fit</a>, <a href='sig_fit_bootstrap.html'>sig_fit_bootstrap</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='kw'>W</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>), ncol = <span class='fl'>2</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='kw'>W</span>) <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sig1"</span>, <span class='st'>"sig2"</span>)
-<span class='kw'>W</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span>(<span class='kw'>W</span>, <span class='fl'>2</span>, <span class='fu'>function</span>(<span class='kw'>x</span>) <span class='kw'>x</span> <span class='op'>/</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='kw'>x</span>))
+    <pre class="examples"><span class='va'>W</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span><span class='op'>)</span>, ncol <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>W</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"sig1"</span>, <span class='st'>"sig2"</span><span class='op'>)</span>
+<span class='va'>W</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span><span class='op'>(</span><span class='va'>W</span>, <span class='fl'>2</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='va'>x</span> <span class='op'>/</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='kw'>H</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>, <span class='fl'>5</span>, <span class='fl'>3</span>, <span class='fl'>6</span>, <span class='fl'>1</span>, <span class='fl'>9</span>, <span class='fl'>1</span>, <span class='fl'>2</span>), ncol = <span class='fl'>4</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='kw'>H</span>) <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"samp"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>)
+<span class='va'>H</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>5</span>, <span class='fl'>3</span>, <span class='fl'>6</span>, <span class='fl'>1</span>, <span class='fl'>9</span>, <span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>, ncol <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>H</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"samp"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>)</span>
 
-<span class='kw'>V</span> <span class='op'>&lt;-</span> <span class='kw'>W</span> <span class='op'>%*%</span> <span class='kw'>H</span>
-<span class='kw'>V</span>
+<span class='va'>V</span> <span class='op'>&lt;-</span> <span class='va'>W</span> <span class='op'>%*%</span> <span class='va'>H</span>
+<span class='va'>V</span>
 
-<span class='co'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"quadprog"</span>)) {
-  <span class='kw'>z10</span> <span class='op'>&lt;-</span> <span class='fu'>sig_fit_bootstrap_batch</span>(<span class='kw'>V</span>, sig = <span class='kw'>W</span>, n = <span class='fl'>10</span>)
-  <span class='kw'>z10</span>
-}
+<span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span><span class='op'>(</span><span class='st'>"quadprog"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='va'>z10</span> <span class='op'>&lt;-</span> <span class='fu'>sig_fit_bootstrap_batch</span><span class='op'>(</span><span class='va'>V</span>, sig <span class='op'>=</span> <span class='va'>W</span>, n <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
+  <span class='va'>z10</span>
+<span class='op'>}</span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

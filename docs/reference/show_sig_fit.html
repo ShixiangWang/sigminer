@@ -131,22 +131,22 @@
     <p>See <a href='sig_fit.html'>sig_fit</a> for examples.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>show_sig_fit</span>(
-  <span class='kw'>fit_result</span>,
-  samples = <span class='kw'>NULL</span>,
-  signatures = <span class='kw'>NULL</span>,
-  plot_fun = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"boxplot"</span>, <span class='st'>"violin"</span>, <span class='st'>"scatter"</span>),
-  palette = <span class='st'>"aaas"</span>,
-  title = <span class='kw'>NULL</span>,
-  xlab = <span class='fl'>FALSE</span>,
-  ylab = <span class='st'>"Signature exposure"</span>,
-  legend = <span class='st'>"none"</span>,
-  width = <span class='fl'>0.3</span>,
-  outlier.shape = <span class='fl'>NA</span>,
-  add = <span class='st'>"jitter"</span>,
-  add.params = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(alpha = <span class='fl'>0.3</span>),
-  <span class='kw'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>show_sig_fit</span><span class='op'>(</span>
+  <span class='va'>fit_result</span>,
+  samples <span class='op'>=</span> <span class='cn'>NULL</span>,
+  signatures <span class='op'>=</span> <span class='cn'>NULL</span>,
+  plot_fun <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"boxplot"</span>, <span class='st'>"violin"</span>, <span class='st'>"scatter"</span><span class='op'>)</span>,
+  palette <span class='op'>=</span> <span class='st'>"aaas"</span>,
+  title <span class='op'>=</span> <span class='cn'>NULL</span>,
+  xlab <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  ylab <span class='op'>=</span> <span class='st'>"Signature exposure"</span>,
+  legend <span class='op'>=</span> <span class='st'>"none"</span>,
+  width <span class='op'>=</span> <span class='fl'>0.3</span>,
+  outlier.shape <span class='op'>=</span> <span class='cn'>NA</span>,
+  add <span class='op'>=</span> <span class='st'>"jitter"</span>,
+  add.params <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>alpha <span class='op'>=</span> <span class='fl'>0.3</span><span class='op'>)</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -223,8 +223,8 @@ argument 'add'; e.g.: add.params = list(color = "red").</p></td>
     <tr>
       <th>...</th>
       <td><p>other arguments to be passed to
-<code><a href='https://ggplot2.tidyverse.org/reference/geom_boxplot.html'>geom_boxplot</a></code>, <code><a href='https://rdrr.io/pkg/ggpubr/man/ggpar.html'>ggpar</a></code> and
-<code><a href='https://rdrr.io/pkg/ggpubr/man/facet.html'>facet</a></code>.</p></td>
+<code><a href='https://ggplot2.tidyverse.org/reference/geom_boxplot.html'>geom_boxplot</a></code>, <code><a href='https://rpkgs.datanovia.com/ggpubr/reference/ggpar.html'>ggpar</a></code> and
+<code><a href='https://rpkgs.datanovia.com/ggpubr/reference/facet.html'>facet</a></code>.</p></td>
     </tr>
     </table>
 

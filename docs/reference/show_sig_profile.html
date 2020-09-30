@@ -131,39 +131,39 @@
     <p>Who don't like to show a barplot for signature profile? This is for it.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>show_sig_profile</span>(
-  <span class='kw'>Signature</span>,
-  mode = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"SBS"</span>, <span class='st'>"copynumber"</span>, <span class='st'>"DBS"</span>, <span class='st'>"ID"</span>),
-  method = <span class='st'>"Wang"</span>,
-  normalize = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"row"</span>, <span class='st'>"column"</span>, <span class='st'>"raw"</span>, <span class='st'>"feature"</span>),
-  filters = <span class='kw'>NULL</span>,
-  feature_setting = <span class='kw'>sigminer</span>::<span class='kw'><a href='CN.features.html'>CN.features</a></span>,
-  style = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"default"</span>, <span class='st'>"cosmic"</span>),
-  palette = <span class='fu'><a href='use_color_style.html'>use_color_style</a></span>(<span class='kw'>style</span>, <span class='kw'>mode</span>, <span class='kw'>method</span>),
-  set_gradient_color = <span class='fl'>FALSE</span>,
-  free_space = <span class='st'>"free_x"</span>,
-  rm_panel_border = <span class='kw'>style</span> <span class='op'>==</span> <span class='st'>"cosmic"</span>,
-  rm_grid_line = <span class='kw'>style</span> <span class='op'>==</span> <span class='st'>"cosmic"</span>,
-  bar_border_color = <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='kw'>style</span> <span class='op'>==</span> <span class='st'>"default"</span>, <span class='st'>"grey50"</span>, <span class='st'>"white"</span>),
-  bar_width = <span class='fl'>0.7</span>,
-  paint_axis_text = <span class='fl'>TRUE</span>,
-  x_label_angle = <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='kw'>mode</span> <span class='op'>==</span> <span class='st'>"copynumber"</span> <span class='op'>&amp;</span> <span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/startsWith.html'>startsWith</a></span>(<span class='kw'>method</span>, <span class='st'>"T"</span>), <span class='fl'>60</span>, <span class='fl'>90</span>),
-  x_label_vjust = <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='kw'>mode</span> <span class='op'>==</span> <span class='st'>"copynumber"</span> <span class='op'>&amp;</span> <span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/startsWith.html'>startsWith</a></span>(<span class='kw'>method</span>, <span class='st'>"T"</span>), <span class='fl'>1</span>, <span class='fl'>0.5</span>),
-  x_label_hjust = <span class='fl'>1</span>,
-  x_lab = <span class='st'>"Components"</span>,
-  y_lab = <span class='st'>"auto"</span>,
-  params = <span class='kw'>NULL</span>,
-  show_cv = <span class='fl'>FALSE</span>,
-  params_label_size = <span class='fl'>3</span>,
-  params_label_angle = <span class='fl'>60</span>,
-  y_expand = <span class='fl'>1</span>,
-  digits = <span class='fl'>2</span>,
-  base_size = <span class='fl'>12</span>,
-  font_scale = <span class='fl'>1</span>,
-  sig_names = <span class='kw'>NULL</span>,
-  sig_orders = <span class='kw'>NULL</span>,
-  check_sig_names = <span class='fl'>TRUE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>show_sig_profile</span><span class='op'>(</span>
+  <span class='va'>Signature</span>,
+  mode <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"SBS"</span>, <span class='st'>"copynumber"</span>, <span class='st'>"DBS"</span>, <span class='st'>"ID"</span><span class='op'>)</span>,
+  method <span class='op'>=</span> <span class='st'>"Wang"</span>,
+  normalize <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"row"</span>, <span class='st'>"column"</span>, <span class='st'>"raw"</span>, <span class='st'>"feature"</span><span class='op'>)</span>,
+  filters <span class='op'>=</span> <span class='cn'>NULL</span>,
+  feature_setting <span class='op'>=</span> <span class='fu'>sigminer</span><span class='fu'>::</span><span class='va'><a href='CN.features.html'>CN.features</a></span>,
+  style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"default"</span>, <span class='st'>"cosmic"</span><span class='op'>)</span>,
+  palette <span class='op'>=</span> <span class='fu'><a href='use_color_style.html'>use_color_style</a></span><span class='op'>(</span><span class='va'>style</span>, <span class='va'>mode</span>, <span class='va'>method</span><span class='op'>)</span>,
+  set_gradient_color <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  free_space <span class='op'>=</span> <span class='st'>"free_x"</span>,
+  rm_panel_border <span class='op'>=</span> <span class='va'>style</span> <span class='op'>==</span> <span class='st'>"cosmic"</span>,
+  rm_grid_line <span class='op'>=</span> <span class='va'>style</span> <span class='op'>==</span> <span class='st'>"cosmic"</span>,
+  bar_border_color <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>style</span> <span class='op'>==</span> <span class='st'>"default"</span>, <span class='st'>"grey50"</span>, <span class='st'>"white"</span><span class='op'>)</span>,
+  bar_width <span class='op'>=</span> <span class='fl'>0.7</span>,
+  paint_axis_text <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  x_label_angle <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>mode</span> <span class='op'>==</span> <span class='st'>"copynumber"</span> <span class='op'>&amp;</span> <span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/startsWith.html'>startsWith</a></span><span class='op'>(</span><span class='va'>method</span>, <span class='st'>"T"</span><span class='op'>)</span>, <span class='fl'>60</span>, <span class='fl'>90</span><span class='op'>)</span>,
+  x_label_vjust <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>mode</span> <span class='op'>==</span> <span class='st'>"copynumber"</span> <span class='op'>&amp;</span> <span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/startsWith.html'>startsWith</a></span><span class='op'>(</span><span class='va'>method</span>, <span class='st'>"T"</span><span class='op'>)</span>, <span class='fl'>1</span>, <span class='fl'>0.5</span><span class='op'>)</span>,
+  x_label_hjust <span class='op'>=</span> <span class='fl'>1</span>,
+  x_lab <span class='op'>=</span> <span class='st'>"Components"</span>,
+  y_lab <span class='op'>=</span> <span class='st'>"auto"</span>,
+  params <span class='op'>=</span> <span class='cn'>NULL</span>,
+  show_cv <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  params_label_size <span class='op'>=</span> <span class='fl'>3</span>,
+  params_label_angle <span class='op'>=</span> <span class='fl'>60</span>,
+  y_expand <span class='op'>=</span> <span class='fl'>1</span>,
+  digits <span class='op'>=</span> <span class='fl'>2</span>,
+  base_size <span class='op'>=</span> <span class='fl'>12</span>,
+  font_scale <span class='op'>=</span> <span class='fl'>1</span>,
+  sig_names <span class='op'>=</span> <span class='cn'>NULL</span>,
+  sig_orders <span class='op'>=</span> <span class='cn'>NULL</span>,
+  check_sig_names <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -330,53 +330,53 @@ a matrix, i.e., all signatures (colnames) must start with 'Sig'.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># Load SBS signature</span>
-<span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_mutational_signature.RData"</span>,
-  package = <span class='st'>"sigminer"</span>, mustWork = <span class='fl'>TRUE</span>
-))
+<span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"toy_mutational_signature.RData"</span>,
+  package <span class='op'>=</span> <span class='st'>"sigminer"</span>, mustWork <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span><span class='op'>)</span>
 <span class='co'># Show signature profile</span>
-<span class='kw'>p1</span> <span class='op'>&lt;-</span> <span class='fu'>show_sig_profile</span>(<span class='kw'>sig2</span>, mode = <span class='st'>"SBS"</span>)
-<span class='kw'>p1</span>
+<span class='va'>p1</span> <span class='op'>&lt;-</span> <span class='fu'>show_sig_profile</span><span class='op'>(</span><span class='va'>sig2</span>, mode <span class='op'>=</span> <span class='st'>"SBS"</span><span class='op'>)</span>
+<span class='va'>p1</span>
 
 <span class='co'># Load copy number signature from method "W"</span>
-<span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_signature_by_W.RData"</span>,
-  package = <span class='st'>"sigminer"</span>, mustWork = <span class='fl'>TRUE</span>
-))
+<span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_signature_by_W.RData"</span>,
+  package <span class='op'>=</span> <span class='st'>"sigminer"</span>, mustWork <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span><span class='op'>)</span>
 <span class='co'># Show signature profile</span>
-<span class='kw'>p2</span> <span class='op'>&lt;-</span> <span class='fu'>show_sig_profile</span>(<span class='kw'>sig</span>,
-  style = <span class='st'>"cosmic"</span>,
-  mode = <span class='st'>"copynumber"</span>,
-  method = <span class='st'>"W"</span>,
-  normalize = <span class='st'>"feature"</span>
-)
-<span class='kw'>p2</span>
+<span class='va'>p2</span> <span class='op'>&lt;-</span> <span class='fu'>show_sig_profile</span><span class='op'>(</span><span class='va'>sig</span>,
+  style <span class='op'>=</span> <span class='st'>"cosmic"</span>,
+  mode <span class='op'>=</span> <span class='st'>"copynumber"</span>,
+  method <span class='op'>=</span> <span class='st'>"W"</span>,
+  normalize <span class='op'>=</span> <span class='st'>"feature"</span>
+<span class='op'>)</span>
+<span class='va'>p2</span>
 
 <span class='co'># Load copy number signature from method "M"</span>
-<span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_signature_by_M.RData"</span>,
-  package = <span class='st'>"sigminer"</span>, mustWork = <span class='fl'>TRUE</span>
-))
+<span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_signature_by_M.RData"</span>,
+  package <span class='op'>=</span> <span class='st'>"sigminer"</span>, mustWork <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span><span class='op'>)</span>
 <span class='co'># Show signature profile</span>
 <span class='co'># The 'column' normalization is consistent with</span>
 <span class='co'># original paper</span>
-<span class='kw'>p3</span> <span class='op'>&lt;-</span> <span class='fu'>show_sig_profile</span>(<span class='kw'>sig</span>,
-  paint_axis_text = <span class='fl'>FALSE</span>,
-  mode = <span class='st'>"copynumber"</span>,
-  method = <span class='st'>"M"</span>, normalize = <span class='st'>"column"</span>
-)
-<span class='kw'>p3</span>
+<span class='va'>p3</span> <span class='op'>&lt;-</span> <span class='fu'>show_sig_profile</span><span class='op'>(</span><span class='va'>sig</span>,
+  paint_axis_text <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  mode <span class='op'>=</span> <span class='st'>"copynumber"</span>,
+  method <span class='op'>=</span> <span class='st'>"M"</span>, normalize <span class='op'>=</span> <span class='st'>"column"</span>
+<span class='op'>)</span>
+<span class='va'>p3</span>
 
 <span class='co'># Add params label</span>
 <span class='co'># =================</span>
 <span class='co'># Load copy number prepare object</span>
-<span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_tally_M.RData"</span>,
-  package = <span class='st'>"sigminer"</span>, mustWork = <span class='fl'>TRUE</span>
-))
-<span class='kw'>params</span> <span class='op'>&lt;-</span> <span class='fu'><a href='get_tidy_parameter.html'>get_tidy_parameter</a></span>(<span class='kw'>cn_tally_M</span><span class='op'>$</span><span class='kw'>components</span>)
-<span class='kw'>p4</span> <span class='op'>&lt;-</span> <span class='fu'>show_sig_profile</span>(<span class='kw'>sig</span>,
-  mode = <span class='st'>"copynumber"</span>,
-  method = <span class='st'>"M"</span>, normalize = <span class='st'>"column"</span>,
-  params = <span class='kw'>params</span>, y_expand = <span class='fl'>2</span>
-)
-<span class='kw'>p4</span>
+<span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_tally_M.RData"</span>,
+  package <span class='op'>=</span> <span class='st'>"sigminer"</span>, mustWork <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span><span class='op'>)</span>
+<span class='va'>params</span> <span class='op'>&lt;-</span> <span class='fu'><a href='get_tidy_parameter.html'>get_tidy_parameter</a></span><span class='op'>(</span><span class='va'>cn_tally_M</span><span class='op'>$</span><span class='va'>components</span><span class='op'>)</span>
+<span class='va'>p4</span> <span class='op'>&lt;-</span> <span class='fu'>show_sig_profile</span><span class='op'>(</span><span class='va'>sig</span>,
+  mode <span class='op'>=</span> <span class='st'>"copynumber"</span>,
+  method <span class='op'>=</span> <span class='st'>"M"</span>, normalize <span class='op'>=</span> <span class='st'>"column"</span>,
+  params <span class='op'>=</span> <span class='va'>params</span>, y_expand <span class='op'>=</span> <span class='fl'>2</span>
+<span class='op'>)</span>
+<span class='va'>p4</span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

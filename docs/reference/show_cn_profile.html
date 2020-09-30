@@ -135,20 +135,20 @@ samples. This function is designed to do this job and can be further modified by
 related packages.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>show_cn_profile</span>(
-  <span class='kw'>data</span>,
-  samples = <span class='kw'>NULL</span>,
-  show_n = <span class='kw'>NULL</span>,
-  show_title = <span class='fl'>FALSE</span>,
-  show_labels = <span class='kw'>NULL</span>,
-  chrs = <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"chr"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>22</span>),
-  position = <span class='kw'>NULL</span>,
-  genome_build = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"hg19"</span>, <span class='st'>"hg38"</span>, <span class='st'>"mm10"</span>),
-  ylim = <span class='kw'>NULL</span>,
-  nrow = <span class='kw'>NULL</span>,
-  ncol = <span class='kw'>NULL</span>,
-  return_plotlist = <span class='fl'>FALSE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>show_cn_profile</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  samples <span class='op'>=</span> <span class='cn'>NULL</span>,
+  show_n <span class='op'>=</span> <span class='cn'>NULL</span>,
+  show_title <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  show_labels <span class='op'>=</span> <span class='cn'>NULL</span>,
+  chrs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"chr"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>22</span><span class='op'>)</span>,
+  position <span class='op'>=</span> <span class='cn'>NULL</span>,
+  genome_build <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"hg19"</span>, <span class='st'>"hg38"</span>, <span class='st'>"mm10"</span><span class='op'>)</span>,
+  ylim <span class='op'>=</span> <span class='cn'>NULL</span>,
+  nrow <span class='op'>=</span> <span class='cn'>NULL</span>,
+  ncol <span class='op'>=</span> <span class='cn'>NULL</span>,
+  return_plotlist <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -213,18 +213,18 @@ overlaps with this range will be shown.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># Load copy number object</span>
-<span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber.RData"</span>,
-  package = <span class='st'>"sigminer"</span>, mustWork = <span class='fl'>TRUE</span>
-))
+<span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber.RData"</span>,
+  package <span class='op'>=</span> <span class='st'>"sigminer"</span>, mustWork <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span><span class='op'>)</span>
 
-<span class='kw'>p</span> <span class='op'>&lt;-</span> <span class='fu'>show_cn_profile</span>(<span class='kw'>cn</span>, nrow = <span class='fl'>2</span>, ncol = <span class='fl'>1</span>)
-<span class='kw'>p</span>
+<span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'>show_cn_profile</span><span class='op'>(</span><span class='va'>cn</span>, nrow <span class='op'>=</span> <span class='fl'>2</span>, ncol <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+<span class='va'>p</span>
 <span class='co'># \donttest{</span>
-<span class='kw'>p2</span> <span class='op'>&lt;-</span> <span class='fu'>show_cn_profile</span>(<span class='kw'>cn</span>,
-  nrow = <span class='fl'>2</span>, ncol = <span class='fl'>1</span>,
-  position = <span class='st'>"chr1:3218923-116319008"</span>
-)
-<span class='kw'>p2</span>
+<span class='va'>p2</span> <span class='op'>&lt;-</span> <span class='fu'>show_cn_profile</span><span class='op'>(</span><span class='va'>cn</span>,
+  nrow <span class='op'>=</span> <span class='fl'>2</span>, ncol <span class='op'>=</span> <span class='fl'>1</span>,
+  position <span class='op'>=</span> <span class='st'>"chr1:3218923-116319008"</span>
+<span class='op'>)</span>
+<span class='va'>p2</span>
 <span class='co'># }</span>
 </pre>
   </div>

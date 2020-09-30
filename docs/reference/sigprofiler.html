@@ -135,28 +135,28 @@ More please see <a href='https://github.com/AlexandrovLab/SigProfilerExtractor'>
 Typically, a reference genome is not required because the input is a matrix (my understanding).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>sigprofiler_extract</span>(
-  <span class='kw'>nmf_matrix</span>,
-  <span class='kw'>output</span>,
-  range = <span class='fl'>2</span><span class='op'>:</span><span class='fl'>5</span>,
-  nrun = <span class='fl'>10L</span>,
-  refit = <span class='fl'>FALSE</span>,
-  refit_plot = <span class='fl'>FALSE</span>,
-  is_exome = <span class='fl'>FALSE</span>,
-  init_method = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"nndsvd_min"</span>, <span class='st'>"random"</span>, <span class='st'>"alexandrov-lab-custom"</span>, <span class='st'>"nndsvd"</span>, <span class='st'>"nndsvda"</span>,
-    <span class='st'>"nndsvdar"</span>),
-  cores = <span class='op'>-</span><span class='fl'>1L</span>,
-  genome_build = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"hg19"</span>, <span class='st'>"hg38"</span>, <span class='st'>"mm10"</span>),
-  use_conda = <span class='fl'>FALSE</span>,
-  py_path = <span class='kw'>NULL</span>,
-  sigprofiler_version = <span class='st'>"1.0.17"</span>
-)
+    <pre class="usage"><span class='fu'>sigprofiler_extract</span><span class='op'>(</span>
+  <span class='va'>nmf_matrix</span>,
+  <span class='va'>output</span>,
+  range <span class='op'>=</span> <span class='fl'>2</span><span class='op'>:</span><span class='fl'>5</span>,
+  nrun <span class='op'>=</span> <span class='fl'>10L</span>,
+  refit <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  refit_plot <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  is_exome <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  init_method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"nndsvd_min"</span>, <span class='st'>"random"</span>, <span class='st'>"alexandrov-lab-custom"</span>, <span class='st'>"nndsvd"</span>, <span class='st'>"nndsvda"</span>,
+    <span class='st'>"nndsvdar"</span><span class='op'>)</span>,
+  cores <span class='op'>=</span> <span class='op'>-</span><span class='fl'>1L</span>,
+  genome_build <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"hg19"</span>, <span class='st'>"hg38"</span>, <span class='st'>"mm10"</span><span class='op'>)</span>,
+  use_conda <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  py_path <span class='op'>=</span> <span class='cn'>NULL</span>,
+  sigprofiler_version <span class='op'>=</span> <span class='st'>"1.0.17"</span>
+<span class='op'>)</span>
 
-<span class='fu'>sigprofiler_import</span>(
-  <span class='kw'>output</span>,
-  order_by_expo = <span class='fl'>FALSE</span>,
-  type = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"suggest"</span>, <span class='st'>"refit"</span>, <span class='st'>"all"</span>)
-)</pre>
+<span class='fu'>sigprofiler_import</span><span class='op'>(</span>
+  <span class='va'>output</span>,
+  order_by_expo <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"suggest"</span>, <span class='st'>"refit"</span>, <span class='st'>"all"</span><span class='op'>)</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -238,21 +238,21 @@ contributed the most exposure in all samples will be named as <code>Sig1</code>.
 <p>For <code>sigprofiler_import()</code>, a <code>list</code> containing <code>Signature</code> object.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
-  <span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_tally_M.RData"</span>,
-    package = <span class='st'>"sigminer"</span>, mustWork = <span class='fl'>TRUE</span>
-  ))
+    <pre class="examples"><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_tally_M.RData"</span>,
+    package <span class='op'>=</span> <span class='st'>"sigminer"</span>, mustWork <span class='op'>=</span> <span class='cn'>TRUE</span>
+  <span class='op'>)</span><span class='op'>)</span>
 
-  <span class='kw'>reticulate</span>::<span class='fu'><a href='https://rdrr.io/pkg/reticulate/man/conda-tools.html'>conda_list</a></span>()
+  <span class='fu'>reticulate</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/reticulate/man/conda-tools.html'>conda_list</a></span><span class='op'>(</span><span class='op'>)</span>
 
-  <span class='fu'>sigprofiler_extract</span>(<span class='kw'>cn_tally_M</span><span class='op'>$</span><span class='kw'>nmf_matrix</span>, <span class='st'>"~/test/test_sigminer"</span>,
-    use_conda = <span class='fl'>TRUE</span>
-  )
+  <span class='fu'>sigprofiler_extract</span><span class='op'>(</span><span class='va'>cn_tally_M</span><span class='op'>$</span><span class='va'>nmf_matrix</span>, <span class='st'>"~/test/test_sigminer"</span>,
+    use_conda <span class='op'>=</span> <span class='cn'>TRUE</span>
+  <span class='op'>)</span>
 
-  <span class='fu'>sigprofiler_extract</span>(<span class='kw'>cn_tally_M</span><span class='op'>$</span><span class='kw'>nmf_matrix</span>, <span class='st'>"~/test/test_sigminer"</span>,
-    use_conda = <span class='fl'>FALSE</span>, py_path = <span class='st'>"/Users/wsx/anaconda3/bin/python"</span>
-  )
-}
+  <span class='fu'>sigprofiler_extract</span><span class='op'>(</span><span class='va'>cn_tally_M</span><span class='op'>$</span><span class='va'>nmf_matrix</span>, <span class='st'>"~/test/test_sigminer"</span>,
+    use_conda <span class='op'>=</span> <span class='cn'>FALSE</span>, py_path <span class='op'>=</span> <span class='st'>"/Users/wsx/anaconda3/bin/python"</span>
+  <span class='op'>)</span>
+<span class='op'>}</span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

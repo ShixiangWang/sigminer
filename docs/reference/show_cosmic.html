@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Show Copy Number Variation Frequency Profile with Circos — show_cn_freq_circos • sigminer</title>
+<title>Show Signature Information in Web Browser — show_cosmic • sigminer</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Show Copy Number Variation Frequency Profile with Circos — show_cn_freq_circos" />
-<meta property="og:description" content="Show Copy Number Variation Frequency Profile with Circos" />
+<meta property="og:title" content="Show Signature Information in Web Browser — show_cosmic" />
+<meta property="og:description" content="Show Signature Information in Web Browser" />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -122,85 +122,27 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Show Copy Number Variation Frequency Profile with Circos</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ShixiangWang/sigminer/blob/master/R/show_cn_freq_circos.R'><code>R/show_cn_freq_circos.R</code></a></small>
-    <div class="hidden name"><code>show_cn_freq_circos.Rd</code></div>
+    <h1>Show Signature Information in Web Browser</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ShixiangWang/sigminer/blob/master/R/show_cosmic_signature.R'><code>R/show_cosmic_signature.R</code></a></small>
+    <div class="hidden name"><code>show_cosmic.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Show Copy Number Variation Frequency Profile with Circos</p>
+    <p>Show Signature Information in Web Browser</p>
     </div>
 
-    <pre class="usage"><span class='fu'>show_cn_freq_circos</span><span class='op'>(</span>
-  <span class='va'>data</span>,
-  groups <span class='op'>=</span> <span class='cn'>NULL</span>,
-  cutoff <span class='op'>=</span> <span class='fl'>2L</span>,
-  resolution_factor <span class='op'>=</span> <span class='fl'>1L</span>,
-  title <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"AMP"</span>, <span class='st'>"DEL"</span><span class='op'>)</span>,
-  chrs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"chr"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>22</span><span class='op'>)</span>,
-  genome_build <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"hg19"</span>, <span class='st'>"hg38"</span>, <span class='st'>"mm10"</span><span class='op'>)</span>,
-  cols <span class='op'>=</span> <span class='cn'>NULL</span>,
-  plot_ideogram <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  track_height <span class='op'>=</span> <span class='fl'>0.5</span>,
-  ideogram_height <span class='op'>=</span> <span class='fl'>1</span>,
-  <span class='va'>...</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>show_cosmic</span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"home"</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>data</th>
-      <td><p>a <code>CopyNumber</code> object or a data.frame containing
-at least 'chromosome', 'start', 'end', 'segVal', 'sample' these columns.</p></td>
-    </tr>
-    <tr>
-      <th>groups</th>
-      <td><p>a named list or a column name for specifying groups.</p></td>
-    </tr>
-    <tr>
-      <th>cutoff</th>
-      <td><p>copy number value cutoff for splitting data into AMP and DEL.
-The values equal to cutoff are discarded. Default is <code>2</code>, you can also set
-a length-2 vector, e.g. <code><a href='https://rdrr.io/r/base/c.html'>c(2, 2)</a></code>.</p></td>
-    </tr>
-    <tr>
-      <th>resolution_factor</th>
-      <td><p>an integer to control the resolution.
-When it is <code>1</code> (default), compute frequency in each cytoband.
-When it is <code>2</code>, use compute frequency in each half cytoband.</p></td>
-    </tr>
-    <tr>
-      <th>title</th>
-      <td><p>length-2 titles for AMP and DEL.</p></td>
-    </tr>
-    <tr>
-      <th>chrs</th>
-      <td><p>chromosomes start with 'chr'.</p></td>
-    </tr>
-    <tr>
-      <th>genome_build</th>
-      <td><p>genome build version, used when <code>data</code> is a <code>data.frame</code>, should be 'hg19' or 'hg38'.</p></td>
-    </tr>
-    <tr>
-      <th>cols</th>
-      <td><p>length-2 colors for AMP and DEL.</p></td>
-    </tr>
-    <tr>
-      <th>plot_ideogram</th>
-      <td><p>default is <code>TRUE</code>, show ideogram.</p></td>
-    </tr>
-    <tr>
-      <th>track_height</th>
-      <td><p>track height in <code>mm</code> unit.</p></td>
-    </tr>
-    <tr>
-      <th>ideogram_height</th>
-      <td><p>ideogram height in <code>mm</code> unit.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>other parameters passing to <a href='https://rdrr.io/pkg/circlize/man/circos.genomicLines.html'>circlize::circos.genomicLines</a>.</p></td>
+      <th>x</th>
+      <td><p>a string indicating location
+("home" for COSMIC signature home, "legacy" for COSMIC v2 signatures,
+"SBS" for COSMIC v3 SBS signatures, "DBS" for COSMIC v3 DBS signatures,
+"ID" for COSMIC v3 INDEL signatures) or signature index (e.g.
+"SBS1", "DBS2", "ID3").</p></td>
     </tr>
     </table>
 
@@ -209,15 +151,16 @@ When it is <code>2</code>, use compute frequency in each half cytoband.</p></td>
     <p>Nothing.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># \donttest{</span>
-<span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber.RData"</span>,
-  package <span class='op'>=</span> <span class='st'>"sigminer"</span>, mustWork <span class='op'>=</span> <span class='cn'>TRUE</span>
-<span class='op'>)</span><span class='op'>)</span>
-
-<span class='fu'>show_cn_freq_circos</span><span class='op'>(</span><span class='va'>cn</span><span class='op'>)</span>
-<span class='va'>ss</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span><span class='op'>(</span><span class='va'>cn</span><span class='op'>@</span><span class='va'>data</span><span class='op'>$</span><span class='va'>sample</span><span class='op'>)</span>
-<span class='fu'>show_cn_freq_circos</span><span class='op'>(</span><span class='va'>cn</span>, groups <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>a <span class='op'>=</span> <span class='va'>ss</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>]</span>, b <span class='op'>=</span> <span class='va'>ss</span><span class='op'>[</span><span class='fl'>6</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>]</span><span class='op'>)</span>, cols <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"red"</span>, <span class='st'>"green"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='co'># }</span>
+    <pre class="examples"><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='fu'>show_cosmic</span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'>show_cosmic</span><span class='op'>(</span><span class='st'>"legacy"</span><span class='op'>)</span>
+<span class='fu'>show_cosmic</span><span class='op'>(</span><span class='st'>"SBS"</span><span class='op'>)</span>
+<span class='fu'>show_cosmic</span><span class='op'>(</span><span class='st'>"DBS"</span><span class='op'>)</span>
+<span class='fu'>show_cosmic</span><span class='op'>(</span><span class='st'>"ID"</span><span class='op'>)</span>
+<span class='fu'>show_cosmic</span><span class='op'>(</span><span class='st'>"SBS1"</span><span class='op'>)</span>
+<span class='fu'>show_cosmic</span><span class='op'>(</span><span class='st'>"DBS2"</span><span class='op'>)</span>
+<span class='fu'>show_cosmic</span><span class='op'>(</span><span class='st'>"ID3"</span><span class='op'>)</span>
+<span class='op'>}</span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

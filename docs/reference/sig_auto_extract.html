@@ -143,21 +143,21 @@ especially for copy number signatures (thus <strong>I don't recommend you to use
 to extract copy number signatures</strong>)). See detail part and references for more.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>sig_auto_extract</span>(
-  nmf_matrix = <span class='kw'>NULL</span>,
-  result_prefix = <span class='st'>"BayesNMF"</span>,
-  destdir = <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>(),
-  method = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"L1W.L2H"</span>, <span class='st'>"L1KL"</span>, <span class='st'>"L2KL"</span>),
-  strategy = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"optimal"</span>, <span class='st'>"stable"</span>),
-  K0 = <span class='fl'>25</span>,
-  nrun = <span class='fl'>10</span>,
-  niter = <span class='fl'>2e+05</span>,
-  tol = <span class='fl'>1e-07</span>,
-  cores = <span class='fl'>1</span>,
-  optimize = <span class='fl'>FALSE</span>,
-  skip = <span class='fl'>FALSE</span>,
-  recover = <span class='fl'>FALSE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>sig_auto_extract</span><span class='op'>(</span>
+  nmf_matrix <span class='op'>=</span> <span class='cn'>NULL</span>,
+  result_prefix <span class='op'>=</span> <span class='st'>"BayesNMF"</span>,
+  destdir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>,
+  method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"L1W.L2H"</span>, <span class='st'>"L1KL"</span>, <span class='st'>"L2KL"</span><span class='op'>)</span>,
+  strategy <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"optimal"</span>, <span class='st'>"stable"</span><span class='op'>)</span>,
+  K0 <span class='op'>=</span> <span class='fl'>25</span>,
+  nrun <span class='op'>=</span> <span class='fl'>10</span>,
+  niter <span class='op'>=</span> <span class='fl'>2e+05</span>,
+  tol <span class='op'>=</span> <span class='fl'>1e-07</span>,
+  cores <span class='op'>=</span> <span class='fl'>1</span>,
+  optimize <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  skip <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  recover <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -258,12 +258,12 @@ estimating signature number for <a href='sig_extract.html'>sig_extract</a>.</p><
     <p>Shixiang Wang</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_tally_M.RData"</span>,
-  package = <span class='st'>"sigminer"</span>, mustWork = <span class='fl'>TRUE</span>
-))
-<span class='kw'>res</span> <span class='op'>&lt;-</span> <span class='fu'>sig_auto_extract</span>(<span class='kw'>cn_tally_M</span><span class='op'>$</span><span class='kw'>nmf_matrix</span>, result_prefix = <span class='st'>"Test_copynumber"</span>, nrun = <span class='fl'>1</span>)
+    <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_tally_M.RData"</span>,
+  package <span class='op'>=</span> <span class='st'>"sigminer"</span>, mustWork <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span><span class='op'>)</span>
+<span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>sig_auto_extract</span><span class='op'>(</span><span class='va'>cn_tally_M</span><span class='op'>$</span><span class='va'>nmf_matrix</span>, result_prefix <span class='op'>=</span> <span class='st'>"Test_copynumber"</span>, nrun <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
 <span class='co'># At default, all run files are stored in tempdir()</span>
-<span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>dir</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>(), pattern = <span class='st'>"Test_copynumber"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>dir</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>, pattern <span class='op'>=</span> <span class='st'>"Test_copynumber"</span><span class='op'>)</span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

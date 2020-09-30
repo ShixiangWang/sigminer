@@ -133,19 +133,19 @@ standard classified components (&quot;Wang&quot; (&quot;W&quot;) method) for cop
 standard classified components ("Wang" ("W") method) for copy number data.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>show_cn_components</span>(
-  <span class='kw'>parameters</span>,
-  method = <span class='st'>"Macintyre"</span>,
-  show_weights = <span class='fl'>TRUE</span>,
-  log_segsize = <span class='fl'>TRUE</span>,
-  log_y = <span class='fl'>FALSE</span>,
-  auto_transform = <span class='fl'>TRUE</span>,
-  return_plotlist = <span class='fl'>FALSE</span>,
-  base_size = <span class='fl'>12</span>,
-  nrow = <span class='fl'>2</span>,
-  align = <span class='st'>"hv"</span>,
-  <span class='kw'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>show_cn_components</span><span class='op'>(</span>
+  <span class='va'>parameters</span>,
+  method <span class='op'>=</span> <span class='st'>"Macintyre"</span>,
+  show_weights <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  log_segsize <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  log_y <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  auto_transform <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  return_plotlist <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  base_size <span class='op'>=</span> <span class='fl'>12</span>,
+  nrow <span class='op'>=</span> <span class='fl'>2</span>,
+  align <span class='op'>=</span> <span class='st'>"hv"</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -199,7 +199,7 @@ vertically ("v") aligned. Options are "none" (default), "hv" (align in both dire
     </tr>
     <tr>
       <th>...</th>
-      <td><p>other options pass to <code><a href='https://rdrr.io/pkg/cowplot/man/plot_grid.html'>plot_grid</a></code> function of <strong>cowplot</strong> package.</p></td>
+      <td><p>other options pass to <code><a href='https://wilkelab.org/cowplot/reference/plot_grid.html'>plot_grid</a></code> function of <strong>cowplot</strong> package.</p></td>
     </tr>
     </table>
 
@@ -211,19 +211,19 @@ vertically ("v") aligned. Options are "none" (default), "hv" (align in both dire
     <p>Shixiang Wang <a href='mailto:w_shixiang@163.com'>w_shixiang@163.com</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_tally_M.RData"</span>,
-  package = <span class='st'>"sigminer"</span>, mustWork = <span class='fl'>TRUE</span>
-))
-<span class='kw'>p1</span> <span class='op'>&lt;-</span> <span class='fu'>show_cn_components</span>(<span class='kw'>cn_tally_M</span><span class='op'>$</span><span class='kw'>parameters</span>)
-<span class='kw'>p1</span>
-<span class='kw'>p2</span> <span class='op'>&lt;-</span> <span class='fu'>show_cn_components</span>(<span class='kw'>cn_tally_M</span><span class='op'>$</span><span class='kw'>parameters</span>, show_weights = <span class='fl'>FALSE</span>)
-<span class='kw'>p2</span>
+    <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_tally_M.RData"</span>,
+  package <span class='op'>=</span> <span class='st'>"sigminer"</span>, mustWork <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span><span class='op'>)</span>
+<span class='va'>p1</span> <span class='op'>&lt;-</span> <span class='fu'>show_cn_components</span><span class='op'>(</span><span class='va'>cn_tally_M</span><span class='op'>$</span><span class='va'>parameters</span><span class='op'>)</span>
+<span class='va'>p1</span>
+<span class='va'>p2</span> <span class='op'>&lt;-</span> <span class='fu'>show_cn_components</span><span class='op'>(</span><span class='va'>cn_tally_M</span><span class='op'>$</span><span class='va'>parameters</span>, show_weights <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+<span class='va'>p2</span>
 
-<span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_tally_W.RData"</span>,
-  package = <span class='st'>"sigminer"</span>, mustWork = <span class='fl'>TRUE</span>
-))
-<span class='kw'>p3</span> <span class='op'>&lt;-</span> <span class='fu'>show_cn_components</span>(<span class='kw'>cn_tally_W</span><span class='op'>$</span><span class='kw'>parameters</span>, method = <span class='st'>"W"</span>)
-<span class='kw'>p3</span>
+<span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_tally_W.RData"</span>,
+  package <span class='op'>=</span> <span class='st'>"sigminer"</span>, mustWork <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span><span class='op'>)</span>
+<span class='va'>p3</span> <span class='op'>&lt;-</span> <span class='fu'>show_cn_components</span><span class='op'>(</span><span class='va'>cn_tally_W</span><span class='op'>$</span><span class='va'>parameters</span>, method <span class='op'>=</span> <span class='st'>"W"</span><span class='op'>)</span>
+<span class='va'>p3</span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

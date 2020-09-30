@@ -48,6 +48,7 @@ reference:
     - show_sig_profile_loop
     - show_sig_profile_heatmap
     - show_sig_exposure
+    - show_cosmic
     - show_cosmic_sig_profile
     - show_sig_consensusmap
   - title: Fit and bootstrap visualization

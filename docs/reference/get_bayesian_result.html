@@ -133,7 +133,7 @@ This function is designed for this purpose." />
 This function is designed for this purpose.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_bayesian_result</span>(<span class='kw'>run_info</span>)</pre>
+    <pre class="usage"><span class='fu'>get_bayesian_result</span><span class='op'>(</span><span class='va'>run_info</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -152,15 +152,15 @@ This function is designed for this purpose.</p>
     <p>Shixiang Wang</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_tally_W.RData"</span>,
-  package = <span class='st'>"sigminer"</span>, mustWork = <span class='fl'>TRUE</span>
-))
+    <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_tally_W.RData"</span>,
+  package <span class='op'>=</span> <span class='st'>"sigminer"</span>, mustWork <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span><span class='op'>)</span>
 
-<span class='kw'>res</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sig_auto_extract.html'>sig_auto_extract</a></span>(<span class='kw'>cn_tally_W</span><span class='op'>$</span><span class='kw'>nmf_matrix</span>, result_prefix = <span class='st'>"Test_copynumber"</span>, nrun = <span class='fl'>1</span>)
+<span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sig_auto_extract.html'>sig_auto_extract</a></span><span class='op'>(</span><span class='va'>cn_tally_W</span><span class='op'>$</span><span class='va'>nmf_matrix</span>, result_prefix <span class='op'>=</span> <span class='st'>"Test_copynumber"</span>, nrun <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
 
 <span class='co'># All run info are stored in res$Raw$summary_run</span>
 <span class='co'># Obtain result of run 1</span>
-<span class='kw'>res_run1</span> <span class='op'>&lt;-</span> <span class='fu'>get_bayesian_result</span>(<span class='kw'>res</span><span class='op'>$</span><span class='kw'>Raw</span><span class='op'>$</span><span class='kw'>summary_run</span>[<span class='fl'>1</span>, ])
+<span class='va'>res_run1</span> <span class='op'>&lt;-</span> <span class='fu'>get_bayesian_result</span><span class='op'>(</span><span class='va'>res</span><span class='op'>$</span><span class='va'>Raw</span><span class='op'>$</span><span class='va'>summary_run</span><span class='op'>[</span><span class='fl'>1</span>, <span class='op'>]</span><span class='op'>)</span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
