@@ -1,6 +1,10 @@
-# Source https://github.com/jmonlong/Hippocamplus/blob/master/content/post/2018-06-09-ClusterEqualSize.Rmd
+# https://github.com/jmonlong/Hippocamplus/blob/master/content/post/2018-06-09-ClusterEqualSize.Rmd
 
 #' Same Size Clustering
+#'
+#' This is a wrapper for several implementation that classify samples into
+#' same size clusters, the details please see [this blog](http://jmonlong.github.io/Hippocamplus/2018/06/09/cluster-same-size/).
+#' The source code is modified based on code from the blog.
 #'
 #' @param mat a data/distance matrix.
 #' @param diss if `TRUE`, treat `mat` as a distance matrix.

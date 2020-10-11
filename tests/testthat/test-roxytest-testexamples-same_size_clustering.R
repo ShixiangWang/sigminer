@@ -2,7 +2,7 @@
 
 context("File R/same_size_clustering.R: @testexamples")
 
-test_that("Function same_size_clustering() @ L34", {
+test_that("Function same_size_clustering() @ L38", {
   
   set.seed(1234L)
   x <- rbind(matrix(rnorm(100, sd = 0.3), ncol = 2),

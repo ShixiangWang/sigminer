@@ -28,7 +28,9 @@ same_size_clustering(
 a vector.
 }
 \description{
-Same Size Clustering
+This is a wrapper for several implementation that classify samples into
+same size clusters, the details please see \href{http://jmonlong.github.io/Hippocamplus/2018/06/09/cluster-same-size/}{this blog}.
+The source code is modified based on code from the blog.
 }
 \examples{
 set.seed(1234L)
