@@ -13,8 +13,8 @@
 #' @importFrom foreach foreach %dopar%
 #' @importFrom graphics hist
 #' @importFrom grDevices colorRampPalette pdf dev.off
+#' @importFrom stats as.formula fisher.test pairwise.table quantile setNames dist kmeans
 #' @importFrom utils data download.file head packageDescription
-#' @import stats
 #' @import NMF
 #' @import ggplot2
 #' @import cli
