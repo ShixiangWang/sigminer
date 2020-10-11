@@ -12,9 +12,10 @@
 #' @importFrom furrr future_pmap
 #' @importFrom foreach foreach %dopar%
 #' @importFrom graphics hist
-#' @importFrom grDevices colorRampPalette
-#' @importFrom stats as.formula fisher.test pairwise.table quantile setNames
+#' @importFrom grDevices colorRampPalette pdf dev.off
 #' @importFrom utils data download.file head packageDescription
+#' @import stats
+#' @import NMF
 #' @import ggplot2
 #' @import cli
 #' @name sigminer

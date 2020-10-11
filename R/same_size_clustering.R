@@ -1,8 +1,38 @@
 # Source https://github.com/jmonlong/Hippocamplus/blob/master/content/post/2018-06-09-ClusterEqualSize.Rmd
 
-# Todo: support both matrix for data or distance
+#' Same Size Clustering
+#'
+#' @param mat a data/distance matrix.
+#' @param diss if `TRUE`, treat `mat` as a distance matrix.
+#' @param clsize integer, number of sample within a cluster.
+#' @param algo algorithm.
+#' @param method method.
+#'
+#' @return a vector.
+#' @export
+#'
+#' @examples
+#' set.seed(1234L)
+#' x <- rbind(matrix(rnorm(100, sd = 0.3), ncol = 2),
+#'            matrix(rnorm(100, mean = 1, sd = 0.3), ncol = 2))
+#' colnames(x) <- c("x", "y")
+#'
+#' y1 <- same_size_clustering(x, clsize = 10)
+#' y11 <- same_size_clustering(as.matrix(dist(x)), clsize = 10, diss = TRUE)
+#'
+#' y2 <- same_size_clustering(x, clsize = 10, algo = "hcbottom", method = "ward.D")
+#'
+#' y3 <- same_size_clustering(x, clsize = 10, algo = "kmvar")
+#' y33 <- same_size_clustering(as.matrix(dist(x)), clsize = 10, algo = "kmvar", diss = TRUE)
+#'
+#' @testexamples
+#' expect_length(y1, 100L)
+#' expect_length(y11, 100L)
+#' expect_length(y2, 100L)
+#' expect_length(y3, 100L)
+#' expect_length(y33, 100L)
 same_size_clustering <- function(mat, diss = FALSE, clsize = NULL,
-                                  algo = c("nnit", "hcbottom", "hclustit", "kmvar"),
+                                  algo = c("nnit", "hcbottom", "kmvar"),
                                   method = c(
                                     "maxd", "random", "mind", "elki",
                                     "ward.D", "average", "complete", "single"
@@ -14,12 +44,20 @@ same_size_clustering <- function(mat, diss = FALSE, clsize = NULL,
   do.call(algo, args = list(mat = mat, diss = diss, clsize = clsize, method = method))
 }
 
-nnit <- function(mat, diss = FALSE, clsize = NULL,
+nnit <- function(mat,
+                 clsize = NULL,
+                 diss = FALSE,
                  method = "maxd") {
+  stopifnot(is.logical(diss))
+
   clsize.rle <- rle(as.numeric(cut(1:nrow(mat), ceiling(nrow(mat) / clsize))))
   clsize <- clsize.rle$lengths
   lab <- rep(NA, nrow(mat))
-  dmat <- as.matrix(dist(mat))
+  if (isFALSE(diss)) {
+    dmat <- as.matrix(dist(mat))
+  } else {
+    dmat <- mat
+  }
   cpt <- 1
   while (sum(is.na(lab)) > 0) {
     lab.ii <- which(is.na(lab))
@@ -42,16 +80,30 @@ nnit <- function(mat, diss = FALSE, clsize = NULL,
   lab
 }
 
-kmvar <- function(mat, diss = FALSE, clsize = NULL,
+kmvar <- function(mat,
+                  clsize = NULL,
+                  diss = FALSE,
                   method = "maxd") {
+  stopifnot(is.logical(diss))
+
   k <- ceiling(nrow(mat) / clsize)
-  km.o <- kmeans(mat, k)
+  if (isFALSE(diss)) {
+    km.o <- kmeans(mat, k)
+    # distance to centers
+    centd <- lapply(1:k, function(kk) {
+      euc <- t(mat) - km.o$centers[kk, ]
+      sqrt(apply(euc, 2, function(x) sum(x^2)))
+    })
+    centd <- matrix(unlist(centd), ncol = k)
+  } else {
+    message("PAM algorithm is applied when input distance matrix.")
+    pam.o <- cluster::pam(mat, k, diss = TRUE)
+    #medoids
+    # distance to medoids
+    centd <- mat[, pam.o$id.med, drop = FALSE]
+  }
+
   labs <- rep(NA, nrow(mat))
-  centd <- lapply(1:k, function(kk) {
-    euc <- t(mat) - km.o$centers[kk, ]
-    sqrt(apply(euc, 2, function(x) sum(x^2)))
-  })
-  centd <- matrix(unlist(centd), ncol = k)
   clsizes <- rep(0, k)
 
   ptord <- switch(
@@ -74,25 +126,18 @@ kmvar <- function(mat, diss = FALSE, clsize = NULL,
   return(labs)
 }
 
-hclustit <- function(mat, diss = FALSE, clsize = NULL,
+hcbottom <- function(mat,
+                     clsize = NULL,
+                     diss = FALSE,
                      method = "ward.D") {
-  method <- match.arg(method, choices = c("ward.D", "average", "complete", "single"))
-  lab <- rep("l", nrow(mat))
-  lab.size <- length(unique(lab))
-  while (lab.size > clsize) {
-    lab.ii <- which(lab == names(lab.size)[which.max(lab.size)])
-    mmat <- mat[lab.ii, ]
-    hc.o <- hclust(dist(mmat), method = method)
-    lab[lab.ii] <- paste0(lab[lab.ii], "-", cutree(hc.o, 2))
-    lab.size <- length(unique(lab))
-  }
-  lab
-}
+  stopifnot(is.logical(diss))
 
-hcbottom <- function(mat, diss = FALSE, clsize = NULL,
-                     method = "ward.D") {
   method <- match.arg(method, choices = c("ward.D", "average", "complete", "single"))
-  dmat <- as.matrix(dist(mat))
+  if (isFALSE(diss)) {
+    dmat <- as.matrix(dist(mat))
+  } else {
+    dmat <- mat
+  }
   clsize.rle <- rle(as.numeric(cut(1:nrow(mat), ceiling(nrow(mat) / clsize))))
   clsizes <- clsize.rle$lengths
   cpt <- 1
@@ -111,6 +156,6 @@ hcbottom <- function(mat, diss = FALSE, clsize = NULL,
     lab[lab.ii[head(cl.sel, clss)]] <- cpt
     cpt <- cpt + 1
   }
-  lab[which(is.na(lab))] <- cpt
+  lab[is.na(lab)] <- cpt
   lab
 }

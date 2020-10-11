@@ -28,8 +28,6 @@
 #' @param match_consensus only used when the `method` is 'consensus'.
 #' If `TRUE`, the result will match order as shown in consensus map.
 #' @return a `data.table` object
-#' @import NMF
-#' @importFrom stats kmeans
 #' @export
 #' @examples
 #' \donttest{

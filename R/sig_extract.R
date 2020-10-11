@@ -10,7 +10,6 @@
 #' @references Gaujoux, Renaud, and Cathal Seoighe. "A flexible R package for nonnegative matrix factorization." BMC bioinformatics 11.1 (2010): 367.
 #' @references Mayakonda, Anand, et al. "Maftools: efficient and comprehensive analysis of somatic variants in cancer." Genome research 28.11 (2018): 1747-1756.
 #' @return a `list` with `Signature` class.
-#' @import NMF
 #' @export
 #' @examples
 #' \donttest{

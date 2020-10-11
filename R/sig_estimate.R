@@ -37,9 +37,7 @@
 #' @param verbose if `TRUE`, print extra message.
 #' @author Shixiang Wang
 #' @references Gaujoux, Renaud, and Cathal Seoighe. "A flexible R package for nonnegative matrix factorization." BMC bioinformatics 11.1 (2010): 367.
-#' @importFrom grDevices pdf dev.off
 #' @return a `list` contains information of NMF run and rank survey.
-#' @import NMF
 #' @export
 #' @examples
 #' load(system.file("extdata", "toy_copynumber_tally_M.RData",
