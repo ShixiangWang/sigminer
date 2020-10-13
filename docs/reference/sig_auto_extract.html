@@ -148,7 +148,8 @@ to extract copy number signatures</strong>)). See detail part and references for
   result_prefix <span class='op'>=</span> <span class='st'>"BayesNMF"</span>,
   destdir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>,
   method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"L1W.L2H"</span>, <span class='st'>"L1KL"</span>, <span class='st'>"L2KL"</span><span class='op'>)</span>,
-  strategy <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"optimal"</span>, <span class='st'>"stable"</span><span class='op'>)</span>,
+  strategy <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"stable"</span>, <span class='st'>"optimal"</span>, <span class='st'>"ms"</span><span class='op'>)</span>,
+  ref_sigs <span class='op'>=</span> <span class='cn'>NULL</span>,
   K0 <span class='op'>=</span> <span class='fl'>25</span>,
   nrun <span class='op'>=</span> <span class='fl'>10</span>,
   niter <span class='op'>=</span> <span class='fl'>2e+05</span>,
@@ -186,7 +187,15 @@ implemented by <a href='https://software.broadinstitute.org/cancer/cga/msp'>Sign
       <th>strategy</th>
       <td><p>the selection strategy for returned data. Set 'stable' for getting optimal
 result from the most frequent K. Set 'optimal' for getting optimal result from all Ks.
+Set 'ms' for getting result with maximum mean cosine similarity with provided reference
+signatures. See <code>ref_sigs</code> option for details.
 If you want select other solution, please check <a href='get_bayesian_result.html'>get_bayesian_result</a>.</p></td>
+    </tr>
+    <tr>
+      <th>ref_sigs</th>
+      <td><p>A Signature object or matrix or string for specifying
+reference signatures, only used when <code>strategy = 'ms'</code>.
+See <code>Signature</code> and <code>sig_db</code> options in <a href='get_sig_similarity.html'>get_sig_similarity</a> for details.</p></td>
     </tr>
     <tr>
       <th>K0</th>
@@ -264,6 +273,20 @@ estimating signature number for <a href='sig_extract.html'>sig_extract</a>.</p><
 <span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>sig_auto_extract</span><span class='op'>(</span><span class='va'>cn_tally_M</span><span class='op'>$</span><span class='va'>nmf_matrix</span>, result_prefix <span class='op'>=</span> <span class='st'>"Test_copynumber"</span>, nrun <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
 <span class='co'># At default, all run files are stored in tempdir()</span>
 <span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>dir</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>, pattern <span class='op'>=</span> <span class='st'>"Test_copynumber"</span><span class='op'>)</span>
+<span class='co'># \donttest{</span>
+<span class='va'>laml.maf</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"tcga_laml.maf.gz"</span>, package <span class='op'>=</span> <span class='st'>"maftools"</span><span class='op'>)</span>
+<span class='va'>laml</span> <span class='op'>&lt;-</span> <span class='fu'><a href='read_maf.html'>read_maf</a></span><span class='op'>(</span>maf <span class='op'>=</span> <span class='va'>laml.maf</span><span class='op'>)</span>
+<span class='va'>mt_tally</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sig_tally.html'>sig_tally</a></span><span class='op'>(</span>
+  <span class='va'>laml</span>,
+  ref_genome <span class='op'>=</span> <span class='st'>"BSgenome.Hsapiens.UCSC.hg19"</span>,
+  use_syn <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span>
+
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'>sig_auto_extract</span><span class='op'>(</span><span class='va'>mt_tally</span><span class='op'>$</span><span class='va'>nmf_matrix</span>,
+  strategy <span class='op'>=</span> <span class='st'>"ms"</span>, nrun <span class='op'>=</span> <span class='fl'>3</span>, ref_sigs <span class='op'>=</span> <span class='st'>"legacy"</span>
+<span class='op'>)</span>
+<span class='va'>x</span>
+<span class='co'># }</span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

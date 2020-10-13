@@ -32,7 +32,12 @@
 #' implemented by [SignatureAnalyzer software](https://software.broadinstitute.org/cancer/cga/msp).
 #' @param strategy the selection strategy for returned data. Set 'stable' for getting optimal
 #' result from the most frequent K. Set 'optimal' for getting optimal result from all Ks.
+#' Set 'ms' for getting result with maximum mean cosine similarity with provided reference
+#' signatures. See `ref_sigs` option for details.
 #' If you want select other solution, please check [get_bayesian_result].
+#' @param ref_sigs A Signature object or matrix or string for specifying
+#' reference signatures, only used when `strategy = 'ms'`.
+#' See `Signature` and `sig_db` options in [get_sig_similarity] for details.
 #' @param K0 number of initial signatures.
 #' @param nrun number of independent simulations.
 #' @param niter the maximum number of iterations.
@@ -63,6 +68,20 @@
 #' res <- sig_auto_extract(cn_tally_M$nmf_matrix, result_prefix = "Test_copynumber", nrun = 1)
 #' # At default, all run files are stored in tempdir()
 #' dir(tempdir(), pattern = "Test_copynumber")
+#' \donttest{
+#' laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
+#' laml <- read_maf(maf = laml.maf)
+#' mt_tally <- sig_tally(
+#'   laml,
+#'   ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
+#'   use_syn = TRUE
+#' )
+#'
+#' x <- sig_auto_extract(mt_tally$nmf_matrix,
+#'   strategy = "ms", nrun = 3, ref_sigs = "legacy"
+#' )
+#' x
+#' }
 #' @testexamples
 #' expect_s3_class(res, "Signature")
 #' res <- sig_auto_extract(cn_tally_M$nmf_matrix, result_prefix = "test",
@@ -71,6 +90,7 @@
 #' res <- sig_auto_extract(cn_tally_M$nmf_matrix, result_prefix = "test",
 #'                         method = "L2KL", nrun = 1)
 #' expect_s3_class(res, "Signature")
+#' expect_s3_class(x, "Signature")
 #' @seealso [sig_tally] for getting variation matrix,
 #' [sig_extract] for extracting signatures using **NMF** package, [sig_estimate] for
 #' estimating signature number for [sig_extract].
@@ -78,7 +98,8 @@ sig_auto_extract <- function(nmf_matrix = NULL,
                              result_prefix = "BayesNMF",
                              destdir = tempdir(),
                              method = c("L1W.L2H", "L1KL", "L2KL"),
-                             strategy = c("optimal", "stable"),
+                             strategy = c("stable", "optimal", "ms"),
+                             ref_sigs = NULL,
                              K0 = 25,
                              nrun = 10,
                              niter = 2e5,
@@ -90,6 +111,11 @@ sig_auto_extract <- function(nmf_matrix = NULL,
   on.exit(invisible(gc())) # clean when exit
   method <- match.arg(method)
   strategy <- match.arg(strategy)
+  if (strategy == "ms") {
+    if (is.null(ref_sigs)) {
+      stop("When strategy set to 'ms', the ref_sigs cannot be NULL!")
+    }
+  }
   if (!dir.exists(destdir)) dir.create(destdir, recursive = TRUE)
 
   filelist <- file.path(destdir, paste(result_prefix, seq_len(nrun), "rds", sep = "."))
@@ -152,20 +178,50 @@ sig_auto_extract <- function(nmf_matrix = NULL,
     )
   })
 
-  summary.run <- summary.run %>%
-    dplyr::arrange(dplyr::desc(.data$posterior))
+  if (strategy != "ms") {
+    summary.run <- summary.run %>%
+      dplyr::arrange(dplyr::desc(.data$posterior))
 
-  if (strategy == "stable") {
-    # Find stable K
-    best <- names(sort(table(summary.run$K), decreasing = TRUE))[1] %>%
-      as.integer()
-    best <- max(1, best, na.rm = TRUE)
+    if (strategy == "stable") {
+      # Find stable K
+      best <- names(sort(table(summary.run$K), decreasing = TRUE))[1] %>%
+        as.integer()
+      best <- max(1, best, na.rm = TRUE)
+    } else {
+      best <- max(1, summary.run$K[1], na.rm = TRUE)
+    }
+
+    best_row <- dplyr::filter(summary.run, .data$K == best) %>%
+      head(1)
   } else {
-    best <- max(1, summary.run$K[1], na.rm = TRUE)
-  }
+    # Select the optimal solution by maximizing mean cosine similarity between
+    # extracted signatures and reference signatures.
 
-  best_row <- dplyr::filter(summary.run, .data$K == best) %>%
-    head(1)
+    sim_list <- lapply(1:nrow(summary.run), function(x, ref) {
+      xz <- get_bayesian_result(summary.run[x, ])
+      if (is.character(ref)) {
+        sim <- suppressMessages(get_sig_similarity(xz$Signature.norm,
+          sig_db = ref
+        ))
+      } else {
+        sim <- suppressMessages(get_sig_similarity(xz$Signature.norm, ref))
+      }
+      sim <- sim$similarity
+      y <- diag(sim)
+      names(y) <- colnames(sim)[seq_along(y)]
+      y
+    }, ref = ref_sigs)
+
+    names(sim_list) <- paste0(
+      "Run#", summary.run$Run, ":",
+      "K#", summary.run$K
+    )
+    sims <- sapply(sim_list, mean)
+    ind <- order(sims, decreasing = TRUE)
+    message("Solutions ordered by mean cosine similarity to references:")
+    print(sims[ind])
+    best_row <- summary.run[ind[1], ]
+  }
 
   message("Select Run ", best_row$Run, ", which K = ", best_row$K, " as best solution.")
   best_solution <- get_bayesian_result(best_row)

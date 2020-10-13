@@ -9,7 +9,8 @@ sig_auto_extract(
   result_prefix = "BayesNMF",
   destdir = tempdir(),
   method = c("L1W.L2H", "L1KL", "L2KL"),
-  strategy = c("optimal", "stable"),
+  strategy = c("stable", "optimal", "ms"),
+  ref_sigs = NULL,
   K0 = 25,
   nrun = 10,
   niter = 2e+05,
@@ -35,7 +36,13 @@ implemented by \href{https://software.broadinstitute.org/cancer/cga/msp}{Signatu
 
 \item{strategy}{the selection strategy for returned data. Set 'stable' for getting optimal
 result from the most frequent K. Set 'optimal' for getting optimal result from all Ks.
+Set 'ms' for getting result with maximum mean cosine similarity with provided reference
+signatures. See \code{ref_sigs} option for details.
 If you want select other solution, please check \link{get_bayesian_result}.}
+
+\item{ref_sigs}{A Signature object or matrix or string for specifying
+reference signatures, only used when \code{strategy = 'ms'}.
+See \code{Signature} and \code{sig_db} options in \link{get_sig_similarity} for details.}
 
 \item{K0}{number of initial signatures.}
 
@@ -89,6 +96,20 @@ load(system.file("extdata", "toy_copynumber_tally_M.RData",
 res <- sig_auto_extract(cn_tally_M$nmf_matrix, result_prefix = "Test_copynumber", nrun = 1)
 # At default, all run files are stored in tempdir()
 dir(tempdir(), pattern = "Test_copynumber")
+\donttest{
+laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
+laml <- read_maf(maf = laml.maf)
+mt_tally <- sig_tally(
+  laml,
+  ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
+  use_syn = TRUE
+)
+
+x <- sig_auto_extract(mt_tally$nmf_matrix,
+  strategy = "ms", nrun = 3, ref_sigs = "legacy"
+)
+x
+}
 }
 \references{
 Tan, Vincent YF, and Cédric Févotte. "Automatic relevance determination in nonnegative matrix factorization with the/spl beta/-divergence."
