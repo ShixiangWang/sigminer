@@ -5,9 +5,12 @@
 \alias{sigminer}
 \title{sigminer: Extract, Analyze and Visualize Signatures for Genomic Variations}
 \description{
-Please go to \url{https://shixiangwang.github.io/sigminer-doc/} for full vignette.
-}
-\details{
-Result visualization for \link{MAF} is provide by \strong{maftools} package,
+\itemize{
+\item Author: \href{https://shixiangwang.github.io/home/}{Shixiang Wang} (\href{mailto:w_shixiang@163.com}{w_shixiang@163.com})
+\item Please go to \url{https://shixiangwang.github.io/sigminer-doc/} for full vignette.
+\item Please go to \url{https://shixiangwang.github.io/sigminer/reference/index.html}
+for organized documentation of functions and datasets.
+\item Result visualization for \link{MAF} is provide by \strong{maftools} package,
 please read its \href{https://bioconductor.org/packages/release/bioc/vignettes/maftools/inst/doc/maftools.html}{vignette}.
+}
 }

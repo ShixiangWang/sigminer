@@ -1,5 +1,6 @@
 # sigminer 1.1.0
 
+- Update `?sigminer` documentation.
 - Added `ms` strategy to select optimal solution by maximizing cosine similarity
 to reference signatures.
 - Added `same_size_clustering()` for same size clustering.
