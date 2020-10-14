@@ -31,6 +31,8 @@
 #' @param rm_panel_border default is `TRUE` for style 'cosmic',
 #' remove panel border to keep plot tight.
 #' @param rm_grid_line default is `FALSE`, if `TRUE`, remove grid lines of plot.
+#' @param rm_axis_text default is `FALSE`, if `TRUE`, remove component texts.
+#' This is useful when multiple signature profiles are plotted together.
 #' @param bar_border_color the color of bar border.
 #' @param bar_width bar width. By default, set to 70% of the resolution of the
 #' data.
@@ -126,6 +128,7 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
                              free_space = "free_x",
                              rm_panel_border = style == "cosmic",
                              rm_grid_line = style == "cosmic",
+                             rm_axis_text = FALSE,
                              bar_border_color = ifelse(style == "default", "grey50", "white"),
                              bar_width = 0.7,
                              paint_axis_text = TRUE,
@@ -506,6 +509,12 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
     p <- p + facet_grid(class ~ base, scales = "free", space = free_space)
   }
 
+  p <- p + scale_y_continuous(
+    labels = scales::number_format(
+      accuracy = if (mean(mat$signature[mat$signature > 0]) < 1) 0.01 else NULL)
+  )
+
+
   # Remove prefix to keep space
   if (startsWith(method, "W")) {
     p <- p + scale_x_discrete(
@@ -597,7 +606,7 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
 
   p <- p + xlab(x_lab)
 
-  if (y_lab == "auto") {
+  if (identical(y_lab, "auto")) {
     if (normalize == "column") {
       p <- p + ylab("Weights")
     } else if (normalize == "row" | normalize == "feature") {
@@ -607,6 +616,13 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
     }
   } else {
     p <- p + ylab(y_lab)
+  }
+
+  if (rm_axis_text) {
+    p <- p + theme(
+      axis.text.x = element_blank(),
+      axis.ticks.x = element_blank()
+    )
   }
 
   if (style != "default" | paint_axis_text) {

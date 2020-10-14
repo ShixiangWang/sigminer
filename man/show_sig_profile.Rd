@@ -17,6 +17,7 @@ show_sig_profile(
   free_space = "free_x",
   rm_panel_border = style == "cosmic",
   rm_grid_line = style == "cosmic",
+  rm_axis_text = FALSE,
   bar_border_color = ifelse(style == "default", "grey50", "white"),
   bar_width = 0.7,
   paint_axis_text = TRUE,
@@ -80,6 +81,9 @@ This setting has no effect unless the appropriate scales also vary.}
 remove panel border to keep plot tight.}
 
 \item{rm_grid_line}{default is \code{FALSE}, if \code{TRUE}, remove grid lines of plot.}
+
+\item{rm_axis_text}{default is \code{FALSE}, if \code{TRUE}, remove component texts.
+This is useful when multiple signature profiles are plotted together.}
 
 \item{bar_border_color}{the color of bar border.}
 

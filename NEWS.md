@@ -1,5 +1,6 @@
 # sigminer 1.1.0
 
+- Optimized signature profile visualization (#295).
 - Update `?sigminer` documentation.
 - Added `ms` strategy to select optimal solution by maximizing cosine similarity
 to reference signatures.

@@ -4,7 +4,14 @@
 \alias{show_sig_profile_loop}
 \title{Show Signature Profile with Loop Way}
 \usage{
-show_sig_profile_loop(Signature, sig_names = NULL, ncol = 1, ...)
+show_sig_profile_loop(
+  Signature,
+  sig_names = NULL,
+  ncol = 1,
+  nrow = NULL,
+  x_lab = "Components",
+  ...
+)
 }
 \arguments{
 \item{Signature}{a \code{Signature} object obtained either from \link{sig_extract} or \link{sig_auto_extract},
@@ -15,6 +22,10 @@ representing signatures (column names must start with 'Sig').}
 Default is \code{NULL}, prefix 'Sig_' plus number is used.}
 
 \item{ncol}{(optional) Number of columns in the plot grid.}
+
+\item{nrow}{(optional) Number of rows in the plot grid.}
+
+\item{x_lab}{x axis lab.}
 
 \item{...}{other parameters but \code{sig_order} passing to \link{show_sig_profile}.}
 }

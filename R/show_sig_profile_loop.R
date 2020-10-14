@@ -21,7 +21,11 @@
 #' @testexamples
 #' expect_s3_class(p1, "ggplot")
 #' expect_s3_class(p2, "ggplot")
-show_sig_profile_loop <- function(Signature, sig_names = NULL, ncol = 1, ...) {
+show_sig_profile_loop <- function(Signature, sig_names = NULL,
+                                  ncol = 1,
+                                  nrow = NULL,
+                                  x_lab = "Components",
+                                  ...) {
   if (inherits(Signature, "Signature")) {
     Sig <- Signature$Signature
   } else if (is.matrix(Signature)) {
@@ -30,6 +34,7 @@ show_sig_profile_loop <- function(Signature, sig_names = NULL, ncol = 1, ...) {
     stop("Invalid input for 'Signature'", call. = FALSE)
   }
 
+  x_lab_bk <- x_lab
   nc <- ncol(Sig)
   plist <- list()
 
@@ -37,8 +42,9 @@ show_sig_profile_loop <- function(Signature, sig_names = NULL, ncol = 1, ...) {
     if (i != nc) {
       x_lab <- NULL
     } else {
-      x_lab <- "Components"
+      x_lab <- x_lab_bk
     }
+
     plist[[i]] <- show_sig_profile(
       Signature = Sig,
       x_lab = x_lab,
@@ -49,6 +55,11 @@ show_sig_profile_loop <- function(Signature, sig_names = NULL, ncol = 1, ...) {
   }
   # cannot modify gglotify ggplot
   # plist[1:(nc-1)] <- lapply(plist[1:(nc-1)], function(x) x + labs(x = NULL))
-  p <- cowplot::plot_grid(plotlist = plist, ncol = ncol)
+  p <- cowplot::plot_grid(plotlist = plist,
+                          ncol = ncol,
+                          nrow = nrow)
+                          #align = "hv",
+                          #axis = "tblr")
+
   return(p)
 }

@@ -144,6 +144,7 @@
   free_space <span class='op'>=</span> <span class='st'>"free_x"</span>,
   rm_panel_border <span class='op'>=</span> <span class='va'>style</span> <span class='op'>==</span> <span class='st'>"cosmic"</span>,
   rm_grid_line <span class='op'>=</span> <span class='va'>style</span> <span class='op'>==</span> <span class='st'>"cosmic"</span>,
+  rm_axis_text <span class='op'>=</span> <span class='cn'>FALSE</span>,
   bar_border_color <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>style</span> <span class='op'>==</span> <span class='st'>"default"</span>, <span class='st'>"grey50"</span>, <span class='st'>"white"</span><span class='op'>)</span>,
   bar_width <span class='op'>=</span> <span class='fl'>0.7</span>,
   paint_axis_text <span class='op'>=</span> <span class='cn'>TRUE</span>,
@@ -233,6 +234,11 @@ remove panel border to keep plot tight.</p></td>
     <tr>
       <th>rm_grid_line</th>
       <td><p>default is <code>FALSE</code>, if <code>TRUE</code>, remove grid lines of plot.</p></td>
+    </tr>
+    <tr>
+      <th>rm_axis_text</th>
+      <td><p>default is <code>FALSE</code>, if <code>TRUE</code>, remove component texts.
+This is useful when multiple signature profiles are plotted together.</p></td>
     </tr>
     <tr>
       <th>bar_border_color</th>
