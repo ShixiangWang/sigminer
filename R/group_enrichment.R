@@ -39,13 +39,14 @@
 #'
 #' @examples
 #' set.seed(1234)
-#' df <- data.frame(
+#' df <- dplyr::tibble(
 #'   g1 = factor(abs(round(rnorm(99, 0, 1)))),
 #'   g2 = rep(LETTERS[1:4], c(50, 40, 8, 1)),
 #'   e1 = sample(c("P", "N"), 99, replace = TRUE),
-#'   e2 = rnorm(99),
-#'   stringsAsFactors = FALSE
+#'   e2 = rnorm(99)
 #' )
+#'
+#' print(str(df))
 #' print(head(df))
 #'
 #' # Compare g1:e1, g1:e2, g2:e1 and g2:e2
@@ -142,7 +143,7 @@ enrich_one <- function(x, y, df, method = "t.test") {
       grp_sum <- df %>%
         dplyr::group_by(.data$Group) %>%
         dplyr::summarise(
-          n = n(),
+          n = dplyr::n(),
           measure = mean(.data$Cval),
           .groups = "drop"
         ) %>%
