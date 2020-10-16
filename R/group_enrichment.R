@@ -42,8 +42,10 @@
 #'   g1 = factor(abs(round(rnorm(99, 0, 1)))),
 #'   g2 = rep(LETTERS[1:4], c(50, 40, 8, 1)),
 #'   e1 = sample(c("P", "N"), 99, replace = TRUE),
-#'   e2 = rnorm(99)
+#'   e2 = rnorm(99),
+#'   stringsAsFactors = FALSE
 #' )
+#' print(head(df))
 #'
 #' # Compare g1:e1, g1:e2, g2:e1 and g2:e2
 #' x1 <- group_enrichment(df, grp_vars = c("g1", "g2"), enrich_vars = c("e1", "e2"))
@@ -135,7 +137,7 @@ enrich_one <- function(x, y, df, method = "t.test") {
         ) %>%
         dplyr::mutate(
           # Scale all measures to range 0-1
-          measure_scaled = (measure - data_range[1]) / diff(data_range)
+          measure_scaled = (.data$measure - data_range[1]) / diff(data_range)
         )
 
       cmp.tbl <- data.table::data.table(
