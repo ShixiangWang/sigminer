@@ -35,6 +35,7 @@
 #' - `type`: one of "binary" and "continuous".
 #' - `method`: one of "fish.test", "wilcox.test" and "t.test".
 #' @export
+#' @seealso [show_group_enrichment]
 #'
 #' @examples
 #' set.seed(1234)
@@ -57,9 +58,20 @@
 #'                        co_method = "wilcox.test",
 #'                        cross = FALSE)
 #' x2
+#'
+#' # Visualization
+#' p1 <- show_group_enrichment(x1, fill_by_p_value = TRUE)
+#' p1
+#' p2 <- show_group_enrichment(x1, fill_by_p_value = FALSE)
+#' p2
+#' p3 <- show_group_enrichment(x1, return_list = TRUE)
+#' p3
 #' @testexamples
 #' expect_is(x1, "data.frame")
 #' expect_is(x2, "data.frame")
+#' expect_is(p1, "ggplot")
+#' expect_is(p2, "ggplot")
+#' expect_is(p3, "list")
 group_enrichment <- function(df, grp_vars = NULL, enrich_vars = NULL,
                              cross = TRUE,
                              co_method = c("t.test", "wilcox.test")) {
@@ -94,7 +106,6 @@ enrich_one <- function(x, y, df, method = "t.test") {
   # y is enrich var
 
   # Check the input
-
   df[[x]] <- as.character(df[[x]])
   grps <- na.omit(unique(df[[x]]))
 

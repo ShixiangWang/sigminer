@@ -2,15 +2,17 @@
 
 context("File R/group_enrichment.R: @testexamples")
 
-test_that("Function group_enrichment() @ L61", {
+test_that("Function group_enrichment() @ L75", {
   
   set.seed(1234)
   df <- data.frame(
     g1 = factor(abs(round(rnorm(99, 0, 1)))),
     g2 = rep(LETTERS[1:4], c(50, 40, 8, 1)),
     e1 = sample(c("P", "N"), 99, replace = TRUE),
-    e2 = rnorm(99)
+    e2 = rnorm(99),
+    stringsAsFactors = FALSE
   )
+  print(head(df))
   
   # Compare g1:e1, g1:e2, g2:e1 and g2:e2
   x1 <- group_enrichment(df, grp_vars = c("g1", "g2"), enrich_vars = c("e1", "e2"))
@@ -22,7 +24,18 @@ test_that("Function group_enrichment() @ L61", {
                          co_method = "wilcox.test",
                          cross = FALSE)
   x2
+  
+  # Visualization
+  p1 <- show_group_enrichment(x1, fill_by_p_value = TRUE)
+  p1
+  p2 <- show_group_enrichment(x1, fill_by_p_value = FALSE)
+  p2
+  p3 <- show_group_enrichment(x1, return_list = TRUE)
+  p3
   expect_is(x1, "data.frame")
   expect_is(x2, "data.frame")
+  expect_is(p1, "ggplot")
+  expect_is(p2, "ggplot")
+  expect_is(p3, "list")
 })
 

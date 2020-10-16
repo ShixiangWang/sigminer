@@ -1,6 +1,6 @@
 # sigminer 1.1.0
 
-- Added `group_enrichment()` (#277).
+- Added `group_enrichment()` and `show_group_enrichment()` (#277).
 - Optimized signature profile visualization (#295).
 - Update `?sigminer` documentation.
 - Added `ms` strategy to select optimal solution by maximizing cosine similarity

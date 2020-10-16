@@ -88,6 +88,7 @@ reference:
     - get_group_comparison
     - show_group_comparison
     - group_enrichment
+    - show_group_enrichment
     - show_group_distribution
     - show_group_mapping
     - enrich_component_strand_bias
