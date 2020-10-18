@@ -425,6 +425,8 @@ sig_tally.MAF <- function(object, mode = c("SBS", "DBS", "ID", "ALL"),
     query = "Variant_Type %in% c('SNP', 'DNP', 'INS', 'DEL')", fields = "Chromosome",
     includeSyn = use_syn, mafObj = FALSE
   )
+  # Check NA in Reference_Allele Tumor_Seq_Allele2
+  query <- query[!is.na(query$Reference_Allele) & !is.na(query$Tumor_Seq_Allele2)]
   send_success("Variants from MAF object queried.")
 
   # Remove unwanted contigs
