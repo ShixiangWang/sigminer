@@ -365,7 +365,7 @@ sig_tally.CopyNumber <- function(object,
 #' **NOTE**: the result counts of 'B' and 'N' labels are a little different from
 #' SigProfilerMatrixGenerator, the reason is unknown (may be caused by annotation file).
 #' @param ignore_chrs Chromsomes to ignore from analysis. e.g. chrX and chrY.
-#' @param use_syn Logical. Whether to include synonymous variants in analysis. Defaults to TRUE
+#' @param use_syn Logical. If `TRUE`, include synonymous variants in analysis.
 #' @references Mayakonda, Anand, et al. "Maftools: efficient and comprehensive analysis of somatic variants in cancer." Genome research 28.11 (2018): 1747-1756.
 #' @references Roberts SA, Lawrence MS, Klimczak LJ, et al. An APOBEC Cytidine Deaminase Mutagenesis Pattern is Widespread in Human Cancers. Nature genetics. 2013;45(9):970-976. doi:10.1038/ng.2702.
 #' @references Bergstrom EN, Huang MN, Mahto U, Barnes M, Stratton MR, Rozen SG, Alexandrov LB: SigProfilerMatrixGenerator: a tool for visualizing and exploring patterns of small mutational events. BMC Genomics 2019, 20:685 https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-019-6041-2

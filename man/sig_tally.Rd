@@ -122,7 +122,7 @@ For a \code{MAF} object, this will just return the most useful matrix.}
 \strong{NOTE}: the result counts of 'B' and 'N' labels are a little different from
 SigProfilerMatrixGenerator, the reason is unknown (may be caused by annotation file).}
 
-\item{use_syn}{Logical. Whether to include synonymous variants in analysis. Defaults to TRUE}
+\item{use_syn}{Logical. If \code{TRUE}, include synonymous variants in analysis.}
 }
 \value{
 a \code{list} contains a \code{matrix} used for NMF de-composition.
