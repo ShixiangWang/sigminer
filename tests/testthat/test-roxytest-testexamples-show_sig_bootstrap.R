@@ -2,7 +2,7 @@
 
 context("File R/show_sig_bootstrap.R: @testexamples")
 
-test_that("[unknown alias] @ L99", {
+test_that("[unknown alias] @ L103", {
   
   
   if (require("BSgenome.Hsapiens.UCSC.hg19")) {
@@ -54,6 +54,8 @@ test_that("[unknown alias] @ L99", {
     p5
     p6 <- show_sig_bootstrap_stability(bt_result, methods = c("QP"), measure = "AbsDiff")
     p6
+    p7 <- show_sig_bootstrap_stability(bt_result, methods = c("QP"), measure = "CV")
+    p7
   } else {
     message("Please install package 'BSgenome.Hsapiens.UCSC.hg19' firstly!")
   }
@@ -64,5 +66,6 @@ test_that("[unknown alias] @ L99", {
   expect_s3_class(p4, "ggplot")
   expect_s3_class(p5, "ggplot")
   expect_s3_class(p6, "ggplot")
+  expect_s3_class(p7, "ggplot")
 })
 

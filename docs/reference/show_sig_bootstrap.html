@@ -176,7 +176,7 @@
 <span class='fu'>show_sig_bootstrap_stability</span><span class='op'>(</span>
   <span class='va'>bt_result</span>,
   signatures <span class='op'>=</span> <span class='cn'>NULL</span>,
-  measure <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"RMSE"</span>, <span class='st'>"MAE"</span>, <span class='st'>"AbsDiff"</span><span class='op'>)</span>,
+  measure <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"RMSE"</span>, <span class='st'>"CV"</span>, <span class='st'>"MAE"</span>, <span class='st'>"AbsDiff"</span><span class='op'>)</span>,
   methods <span class='op'>=</span> <span class='st'>"QP"</span>,
   plot_fun <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"boxplot"</span>, <span class='st'>"violin"</span><span class='op'>)</span>,
   palette <span class='op'>=</span> <span class='st'>"aaas"</span>,
@@ -289,7 +289,7 @@ vector c(x, y); see details section.</p></td>
     </tr>
     <tr>
       <th>measure</th>
-      <td><p>measure to estimate the exposure instability, can be one of 'RMSE', 'MAE' and 'AbsDiff'.</p></td>
+      <td><p>measure to estimate the exposure instability, can be one of 'RMSE', 'CV', 'MAE' and 'AbsDiff'.</p></td>
     </tr>
     </table>
 
@@ -306,6 +306,7 @@ The error from optimal solution (the decomposition error from original input) is
 <li><p>show_sig_bootstrap_stability - this function plots the signature exposure instability for specified signatures. Currently,
 the instability measure supports 3 types:</p><ul>
 <li><p>'RMSE' for Mean Root Squared Error (default) of bootstrap exposures and original exposures for each sample.</p></li>
+<li><p>'CV' for  Coefficient of Variation (CV) based on RMSE (i.e. <code>RMSE / btExposure_mean</code>).</p></li>
 <li><p>'MAE' for Mean Absolute Error of bootstrap exposures and original exposures for each sample.</p></li>
 <li><p>'AbsDiff' for Absolute Difference between mean bootstram exposure and original exposure.</p></li>
 </ul></li>
@@ -369,6 +370,8 @@ the instability measure supports 3 types:</p><ul>
   <span class='va'>p5</span>
   <span class='va'>p6</span> <span class='op'>&lt;-</span> <span class='fu'>show_sig_bootstrap_stability</span><span class='op'>(</span><span class='va'>bt_result</span>, methods <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"QP"</span><span class='op'>)</span>, measure <span class='op'>=</span> <span class='st'>"AbsDiff"</span><span class='op'>)</span>
   <span class='va'>p6</span>
+  <span class='va'>p7</span> <span class='op'>&lt;-</span> <span class='fu'>show_sig_bootstrap_stability</span><span class='op'>(</span><span class='va'>bt_result</span>, methods <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"QP"</span><span class='op'>)</span>, measure <span class='op'>=</span> <span class='st'>"CV"</span><span class='op'>)</span>
+  <span class='va'>p7</span>
 <span class='op'>}</span> <span class='kw'>else</span> <span class='op'>{</span>
   <span class='fu'><a href='https://rdrr.io/r/base/message.html'>message</a></span><span class='op'>(</span><span class='st'>"Please install package 'BSgenome.Hsapiens.UCSC.hg19' firstly!"</span><span class='op'>)</span>
 <span class='op'>}</span>

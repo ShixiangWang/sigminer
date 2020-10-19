@@ -11,6 +11,7 @@
 #' - [show_sig_bootstrap_stability] - this function plots the signature exposure instability for specified signatures. Currently,
 #' the instability measure supports 3 types:
 #'   - 'RMSE' for Mean Root Squared Error (default) of bootstrap exposures and original exposures for each sample.
+#'   - 'CV' for  Coefficient of Variation (CV) based on RMSE (i.e. `RMSE / btExposure_mean`).
 #'   - 'MAE' for Mean Absolute Error of bootstrap exposures and original exposures for each sample.
 #'   - 'AbsDiff' for Absolute Difference between mean bootstram exposure and original exposure.
 #'
@@ -21,7 +22,7 @@
 #' @param bt_result result object from [sig_fit_bootstrap_batch].
 #' @param sample a sample id.
 #' @param signatures signatures to show.
-#' @param measure measure to estimate the exposure instability, can be one of 'RMSE', 'MAE' and 'AbsDiff'.
+#' @param measure measure to estimate the exposure instability, can be one of 'RMSE', 'CV', 'MAE' and 'AbsDiff'.
 #' @param dodge_width dodge width.
 #' @param plot_fun set the plot function.
 #' @param agg_fun set the aggregation function when `sample` is `NULL`.
@@ -85,6 +86,8 @@
 #'   p5
 #'   p6 <- show_sig_bootstrap_stability(bt_result, methods = c("QP"), measure = "AbsDiff")
 #'   p6
+#'   p7 <- show_sig_bootstrap_stability(bt_result, methods = c("QP"), measure = "CV")
+#'   p7
 #' } else {
 #'   message("Please install package 'BSgenome.Hsapiens.UCSC.hg19' firstly!")
 #' }
@@ -96,6 +99,7 @@
 #' expect_s3_class(p4, "ggplot")
 #' expect_s3_class(p5, "ggplot")
 #' expect_s3_class(p6, "ggplot")
+#' expect_s3_class(p7, "ggplot")
 NULL
 
 #' @rdname show_sig_bootstrap
@@ -289,7 +293,8 @@ show_sig_bootstrap_error <- function(bt_result, sample = NULL,
 
 #' @rdname show_sig_bootstrap
 #' @export
-show_sig_bootstrap_stability <- function(bt_result, signatures = NULL, measure = c("RMSE", "MAE", "AbsDiff"),
+show_sig_bootstrap_stability <- function(bt_result, signatures = NULL,
+                                         measure = c("RMSE", "CV", "MAE", "AbsDiff"),
                                          methods = "QP", plot_fun = c("boxplot", "violin"),
                                          palette = "aaas", title = NULL,
                                          xlab = FALSE, ylab = "Signature instability",
@@ -338,13 +343,23 @@ show_sig_bootstrap_stability <- function(bt_result, signatures = NULL, measure =
       dplyr::summarise(measure = abs(.data$optimal - .data$bootstrap)) %>%
       dplyr::ungroup()
   } else {
-    ## Calculate RMSE（Root Mean Squared Error）or MAE (Mean Absolute Error)
-    if (measure == "RMSE") {
+    ## Calculate RMSE（Root Mean Squared Error), CV or MAE (Mean Absolute Error)
+    if (measure %in% c("RMSE", "CV")) {
       ## across solution: https://github.com/tidyverse/dplyr/issues/5230
       dat <- dat %>%
         tidyr::pivot_wider(names_from = "type", values_from = "exposure") %>%
-        dplyr::mutate_at(dplyr::vars(dplyr::starts_with("Rep_")), ~ (. - .data$optimal)^2) %>%
-        dplyr::mutate(measure = dplyr::select(., -c("method", "sample", "optimal", "sig")) %>% rowMeans() %>% sqrt()) %>%
+        dplyr::mutate(mean_rep = dplyr::select(., dplyr::starts_with("Rep_")) %>% rowMeans()) %>%
+        dplyr::mutate_at(dplyr::vars(dplyr::starts_with("Rep_", ignore.case = FALSE)), ~ (. - .data$optimal)^2) %>%
+        dplyr::mutate(measure = dplyr::select(., -c("method", "sample", "optimal", "sig")) %>% rowMeans() %>% sqrt())
+
+
+      if (measure == "CV") {
+        # Calculate Coefficient of Variation (CV) with RMSE
+        dat <- dat %>%
+          dplyr::mutate(measure = measure / mean_rep)
+      }
+
+      dat <- dat %>%
         dplyr::select(c("method", "sample", "sig", "measure"))
     } else {
       ## MAE

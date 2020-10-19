@@ -52,7 +52,7 @@ show_sig_bootstrap_error(
 show_sig_bootstrap_stability(
   bt_result,
   signatures = NULL,
-  measure = c("RMSE", "MAE", "AbsDiff"),
+  measure = c("RMSE", "CV", "MAE", "AbsDiff"),
   methods = "QP",
   plot_fun = c("boxplot", "violin"),
   palette = "aaas",
@@ -123,7 +123,7 @@ c("top", "bottom", "left", "right", "none"). To remove the legend use
 legend = "none". Legend position can be also specified using a numeric
 vector c(x, y); see details section.}
 
-\item{measure}{measure to estimate the exposure instability, can be one of 'RMSE', 'MAE' and 'AbsDiff'.}
+\item{measure}{measure to estimate the exposure instability, can be one of 'RMSE', 'CV', 'MAE' and 'AbsDiff'.}
 }
 \value{
 a \code{ggplot} object
@@ -142,6 +142,7 @@ The error from optimal solution (the decomposition error from original input) is
 the instability measure supports 3 types:
 \itemize{
 \item 'RMSE' for Mean Root Squared Error (default) of bootstrap exposures and original exposures for each sample.
+\item 'CV' for  Coefficient of Variation (CV) based on RMSE (i.e. \code{RMSE / btExposure_mean}).
 \item 'MAE' for Mean Absolute Error of bootstrap exposures and original exposures for each sample.
 \item 'AbsDiff' for Absolute Difference between mean bootstram exposure and original exposure.
 }
@@ -198,6 +199,8 @@ if (require("BSgenome.Hsapiens.UCSC.hg19")) {
   p5
   p6 <- show_sig_bootstrap_stability(bt_result, methods = c("QP"), measure = "AbsDiff")
   p6
+  p7 <- show_sig_bootstrap_stability(bt_result, methods = c("QP"), measure = "CV")
+  p7
 } else {
   message("Please install package 'BSgenome.Hsapiens.UCSC.hg19' firstly!")
 }

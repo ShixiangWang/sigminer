@@ -1,5 +1,6 @@
 # sigminer 1.1.0
 
+- Added new measure 'CV' for `show_sig_bootstrap()` (#298).
 - Added `group_enrichment()` and `show_group_enrichment()` (#277).
 - Optimized signature profile visualization (#295).
 - Update `?sigminer` documentation.
