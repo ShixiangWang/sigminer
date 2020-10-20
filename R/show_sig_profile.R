@@ -179,7 +179,15 @@ show_sig_profile <- function(Signature,
   if (normalize == "row") {
     Sig <- apply(Sig, 2, function(x) x / sum(x))
   } else if (normalize == "column") {
-    Sig <- t(apply(Sig, 1, function(x) x / sum(x)))
+    Sig2 <- t(apply(Sig, 1, function(x) x / sum(x)))
+    if (is.null(rownames(Sig2))) {
+      Sig2 <- t(Sig2)
+      colnames(Sig2) <- colnames(Sig)
+      Sig <- Sig2
+    } else {
+      Sig <- Sig2
+    }
+    Sig[is.na(Sig)] <- 1
   }
 
   if (!is.null(filters)) {
