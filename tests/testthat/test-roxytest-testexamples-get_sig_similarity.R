@@ -2,7 +2,7 @@
 
 context("File R/get_sig_similarity.R: @testexamples")
 
-test_that("Function get_sig_similarity() @ L84", {
+test_that("Function get_sig_similarity() @ L88", {
   
   # Load mutational signature
   load(system.file("extdata", "toy_mutational_signature.RData",
@@ -43,16 +43,22 @@ test_that("Function get_sig_similarity() @ L84", {
 })
 
 
-test_that("Function get_sig_db() @ L303", {
+test_that("Function get_sig_db() @ L315", {
   
   s1 <- get_sig_db()
   s2 <- get_sig_db("DBS")
   s3 <- get_sig_db("DBS_mm10")
+  s4 <- get_sig_db("SBS_Nik_lab")
+  s5 <- get_sig_db("RS_Nik_lab")
   s1
   s2
   s3
+  s4
+  s5
   expect_is(s1, "list")
   expect_is(s2, "list")
   expect_is(s3, "list")
+  expect_is(s4, "list")
+  expect_is(s5, "list")
 })
 

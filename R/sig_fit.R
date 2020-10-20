@@ -152,7 +152,14 @@ sig_fit <- function(catalogue_matrix,
       SBS = substring(colnames(sigs), 4),
       DBS = substring(colnames(sigs), 4),
       ID = substring(colnames(sigs), 3),
-      TSB = substring(colnames(sigs), 4)
+      TSB = substring(colnames(sigs), 4),
+      {
+        if (startsWith(colnames(sigs)[1], "Ref_Sig")) {
+          substring(colnames(sigs), 9)
+        } else {
+          colnames(sigs)
+        }
+      }
     )
 
     send_info("Checking signature index.")

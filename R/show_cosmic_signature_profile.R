@@ -1,4 +1,4 @@
-#' Plot COSMIC Signature Profile
+#' Plot Reference (Mainly COSMIC) Signature Profile
 #'
 #' @param sig_index a vector for signature index. "ALL" for all signatures.
 #' @param show_index if `TRUE`, show valid indices.
@@ -34,7 +34,14 @@ show_cosmic_sig_profile <- function(sig_index = NULL, show_index = TRUE, sig_db 
     SBS = substring(colnames(sigs), 4),
     DBS = substring(colnames(sigs), 4),
     ID = substring(colnames(sigs), 3),
-    TSB = substring(colnames(sigs), 4)
+    TSB = substring(colnames(sigs), 4),
+    {
+      if (startsWith(colnames(sigs)[1], "Ref_Sig")) {
+        substring(colnames(sigs), 9)
+      } else {
+        colnames(sigs)
+      }
+    }
   )
 
   msg <- paste(
@@ -79,6 +86,10 @@ show_cosmic_sig_profile <- function(sig_index = NULL, show_index = TRUE, sig_db 
 
   if (sig_db %in% c("legacy", "SBS", "TSB")) {
     mode <- "SBS"
+  } else if (startsWith(sig_db, "SBS")) {
+    mode <- "SBS"
+  } else if (startsWith(sig_db, "RS")) {
+    mode <- "RS"
   } else {
     mode <- sig_db
   }

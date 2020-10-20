@@ -63,7 +63,7 @@ SBS_Nik_lab <- list(
   db = s3,
   aetiology = data.frame(
     V1 = colnames(s3),
-    V2 = "See COSMIC signatures with same ID or check Nik-Zainal lab Nature Cancer paper "
+    V2 = "See COSMIC signatures with same ID or https://doi.org/10.1038/s43018-020-0027-5"
   ) %>% tibble::column_to_rownames("V1") %>% setNames("aetiology"),
   date = "2020/10/20"
 )
@@ -77,7 +77,7 @@ RS_Nik_lab <- list(
   db = s4,
   aetiology = data.frame(
     V1 = colnames(s4),
-    V2 = "See COSMIC signatures with same ID or check Nik-Zainal lab Nature Cancer paper "
+    V2 = "See https://doi.org/10.1038/s43018-020-0027-5"
   ) %>% tibble::column_to_rownames("V1") %>% setNames("aetiology"),
   date = "2020/10/20"
 )

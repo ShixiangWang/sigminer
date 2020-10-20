@@ -17,7 +17,10 @@
 #' 'SBS', 'DBS', 'ID' and 'TSB' (for [COSMIV v3.1 signatures](https://cancer.sanger.ac.uk/cosmic/signatures/)).
 #' For more specific details, it can also be 'SBS_hg19', 'SBS_hg38',
 #' 'SBS_mm9', 'SBS_mm10', 'DBS_hg19', 'DBS_hg38', 'DBS_mm9', 'DBS_mm10' to use
-#' COSMIC v3 reference signatures from Alexandrov, Ludmil B., et al. (2020).
+#' COSMIC v3 reference signatures from Alexandrov, Ludmil B., et al. (2020) (reference #1).
+#' In addition, it can be one of "SBS_Nik_lab_Organ", "RS_Nik_lab_Organ",
+#' "SBS_Nik_lab", "RS_Nik_lab" to refer reference signatures from
+#' Degasperi, Andrea, et al. (2020) (reference #2).
 #' **Note**: the signature profile for different genome builds are basically same.
 #' And specific database (e.g. 'SBS_mm10') contains less signatures than all COSMIC
 #' signatures (because some signatures are not detected from Alexandrov, Ludmil B., et al. (2020)).
@@ -40,6 +43,7 @@
 #' @references
 #' Alexandrov, Ludmil B., et al. "The repertoire of mutational signatures in human cancer." Nature 578.7793 (2020): 94-101.
 #'
+#' Degasperi, Andrea, et al. "A practical framework and online tool for mutational signature analyses show intertissue variation and driver dependencies." Nature cancer 1.2 (2020): 249-263.
 #' @return a `list` containing smilarities, aetiologies if available, best match and RSS.
 #' @export
 #'
@@ -119,7 +123,9 @@ get_sig_similarity <- function(Signature, Ref = NULL,
   sig_db <- match.arg(arg = sig_db,
                       choices = c("legacy", "SBS", "DBS", "ID", "TSB",
                                   "SBS_hg19", "SBS_hg38", "SBS_mm9", "SBS_mm10",
-                                  "DBS_hg19", "DBS_hg38", "DBS_mm9", "DBS_mm10"))
+                                  "DBS_hg19", "DBS_hg38", "DBS_mm9", "DBS_mm10",
+                                  "SBS_Nik_lab_Organ", "RS_Nik_lab_Organ",
+                                  "SBS_Nik_lab", "RS_Nik_lab"))
   method <- match.arg(arg = method, choices = c("cosine"))
 
   if (is.null(Ref)) {
@@ -293,30 +299,48 @@ get_sig_similarity <- function(Signature, Ref = NULL,
 #' s1 <- get_sig_db()
 #' s2 <- get_sig_db("DBS")
 #' s3 <- get_sig_db("DBS_mm10")
+#' s4 <- get_sig_db("SBS_Nik_lab")
+#' s5 <- get_sig_db("RS_Nik_lab")
 #' s1
 #' s2
 #' s3
+#' s4
+#' s5
 #' @testexamples
 #' expect_is(s1, "list")
 #' expect_is(s2, "list")
 #' expect_is(s3, "list")
+#' expect_is(s4, "list")
+#' expect_is(s5, "list")
 get_sig_db <- function(sig_db = "legacy") {
   db_file <- switch(
     sig_db,
     legacy = system.file("extdata", "legacy_signatures.RDs",
-      package = "maftools", mustWork = TRUE
+                         package = "maftools", mustWork = TRUE
     ),
     SBS = system.file("extdata", "SBS_signatures.rds",
-      package = "sigminer", mustWork = TRUE
+                      package = "sigminer", mustWork = TRUE
+    ),
+    SBS_Nik_lab = system.file("extdata", "SBS_signatures_Nik_lab.rds",
+                              package = "sigminer", mustWork = TRUE
+    ),
+    SBS_Nik_lab_Organ = system.file("extdata", "SBS_signatures_Nik_lab_Organ.rds",
+                                    package = "sigminer", mustWork = TRUE
+    ),
+    RS_Nik_lab = system.file("extdata", "RS_signatures_Nik_lab.rds",
+                             package = "sigminer", mustWork = TRUE
+    ),
+    RS_Nik_lab_Organ = system.file("extdata", "RS_signatures_Nik_lab_Organ.rds",
+                                   package = "sigminer", mustWork = TRUE
     ),
     DBS = system.file("extdata", "DBS_signatures.rds",
-      package = "sigminer", mustWork = TRUE
+                      package = "sigminer", mustWork = TRUE
     ),
     ID = system.file("extdata", "ID_signatures.rds",
-      package = "sigminer", mustWork = TRUE
+                     package = "sigminer", mustWork = TRUE
     ),
     TSB = system.file("extdata", "TSB_signatures.rds",
-      package = "sigminer", mustWork = TRUE
+                      package = "sigminer", mustWork = TRUE
     ),
     {
       if (startsWith(sig_db, "SBS")) {

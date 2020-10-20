@@ -11,7 +11,10 @@ get_sig_db(sig_db = "legacy")
 'SBS', 'DBS', 'ID' and 'TSB' (for \href{https://cancer.sanger.ac.uk/cosmic/signatures/}{COSMIV v3.1 signatures}).
 For more specific details, it can also be 'SBS_hg19', 'SBS_hg38',
 'SBS_mm9', 'SBS_mm10', 'DBS_hg19', 'DBS_hg38', 'DBS_mm9', 'DBS_mm10' to use
-COSMIC v3 reference signatures from Alexandrov, Ludmil B., et al. (2020).
+COSMIC v3 reference signatures from Alexandrov, Ludmil B., et al. (2020) (reference #1).
+In addition, it can be one of "SBS_Nik_lab_Organ", "RS_Nik_lab_Organ",
+"SBS_Nik_lab", "RS_Nik_lab" to refer reference signatures from
+Degasperi, Andrea, et al. (2020) (reference #2).
 \strong{Note}: the signature profile for different genome builds are basically same.
 And specific database (e.g. 'SBS_mm10') contains less signatures than all COSMIC
 signatures (because some signatures are not detected from Alexandrov, Ludmil B., et al. (2020)).}
@@ -28,9 +31,13 @@ The signatures and their aetiologies mainly obtained from COSMIC database
 s1 <- get_sig_db()
 s2 <- get_sig_db("DBS")
 s3 <- get_sig_db("DBS_mm10")
+s4 <- get_sig_db("SBS_Nik_lab")
+s5 <- get_sig_db("RS_Nik_lab")
 s1
 s2
 s3
+s4
+s5
 }
 \seealso{
 \link{get_sig_similarity}, \link{sig_fit} and \link{show_cosmic_sig_profile}.
