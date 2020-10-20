@@ -72,7 +72,8 @@ lower than (equal is included, i.e. \code{<=}) this value will be set to 0
 (both absolute exposure and relative exposure).
 In this case, sum of signature contribution may not equal to 1.}
 
-\item{mode}{signature type for plotting, now supports 'copynumber', 'SBS', 'DBS' and 'ID'.}
+\item{mode}{signature type for plotting, now supports 'copynumber', 'SBS',
+'DBS', 'ID' and 'RS' (genome rearrangement signature).}
 
 \item{true_catalog}{used by \link{sig_fit_bootstrap}, user never use it.}
 

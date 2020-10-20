@@ -6,7 +6,7 @@
 \usage{
 show_sig_profile(
   Signature,
-  mode = c("SBS", "copynumber", "DBS", "ID"),
+  mode = c("SBS", "copynumber", "DBS", "ID", "RS"),
   method = "Wang",
   normalize = c("row", "column", "raw", "feature"),
   filters = NULL,
@@ -44,9 +44,10 @@ show_sig_profile(
 or just a raw signature matrix with row representing components (motifs) and column
 representing signatures (column names must start with 'Sig').}
 
-\item{mode}{signature type for plotting, now supports 'copynumber', 'SBS', 'DBS' and 'ID'.}
+\item{mode}{signature type for plotting, now supports 'copynumber', 'SBS',
+'DBS', 'ID' and 'RS' (genome rearrangement signature).}
 
-\item{method}{method for copy number feature classfication in \link{sig_tally},
+\item{method}{method for copy number feature classification in \link{sig_tally},
 can be one of "Macintyre" ("M"), "Wang" ("W").}
 
 \item{normalize}{one of 'row', 'column', 'raw' and "feature", for row normalization (signature),
@@ -184,6 +185,13 @@ p4 <- show_sig_profile(sig,
   params = params, y_expand = 2
 )
 p4
+
+# Visualize rearrangement signatures
+s <- get_sig_db("RS_Nik_lab")
+ss <- s$db[, 1:3]
+colnames(ss) <- c("Sig1", "Sig2", "Sig3")
+p5 <- show_sig_profile(ss, mode = "RS", style = "cosmic")
+p5
 }
 \seealso{
 \link{show_sig_profile_loop}, \link{show_sig_profile_heatmap}

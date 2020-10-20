@@ -108,26 +108,28 @@
 <p><img src="reference/figures/README-unnamed-chunk-3-1.png" width="100%"></p>
 <p><strong>INDEL (i.e. ID) signatures</strong>:</p>
 <p><img src="reference/figures/README-unnamed-chunk-4-1.png" width="100%"></p>
+<p><strong>Genome rearrangement signatures</strong>:</p>
+<p><img src="reference/figures/README-unnamed-chunk-5-1.png" width="100%"></p>
+<blockquote>
+<p><code><a href="reference/sig_tally.html">sig_tally()</a></code> for RS is not supported.</p>
+</blockquote>
 <div id="feature" class="section level3">
 <h3 class="hasAnchor">
 <a href="#feature" class="anchor"></a>Feature</h3>
 <ul>
-<li>supports a standard <em>de novo</em> pipeline for identification of <strong>4</strong> types of signatures: copy number, SBS, DBS and INDEL</li>
-<li>supports quantify exposure for one sample based on <em>known signatures</em>
-</li>
-<li>supports two methods for calling copy number signatures: one is from Macintyre et al. 2018 and the other is created by us</li>
-<li>supports association and group analysis and visualization for signatures</li>
-<li>supports a bayesian variant of NMF algorithm to enable optimal inferences for the number of signatures through the automatic relevance determination technique from <strong>SignatureAnalyzer</strong> package</li>
-<li>supports two plot styles for signature profile: ‘default’ (like <strong>SignatureAnalyzer</strong> package) and ‘cosmic’ (like <strong>COSMIC</strong> database)</li>
-<li>supports two types of signatrue exposures: relative exposure (relative contribution of signatures in each sample) and absolute exposure (estimated variation records of signatures in each sample)</li>
-<li>supports basic summary and visualization for profile of mutation (powered by <strong>maftools</strong>) and copy number</li>
-<li>supports parallel computation by R packages <strong>foreach</strong>, <strong>future</strong> and <strong>NMF</strong>
-</li>
-<li>efficient code powered by R packages <strong>data.table</strong> and <strong>tidyverse</strong>
-</li>
-<li>elegant plots powered by R packages <strong>ggplot2</strong>, <strong>ggpubr</strong>, <strong>cowplot</strong> and <strong>patchwork</strong>
-</li>
-<li>well tested by R package <strong>testthat</strong> and documented by R package <strong>roxygen2</strong>, <strong>roxytest</strong>, <strong>pkgdown</strong>, and etc. for both reliable and reproducible research</li>
+<li>supports a standard <em>de novo</em> pipeline for identification of <strong>5</strong> types of signatures: copy number, SBS, DBS, INDEL and RS (genome rearrangement signature).</li>
+<li>supports quantify exposure for one sample based on <em>known signatures</em>.</li>
+<li>supports two methods for calling copy number signatures: one is from Macintyre et al. 2018 and the other is created by our group.</li>
+<li>supports association and group analysis and visualization for signatures.</li>
+<li>supports a Bayesian variant of NMF algorithm to enable optimal inferences for the number of signatures through the automatic relevance determination technique from <strong>SignatureAnalyzer</strong> package.</li>
+<li>supports a caller for <strong>SigProfiler</strong>.</li>
+<li>supports two plot styles for signature profile: ‘default’ (like <strong>SignatureAnalyzer</strong> package) and ‘cosmic’ (like <strong>COSMIC</strong> database).</li>
+<li>supports two types of signature exposures: relative exposure (relative contribution of signatures in each sample) and absolute exposure (estimated variation records of signatures in each sample).</li>
+<li>supports basic summary and visualization for profile of mutation (powered by <strong>maftools</strong>) and copy number.</li>
+<li>supports parallel computation by R packages <strong>foreach</strong>, <strong>future</strong> and <strong>NMF</strong>.</li>
+<li>efficient code powered by R packages <strong>data.table</strong> and <strong>tidyverse</strong>.</li>
+<li>elegant plots powered by R packages <strong>ggplot2</strong>, <strong>ggpubr</strong>, <strong>cowplot</strong> and <strong>patchwork</strong>.</li>
+<li>well tested by R package <strong>testthat</strong> and documented by R package <strong>roxygen2</strong>, <strong>roxytest</strong>, <strong>pkgdown</strong>, and etc. for both reliable and reproducible research.</li>
 </ul>
 </div>
 </div>
@@ -160,7 +162,7 @@
 <div id="download-stats" class="section level2">
 <h2 class="hasAnchor">
 <a href="#download-stats" class="anchor"></a>Download Stats</h2>
-<p><img src="reference/figures/README-unnamed-chunk-7-1.png" width="100%"></p>
+<p><img src="reference/figures/README-unnamed-chunk-8-1.png" width="100%"></p>
 </div>
 <div id="acknowledgments" class="section level2">
 <h2 class="hasAnchor">

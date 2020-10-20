@@ -1,5 +1,6 @@
 # sigminer 1.1.0
 
+- Added visualization support for genome rearrangement signatures (#300).
 - Added four database for reference signatures from <https://doi.org/10.1038/s43018-020-0027-5> (#299).
 - Added new measure 'CV' for `show_sig_bootstrap()` (#298).
 - Added `group_enrichment()` and `show_group_enrichment()` (#277).

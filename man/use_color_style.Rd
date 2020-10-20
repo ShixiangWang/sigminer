@@ -6,7 +6,7 @@
 \usage{
 use_color_style(
   style,
-  mode = c("SBS", "copynumber", "DBS", "ID"),
+  mode = c("SBS", "copynumber", "DBS", "ID", "RS"),
   method = "Wang"
 )
 }

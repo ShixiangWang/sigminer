@@ -9,8 +9,9 @@
 #' @param Signature a `Signature` object obtained either from [sig_extract] or [sig_auto_extract],
 #' or just a raw signature matrix with row representing components (motifs) and column
 #' representing signatures (column names must start with 'Sig').
-#' @param mode signature type for plotting, now supports 'copynumber', 'SBS', 'DBS' and 'ID'.
-#' @param method method for copy number feature classfication in [sig_tally],
+#' @param mode signature type for plotting, now supports 'copynumber', 'SBS',
+#' 'DBS', 'ID' and 'RS' (genome rearrangement signature).
+#' @param method method for copy number feature classification in [sig_tally],
 #' can be one of "Macintyre" ("M"), "Wang" ("W").
 #' @param normalize one of 'row', 'column', 'raw' and "feature", for row normalization (signature),
 #' column normalization (component), raw data, row normalization by feature, respectively.
@@ -111,13 +112,21 @@
 #'   params = params, y_expand = 2
 #' )
 #' p4
+#'
+#' # Visualize rearrangement signatures
+#' s <- get_sig_db("RS_Nik_lab")
+#' ss <- s$db[, 1:3]
+#' colnames(ss) <- c("Sig1", "Sig2", "Sig3")
+#' p5 <- show_sig_profile(ss, mode = "RS", style = "cosmic")
+#' p5
 #' @testexamples
 #' expect_s3_class(p1, "ggplot")
 #' expect_s3_class(p2, "ggplot")
 #' expect_s3_class(p3, "ggplot")
 #' expect_s3_class(p4, "ggplot")
-# Signature <- s_mat
-show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID"),
+#' expect_s3_class(p5, "ggplot")
+show_sig_profile <- function(Signature,
+                             mode = c("SBS", "copynumber", "DBS", "ID", "RS"),
                              method = "Wang",
                              normalize = c("row", "column", "raw", "feature"),
                              filters = NULL,
@@ -404,6 +413,37 @@ show_sig_profile <- function(Signature, mode = c("SBS", "copynumber", "DBS", "ID
         class = factor(class, levels = colnames(Sig))
       )
     }
+  } else if (mode == "RS") {
+    if (nrow(mat) != 32L) {
+      send_stop("'RS' signatures should have 32 components!")
+    }
+    mat %>%
+      dplyr::mutate(
+        is_clustered = startsWith(.data$context, "clustered"),
+        type = sub("(non-)?clustered_([^_]+)_?.*", "\\2", .data$context),
+        base = paste(ifelse(.data$is_clustered, "C", "N"), .data$type, sep = "-"),
+        base = sub("-trans", "", .data$base)
+      ) %>%
+      dplyr::select(-c("is_clustered", "type")) -> mat
+    mat$context <- sub("^.*_([^_]+)$", "\\1", mat$context)
+
+    mat <- tidyr::gather(mat, class, signature, -c("context", "base"))
+
+    mat <- dplyr::mutate(mat,
+                         context = factor(.data$context,
+                                          levels = c(
+                                            "1-10Kb", "10-100Kb",
+                                            "100Kb-1Mb", "1Mb-10Mb",
+                                            ">10Mb", "trans"
+                                          )),
+                         base = factor(.data$base, levels = c(
+                           "C-del", "C-tds",
+                           "C-inv", "C",
+                           "N-del", "N-tds",
+                           "N-inv", "N"
+                         )),
+                         class = factor(class, levels = colnames(Sig))
+    )
   }
 
   if (normalize == "feature") {

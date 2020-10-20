@@ -133,7 +133,7 @@
 
     <pre class="usage"><span class='fu'>show_sig_profile</span><span class='op'>(</span>
   <span class='va'>Signature</span>,
-  mode <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"SBS"</span>, <span class='st'>"copynumber"</span>, <span class='st'>"DBS"</span>, <span class='st'>"ID"</span><span class='op'>)</span>,
+  mode <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"SBS"</span>, <span class='st'>"copynumber"</span>, <span class='st'>"DBS"</span>, <span class='st'>"ID"</span>, <span class='st'>"RS"</span><span class='op'>)</span>,
   method <span class='op'>=</span> <span class='st'>"Wang"</span>,
   normalize <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"row"</span>, <span class='st'>"column"</span>, <span class='st'>"raw"</span>, <span class='st'>"feature"</span><span class='op'>)</span>,
   filters <span class='op'>=</span> <span class='cn'>NULL</span>,
@@ -177,11 +177,12 @@ representing signatures (column names must start with 'Sig').</p></td>
     </tr>
     <tr>
       <th>mode</th>
-      <td><p>signature type for plotting, now supports 'copynumber', 'SBS', 'DBS' and 'ID'.</p></td>
+      <td><p>signature type for plotting, now supports 'copynumber', 'SBS',
+'DBS', 'ID' and 'RS' (genome rearrangement signature).</p></td>
     </tr>
     <tr>
       <th>method</th>
-      <td><p>method for copy number feature classfication in <a href='sig_tally.html'>sig_tally</a>,
+      <td><p>method for copy number feature classification in <a href='sig_tally.html'>sig_tally</a>,
 can be one of "Macintyre" ("M"), "Wang" ("W").</p></td>
     </tr>
     <tr>
@@ -383,6 +384,13 @@ a matrix, i.e., all signatures (colnames) must start with 'Sig'.</p></td>
   params <span class='op'>=</span> <span class='va'>params</span>, y_expand <span class='op'>=</span> <span class='fl'>2</span>
 <span class='op'>)</span>
 <span class='va'>p4</span>
+
+<span class='co'># Visualize rearrangement signatures</span>
+<span class='va'>s</span> <span class='op'>&lt;-</span> <span class='fu'><a href='get_sig_db.html'>get_sig_db</a></span><span class='op'>(</span><span class='st'>"RS_Nik_lab"</span><span class='op'>)</span>
+<span class='va'>ss</span> <span class='op'>&lt;-</span> <span class='va'>s</span><span class='op'>$</span><span class='va'>db</span><span class='op'>[</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>]</span>
+<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>ss</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Sig1"</span>, <span class='st'>"Sig2"</span>, <span class='st'>"Sig3"</span><span class='op'>)</span>
+<span class='va'>p5</span> <span class='op'>&lt;-</span> <span class='fu'>show_sig_profile</span><span class='op'>(</span><span class='va'>ss</span>, mode <span class='op'>=</span> <span class='st'>"RS"</span>, style <span class='op'>=</span> <span class='st'>"cosmic"</span><span class='op'>)</span>
+<span class='va'>p5</span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

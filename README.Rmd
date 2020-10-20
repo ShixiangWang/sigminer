@@ -89,21 +89,31 @@ p4 <- show_sig_profile(ID$db[, 4:6] %>% as.matrix(), mode = "ID", style = "cosmi
 p4
 ```
 
+**Genome rearrangement signatures**:
+
+```{r fig.width=10, fig.height=5, echo=FALSE, message=FALSE}
+p5 <- show_cosmic_sig_profile(sig_index = c("R1", "R2", "R3"), sig_db = "RS_Nik_lab", style = "cosmic", show_index = FALSE)
+p5
+```
+
+> `sig_tally()` for RS is not supported.
+
 ### Feature
 
-- supports a standard *de novo* pipeline for identification of **4** types of signatures: copy number, SBS, DBS and INDEL
-- supports quantify exposure for one sample based on *known signatures*
-- supports two methods for calling copy number signatures: one is from Macintyre et al. 2018 and the other is created by us
-- supports association and group analysis and visualization for signatures
-- supports a bayesian variant of NMF algorithm to enable optimal inferences for the number of signatures through the automatic relevance determination technique from **SignatureAnalyzer** package
-- supports two plot styles for signature profile: 'default' (like **SignatureAnalyzer** package) and 'cosmic' (like **COSMIC** database)
-- supports two types of signatrue exposures: relative exposure (relative contribution of signatures in each sample) and absolute exposure (estimated variation records of signatures in each sample)
-- supports basic summary and visualization for profile of mutation (powered by **maftools**) and copy number
-- supports parallel computation by R packages **foreach**, **future** and **NMF**
-- efficient code powered by R packages **data.table** and **tidyverse**
-- elegant plots powered by R packages **ggplot2**, **ggpubr**, **cowplot** and **patchwork**
+- supports a standard *de novo* pipeline for identification of **5** types of signatures: copy number, SBS, DBS, INDEL and RS (genome rearrangement signature).
+- supports quantify exposure for one sample based on *known signatures*.
+- supports two methods for calling copy number signatures: one is from Macintyre et al. 2018 and the other is created by our group.
+- supports association and group analysis and visualization for signatures.
+- supports a Bayesian variant of NMF algorithm to enable optimal inferences for the number of signatures through the automatic relevance determination technique from **SignatureAnalyzer** package.
+- supports a caller for **SigProfiler**.
+- supports two plot styles for signature profile: 'default' (like **SignatureAnalyzer** package) and 'cosmic' (like **COSMIC** database).
+- supports two types of signature exposures: relative exposure (relative contribution of signatures in each sample) and absolute exposure (estimated variation records of signatures in each sample).
+- supports basic summary and visualization for profile of mutation (powered by **maftools**) and copy number.
+- supports parallel computation by R packages **foreach**, **future** and **NMF**.
+- efficient code powered by R packages **data.table** and **tidyverse**.
+- elegant plots powered by R packages **ggplot2**, **ggpubr**, **cowplot** and **patchwork**.
 - well tested by R package **testthat** and documented by R package **roxygen2**, **roxytest**, **pkgdown**, and etc.
-for both reliable and reproducible research
+for both reliable and reproducible research.
 
 ## Installation
 

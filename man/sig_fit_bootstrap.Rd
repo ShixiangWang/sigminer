@@ -71,7 +71,8 @@ lower than (equal is included, i.e. \code{<=}) this value will be set to 0
 (both absolute exposure and relative exposure).
 In this case, sum of signature contribution may not equal to 1.}
 
-\item{mode}{signature type for plotting, now supports 'copynumber', 'SBS', 'DBS' and 'ID'.}
+\item{mode}{signature type for plotting, now supports 'copynumber', 'SBS',
+'DBS', 'ID' and 'RS' (genome rearrangement signature).}
 
 \item{find_suboptimal}{logical, if \code{TRUE}, find suboptimal decomposition with
 slightly higher error than the optimal solution by method 'SA'. This is useful

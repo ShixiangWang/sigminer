@@ -2,7 +2,7 @@
 
 context("File R/show_sig_profile.R: @testexamples")
 
-test_that("Function show_sig_profile() @ L120", {
+test_that("Function show_sig_profile() @ L128", {
   
   # Load SBS signature
   load(system.file("extdata", "toy_mutational_signature.RData",
@@ -52,9 +52,17 @@ test_that("Function show_sig_profile() @ L120", {
     params = params, y_expand = 2
   )
   p4
+  
+  # Visualize rearrangement signatures
+  s <- get_sig_db("RS_Nik_lab")
+  ss <- s$db[, 1:3]
+  colnames(ss) <- c("Sig1", "Sig2", "Sig3")
+  p5 <- show_sig_profile(ss, mode = "RS", style = "cosmic")
+  p5
   expect_s3_class(p1, "ggplot")
   expect_s3_class(p2, "ggplot")
   expect_s3_class(p3, "ggplot")
   expect_s3_class(p4, "ggplot")
+  expect_s3_class(p5, "ggplot")
 })
 
