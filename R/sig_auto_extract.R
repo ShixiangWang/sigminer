@@ -217,10 +217,13 @@ sig_auto_extract <- function(nmf_matrix = NULL,
       "K#", summary.run$K
     )
     sims <- sapply(sim_list, mean)
+    summary.run$similarity_to_ref <- as.numeric(sims)
     ind <- order(sims, decreasing = TRUE)
     message("Solutions ordered by mean cosine similarity to references:")
     print(sims[ind])
     best_row <- summary.run[ind[1], ]
+    summary.run <- summary.run %>%
+      dplyr::arrange(dplyr::desc(.data$similarity_to_ref))
   }
 
   message("Select Run ", best_row$Run, ", which K = ", best_row$K, " as best solution.")
