@@ -26,7 +26,7 @@
 #' @testexamples
 #' expect_s3_class(p, "ggplot")
 show_catalogue <- function(catalogue,
-                           mode = c("SBS", "copynumber", "DBS", "ID"),
+                           mode = c("SBS", "copynumber", "DBS", "ID", "RS"),
                            method = "Wang",
                            normalize = c("raw", "row", "feature"),
                            style = c("default", "cosmic"),

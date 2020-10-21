@@ -6,7 +6,7 @@
 \usage{
 show_catalogue(
   catalogue,
-  mode = c("SBS", "copynumber", "DBS", "ID"),
+  mode = c("SBS", "copynumber", "DBS", "ID", "RS"),
   method = "Wang",
   normalize = c("raw", "row", "feature"),
   style = c("default", "cosmic"),
