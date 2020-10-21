@@ -22,7 +22,7 @@ show_cn_components(
 \item{parameters}{a \code{data.frame} contain parameter components, obtain this
 from \link{sig_tally} function.}
 
-\item{method}{method for feature classfication, can be one of "Macintyre" ("M"),
+\item{method}{method for feature classification, can be one of "Macintyre" ("M"),
 "Wang" ("W").}
 
 \item{show_weights}{default is \code{TRUE}, show weights for each component.

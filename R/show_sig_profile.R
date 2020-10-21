@@ -275,13 +275,13 @@ show_sig_profile <- function(Signature,
       )
     } else {
       ## Ziyu Tao & Tao Wu & Wang
-      if (any(nchar(mat$context) > 12)) {
+      if (any(nchar(mat$context) > 14)) {
         send_stop("Wrong 'method' option or unsupported components.")
       }
       # mat$base <- sub("^([A-Z]:[A-Z]{2}):[0-9]\\+?:([A-Z]{2})$", "\\1:\\2", mat$context)
       # mat$context <- sub("^[A-Z]:[A-Z]{2}:([0-9]\\+?):[A-Z]{2}$", "\\1", mat$context)
-      mat$base <- sub("^([A-Z]:[A-Z]{2}):[0-9]\\+?:[A-Z0-9]{2}$", "\\1", mat$context)
-      mat$context <- sub("^[A-Z]:[A-Z]{2}:([0-9]\\+?:[A-Z0-9]{2}$)", "\\1", mat$context)
+      mat$base <- sub("^([A-Z]:[A-Z]{2}):[0-9]\\+?(LOH)?:[A-Z0-9]{2,3}$", "\\1", mat$context)
+      mat$context <- sub("^[A-Z]:[A-Z]{2}:([0-9]\\+?(LOH)?:[A-Z0-9]{2,3}$)", "\\1", mat$context)
       # mat$context <- sub("^[A-Z]:[A-Z]{2}:", "", mat$context)
       mat <- tidyr::gather(mat, class, signature, -c("context", "base"))
 

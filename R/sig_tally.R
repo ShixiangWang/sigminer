@@ -125,8 +125,9 @@ sig_tally <- function(object, ...) {
 
 #' @describeIn sig_tally Returns copy number features, components and component-by-sample matrix
 #' @param indices integer vector indicating segments to keep.
-#' @param method method for feature classfication, can be one of "Macintyre" ("M"),
+#' @param method method for feature classification, can be one of "Macintyre" ("M"),
 #' "Wang" ("W").
+#' @param add_loh flag to add LOH classifications.
 #' @param feature_setting a `data.frame` used for classification.
 #' **Only used when method is "Wang" ("W")**.
 #' Default is [CN.features]. Users can also set custom input with "feature",
@@ -177,6 +178,7 @@ sig_tally.CopyNumber <- function(object,
                                  method = "Wang",
                                  ignore_chrs = NULL,
                                  indices = NULL,
+                                 add_loh = FALSE,
                                  feature_setting = sigminer::CN.features,
                                  type = c("probability", "count"),
                                  reference_components = FALSE,
@@ -292,9 +294,9 @@ sig_tally.CopyNumber <- function(object,
     # cn_matrix[is.na(cn_matrix)] <- 0L
     feature_setting$n_obs <- colSums(cn_matrix, na.rm = TRUE)
   } else {
-    # Method: Tao & Wang, 'T'
+    # Method: Shixiang Wang, Ziyu Tao and Tao Wu, short with 'T'
     send_info("Step: getting copy number features.")
-    cn_features <- get_features_mutex(CN_data = cn_list, cores = cores)
+    cn_features <- get_features_mutex(CN_data = cn_list, add_loh = add_loh, cores = cores)
     send_success("Gotten.")
 
     send_info("Step: generating copy number components based on combination.")

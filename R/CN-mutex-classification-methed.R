@@ -6,13 +6,18 @@
 ## similar to previous work but here we focus on each **segment**.
 ## Secondly, we classified all segments into mutually exclusive types based on features.
 get_features_mutex <- function(CN_data,
+                               add_loh = FALSE,
                                cores = 1) {
   oplan <- future::plan()
   future::plan("multiprocess", workers = cores)
   on.exit(future::plan(oplan), add = TRUE)
 
   # features <- unique(feature_setting$feature)
-  features <- c("BP10MB", "CN", "SS", "CS", "AB")
+  if (add_loh) {
+    features <- c("BP10MB", "CN", "SS", "CS", "AB", "LOH")
+  } else {
+    features <- c("BP10MB", "CN", "SS", "CS", "AB")
+  }
 
   send_info("NOTE: this method derives features for each segment. Be patient...")
 
@@ -34,6 +39,9 @@ get_features_mutex <- function(CN_data,
     } else if (i == "AB") {
       send_info("Getting change extent on left and right sides of each segment...")
       getAB(CN_data)
+    } else if (i == "LOH") {
+      send_info("Getting LOH status of each segment...")
+      getLOH(CN_data)
     }
   }
 
@@ -109,11 +117,12 @@ getCS <- function(abs_profiles) {
         rv = -diff(c(.data$segVal, 2L))
       ) %>%
       dplyr::mutate(
+        # 0 copy change has been marked as 'H' here
         value = dplyr::case_when(
           .data$lv <= 0 & .data$rv <= 0 ~ "HH",
-          .data$lv < 0 & .data$rv > 0 ~ "HL",
-          .data$lv > 0 & .data$rv < 0 ~ "LH",
-          .data$lv >= 0 & .data$rv >= 0 ~ "LL"
+          .data$lv <= 0 & .data$rv > 0 ~ "HL",
+          .data$lv > 0 & .data$rv <= 0 ~ "LH",
+          .data$lv > 0 & .data$rv > 0 ~ "LL"
         )
       ) %>%
       dplyr::ungroup() %>%
@@ -151,18 +160,49 @@ getAB <- function(abs_profiles) {
 
   y[order(y$Index)]
 }
+
+# LOH definition: minor copy = 0 & total copy > 0 (for SNP location)
+getLOH <- function(abs_profiles) {
+  y <- purrr::map_df(abs_profiles, function(x) {
+    x %>%
+      dplyr::as_tibble() %>%
+      dplyr::group_by(.data$chromosome) %>%
+      dplyr::mutate(
+        value = dplyr::case_when(
+          .data$segVal >= 1 & as.integer(.data$minor_cn) == 0 ~ "LOH",
+          TRUE ~ "None"
+        )
+      ) %>%
+      dplyr::ungroup() %>%
+      dplyr::select(c("sample", "chromosome", "value", "Index"))
+  }) %>%
+    dplyr::mutate(
+      # Remove LOH labels in sex chromosomes
+      value = ifelse(.data$chromosome %in% c("chrX", "chrY") & .data$value == "LOH",
+                     "None", .data$value)
+    ) %>%
+    dplyr::select(c("sample", "value", "Index")) %>%
+    data.table::as.data.table()
+
+  y[order(y$Index)]
+}
+
 # Get components ----------------------------------------------------------
 
 ## Use two classification systems:
 ## Standard system (S): keep simpler
 ## Complex system (C): keep comprehensive
 get_components_mutex <- function(CN_features) {
-  feature_names <- names(CN_features)
+  feature_names <- setdiff(names(CN_features), "LOH")
 
-  purrr::map2(CN_features, feature_names, call_component)
+  purrr::map2(CN_features[feature_names], feature_names,
+              .f = call_component,
+              extra = if ("LOH" %in% names(CN_features)) {
+                CN_features$LOH
+              } else NULL)
 }
 
-call_component <- function(f_dt, f_name) {
+call_component <- function(f_dt, f_name, extra = NULL) {
   f_dt <- data.table::copy(f_dt)
 
   if (f_name == "BP10MB") {
@@ -172,13 +212,32 @@ call_component <- function(f_dt, f_name) {
     )
   } else if (f_name == "CN") {
     f_dt$S_CN <- cut(f_dt$value,
-      breaks = c(-Inf, 0:4, Inf),
-      labels = c(as.character(0:4), "5+")
+                     breaks = c(-Inf, 0:4, Inf),
+                     labels = c(as.character(0:4), "5+")
     )
     f_dt$C_CN <- cut(f_dt$value,
-      breaks = c(-Inf, 0:8, Inf),
-      labels = c(as.character(0:8), "9+")
+                     breaks = c(-Inf, 0:8, Inf),
+                     labels = c(as.character(0:8), "9+")
     )
+    if (!is.null(extra)) {
+      f_dt$value <- NULL
+      f_dt <- merge(f_dt, extra, by = c("sample", "Index"))
+      f_dt <- f_dt %>%
+        dplyr::as_tibble() %>%
+        dplyr::mutate(
+          S_CN = dplyr::case_when(
+            .data$S_CN != "1" && .data$value == "LOH" ~ "2+LOH",
+            TRUE ~ as.character(.data$S_CN)
+          ),
+          S_CN = factor(.data$S_CN, levels = c(as.character(0:4), "5+", "2+LOH")),
+          C_CN = dplyr::case_when(
+            .data$C_CN != "1" && .data$value == "LOH" ~ "2+LOH",
+            TRUE ~ as.character(.data$C_CN)
+          ),
+          C_CN = factor(.data$C_CN, levels = c(as.character(0:8), "9+", "2+LOH")),
+        ) %>%
+        data.table::as.data.table()
+    }
   } else if (f_name == "SS") {
     f_dt$S_SS <- cut(f_dt$value,
       breaks = c(-Inf, 50000L, 500000L, 5000000L, Inf),
@@ -192,6 +251,8 @@ call_component <- function(f_dt, f_name) {
     f_dt$S_CS <- f_dt$C_CS <- factor(f_dt$value, levels = c("HH", "HL", "LH", "LL"))
   } else if (f_name == "AB") {
     f_dt$S_AB <- f_dt$C_AB <- factor(f_dt$value, levels = c("AA", "AB", "BA", "BB"))
+  } else if (f_name == "LOH") {
+    f_dt$S_LOH <- f_dt$C_LOH <- factor(f_dt$value, levels = c("LOH", "None"))
   }
   f_dt$value <- NULL
   f_dt
@@ -218,13 +279,12 @@ get_matrix_mutex <- function(CN_components, indices = NULL) {
     c_string = ":"
   )
 
-
   dt_s$s_class <- paste(dt_s$S_SS, dt_s$S_CS, dt_s$S_CN, dt_s$S_AB, sep = ":")
   dt_s$s_class <- factor(dt_s$s_class, levels = s_class_levels)
   s_mat <- classDT2Matrix(dt_s, samp_col = "sample", component_col = "s_class") %>%
     as.data.frame()
 
-  ## Code to combine catagories with very few counts
+  ## Code to combine categories with very few counts
   ## for AB|BA|BB
   TM_set <- c(
     "S:HH:0:",
@@ -330,9 +390,27 @@ get_matrix_mutex <- function(CN_components, indices = NULL) {
     ss_mat,
     s_mat[rownames(ss_mat), !grepl("(LH)|(HL)", colnames(s_mat)), drop = FALSE]
   )
+  # Combine LOH types
+  if (any(grepl("LOH", colnames(ss_mat)))) {
+    ss_mat <- as.data.frame(ss_mat)
+    all_types = unique(substr(colnames(ss_mat), 1, 5))
+
+    for (i in all_types) {
+      ss_mat[[paste0(i, "2+LOH")]] <- ss_mat[[paste0(i, "2+LOH:AA")]] +
+        ss_mat[[paste0(i, "2+LOH:AB")]] + ss_mat[[paste0(i, "2+LOH:BA")]] +
+        ss_mat[[paste0(i, "2+LOH:BB")]]
+      ss_mat[[paste0(i, "2+LOH:AA")]] <- NULL
+      ss_mat[[paste0(i, "2+LOH:AB")]] <- NULL
+      ss_mat[[paste0(i, "2+LOH:BA")]] <- NULL
+      ss_mat[[paste0(i, "2+LOH:BB")]] <- NULL
+    }
+    colnames(ss_mat) <- sub("LOH", ":LOH", colnames(ss_mat))
+    ss_mat <- as.matrix(ss_mat)
+  }
+
   ss_mat <- ss_mat[, sort(colnames(ss_mat))]
 
-  ## 2. hanlde complex way
+  ## 2. handle complex way
   c_class_levels <- vector_to_combination(levels(dt_c$C_SS), levels(dt_c$C_CS), levels(dt_c$C_CN),
     paste0("P", levels(dt_c$C_BP10MB)),
     c_string = ":"
