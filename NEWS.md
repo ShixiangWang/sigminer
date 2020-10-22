@@ -1,11 +1,14 @@
 # sigminer 1.1.0
 
+- Optimized default behavior of `read_copynumber()`.
+  - Set `complement = FALSE` as default.
+  - Free dependencies between option `use_all` and `complement`.
 - Added visualization support for genome rearrangement signatures (#300).
 - Added four database for reference signatures from <https://doi.org/10.1038/s43018-020-0027-5> (#299).
 - Added new measure 'CV' for `show_sig_bootstrap()` (#298).
 - Added `group_enrichment()` and `show_group_enrichment()` (#277).
 - Optimized signature profile visualization (#295).
-- Update `?sigminer` documentation.
+- Updated `?sigminer` documentation.
 - Added `ms` strategy to select optimal solution by maximizing cosine similarity
 to reference signatures.
 - Added `same_size_clustering()` for same size clustering.

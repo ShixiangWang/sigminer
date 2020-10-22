@@ -29,7 +29,7 @@
 #' this option is useful for WES and target sequencing.
 #' Set 'wg' will use autosome size from genome build, this option is useful for WGS, SNP etc..
 #' @param complement if `TRUE`, complement chromosome (except 'Y') does not show in input data
-#' with normal copy 2 and force `use_all` to `FALSE` (no matter what user input).
+#' with normal copy 2.
 #' @param ... other parameters pass to [data.table::fread()]
 #' @author Shixiang Wang <w_shixiang@163.com>
 #' @return a [CopyNumber] object.
@@ -68,7 +68,7 @@ read_copynumber <- function(input,
                             max_copynumber = 20L,
                             genome_build = c("hg19", "hg38", "mm10"),
                             genome_measure = c("called", "wg"),
-                            complement = TRUE,
+                            complement = FALSE,
                             ...) {
   stopifnot(
     is.character(samp_col),
@@ -198,14 +198,10 @@ read_copynumber <- function(input,
             chrlen[["size"]][miss_index],
             2
           )]
-          temp <- rbind(temp, comp_df)
+          comp_df[, setdiff(colnames(comp_df),
+                         c("chromosome", "start", "end", "segVal", "sample")) := NA]
+          temp <- rbind(temp, comp_df, fill = TRUE)
         }
-
-        cli::cli_status_update(
-          id = sb,
-          "{symbol$arrow_right} 'complement' option is TRUE, thus use_all automatically set to FALSE."
-        )
-        use_all <- FALSE
       }
 
       if (!use_all) temp <- temp[, new_cols, with = FALSE]
@@ -316,13 +312,13 @@ read_copynumber <- function(input,
             chrlen[["size"]][miss_index],
             2
           )]
-          comp <- rbind(comp, comp_df)
+          comp <- rbind(comp, comp_df, fill = TRUE)
         }
       }
-      temp <- rbind(temp, comp)
+      comp[, setdiff(colnames(comp),
+                     c("chromosome", "start", "end", "segVal", "sample")) := NA]
+      temp <- rbind(temp, comp, fill = TRUE)
       send_success("Value 2 (normal copy) filled to uncalled chromosomes.")
-      use_all <- FALSE
-      send_info("'complement' is TRUE, thus use_all automatically set to FALSE.")
     }
 
     if (!use_all) temp <- temp[, new_cols, with = FALSE]

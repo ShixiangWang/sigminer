@@ -17,7 +17,7 @@ read_copynumber(
   max_copynumber = 20L,
   genome_build = c("hg19", "hg38", "mm10"),
   genome_measure = c("called", "wg"),
-  complement = TRUE,
+  complement = FALSE,
   ...
 )
 }
@@ -59,7 +59,7 @@ this option is useful for WES and target sequencing.
 Set 'wg' will use autosome size from genome build, this option is useful for WGS, SNP etc..}
 
 \item{complement}{if \code{TRUE}, complement chromosome (except 'Y') does not show in input data
-with normal copy 2 and force \code{use_all} to \code{FALSE} (no matter what user input).}
+with normal copy 2.}
 
 \item{...}{other parameters pass to \code{\link[data.table:fread]{data.table::fread()}}}
 }
