@@ -14,7 +14,7 @@ helper_join_segments2 <- function(segTab) {
   x$dval <- NULL
 
   if (length(i_eq) > 0) {
-    ## Split joining segments into differnet groups
+    ## Split joining segments into different groups
     i_join <- sort(union(i_eq - 1L, i_eq))
     # z <- split(i_eq, findInterval(i_eq, i_eq[diff(i_eq) > 1] + 2L)) ## the first element is not included
     # grp <- rep(names(z), sapply(z, length) + 1L)
@@ -52,26 +52,14 @@ helper_join_segments2 <- function(segTab) {
     x[, (cols) := lapply(dt[, cols, with = FALSE], function(x) {
       if (is.numeric(x)) {
         mean(x, na.rm = TRUE)
+      } else if (is.logical(x)) {
+        any(x, na.rm = TRUE)
       } else {
         paste0(unique(na.omit(x)), collapse = ",")
       }
     })]
   }
   return(x)
-}
-
-helper_join_segments2_old <- function(segTab) {
-  # segTab <- segTab[order(segTab$start)]
-  final_orders <- c("chromosome", "start", "end", "segVal", "sample")
-  cls_cols <- setdiff(colnames(segTab), c(final_orders, "segVal2"))
-  segTab$segVal2 <- segTab$segVal
-  segTab <- segTab[, .groupby_collapse(.SD, cls_cols),
-    by = list(sample, chromosome)
-  ]
-
-  segTab$data.table <- NULL
-  data.table::setcolorder(segTab, final_orders)
-  return(segTab)
 }
 
 .groupby_collapse <- function(dt, cols = NULL) {

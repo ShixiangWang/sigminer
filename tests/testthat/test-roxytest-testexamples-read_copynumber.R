@@ -2,7 +2,7 @@
 
 context("File R/read_copynumber.R: @testexamples")
 
-test_that("Function read_copynumber() @ L59", {
+test_that("Function read_copynumber() @ L70", {
   
   # Load toy dataset of absolute copynumber profile
   load(system.file("extdata", "toy_segTab.RData",
@@ -14,6 +14,14 @@ test_that("Function read_copynumber() @ L59", {
   )
   cn
   cn_subset <- subset(cn, sample == "TCGA-DF-A2KN-01A-11D-A17U-01")
+  
+  # Add LOH
+  set.seed(1234)
+  segTabs$minor_cn = sample(c(0, 1), size = nrow(segTabs), replace = TRUE)
+  cn <- read_copynumber(segTabs,
+    seg_cols = c("chromosome", "start", "end", "segVal"),
+    genome_measure = "wg", complement = TRUE, add_loh = TRUE
+  )
   
   tab_file <- system.file("extdata", "metastatic_tumor.segtab.txt",
     package = "sigminer", mustWork = TRUE

@@ -1,6 +1,7 @@
 # sigminer 1.1.0
 
 - Optimized default behavior of `read_copynumber()`.
+  - Support LOH records when user input minor allele copy number.
   - Set `complement = FALSE` as default.
   - Free dependencies between option `use_all` and `complement`.
 - Added visualization support for genome rearrangement signatures (#300).

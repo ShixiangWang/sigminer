@@ -609,16 +609,8 @@ get_cnsummary_sample <- function(segTab, genome_build = c("hg19", "hg38", "mm10"
   genome_build <- match.arg(genome_build)
   genome_measure <- match.arg(genome_measure)
 
-  if (ncol(segTab) > 5) {
-    segTab <- segTab[, 1:5]
-  }
-  if (ncol(segTab) == 5) {
-    colnames(segTab) <- c("chromosome", "start", "end", "segVal", "sample")
-  } else {
-    stop(
-      "Input must have 5 ordered columns (chr, start, end, segVal, sample)."
-    )
-  }
+  # "Input must have 5 ordered columns (chr, start, end, segVal, sample)."
+  # colnames(segTab)[1:5] <- c("chromosome", "start", "end", "segVal", "sample")
 
   # Handle sex
   sex <- getOption("sigminer.sex", default = "female")
@@ -643,7 +635,7 @@ get_cnsummary_sample <- function(segTab, genome_build = c("hg19", "hg38", "mm10"
         )
       ) %>%
       dplyr::select(-"sex") %>%
-      dplyr::select(c("chromosome", "start", "end", "segVal", "sample")) %>%
+      dplyr::select(c("chromosome", "start", "end", "segVal", "sample"), dplyr::everything()) %>%
       data.table::as.data.table()
   }
 
@@ -675,14 +667,26 @@ get_cnsummary_sample <- function(segTab, genome_build = c("hg19", "hg38", "mm10"
         n_of_del = sum(segVal < 2)
       )
 
-    seg_sum2 <- segTab %>%
-      dplyr::as_tibble() %>%
-      dplyr::filter(chromosome %in% autosome) %>%
-      dplyr::group_by(.data$sample) %>%
-      dplyr::summarise(
-        n_of_vchr = length(unique(chromosome[segVal != 2])),
-        cna_burden = sum(end[segVal != 2] - start[segVal != 2] + 1) / total_size
-      )
+    if ("loh" %in% colnames(segTab)) {
+      seg_sum2 <- segTab %>%
+        dplyr::as_tibble() %>%
+        dplyr::filter(chromosome %in% autosome) %>%
+        dplyr::group_by(.data$sample) %>%
+        dplyr::summarise(
+          n_of_vchr = length(unique(chromosome[segVal != 2])),
+          n_loh = sum(.data$loh, na.rm = TRUE),
+          cna_burden = sum(end[segVal != 2] - start[segVal != 2] + 1) / total_size
+        )
+    } else {
+      seg_sum2 <- segTab %>%
+        dplyr::as_tibble() %>%
+        dplyr::filter(chromosome %in% autosome) %>%
+        dplyr::group_by(.data$sample) %>%
+        dplyr::summarise(
+          n_of_vchr = length(unique(chromosome[segVal != 2])),
+          cna_burden = sum(end[segVal != 2] - start[segVal != 2] + 1) / total_size
+        )
+    }
 
     seg_summary <- dplyr::full_join(seg_sum1, seg_sum2, by = "sample") %>%
       data.table::as.data.table()
@@ -697,14 +701,26 @@ get_cnsummary_sample <- function(segTab, genome_build = c("hg19", "hg38", "mm10"
         n_of_del = sum(segVal < 2)
       )
 
-    seg_sum2 <- segTab %>%
-      dplyr::as_tibble() %>%
-      dplyr::filter(chromosome %in% autosome) %>%
-      dplyr::group_by(.data$sample) %>%
-      dplyr::summarise(
-        n_of_vchr = length(unique(chromosome[segVal != 2])),
-        cna_burden = sum(end[segVal != 2] - start[segVal != 2] + 1) / sum(end - start + 1)
-      )
+    if ("loh" %in% colnames(segTab)) {
+      seg_sum2 <- segTab %>%
+        dplyr::as_tibble() %>%
+        dplyr::filter(chromosome %in% autosome) %>%
+        dplyr::group_by(.data$sample) %>%
+        dplyr::summarise(
+          n_of_vchr = length(unique(chromosome[segVal != 2])),
+          n_loh = sum(.data$loh, na.rm = TRUE),
+          cna_burden = sum(end[segVal != 2] - start[segVal != 2] + 1) / sum(end - start + 1)
+        )
+    } else {
+      seg_sum2 <- segTab %>%
+        dplyr::as_tibble() %>%
+        dplyr::filter(chromosome %in% autosome) %>%
+        dplyr::group_by(.data$sample) %>%
+        dplyr::summarise(
+          n_of_vchr = length(unique(chromosome[segVal != 2])),
+          cna_burden = sum(end[segVal != 2] - start[segVal != 2] + 1) / sum(end - start + 1)
+        )
+    }
 
     seg_summary <- dplyr::full_join(seg_sum1, seg_sum2, by = "sample") %>%
       data.table::as.data.table()

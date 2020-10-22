@@ -14,6 +14,9 @@
 #' @param samp_col a character used to specify the sample column name. If `input`
 #' is a directory and cannot find `samp_col`, sample names will use file names
 #' (set this parameter to `NULL` is recommended in this case).
+#' @param add_loh if `TRUE`, add LOH labels to segments. **NOTE** a column
+#' 'minor_cn' must exist to indicate minor allele copy number value.
+#' Sex chromosome will not be labeled.
 #' @param join_adj_seg if `TRUE` (default), join adjacent segments with
 #' same copy number value. This is helpful for precisely count the number of breakpoint.
 #' When set `use_all=TRUE`, the mean function will be applied to extra numeric columns
@@ -46,6 +49,14 @@
 #' cn
 #' cn_subset <- subset(cn, sample == "TCGA-DF-A2KN-01A-11D-A17U-01")
 #'
+#' # Add LOH
+#' set.seed(1234)
+#' segTabs$minor_cn = sample(c(0, 1), size = nrow(segTabs), replace = TRUE)
+#' cn <- read_copynumber(segTabs,
+#'   seg_cols = c("chromosome", "start", "end", "segVal"),
+#'   genome_measure = "wg", complement = TRUE, add_loh = TRUE
+#' )
+#'
 #' tab_file <- system.file("extdata", "metastatic_tumor.segtab.txt",
 #'   package = "sigminer", mustWork = TRUE
 #' )
@@ -61,9 +72,10 @@ read_copynumber <- function(input,
                             ignore_case = FALSE,
                             seg_cols = c("Chromosome", "Start.bp", "End.bp", "modal_cn"),
                             samp_col = "sample",
+                            add_loh = FALSE,
                             join_adj_seg = TRUE,
                             skip_annotation = FALSE,
-                            use_all = FALSE,
+                            use_all = add_loh,
                             min_segnum = 0L,
                             max_copynumber = 20L,
                             genome_build = c("hg19", "hg38", "mm10"),
@@ -86,6 +98,12 @@ read_copynumber <- function(input,
 
   send_info("Genome build  : ", genome_build, ".")
   send_info("Genome measure: ", genome_measure, ".")
+
+  if (add_loh) {
+    use_all <- TRUE
+    send_info("When add_loh is TRUE, use_all is forced to TRUE.
+              Please drop columns you don't want to keep before reading.")
+  }
 
   # get chromosome lengths
   if (genome_build == "mm10") {
@@ -352,7 +370,7 @@ read_copynumber <- function(input,
 
   # reset copy number for high copy number segments
   data_df$segVal[data_df$segVal > max_copynumber] <- max_copynumber
-  # make sure seg value is integer
+  # make sure seg copy number value is integer
   data_df[["segVal"]] <- as.integer(round(data_df[["segVal"]]))
   # make sure position is numeric
   data_df$start <- as.numeric(data_df$start)
@@ -360,6 +378,16 @@ read_copynumber <- function(input,
 
   data.table::setorderv(data_df, c("sample", "chromosome", "start"))
   send_success("Segments sorted.")
+
+  if (add_loh) {
+    send_info("Adding LOH labels...")
+    if (!"minor_cn" %in% colnames(data_df)) {
+      send_stop("When you want to add LOH infor, a column named as 'minor_cn' should exist!")
+    }
+    data_df$loh <- data_df$segVal >= 1 & data_df$minor_cn == 0
+    # We don't label sex chromosomes
+    data_df[data_df$chromosome %in% c("chrX", "chrY")]$loh = FALSE
+  }
 
   if (join_adj_seg) {
     send_info("Joining adjacent segments with same copy number value. Be patient...")
