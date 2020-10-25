@@ -7,21 +7,23 @@
 ## Secondly, we classified all segments into mutually exclusive types based on features.
 get_features_mutex <- function(CN_data,
                                add_loh = FALSE,
+                               XVersion = FALSE,
                                cores = 1) {
   oplan <- future::plan()
   future::plan("multiprocess", workers = cores)
   on.exit(future::plan(oplan), add = TRUE)
 
-  # features <- unique(feature_setting$feature)
-  if (add_loh) {
-    features <- c("BP10MB", "CN", "SS", "CS", "AB", "LOH")
+  if (XVersion) {
+    features <- c("CN", "SS", "CS", "AB")
   } else {
     features <- c("BP10MB", "CN", "SS", "CS", "AB")
   }
 
+  if (add_loh) features <- c(features, "LOH")
+
   send_info("NOTE: this method derives features for each segment. Be patient...")
 
-  .get_feature <- function(i) {
+  .get_feature <- function(i, XVersion = FALSE) {
     if (i == "SS") {
       send_info("Getting floor(log10 based segment size) of eash segment...")
       zz <- getSegsize_v2(CN_data)
@@ -38,14 +40,17 @@ get_features_mutex <- function(CN_data,
       getCS(CN_data)
     } else if (i == "AB") {
       send_info("Getting change extent on left and right sides of each segment...")
-      getAB(CN_data)
+      getAB(CN_data, XVersion = XVersion)
     } else if (i == "LOH") {
       send_info("Getting LOH status of each segment...")
       getLOH(CN_data)
     }
   }
 
-  res <- furrr::future_map(features, .get_feature,
+  res <- furrr::future_map(
+    features,
+    .f = .get_feature,
+    XVersion = XVersion,
     .progress = TRUE
   )
   res <- res %>% setNames(features)
@@ -133,56 +138,63 @@ getCS <- function(abs_profiles) {
   y[order(y$Index)]
 }
 
-## Get left and right CN change cut off
+## Get left and right CN change cut-off
 ## (left&right):AA, AB, BA, BB (A <= 2, B >2)
-# abs_profiles <- sigminer::get_cnlist(cn, add_index = TRUE)
-getAB <- function(abs_profiles) {
-  y <- purrr::map_df(abs_profiles, function(x) {
-    x %>%
-      dplyr::as_tibble() %>%
-      dplyr::group_by(.data$chromosome) %>%
-      dplyr::mutate(
-        lv = abs(diff(c(2L, .data$segVal))),
-        rv = abs(-diff(c(.data$segVal, 2L)))
-      ) %>%
-      dplyr::mutate(
-        value = dplyr::case_when(
-          .data$lv <= 2 & .data$rv <= 2 ~ "AA",
-          .data$lv <= 2 & .data$rv > 2 ~ "AB",
-          .data$lv > 2 & .data$rv <= 2 ~ "BA",
-          .data$lv > 2 & .data$rv > 2 ~ "BB"
-        )
-      ) %>%
-      dplyr::ungroup() %>%
-      dplyr::select(c("sample", "value", "Index"))
-  }) %>%
-    data.table::as.data.table()
+## XVersion: both <= 2 -> AA
+##           others -> BB
+getAB <- function(abs_profiles, XVersion = FALSE) {
+  if (isFALSE(XVersion)) {
+    y <- purrr::map_df(abs_profiles, function(x) {
+      x %>%
+        dplyr::as_tibble() %>%
+        dplyr::group_by(.data$chromosome) %>%
+        dplyr::mutate(
+          lv = abs(diff(c(2L, .data$segVal))),
+          rv = abs(-diff(c(.data$segVal, 2L)))
+        ) %>%
+        dplyr::mutate(
+          value = dplyr::case_when(
+            .data$lv <= 2 & .data$rv <= 2 ~ "AA",
+            .data$lv <= 2 & .data$rv > 2 ~ "AB",
+            .data$lv > 2 & .data$rv <= 2 ~ "BA",
+            .data$lv > 2 & .data$rv > 2 ~ "BB"
+          )
+        ) %>%
+        dplyr::ungroup() %>%
+        dplyr::select(c("sample", "value", "Index"))
+    }) %>%
+      data.table::as.data.table()
+  } else {
+    y <- purrr::map_df(abs_profiles, function(x) {
+      x %>%
+        dplyr::as_tibble() %>%
+        dplyr::group_by(.data$chromosome) %>%
+        dplyr::mutate(
+          lv = abs(diff(c(2L, .data$segVal))),
+          rv = abs(-diff(c(.data$segVal, 2L)))
+        ) %>%
+        dplyr::mutate(
+          value = dplyr::case_when(
+            .data$lv <= 2 & .data$rv <= 2 ~ "AA",
+            TRUE ~ "BB"
+          )
+        ) %>%
+        dplyr::ungroup() %>%
+        dplyr::select(c("sample", "value", "Index"))
+    }) %>%
+      data.table::as.data.table()
+  }
 
   y[order(y$Index)]
 }
 
 # LOH definition: minor copy = 0 & total copy > 0 (for SNP location)
+# The major operations have done in read_copynumber()
 getLOH <- function(abs_profiles) {
-  y <- purrr::map_df(abs_profiles, function(x) {
-    x %>%
-      dplyr::as_tibble() %>%
-      dplyr::group_by(.data$chromosome) %>%
-      dplyr::mutate(
-        value = dplyr::case_when(
-          .data$segVal >= 1 & as.integer(.data$minor_cn) == 0 ~ "LOH",
-          TRUE ~ "None"
-        )
-      ) %>%
-      dplyr::ungroup() %>%
-      dplyr::select(c("sample", "chromosome", "value", "Index"))
-  }) %>%
-    dplyr::mutate(
-      # Remove LOH labels in sex chromosomes
-      value = ifelse(.data$chromosome %in% c("chrX", "chrY") & .data$value == "LOH",
-                     "None", .data$value)
-    ) %>%
-    dplyr::select(c("sample", "value", "Index")) %>%
-    data.table::as.data.table()
+  y <- data.table::rbindlist(abs_profiles)
+  y <- y[, c("sample", "loh", "Index")]
+  colnames(y)[2] <- "value"
+  y$value[is.na(y$value)] <- FALSE
 
   y[order(y$Index)]
 }
@@ -192,17 +204,18 @@ getLOH <- function(abs_profiles) {
 ## Use two classification systems:
 ## Standard system (S): keep simpler
 ## Complex system (C): keep comprehensive
-get_components_mutex <- function(CN_features) {
+get_components_mutex <- function(CN_features, XVersion = FALSE) {
   feature_names <- setdiff(names(CN_features), "LOH")
 
   purrr::map2(CN_features[feature_names], feature_names,
               .f = call_component,
               extra = if ("LOH" %in% names(CN_features)) {
                 CN_features$LOH
-              } else NULL)
+              } else NULL,
+              XVersion = XVersion)
 }
 
-call_component <- function(f_dt, f_name, extra = NULL) {
+call_component <- function(f_dt, f_name, extra = NULL, XVersion = FALSE) {
   f_dt <- data.table::copy(f_dt)
 
   if (f_name == "BP10MB") {
@@ -211,32 +224,63 @@ call_component <- function(f_dt, f_name, extra = NULL) {
       labels = c("2-", "4-", "6-", "8-", "10-", "11+")
     )
   } else if (f_name == "CN") {
-    f_dt$S_CN <- cut(f_dt$value,
-                     breaks = c(-Inf, 0:4, Inf),
-                     labels = c(as.character(0:4), "5+")
-    )
-    f_dt$C_CN <- cut(f_dt$value,
-                     breaks = c(-Inf, 0:8, Inf),
-                     labels = c(as.character(0:8), "9+")
-    )
-    if (!is.null(extra)) {
-      f_dt$value <- NULL
-      f_dt <- merge(f_dt, extra, by = c("sample", "Index"))
-      f_dt <- f_dt %>%
-        dplyr::as_tibble() %>%
-        dplyr::mutate(
-          S_CN = dplyr::case_when(
-            .data$S_CN != "1" && .data$value == "LOH" ~ "2+LOH",
-            TRUE ~ as.character(.data$S_CN)
-          ),
-          S_CN = factor(.data$S_CN, levels = c(as.character(0:4), "5+", "2+LOH")),
-          C_CN = dplyr::case_when(
-            .data$C_CN != "1" && .data$value == "LOH" ~ "2+LOH",
-            TRUE ~ as.character(.data$C_CN)
-          ),
-          C_CN = factor(.data$C_CN, levels = c(as.character(0:8), "9+", "2+LOH")),
-        ) %>%
-        data.table::as.data.table()
+    if (isFALSE(XVersion)) {
+      f_dt$S_CN <- cut(f_dt$value,
+                       breaks = c(-Inf, 0:4, Inf),
+                       labels = c(as.character(0:4), "5+")
+      )
+      f_dt$C_CN <- cut(f_dt$value,
+                       breaks = c(-Inf, 0:8, Inf),
+                       labels = c(as.character(0:8), "9+")
+      )
+      if (!is.null(extra)) {
+        f_dt$value <- NULL
+        f_dt <- merge(f_dt, extra, by = c("sample", "Index"))
+        f_dt <- f_dt %>%
+          dplyr::as_tibble() %>%
+          dplyr::mutate(
+            S_CN = dplyr::case_when(
+              .data$S_CN != "1" & .data$value ~ "2+LOH",
+              TRUE ~ as.character(.data$S_CN)
+            ),
+            S_CN = factor(.data$S_CN, levels = c(as.character(0:4), "5+", "2+LOH")),
+            C_CN = dplyr::case_when(
+              .data$C_CN != "1" & .data$value ~ "2+LOH",
+              TRUE ~ as.character(.data$C_CN)
+            ),
+            C_CN = factor(.data$C_CN, levels = c(as.character(0:8), "9+", "2+LOH")),
+          ) %>%
+          data.table::as.data.table()
+      }
+    } else {
+      # XVersion CN
+      f_dt$S_CN <- cut(f_dt$value,
+                       breaks = c(-Inf, 0:4, 8, Inf),
+                       labels = c(as.character(0:4), "5-8", "9+")
+      )
+
+      if (!is.null(extra)) {
+        # extra refer to LOH labels
+        f_dt$value <- NULL
+        f_dt <- merge(f_dt, extra, by = c("sample", "Index"))
+        f_dt <- f_dt %>%
+          dplyr::as_tibble() %>%
+          dplyr::mutate(
+            S_CN = as.character(.data$S_CN),
+            CN_Value = as.integer(sub("[^0-9]*([0-9]*).*", "\\1", .data$S_CN))
+          ) %>%
+          dplyr::mutate(
+            S_CN = dplyr::if_else(
+              .data$CN_Value >= 2 & .data$value,
+              paste0(.data$S_CN, "LOH"),
+              .data$S_CN),
+            S_CN = factor(.data$S_CN,
+                          levels = c(as.character(0:4), "5-8", "9+",
+                                     paste0(c(as.character(2:4), "5-8", "9+"), "LOH")))
+          ) %>%
+          dplyr::select(-"CN_Value") %>%
+          data.table::as.data.table()
+      }
     }
   } else if (f_name == "SS") {
     f_dt$S_SS <- cut(f_dt$value,
@@ -250,9 +294,11 @@ call_component <- function(f_dt, f_name, extra = NULL) {
   } else if (f_name == "CS") {
     f_dt$S_CS <- f_dt$C_CS <- factor(f_dt$value, levels = c("HH", "HL", "LH", "LL"))
   } else if (f_name == "AB") {
-    f_dt$S_AB <- f_dt$C_AB <- factor(f_dt$value, levels = c("AA", "AB", "BA", "BB"))
-  } else if (f_name == "LOH") {
-    f_dt$S_LOH <- f_dt$C_LOH <- factor(f_dt$value, levels = c("LOH", "None"))
+    if (isFALSE(XVersion)) {
+      f_dt$S_AB <- f_dt$C_AB <- factor(f_dt$value, levels = c("AA", "AB", "BA", "BB"))
+    } else {
+      f_dt$S_AB <- factor(f_dt$value, levels = c("AA", "BB"))
+    }
   }
   f_dt$value <- NULL
   f_dt
@@ -260,7 +306,6 @@ call_component <- function(f_dt, f_name, extra = NULL) {
 
 
 # Get matrix --------------------------------------------------------------
-# CN_components <- cn_tally$components
 get_matrix_mutex <- function(CN_components, indices = NULL) {
   merged_dt <- purrr::reduce(CN_components, merge, by = c("sample", "Index"), all = TRUE)
 
@@ -425,6 +470,83 @@ get_matrix_mutex <- function(CN_components, indices = NULL) {
   return(list(s_mat = s_mat, c_mat = c_mat, ss_mat = ss_mat))
 }
 
+
+get_matrix_mutex_xv <- function(CN_components, indices = NULL) {
+  merged_dt <- purrr::reduce(CN_components, merge, by = c("sample", "Index"), all = TRUE)
+
+  if (!is.null(indices)) {
+    merged_dt <- merged_dt[merged_dt$Index %in% indices]
+  }
+
+  ## Standard Classifications
+  ## Complex Classifications
+  dt_s <- merged_dt[, colnames(merged_dt) == "sample" | startsWith(colnames(merged_dt), "S_"), with = FALSE]
+
+  s_class_levels <- vector_to_combination(levels(dt_s$S_SS), levels(dt_s$S_CS),
+                                          levels(dt_s$S_CN), levels(dt_s$S_AB),
+                                          c_string = ":"
+  )
+
+  dt_s$s_class <- paste(dt_s$S_SS, dt_s$S_CS, dt_s$S_CN, dt_s$S_AB, sep = ":")
+  dt_s$s_class <- factor(dt_s$s_class, levels = s_class_levels)
+  s_mat <- classDT2Matrix(dt_s, samp_col = "sample", component_col = "s_class") %>%
+    as.data.frame()
+
+  ## Delete 0 count classifications
+  ## some classes have already been deleted in the previous step
+  allTypes = colnames(s_mat)
+  class2rm <- grepl("LH:0", allTypes) |
+    grepl("HL:0", allTypes) | grepl("LL:0", allTypes) |
+    grepl("LH:1:BB", allTypes) |
+    grepl("HL:1:BB", allTypes) | grepl("LL:1:BB", allTypes) |
+    grepl("LH:2:BB", allTypes) |
+    grepl("HL:2:BB", allTypes) | grepl("LL:2:BB", allTypes) |
+    grepl("LH:2LOH:BB", allTypes) |
+    grepl("HL:2LOH:BB", allTypes) | grepl("LL:2LOH:BB", allTypes)
+  s_mat[, class2rm] <- NULL
+
+  s_mat <- as.matrix(s_mat[, sort(colnames(s_mat))])
+  ## Generated a simplified matrix, suggested by Prof. Liu
+  ## HL and LH will be combined, named as LD (LadDer)
+  ss_mat <- s_mat %>%
+    dplyr::as_tibble(rownames = "sample") %>%
+    tidyr::pivot_longer(
+      cols = colnames(.)[-1],
+      names_to = "component", values_to = "count"
+    ) %>%
+    tidyr::separate(
+      col = "component",
+      into = c("len", "type", "cn", "type2"),
+      sep = ":",
+      remove = FALSE
+    ) %>%
+    dplyr::filter(.data$type %in% c("HL", "LH")) %>%
+    dplyr::group_by(.data$sample, .data$len, .data$cn, .data$type2) %>%
+    dplyr::summarise(
+      count = sum(.data$count, na.rm = TRUE),
+      .groups = "drop"
+    ) %>%
+    dplyr::mutate(
+      component = paste(.data$len, "LD", .data$cn, .data$type2, sep = ":")
+    ) %>%
+    dplyr::select(c("sample", "component", "count")) %>%
+    tidyr::pivot_wider(
+      id_cols = "sample",
+      names_from = "component",
+      values_from = "count",
+      values_fill = 0L
+    ) %>%
+    tibble::column_to_rownames("sample") %>%
+    as.matrix()
+
+  ss_mat <- cbind(
+    ss_mat,
+    s_mat[rownames(ss_mat), !grepl("(LH)|(HL)", colnames(s_mat)), drop = FALSE]
+  )
+
+  ss_mat <- ss_mat[, sort(colnames(ss_mat))]
+  return(list(s_mat = s_mat, ss_mat = ss_mat))
+}
 
 classDT2Matrix <- function(dt, samp_col, component_col) {
   dt.summary <- dt[, .N, by = c(samp_col, component_col)]

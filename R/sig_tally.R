@@ -191,9 +191,9 @@ sig_tally.CopyNumber <- function(object,
                                  keep_only_matrix = FALSE,
                                  ...) {
   stopifnot(is.logical(reference_components) | is.list(reference_components) | is.null(reference_components))
-  method <- match.arg(method, choices = c("Macintyre", "M", "Wang", "W", "Tao & Wang", "T"))
+  method <- match.arg(method, choices = c("Macintyre", "M", "Wang", "W", "Tao & Wang", "T", "X"))
 
-  if (startsWith(method, "T")) {
+  if (startsWith(method, "T") | method == "X") {
     send_warning("Currently, the method 'T' is in experimental stage, please don't use it for now!")
     ## Add segment index for method "T" so the segments can be easily joined or checked
     cn_list <- get_cnlist(object, ignore_chrs = ignore_chrs, add_index = TRUE)
@@ -296,16 +296,27 @@ sig_tally.CopyNumber <- function(object,
   } else {
     # Method: Shixiang Wang, Ziyu Tao and Tao Wu, short with 'T'
     send_info("Step: getting copy number features.")
-    cn_features <- get_features_mutex(CN_data = cn_list, add_loh = add_loh, cores = cores)
+    cn_features <- get_features_mutex(CN_data = cn_list,
+                                      add_loh = add_loh,
+                                      # 'X' for final version
+                                      XVersion = method == "X",
+                                      cores = cores)
     send_success("Gotten.")
 
     send_info("Step: generating copy number components based on combination.")
-    cn_components <- get_components_mutex(cn_features)
+    cn_components <- get_components_mutex(cn_features, XVersion = method == "X")
     send_success("Classified and combined.")
 
     send_info("Step: generating components by sample matrix.")
-    cn_matrix_list <- get_matrix_mutex(cn_components, indices = indices)
-    cn_matrix <- cn_matrix_list$s_mat
+    if (method != "X") {
+      cn_matrix_list <- get_matrix_mutex(cn_components,
+                                         indices = indices)
+    } else {
+      cn_matrix_list <- get_matrix_mutex_xv(cn_components,
+                                            indices = indices)
+    }
+
+    cn_matrix <- cn_matrix_list$ss_mat
 
     if (keep_only_matrix) {
       send_info("When keep_only_matrix is TRUE, only standard matrix kept.")
@@ -326,19 +337,28 @@ sig_tally.CopyNumber <- function(object,
       para_df <- feature_setting
     } else if (startsWith(method, "T")) {
       para_df <- "Message: No this info for method T."
+    } else if (startsWith(method, "X")) {
+      para_df <- "Message: No this info for method X."
     }
 
-    if (startsWith(method, "T")) {
+    if (startsWith(method, "T") | method == "X") {
       res_list <- list(
         features = cn_features,
         components = cn_components,
         parameters = para_df,
         nmf_matrix = cn_matrix,
-        all_matrices = list(
-          simplified_matrix = cn_matrix_list$ss_mat,
-          standard_matrix = cn_matrix_list$s_mat,
-          complex_matrix = cn_matrix_list$c_mat
-        )
+        all_matrices = if (method == "X") {
+          list(
+            simplified_matrix = cn_matrix_list$ss_mat,
+            standard_matrix = cn_matrix_list$s_mat
+          )
+        } else {
+          list(
+            simplified_matrix = cn_matrix_list$ss_mat,
+            standard_matrix = cn_matrix_list$s_mat,
+            complex_matrix = cn_matrix_list$c_mat
+          )
+        }
       )
     } else {
       res_list <- list(

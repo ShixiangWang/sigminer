@@ -108,7 +108,7 @@ use_color_style <- function(style, mode = c("SBS", "copynumber", "DBS", "ID", "R
       RS = c("blue", "red", "brown", "purple", "blue", "red", "brown", "purple")
     )
 
-    if (mode == "copynumber" & startsWith(method, "T")) {
+    if (mode == "copynumber" & (startsWith(method, "T") | method == "X")) {
       colors <- list(
         c(226, 226, 239), c(182, 182, 216), c(134, 131, 189), c(98, 64, 155),
         c(253, 202, 181), c(252, 138, 106), c(241, 68, 50), c(188, 25, 26),
