@@ -34,7 +34,8 @@ helper_join_segments2 <- function(segTab, add_loh = FALSE, loh_min_frac = 0.3) {
     dt_join$.grp <- NULL
 
     x <- data.table::rbindlist(
-      list(x[setdiff(index, i_join)], dt_join)
+      list(x[setdiff(index, i_join)], dt_join),
+      fill = TRUE
     )
   }
 
@@ -68,12 +69,14 @@ helper_join_segments2 <- function(segTab, add_loh = FALSE, loh_min_frac = 0.3) {
     # A logical column 'loh' should exist
     if (any(dt$loh)) {
       dt$.len <- dt$end - dt$start + 1
-      frac = sum(dt$.len[dt$loh]) / sum(dt$.len)
-      if (frac > loh_min_frac) {
-        x$loh = TRUE
-      } else {
+      x$.loh_frac = sum(dt$.len[dt$loh]) / sum(dt$.len)
+      # x$loh is already TRUE
+      # reset it
+      if (x$.loh_frac <= loh_min_frac) {
         x$loh = FALSE
       }
+    } else {
+      x$.loh_frac = NA_real_
     }
   }
 
