@@ -2,7 +2,7 @@
 
 context("File R/read_copynumber.R: @testexamples")
 
-test_that("Function read_copynumber() @ L70", {
+test_that("Function read_copynumber() @ L73", {
   
   # Load toy dataset of absolute copynumber profile
   load(system.file("extdata", "toy_segTab.RData",

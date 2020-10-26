@@ -21,8 +21,10 @@ show_sig_profile(
   bar_border_color = ifelse(style == "default", "grey50", "white"),
   bar_width = 0.7,
   paint_axis_text = TRUE,
-  x_label_angle = ifelse(mode == "copynumber" & !startsWith(method, "T"), 60, 90),
-  x_label_vjust = ifelse(mode == "copynumber" & !startsWith(method, "T"), 1, 0.5),
+  x_label_angle = ifelse(mode == "copynumber" & !(startsWith(method, "T") | method ==
+    "X"), 60, 90),
+  x_label_vjust = ifelse(mode == "copynumber" & !(startsWith(method, "T") | method ==
+    "X"), 1, 0.5),
   x_label_hjust = 1,
   x_lab = "Components",
   y_lab = "auto",

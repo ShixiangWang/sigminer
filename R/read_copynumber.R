@@ -6,7 +6,7 @@
 #' summary.
 #' @param input a `data.frame` or a file or a directory contains copy number profile.
 #' @param pattern an optional regular expression used to select part of files if
-#' `input` is a directory, more detail please see [list.files] function.
+#' `input` is a directory, more detail please see [list.files()] function.
 #' @param ignore_case logical. Should pattern-matching be case-insensitive?
 #' @param seg_cols four strings used to specify chromosome, start position,
 #'  end position and copy number value in `input`, respectively.
@@ -17,6 +17,9 @@
 #' @param add_loh if `TRUE`, add LOH labels to segments. **NOTE** a column
 #' 'minor_cn' must exist to indicate minor allele copy number value.
 #' Sex chromosome will not be labeled.
+#' @param loh_min_len The length cut-off for labeling a segment as 'LOH'.
+#' @param loh_min_frac When `join_adj_seg` set to `TRUE`, only the length fraction
+#' of LOH region is larger than this value will be labeled as 'LOH'.
 #' @param join_adj_seg if `TRUE` (default), join adjacent segments with
 #' same copy number value. This is helpful for precisely count the number of breakpoint.
 #' When set `use_all=TRUE`, the mean function will be applied to extra numeric columns
@@ -73,6 +76,8 @@ read_copynumber <- function(input,
                             seg_cols = c("Chromosome", "Start.bp", "End.bp", "modal_cn"),
                             samp_col = "sample",
                             add_loh = FALSE,
+                            loh_min_len = 10e4,
+                            loh_min_frac = 0.3,
                             join_adj_seg = TRUE,
                             skip_annotation = FALSE,
                             use_all = add_loh,
@@ -384,14 +389,19 @@ read_copynumber <- function(input,
     if (!"minor_cn" %in% colnames(data_df)) {
       send_stop("When you want to add LOH infor, a column named as 'minor_cn' should exist!")
     }
-    data_df$loh <- data_df$segVal >= 1 & data_df$minor_cn == 0
+    data_df$loh <- data_df$segVal >= 1 & data_df$minor_cn == 0 &
+      (data_df$end - data_df$start > loh_min_len - 1)
     # We don't label sex chromosomes
     data_df[data_df$chromosome %in% c("chrX", "chrY")]$loh = FALSE
   }
 
   if (join_adj_seg) {
     send_info("Joining adjacent segments with same copy number value. Be patient...")
-    data_df <- helper_join_segments2(data_df)
+    # When LOH regions have same total copy number values as adjacent
+    # regions, only label the segments harbor LOH with minimal length fraction
+    data_df <- helper_join_segments2(data_df,
+                                     add_loh = add_loh,
+                                     loh_min_frac = loh_min_frac)
     send_success(nrow(data_df), " segments left after joining.")
   } else {
     send_info("Skipped joining adjacent segments with same copy number value.")
