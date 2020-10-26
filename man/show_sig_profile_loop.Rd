@@ -19,7 +19,7 @@ or just a raw signature matrix with row representing components (motifs) and col
 representing signatures (column names must start with 'Sig').}
 
 \item{sig_names}{set name of signatures, can be a character vector.
-Default is \code{NULL}, prefix 'Sig_' plus number is used.}
+Default is \code{NULL}, prefix 'Sig' plus number is used.}
 
 \item{ncol}{(optional) Number of columns in the plot grid.}
 

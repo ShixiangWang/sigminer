@@ -9,6 +9,7 @@ show_sig_profile(
   mode = c("SBS", "copynumber", "DBS", "ID", "RS"),
   method = "Wang",
   normalize = c("row", "column", "raw", "feature"),
+  y_tr = NULL,
   filters = NULL,
   feature_setting = sigminer::CN.features,
   style = c("default", "cosmic"),
@@ -55,6 +56,8 @@ can be one of "Macintyre" ("M"), "Wang" ("W").}
 \item{normalize}{one of 'row', 'column', 'raw' and "feature", for row normalization (signature),
 column normalization (component), raw data, row normalization by feature, respectively.
 Of note, 'feature' only works when the mode is 'copynumber'.}
+
+\item{y_tr}{a function (e.g. \code{log10}) to transform y axis before plotting.}
 
 \item{filters}{a pattern used to select components to plot.}
 
@@ -123,7 +126,7 @@ data.}
 \item{font_scale}{a number used to set font scale.}
 
 \item{sig_names}{set name of signatures, can be a character vector.
-Default is \code{NULL}, prefix 'Sig_' plus number is used.}
+Default is \code{NULL}, prefix 'Sig' plus number is used.}
 
 \item{sig_orders}{set order of signatures, can be a character vector.
 Default is \code{NULL}, the signatures are ordered by alphabetical order.
@@ -146,6 +149,10 @@ load(system.file("extdata", "toy_mutational_signature.RData",
 # Show signature profile
 p1 <- show_sig_profile(sig2, mode = "SBS")
 p1
+
+# Use 'y_tr' option to transform values in y axis
+p11 <- show_sig_profile(sig2, mode = "SBS", y_tr = function(x) x * 100)
+p11
 
 # Load copy number signature from method "W"
 load(system.file("extdata", "toy_copynumber_signature_by_W.RData",

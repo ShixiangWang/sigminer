@@ -141,14 +141,17 @@ summary.</p>
   ignore_case <span class='op'>=</span> <span class='cn'>FALSE</span>,
   seg_cols <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Chromosome"</span>, <span class='st'>"Start.bp"</span>, <span class='st'>"End.bp"</span>, <span class='st'>"modal_cn"</span><span class='op'>)</span>,
   samp_col <span class='op'>=</span> <span class='st'>"sample"</span>,
+  add_loh <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  loh_min_len <span class='op'>=</span> <span class='fl'>1e+05</span>,
+  loh_min_frac <span class='op'>=</span> <span class='fl'>0.3</span>,
   join_adj_seg <span class='op'>=</span> <span class='cn'>TRUE</span>,
   skip_annotation <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  use_all <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  use_all <span class='op'>=</span> <span class='va'>add_loh</span>,
   min_segnum <span class='op'>=</span> <span class='fl'>0L</span>,
   max_copynumber <span class='op'>=</span> <span class='fl'>20L</span>,
   genome_build <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"hg19"</span>, <span class='st'>"hg38"</span>, <span class='st'>"mm10"</span><span class='op'>)</span>,
   genome_measure <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"called"</span>, <span class='st'>"wg"</span><span class='op'>)</span>,
-  complement <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  complement <span class='op'>=</span> <span class='cn'>FALSE</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
@@ -162,7 +165,7 @@ summary.</p>
     <tr>
       <th>pattern</th>
       <td><p>an optional regular expression used to select part of files if
-<code>input</code> is a directory, more detail please see <a href='https://rdrr.io/r/base/list.files.html'>list.files</a> function.</p></td>
+<code>input</code> is a directory, more detail please see <code><a href='https://rdrr.io/r/base/list.files.html'>list.files()</a></code> function.</p></td>
     </tr>
     <tr>
       <th>ignore_case</th>
@@ -179,6 +182,21 @@ Default use names from ABSOLUTE calling result.</p></td>
       <td><p>a character used to specify the sample column name. If <code>input</code>
 is a directory and cannot find <code>samp_col</code>, sample names will use file names
 (set this parameter to <code>NULL</code> is recommended in this case).</p></td>
+    </tr>
+    <tr>
+      <th>add_loh</th>
+      <td><p>if <code>TRUE</code>, add LOH labels to segments. <strong>NOTE</strong> a column
+'minor_cn' must exist to indicate minor allele copy number value.
+Sex chromosome will not be labeled.</p></td>
+    </tr>
+    <tr>
+      <th>loh_min_len</th>
+      <td><p>The length cut-off for labeling a segment as 'LOH'.</p></td>
+    </tr>
+    <tr>
+      <th>loh_min_frac</th>
+      <td><p>When <code>join_adj_seg</code> set to <code>TRUE</code>, only the length fraction
+of LOH region is larger than this value will be labeled as 'LOH'.</p></td>
     </tr>
     <tr>
       <th>join_adj_seg</th>
@@ -218,7 +236,7 @@ Set 'wg' will use autosome size from genome build, this option is useful for WGS
     <tr>
       <th>complement</th>
       <td><p>if <code>TRUE</code>, complement chromosome (except 'Y') does not show in input data
-with normal copy 2 and force <code>use_all</code> to <code>FALSE</code> (no matter what user input).</p></td>
+with normal copy 2.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -247,6 +265,14 @@ with normal copy 2 and force <code>use_all</code> to <code>FALSE</code> (no matt
 <span class='op'>)</span>
 <span class='va'>cn</span>
 <span class='va'>cn_subset</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span><span class='va'>cn</span>, <span class='va'>sample</span> <span class='op'>==</span> <span class='st'>"TCGA-DF-A2KN-01A-11D-A17U-01"</span><span class='op'>)</span>
+
+<span class='co'># Add LOH</span>
+<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>1234</span><span class='op'>)</span>
+<span class='va'>segTabs</span><span class='op'>$</span><span class='va'>minor_cn</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span><span class='op'>)</span>, size <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>segTabs</span><span class='op'>)</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='va'>cn</span> <span class='op'>&lt;-</span> <span class='fu'>read_copynumber</span><span class='op'>(</span><span class='va'>segTabs</span>,
+  seg_cols <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"chromosome"</span>, <span class='st'>"start"</span>, <span class='st'>"end"</span>, <span class='st'>"segVal"</span><span class='op'>)</span>,
+  genome_measure <span class='op'>=</span> <span class='st'>"wg"</span>, complement <span class='op'>=</span> <span class='cn'>TRUE</span>, add_loh <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span>
 
 <span class='va'>tab_file</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"metastatic_tumor.segtab.txt"</span>,
   package <span class='op'>=</span> <span class='st'>"sigminer"</span>, mustWork <span class='op'>=</span> <span class='cn'>TRUE</span>

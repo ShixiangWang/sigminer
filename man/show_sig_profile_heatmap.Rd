@@ -61,7 +61,7 @@ Of note, 'feature' only works when the mode is 'copynumber'.}
 \item{flip_xy}{if \code{TRUE}, flip x axis and y axis.}
 
 \item{sig_names}{set name of signatures, can be a character vector.
-Default is \code{NULL}, prefix 'Sig_' plus number is used.}
+Default is \code{NULL}, prefix 'Sig' plus number is used.}
 
 \item{sig_orders}{set order of signatures, can be a character vector.
 Default is \code{NULL}, the signatures are ordered by alphabetical order.

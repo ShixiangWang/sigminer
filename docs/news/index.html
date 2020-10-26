@@ -130,12 +130,20 @@
 <a href="#sigminer-110" class="anchor"></a>sigminer 1.1.0<small> Unreleased </small>
 </h1>
 <ul>
+<li>Added <code>y_tr</code> option in <code><a href="../reference/show_sig_profile.html">show_sig_profile()</a></code> to transform y axis values.</li>
+<li>Optimized default behavior of <code><a href="../reference/read_copynumber.html">read_copynumber()</a></code>.
+<ul>
+<li>Support LOH records when user input minor allele copy number.</li>
+<li>Set <code>complement = FALSE</code> as default.</li>
+<li>Free dependencies between option <code>use_all</code> and <code>complement</code>.</li>
+</ul>
+</li>
 <li>Added visualization support for genome rearrangement signatures (<a href='https://github.com/ShixiangWang/sigminer/issues/300'>#300</a>).</li>
 <li>Added four database for reference signatures from <a href="https://doi.org/10.1038/s43018-020-0027-5" class="uri">https://doi.org/10.1038/s43018-020-0027-5</a> (<a href='https://github.com/ShixiangWang/sigminer/issues/299'>#299</a>).</li>
 <li>Added new measure ‘CV’ for <code><a href="../reference/show_sig_bootstrap.html">show_sig_bootstrap()</a></code> (<a href='https://github.com/ShixiangWang/sigminer/issues/298'>#298</a>).</li>
 <li>Added <code><a href="../reference/group_enrichment.html">group_enrichment()</a></code> and <code><a href="../reference/show_group_enrichment.html">show_group_enrichment()</a></code> (<a href='https://github.com/ShixiangWang/sigminer/issues/277'>#277</a>).</li>
 <li>Optimized signature profile visualization (<a href='https://github.com/ShixiangWang/sigminer/issues/295'>#295</a>).</li>
-<li>Update <code><a href="../reference/sigminer.html">?sigminer</a></code> documentation.</li>
+<li>Updated <code><a href="../reference/sigminer.html">?sigminer</a></code> documentation.</li>
 <li>Added <code>ms</code> strategy to select optimal solution by maximizing cosine similarity to reference signatures.</li>
 <li>Added <code><a href="../reference/same_size_clustering.html">same_size_clustering()</a></code> for same size clustering.</li>
 <li>Added <code><a href="../reference/show_cosmic.html">show_cosmic()</a></code> to support reading COSMIC signatures in web browser (<a href='https://github.com/ShixiangWang/sigminer/issues/288'>#288</a>).</li>

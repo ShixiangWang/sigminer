@@ -2,7 +2,7 @@
 
 context("File R/show_sig_profile.R: @testexamples")
 
-test_that("Function show_sig_profile() @ L128", {
+test_that("Function show_sig_profile() @ L134", {
   
   # Load SBS signature
   load(system.file("extdata", "toy_mutational_signature.RData",
@@ -11,6 +11,10 @@ test_that("Function show_sig_profile() @ L128", {
   # Show signature profile
   p1 <- show_sig_profile(sig2, mode = "SBS")
   p1
+  
+  # Use 'y_tr' option to transform values in y axis
+  p11 <- show_sig_profile(sig2, mode = "SBS", y_tr = function(x) x * 100)
+  p11
   
   # Load copy number signature from method "W"
   load(system.file("extdata", "toy_copynumber_signature_by_W.RData",
@@ -60,6 +64,7 @@ test_that("Function show_sig_profile() @ L128", {
   p5 <- show_sig_profile(ss, mode = "RS", style = "cosmic")
   p5
   expect_s3_class(p1, "ggplot")
+  expect_s3_class(p11, "ggplot")
   expect_s3_class(p2, "ggplot")
   expect_s3_class(p3, "ggplot")
   expect_s3_class(p4, "ggplot")

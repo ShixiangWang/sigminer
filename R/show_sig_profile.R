@@ -16,6 +16,7 @@
 #' @param normalize one of 'row', 'column', 'raw' and "feature", for row normalization (signature),
 #' column normalization (component), raw data, row normalization by feature, respectively.
 #' Of note, 'feature' only works when the mode is 'copynumber'.
+#' @param y_tr a function (e.g. `log10`) to transform y axis before plotting.
 #' @param filters a pattern used to select components to plot.
 #' @param style plot style, one of 'default' and 'cosmic', works when
 #' parameter `set_gradient_color` is `FALSE`.
@@ -52,7 +53,7 @@
 #' @param digits digits for plotting params of copy number signatures.
 #' @param font_scale a number used to set font scale.
 #' @param sig_names set name of signatures, can be a character vector.
-#' Default is `NULL`, prefix 'Sig_' plus number is used.
+#' Default is `NULL`, prefix 'Sig' plus number is used.
 #' @param sig_orders set order of signatures, can be a character vector.
 #' Default is `NULL`, the signatures are ordered by alphabetical order.
 #' If an integer vector set, only specified signatures are plotted.
@@ -71,6 +72,10 @@
 #' # Show signature profile
 #' p1 <- show_sig_profile(sig2, mode = "SBS")
 #' p1
+#'
+#' # Use 'y_tr' option to transform values in y axis
+#' p11 <- show_sig_profile(sig2, mode = "SBS", y_tr = function(x) x * 100)
+#' p11
 #'
 #' # Load copy number signature from method "W"
 #' load(system.file("extdata", "toy_copynumber_signature_by_W.RData",
@@ -121,6 +126,7 @@
 #' p5
 #' @testexamples
 #' expect_s3_class(p1, "ggplot")
+#' expect_s3_class(p11, "ggplot")
 #' expect_s3_class(p2, "ggplot")
 #' expect_s3_class(p3, "ggplot")
 #' expect_s3_class(p4, "ggplot")
@@ -129,6 +135,7 @@ show_sig_profile <- function(Signature,
                              mode = c("SBS", "copynumber", "DBS", "ID", "RS"),
                              method = "Wang",
                              normalize = c("row", "column", "raw", "feature"),
+                             y_tr = NULL,
                              filters = NULL,
                              feature_setting = sigminer::CN.features,
                              style = c("default", "cosmic"),
@@ -484,6 +491,9 @@ show_sig_profile <- function(Signature,
     mat[["class"]] <- factor(mat[["class"]])
   }
   # >>>>>>>>>>>>>>>>>>>>>>> Plot
+  if (!is.null(y_tr)) {
+    mat$signature <- y_tr(mat$signature)
+  }
 
   if (set_gradient_color) {
     if (mode == "SBS") {

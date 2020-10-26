@@ -270,13 +270,14 @@ call_component <- function(f_dt, f_name, extra = NULL, XVersion = FALSE) {
             CN_Value = as.integer(sub("[^0-9]*([0-9]*).*", "\\1", .data$S_CN))
           ) %>%
           dplyr::mutate(
-            S_CN = dplyr::if_else(
-              .data$CN_Value >= 2 & .data$value,
-              paste0(.data$S_CN, "LOH"),
-              .data$S_CN),
+            S_CN = dplyr::case_when(
+              .data$CN_Value == 2 & .data$value ~ "2LOH",
+              .data$CN_Value > 2 & .data$value ~ "3+LOH",
+              TRUE ~ .data$S_CN
+            ),
             S_CN = factor(.data$S_CN,
                           levels = c(as.character(0:4), "5-8", "9+",
-                                     paste0(c(as.character(2:4), "5-8", "9+"), "LOH")))
+                                     paste0(c("2", "3+"), "LOH")))
           ) %>%
           dplyr::select(-"CN_Value") %>%
           data.table::as.data.table()
