@@ -11,7 +11,7 @@ read_copynumber(
   seg_cols = c("Chromosome", "Start.bp", "End.bp", "modal_cn"),
   samp_col = "sample",
   add_loh = FALSE,
-  loh_min_len = 1e+05,
+  loh_min_len = 10000,
   loh_min_frac = 0.3,
   join_adj_seg = TRUE,
   skip_annotation = FALSE,
@@ -44,10 +44,12 @@ is a directory and cannot find \code{samp_col}, sample names will use file names
 'minor_cn' must exist to indicate minor allele copy number value.
 Sex chromosome will not be labeled.}
 
-\item{loh_min_len}{The length cut-off for labeling a segment as 'LOH'.}
+\item{loh_min_len}{The length cut-off for labeling a segment as 'LOH'.
+Default is \verb{10Kb}.}
 
 \item{loh_min_frac}{When \code{join_adj_seg} set to \code{TRUE}, only the length fraction
-of LOH region is larger than this value will be labeled as 'LOH'.}
+of LOH region is larger than this value will be labeled as 'LOH'.
+Default is 30\%.}
 
 \item{join_adj_seg}{if \code{TRUE} (default), join adjacent segments with
 same copy number value. This is helpful for precisely count the number of breakpoint.

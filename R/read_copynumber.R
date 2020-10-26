@@ -18,8 +18,10 @@
 #' 'minor_cn' must exist to indicate minor allele copy number value.
 #' Sex chromosome will not be labeled.
 #' @param loh_min_len The length cut-off for labeling a segment as 'LOH'.
+#' Default is `10Kb`.
 #' @param loh_min_frac When `join_adj_seg` set to `TRUE`, only the length fraction
 #' of LOH region is larger than this value will be labeled as 'LOH'.
+#' Default is 30%.
 #' @param join_adj_seg if `TRUE` (default), join adjacent segments with
 #' same copy number value. This is helpful for precisely count the number of breakpoint.
 #' When set `use_all=TRUE`, the mean function will be applied to extra numeric columns
@@ -76,7 +78,7 @@ read_copynumber <- function(input,
                             seg_cols = c("Chromosome", "Start.bp", "End.bp", "modal_cn"),
                             samp_col = "sample",
                             add_loh = FALSE,
-                            loh_min_len = 10e4,
+                            loh_min_len = 1e4,
                             loh_min_frac = 0.3,
                             join_adj_seg = TRUE,
                             skip_annotation = FALSE,
