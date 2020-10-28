@@ -104,7 +104,7 @@ show_cor <- function(data, x_vars = colnames(data), y_vars = x_vars,
     corr,
     method = vis_method,
     hc.order = hc_order,
-    lab = TRUE,
+    lab = lab,
     p.mat = if (!test) NULL else p_mat,
     ...
   )

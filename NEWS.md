@@ -1,5 +1,6 @@
 # sigminer 1.1.0
 
+- Fixed typo in `show_cor()`, thanks to @Miachol.
 - Added `y_tr` option in `show_sig_profile()` to transform y axis values.
 - Optimized default behavior of `read_copynumber()`.
   - Support LOH records when user input minor allele copy number.
