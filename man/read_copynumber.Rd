@@ -12,7 +12,7 @@ read_copynumber(
   samp_col = "sample",
   add_loh = FALSE,
   loh_min_len = 10000,
-  loh_min_frac = 0.3,
+  loh_min_frac = 0.05,
   join_adj_seg = TRUE,
   skip_annotation = FALSE,
   use_all = add_loh,
