@@ -25,7 +25,7 @@ get_features_mutex <- function(CN_data,
 
   .get_feature <- function(i, XVersion = FALSE) {
     if (i == "SS") {
-      send_info("Getting floor(log10 based segment size) of eash segment...")
+      send_info("Getting segment size of eash segment...")
       zz <- getSegsize_v2(CN_data)
       # zz$value <- floor(log10(zz$value))  # do it in get_components
       zz
