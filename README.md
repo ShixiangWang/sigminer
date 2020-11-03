@@ -17,13 +17,12 @@ Code](https://tokei.rs/b1/github/ShixiangWang/sigminer?category=code)](https://g
 
 ## Overview
 
-Genomic alterations including single nucleotide substitution (SBS), copy
-number alteration (CNA), etc. are the major force for cancer
-initialization and development. Due to the specificity of molecular
-lesions caused by genomic alterations, we can generate characteristic
-alteration spectra, called ‘signature’. This package helps users to
-extract, analyze and visualize signatures from genomic alteration
-records, thus providing new insight into cancer study.
+The cancer genome is shaped by various mutational processes over its
+lifetime, stemming from exogenous and cell-intrinsic DNA damage, and
+error-prone DNA replication, leaving behind characteristic mutational
+spectra, termed **mutational signatures**. This package, **sigminer**,
+helps users to extract, analyze and visualize signatures from genome
+alteration records, thus providing new insight into cancer study.
 
 For pipeline tool, please see its co-evolutionary CLI
 [sigflow](https://github.com/ShixiangWang/sigflow).
