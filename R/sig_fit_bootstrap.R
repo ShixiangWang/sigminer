@@ -259,7 +259,10 @@ bootstrap_p_value <- function(x, y) {
   # }
   x <- x / colSums(x)
   y_mat <- sapply(y, function(yi) {
-    rowSums(x < yi) / ncol(x)
+    apply(x, 1, function(xi) {
+      t.test(xi, mu = yi, alternative = "greater")$p.value
+    })
+
   })
   colnames(y_mat) <- paste0("threshold_", y)
   return(y_mat)
