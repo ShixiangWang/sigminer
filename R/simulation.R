@@ -3,6 +3,7 @@
 # Simulate signatures from signature pool
 simulate_signature <- function(x, weights = NULL) {
   stopifnot(is.numeric(x))
+
   if (is.vector(x)) {
     mat <- matrix(x, nrow = 1, byrow = TRUE)
     colnames(mat) <- names(x)

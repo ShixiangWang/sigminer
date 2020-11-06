@@ -89,7 +89,8 @@ Suggests:
     roxygen2,
     testthat,
     tibble,
-    scales
+    scales,
+    matrixStats
 LinkingTo: 
     Rcpp
 VignetteBuilder: 

@@ -260,10 +260,20 @@ bootstrap_p_value <- function(x, y) {
   x <- x / colSums(x)
   y_mat <- sapply(y, function(yi) {
     apply(x, 1, function(xi) {
-      t.test(xi, mu = yi, alternative = "greater")$p.value
+      p <- my.t.test.p.value(xi, mu = yi, alternative = "greater")
+      if (is.na(p)) {
+        send_warning("NA result detected from t.test, reporting proportion as p value.")
+        p <- mean(xi <= yi)
+      }
+      p
     })
 
   })
   colnames(y_mat) <- paste0("threshold_", y)
   return(y_mat)
+}
+
+my.t.test.p.value <- function(...) {
+  obj <- try(t.test(...), silent = TRUE)
+  if (is(obj, "try-error")) return(NA) else return(obj$p.value)
 }

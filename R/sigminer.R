@@ -15,7 +15,7 @@
 #' @importFrom foreach foreach %dopar%
 #' @importFrom graphics hist
 #' @importFrom grDevices colorRampPalette pdf dev.off
-#' @importFrom stats as.formula fisher.test pairwise.table quantile setNames dist kmeans
+#' @importFrom stats as.formula t.test fisher.test pairwise.table quantile setNames dist kmeans
 #' @importFrom utils data download.file head packageDescription
 #' @import NMF
 #' @import ggplot2
