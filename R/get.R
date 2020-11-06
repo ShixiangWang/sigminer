@@ -90,7 +90,7 @@ get_features <- function(CN_data,
   }
 
   res <- furrr::future_map(features, .get_feature,
-    .progress = TRUE
+    .progress = TRUE, .options = furrr::furrr_options(seed = TRUE)
   )
   res <- res %>% setNames(features)
   res
@@ -147,7 +147,7 @@ get_features_wang <- function(CN_data,
   }
 
   res <- furrr::future_map(features, .get_feature,
-    .progress = TRUE
+    .progress = TRUE, .options = furrr::furrr_options(seed = TRUE)
   )
   res <- res %>% setNames(features)
   res
@@ -288,7 +288,8 @@ get_matrix <- function(CN_features,
     ),
     .f = calculateSumOfEvents,
     type = type,
-    .progress = TRUE
+    .progress = TRUE,
+    .options = furrr::furrr_options(seed = TRUE)
   )
 
   full_mat <- purrr::reduce(full_mat, .f = base::cbind)

@@ -51,7 +51,8 @@ get_features_mutex <- function(CN_data,
     features,
     .f = .get_feature,
     XVersion = XVersion,
-    .progress = TRUE
+    .progress = TRUE,
+    .options = furrr::furrr_options(seed = TRUE)
   )
   res <- res %>% setNames(features)
   res

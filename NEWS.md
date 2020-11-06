@@ -1,5 +1,6 @@
 # sigminer 1.1.0
 
+- Suppressed `future` warnings.
 - Fixed p value calculation in bootstrap analysis.
 - Fixed typo in `show_cor()`, thanks to @Miachol.
 - Added `y_tr` option in `show_sig_profile()` to transform y axis values.
