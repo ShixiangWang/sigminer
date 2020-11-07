@@ -14,6 +14,7 @@ status](https://codecov.io/gh/ShixiangWang/sigminer/branch/master/graph/badge.sv
 issues](https://img.shields.io/github/issues-closed/ShixiangWang/sigminer.svg)](https://github.com/ShixiangWang/sigminer/issues?q=is%3Aissue+is%3Aclosed)
 [![Lines Of
 Code](https://tokei.rs/b1/github/ShixiangWang/sigminer?category=code)](https://github.com/ShixiangWang/sigminer)
+[![HitCount](http://hits.dwyl.com/ShixiangWang/sigminer.svg)](http://hits.dwyl.com/ShixiangWang/sigminer)
 
 ## Overview
 
