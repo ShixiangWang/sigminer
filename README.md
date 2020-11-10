@@ -14,7 +14,7 @@ status](https://codecov.io/gh/ShixiangWang/sigminer/branch/master/graph/badge.sv
 issues](https://img.shields.io/github/issues-closed/ShixiangWang/sigminer.svg)](https://github.com/ShixiangWang/sigminer/issues?q=is%3Aissue+is%3Aclosed)
 [![Lines Of
 Code](https://tokei.rs/b1/github/ShixiangWang/sigminer?category=code)](https://github.com/ShixiangWang/sigminer)
-[![HitCount](http://hits.dwyl.com/ShixiangWang/sigminer.svg)](http://hits.dwyl.com/ShixiangWang/sigminer)
+[![HitCount](https://hits.dwyl.com/ShixiangWang/sigminer.svg)](https://hits.dwyl.com/ShixiangWang/sigminer/)
 
 ## Overview
 
@@ -119,7 +119,7 @@ its documentation.
 
 -----
 
-***Wang, Shixiang, et al. “Copy number signature analyses in prostate
+***Wang, Shixiang, et al. “Copy number signature analyses in prostate
 cancer reveal distinct etiologies and clinical outcomes” medRxiv
 (2020)***
 <https://www.medrxiv.org/content/10.1101/2020.04.27.20082404v1>
@@ -154,19 +154,18 @@ cite:
 
 The code for extracting mutational signatures was based in part on the
 source code of the **SignatureAnalyzer** package, if you use this
-feature, please also
-    cite:
+feature, please also cite:
 
     Kim, Jaegil, et al. "Somatic ERCC2 mutations are associated with a distinct genomic
         signature in urothelial tumors." Nature genetics 48.6 (2016): 600.
 
 ## References
 
-1.  Alexandrov, Ludmil B., et al. “The repertoire of mutational
+1.  Alexandrov, Ludmil B., et al. “The repertoire of mutational
     signatures in human cancer.” Nature 578.7793 (2020): 94-101.
-2.  Macintyre, Geoff, et al. “Copy number signatures and mutational
+2.  Macintyre, Geoff, et al. “Copy number signatures and mutational
     processes in ovarian carcinoma.” Nature genetics 50.9 (2018): 1262.
-3.  Mayakonda, Anand, et al. “Maftools: efficient and comprehensive
+3.  Mayakonda, Anand, et al. “Maftools: efficient and comprehensive
     analysis of somatic variants in cancer.” Genome research 28.11
     (2018): 1747-1756.
 4.  Gaujoux, Renaud, and Cathal Seoighe. “A Flexible R Package for
@@ -178,7 +177,7 @@ feature, please also
     determination in nonnegative matrix factorization with the/spl
     beta/-divergence.” IEEE Transactions on Pattern Analysis and Machine
     Intelligence 35.7 (2012): 1592-1605.
-7.  Kim, Jaegil, et al. “Somatic ERCC2 mutations are associated with a
+7.  Kim, Jaegil, et al. “Somatic ERCC2 mutations are associated with a
     distinct genomic signature in urothelial tumors.” Nature genetics
     48.6 (2016): 600.
 8.  Bergstrom EN, Huang MN, Mahto U, Barnes M, Stratton MR, Rozen SG,

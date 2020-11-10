@@ -20,3 +20,4 @@ inst/test
 tests
 ^README_zh\.md$
 cran_check.R
+inst/figures
