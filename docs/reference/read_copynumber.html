@@ -142,8 +142,8 @@ summary.</p>
   seg_cols <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Chromosome"</span>, <span class='st'>"Start.bp"</span>, <span class='st'>"End.bp"</span>, <span class='st'>"modal_cn"</span><span class='op'>)</span>,
   samp_col <span class='op'>=</span> <span class='st'>"sample"</span>,
   add_loh <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  loh_min_len <span class='op'>=</span> <span class='fl'>1e+05</span>,
-  loh_min_frac <span class='op'>=</span> <span class='fl'>0.3</span>,
+  loh_min_len <span class='op'>=</span> <span class='fl'>10000</span>,
+  loh_min_frac <span class='op'>=</span> <span class='fl'>0.05</span>,
   join_adj_seg <span class='op'>=</span> <span class='cn'>TRUE</span>,
   skip_annotation <span class='op'>=</span> <span class='cn'>FALSE</span>,
   use_all <span class='op'>=</span> <span class='va'>add_loh</span>,
@@ -191,12 +191,14 @@ Sex chromosome will not be labeled.</p></td>
     </tr>
     <tr>
       <th>loh_min_len</th>
-      <td><p>The length cut-off for labeling a segment as 'LOH'.</p></td>
+      <td><p>The length cut-off for labeling a segment as 'LOH'.
+Default is <code>10Kb</code>.</p></td>
     </tr>
     <tr>
       <th>loh_min_frac</th>
       <td><p>When <code>join_adj_seg</code> set to <code>TRUE</code>, only the length fraction
-of LOH region is larger than this value will be labeled as 'LOH'.</p></td>
+of LOH region is larger than this value will be labeled as 'LOH'.
+Default is 30%.</p></td>
     </tr>
     <tr>
       <th>join_adj_seg</th>

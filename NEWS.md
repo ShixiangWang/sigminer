@@ -1,5 +1,6 @@
 # sigminer 1.1.0
 
+- Added data simulation.
 - Suppressed `future` warnings.
 - Fixed p value calculation in bootstrap analysis.
 - Fixed typo in `show_cor()`, thanks to @Miachol.

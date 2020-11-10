@@ -92,6 +92,7 @@ reference:
     - show_group_distribution
     - show_group_mapping
     - enrich_component_strand_bias
+    - simulation
   - title: Package datasets
     desc: Datasets used for signature identification and analysis (some stored in `extdata/`).
     contents:
