@@ -71,14 +71,14 @@ bp_extract_signatures <- function(nmf_matrix,
           s = seeds,
           bt_matrix = bt_catalog_list,
           .packages = "NMF",
-          .export = c("k", "verbose"),
+          .export = c("k", "range", "verbose"),
           .verbose = FALSE
         ) %dopar% {
           if (verbose) {
-            message("Extracting ", k, " signatures with seed: ", s)
+            message("Extracting ", range[k], " signatures with seed: ", s)
             print(bt_matrix)
           }
-          NMF::nmf(bt_matrix, rank = k, method = "brunet", seed = s, nrun = 1L)
+          NMF::nmf(bt_matrix, rank = range[k], method = "brunet", seed = s, nrun = 1L)
         }
       }
     )
@@ -89,12 +89,47 @@ bp_extract_signatures <- function(nmf_matrix,
   }
 
   # Collect solutions
+  # 先将所有 solution 标准化处理，得到 signature 和 activity
+  # 然后针对 signature 使用 clustering with match 算法进行聚类
+  solutions <- purrr::map(solutions, .f = function(solution_list) {
+    out <- purrr::map(solution_list, .f = normalize_solution) %>%
+      setNames(paste0("Run", seq_along(solution_list)))
+    # To do: Do clustering with match
+    run_pairs <- combn(names(out), 2, simplify = FALSE)
+    # Get similarity distance
+    out
+  })
   solutions
   # 聚类：使用 cosine 或相关性作为距离指标
 
   # 生成统计量
   # 重构相似性，cophenetic，轮廓系数，
   # 聚类平均相似距离，RSS, 平均错误，Exposure 相关性
+
+}
+
+normalize_solution <- function(solution) {
+  # solution is a NMF fit result
+
+  W <- NMF::basis(solution)
+  H <- NMF::coef(solution)
+  K <- ncol(W)
+  KLD <- NMF::deviance(solution)
+
+  out <- c(helper_scale_nmf_matrix(W, H, K, handle_cn = FALSE), KLD = KLD)
+  colnames(out$Signature) <- rownames(out$Exposure) <- paste0("S", seq_len(K))
+  out
+}
+
+# My implementation of clustering with match algorithm proposed
+# by Nature Cancer paper by following description in supplementary material
+# Steps:
+# 1. 得到不同 runs 的 signature 结果列表，进行编号
+# 2. 一对一配对计算相似性，并得到距离矩阵
+# 3. 每个距离矩阵计算最小平均距离
+# 4. 按平均距离对配对 run 进行排序，得到排序好的列表
+# 5. 初始化排序列表（步骤4的子集），按顺序利用算法逐步合并（左连接）
+clustering_with_match <- function() {
 
 }
 

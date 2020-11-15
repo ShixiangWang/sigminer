@@ -1,7 +1,7 @@
 ## Used in sig_extract and sig_auto_extract
 ##
 ## By scaling the signature loading matrix has all mutation burdens
-## - each signture (column in W) now represents a number of mutations
+## - each signature (column in W) now represents a number of mutations
 ## assigned to each signature.
 ##
 
