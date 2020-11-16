@@ -55,6 +55,7 @@ bp_extract_signatures <- function(nmf_matrix,
     set.seed(x)
     simulate_catalogue_matrix(nmf_matrix)
   })
+  nmf_matrix <- t(nmf_matrix)
 
   # NMF with brunet method
   if (isFALSE(mpi_platform)) {
@@ -79,9 +80,9 @@ bp_extract_signatures <- function(nmf_matrix,
       ) %dopar% {
         if (verbose) {
           message("Extracting ", range[k], " signatures with seed: ", s)
-          print(bt_matrix)
+          print(t(bt_matrix))
         }
-        NMF::nmf(bt_matrix, rank = range[k], method = "brunet", seed = s, nrun = 1L)
+        NMF::nmf(t(bt_matrix), rank = range[k], method = "brunet", seed = s, nrun = 1L)
       }
     })
     KLD_list <- sapply(solution_list, NMF::deviance)
@@ -93,16 +94,14 @@ bp_extract_signatures <- function(nmf_matrix,
   # Collect solutions
   # 先将所有 solution 标准化处理，得到 signature 和 activity
   # 然后针对 signature 使用 clustering with match 算法进行聚类
-  solutions <- purrr::map(solutions, .f = process_solution)
+  # 聚类：使用 1 - cosine 相似性作为距离指标
+  solutions <- purrr::map(solutions, .f = process_solution,
+                          nmf_matrix = nmf_matrix)
   solutions
-  # 聚类：使用 cosine 或相关性作为距离指标
 
-  # 生成统计量
-  # 重构相似性，cophenetic，轮廓系数，
-  # 聚类平均相似距离，RSS, 平均错误，Exposure 相关性
 }
 
-process_solution <- function(slist) {
+process_solution <- function(slist, nmf_matrix) {
   out <- purrr::map(slist, .f = normalize_solution) %>%
     setNames(paste0("Run", seq_along(slist)))
 
@@ -127,8 +126,21 @@ process_solution <- function(slist) {
     pair_dist_mean <- pair_dist_mean[res_orders]
     match_list <- match_list[res_orders]
 
-    # To do: Do clustering with match
+    # Do clustering with match
     clusters <- clustering_with_match(match_list, n = length(out))
+
+    # 按 match cluster 排序
+    # 样本排序也确保对齐
+    samp_order <- colnames(out$Run1$Exposure)
+    out <- purrr::map2(clusters, out, function(x, y, samp_order) {
+      y$Signature <- y$Signature[, x, drop = FALSE]
+      y$Exposure <- y$Exposure[x, samp_order, drop = FALSE]
+      y
+    }, samp_order = samp_order)
+    Signature <- purrr::reduce(purrr::map(out, "Signature"), `+`) / length(out)
+    Exposure <- purrr::reduce(purrr::map(out, "Exposure"), `+`) / length(out)
+    KLD <- purrr::reduce(purrr::map(out, "KLD"), `+`) / length(out)
+
   } else {
     run_pairs <- NA
     pair_dist <- NA
@@ -137,7 +149,25 @@ process_solution <- function(slist) {
     clusters <- data.table::data.table(
       Run1 = paste0("S", seq_len(ncol(out$Run1$Signature)))
     )
+
+    Signature <- out$Run1$Signature
+    Exposure <- out$Run1$Exposure
+    KLD <- out$Run1$KLD
   }
+
+  # Order by contribution and rename signatures
+  new_order <- order(colSums(Signature), decreasing = TRUE)
+  Signature <- Signature[, new_order, drop = FALSE]
+  Exposure <- Exposure[new_order, , drop = FALSE]
+  colnames(Signature) <- rownames(Exposure) <- paste0("Sig", seq_along(new_order))
+
+  # 生成统计量
+  # Remember the new order above
+  # 分为 signature 和 样本两种，取每个度量的最大、最小值、平均值以及 SD
+  # 重构相似性，cophenetic，轮廓系数，
+  # 聚类平均相似距离，RSS, 平均错误，Exposure 相关性
+  stat_sigs <- get_stat_sigs(out)
+  stat_samps <- get_stat_samps(out, mat = nmf_matrix)
 
   list(
     runs = out,
@@ -147,6 +177,15 @@ process_solution <- function(slist) {
     match_list = match_list,
     clusters = clusters
   )
+}
+
+get_stat_sigs <- function(runs) {
+  sig_list <- purrr::map(runs, "Signature")
+
+}
+
+get_stat_samps <- function(runs, mat) {
+
 }
 
 normalize_solution <- function(solution) {
