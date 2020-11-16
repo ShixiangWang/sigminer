@@ -12,14 +12,16 @@ bp_extract_signatures <- function(nmf_matrix,
                                   handle_hyper_mutation = TRUE,
                                   mpi_platform = FALSE,
                                   verbose = FALSE) {
-  stopifnot(is.matrix(nmf_matrix),
-            !is.null(rownames(nmf_matrix)), !is.null(colnames(nmf_matrix)),
-            is.numeric(range), is.numeric(nrun), # nrun >= 100,
-            is.numeric(RTOL), RTOL > 0,
-            is.numeric(min_contribution),
-            min_contribution >= 0, min_contribution <= 0.1,
-            is.numeric(seed),
-            is.logical(handle_hyper_mutation), is.logical(mpi_platform))
+  stopifnot(
+    is.matrix(nmf_matrix),
+    !is.null(rownames(nmf_matrix)), !is.null(colnames(nmf_matrix)),
+    is.numeric(range), is.numeric(nrun), # nrun >= 100,
+    is.numeric(RTOL), RTOL > 0,
+    is.numeric(min_contribution),
+    min_contribution >= 0, min_contribution <= 0.1,
+    is.numeric(seed),
+    is.logical(handle_hyper_mutation), is.logical(mpi_platform)
+  )
   seed <- as.integer(seed)
 
   timer <- Sys.time()
@@ -34,8 +36,10 @@ bp_extract_signatures <- function(nmf_matrix,
     contris <- colSums(nmf_matrix) / sum(nmf_matrix)
     contris_index <- contris <= min_contribution
     if (any(contris_index)) {
-      send_info("Dropping the components with very few contribution: ",
-                paste(names(contris[contris_index]), collapse = ", "))
+      send_info(
+        "Dropping the components with very few contribution: ",
+        paste(names(contris[contris_index]), collapse = ", ")
+      )
       nmf_matrix <- nmf_matrix[, !contris_index, drop = FALSE]
     }
   }
@@ -65,23 +69,21 @@ bp_extract_signatures <- function(nmf_matrix,
   solutions <- list()
   for (k in seq_along(range)) {
     send_info("Extracting ", range[k], " signatures on bootstrapped catalogs...")
-    solution_list <- suppressWarnings(
-      {
-        foreach(
-          s = seeds,
-          bt_matrix = bt_catalog_list,
-          .packages = "NMF",
-          .export = c("k", "range", "verbose"),
-          .verbose = FALSE
-        ) %dopar% {
-          if (verbose) {
-            message("Extracting ", range[k], " signatures with seed: ", s)
-            print(bt_matrix)
-          }
-          NMF::nmf(bt_matrix, rank = range[k], method = "brunet", seed = s, nrun = 1L)
+    solution_list <- suppressWarnings({
+      foreach(
+        s = seeds,
+        bt_matrix = bt_catalog_list,
+        .packages = "NMF",
+        .export = c("k", "range", "verbose"),
+        .verbose = FALSE
+      ) %dopar% {
+        if (verbose) {
+          message("Extracting ", range[k], " signatures with seed: ", s)
+          print(bt_matrix)
         }
+        NMF::nmf(bt_matrix, rank = range[k], method = "brunet", seed = s, nrun = 1L)
       }
-    )
+    })
     KLD_list <- sapply(solution_list, NMF::deviance)
 
     # Filter solutions with RTOL threshold
@@ -91,21 +93,60 @@ bp_extract_signatures <- function(nmf_matrix,
   # Collect solutions
   # 先将所有 solution 标准化处理，得到 signature 和 activity
   # 然后针对 signature 使用 clustering with match 算法进行聚类
-  solutions <- purrr::map(solutions, .f = function(solution_list) {
-    out <- purrr::map(solution_list, .f = normalize_solution) %>%
-      setNames(paste0("Run", seq_along(solution_list)))
-    # To do: Do clustering with match
-    run_pairs <- combn(names(out), 2, simplify = FALSE)
-    # Get similarity distance
-    out
-  })
+  solutions <- purrr::map(solutions, .f = process_solution)
   solutions
   # 聚类：使用 cosine 或相关性作为距离指标
 
   # 生成统计量
   # 重构相似性，cophenetic，轮廓系数，
   # 聚类平均相似距离，RSS, 平均错误，Exposure 相关性
+}
 
+process_solution <- function(slist) {
+  out <- purrr::map(slist, .f = normalize_solution) %>%
+    setNames(paste0("Run", seq_along(slist)))
+
+  # If just one run, skip the following steps
+  if (length(out) >= 2) {
+    run_pairs <- combn(names(out), 2, simplify = FALSE)
+    run_pairs_name <- purrr::map_chr(run_pairs, ~ paste(., collapse = "_"))
+    # Get similarity distance
+    pair_dist <- purrr::map(
+      run_pairs,
+      ~ get_cosine_distance(out[[.[1]]]$Signature, out[[.[2]]]$Signature)
+    ) %>%
+      setNames(run_pairs_name)
+    pair_dist_mean <- purrr::map_dbl(pair_dist, mean) %>%
+      setNames(run_pairs_name)
+    match_list <- purrr::map2(pair_dist, run_pairs, get_matches)
+
+    # Order the result by mean distance
+    res_orders <- order(pair_dist_mean)
+    run_pairs <- run_pairs[res_orders]
+    pair_dist <- pair_dist[res_orders]
+    pair_dist_mean <- pair_dist_mean[res_orders]
+    match_list <- match_list[res_orders]
+
+    # To do: Do clustering with match
+    clusters <- clustering_with_match(match_list, n = length(out))
+  } else {
+    run_pairs <- NA
+    pair_dist <- NA
+    pair_dist_mean <- NA
+    match_list <- NA
+    clusters <- data.table::data.table(
+      Run1 = paste0("S", seq_len(ncol(out$Run1$Signature)))
+    )
+  }
+
+  list(
+    runs = out,
+    run_pairs = run_pairs,
+    pair_dist = pair_dist,
+    pair_dist_mean = pair_dist_mean,
+    match_list = match_list,
+    clusters = clusters
+  )
 }
 
 normalize_solution <- function(solution) {
@@ -121,6 +162,63 @@ normalize_solution <- function(solution) {
   out
 }
 
+# Column representing signatures
+get_cosine_distance <- function(x, y) {
+  # rows for x and cols for y
+  out <- 1 - cosineMatrix(x, y)
+  rownames(out) <- paste0("S", seq_len(ncol(x)))
+  colnames(out) <- paste0("S", seq_len(ncol(y)))
+  out
+}
+
+# test_mat <- matrix(
+#   c(0.6, 0.1, 0.5, 0.3, 0.1, 0.7, 0.2, 0.4, 0.9),
+#   nrow = 3
+# )
+# rownames(test_mat) <- colnames(test_mat) <- c("S1", "S2", "S3")
+get_matches <- function(mat, runs) {
+  # Find the column index of the second run responds to the first run
+  match_index <- apply(mat, 1, which.min) %>% as.integer()
+  index_uniq <- unique(match_index)
+  if (length(match_index) != length(index_uniq)) {
+    # Some signatures in the first run is matched by more than once
+    # Order the columns by cum minimum distance
+    min_orders <- get_min_orders(mat)
+    # Assign the match by the order
+    index_uniq <- vector("integer", length = length(match_index))
+    for (i in seq_along(min_orders)) {
+      values_order <- order(mat[, min_orders[i]])
+
+      for (j in seq_along(values_order)) {
+        # possible index
+        pi <- which(values_order == j)
+        if (index_uniq[pi] == 0L) {
+          index_uniq[pi] <- min_orders[i]
+          break()
+        }
+      }
+    }
+  }
+  out <- data.table::data.table(
+    v1 = rownames(mat),
+    v2 = colnames(mat)[index_uniq]
+  )
+  colnames(out) <- runs
+  out
+}
+
+get_min_orders <- function(mat) {
+  cummins <- apply(mat, 2, function(x) {
+    cumsum(sort(x))
+  }) %>% t()
+  colnames(cummins) <- paste0("ord", seq_len(ncol(cummins)))
+  cummins %>%
+    dplyr::as_tibble() %>%
+    dplyr::mutate(.i = dplyr::row_number()) %>%
+    dplyr::arrange_at(colnames(cummins)) %>%
+    dplyr::pull(".i")
+}
+
 # My implementation of clustering with match algorithm proposed
 # by Nature Cancer paper by following description in supplementary material
 # Steps:
@@ -129,8 +227,68 @@ normalize_solution <- function(solution) {
 # 3. 每个距离矩阵计算最小平均距离
 # 4. 按平均距离对配对 run 进行排序，得到排序好的列表
 # 5. 初始化排序列表（步骤4的子集），按顺序利用算法逐步合并（左连接）
-clustering_with_match <- function() {
+clustering_with_match <- function(match_list, n) {
+  # Input: a match list ordered by mean distance
+  # This function implements the core step:
+  #   collapse the match list into one step by step
 
+  # Init
+  len <- length(match_list)
+
+  if (len >= 2) {
+    # L = match_list[seq(2L, len)]
+    # G = match_list[1]
+    pair_list <- purrr::map(match_list, colnames)
+
+    G <- vector("character", 2 * (n - 1))
+    G[1:2] <- pair_list[[1]]
+    G_index <- vector("integer", n - 1)
+    G_index[1] <- 1L
+
+    # Loop for integration
+    # 找到另外 n - 2 个需要合并的 match 的索引
+    j <- 1L
+    for (i in seq_along(pair_list)) {
+      if (i == 1L) next()
+      if (all(pair_list[[i]] %in% G)) {
+        # Do nothing because the result has been included
+        next()
+      } else {
+        # Include the result
+        G[seq(2 * j + 1, 2 * j + 2)] <- pair_list[[i]]
+        G_index[j + 1] <- i
+        j <- j + 1L
+      }
+      if (G_index[n - 1] != 0) break()
+    }
+
+    integrated_list <- match_list[G_index]
+    # Make sure the list can be merged correctly
+    # res <- tryCatch(
+    #   purrr::reduce(integrated_list, merge),
+    #   error = function(e) {
+    #     to_join <- integrated_list[[1]]
+    #     be_join <- integrated_list[-1]
+    #     while (length(be_join) > 0) {
+    #       col_exist <- colnames(be_join[[1]]) %in% colnames(to_join)
+    #       if (any(col_exist)) {
+    #         to_join <- merge(to_join, be_join[[1]], by = colnames(be_join[[1]])[col_exist])
+    #         be_join[[1]] <- NULL
+    #       } else {
+    #         be_join <- shifter(be_join)
+    #       }
+    #     }
+    #   }
+    # )
+    res <- purrr::reduce(
+      purrr::map(integrated_list, as.data.frame),
+      merge
+    ) %>% data.table::as.data.table()
+
+    res[, paste0("Run", seq_len(ncol(res))), with = FALSE]
+  } else {
+    match_list[[1]]
+  }
 }
 
 # 获取一些指定的信息

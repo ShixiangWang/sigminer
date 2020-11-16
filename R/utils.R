@@ -45,7 +45,11 @@ file_name <- function(filepath, must_chop = NULL) {
   y
 }
 
-# chunk2 <- function(x, n) split(x, cut(seq_along(x), n, labels = FALSE))
+chunk2 <- function(x, n) split(x, cut(seq_along(x), n, labels = FALSE))
+# https://stackoverflow.com/questions/30542128/circular-shift-of-vector-by-distance-n
+shifter <- function(x, n = 1) {
+  if (n == 0) x else c(tail(x, -n), head(x, n))
+}
 
 # From https://gist.github.com/mbannert/e9fcfa86de3b06068c83
 rgb2hex <- function(r, g, b) grDevices::rgb(r, g, b, maxColorValue = 255)
