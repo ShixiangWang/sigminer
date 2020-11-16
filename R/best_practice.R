@@ -95,10 +95,11 @@ bp_extract_signatures <- function(nmf_matrix,
   # 先将所有 solution 标准化处理，得到 signature 和 activity
   # 然后针对 signature 使用 clustering with match 算法进行聚类
   # 聚类：使用 1 - cosine 相似性作为距离指标
-  solutions <- purrr::map(solutions, .f = process_solution,
-                          nmf_matrix = nmf_matrix)
+  solutions <- purrr::map(solutions,
+    .f = process_solution,
+    nmf_matrix = nmf_matrix
+  )
   solutions
-
 }
 
 process_solution <- function(slist, nmf_matrix) {
@@ -140,7 +141,6 @@ process_solution <- function(slist, nmf_matrix) {
     Signature <- purrr::reduce(purrr::map(out, "Signature"), `+`) / length(out)
     Exposure <- purrr::reduce(purrr::map(out, "Exposure"), `+`) / length(out)
     KLD <- purrr::reduce(purrr::map(out, "KLD"), `+`) / length(out)
-
   } else {
     run_pairs <- NA
     pair_dist <- NA
@@ -165,7 +165,7 @@ process_solution <- function(slist, nmf_matrix) {
   # Remember the new order above
   # 分为 signature 和 样本两种，取每个度量的最大、最小值、平均值以及 SD
   # 重构相似性，cophenetic，轮廓系数，
-  # 聚类平均相似距离，RSS, 平均错误，Exposure 相关性
+  # 聚类平均相似距离，RSS, 平均错误，Exposure 相关性等
   stat_sigs <- get_stat_sigs(out)
   stat_samps <- get_stat_samps(out, mat = nmf_matrix)
 
@@ -175,13 +175,110 @@ process_solution <- function(slist, nmf_matrix) {
     pair_dist = pair_dist,
     pair_dist_mean = pair_dist_mean,
     match_list = match_list,
-    clusters = clusters
+    clusters = clusters,
+    stat_sigs = stat_sigs,
+    stat_samps = stat_samps
   )
+}
+
+get_3d_array_stats <- function(x, ns = NULL) {
+  r <- list(
+    mean = apply(x, c(1, 2), mean),
+    sd = apply(x, c(1, 2), sd),
+    min = apply(x, c(1, 2), min),
+    max = apply(x, c(1, 2), max)
+  )
+  if (!is.null(ns)) {
+    names(r) <- ns
+  }
+  r
+}
+
+get_similarity_stats <- function(x,
+                                 n,
+                                 ns = NULL,
+                                 col = TRUE,
+                                 type = "within-cluster") {
+  # col = TRUE for sigs FALSE for samps stats
+  if (type == "within-cluster") {
+    d <- lapply(seq_len(n), function(i) {
+      mat <- if (col) {
+        cosineMatrix(x[, i, ], x[, i, ])
+      } else {
+        cosineMatrix(x[i, , ], x[i, , ])
+      } # not test
+      mat[upper.tri(mat)]
+    })
+  } else if (type == "between-cluster") {
+    d <- lapply(seq_len(n), function(i) {
+      mat <- if (col) {
+        x1 <- x[, i, ]
+        x2 <- x[, -i, ]
+        dim(x2) <- c(dim(x1)[1], prod(dim(x2)) / dim(x1)[1])
+        cosineMatrix(x1, x2)
+      } else {
+        # x1 <- x[, i, ]
+        # x2 <- x[, -i, ]
+        # dim(x2) <- c(prod(dim(x2)) / dim(x1)[2], dim(x1)[2])
+        # cosineMatrix(x1, x2)
+      } # not test
+    })
+  }
+  r <- data.frame(
+    mean = sapply(d, mean),
+    sd = sapply(d, sd),
+    min = sapply(d, min),
+    max = sapply(d, max),
+    stringsAsFactors = FALSE
+  )
+  if (!is.null(ns)) {
+    colnames(r) <- ns
+  }
+  r
 }
 
 get_stat_sigs <- function(runs) {
   sig_list <- purrr::map(runs, "Signature")
+  dm <- dim(sig_list[[1]])
+  l <- length(sig_list)
+  sig_array <- array(unlist(sig_list), dim = c(dm, l))
+  # signatures
+  s <- get_3d_array_stats(
+    sig_array,
+    c(
+      "signature_mean", "signature_sd",
+      "signature_min", "signature_max"
+    )
+  )
+  sim <- get_similarity_stats(
+    sig_array,
+    n = dm[2],
+    ns = c(
+      "similarity_mean", "similarity_sd",
+      "similarity_min", "similarity_max"
+    )
+  )
+  # cluster silhouette
+  cross_sim <- get_similarity_stats(
+    sig_array,
+    n = dm[2],
+    ns = c(
+      "cross_similarity_mean", "cross_similarity_sd",
+      "cross_similarity_min", "cross_similarity_max"
+    ),
+    type = "between-cluster"
+  )
 
+  b <- cross_sim$cross_similarity_mean
+  a <- sim$similarity_mean
+  sil_width <- data.frame(
+    sil_width = (b - a) / pmax(a, b),
+    stringsAsFactors = FALSE
+  )
+  list(
+    signature = s,
+    sig_stats = cbind(sim, sil_width, cross_sim)
+  )
 }
 
 get_stat_samps <- function(runs, mat) {
