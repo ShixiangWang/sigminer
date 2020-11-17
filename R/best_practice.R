@@ -72,9 +72,11 @@ bp_extract_signatures <- function(nmf_matrix,
   seeds <- seq(seed, length = n_bootstrap * n_nmf_run)
   solutions <- list()
   for (k in seq_along(range)) {
-    send_info("Extracting ", range[k], " signatures on ",
-              n_bootstrap, " bootstrapped catalogs with ",
-              n_nmf_run, " NMF runs for each.")
+    send_info(
+      "Extracting ", range[k], " signatures on ",
+      n_bootstrap, " bootstrapped catalogs with ",
+      n_nmf_run, " NMF runs for each."
+    )
     solution_list <- suppressWarnings({
       foreach(
         s = seeds,
@@ -99,7 +101,8 @@ bp_extract_signatures <- function(nmf_matrix,
         s <- s[KLD_list <= min(KLD_list) * (1 + RTOL)]
         if (length(s) > 10) s <- s[1:10] # Limits 10 best runs
         s
-      })
+      }
+    ) %>% unlist()
   }
 
   # Collect solutions
@@ -298,7 +301,7 @@ get_stat_samps <- function(runs, mat) {
   )
   # get catalog array
   sig_list <- purrr::map(runs, "Signature")
-  catalog_list <- purrr::map2(sig_list, expo_list, ~.x%*%.y)
+  catalog_list <- purrr::map2(sig_list, expo_list, ~ .x %*% .y)
   dm2 <- dim(catalog_list[[1]])
   catalog_array <- array(unlist(catalog_list), dim = c(dm2, l))
 
@@ -410,66 +413,98 @@ get_min_orders <- function(mat) {
 # 2. 一对一配对计算相似性，并得到距离矩阵
 # 3. 每个距离矩阵计算最小平均距离
 # 4. 按平均距离对配对 run 进行排序，得到排序好的列表
-# 5. 初始化排序列表（步骤4的子集），按顺序利用算法逐步合并（左连接）
+# 5. 初始化排序列表（步骤4的子集），按顺序利用算法逐步合并
 clustering_with_match <- function(match_list, n) {
   # Input: a match list ordered by mean distance
   # This function implements the core step:
-  #   collapse the match list into one step by step
-
-  # Init
+  #   collapse the match list into one data.table step by step
   len <- length(match_list)
 
   if (len >= 2) {
-    # L = match_list[seq(2L, len)]
-    # G = match_list[1]
+    reduceG <- function(G) {
+      # Reduce elements of G if at least two elements
+      # contain common column names
+      # G >= 2 elements here
+      if (length(G) < 2) {
+        return(G)
+      }
+      cnames <- purrr::map(G, colnames)
+      check_list <- combn(seq_along(cnames), 2, simplify = FALSE)
+      common <- purrr::map(check_list, ~ intersect(cnames[[.[1]]], cnames[[.[2]]]))
+
+      # Index to reduce
+      ri <- purrr::map_lgl(common, ~ length(.) != 0)
+      if (any(ri)) {
+        purrr::map2(check_list[ri], common[ri], .f = function(x, y) {
+          if (!is.na(G[x[1]]) & !is.na(G[x[2]])) {
+            # Update global G in reduceG
+            G[[min(x)]] <<- merge(G[[x[1]]], G[[x[2]]], by = y)
+            # to make sure the data is removed and the index
+            # is kept to avoid "subscript out of bounds" error
+            G[[max(x)]] <<- NA
+          }
+        })
+        # Remove elements set to NA
+        G <- G[!is.na(G)]
+        return(reduceG(G))
+      } else {
+        return(G)
+      }
+    }
+
+    updateG <- function(G, m) {
+      # Add a match m to the set G
+      # Check if m can be merged into G
+      # if not, add m as a new element of G
+      # if yes, merge the m and go further
+      # check if the G can be reduced
+      flag <- FALSE
+      for (i in seq_along(G)) {
+        nm <- colnames(G[[i]])
+        byi <- colnames(m) %in% nm
+        if (any(byi)) {
+          # Can be merged
+          G[[i]] <- merge(G[[i]], m, by = colnames(m)[byi])
+          flag <- TRUE
+          break()
+        }
+      }
+      if (isFALSE(flag)) {
+        # Set as a new member of G
+        G[[length(G) + 1]] <- m
+      } else if (length(G) > 1) {
+        # Go further check if G can be reduced
+        # 这是个递归操作
+        G <- reduceG(G)
+      }
+
+      return(G)
+    }
+
+    G <- match_list[1]
     pair_list <- purrr::map(match_list, colnames)
 
-    G <- vector("character", 2 * (n - 1))
-    G[1:2] <- pair_list[[1]]
-    G_index <- vector("integer", n - 1)
-    G_index[1] <- 1L
-
     # Loop for integration
-    # 找到另外 n - 2 个需要合并的 match 的索引
-    j <- 1L
+    # 找到另外 n - 2 个需要合并的 match
+    # 边查找，边合并
     for (i in seq_along(pair_list)) {
       if (i == 1L) next()
-      if (all(pair_list[[i]] %in% G)) {
+      if (any(purrr::map_lgl(G, ~ all(pair_list[[i]] %in% colnames(.))))) {
         # Do nothing because the result has been included
         next()
       } else {
         # Include the result
-        G[seq(2 * j + 1, 2 * j + 2)] <- pair_list[[i]]
-        G_index[j + 1] <- i
-        j <- j + 1L
+        G <- updateG(G, match_list[[i]])
       }
-      if (G_index[n - 1] != 0) break()
+      if (length(G) == 1L & ncol(G[[1]]) == n) break()
+    }
+    G <- G[[1]]
+    # Check the G set
+    if (any(ncol(G) != n, nrow(G) != nrow(match_list[[1]]))) {
+      stop("Clustering failed! There are some bugs in code the developer not found, please report it!")
     }
 
-    integrated_list <- match_list[G_index]
-    # Make sure the list can be merged correctly
-    # res <- tryCatch(
-    #   purrr::reduce(integrated_list, merge),
-    #   error = function(e) {
-    #     to_join <- integrated_list[[1]]
-    #     be_join <- integrated_list[-1]
-    #     while (length(be_join) > 0) {
-    #       col_exist <- colnames(be_join[[1]]) %in% colnames(to_join)
-    #       if (any(col_exist)) {
-    #         to_join <- merge(to_join, be_join[[1]], by = colnames(be_join[[1]])[col_exist])
-    #         be_join[[1]] <- NULL
-    #       } else {
-    #         be_join <- shifter(be_join)
-    #       }
-    #     }
-    #   }
-    # )
-    res <- purrr::reduce(
-      purrr::map(integrated_list, as.data.frame),
-      merge
-    ) %>% data.table::as.data.table()
-
-    res[, paste0("Run", seq_len(ncol(res))), with = FALSE]
+    G[, paste0("Run", seq_len(ncol(G))), with = FALSE]
   } else {
     match_list[[1]]
   }
