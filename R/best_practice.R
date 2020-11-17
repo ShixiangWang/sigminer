@@ -28,6 +28,7 @@ bp_extract_signatures <- function(nmf_matrix,
 
   timer <- Sys.time()
   send_info("Best practice for signature extraction started.")
+  send_info("NOTE: the input should be a sample-by-component matrix.")
   on.exit(send_elapsed_time(timer))
 
   # Input: a matrix used for NMF decomposition with rows indicate samples and columns indicate components.
@@ -65,7 +66,7 @@ bp_extract_signatures <- function(nmf_matrix,
       send_info("{.pkg doFuture} is recommended to install for improving computation.")
     } else {
       doFuture::registerDoFuture()
-      future::plan("multiprocess", workers = cores)
+      suppressWarnings(future::plan("multiprocess", workers = cores))
     }
   }
 
