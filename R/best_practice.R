@@ -269,11 +269,10 @@ get_stat_sigs <- function(runs) {
     type = "between-cluster"
   )
 
-  b <- cross_sim$cross_similarity_mean
-  a <- sim$similarity_mean
+  b <- 1 - cross_sim$cross_similarity_mean
+  a <- 1 - sim$similarity_mean
   sil_width <- data.frame(
-    sil_width = (b - a) / pmax(a, b),
-    stringsAsFactors = FALSE
+    silhouette_width = (b - a) / pmax(a, b)
   )
   list(
     signature = s,
