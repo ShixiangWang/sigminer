@@ -6,7 +6,9 @@
 # 大时，它们的相对熵也会增大。
 # deviance(res) # KLD
 bp_extract_signatures <- function(nmf_matrix,
-                                  range = 2:10, nrun = 100L,
+                                  range = 2:10,
+                                  n_bootstrap = 20L,
+                                  n_nmf_run = 50,
                                   RTOL = 1e-3, min_contribution = 0,
                                   cores = 1L, seed = 123456L,
                                   handle_hyper_mutation = TRUE,
@@ -15,7 +17,7 @@ bp_extract_signatures <- function(nmf_matrix,
   stopifnot(
     is.matrix(nmf_matrix),
     !is.null(rownames(nmf_matrix)), !is.null(colnames(nmf_matrix)),
-    is.numeric(range), is.numeric(nrun), # nrun >= 100,
+    is.numeric(range), is.numeric(n_bootstrap), is.numeric(n_nmf_run),
     is.numeric(RTOL), RTOL > 0,
     is.numeric(min_contribution),
     min_contribution >= 0, min_contribution <= 0.1,
@@ -49,9 +51,9 @@ bp_extract_signatures <- function(nmf_matrix,
     nmf_matrix <- handle_hyper_mutation(nmf_matrix)
   }
 
-  seeds <- seq(seed, length = nrun)
-  # Generate bootstrapped catalogs based on nrun
-  bt_catalog_list <- purrr::map(seeds, function(x) {
+  seeds_bt <- seq(seed, length = n_bootstrap)
+  # Generate bootstrapped catalogs based on n_bootstrap
+  bt_catalog_list <- purrr::map(seeds_bt, function(x) {
     set.seed(x)
     simulate_catalogue_matrix(nmf_matrix)
   })
@@ -67,13 +69,16 @@ bp_extract_signatures <- function(nmf_matrix,
     }
   }
 
+  seeds <- seq(seed, length = n_bootstrap * n_nmf_run)
   solutions <- list()
   for (k in seq_along(range)) {
-    send_info("Extracting ", range[k], " signatures on bootstrapped catalogs...")
+    send_info("Extracting ", range[k], " signatures on ",
+              n_bootstrap, " bootstrapped catalogs with ",
+              n_nmf_run, " NMF runs for each.")
     solution_list <- suppressWarnings({
       foreach(
         s = seeds,
-        bt_matrix = bt_catalog_list,
+        bt_matrix = bt_catalog_list[rep(seq_len(n_bootstrap), each = n_nmf_run)],
         .packages = "NMF",
         .export = c("k", "range", "verbose"),
         .verbose = FALSE
@@ -85,10 +90,16 @@ bp_extract_signatures <- function(nmf_matrix,
         NMF::nmf(t(bt_matrix), rank = range[k], method = "brunet", seed = s, nrun = 1L)
       }
     })
-    KLD_list <- sapply(solution_list, NMF::deviance)
 
-    # Filter solutions with RTOL threshold
-    solutions[[paste0("K", range[k])]] <- solution_list[KLD_list <= min(KLD_list) * (1 + RTOL)]
+    # Filter solutions with RTOL threshold in each bootstrap chunk
+    solutions[[paste0("K", range[k])]] <- purrr::map(
+      chunk2(solution_list, n_bootstrap),
+      .f = function(s) {
+        KLD_list <- sapply(s, NMF::deviance)
+        s <- s[KLD_list <= min(KLD_list) * (1 + RTOL)]
+        if (length(s) > 10) s <- s[1:10] # Limits 10 best runs
+        s
+      })
   }
 
   # Collect solutions
@@ -197,31 +208,18 @@ get_3d_array_stats <- function(x, ns = NULL) {
 get_similarity_stats <- function(x,
                                  n,
                                  ns = NULL,
-                                 col = TRUE,
                                  type = "within-cluster") {
-  # col = TRUE for sigs FALSE for samps stats
   if (type == "within-cluster") {
     d <- lapply(seq_len(n), function(i) {
-      mat <- if (col) {
-        cosineMatrix(x[, i, ], x[, i, ])
-      } else {
-        cosineMatrix(x[i, , ], x[i, , ])
-      } # not test
+      mat <- cosineMatrix(x[, i, ], x[, i, ])
       mat[upper.tri(mat)]
     })
   } else if (type == "between-cluster") {
     d <- lapply(seq_len(n), function(i) {
-      mat <- if (col) {
-        x1 <- x[, i, ]
-        x2 <- x[, -i, ]
-        dim(x2) <- c(dim(x1)[1], prod(dim(x2)) / dim(x1)[1])
-        cosineMatrix(x1, x2)
-      } else {
-        # x1 <- x[, i, ]
-        # x2 <- x[, -i, ]
-        # dim(x2) <- c(prod(dim(x2)) / dim(x1)[2], dim(x1)[2])
-        # cosineMatrix(x1, x2)
-      } # not test
+      x1 <- x[, i, ]
+      x2 <- x[, -i, ]
+      dim(x2) <- c(dim(x1)[1], prod(dim(x2)) / dim(x1)[1])
+      cosineMatrix(x1, x2)
     })
   }
   r <- data.frame(
@@ -258,6 +256,7 @@ get_stat_sigs <- function(runs) {
       "similarity_min", "similarity_max"
     )
   )
+
   # cluster silhouette
   cross_sim <- get_similarity_stats(
     sig_array,
@@ -268,20 +267,70 @@ get_stat_sigs <- function(runs) {
     ),
     type = "between-cluster"
   )
-
   b <- 1 - cross_sim$cross_similarity_mean
   a <- 1 - sim$similarity_mean
   sil_width <- data.frame(
-    silhouette_width = (b - a) / pmax(a, b)
+    silhouette = (b - a) / pmax(a, b)
   )
+  # The minimum KLD in all kept runs
+  KLD <- data.frame(
+    KLD = rep(min(purrr::map_dbl(runs, "KLD")), length(a))
+  )
+
   list(
     signature = s,
-    sig_stats = cbind(sim, sil_width, cross_sim)
+    stats = cbind(KLD, sim, sil_width, cross_sim)
   )
 }
 
 get_stat_samps <- function(runs, mat) {
+  expo_list <- purrr::map(runs, "Exposure")
+  dm <- dim(expo_list[[2]]) # the second value indicates how many samples
+  l <- length(expo_list)
+  expo_array <- array(unlist(expo_list), dim = c(dm, l))
+  # exposures
+  e <- get_3d_array_stats(
+    expo_array,
+    c(
+      "exposure_mean", "exposure_sd",
+      "exposure_min", "exposure_max"
+    )
+  )
+  # get catalog array
+  sig_list <- purrr::map(runs, "Signature")
+  catalog_list <- purrr::map2(sig_list, expo_list, ~.x%*%.y)
+  dm2 <- dim(catalog_list[[1]])
+  catalog_array <- array(unlist(catalog_list), dim = c(dm2, l))
 
+  sim <- get_similarity_stats(
+    catalog_array,
+    n = dm2[2],
+    ns = c(
+      "similarity_mean", "similarity_sd",
+      "similarity_min", "similarity_max"
+    )
+  )
+
+  # cluster silhouette
+  cross_sim <- get_similarity_stats(
+    catalog_array,
+    n = dm2[2],
+    ns = c(
+      "cross_similarity_mean", "cross_similarity_sd",
+      "cross_similarity_min", "cross_similarity_max"
+    ),
+    type = "between-cluster"
+  )
+  b <- 1 - cross_sim$cross_similarity_mean
+  a <- 1 - sim$similarity_mean
+  sil_width <- data.frame(
+    silhouette = (b - a) / pmax(a, b)
+  )
+
+  list(
+    exposure = e,
+    stats = cbind(sim, sil_width, cross_sim)
+  )
 }
 
 normalize_solution <- function(solution) {
