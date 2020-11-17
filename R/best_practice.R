@@ -239,12 +239,86 @@ get_similarity_stats <- function(x,
   r
 }
 
+# Quantify the exposure correlation between different signatures with
+# Pearson coefficient
+get_expo_corr_stat <- function(x) {
+  n <- dim(x)[1] # n signatures
+  r <- dim(x)[3] # r runs
+
+  get_cor <- function(x1, x2) {
+    nc <- ncol(x1)
+    sapply(seq_len(nc), function(i) {
+      stats::cor(x1[, i], x2[, i])
+    })
+  }
+
+  d <- lapply(seq_len(n), function(i) {
+    x1 <- x[i, , ]
+    x2 <- x[-i, , ]
+    if (length(dim(x2)) < 3) {
+      get_cor(x1, x2)
+    } else {
+      apply(x2, 1, function(m) {
+        get_cor(x1, m)
+      }) %>% rowMeans()
+    }
+  })
+
+  r <- list(
+    expo_cor_mean = sapply(d, mean),
+    expo_cor_sd = sapply(d, sd),
+    expo_cor_min = sapply(d, min),
+    expo_cor_max = sapply(d, max)
+  )
+  r
+}
+
+# The difference between reconstructed catalogs and the original catalog
+# 用相似性、L1、L2范数
+get_error_stats <- function(x, mat) {
+  n <- dim(mat)[2] # n samples
+  r <- dim(x)[3] # n runs
+
+  # similarity distance
+  d <- lapply(seq_len(n), function(i) {
+    1 - cosineMatrix(x[, i, ], mat[, i, drop = FALSE])
+  })
+  # L1 and L2
+  # Target at each column (i.e. sample)
+  l1 <- lapply(seq_len(n), function(i) {
+    colSums(abs(x[, i, ] - mat[, rep(i, r), drop = FALSE]))
+  })
+  l2 <- lapply(seq_len(n), function(i) {
+    sqrt(colSums((x[, i, ] - mat[, rep(i, r), drop = FALSE])^2))
+  })
+
+  r <- data.frame(
+    cosine_distance_mean = sapply(d, mean),
+    cosine_distance_sd = sapply(d, sd),
+    cosine_distance_min = sapply(d, min),
+    cosine_distance_max = sapply(d, max),
+    L1_mean = sapply(l1, mean),
+    L1_sd = sapply(l1, sd),
+    L1_min = sapply(l1, min),
+    L1_max = sapply(l1, max),
+    L2_mean = sapply(l2, mean),
+    L2_sd = sapply(l2, sd),
+    L2_min = sapply(l2, min),
+    L2_max = sapply(l2, max),
+    stringsAsFactors = FALSE
+  )
+  r
+}
+
 get_stat_sigs <- function(runs) {
   sig_list <- purrr::map(runs, "Signature")
   dm <- dim(sig_list[[1]])
   l <- length(sig_list)
   sig_array <- array(unlist(sig_list), dim = c(dm, l))
   # signatures
+  sig <- data.frame(
+    signature = seq_len(dm[2]) # Rename it outside the function
+  )
   s <- get_3d_array_stats(
     sig_array,
     c(
@@ -281,15 +355,21 @@ get_stat_sigs <- function(runs) {
     KLD = rep(min(purrr::map_dbl(runs, "KLD")), length(a))
   )
 
+  # Get exposure correlation between different signatures
+  expo_list <- purrr::map(runs, "Exposure")
+  dm <- dim(expo_list[[2]])
+  expo_array <- array(unlist(expo_list), dim = c(dm, l))
+  expo_cor <- get_expo_corr_stat(expo_array)
+
   list(
     signature = s,
-    stats = cbind(KLD, sim, sil_width, cross_sim)
+    stats = cbind(sig, KLD, sil_width, expo_cor, sim, cross_sim)
   )
 }
 
 get_stat_samps <- function(runs, mat) {
   expo_list <- purrr::map(runs, "Exposure")
-  dm <- dim(expo_list[[2]]) # the second value indicates how many samples
+  dm <- dim(expo_list[[2]]) # the second value of dm indicates how many samples
   l <- length(expo_list)
   expo_array <- array(unlist(expo_list), dim = c(dm, l))
   # exposures
@@ -331,9 +411,19 @@ get_stat_samps <- function(runs, mat) {
     silhouette = (b - a) / pmax(a, b)
   )
 
+  samp <- data.frame(
+    sample = colnames(mat)
+  )
+
+  # error
+  error <- get_error_stats(
+    catalog_array,
+    mat
+  )
+
   list(
     exposure = e,
-    stats = cbind(sim, sil_width, cross_sim)
+    stats = cbind(samp, sil_width, error)
   )
 }
 
