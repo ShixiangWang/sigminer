@@ -2,7 +2,8 @@
 
 context("File R/show_cor.R: @testexamples")
 
-test_that("Function show_cor() @ L47", {
+test_that("Function show_cor() @ L48", {
+  
   data("mtcars")
   p1 <- show_cor(mtcars)
   p2 <- show_cor(mtcars,
@@ -14,7 +15,7 @@ test_that("Function show_cor() @ L47", {
   p1$cor
   p2
   p3
-
+  
   ## Auto detect problem variables
   mtcars$xx <- 0L
   p4 <- show_cor(mtcars)
@@ -24,3 +25,4 @@ test_that("Function show_cor() @ L47", {
   expect_is(p3, "ggplot")
   expect_is(p4, "ggplot")
 })
+

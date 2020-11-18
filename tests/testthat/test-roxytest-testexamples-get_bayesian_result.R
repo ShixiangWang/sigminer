@@ -3,15 +3,17 @@
 context("File R/get_bayesian_result.R: @testexamples")
 
 test_that("Function get_bayesian_result() @ L25", {
+  
   load(system.file("extdata", "toy_copynumber_tally_W.RData",
     package = "sigminer", mustWork = TRUE
   ))
-
+  
   res <- sig_auto_extract(cn_tally_W$nmf_matrix, result_prefix = "Test_copynumber", nrun = 1)
-
+  
   # All run info are stored in res$Raw$summary_run
   # Obtain result of run 1
   res_run1 <- get_bayesian_result(res$Raw$summary_run[1, ])
   expect_s3_class(res, "Signature")
   expect_equal(length(res_run1), 7L)
 })
+

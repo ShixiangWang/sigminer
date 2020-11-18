@@ -3,6 +3,7 @@
 context("File R/transform_seg_table.R: @testexamples")
 
 test_that("Function transform_seg_table() @ L23", {
+  
   load(system.file("extdata", "toy_copynumber.RData",
     package = "sigminer", mustWork = TRUE
   ))
@@ -15,3 +16,4 @@ test_that("Function transform_seg_table() @ L23", {
   expect_is(x, "data.table")
   expect_is(x2, "data.table")
 })
+

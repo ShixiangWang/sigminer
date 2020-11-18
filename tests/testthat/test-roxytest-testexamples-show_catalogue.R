@@ -3,6 +3,7 @@
 context("File R/show_catalogue.R: @testexamples")
 
 test_that("Function show_catalogue() @ L28", {
+  
   load(system.file("extdata", "toy_copynumber_tally_M.RData",
     package = "sigminer", mustWork = TRUE
   ))
@@ -13,3 +14,4 @@ test_that("Function show_catalogue() @ L28", {
   p
   expect_s3_class(p, "ggplot")
 })
+

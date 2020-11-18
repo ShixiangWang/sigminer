@@ -3,6 +3,7 @@
 context("File R/show_group_mapping.R: @testexamples")
 
 test_that("Function show_group_mapping() @ L40", {
+  
   data <- dplyr::tibble(
     Group1 = rep(LETTERS[1:5], each = 10),
     Group2 = rep(LETTERS[6:15], each = 5),
@@ -10,16 +11,17 @@ test_that("Function show_group_mapping() @ L40", {
   )
   p1 <- show_group_mapping(data, col_to_flow = "Group1", cols_to_map = colnames(data)[-1])
   p1
-
+  
   p2 <- show_group_mapping(data,
     col_to_flow = "Group1", cols_to_map = colnames(data)[-1],
     include_sig = TRUE
   )
   p2
   if (!is.null(p1)) {
-    expect_s3_class(p1, "ggplot")
+  expect_s3_class(p1, "ggplot")
   }
   if (!is.null(p2)) {
-    expect_s3_class(p2, "ggplot")
+  expect_s3_class(p2, "ggplot")
   }
 })
+

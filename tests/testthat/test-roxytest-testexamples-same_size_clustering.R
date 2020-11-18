@@ -2,25 +2,26 @@
 
 context("File R/same_size_clustering.R: @testexamples")
 
-test_that("Function same_size_clustering() @ L38", {
+test_that("Function same_size_clustering() @ L39", {
+  
   set.seed(1234L)
   x <- rbind(
     matrix(rnorm(100, sd = 0.3), ncol = 2),
     matrix(rnorm(100, mean = 1, sd = 0.3), ncol = 2)
   )
   colnames(x) <- c("x", "y")
-
+  
   y1 <- same_size_clustering(x, clsize = 10)
   y11 <- same_size_clustering(as.matrix(dist(x)), clsize = 10, diss = TRUE)
-
+  
   y2 <- same_size_clustering(x, clsize = 10, algo = "hcbottom", method = "ward.D")
-
+  
   y3 <- same_size_clustering(x, clsize = 10, algo = "kmvar")
   y33 <- same_size_clustering(as.matrix(dist(x)), clsize = 10, algo = "kmvar", diss = TRUE)
-
   expect_length(y1, 100L)
   expect_length(y11, 100L)
   expect_length(y2, 100L)
   expect_length(y3, 100L)
   expect_length(y33, 100L)
 })
+

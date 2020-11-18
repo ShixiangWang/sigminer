@@ -3,6 +3,8 @@
 context("File R/show_sig_profile_loop.R: @testexamples")
 
 test_that("Function show_sig_profile_loop() @ L24", {
+  
+  
   load(system.file("extdata", "toy_mutational_signature.RData",
     package = "sigminer", mustWork = TRUE
   ))
@@ -14,3 +16,4 @@ test_that("Function show_sig_profile_loop() @ L24", {
   expect_s3_class(p1, "ggplot")
   expect_s3_class(p2, "ggplot")
 })
+

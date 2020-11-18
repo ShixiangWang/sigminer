@@ -3,6 +3,7 @@
 context("File R/get_tidy_parameter.R: @testexamples")
 
 test_that("Function get_tidy_parameter() @ L26", {
+  
   load(system.file("extdata", "toy_copynumber_tally_M.RData",
     package = "sigminer", mustWork = TRUE
   ))
@@ -15,3 +16,4 @@ test_that("Function get_tidy_parameter() @ L26", {
   expect_equal(nrow(d1), 20L)
   expect_equal(nrow(d2), 10L)
 })
+

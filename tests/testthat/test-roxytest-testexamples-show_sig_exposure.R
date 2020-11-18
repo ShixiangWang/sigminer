@@ -3,7 +3,7 @@
 context("File R/show_sig_exposure.R: @testexamples")
 
 test_that("Function show_sig_exposure() @ L45", {
-
+  
   # Load mutational signature
   load(system.file("extdata", "toy_mutational_signature.RData",
     package = "sigminer", mustWork = TRUE
@@ -11,7 +11,7 @@ test_that("Function show_sig_exposure() @ L45", {
   # Show signature exposure
   p1 <- show_sig_exposure(sig2)
   p1
-
+  
   # Load copy number signature
   load(system.file("extdata", "toy_copynumber_signature_by_M.RData",
     package = "sigminer", mustWork = TRUE
@@ -22,3 +22,4 @@ test_that("Function show_sig_exposure() @ L45", {
   expect_s3_class(p1, "ggplot")
   expect_s3_class(p2, "ggplot")
 })
+

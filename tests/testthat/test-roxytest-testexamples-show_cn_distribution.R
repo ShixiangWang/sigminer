@@ -3,7 +3,7 @@
 context("File R/show_cn_distribution.R: @testexamples")
 
 test_that("Function show_cn_distribution() @ L32", {
-
+  
   # Load copy number object
   load(system.file("extdata", "toy_copynumber.RData",
     package = "sigminer", mustWork = TRUE
@@ -19,3 +19,4 @@ test_that("Function show_cn_distribution() @ L32", {
   expect_s3_class(p2, "ggplot")
   expect_s3_class(p3, "ggplot")
 })
+

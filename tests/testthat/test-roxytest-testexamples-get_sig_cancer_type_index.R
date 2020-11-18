@@ -3,6 +3,7 @@
 context("File R/get_sig_cancer_type_index.R: @testexamples")
 
 test_that("Function get_sig_cancer_type_index() @ L28", {
+  
   l1 <- get_sig_cancer_type_index()
   l2 <- get_sig_cancer_type_index(sig_type = "SBS")
   l3 <- get_sig_cancer_type_index(sig_type = "DBS", source = "PCAWG", seq_type = "WGS")
@@ -19,3 +20,4 @@ test_that("Function get_sig_cancer_type_index() @ L28", {
   expect_is(l4, "list")
   expect_null(l5)
 })
+

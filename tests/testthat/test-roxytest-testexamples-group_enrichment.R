@@ -2,7 +2,8 @@
 
 context("File R/group_enrichment.R: @testexamples")
 
-test_that("Function group_enrichment() @ L76", {
+test_that("Function group_enrichment() @ L78", {
+  
   set.seed(1234)
   df <- dplyr::tibble(
     g1 = factor(abs(round(rnorm(99, 0, 1)))),
@@ -10,14 +11,14 @@ test_that("Function group_enrichment() @ L76", {
     e1 = sample(c("P", "N"), 99, replace = TRUE),
     e2 = rnorm(99)
   )
-
+  
   print(str(df))
   print(head(df))
-
+  
   # Compare g1:e1, g1:e2, g2:e1 and g2:e2
   x1 <- group_enrichment(df, grp_vars = c("g1", "g2"), enrich_vars = c("e1", "e2"))
   x1
-
+  
   # Only compare g1:e1, g2:e2
   x2 <- group_enrichment(df,
     grp_vars = c("g1", "g2"),
@@ -26,7 +27,7 @@ test_that("Function group_enrichment() @ L76", {
     cross = FALSE
   )
   x2
-
+  
   # Visualization
   p1 <- show_group_enrichment(x1, fill_by_p_value = TRUE)
   p1
@@ -40,3 +41,4 @@ test_that("Function group_enrichment() @ L76", {
   expect_is(p2, "ggplot")
   expect_is(p3, "list")
 })
+

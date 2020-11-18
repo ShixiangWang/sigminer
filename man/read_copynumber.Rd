@@ -99,7 +99,7 @@ cn_subset <- subset(cn, sample == "TCGA-DF-A2KN-01A-11D-A17U-01")
 
 # Add LOH
 set.seed(1234)
-segTabs$minor_cn = sample(c(0, 1), size = nrow(segTabs), replace = TRUE)
+segTabs$minor_cn <- sample(c(0, 1), size = nrow(segTabs), replace = TRUE)
 cn <- read_copynumber(segTabs,
   seg_cols = c("chromosome", "start", "end", "segVal"),
   genome_measure = "wg", complement = TRUE, add_loh = TRUE

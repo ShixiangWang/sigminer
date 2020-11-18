@@ -3,6 +3,8 @@
 context("File R/hello.R: @testexamples")
 
 test_that("Function hello() @ L7", {
+  
   hello()
   expect_message(hello(), "sigminer")
 })
+

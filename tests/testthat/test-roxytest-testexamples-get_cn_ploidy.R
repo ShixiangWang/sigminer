@@ -3,13 +3,14 @@
 context("File R/get_cn_ploidy.R: @testexamples")
 
 test_that("Function get_cn_ploidy() @ L18", {
-
+  
   # Load copy number object
   load(system.file("extdata", "toy_copynumber.RData",
     package = "sigminer", mustWork = TRUE
   ))
-
+  
   df <- get_cn_ploidy(cn)
   df
   expect_equal(nrow(df), 10L)
 })
+
