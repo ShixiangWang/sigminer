@@ -163,9 +163,11 @@ sig_auto_extract <- function(nmf_matrix = NULL,
         }
         saveRDS(res, file = filelist[i])
       }
-    }, method = method, filelist = filelist, skip = skip,
+    },
+    method = method, filelist = filelist, skip = skip,
     .progress = TRUE,
-    .options = furrr::furrr_options(seed = TRUE))
+    .options = furrr::furrr_options(seed = TRUE)
+    )
   }
 
   summary.run <- purrr::map_df(seq_len(nrun), function(i) {

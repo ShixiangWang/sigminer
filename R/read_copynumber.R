@@ -56,7 +56,7 @@
 #'
 #' # Add LOH
 #' set.seed(1234)
-#' segTabs$minor_cn = sample(c(0, 1), size = nrow(segTabs), replace = TRUE)
+#' segTabs$minor_cn <- sample(c(0, 1), size = nrow(segTabs), replace = TRUE)
 #' cn <- read_copynumber(segTabs,
 #'   seg_cols = c("chromosome", "start", "end", "segVal"),
 #'   genome_measure = "wg", complement = TRUE, add_loh = TRUE
@@ -223,8 +223,10 @@ read_copynumber <- function(input,
             chrlen[["size"]][miss_index],
             2
           )]
-          comp_df[, setdiff(colnames(comp_df),
-                         c("chromosome", "start", "end", "segVal", "sample")) := NA]
+          comp_df[, setdiff(
+            colnames(comp_df),
+            c("chromosome", "start", "end", "segVal", "sample")
+          ) := NA]
           temp <- rbind(temp, comp_df, fill = TRUE)
         }
       }
@@ -340,8 +342,10 @@ read_copynumber <- function(input,
           comp <- rbind(comp, comp_df, fill = TRUE)
         }
       }
-      comp[, setdiff(colnames(comp),
-                     c("chromosome", "start", "end", "segVal", "sample")) := NA]
+      comp[, setdiff(
+        colnames(comp),
+        c("chromosome", "start", "end", "segVal", "sample")
+      ) := NA]
       temp <- rbind(temp, comp, fill = TRUE)
       send_success("Value 2 (normal copy) filled to uncalled chromosomes.")
     }
@@ -394,7 +398,7 @@ read_copynumber <- function(input,
     data_df$loh <- data_df$segVal >= 1 & data_df$minor_cn == 0 &
       (data_df$end - data_df$start > loh_min_len - 1)
     # We don't label sex chromosomes
-    data_df[data_df$chromosome %in% c("chrX", "chrY")]$loh = FALSE
+    data_df[data_df$chromosome %in% c("chrX", "chrY")]$loh <- FALSE
   }
 
   if (join_adj_seg) {
@@ -402,8 +406,9 @@ read_copynumber <- function(input,
     # When LOH regions have same total copy number values as adjacent
     # regions, only label the segments harbor LOH with minimal length fraction
     data_df <- helper_join_segments2(data_df,
-                                     add_loh = add_loh,
-                                     loh_min_frac = loh_min_frac)
+      add_loh = add_loh,
+      loh_min_frac = loh_min_frac
+    )
     send_success(nrow(data_df), " segments left after joining.")
   } else {
     send_info("Skipped joining adjacent segments with same copy number value.")

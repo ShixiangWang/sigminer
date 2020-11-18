@@ -3,14 +3,13 @@
 context("File R/sig_auto_extract.R: @testexamples")
 
 test_that("Function sig_auto_extract() @ L97", {
-  
   load(system.file("extdata", "toy_copynumber_tally_M.RData",
     package = "sigminer", mustWork = TRUE
   ))
   res <- sig_auto_extract(cn_tally_M$nmf_matrix, result_prefix = "Test_copynumber", nrun = 1)
   # At default, all run files are stored in tempdir()
   dir(tempdir(), pattern = "Test_copynumber")
-  
+
   laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
   laml <- read_maf(maf = laml.maf)
   mt_tally <- sig_tally(
@@ -18,19 +17,22 @@ test_that("Function sig_auto_extract() @ L97", {
     ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
     use_syn = TRUE
   )
-  
+
   x <- sig_auto_extract(mt_tally$nmf_matrix,
     strategy = "ms", nrun = 3, ref_sigs = "legacy"
   )
   x
-  
+
   expect_s3_class(res, "Signature")
-  res <- sig_auto_extract(cn_tally_M$nmf_matrix, result_prefix = "test",
-                          method = "L1KL", nrun = 1)
+  res <- sig_auto_extract(cn_tally_M$nmf_matrix,
+    result_prefix = "test",
+    method = "L1KL", nrun = 1
+  )
   expect_s3_class(res, "Signature")
-  res <- sig_auto_extract(cn_tally_M$nmf_matrix, result_prefix = "test",
-                          method = "L2KL", nrun = 1)
+  res <- sig_auto_extract(cn_tally_M$nmf_matrix,
+    result_prefix = "test",
+    method = "L2KL", nrun = 1
+  )
   expect_s3_class(res, "Signature")
   expect_s3_class(x, "Signature")
 })
-

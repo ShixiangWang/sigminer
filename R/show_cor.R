@@ -27,8 +27,9 @@
 #' data("mtcars")
 #' p1 <- show_cor(mtcars)
 #' p2 <- show_cor(mtcars,
-#'                x_vars = colnames(mtcars)[1:4],
-#'                y_vars = colnames(mtcars)[5:8])
+#'   x_vars = colnames(mtcars)[1:4],
+#'   y_vars = colnames(mtcars)[5:8]
+#' )
 #' p3 <- show_cor(mtcars, vis_method = "circle", p_adj = "fdr")
 #' p1
 #' p1$cor
@@ -83,8 +84,9 @@ show_cor <- function(data, x_vars = colnames(data), y_vars = x_vars,
   }
 
   corr <- round(stats::cor(data,
-                           use = "pairwise.complete.obs",
-                           method = cor_method), 2)
+    use = "pairwise.complete.obs",
+    method = cor_method
+  ), 2)
 
   corr <- corr[x_vars, y_vars, drop = FALSE]
 
@@ -93,9 +95,13 @@ show_cor <- function(data, x_vars = colnames(data), y_vars = x_vars,
 
     if (!is.null(p_adj)) {
       pa <- stats::p.adjust(p_mat, method = p_adj)
-      p_mat <- matrix(pa, nrow = nrow(p_mat), ncol = ncol(p_mat),
-                      dimnames = list(rownames(p_mat),
-                                      colnames(p_mat)))
+      p_mat <- matrix(pa,
+        nrow = nrow(p_mat), ncol = ncol(p_mat),
+        dimnames = list(
+          rownames(p_mat),
+          colnames(p_mat)
+        )
+      )
     }
     p_mat <- p_mat[x_vars, y_vars, drop = FALSE]
   }

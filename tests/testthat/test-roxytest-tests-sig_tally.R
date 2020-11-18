@@ -13,12 +13,12 @@ test_that("Function sig_tally() @ L118", {
   cn_tally_W <- sig_tally(cn, method = "W")
   # Use method designed by Tao & Wang.
   cn_tally_T <- sig_tally(cn, method = "T")
-  
+
   expect_equal(length(cn_tally_M), length(cn_tally_W))
   expect_equal(length(cn_tally_T), 5L)
-  
+
   ## for SBS
-  
+
   laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
   laml <- read_maf(maf = laml.maf)
   if (require("BSgenome.Hsapiens.UCSC.hg19")) {
@@ -27,9 +27,9 @@ test_that("Function sig_tally() @ L118", {
       ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
       use_syn = TRUE
     )
-  
+
     expect_equal(length(mt_tally), 3L)
-  
+
     ## Use strand bias categories
     mt_tally <- sig_tally(
       laml,
@@ -37,13 +37,12 @@ test_that("Function sig_tally() @ L118", {
       use_syn = TRUE, add_trans_bias = TRUE
     )
     ## Test it by enrichment analysis
-    dt1 = enrich_component_strand_bias(mt_tally$nmf_matrix)
-    dt2 = enrich_component_strand_bias(mt_tally$all_matrices$SBS_24)
-  
+    dt1 <- enrich_component_strand_bias(mt_tally$nmf_matrix)
+    dt2 <- enrich_component_strand_bias(mt_tally$all_matrices$SBS_24)
+
     expect_s3_class(dt1, "data.table")
     expect_s3_class(dt2, "data.table")
   } else {
     message("Please install package 'BSgenome.Hsapiens.UCSC.hg19' firstly!")
   }
 })
-

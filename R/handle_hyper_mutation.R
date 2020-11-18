@@ -52,5 +52,3 @@ collapse_hyper_records <- function(mat) {
   }
   mat
 }
-
-

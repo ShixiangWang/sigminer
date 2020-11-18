@@ -55,11 +55,13 @@ show_sig_profile_loop <- function(Signature, sig_names = NULL,
   }
   # cannot modify gglotify ggplot
   # plist[1:(nc-1)] <- lapply(plist[1:(nc-1)], function(x) x + labs(x = NULL))
-  p <- cowplot::plot_grid(plotlist = plist,
-                          ncol = ncol,
-                          nrow = nrow)
-                          #align = "hv",
-                          #axis = "tblr")
+  p <- cowplot::plot_grid(
+    plotlist = plist,
+    ncol = ncol,
+    nrow = nrow
+  )
+  # align = "hv",
+  # axis = "tblr")
 
   return(p)
 }

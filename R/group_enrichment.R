@@ -54,10 +54,12 @@
 #' x1
 #'
 #' # Only compare g1:e1, g2:e2
-#' x2 <- group_enrichment(df, grp_vars = c("g1", "g2"),
-#'                        enrich_vars = c("e1", "e2"),
-#'                        co_method = "wilcox.test",
-#'                        cross = FALSE)
+#' x2 <- group_enrichment(df,
+#'   grp_vars = c("g1", "g2"),
+#'   enrich_vars = c("e1", "e2"),
+#'   co_method = "wilcox.test",
+#'   cross = FALSE
+#' )
 #' x2
 #'
 #' # Visualization

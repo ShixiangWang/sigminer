@@ -3,7 +3,6 @@
 context("File R/show_group_distribution.R: @testexamples")
 
 test_that("Function show_group_distribution() @ L59", {
-  
   set.seed(1234)
   data <- data.frame(
     yval = rnorm(120),
@@ -22,15 +21,14 @@ test_that("Function show_group_distribution() @ L59", {
     alpha = 0.3
   )
   p2
-  
+
   # Set custom group names
   p3 <- show_group_distribution(data,
-                          gvar = 2, dvar = 1,
-                          g_label = c("A"="X", "B"="Y", "C"="Z")
+    gvar = 2, dvar = 1,
+    g_label = c("A" = "X", "B" = "Y", "C" = "Z")
   )
   p3
   expect_is(p, "ggplot")
   expect_is(p2, "ggplot")
   expect_is(p3, "ggplot")
 })
-

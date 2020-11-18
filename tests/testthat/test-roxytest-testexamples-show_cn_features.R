@@ -3,7 +3,7 @@
 context("File R/show_cn_features.R: @testexamples")
 
 test_that("Function show_cn_features() @ L28", {
-  
+
   # Load copy number prepare object
   load(system.file("extdata", "toy_copynumber_tally_M.RData",
     package = "sigminer", mustWork = TRUE
@@ -12,4 +12,3 @@ test_that("Function show_cn_features() @ L28", {
   p
   expect_s3_class(p, "ggplot")
 })
-

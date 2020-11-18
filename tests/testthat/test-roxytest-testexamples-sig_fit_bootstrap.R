@@ -3,23 +3,22 @@
 context("File R/sig_fit_bootstrap.R: @testexamples")
 
 test_that("Function sig_fit_bootstrap() @ L61", {
-  
   W <- matrix(c(1, 2, 3, 4, 5, 6), ncol = 2)
   colnames(W) <- c("sig1", "sig2")
   W <- apply(W, 2, function(x) x / sum(x))
-  
+
   H <- matrix(c(2, 5, 3, 6, 1, 9, 1, 2), ncol = 4)
   colnames(H) <- paste0("samp", 1:4)
-  
+
   V <- W %*% H
   V
-  
+
   if (requireNamespace("quadprog", quietly = TRUE)) {
     H_bootstrap <- sig_fit_bootstrap(V[, 1], W, n = 10, type = "absolute")
     ## Typically, you have to run many times to get close to the answer
     boxplot(t(H_bootstrap$expo))
     H[, 1]
-  
+
     ## Return P values
     ## In practice, run times >= 100
     ## is recommended
@@ -27,8 +26,6 @@ test_that("Function sig_fit_bootstrap() @ L61", {
     ## For multiple samples
     ## Input a list
     report_bootstrap_p_value(list(samp1 = H_bootstrap, samp2 = H_bootstrap))
-  
   }
   expect_is(H_bootstrap, "list")
 })
-

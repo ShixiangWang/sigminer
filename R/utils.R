@@ -46,7 +46,9 @@ file_name <- function(filepath, must_chop = NULL) {
 }
 
 chunk2 <- function(x, n) {
-  if (n < 2) return(list(x))
+  if (n < 2) {
+    return(list(x))
+  }
   split(x, cut(seq_along(x), n, labels = FALSE))
 }
 # https://stackoverflow.com/questions/30542128/circular-shift-of-vector-by-distance-n
@@ -125,11 +127,11 @@ use_color_style <- function(style, mode = c("SBS", "copynumber", "DBS", "ID", "R
       )
     }
 
-   if (mode != "RS") {
-     palette <- sapply(colors, FUN = function(x) rgb2hex(x[1], x[2], x[3])) %>% as.character()
-   } else {
-     palette <- colors
-   }
+    if (mode != "RS") {
+      palette <- sapply(colors, FUN = function(x) rgb2hex(x[1], x[2], x[3])) %>% as.character()
+    } else {
+      palette <- colors
+    }
 
     if (mode %in% c("copynumber", "SBS")) {
       palette <- c(palette, sapply(c("purple", "brown", "orange"), FUN = col2hex) %>% as.character())

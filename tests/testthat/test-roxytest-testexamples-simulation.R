@@ -3,14 +3,14 @@
 context("File R/simulation.R: @testexamples")
 
 test_that("[unknown alias] @ L53", {
-  
+
   # Generate a catalog
   set.seed(1234)
   catalog <- as.integer(table(sample(1:96, 1000, replace = TRUE)))
   names(catalog) <- paste0("comp", 1:96)
   # Generate a signature
   sig <- catalog / sum(catalog)
-  
+
   # Simulate catalogs
   x1 <- simulate_catalogue(catalog, 10) # 10 mutations
   x1
@@ -21,7 +21,7 @@ test_that("[unknown alias] @ L53", {
   # Similar with a signature
   x4 <- simulate_catalogue(sig, 10) # 10 mutations
   x4
-  
+
   # Load SBS signature
   load(system.file("extdata", "toy_mutational_signature.RData",
     package = "sigminer", mustWork = TRUE
@@ -43,4 +43,3 @@ test_that("[unknown alias] @ L53", {
   expect_is(s2, "numeric")
   expect_is(c1, "integer")
 })
-

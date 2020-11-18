@@ -17,8 +17,10 @@
 #'
 #' @examples
 #' set.seed(1234L)
-#' x <- rbind(matrix(rnorm(100, sd = 0.3), ncol = 2),
-#'            matrix(rnorm(100, mean = 1, sd = 0.3), ncol = 2))
+#' x <- rbind(
+#'   matrix(rnorm(100, sd = 0.3), ncol = 2),
+#'   matrix(rnorm(100, mean = 1, sd = 0.3), ncol = 2)
+#' )
 #' colnames(x) <- c("x", "y")
 #'
 #' y1 <- same_size_clustering(x, clsize = 10)
@@ -28,7 +30,6 @@
 #'
 #' y3 <- same_size_clustering(x, clsize = 10, algo = "kmvar")
 #' y33 <- same_size_clustering(as.matrix(dist(x)), clsize = 10, algo = "kmvar", diss = TRUE)
-#'
 #' @testexamples
 #' expect_length(y1, 100L)
 #' expect_length(y11, 100L)
@@ -36,11 +37,11 @@
 #' expect_length(y3, 100L)
 #' expect_length(y33, 100L)
 same_size_clustering <- function(mat, diss = FALSE, clsize = NULL,
-                                  algo = c("nnit", "hcbottom", "kmvar"),
-                                  method = c(
-                                    "maxd", "random", "mind", "elki",
-                                    "ward.D", "average", "complete", "single"
-                                  )) {
+                                 algo = c("nnit", "hcbottom", "kmvar"),
+                                 method = c(
+                                   "maxd", "random", "mind", "elki",
+                                   "ward.D", "average", "complete", "single"
+                                 )) {
   stopifnot(is.numeric(clsize))
 
   algo <- match.arg(algo)
@@ -102,7 +103,7 @@ kmvar <- function(mat,
   } else {
     message("PAM algorithm is applied when input distance matrix.")
     pam.o <- cluster::pam(mat, k, diss = TRUE)
-    #medoids
+    # medoids
     # distance to medoids
     centd <- mat[, pam.o$id.med, drop = FALSE]
   }

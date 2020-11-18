@@ -23,12 +23,14 @@ helper_join_segments2 <- function(segTab, add_loh = FALSE, loh_min_frac = 0.3) {
     z$lengths <- z$lengths + 1L
     z$values <- as.character(z$values)
     dt_join <- x[i_join][,
-      .collapse_segTab(.SD, cols = setdiff(
-        colnames(x),
-        c("chromosome", "start", "end", "segVal", "sample")
+      .collapse_segTab(.SD,
+        cols = setdiff(
+          colnames(x),
+          c("chromosome", "start", "end", "segVal", "sample")
+        ),
+        add_loh = add_loh,
+        loh_min_frac = loh_min_frac
       ),
-      add_loh = add_loh,
-      loh_min_frac = loh_min_frac),
       by = list(.grp = inverse.rle(z))
     ]
     dt_join$.grp <- NULL
@@ -69,14 +71,14 @@ helper_join_segments2 <- function(segTab, add_loh = FALSE, loh_min_frac = 0.3) {
     # A logical column 'loh' should exist
     if (any(dt$loh)) {
       dt$.len <- dt$end - dt$start + 1
-      x$.loh_frac = sum(dt$.len[dt$loh]) / sum(dt$.len)
+      x$.loh_frac <- sum(dt$.len[dt$loh]) / sum(dt$.len)
       # x$loh is already TRUE
       # reset it
       if (x$.loh_frac <= loh_min_frac) {
-        x$loh = FALSE
+        x$loh <- FALSE
       }
     } else {
-      x$.loh_frac = NA_real_
+      x$.loh_frac <- NA_real_
     }
   }
 

@@ -2,10 +2,12 @@ library(tidyverse)
 devtools::load_all()
 
 ## SBS
-download.file("https://raw.githubusercontent.com/AlexandrovLab/SigProfilerExtractor/master/SigProfilerExtractor/data/sigProfiler_SBS_signatures_2018_03_28.csv",
-              "data-raw/sigProfiler_SBS_signatures_2018_03_28.csv")
-SBS = readr::read_csv("data-raw/sigProfiler_SBS_signatures_2018_03_28.csv")
-SBS = SBS %>%
+download.file(
+  "https://raw.githubusercontent.com/AlexandrovLab/SigProfilerExtractor/master/SigProfilerExtractor/data/sigProfiler_SBS_signatures_2018_03_28.csv",
+  "data-raw/sigProfiler_SBS_signatures_2018_03_28.csv"
+)
+SBS <- readr::read_csv("data-raw/sigProfiler_SBS_signatures_2018_03_28.csv")
+SBS <- SBS %>%
   dplyr::mutate(
     Type = paste0(
       substr(SubType, 1, 1),
@@ -19,7 +21,7 @@ SBS = SBS %>%
   tibble::column_to_rownames("Type")
 
 cosmic_v3.1 <- readxl::read_excel("data-raw/COSMIC_Mutational_Signatures_v3.1.xlsx", sheet = 1)
-cosmic_v3.1 = cosmic_v3.1 %>%
+cosmic_v3.1 <- cosmic_v3.1 %>%
   dplyr::mutate(
     Type = paste0(
       substr(Subtype, 1, 1),
@@ -40,7 +42,7 @@ colSums(cosmic_v3.1)
 # get_sig_similarity(SBS, sbs$db)
 # get_sig_similarity(SBS, as.data.frame(sbs$db))
 
-SBS = cosmic_v3.1
+SBS <- cosmic_v3.1
 
 SBS_aetiology <- data.frame(
   aetiology = c(
@@ -332,8 +334,8 @@ sbs_list$mm10 <- readxl::read_excel("data-raw/SBS_signatures_genome_builds.xlsx"
 
 sbs_file <- "inst/extdata/SBS_signatures.rds"
 sbs <- readRDS(sbs_file)
-sbs_list$aetiology = sbs$aetiology[rownames(sbs$aetiology) %in% colnames(sbs_list$hg19), , drop = FALSE]
-sbs_list$date = "2020/09/29"
+sbs_list$aetiology <- sbs$aetiology[rownames(sbs$aetiology) %in% colnames(sbs_list$hg19), , drop = FALSE]
+sbs_list$date <- "2020/09/29"
 
 saveRDS(sbs_list, file = "inst/extdata/SBS_signatures_list.rds")
 
@@ -350,7 +352,7 @@ dbs_list$mm10 <- readxl::read_excel("data-raw/DBS_signatures_genome_builds.xlsx"
 
 dbs_file <- "inst/extdata/DBS_signatures.rds"
 dbs <- readRDS(dbs_file)
-dbs_list$aetiology = dbs$aetiology
-dbs_list$date = "2020/09/29"
+dbs_list$aetiology <- dbs$aetiology
+dbs_list$date <- "2020/09/29"
 
 saveRDS(dbs_list, file = "inst/extdata/DBS_signatures_list.rds")

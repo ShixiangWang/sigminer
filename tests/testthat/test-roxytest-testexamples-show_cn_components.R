@@ -3,7 +3,6 @@
 context("File R/show_cn_components.R: @testexamples")
 
 test_that("Function show_cn_components() @ L37", {
-  
   load(system.file("extdata", "toy_copynumber_tally_M.RData",
     package = "sigminer", mustWork = TRUE
   ))
@@ -11,7 +10,7 @@ test_that("Function show_cn_components() @ L37", {
   p1
   p2 <- show_cn_components(cn_tally_M$parameters, show_weights = FALSE)
   p2
-  
+
   load(system.file("extdata", "toy_copynumber_tally_W.RData",
     package = "sigminer", mustWork = TRUE
   ))
@@ -21,4 +20,3 @@ test_that("Function show_cn_components() @ L37", {
   expect_s3_class(p2, "ggplot")
   expect_s3_class(p3, "ggplot")
 })
-

@@ -3,36 +3,34 @@
 context("File R/sig_fit.R: @testexamples")
 
 test_that("Function sig_fit() @ L97", {
-  
   W <- matrix(c(1, 2, 3, 4, 5, 6), ncol = 2)
   colnames(W) <- c("sig1", "sig2")
   W <- apply(W, 2, function(x) x / sum(x))
-  
+
   H <- matrix(c(2, 5, 3, 6, 1, 9, 1, 2), ncol = 4)
   colnames(H) <- paste0("samp", 1:4)
-  
+
   V <- W %*% H
   V
-  
+
   if (requireNamespace("quadprog", quietly = TRUE)) {
     H_infer <- sig_fit(V, W, method = "QP")
     H_infer
     H
-  
+
     H_dt <- sig_fit(V, W, method = "QP", return_class = "data.table")
     H_dt
-  
+
     ## Show results
     show_sig_fit(H_infer)
     show_sig_fit(H_dt)
-  
+
     ## Get clusters/groups
     H_dt_rel <- sig_fit(V, W, return_class = "data.table", type = "relative")
     z <- get_groups(H_dt_rel, method = "k-means")
     show_groups(z)
   }
-  
+
   expect_is(H_infer, "matrix")
   expect_is(H_dt, "data.table")
 })
-

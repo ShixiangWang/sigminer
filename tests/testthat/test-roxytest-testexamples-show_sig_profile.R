@@ -3,7 +3,7 @@
 context("File R/show_sig_profile.R: @testexamples")
 
 test_that("Function show_sig_profile() @ L134", {
-  
+
   # Load SBS signature
   load(system.file("extdata", "toy_mutational_signature.RData",
     package = "sigminer", mustWork = TRUE
@@ -11,11 +11,11 @@ test_that("Function show_sig_profile() @ L134", {
   # Show signature profile
   p1 <- show_sig_profile(sig2, mode = "SBS")
   p1
-  
+
   # Use 'y_tr' option to transform values in y axis
   p11 <- show_sig_profile(sig2, mode = "SBS", y_tr = function(x) x * 100)
   p11
-  
+
   # Load copy number signature from method "W"
   load(system.file("extdata", "toy_copynumber_signature_by_W.RData",
     package = "sigminer", mustWork = TRUE
@@ -28,7 +28,7 @@ test_that("Function show_sig_profile() @ L134", {
     normalize = "feature"
   )
   p2
-  
+
   # Load copy number signature from method "M"
   load(system.file("extdata", "toy_copynumber_signature_by_M.RData",
     package = "sigminer", mustWork = TRUE
@@ -42,7 +42,7 @@ test_that("Function show_sig_profile() @ L134", {
     method = "M", normalize = "column"
   )
   p3
-  
+
   # Add params label
   # =================
   # Load copy number prepare object
@@ -56,7 +56,7 @@ test_that("Function show_sig_profile() @ L134", {
     params = params, y_expand = 2
   )
   p4
-  
+
   # Visualize rearrangement signatures
   s <- get_sig_db("RS_Nik_lab")
   ss <- s$db[, 1:3]
@@ -70,4 +70,3 @@ test_that("Function show_sig_profile() @ L134", {
   expect_s3_class(p4, "ggplot")
   expect_s3_class(p5, "ggplot")
 })
-

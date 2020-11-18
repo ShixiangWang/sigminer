@@ -10,7 +10,8 @@ bp_extract_signatures <- function(nmf_matrix,
                                   n_bootstrap = 20L,
                                   n_nmf_run = 50,
                                   RTOL = 1e-3, min_contribution = 0,
-                                  cores = 1L, seed = 123456L,
+                                  cores = min(4L, future::availableCores()),
+                                  seed = 123456L,
                                   handle_hyper_mutation = TRUE,
                                   report_integer_counts = TRUE,
                                   mpi_platform = FALSE,
@@ -33,6 +34,7 @@ bp_extract_signatures <- function(nmf_matrix,
   send_info("Best practice for signature extraction started.")
   send_info("NOTE: the input should be a sample-by-component matrix.")
   on.exit(send_elapsed_time(timer))
+  on.exit(invisible(gc()))
 
   # Input: a matrix used for NMF decomposition with rows indicate samples and columns indicate components.
   raw_catalogue_matrix <- t(nmf_matrix)
@@ -68,7 +70,7 @@ bp_extract_signatures <- function(nmf_matrix,
     send_success("Resampling is disabled.")
     bt_catalog_list <- list(nmf_matrix)
     n_bootstrap <- 1L
-    bt_flag = FALSE
+    bt_flag <- FALSE
   } else {
     send_success("Starting resampling (get bootstrapped catalog matrix).")
     seeds_bt <- seq(seed, length = n_bootstrap)
@@ -77,7 +79,7 @@ bp_extract_signatures <- function(nmf_matrix,
       set.seed(x)
       simulate_catalogue_matrix(nmf_matrix)
     })
-    bt_flag = TRUE
+    bt_flag <- TRUE
   }
   catalogue_matrix <- t(nmf_matrix)
   send_success("Done.")
@@ -145,7 +147,10 @@ bp_extract_signatures <- function(nmf_matrix,
         s
       }
     ) %>% unlist()
-    send_success("NMF done for this solution.")
+    send_success(
+      "NMF done for this solution. Current memory size used: ",
+      round(mem_used() / 2^20), "MB"
+    )
   }
 
   send_info("Starting process the solution list.")
@@ -158,7 +163,10 @@ bp_extract_signatures <- function(nmf_matrix,
     catalogue_matrix = catalogue_matrix,
     report_integer_counts = report_integer_counts
   )
-  send_success("Solution list processed.")
+  send_success(
+    "Solution list processed. Current memory size used: ",
+    round(mem_used() / 2^20), "MB"
+  )
 
   send_info("Merging and checking the solution data.")
   # 合并 solutions
@@ -190,7 +198,10 @@ bp_extract_signatures <- function(nmf_matrix,
       obj
     }, to_add = to_add)
   }
-  send_success("Merged.")
+  send_success(
+    "Merged. Current memory size used: ",
+    round(mem_used() / 2^20), "MB"
+  )
 
   # TODO：利用一些算法生成建议 signature 并进行标记
   class(solutions) <- "ExtractionResult"
@@ -559,12 +570,14 @@ get_similarity_stats <- function(x,
     d <- lapply(seq_len(n), function(i) {
       x2 <- x[, i, ]
       if (is.null(dim(x2))) {
-        x2 = matrix(x2, ncol = 1)
+        x2 <- matrix(x2, ncol = 1)
       }
       mat <- cosineMatrix(x2, x2)
       if (ncol(mat) > 1) {
         mat[upper.tri(mat)]
-      } else mat
+      } else {
+        mat
+      }
     })
   } else if (type == "between-cluster") {
     d <- lapply(seq_len(n), function(i) {
@@ -607,12 +620,11 @@ get_expo_corr_stat <- function(x) {
 
   if (n > 1) {
     d <- lapply(seq_len(n), function(i) {
-
-      x1 <- x[i, ,  , drop = FALSE]
+      x1 <- x[i, , , drop = FALSE]
       x2 <- x[-i, , , drop = FALSE]
 
-      rows = dim(x2)[1]
-      corr = vector("numeric", rows * r)
+      rows <- dim(x2)[1]
+      corr <- vector("numeric", rows * r)
       # calculate exposure corr in each run
       j <- 1L
       for (row in seq_len(rows)) {
@@ -644,7 +656,7 @@ get_expo_corr_stat <- function(x) {
 }
 
 # The difference between reconstructed catalogs and the original catalog
-# 用相似性、L1、L2范数
+# 用相似性距离、L1、L2范数
 get_error_stats <- function(x, mat) {
   n <- dim(mat)[2] # n samples
   r <- dim(x)[3] # r runs

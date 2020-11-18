@@ -3,8 +3,6 @@
 context("File R/show_sig_bootstrap.R: @testexamples")
 
 test_that("[unknown alias] @ L103", {
-  
-  
   if (require("BSgenome.Hsapiens.UCSC.hg19")) {
     laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
     laml <- read_maf(maf = laml.maf)
@@ -13,7 +11,7 @@ test_that("[unknown alias] @ L103", {
       ref_genome = "BSgenome.Hsapiens.UCSC.hg19",
       use_syn = TRUE
     )
-  
+
     library(NMF)
     mt_sig <- sig_extract(mt_tally$nmf_matrix,
       n_sig = 3,
@@ -21,13 +19,13 @@ test_that("[unknown alias] @ L103", {
       cores = 1,
       pConstant = 1e-13
     )
-  
+
     mat <- t(mt_tally$nmf_matrix)
     mat <- mat[, colSums(mat) > 0]
     bt_result <- sig_fit_bootstrap_batch(mat, sig = mt_sig, n = 10)
     ## Parallel computation
     ## bt_result = sig_fit_bootstrap_batch(mat, sig = mt_sig, n = 10, use_parallel = TRUE)
-  
+
     ## At default, mean bootstrap exposure for each sample has been calculated
     p <- show_sig_bootstrap_exposure(bt_result, methods = c("QP"))
     ## Show bootstrap exposure (optimal exposure is shown as triangle)
@@ -39,14 +37,14 @@ test_that("[unknown alias] @ L103", {
       signatures = c("Sig1", "Sig2")
     )
     p2
-  
+
     ## Show bootstrap error
     ## Similar to exposure above
     p <- show_sig_bootstrap_error(bt_result, methods = c("QP"))
     p
     p3 <- show_sig_bootstrap_error(bt_result, methods = c("QP"), sample = "TCGA-AB-2802")
     p3
-  
+
     ## Show exposure (in)stability
     p4 <- show_sig_bootstrap_stability(bt_result, methods = c("QP"))
     p4
@@ -59,7 +57,7 @@ test_that("[unknown alias] @ L103", {
   } else {
     message("Please install package 'BSgenome.Hsapiens.UCSC.hg19' firstly!")
   }
-  
+
   expect_s3_class(p1, "ggplot")
   expect_s3_class(p2, "ggplot")
   expect_s3_class(p3, "ggplot")
@@ -68,4 +66,3 @@ test_that("[unknown alias] @ L103", {
   expect_s3_class(p6, "ggplot")
   expect_s3_class(p7, "ggplot")
 })
-
