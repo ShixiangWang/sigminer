@@ -68,7 +68,7 @@ simulate_signature <- function(x, weights = NULL) {
   # Normalize all catalogue/signatures to 1
   mat2 <- apply(mat2, 2, function(x) x / sum(x, na.rm = TRUE))
 
-  if (!is.null(weights)) {
+  if (is.null(weights)) {
     weights <- rep(1L, ncol(mat2))
   }
 

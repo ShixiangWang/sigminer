@@ -12,6 +12,7 @@ bp_extract_signatures <- function(nmf_matrix,
                                   RTOL = 1e-3, min_contribution = 0,
                                   cores = 1L, seed = 123456L,
                                   handle_hyper_mutation = TRUE,
+                                  report_integer_counts = TRUE,
                                   mpi_platform = FALSE,
                                   verbose = FALSE) {
   stopifnot(
@@ -32,7 +33,7 @@ bp_extract_signatures <- function(nmf_matrix,
   on.exit(send_elapsed_time(timer))
 
   # Input: a matrix used for NMF decomposition with rows indicate samples and columns indicate components.
-  input <- nmf_matrix
+  raw_catalogue_matrix <- t(nmf_matrix)
 
   # Dimension reduction: 去掉总贡献小的 components
   if (min_contribution != 0) {
@@ -58,7 +59,7 @@ bp_extract_signatures <- function(nmf_matrix,
     set.seed(x)
     simulate_catalogue_matrix(nmf_matrix)
   })
-  nmf_matrix <- t(nmf_matrix)
+  catalogue_matrix <- t(nmf_matrix)
 
   # NMF with brunet method
   if (isFALSE(mpi_platform)) {
@@ -112,14 +113,29 @@ bp_extract_signatures <- function(nmf_matrix,
   # 聚类：使用 1 - cosine 相似性作为距离指标
   solutions <- purrr::map(solutions,
     .f = process_solution,
-    nmf_matrix = nmf_matrix
+    catalogue_matrix = catalogue_matrix,
+    report_integer_counts = report_integer_counts
   )
+  # TODO: 合并 solutions
+  # TODO: 如果发现缺少 components，利用 0 进行回补
+  # TODO：利用一些算法生成建议 signature 并进行标记
   solutions
 }
 
-process_solution <- function(slist, nmf_matrix) {
+process_solution <- function(slist, catalogue_matrix, report_integer_counts = FALSE) {
   out <- purrr::map(slist, .f = normalize_solution) %>%
     setNames(paste0("Run", seq_along(slist)))
+
+  # If there are hyper-mutant records, collapse the samples into true samples
+  if (any(grepl("_\\[hyper\\]_", colnames(catalogue_matrix)))) {
+    catalogue_matrix <- collapse_hyper_records(catalogue_matrix)
+    purrr::map(seq_along(out), function(i) {
+      out[[i]]$Exposure <<- collapse_hyper_records(out[[i]]$Exposure)
+    })
+    purrr::map(seq_along(out), function(i) {
+      out[[i]]$H <<- collapse_hyper_records(out[[i]]$H)
+    })
+  }
 
   # If just one run, skip the following steps
   if (length(out) >= 2) {
@@ -153,9 +169,6 @@ process_solution <- function(slist, nmf_matrix) {
       y$Exposure <- y$Exposure[x, samp_order, drop = FALSE]
       y
     }, samp_order = samp_order)
-    Signature <- purrr::reduce(purrr::map(out, "Signature"), `+`) / length(out)
-    Exposure <- purrr::reduce(purrr::map(out, "Exposure"), `+`) / length(out)
-    KLD <- purrr::reduce(purrr::map(out, "KLD"), `+`) / length(out)
   } else {
     run_pairs <- NA
     pair_dist <- NA
@@ -164,17 +177,7 @@ process_solution <- function(slist, nmf_matrix) {
     clusters <- data.table::data.table(
       Run1 = paste0("S", seq_len(ncol(out$Run1$Signature)))
     )
-
-    Signature <- out$Run1$Signature
-    Exposure <- out$Run1$Exposure
-    KLD <- out$Run1$KLD
   }
-
-  # Order by contribution and rename signatures
-  new_order <- order(colSums(Signature), decreasing = TRUE)
-  Signature <- Signature[, new_order, drop = FALSE]
-  Exposure <- Exposure[new_order, , drop = FALSE]
-  colnames(Signature) <- rownames(Exposure) <- paste0("Sig", seq_along(new_order))
 
   # 生成统计量
   # Remember the new order above
@@ -182,132 +185,137 @@ process_solution <- function(slist, nmf_matrix) {
   # 重构相似性，cophenetic，轮廓系数，
   # 聚类平均相似距离，RSS, 平均错误，Exposure 相关性等
   stat_sigs <- get_stat_sigs(out)
-  stat_samps <- get_stat_samps(out, mat = nmf_matrix)
+  stat_samps <- get_stat_samps(out, mat = catalogue_matrix)
+
+  Signature <- stat_sigs$signature
+  Exposure <- stat_samps$exposure
+  stats_signature <- stat_sigs$stats
+  stats_sample <- stat_samps$stats
+
+  # Order by contribution and set signature names
+  new_order <- order(colSums(Signature$signature_mean), decreasing = TRUE)
+
+  Signature <- lapply(Signature, function(s) {
+    s <- s[, new_order, drop = FALSE]
+    rownames(s) <- rownames(catalogue_matrix)
+    colnames(s) <- paste0("Sig", seq_along(new_order))
+    s
+  })
+
+  Exposure <- lapply(Exposure, function(e) {
+    e <- e[new_order, , drop = FALSE]
+    colnames(e) <- colnames(catalogue_matrix)
+    rownames(e) <- paste0("Sig", seq_along(new_order))
+    e
+  })
+
+  # Update the order for stats_signature and set signature names
+  stats_signature <- stats_signature[new_order, ]
+  stats_signature$signature <- paste0("Sig", seq_along(new_order))
+
+  # Merge the stats and generate measures for selecting signature number
+  stats <- data.frame(
+    signature_number = nrow(stats_signature),
+    silhouette_signature = mean(stats_signature$silhouette),
+    silhouette_sample = mean(stats_sample$silhouette),
+    sample_cosine_distance = mean(stats_sample$cosine_distance_mean),
+    L1_error = mean(stats_sample$L1_mean),
+    L2_error = mean(stats_sample$L2_mean),
+    exposure_positive_correlation = mean(stats_signature$expo_pos_cor_mean),
+    signature_similarity_within_cluster = mean(stats_signature$similarity_mean),
+    signature_similarity_across_cluster = mean(stats_signature$cross_similarity_mean),
+    stringsAsFactors = FALSE
+  )
+
+  # Generate Signature object
+  object <- tf_signature(
+    Signature$signature_mean,
+    Exposure$exposure_mean,
+    used_runs = length(out),
+    catalogue_matrix = if (report_integer_counts) catalogue_matrix else NULL
+  )
 
   list(
-    runs = out,
-    run_pairs = run_pairs,
-    pair_dist = pair_dist,
-    pair_dist_mean = pair_dist_mean,
-    match_list = match_list,
-    clusters = clusters,
-    stat_sigs = stat_sigs,
-    stat_samps = stat_samps
+    object = object,
+    stats = stats,
+    stats_signature = stats_signature,
+    stats_sample = stats_sample,
+    signature = Signature,
+    exposure = Exposure
   )
 }
 
-get_3d_array_stats <- function(x, ns = NULL) {
-  r <- list(
-    mean = apply(x, c(1, 2), mean),
-    sd = apply(x, c(1, 2), sd),
-    min = apply(x, c(1, 2), min),
-    max = apply(x, c(1, 2), max)
+normalize_solution <- function(solution) {
+  # solution is a NMF fit result
+
+  W2 <- W <- NMF::basis(solution)
+  H2 <- H <- NMF::coef(solution)
+  K <- ncol(W)
+  KLD <- NMF::deviance(solution)
+
+  out <- c(helper_scale_nmf_matrix(W, H, K, handle_cn = FALSE),
+    list(W = W2, H = H2),
+    KLD = KLD
   )
-  if (!is.null(ns)) {
-    names(r) <- ns
-  }
-  r
+  colnames(out$Signature) <- colnames(out$W) <- rownames(out$Exposure) <- rownames(out$H) <- paste0("S", seq_len(K))
+  out
 }
 
-get_similarity_stats <- function(x,
-                                 n,
-                                 ns = NULL,
-                                 type = "within-cluster") {
-  if (type == "within-cluster") {
-    d <- lapply(seq_len(n), function(i) {
-      mat <- cosineMatrix(x[, i, ], x[, i, ])
-      mat[upper.tri(mat)]
-    })
-  } else if (type == "between-cluster") {
-    d <- lapply(seq_len(n), function(i) {
-      x1 <- x[, i, ]
-      x2 <- x[, -i, ]
-      dim(x2) <- c(dim(x1)[1], prod(dim(x2)) / dim(x1)[1])
-      cosineMatrix(x1, x2)
-    })
-  }
-  r <- data.frame(
-    mean = sapply(d, mean),
-    sd = sapply(d, sd),
-    min = sapply(d, min),
-    max = sapply(d, max),
-    stringsAsFactors = FALSE
-  )
-  if (!is.null(ns)) {
-    colnames(r) <- ns
-  }
-  r
-}
-
-# Quantify the exposure correlation between different signatures with
-# Pearson coefficient
-get_expo_corr_stat <- function(x) {
-  n <- dim(x)[1] # n signatures
-  r <- dim(x)[3] # r runs
-
-  get_cor <- function(x1, x2) {
-    nc <- ncol(x1)
-    sapply(seq_len(nc), function(i) {
-      stats::cor(x1[, i], x2[, i])
-    })
+# Transform data into Signature object
+tf_signature <- function(s, e, used_runs, catalogue_matrix = NULL) {
+  # If total_records is not NULL
+  # generate integer counts based on resampling
+  s.norm <- apply(s, 2, function(x) x / sum(x, na.rm = TRUE))
+  e.norm <- apply(e, 2, function(x) x / sum(x, na.rm = TRUE))
+  # When only one signature
+  if (!is.matrix(e.norm)) {
+    e.norm <- matrix(e.norm,
+      nrow = 1,
+      dimnames = list(rownames(e), names(e.norm))
+    )
   }
 
-  d <- lapply(seq_len(n), function(i) {
-    x1 <- x[i, , ]
-    x2 <- x[-i, , ]
-    if (length(dim(x2)) < 3) {
-      get_cor(x1, x2)
-    } else {
-      apply(x2, 1, function(m) {
-        get_cor(x1, m)
-      }) %>% rowMeans()
-    }
-  })
+  if (!is.null(catalogue_matrix)) {
+    set.seed(123)
+    s2 <- purrr::map2(
+      as.data.frame(s),
+      round((colSums(s) / sum(colSums(s))) * sum(catalogue_matrix)),
+      simulate_catalogue
+    ) %>%
+      dplyr::as_tibble() %>%
+      as.matrix()
+    rownames(s2) <- rownames(s)
+    colnames(s2) <- colnames(s)
+    s <- s2
 
-  r <- list(
-    expo_cor_mean = sapply(d, mean),
-    expo_cor_sd = sapply(d, sd),
-    expo_cor_min = sapply(d, min),
-    expo_cor_max = sapply(d, max)
+    set.seed(123)
+    e2 <- purrr::map2(
+      as.data.frame(e),
+      colSums(catalogue_matrix),
+      simulate_catalogue
+    ) %>%
+      dplyr::as_tibble() %>%
+      as.matrix()
+    rownames(e2) <- rownames(e)
+    colnames(e2) <- colnames(e)
+    e <- e2
+  }
+
+  obj <- list(
+    Signature = s,
+    Signature.norm = s.norm,
+    Exposure = e,
+    Exposure.norm = e.norm,
+    K = nrow(e)
+    # Raw = list()
   )
-  r
-}
 
-# The difference between reconstructed catalogs and the original catalog
-# 用相似性、L1、L2范数
-get_error_stats <- function(x, mat) {
-  n <- dim(mat)[2] # n samples
-  r <- dim(x)[3] # n runs
-
-  # similarity distance
-  d <- lapply(seq_len(n), function(i) {
-    1 - cosineMatrix(x[, i, ], mat[, i, drop = FALSE])
-  })
-  # L1 and L2
-  # Target at each column (i.e. sample)
-  l1 <- lapply(seq_len(n), function(i) {
-    colSums(abs(x[, i, ] - mat[, rep(i, r), drop = FALSE]))
-  })
-  l2 <- lapply(seq_len(n), function(i) {
-    sqrt(colSums((x[, i, ] - mat[, rep(i, r), drop = FALSE])^2))
-  })
-
-  r <- data.frame(
-    cosine_distance_mean = sapply(d, mean),
-    cosine_distance_sd = sapply(d, sd),
-    cosine_distance_min = sapply(d, min),
-    cosine_distance_max = sapply(d, max),
-    L1_mean = sapply(l1, mean),
-    L1_sd = sapply(l1, sd),
-    L1_min = sapply(l1, min),
-    L1_max = sapply(l1, max),
-    L2_mean = sapply(l2, mean),
-    L2_sd = sapply(l2, sd),
-    L2_min = sapply(l2, min),
-    L2_max = sapply(l2, max),
-    stringsAsFactors = FALSE
-  )
-  r
+  class(obj) <- "Signature"
+  attr(obj, "used_runs") <- used_runs
+  attr(obj, "method") <- "brunet"
+  # attr(obj, "seed") <- seed
+  attr(obj, "call_method") <- "NMF with best practice"
+  obj
 }
 
 get_stat_sigs <- function(runs) {
@@ -381,8 +389,9 @@ get_stat_samps <- function(runs, mat) {
     )
   )
   # get catalog array
-  sig_list <- purrr::map(runs, "Signature")
-  catalog_list <- purrr::map2(sig_list, expo_list, ~ .x %*% .y)
+  W_list <- purrr::map(runs, "W")
+  H_list <- purrr::map(runs, "H")
+  catalog_list <- purrr::map2(W_list, H_list, ~ .x %*% .y)
   dm2 <- dim(catalog_list[[1]])
   catalog_array <- array(unlist(catalog_list), dim = c(dm2, l))
 
@@ -427,17 +436,122 @@ get_stat_samps <- function(runs, mat) {
   )
 }
 
-normalize_solution <- function(solution) {
-  # solution is a NMF fit result
+get_3d_array_stats <- function(x, ns = NULL) {
+  r <- list(
+    mean = apply(x, c(1, 2), mean),
+    sd = apply(x, c(1, 2), sd),
+    min = apply(x, c(1, 2), min),
+    max = apply(x, c(1, 2), max)
+  )
+  if (!is.null(ns)) {
+    names(r) <- ns
+  }
+  r
+}
 
-  W <- NMF::basis(solution)
-  H <- NMF::coef(solution)
-  K <- ncol(W)
-  KLD <- NMF::deviance(solution)
+get_similarity_stats <- function(x,
+                                 n,
+                                 ns = NULL,
+                                 type = "within-cluster") {
+  if (type == "within-cluster") {
+    d <- lapply(seq_len(n), function(i) {
+      mat <- cosineMatrix(x[, i, ], x[, i, ])
+      mat[upper.tri(mat)]
+    })
+  } else if (type == "between-cluster") {
+    d <- lapply(seq_len(n), function(i) {
+      x1 <- x[, i, ]
+      x2 <- x[, -i, ]
+      dim(x2) <- c(dim(x1)[1], prod(dim(x2)) / dim(x1)[1])
+      cosineMatrix(x1, x2)
+    })
+  }
+  r <- data.frame(
+    mean = sapply(d, mean),
+    sd = sapply(d, sd),
+    min = sapply(d, min),
+    max = sapply(d, max),
+    stringsAsFactors = FALSE
+  )
+  if (!is.null(ns)) {
+    colnames(r) <- ns
+  }
+  r
+}
 
-  out <- c(helper_scale_nmf_matrix(W, H, K, handle_cn = FALSE), KLD = KLD)
-  colnames(out$Signature) <- rownames(out$Exposure) <- paste0("S", seq_len(K))
-  out
+# Quantify the exposure correlation between different signatures with
+# Pearson coefficient
+get_expo_corr_stat <- function(x) {
+  n <- dim(x)[1] # n signatures
+  r <- dim(x)[3] # r runs
+
+  get_cor <- function(x1, x2) {
+    nc <- ncol(x1)
+    sapply(seq_len(nc), function(i) {
+      stats::cor(x1[, i], x2[, i])
+    })
+  }
+
+  d <- lapply(seq_len(n), function(i) {
+    # 仅关注正相关
+    x1 <- x[i, , ]
+    x2 <- x[-i, , ]
+    if (length(dim(x2)) < 3) {
+      corr <- get_cor(x1, x2)
+    } else {
+      corr <- apply(x2, 1, function(m) {
+        get_cor(x1, m)
+      }) %>% rowMeans()
+    }
+    corr <- corr[corr > 0]
+    if (length(corr) == 0) NA else corr
+  })
+
+  r <- data.frame(
+    expo_pos_cor_mean = sapply(d, mean),
+    expo_pos_cor_sd = sapply(d, sd),
+    expo_pos_cor_min = sapply(d, min),
+    expo_pos_cor_max = sapply(d, max)
+  )
+  purrr::map_df(r, ~ ifelse(is.na(.), 0, .)) %>%
+    as.data.frame()
+}
+
+# The difference between reconstructed catalogs and the original catalog
+# 用相似性、L1、L2范数
+get_error_stats <- function(x, mat) {
+  n <- dim(mat)[2] # n samples
+  r <- dim(x)[3] # r runs
+
+  # similarity distance
+  d <- lapply(seq_len(n), function(i) {
+    1 - cosineMatrix(x[, i, ], mat[, i, drop = FALSE])
+  })
+  # L1 and L2
+  # Target at each column (i.e. sample)
+  l1 <- lapply(seq_len(n), function(i) {
+    colSums(abs(x[, i, ] - mat[, rep(i, r), drop = FALSE]))
+  })
+  l2 <- lapply(seq_len(n), function(i) {
+    sqrt(colSums((x[, i, ] - mat[, rep(i, r), drop = FALSE])^2))
+  })
+
+  r <- data.frame(
+    cosine_distance_mean = sapply(d, mean),
+    cosine_distance_sd = sapply(d, sd),
+    cosine_distance_min = sapply(d, min),
+    cosine_distance_max = sapply(d, max),
+    L1_mean = sapply(l1, mean),
+    L1_sd = sapply(l1, sd),
+    L1_min = sapply(l1, min),
+    L1_max = sapply(l1, max),
+    L2_mean = sapply(l2, mean),
+    L2_sd = sapply(l2, sd),
+    L2_min = sapply(l2, min),
+    L2_max = sapply(l2, max),
+    stringsAsFactors = FALSE
+  )
+  r
 }
 
 # Column representing signatures

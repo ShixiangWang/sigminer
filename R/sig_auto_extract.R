@@ -260,27 +260,8 @@ sig_auto_extract <- function(nmf_matrix = NULL,
       )
     }
 
-    Exposure <- best_solution$Exposure
     # Handle hyper mutant samples
-    hyper_index <- grepl("_\\[hyper\\]_", colnames(Exposure))
-    if (sum(hyper_index) > 0) {
-      H.hyper <- Exposure[, hyper_index, drop = FALSE]
-      H.nonhyper <- Exposure[, !hyper_index, drop = FALSE]
-      sample.hyper <- sapply(
-        colnames(H.hyper),
-        function(x) strsplit(x, "_\\[hyper\\]_")[[1]][[1]]
-      )
-      unique.hyper <- unique(sample.hyper)
-      n.hyper <- length(unique.hyper)
-      x.hyper <- array(0, dim = c(nrow(H.hyper), n.hyper))
-      for (i in 1:n.hyper) {
-        x.hyper[, i] <- rowSums(H.hyper[, sample.hyper %in% unique.hyper[i], drop = FALSE])
-      }
-      colnames(x.hyper) <- unique.hyper
-      rownames(x.hyper) <- rownames(Exposure)
-      Exposure <- cbind(H.nonhyper, x.hyper)
-      best_solution$Exposure <- Exposure
-    }
+    best_solution$Exposure <- collapse_hyper_records(best_solution$Exposure)
 
     best_solution$Exposure.norm <- apply(
       best_solution$Exposure, 2,
@@ -317,7 +298,6 @@ sig_auto_extract <- function(nmf_matrix = NULL,
   class(res) <- "Signature"
   attr(res, "nrun") <- nrun
   attr(res, "method") <- method
-  # attr(res, "seed") <- seed
   attr(res, "call_method") <- "BayesianNMF"
 
   res
