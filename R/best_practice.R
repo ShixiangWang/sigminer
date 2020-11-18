@@ -216,14 +216,15 @@ process_solution <- function(slist, catalogue_matrix, report_integer_counts = FA
   # Merge the stats and generate measures for selecting signature number
   stats <- data.frame(
     signature_number = nrow(stats_signature),
-    silhouette_signature = mean(stats_signature$silhouette),
-    silhouette_sample = mean(stats_sample$silhouette),
+    silhouette = mean(stats_signature$silhouette),
     sample_cosine_distance = mean(stats_sample$cosine_distance_mean),
     L1_error = mean(stats_sample$L1_mean),
     L2_error = mean(stats_sample$L2_mean),
     exposure_positive_correlation = mean(stats_signature$expo_pos_cor_mean),
     signature_similarity_within_cluster = mean(stats_signature$similarity_mean),
     signature_similarity_across_cluster = mean(stats_signature$cross_similarity_mean),
+    silhouette_sample = mean(stats_sample$silhouette), # 不同 runs 同一样本看作一个 cluster
+                                                       # 展示的是样本间的区分度
     stringsAsFactors = FALSE
   )
 
@@ -289,13 +290,17 @@ tf_signature <- function(s, e, used_runs, catalogue_matrix = NULL) {
     s <- s2
 
     set.seed(123)
-    e2 <- purrr::map2(
-      as.data.frame(e),
-      colSums(catalogue_matrix),
-      simulate_catalogue
-    ) %>%
-      dplyr::as_tibble() %>%
-      as.matrix()
+    if (nrow(e) < 2) {
+      e2 <- matrix(colSums(catalogue_matrix), nrow = 1)
+    } else {
+      e2 <- purrr::map2(
+        as.data.frame(e),
+        colSums(catalogue_matrix),
+        simulate_catalogue
+      ) %>%
+        dplyr::as_tibble() %>%
+        as.matrix()
+    }
     rownames(e2) <- rownames(e)
     colnames(e2) <- colnames(e)
     e <- e2
@@ -424,7 +429,7 @@ get_stat_samps <- function(runs, mat) {
     sample = colnames(mat)
   )
 
-  # error
+  # 重构 error：包括 重构相似度
   error <- get_error_stats(
     catalog_array,
     mat
@@ -460,10 +465,14 @@ get_similarity_stats <- function(x,
     })
   } else if (type == "between-cluster") {
     d <- lapply(seq_len(n), function(i) {
-      x1 <- x[, i, ]
-      x2 <- x[, -i, ]
-      dim(x2) <- c(dim(x1)[1], prod(dim(x2)) / dim(x1)[1])
-      cosineMatrix(x1, x2)
+      if (dim(x)[2] >= 2) {
+        x1 <- x[, i, ]
+        x2 <- x[, -i, ]
+        dim(x2) <- c(dim(x1)[1], prod(dim(x2)) / dim(x1)[1])
+        cosineMatrix(x1, x2)
+      } else {
+        NA
+      }
     })
   }
   r <- data.frame(
@@ -485,27 +494,32 @@ get_expo_corr_stat <- function(x) {
   n <- dim(x)[1] # n signatures
   r <- dim(x)[3] # r runs
 
-  get_cor <- function(x1, x2) {
-    nc <- ncol(x1)
-    sapply(seq_len(nc), function(i) {
-      stats::cor(x1[, i], x2[, i])
+  if (n > 1) {
+    get_cor <- function(x1, x2) {
+      nc <- ncol(x1)
+      sapply(seq_len(nc), function(i) {
+        stats::cor(x1[, i], x2[, i])
+      })
+    }
+
+    d <- lapply(seq_len(n), function(i) {
+      # 仅关注正相关
+      x1 <- x[i, , ]
+      x2 <- x[-i, , ]
+      if (length(dim(x2)) < 3) {
+        corr <- get_cor(x1, x2)
+      } else {
+        corr <- apply(x2, 1, function(m) {
+          get_cor(x1, m)
+        }) %>% rowMeans()
+      }
+      corr <- corr[corr > 0]
+      if (length(corr) == 0) NA else corr
     })
+  } else {
+    d <- NA
   }
 
-  d <- lapply(seq_len(n), function(i) {
-    # 仅关注正相关
-    x1 <- x[i, , ]
-    x2 <- x[-i, , ]
-    if (length(dim(x2)) < 3) {
-      corr <- get_cor(x1, x2)
-    } else {
-      corr <- apply(x2, 1, function(m) {
-        get_cor(x1, m)
-      }) %>% rowMeans()
-    }
-    corr <- corr[corr > 0]
-    if (length(corr) == 0) NA else corr
-  })
 
   r <- data.frame(
     expo_pos_cor_mean = sapply(d, mean),
