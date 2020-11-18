@@ -45,7 +45,10 @@ file_name <- function(filepath, must_chop = NULL) {
   y
 }
 
-chunk2 <- function(x, n) split(x, cut(seq_along(x), n, labels = FALSE))
+chunk2 <- function(x, n) {
+  if (n < 2) return(list(x))
+  split(x, cut(seq_along(x), n, labels = FALSE))
+}
 # https://stackoverflow.com/questions/30542128/circular-shift-of-vector-by-distance-n
 shifter <- function(x, n = 1) {
   if (n == 0) x else c(tail(x, -n), head(x, n))

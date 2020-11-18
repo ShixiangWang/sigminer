@@ -4,7 +4,7 @@
 
 # 当两个随机分布相同时，它们的相对熵为零，当两个随机分布的差别增
 # 大时，它们的相对熵也会增大。
-# deviance(res) # KLD
+# 当 n_bootstrap = 0 时，不进行 bootstrap
 bp_extract_signatures <- function(nmf_matrix,
                                   range = 2:10,
                                   n_bootstrap = 20L,
@@ -18,7 +18,9 @@ bp_extract_signatures <- function(nmf_matrix,
   stopifnot(
     is.matrix(nmf_matrix),
     !is.null(rownames(nmf_matrix)), !is.null(colnames(nmf_matrix)),
-    is.numeric(range), is.numeric(n_bootstrap), is.numeric(n_nmf_run),
+    is.numeric(range),
+    is.numeric(n_bootstrap), is.numeric(n_nmf_run),
+    n_bootstrap >= 0, n_nmf_run > 0,
     is.numeric(RTOL), RTOL > 0,
     is.numeric(min_contribution),
     min_contribution >= 0, min_contribution <= 0.1,
@@ -34,9 +36,11 @@ bp_extract_signatures <- function(nmf_matrix,
 
   # Input: a matrix used for NMF decomposition with rows indicate samples and columns indicate components.
   raw_catalogue_matrix <- t(nmf_matrix)
+  send_success("Input matrix kept.")
 
   # Dimension reduction: 去掉总贡献小的 components
   if (min_contribution != 0) {
+    send_info("Checking contribution of components.")
     contris <- colSums(nmf_matrix) / sum(nmf_matrix)
     contris_index <- contris <= min_contribution
     if (any(contris_index)) {
@@ -46,24 +50,39 @@ bp_extract_signatures <- function(nmf_matrix,
       )
       nmf_matrix <- nmf_matrix[, !contris_index, drop = FALSE]
     }
-    if (ncol(nmf_matrix) < 5) {
-      send_error("Too few components (<5) left!")
+    if (ncol(nmf_matrix) < 3) {
+      send_error("Too few components (<3) left!")
     }
+    send_success("Checked.")
   }
 
   # 超突变处理
   if (handle_hyper_mutation) {
+    send_info("Spliting samples if it is hyper-mutant.")
     nmf_matrix <- handle_hyper_mutation(nmf_matrix)
+    send_success("Done.")
   }
 
-  seeds_bt <- seq(seed, length = n_bootstrap)
-  # Generate bootstrapped catalogs based on n_bootstrap
-  bt_catalog_list <- purrr::map(seeds_bt, function(x) {
-    set.seed(x)
-    simulate_catalogue_matrix(nmf_matrix)
-  })
+  send_info("Generating data for inputing NMF.")
+  if (n_bootstrap == 0) {
+    send_success("Resampling is disabled.")
+    bt_catalog_list <- list(nmf_matrix)
+    n_bootstrap <- 1L
+    bt_flag = FALSE
+  } else {
+    send_success("Starting resampling (get bootstrapped catalog matrix).")
+    seeds_bt <- seq(seed, length = n_bootstrap)
+    # Generate bootstrapped catalogs based on n_bootstrap
+    bt_catalog_list <- purrr::map(seeds_bt, function(x) {
+      set.seed(x)
+      simulate_catalogue_matrix(nmf_matrix)
+    })
+    bt_flag = TRUE
+  }
   catalogue_matrix <- t(nmf_matrix)
+  send_success("Done.")
 
+  send_info("Running NMF with brunet method (Lee-KLD).")
   # NMF with brunet method
   if (isFALSE(mpi_platform)) {
     if (!requireNamespace("doFuture", quietly = TRUE)) {
@@ -75,13 +94,24 @@ bp_extract_signatures <- function(nmf_matrix,
   }
 
   seeds <- seq(seed, length = n_bootstrap * n_nmf_run)
+  send_success("Seeds generated for reproducible research.")
+
   solutions <- list()
   for (k in seq_along(range)) {
-    send_info(
-      "Extracting ", range[k], " signatures on ",
-      n_bootstrap, " bootstrapped catalogs with ",
-      n_nmf_run, " NMF runs for each."
-    )
+    if (bt_flag) {
+      send_info(
+        "Extracting ", range[k], " signatures on ",
+        n_bootstrap, " bootstrapped catalogs with ",
+        n_nmf_run, " NMF runs for each."
+      )
+    } else {
+      send_info(
+        "Extracting ", range[k], " signatures on ",
+        "the original catalog with ",
+        n_nmf_run, " NMF runs in a parallel chunk."
+      )
+    }
+
     solution_list <- suppressWarnings({
       foreach(
         s = seeds,
@@ -98,18 +128,27 @@ bp_extract_signatures <- function(nmf_matrix,
       }
     })
 
-    # Filter solutions with RTOL threshold in each bootstrap chunk
+    # Filter solutions with RTOL threshold
+    send_info("Keeping solutions with KLD within (1+RTOL) range of the best.")
     solutions[[paste0("K", range[k])]] <- purrr::map(
       chunk2(solution_list, n_bootstrap),
       .f = function(s) {
         KLD_list <- sapply(s, NMF::deviance)
-        s <- s[KLD_list <= min(KLD_list) * (1 + RTOL)]
-        if (length(s) > 10) s <- s[1:10] # Limits 10 best runs
+        ki <- KLD_list <= min(KLD_list) * (1 + RTOL)
+        s <- s[ki]
+        if (length(s) > 10 & bt_flag) {
+          # Limits 10 best runs if it is bootstrapped
+          KLD_list <- KLD_list[ki]
+          s <- s[order(KLD_list)]
+          s <- s[1:10]
+        }
         s
       }
     ) %>% unlist()
+    send_success("NMF done for this solution.")
   }
 
+  send_info("Starting process the solution list.")
   # Collect solutions
   # 先将所有 solution 标准化处理，得到 signature 和 activity
   # 然后针对 signature 使用 clustering with match 算法进行聚类
@@ -119,6 +158,9 @@ bp_extract_signatures <- function(nmf_matrix,
     catalogue_matrix = catalogue_matrix,
     report_integer_counts = report_integer_counts
   )
+  send_success("Solution list processed.")
+
+  send_info("Merging and checking the solution data.")
   # 合并 solutions
   solutions <- purrr::transpose(solutions)
   solutions$stats <- purrr::reduce(solutions$stats, rbind)
@@ -148,17 +190,25 @@ bp_extract_signatures <- function(nmf_matrix,
       obj
     }, to_add = to_add)
   }
+  send_success("Merged.")
+
   # TODO：利用一些算法生成建议 signature 并进行标记
   class(solutions) <- "ExtractionResult"
+
+  send_success("Extraction procedure run successfully.")
   solutions
 }
 
 process_solution <- function(slist, catalogue_matrix, report_integer_counts = FALSE) {
+  send_info("Normalizing solutions to get Signature and Exposure.")
   out <- purrr::map(slist, .f = normalize_solution) %>%
     setNames(paste0("Run", seq_along(slist)))
+  sn <- ncol(out[[1]]$Signature)
+  send_success("Done for ", sn, " signatures.")
 
   # If there are hyper-mutant records, collapse the samples into true samples
   if (any(grepl("_\\[hyper\\]_", colnames(catalogue_matrix)))) {
+    send_info("Hyper-mutant records detected, revert them to true samples.")
     catalogue_matrix <- collapse_hyper_records(catalogue_matrix)
     purrr::map(seq_along(out), function(i) {
       out[[i]]$Exposure <<- collapse_hyper_records(out[[i]]$Exposure)
@@ -166,21 +216,26 @@ process_solution <- function(slist, catalogue_matrix, report_integer_counts = FA
     purrr::map(seq_along(out), function(i) {
       out[[i]]$H <<- collapse_hyper_records(out[[i]]$H)
     })
+    send_success("Reverted.")
   }
 
   # If just one run, skip the following steps
   if (length(out) >= 2) {
+    send_info("Running clustering with match algorithm for signature assignment in different NMF runs.")
     run_pairs <- combn(names(out), 2, simplify = FALSE)
     run_pairs_name <- purrr::map_chr(run_pairs, ~ paste(., collapse = "_"))
+    send_success("Run pairs obtained.")
     # Get similarity distance
     pair_dist <- purrr::map(
       run_pairs,
       ~ get_cosine_distance(out[[.[1]]]$Signature, out[[.[2]]]$Signature)
     ) %>%
       setNames(run_pairs_name)
+    send_success("Run pairwise similarity distance calculated.")
     pair_dist_mean <- purrr::map_dbl(pair_dist, mean) %>%
       setNames(run_pairs_name)
     match_list <- purrr::map2(pair_dist, run_pairs, get_matches)
+    send_success("Match list obtained.")
 
     # Order the result by mean distance
     res_orders <- order(pair_dist_mean)
@@ -188,18 +243,22 @@ process_solution <- function(slist, catalogue_matrix, report_integer_counts = FA
     pair_dist <- pair_dist[res_orders]
     pair_dist_mean <- pair_dist_mean[res_orders]
     match_list <- match_list[res_orders]
+    send_success("Match list ordered by distance.")
 
     # Do clustering with match
     clusters <- clustering_with_match(match_list, n = length(out))
+    send_success("Clustering done.")
 
     # 按 match cluster 排序
     # 样本排序也确保对齐
+    send_info("Ordering data based on the clustering result.")
     samp_order <- colnames(out$Run1$Exposure)
     out <- purrr::map2(clusters, out, function(x, y, samp_order) {
       y$Signature <- y$Signature[, x, drop = FALSE]
       y$Exposure <- y$Exposure[x, samp_order, drop = FALSE]
       y
     }, samp_order = samp_order)
+    send_success("Done.")
   } else {
     run_pairs <- NA
     pair_dist <- NA
@@ -210,6 +269,7 @@ process_solution <- function(slist, catalogue_matrix, report_integer_counts = FA
     )
   }
 
+  send_info("Calculating stats for signatures and samples.")
   # 生成统计量
   # Remember the new order above
   # 分为 signature 和 样本两种，取每个度量的最大、最小值、平均值以及 SD
@@ -217,6 +277,9 @@ process_solution <- function(slist, catalogue_matrix, report_integer_counts = FA
   # 聚类平均相似距离, 平均错误，Exposure 相关性等
   stat_sigs <- get_stat_sigs(out)
   stat_samps <- get_stat_samps(out, mat = catalogue_matrix)
+  send_success("Done.")
+
+  send_info("Outputing extraction result and corresponding stats.")
 
   Signature <- stat_sigs$signature
   Exposure <- stat_samps$exposure
@@ -258,6 +321,7 @@ process_solution <- function(slist, catalogue_matrix, report_integer_counts = FA
     # 展示的是样本间的区分度
     stringsAsFactors = FALSE
   )
+  send_success("Data.frame for stats generated.")
 
   # Generate Signature object
   object <- tf_signature(
@@ -266,6 +330,7 @@ process_solution <- function(slist, catalogue_matrix, report_integer_counts = FA
     used_runs = length(out),
     catalogue_matrix = if (report_integer_counts) catalogue_matrix else NULL
   )
+  send_success("Signature object generated.")
 
   list(
     object = object,
@@ -349,7 +414,6 @@ tf_signature <- function(s, e, used_runs, catalogue_matrix = NULL) {
   class(obj) <- "Signature"
   attr(obj, "used_runs") <- used_runs
   attr(obj, "method") <- "brunet"
-  # attr(obj, "seed") <- seed
   attr(obj, "call_method") <- "NMF with best practice"
   obj
 }
@@ -402,7 +466,7 @@ get_stat_sigs <- function(runs) {
 
   # Get exposure correlation between different signatures
   expo_list <- purrr::map(runs, "Exposure")
-  dm <- dim(expo_list[[2]])
+  dm <- dim(expo_list[[1]])
   expo_array <- array(unlist(expo_list), dim = c(dm, l))
   expo_cor <- get_expo_corr_stat(expo_array)
 
@@ -414,7 +478,7 @@ get_stat_sigs <- function(runs) {
 
 get_stat_samps <- function(runs, mat) {
   expo_list <- purrr::map(runs, "Exposure")
-  dm <- dim(expo_list[[2]]) # the second value of dm indicates how many samples
+  dm <- dim(expo_list[[1]]) # the second value of dm indicates how many samples
   l <- length(expo_list)
   expo_array <- array(unlist(expo_list), dim = c(dm, l))
   # exposures
@@ -493,14 +557,28 @@ get_similarity_stats <- function(x,
                                  type = "within-cluster") {
   if (type == "within-cluster") {
     d <- lapply(seq_len(n), function(i) {
-      mat <- cosineMatrix(x[, i, ], x[, i, ])
-      mat[upper.tri(mat)]
+      x2 <- x[, i, ]
+      if (is.null(dim(x2))) {
+        x2 = matrix(x2, ncol = 1)
+      }
+      mat <- cosineMatrix(x2, x2)
+      if (ncol(mat) > 1) {
+        mat[upper.tri(mat)]
+      } else mat
     })
   } else if (type == "between-cluster") {
     d <- lapply(seq_len(n), function(i) {
       if (dim(x)[2] >= 2) {
         x1 <- x[, i, ]
         x2 <- x[, -i, ]
+
+        if (is.null(dim(x1))) {
+          x1 <- matrix(x1, ncol = 1)
+        }
+        if (is.null(dim(x2))) {
+          x2 <- matrix(x2, ncol = 1)
+        }
+
         dim(x2) <- c(dim(x1)[1], prod(dim(x2)) / dim(x1)[1])
         cosineMatrix(x1, x2)
       } else {
@@ -528,31 +606,32 @@ get_expo_corr_stat <- function(x) {
   r <- dim(x)[3] # r runs
 
   if (n > 1) {
-    get_cor <- function(x1, x2) {
-      nc <- ncol(x1)
-      sapply(seq_len(nc), function(i) {
-        stats::cor(x1[, i], x2[, i])
-      })
-    }
-
     d <- lapply(seq_len(n), function(i) {
-      # 仅关注正相关
-      x1 <- x[i, , ]
-      x2 <- x[-i, , ]
-      if (length(dim(x2)) < 3) {
-        corr <- get_cor(x1, x2)
-      } else {
-        corr <- apply(x2, 1, function(m) {
-          get_cor(x1, m)
-        }) %>% rowMeans()
+
+      x1 <- x[i, ,  , drop = FALSE]
+      x2 <- x[-i, , , drop = FALSE]
+
+      rows = dim(x2)[1]
+      corr = vector("numeric", rows * r)
+      # calculate exposure corr in each run
+      j <- 1L
+      for (row in seq_len(rows)) {
+        for (rn in seq_len(r)) {
+          corr[j] <- stats::cor(
+            x1[1, , rn],
+            x2[row, , rn]
+          )
+          j <- j + 1L
+        }
       }
+
+      # 仅关注正相关
       corr <- corr[corr > 0]
       if (length(corr) == 0) NA else corr
     })
   } else {
     d <- NA
   }
-
 
   r <- data.frame(
     expo_pos_cor_mean = sapply(d, mean),
@@ -572,7 +651,11 @@ get_error_stats <- function(x, mat) {
 
   # similarity distance
   d <- lapply(seq_len(n), function(i) {
-    1 - cosineMatrix(x[, i, ], mat[, i, drop = FALSE])
+    x2 <- x[, i, ]
+    if (is.null(dim(x2))) {
+      x2 <- matrix(x2, ncol = 1)
+    }
+    1 - cosineMatrix(x2, mat[, i, drop = FALSE])
   })
   # L1 and L2
   # Target at each column (i.e. sample)
