@@ -46,6 +46,9 @@ bp_extract_signatures <- function(nmf_matrix,
       )
       nmf_matrix <- nmf_matrix[, !contris_index, drop = FALSE]
     }
+    if (ncol(nmf_matrix) < 5) {
+      send_error("Too few components (<5) left!")
+    }
   }
 
   # 超突变处理
@@ -116,9 +119,37 @@ bp_extract_signatures <- function(nmf_matrix,
     catalogue_matrix = catalogue_matrix,
     report_integer_counts = report_integer_counts
   )
-  # TODO: 合并 solutions
-  # TODO: 如果发现缺少 components，利用 0 进行回补
+  # 合并 solutions
+  solutions <- purrr::transpose(solutions)
+  solutions$stats <- purrr::reduce(solutions$stats, rbind)
+  solutions$stats_signature <- purrr::reduce(solutions$stats_signature, rbind)
+  solutions$stats_sample <- purrr::reduce(solutions$stats_sample, rbind)
+  # 追加属性
+  solutions$object <- purrr::map(solutions$object, .f = function(obj) {
+    attr(obj, "nrun") <- n_bootstrap * n_nmf_run
+    attr(obj, "seed") <- seed
+    obj
+  })
+  # 如果发现缺少 components，利用 0 进行回补
+  kept_comps <- rownames(solutions$signature[[1]]$signature_mean)
+  raw_comps <- rownames(raw_catalogue_matrix)
+  if (length(kept_comps) < length(raw_comps)) {
+    to_add <- setdiff(raw_comps, kept_comps)
+    solutions$object <- purrr::map(solutions$object, .f = function(obj, to_add) {
+      n <- ncol(obj$Signature)
+      m <- length(to_add)
+
+      mat_add <- matrix(rep(0, n * m),
+        nrow = m,
+        dimnames = list(to_add)
+      )
+      obj$Signature <- rbind(obj$Signature, mat_add)
+      obj$Signature.norm <- rbind(obj$Signature.norm, mat_add)
+      obj
+    }, to_add = to_add)
+  }
   # TODO：利用一些算法生成建议 signature 并进行标记
+  class(solutions) <- "ExtractionResult"
   solutions
 }
 
@@ -182,8 +213,8 @@ process_solution <- function(slist, catalogue_matrix, report_integer_counts = FA
   # 生成统计量
   # Remember the new order above
   # 分为 signature 和 样本两种，取每个度量的最大、最小值、平均值以及 SD
-  # 重构相似性，cophenetic，轮廓系数，
-  # 聚类平均相似距离，RSS, 平均错误，Exposure 相关性等
+  # 重构相似性，轮廓系数，
+  # 聚类平均相似距离, 平均错误，Exposure 相关性等
   stat_sigs <- get_stat_sigs(out)
   stat_samps <- get_stat_samps(out, mat = catalogue_matrix)
 
@@ -224,7 +255,7 @@ process_solution <- function(slist, catalogue_matrix, report_integer_counts = FA
     signature_similarity_within_cluster = mean(stats_signature$similarity_mean),
     signature_similarity_across_cluster = mean(stats_signature$cross_similarity_mean),
     silhouette_sample = mean(stats_sample$silhouette), # 不同 runs 同一样本看作一个 cluster
-                                                       # 展示的是样本间的区分度
+    # 展示的是样本间的区分度
     stringsAsFactors = FALSE
   )
 
@@ -330,6 +361,7 @@ get_stat_sigs <- function(runs) {
   sig_array <- array(unlist(sig_list), dim = c(dm, l))
   # signatures
   sig <- data.frame(
+    signature_number = rep(dm[2], dm[2]),
     signature = seq_len(dm[2]) # Rename it outside the function
   )
   s <- get_3d_array_stats(
@@ -426,6 +458,7 @@ get_stat_samps <- function(runs, mat) {
   )
 
   samp <- data.frame(
+    signature_number = rep(dm[1], ncol(mat)),
     sample = colnames(mat)
   )
 
