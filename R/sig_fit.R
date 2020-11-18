@@ -393,7 +393,7 @@ decompose_NNLS <- function(x, y, z, sig_matrix, type = "absolute", auto_reduce =
     if (auto_reduce) {
       rec <- (expo %*% t(sig_matrix) * sum(x))[1, ]
       sim <- cosine(rec, x)
-      if (sim < 0.99) {
+      if (sim < 0.95) {
         sim_old <- sim
         # continue to optimize
         send_info("Start optimizing...")
@@ -434,9 +434,7 @@ decompose_NNLS <- function(x, y, z, sig_matrix, type = "absolute", auto_reduce =
   return_expo(expo = expo, y, type, total = sum(x))
 }
 
-# m observed turmor profile vector for a single patient/sample, 96 by 1. m is normalized.
 # P is same as sig_matrix
-
 decompose_QP <- function(x, y, z, P, type = "absolute", auto_reduce = FALSE, ...) {
   if (!is.na(z)) send_info("Fitting sample: ", z)
 
@@ -466,7 +464,7 @@ decompose_QP <- function(x, y, z, P, type = "absolute", auto_reduce = FALSE, ...
       sig_matrix <- P
       rec <- (expo %*% t(sig_matrix) * sum(x))[1, ]
       sim <- cosine(rec, x)
-      if (sim < 0.99) {
+      if (sim < 0.95) {
         sim_old <- sim
         # continue to optimize
         send_info("Start optimizing...")
@@ -537,7 +535,7 @@ decompose_SA <- function(x, y, z, P, type = "absolute", auto_reduce = FALSE, ...
       sig_matrix <- P
       rec <- (expo %*% t(sig_matrix) * sum(x))[1, ]
       sim <- cosine(rec, x)
-      if (sim < 0.99) {
+      if (sim < 0.95) {
         sim_old <- sim
         # continue to optimize
         send_info("Start optimizing...")
