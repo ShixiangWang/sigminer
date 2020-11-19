@@ -139,25 +139,27 @@ bp_extract_signatures <- function(nmf_matrix,
       ) %dopar% {
         if (verbose) {
           message("Extracting ", range[k], " signatures with seed: ", s)
-          print(t(bt_matrix))
+          #print(t(bt_matrix))
         }
         NMF::nmf(t(bt_matrix), rank = range[k], method = "brunet", seed = s, nrun = 1L)
       }
     })
 
     # Filter solutions with RTOL threshold
-    send_info("Keeping solutions with KLD within (1+RTOL) range of the best.")
+    if (bt_flag) send_info("Keeping solutions with KLD within (1+RTOL) range of the best.")
     solutions[[paste0("K", range[k])]] <- purrr::map(
       chunk2(solution_list, n_bootstrap),
       .f = function(s) {
-        KLD_list <- sapply(s, NMF::deviance)
-        ki <- KLD_list <= min(KLD_list) * (1 + RTOL)
-        s <- s[ki]
-        if (length(s) > 10 & bt_flag) {
-          # Limits 10 best runs if it is bootstrapped
-          KLD_list <- KLD_list[ki]
-          s <- s[order(KLD_list)]
-          s <- s[1:10]
+        if (bt_flag) {
+          KLD_list <- sapply(s, NMF::deviance)
+          ki <- KLD_list <= min(KLD_list) * (1 + RTOL)
+          s <- s[ki]
+          if (length(s) > 10) {
+            # Limits 10 best runs
+            KLD_list <- KLD_list[ki]
+            s <- s[order(KLD_list)]
+            s <- s[1:10]
+          }
         }
         s
       }
