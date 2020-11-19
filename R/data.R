@@ -109,11 +109,23 @@ NULL
 #' data(transcript.mm10)
 NULL
 
-#' Classfication Table of Copy Number Features Devised by Wang et al. for Method 'W'
+#' Classification Table of Copy Number Features Devised by Wang et al. for Method 'W'
 #' @docType data
 #' @name CN.features
 #' @format A `data.table` with "sigminer.features" class name
 #' @source Generate from code under data_raw/
 #' @examples
 #' data(CN.features)
+NULL
+
+#' A List of Simulated SBS-96 Catalog Matrix
+#'
+#' Data from <https://doi.org/10.1038/s43018-020-0027-5>.
+#' 5 simulated catalog datasets are used by the paper but only 4 are available.
+#' @docType data
+#' @name simulated_catalogs
+#' @format A list of matrix
+#' @source Generate from code under data_raw/
+#' @examples
+#' data(simulated_catalogs)
 NULL

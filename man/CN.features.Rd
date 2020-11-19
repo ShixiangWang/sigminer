@@ -3,7 +3,7 @@
 \docType{data}
 \name{CN.features}
 \alias{CN.features}
-\title{Classfication Table of Copy Number Features Devised by Wang et al. for Method 'W'}
+\title{Classification Table of Copy Number Features Devised by Wang et al. for Method 'W'}
 \format{
 A \code{data.table} with "sigminer.features" class name
 }
@@ -11,7 +11,7 @@ A \code{data.table} with "sigminer.features" class name
 Generate from code under data_raw/
 }
 \description{
-Classfication Table of Copy Number Features Devised by Wang et al. for Method 'W'
+Classification Table of Copy Number Features Devised by Wang et al. for Method 'W'
 }
 \examples{
 data(CN.features)
