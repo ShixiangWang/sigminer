@@ -30,6 +30,15 @@ bp_extract_signatures <- function(nmf_matrix,
   )
   seed <- as.integer(seed)
 
+  ii <- rowSums(nmf_matrix) < 0.01
+  if (any(ii)) {
+    message(
+      "The follow samples dropped due to null catalogue:\n\t",
+      paste0(rownames(nmf_matrix)[ii], collapse = ", ")
+    )
+    nmf_matrix <- nmf_matrix[!ii, , drop = FALSE]
+  }
+
   timer <- Sys.time()
   send_info("Best practice for signature extraction started.")
   send_info("NOTE: the input should be a sample-by-component matrix.")
@@ -53,7 +62,7 @@ bp_extract_signatures <- function(nmf_matrix,
       nmf_matrix <- nmf_matrix[, !contris_index, drop = FALSE]
     }
     if (ncol(nmf_matrix) < 3) {
-      send_error("Too few components (<3) left!")
+      send_stop("Too few components (<3) left!")
     }
     send_success("Checked.")
   }
@@ -81,6 +90,12 @@ bp_extract_signatures <- function(nmf_matrix,
     })
     bt_flag <- TRUE
   }
+
+  # 有必要的话添加一个极小的数，解决 NMF 包可能存在的异常报错问题
+  # 一个 component 之和不能为 0
+  # Here rows are samples
+  bt_catalog_list <- purrr::map(bt_catalog_list, check_nmf_matrix)
+
   catalogue_matrix <- t(nmf_matrix)
   send_success("Done.")
 

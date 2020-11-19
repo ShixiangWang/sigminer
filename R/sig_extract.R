@@ -31,7 +31,6 @@ sig_extract <- function(nmf_matrix,
                         cores = 1,
                         method = "brunet",
                         optimize = FALSE,
-                        pConstant = NULL,
                         seed = 123456, ...) {
   # transpose matrix
   mat <- t(nmf_matrix)
@@ -45,13 +44,8 @@ sig_extract <- function(nmf_matrix,
     mat <- mat[, !ii, drop = FALSE]
   }
 
-  # To avoid error due to non-conformable arrays
-  if (!is.null(pConstant)) {
-    if (pConstant < 0 | pConstant == 0) {
-      stop("pConstant must be > 0")
-    }
-    mat <- mat + pConstant
-  }
+  # To avoid error due to NMF
+  mat <- check_nmf_matrix(mat, byrow = TRUE)
 
   nmf.res <- NMF::nmf(
     mat,
@@ -154,7 +148,6 @@ sig_extract <- function(nmf_matrix,
   class(res) <- "Signature"
   attr(res, "nrun") <- nrun
   attr(res, "method") <- method
-  attr(res, "pConstant") <- pConstant
   attr(res, "seed") <- seed
   attr(res, "call_method") <- "NMF"
 

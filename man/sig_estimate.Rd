@@ -16,7 +16,6 @@ sig_estimate(
   save_plots = FALSE,
   plot_basename = file.path(tempdir(), "nmf"),
   what = "all",
-  pConstant = NULL,
   verbose = FALSE
 )
 }
@@ -32,7 +31,7 @@ enough to achieve robust result.}
 \item{use_random}{Should generate random data from input to test measurements. Default is \code{TRUE}.}
 
 \item{method}{specification of the NMF algorithm. Use 'brunet' as default.
-Available methods for nmf decompositions are 'brunet', 'lee', 'ls-nmf', 'nsNMF', 'offset'.}
+Available methods for NMF decompositions are 'brunet', 'lee', 'ls-nmf', 'nsNMF', 'offset'.}
 
 \item{seed}{specification of the starting point or seeding method, which will compute a starting point,
 usually using data from the target matrix in order to provide a good guess.}
@@ -50,10 +49,6 @@ the measures computed by summary on each multi-run NMF result: ‘all’, ‘cop
 ‘dispersion’, ‘evar’, ‘silhouette’ (and more specific .coef, .basis, .consensus), ‘sparseness’
 (and more specific .coef, .basis). It specifies which measure must be plotted
 (what='all' plots all the measures).}
-
-\item{pConstant}{A small positive value (like 1e-9) to add to the matrix.
-Use it ONLY if the functions throws
-an \code{non-conformable arrays} error.}
 
 \item{verbose}{if \code{TRUE}, print extra message.}
 }

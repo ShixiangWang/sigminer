@@ -1,3 +1,17 @@
+# sigminer 1.1.1
+
+## BUG REPORTS
+
+## ENHANCEMENTS
+
+- Removed `pConstant` option from `sig_extract()` and `sig_estimate()`. Now a
+auto-check function is created for avoiding the error from NMF package due to
+no contribution of a component in all samples.
+
+## NEW FUNCTIONS
+
+## DEPRECATED
+
 # sigminer 1.1.0
 
 - Added data simulation.
