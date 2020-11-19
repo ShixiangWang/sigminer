@@ -20,6 +20,8 @@ sim_results$set2$stats
 sim_results$set3$stats
 sim_results$set4$stats
 
+rank_solutions(sim_results$set1$stats)
+
 pheatmap::pheatmap(get_sig_similarity(sim_results$set1$object$K10)$similarity[, c(paste0("COSMIC_", c(1:3, 5:6, 8, 12:13, 17:18)))],
                    cluster_rows = F, cluster_cols = F, display_numbers = T)
 pheatmap::pheatmap(get_sig_similarity(sim_results$set2$object$K10)$similarity[, c(paste0("COSMIC_", c(1:3, 5:6, 8, 12:13, 17:18)))],
@@ -35,6 +37,8 @@ sim_results2 <- purrr::map(
   ~ bp_extract_signatures(
     t(.), range = 8:12, cores = 8, n_bootstrap = 0, n_nmf_run = 1000, verbose = TRUE
   ))
+
+save(sim_results2, file = "~/Desktop/sim_results2.RData")
 
 sim_results2$set1$stats
 sim_results2$set2$stats

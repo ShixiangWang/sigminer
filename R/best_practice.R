@@ -903,7 +903,7 @@ rank_solutions <- function(stats) {
                 "exposure_positive_correlation", "signature_similarity_within_cluster")
   types <- c("diff", "increase", "increase", "increase", "decrease")
 
-  rk <- purrr::map2(.x = stats[, measures],
+  rk <- purrr::map2_df(.x = stats[, measures],
                     .y = types,
                     .f = function(x, y, signum) {
     if (y == "increase") {
@@ -918,6 +918,17 @@ rank_solutions <- function(stats) {
       signum[order(x)]
     }
   }, signum = stats$signature_number)
+
+  r <- list()
+  r$rank_measure = rk
+  r$rank_order <- RankAggreg::RankAggreg(rk %>%
+                                 as.matrix() %>%
+                                 t(),
+                               nrow(rk),
+                               method = "CE",
+                               distance = "Spearman",
+                               verbose = FALSE)
+  r
 }
 
 # 获取一些指定的信息
