@@ -161,8 +161,7 @@ bp_extract_signatures <- function(nmf_matrix,
           if (length(s) > 10 ) {
             # Limits 10 best runs
             KLD_list <- KLD_list[ki]
-            s <- s[order(KLD_list)]
-            s <- s[1:10]
+            s <- s[order(KLD_list)[1:10]]
           }
         } else if (length(s) > 100 & !bt_flag) {
           s <- s[order(KLD_list)[1:100]]
