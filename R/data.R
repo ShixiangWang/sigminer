@@ -121,7 +121,13 @@ NULL
 #' A List of Simulated SBS-96 Catalog Matrix
 #'
 #' Data from <https://doi.org/10.1038/s43018-020-0027-5>.
-#' 5 simulated catalog datasets are used by the paper but only 4 are available.
+#' 5 simulated mutation catalogs are used by the paper but only 4 are available.
+#' The data are simulated from COSMIC mutational signatures 1, 2, 3, 5, 6, 8,
+#' 12, 13, 17 and 18. Each sample is a linear combination of 5 randomly selected
+#' signatures with the addiction of Poisson noise. The number of mutation in
+#' each sample is randomly selected between 1,000 and 50,000 mutations, in log
+#' scale so that a lower number of mutations is more likely to be selected.
+#' The proportion of each signature in each sample is also random.
 #' @docType data
 #' @name simulated_catalogs
 #' @format A list of matrix
