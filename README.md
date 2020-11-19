@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# Sigminer: Mutational Signature Analysis and Visualization in R <img src="man/figures/logo.png" align="right"  height="140" width="120" alt="logo"/>
+# Sigminer: Mutational Signature Analysis and Visualization in R <img src="man/figures/logo.png" alt="logo" align="right" height="140" width="120"/>
 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/sigminer)](https://cran.r-project.org/package=sigminer)
@@ -52,35 +52,35 @@ For pipeline tool, please see its co-evolutionary CLI
 
 ### Feature
 
-  - supports a standard *de novo* pipeline for identification of **5**
+-   supports a standard *de novo* pipeline for identification of **5**
     types of signatures: copy number, SBS, DBS, INDEL and RS (genome
     rearrangement signature).
-  - supports quantify exposure for one sample based on *known
+-   supports quantify exposure for one sample based on *known
     signatures*.
-  - supports two methods for calling copy number signatures: one is from
+-   supports two methods for calling copy number signatures: one is from
     Macintyre et al. 2018 and the other is created by our group.
-  - supports association and group analysis and visualization for
+-   supports association and group analysis and visualization for
     signatures.
-  - supports a Bayesian variant of NMF algorithm to enable optimal
+-   supports a Bayesian variant of NMF algorithm to enable optimal
     inferences for the number of signatures through the automatic
     relevance determination technique from **SignatureAnalyzer**
     package.
-  - supports a caller for **SigProfiler**.
-  - supports two plot styles for signature profile: ‘default’ (like
+-   supports a caller for **SigProfiler**.
+-   supports two plot styles for signature profile: ‘default’ (like
     **SignatureAnalyzer** package) and ‘cosmic’ (like **COSMIC**
     database).
-  - supports two types of signature exposures: relative exposure
+-   supports two types of signature exposures: relative exposure
     (relative contribution of signatures in each sample) and absolute
     exposure (estimated variation records of signatures in each sample).
-  - supports basic summary and visualization for profile of mutation
+-   supports basic summary and visualization for profile of mutation
     (powered by **maftools**) and copy number.
-  - supports parallel computation by R packages **foreach**, **future**
+-   supports parallel computation by R packages **foreach**, **future**
     and **NMF**.
-  - efficient code powered by R packages **data.table** and
+-   efficient code powered by R packages **data.table** and
     **tidyverse**.
-  - elegant plots powered by R packages **ggplot2**, **ggpubr**,
+-   elegant plots powered by R packages **ggplot2**, **ggpubr**,
     **cowplot** and **patchwork**.
-  - well tested by R package **testthat** and documented by R package
+-   well tested by R package **testthat** and documented by R package
     **roxygen2**, **roxytest**, **pkgdown**, and etc. for both reliable
     and reproducible research.
 
@@ -117,14 +117,22 @@ its documentation.
 
 ## Citation
 
------
+If you use **sigminer** in academic field, please cite one of the
+following papers.
 
-***Wang, Shixiang, et al. “Copy number signature analyses in prostate
-cancer reveal distinct etiologies and clinical outcomes” medRxiv
-(2020)***
-<https://www.medrxiv.org/content/10.1101/2020.04.27.20082404v1>
+------------------------------------------------------------------------
 
------
+-   ***Wang, Shixiang, et al. “Copy number signature analyses in
+    prostate cancer reveal distinct etiologies and clinical outcomes”
+    medRxiv (2020)***
+    <https://www.medrxiv.org/content/10.1101/2020.04.27.20082404v1>
+
+-   **Shixiang Wang, Ziyu Tao, Tao Wu, Xue-Song Liu, Sigflow: An
+    Automated And Comprehensive Pipeline For Cancer Genome Mutational
+    Signature Analysis, Bioinformatics, btaa895**,
+    <https://doi.org/10.1093/bioinformatics/btaa895>
+
+------------------------------------------------------------------------
 
 ## Download Stats
 
@@ -203,8 +211,9 @@ MIT © 2018 Geoffrey Macintyre
 
 MIT © 2018 Anand Mayakonda
 
------
+------------------------------------------------------------------------
 
-**[Cancer Biology Group](https://github.com/XSLiuLab) @ShanghaiTech**
+[**Cancer Biology Group**](https://github.com/XSLiuLab)
+**@ShanghaiTech**
 
 **Research group led by Xue-Song Liu in ShanghaiTech University**
