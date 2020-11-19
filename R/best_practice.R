@@ -34,7 +34,7 @@ bp_extract_signatures <- function(nmf_matrix,
   send_info("Best practice for signature extraction started.")
   send_info("NOTE: the input should be a sample-by-component matrix.")
   on.exit(send_elapsed_time(timer))
-  on.exit(invisible(gc()))
+  on.exit(invisible(gc()), add = TRUE)
 
   # Input: a matrix used for NMF decomposition with rows indicate samples and columns indicate components.
   raw_catalogue_matrix <- t(nmf_matrix)
@@ -158,11 +158,26 @@ bp_extract_signatures <- function(nmf_matrix,
   # 先将所有 solution 标准化处理，得到 signature 和 activity
   # 然后针对 signature 使用 clustering with match 算法进行聚类
   # 聚类：使用 1 - cosine 相似性作为距离指标
-  solutions <- purrr::map(solutions,
-    .f = process_solution,
-    catalogue_matrix = catalogue_matrix,
-    report_integer_counts = report_integer_counts
-  )
+  if (sum(sapply(solutions, length)) < 200L & length(solutions) < 4) {
+    solutions <- purrr::map(
+      solutions,
+      .f = process_solution,
+      catalogue_matrix = catalogue_matrix,
+      report_integer_counts = report_integer_counts
+    )
+  } else {
+    oplan <- future::plan()
+    future::plan("multiprocess", workers = cores)
+    on.exit(future::plan(oplan), add = TRUE)
+    solutions <- furrr::future_map(
+      solutions,
+      .f = process_solution,
+      catalogue_matrix = catalogue_matrix,
+      report_integer_counts = report_integer_counts,
+      .progress = TRUE,
+      .options = furrr::furrr_options(seed = TRUE)
+    )
+  }
   send_success(
     "Solution list processed. Current memory size used: ",
     round(mem_used() / 2^20), "MB"
@@ -215,7 +230,7 @@ process_solution <- function(slist, catalogue_matrix, report_integer_counts = FA
   out <- purrr::map(slist, .f = normalize_solution) %>%
     setNames(paste0("Run", seq_along(slist)))
   sn <- ncol(out[[1]]$Signature)
-  send_success("Done for ", sn, " signatures.")
+  send_info("Start processing ", sn, " signatures.")
 
   # If there are hyper-mutant records, collapse the samples into true samples
   if (any(grepl("_\\[hyper\\]_", colnames(catalogue_matrix)))) {
