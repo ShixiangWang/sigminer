@@ -146,20 +146,26 @@ bp_extract_signatures <- function(nmf_matrix,
     })
 
     # Filter solutions with RTOL threshold
-    if (bt_flag) send_info("Keeping solutions with KLD within (1+RTOL) range of the best.")
+    if (bt_flag) {
+      send_info("Keeping at most 10 NMF solutions with KLD within (1+RTOL) range of the best.")
+    } else {
+      send_info("Keeping at most 100 best NMF solutions.")
+    }
     solutions[[paste0("K", range[k])]] <- purrr::map(
       chunk2(solution_list, n_bootstrap),
       .f = function(s) {
+        KLD_list <- sapply(s, NMF::deviance)
         if (bt_flag) {
-          KLD_list <- sapply(s, NMF::deviance)
           ki <- KLD_list <= min(KLD_list) * (1 + RTOL)
           s <- s[ki]
-          if (length(s) > 10) {
+          if (length(s) > 10 ) {
             # Limits 10 best runs
             KLD_list <- KLD_list[ki]
             s <- s[order(KLD_list)]
             s <- s[1:10]
           }
+        } else if (length(s) > 100 & !bt_flag) {
+          s <- s[order(KLD_list)[1:100]]
         }
         s
       }
@@ -887,6 +893,32 @@ clustering_with_match <- function(match_list, n) {
   } else {
     match_list[[1]]
   }
+}
+
+rank_solutions <- function(stats) {
+  # 同时迭代 signature number, 指标 data.frame 和对应的排序方法
+  # stats 必须按 signature_number 从小到大 order，不然一些定量会有问题
+  stats <- stats[order(stats$signature_number), ]
+
+  measures <- c("silhouette", "sample_cosine_distance", "L2_error",
+                "exposure_positive_correlation", "signature_similarity_within_cluster")
+  types <- c("diff", "increase", "increase", "increase", "decrease")
+
+  rk <- purrr::map2(.x = stats[, measures],
+                    .y = types,
+                    .f = function(x, y, signum) {
+    if (y == "increase") {
+      # Smaller is better
+      signum[order(x)]
+    } else if (y == "decrease") {
+      # Larger is better
+      signum[order(x, decreasing = TRUE)]
+    } else {
+      # diff type
+      df <- c(diff(x), 0)
+      signum[order(x)]
+    }
+  }, signum = stats$signature_number)
 }
 
 # 获取一些指定的信息
