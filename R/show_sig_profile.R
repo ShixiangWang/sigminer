@@ -442,19 +442,20 @@ show_sig_profile <- function(Signature,
     mat <- tidyr::gather(mat, class, signature, -c("context", "base"))
 
     mat <- dplyr::mutate(mat,
-                         context = factor(.data$context,
-                                          levels = c(
-                                            "1-10Kb", "10-100Kb",
-                                            "100Kb-1Mb", "1Mb-10Mb",
-                                            ">10Mb", "trans"
-                                          )),
-                         base = factor(.data$base, levels = c(
-                           "C-del", "C-tds",
-                           "C-inv", "C",
-                           "N-del", "N-tds",
-                           "N-inv", "N"
-                         )),
-                         class = factor(class, levels = colnames(Sig))
+      context = factor(.data$context,
+        levels = c(
+          "1-10Kb", "10-100Kb",
+          "100Kb-1Mb", "1Mb-10Mb",
+          ">10Mb", "trans"
+        )
+      ),
+      base = factor(.data$base, levels = c(
+        "C-del", "C-tds",
+        "C-inv", "C",
+        "N-del", "N-tds",
+        "N-inv", "N"
+      )),
+      class = factor(class, levels = colnames(Sig))
     )
   }
 
@@ -566,7 +567,8 @@ show_sig_profile <- function(Signature,
 
   p <- p + scale_y_continuous(
     labels = scales::number_format(
-      accuracy = if (mean(mat$signature[mat$signature > 0]) < 1) 0.01 else NULL)
+      accuracy = if (mean(mat$signature[mat$signature > 0]) < 1) 0.01 else NULL
+    )
   )
 
 

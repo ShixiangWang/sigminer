@@ -1,3 +1,11 @@
+# Check data may cause NMF error
+# It is a bug of NMF package and now is not be addressed
+#
+# NMF::nmf - Input matrix x contains at least one null or NA-filled row
+# Just add a small positive values
+check_nmf_matrix <- function(x, threshold = 1e-20) {
+  x + threshold
+}
 
 # Source code from reporttools (https://github.com/cran/reporttools/blob/master/R/pairwise.fisher.test.r)
 pairwise.fisher.test <- function(x, g, p.adjust.method, ...) {
@@ -45,7 +53,16 @@ file_name <- function(filepath, must_chop = NULL) {
   y
 }
 
-# chunk2 <- function(x, n) split(x, cut(seq_along(x), n, labels = FALSE))
+chunk2 <- function(x, n) {
+  if (n < 2) {
+    return(list(x))
+  }
+  split(x, cut(seq_along(x), n, labels = FALSE))
+}
+# https://stackoverflow.com/questions/30542128/circular-shift-of-vector-by-distance-n
+shifter <- function(x, n = 1) {
+  if (n == 0) x else c(tail(x, -n), head(x, n))
+}
 
 # From https://gist.github.com/mbannert/e9fcfa86de3b06068c83
 rgb2hex <- function(r, g, b) grDevices::rgb(r, g, b, maxColorValue = 255)
@@ -118,11 +135,11 @@ use_color_style <- function(style, mode = c("SBS", "copynumber", "DBS", "ID", "R
       )
     }
 
-   if (mode != "RS") {
-     palette <- sapply(colors, FUN = function(x) rgb2hex(x[1], x[2], x[3])) %>% as.character()
-   } else {
-     palette <- colors
-   }
+    if (mode != "RS") {
+      palette <- sapply(colors, FUN = function(x) rgb2hex(x[1], x[2], x[3])) %>% as.character()
+    } else {
+      palette <- colors
+    }
 
     if (mode %in% c("copynumber", "SBS")) {
       palette <- c(palette, sapply(c("purple", "brown", "orange"), FUN = col2hex) %>% as.character())

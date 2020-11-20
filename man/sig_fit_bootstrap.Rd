@@ -118,6 +118,13 @@ if (requireNamespace("quadprog", quietly = TRUE)) {
   ## Input a list
   report_bootstrap_p_value(list(samp1 = H_bootstrap, samp2 = H_bootstrap))
 
+  #   ## Find suboptimal decomposition
+  #   H_suboptimal <- sig_fit_bootstrap(V[, 1], W,
+  #     n = 10,
+  #     type = "absolute",
+  #     method = "SA",
+  #     find_suboptimal = TRUE
+  #   )
 }
 }
 \references{

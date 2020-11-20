@@ -46,13 +46,13 @@
 #'   ## Input a list
 #'   report_bootstrap_p_value(list(samp1 = H_bootstrap, samp2 = H_bootstrap))
 #'
-#   ## Find suboptimal decomposition
-#   H_suboptimal <- sig_fit_bootstrap(V[, 1], W,
-#     n = 10,
-#     type = "absolute",
-#     method = "SA",
-#     find_suboptimal = TRUE
-#   )
+#'   #   ## Find suboptimal decomposition
+#'   #   H_suboptimal <- sig_fit_bootstrap(V[, 1], W,
+#'   #     n = 10,
+#'   #     type = "absolute",
+#'   #     method = "SA",
+#'   #     find_suboptimal = TRUE
+#'   #   )
 #' }
 #' @testexamples
 #' expect_is(H_bootstrap, "list")
@@ -267,7 +267,6 @@ bootstrap_p_value <- function(x, y) {
       }
       p
     })
-
   })
   colnames(y_mat) <- paste0("threshold_", y)
   return(y_mat)
@@ -275,5 +274,9 @@ bootstrap_p_value <- function(x, y) {
 
 my.t.test.p.value <- function(...) {
   obj <- try(t.test(...), silent = TRUE)
-  if (is(obj, "try-error")) return(NA) else return(obj$p.value)
+  if (is(obj, "try-error")) {
+    return(NA)
+  } else {
+    return(obj$p.value)
+  }
 }

@@ -23,12 +23,13 @@
 show_cosmic <- function(x = "home") {
   stopifnot(length(x) == 1L, is.character(x))
   url <- switch(x,
-                home = "https://cancer.sanger.ac.uk/cosmic/signatures",
-                legacy = "https://cancer.sanger.ac.uk/cosmic/signatures_v2.tt",
-                SBS = "https://cancer.sanger.ac.uk/cosmic/signatures/SBS/index.tt",
-                DBS = "https://cancer.sanger.ac.uk/cosmic/signatures/DBS/index.tt",
-                ID = "https://cancer.sanger.ac.uk/cosmic/signatures/ID/index.tt",
-                parse_cosmic(x))
+    home = "https://cancer.sanger.ac.uk/cosmic/signatures",
+    legacy = "https://cancer.sanger.ac.uk/cosmic/signatures_v2.tt",
+    SBS = "https://cancer.sanger.ac.uk/cosmic/signatures/SBS/index.tt",
+    DBS = "https://cancer.sanger.ac.uk/cosmic/signatures/DBS/index.tt",
+    ID = "https://cancer.sanger.ac.uk/cosmic/signatures/ID/index.tt",
+    parse_cosmic(x)
+  )
   message("Opening your default web browser...")
   utils::browseURL(url)
 }

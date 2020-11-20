@@ -50,7 +50,7 @@ For pipeline tool, please see its co-evolutionary CLI
 
 > `sig_tally()` for RS is not supported.
 
-### Feature
+### Features
 
 -   supports a standard *de novo* pipeline for identification of **5**
     types of signatures: copy number, SBS, DBS, INDEL and RS (genome
@@ -61,14 +61,6 @@ For pipeline tool, please see its co-evolutionary CLI
     Macintyre et al. 2018 and the other is created by our group.
 -   supports association and group analysis and visualization for
     signatures.
--   supports a Bayesian variant of NMF algorithm to enable optimal
-    inferences for the number of signatures through the automatic
-    relevance determination technique from **SignatureAnalyzer**
-    package.
--   supports a caller for **SigProfiler**.
--   supports two plot styles for signature profile: ‘default’ (like
-    **SignatureAnalyzer** package) and ‘cosmic’ (like **COSMIC**
-    database).
 -   supports two types of signature exposures: relative exposure
     (relative contribution of signatures in each sample) and absolute
     exposure (estimated variation records of signatures in each sample).
@@ -83,6 +75,36 @@ For pipeline tool, please see its co-evolutionary CLI
 -   well tested by R package **testthat** and documented by R package
     **roxygen2**, **roxytest**, **pkgdown**, and etc. for both reliable
     and reproducible research.
+
+### Key Interfaces and Their Performance
+
+**Sigminer** provides many approaches to extract mutational signatures.
+To test their performance, I use 4 mutation catalog datasets (each
+catalog dataset is composed of 30 samples, 10 signatures are randomly
+assign to each sample with random signature exposure) from reference
+\#6. The following table show how many signatures can be recovered and
+the mean cosine similarity to COSMIC reference signatures for each
+method.
+
+| Approach      | Selection Way        | Setting                                               | Caller                        | Driver          | Set1       | Set2       | Set3            | Set4       | Success /Mean | Run time          | Recommand     |
+|---------------|----------------------|-------------------------------------------------------|-------------------------------|-----------------|------------|------------|-----------------|------------|---------------|-------------------|---------------|
+| Standard NMF  | Manual               | Default. 50 runs (estimation) + 100 runs (extraction) | `sig_estimate`, `sig_extract` | R               | 10 (0.884) | 10 (0.944) | 9 or 10 (0.998) | 10 (0.994) | \~90%/0.955   | \~1min (8 cores)  | YES :star: ⭐⭐ |
+| SigProfiler   | **Manual/Automatic** | Default. 100 runs + 8 cores                           | `sigprofiler_extract`         | Python/Anaconda | 10 (0.961) | 10 (0.999) | 10 (0.990)      | 10 (0.997) | 100%/0.987    | \~1h (8 cores)    | YES ⭐⭐⭐⭐      |
+| Best Practice | **Manual/Automatic** | Use bootstrapped catalog (1000 runs)                  | `bp_extract_signatures`       | R               | 10 (0.973) | 10 (0.990) | 10 (0.992)      | 10 (0.971) | 100%/0.981    | \~10min (8 cores) | YES ⭐⭐⭐⭐⭐     |
+| Best Practice | **Manual/Automatic** | Use original catalog (1000 runs)                      | `bp_extract_signatures`       | R               | 10 (0.987) | 9 (0.985)  | 10 (0.997)      | 9 (0.987)  | 50%/0.989     | \~10min (8 cores) | NO :star:     |
+| Bayesian NMF  | **Automatic**        | L1KL+optimal (20 runs)                                | `sig_auto_extract`            | R               | 10 (0.994) | 9 (0.997)  | 9 (0.998)       | 9 (0.999)  | 25%/0.997     | \~10min (8 cores) | YES ⭐⭐⭐:star  |
+| Bayesian NMF  | **Automatic**        | L1KL+stable (20runs)                                  | `sig_auto_extract`            | R               | 10 (0.994) | 9 (0.997)  | 10 (0.988)      | 9 (0.999)  | 50%/0.995     | \~10min (8 cores) | YES ⭐⭐⭐⭐      |
+| Bayesian NMF  | **Automatic**        | L2KL+optimal (20runs)                                 | `sig_auto_extract`            | R               | 12 (0.990) | 13 (0.988) | 12 (0.902)      | 12 (0.994) | 0%/0.969      | \~10min (8 cores) | NO :star:     |
+| Bayesian NMF  | **Automatic**        | L2KL+stable (20runs)                                  | `sig_auto_extract`            | R               | 12 (0.990) | 12 (0.988) | 12 (0.902)      | 12 (0.994) | 0%/0.969      | \~10min (8 cores) | NO :star:     |
+| Bayesian NMF  | **Automatic**        | L1WL2H+optimal (20runs)                               | `sig_auto_extract`            | R               | 9 (0.989)  | 9 (0.999)  | 9 (0.996)       | 9 (1.000)  | 0%/0.996      | \~10min (8 cores) | YES ⭐⭐⭐       |
+| Bayesian NMF  | **Automatic**        | L1WL2H+stable (20runs)                                | `sig_auto_extract`            | R               | 9 (0.989)  | 9 (0.999)  | 9 (0.996)       | 9 (1.000)  | 0%/0.996      | \~10min (8 cores) | YES ⭐⭐⭐⭐      |
+
+> NOTE: although Bayesian NMF approach with L1KL or L1WL2H prior cannot
+> recover all 10 signatures here, but it is close to the true answer
+> from initial signature number 20 in a automatic way, and the result
+> signatures are highly similar to reference signatures. This also
+> reminds us that we could not use this method to find signatures with
+> small contributions in tumors.
 
 ## Installation
 
@@ -138,57 +160,39 @@ following papers.
 
 <img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
 
-## Acknowledgments
-
-If you use **NMF** package in R, please also cite:
-
-    Gaujoux, Renaud, and Cathal Seoighe. "A Flexible R Package for 
-        Nonnegative Matrix Factorization."" BMC Bioinformatics 11, no. 1 (December 2010).
-
-The method “M” for extracting copy number signatures was based in part
-on the source code from paper *Copy number signatures and mutational
-processes in ovarian carcinoma*, if you use this feature, please also
-cite:
-
-    Macintyre, Geoff, et al. "Copy number signatures and mutational
-        processes in ovarian carcinoma." Nature genetics 50.9 (2018): 1262.
-
-The code for extracting SBS signatures was based in part on the source
-code of the **maftools** package, if you use this feature, please also
-cite:
-
-    Mayakonda, Anand, et al. "Maftools: efficient and comprehensive analysis
-        of somatic variants in cancer." Genome research 28.11 (2018): 1747-1756.
-
-The code for extracting mutational signatures was based in part on the
-source code of the **SignatureAnalyzer** package, if you use this
-feature, please also cite:
-
-    Kim, Jaegil, et al. "Somatic ERCC2 mutations are associated with a distinct genomic
-        signature in urothelial tumors." Nature genetics 48.6 (2016): 600.
-
 ## References
 
-1.  Alexandrov, Ludmil B., et al. “The repertoire of mutational
-    signatures in human cancer.” Nature 578.7793 (2020): 94-101.
-2.  Macintyre, Geoff, et al. “Copy number signatures and mutational
-    processes in ovarian carcinoma.” Nature genetics 50.9 (2018): 1262.
-3.  Mayakonda, Anand, et al. “Maftools: efficient and comprehensive
+Please properly cite the following references when you are using any
+corresponding features. The references are also listed in the function
+documentation. Very thanks to the works, **sigminer** cannot be created
+without the giants.
+
+1.  Mayakonda, Anand, et al. “Maftools: efficient and comprehensive
     analysis of somatic variants in cancer.” Genome research 28.11
     (2018): 1747-1756.
-4.  Gaujoux, Renaud, and Cathal Seoighe. “A Flexible R Package for
+2.  Gaujoux, Renaud, and Cathal Seoighe. “A Flexible R Package for
     Nonnegative Matrix Factorization.”" BMC Bioinformatics 11, no. 1
     (December 2010).
-5.  H. Wickham. ggplot2: Elegant Graphics for Data Analysis.
+3.  H. Wickham. ggplot2: Elegant Graphics for Data Analysis.
     Springer-Verlag New York, 2016.
-6.  Tan, Vincent YF, and Cédric Févotte. “Automatic relevance
+4.  Kim, Jaegil, et al. “Somatic ERCC2 mutations are associated with a
+    distinct genomic signature in urothelial tumors.” Nature genetics
+    48.6 (2016): 600.
+5.  Alexandrov, Ludmil B., et al. “Deciphering signatures of mutational
+    processes operative in human cancer.” Cell reports 3.1 (2013):
+    246-259.
+6.  Degasperi, Andrea, et al. “A practical framework and online tool for
+    mutational signature analyses show intertissue variation and driver
+    dependencies.” Nature cancer 1.2 (2020): 249-263.
+7.  Alexandrov, Ludmil B., et al. “The repertoire of mutational
+    signatures in human cancer.” Nature 578.7793 (2020): 94-101.
+8.  Macintyre, Geoff, et al. “Copy number signatures and mutational
+    processes in ovarian carcinoma.” Nature genetics 50.9 (2018): 1262.
+9.  Tan, Vincent YF, and Cédric Févotte. “Automatic relevance
     determination in nonnegative matrix factorization with the/spl
     beta/-divergence.” IEEE Transactions on Pattern Analysis and Machine
     Intelligence 35.7 (2012): 1592-1605.
-7.  Kim, Jaegil, et al. “Somatic ERCC2 mutations are associated with a
-    distinct genomic signature in urothelial tumors.” Nature genetics
-    48.6 (2016): 600.
-8.  Bergstrom EN, Huang MN, Mahto U, Barnes M, Stratton MR, Rozen SG,
+10. Bergstrom EN, Huang MN, Mahto U, Barnes M, Stratton MR, Rozen SG,
     Alexandrov LB: SigProfilerMatrixGenerator: a tool for visualizing
     and exploring patterns of small mutational events. BMC Genomics
     2019, 20:685
@@ -205,7 +209,7 @@ written permission after contacting Shixiang Wang
 <wangshx@shanghaitech.edu.cn> or Xue-Song Liu
 <liuxs@shanghaitech.edu.cn>.
 
-MIT © 2019-2020 Shixiang Wang, Xue-Song Liu
+MIT © 2019-Present Shixiang Wang, Xue-Song Liu
 
 MIT © 2018 Geoffrey Macintyre
 

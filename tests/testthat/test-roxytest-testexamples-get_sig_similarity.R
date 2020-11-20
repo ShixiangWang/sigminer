@@ -43,7 +43,7 @@ test_that("Function get_sig_similarity() @ L88", {
 })
 
 
-test_that("Function get_sig_db() @ L315", {
+test_that("Function get_sig_db() @ L319", {
   
   s1 <- get_sig_db()
   s2 <- get_sig_db("DBS")

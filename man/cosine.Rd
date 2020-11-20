@@ -7,7 +7,7 @@
 cosine(x, y)
 }
 \arguments{
-\item{x}{a numeric vector or matrix.}
+\item{x}{a numeric vector or matrix with column representing vector to calculate similarity.}
 
 \item{y}{must be same format as \code{x}.}
 }

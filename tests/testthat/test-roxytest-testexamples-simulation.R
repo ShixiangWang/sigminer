@@ -2,7 +2,7 @@
 
 context("File R/simulation.R: @testexamples")
 
-test_that("[unknown alias] @ L52", {
+test_that("[unknown alias] @ L53", {
   
   # Generate a catalog
   set.seed(1234)

@@ -11,7 +11,6 @@ sig_extract(
   cores = 1,
   method = "brunet",
   optimize = FALSE,
-  pConstant = NULL,
   seed = 123456,
   ...
 )
@@ -27,13 +26,9 @@ enough to achieve robust result.}
 \item{cores}{number of cpu cores to run NMF.}
 
 \item{method}{specification of the NMF algorithm. Use 'brunet' as default.
-Available methods for nmf decompositions are 'brunet', 'lee', 'ls-nmf', 'nsNMF', 'offset'.}
+Available methods for NMF decompositions are 'brunet', 'lee', 'ls-nmf', 'nsNMF', 'offset'.}
 
 \item{optimize}{if \code{TRUE}, then refit the denovo signatures with QP method, see \link{sig_fit}.}
-
-\item{pConstant}{A small positive value (like 1e-9) to add to the matrix.
-Use it ONLY if the functions throws
-an \code{non-conformable arrays} error.}
 
 \item{seed}{specification of the starting point or seeding method, which will compute a starting point,
 usually using data from the target matrix in order to provide a good guess.}

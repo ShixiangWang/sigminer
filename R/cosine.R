@@ -1,6 +1,6 @@
 #' Calculate Cosine Measures
 #'
-#' @param x a numeric vector or matrix.
+#' @param x a numeric vector or matrix with column representing vector to calculate similarity.
 #' @param y must be same format as `x`.
 #'
 #' @return a numeric value or `matrix`.

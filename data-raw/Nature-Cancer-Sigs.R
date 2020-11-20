@@ -12,16 +12,20 @@ s4 <- read_excel("data-raw/NC-Ref-Sigs.xlsx", sheet = 4)
 
 # S1 and S2 ---------------------------------------------------------------
 
-s1 <- s1 %>% tibble::column_to_rownames("Type") %>% as.matrix()
+s1 <- s1 %>%
+  tibble::column_to_rownames("Type") %>%
+  as.matrix()
 s1_names <- colnames(s1)
 s1_map <- stringr::str_split(s1_names, pattern = " ", simplify = T) %>%
   as.data.frame() %>%
-  dplyr::mutate(V2 = stringr::str_remove(V2, "\\("),
-                V2 = stringr::str_remove(V2, "\\)"),
-                V2 = stringr::str_remove(V2, "^[^_]+_"),
-                V2 = stringr::str_remove(V2, "SoftTissue_"),
-                V2 = stringr::str_remove(V2, "neck_"),
-                V2 = stringr::str_replace_all(V2, "_", ","))
+  dplyr::mutate(
+    V2 = stringr::str_remove(V2, "\\("),
+    V2 = stringr::str_remove(V2, "\\)"),
+    V2 = stringr::str_remove(V2, "^[^_]+_"),
+    V2 = stringr::str_remove(V2, "SoftTissue_"),
+    V2 = stringr::str_remove(V2, "neck_"),
+    V2 = stringr::str_replace_all(V2, "_", ",")
+  )
 
 colnames(s1) <- s1_map$V1
 
@@ -33,16 +37,20 @@ SBS_Nik_lab_Organ <- list(
 
 saveRDS(SBS_Nik_lab_Organ, file = "inst/extdata/SBS_signatures_Nik_lab_Organ.rds")
 
-s2 <- s2 %>% tibble::column_to_rownames("Type") %>% as.matrix()
+s2 <- s2 %>%
+  tibble::column_to_rownames("Type") %>%
+  as.matrix()
 s2_names <- colnames(s2)
 s2_map <- stringr::str_split(s2_names, pattern = " ", simplify = T) %>%
   as.data.frame() %>%
-  dplyr::mutate(V2 = stringr::str_remove(V2, "\\("),
-                V2 = stringr::str_remove(V2, "\\)"),
-                V2 = stringr::str_remove(V2, "^[^_]+_"),
-                V2 = stringr::str_remove(V2, "SoftTissue_"),
-                V2 = stringr::str_remove(V2, "neck_"),
-                V2 = stringr::str_replace_all(V2, "_", ","))
+  dplyr::mutate(
+    V2 = stringr::str_remove(V2, "\\("),
+    V2 = stringr::str_remove(V2, "\\)"),
+    V2 = stringr::str_remove(V2, "^[^_]+_"),
+    V2 = stringr::str_remove(V2, "SoftTissue_"),
+    V2 = stringr::str_remove(V2, "neck_"),
+    V2 = stringr::str_replace_all(V2, "_", ",")
+  )
 
 colnames(s2) <- s2_map$V1
 
@@ -56,7 +64,9 @@ saveRDS(RS_Nik_lab_Organ, file = "inst/extdata/RS_signatures_Nik_lab_Organ.rds")
 
 # S3 and S4 ---------------------------------------------------------------
 
-s3 <- s3 %>% tibble::column_to_rownames("Type") %>% as.matrix()
+s3 <- s3 %>%
+  tibble::column_to_rownames("Type") %>%
+  as.matrix()
 colnames(s3) <- gsub("\\.", "_", colnames(s3))
 
 SBS_Nik_lab <- list(
@@ -70,7 +80,9 @@ SBS_Nik_lab <- list(
 
 saveRDS(SBS_Nik_lab, file = "inst/extdata/SBS_signatures_Nik_lab.rds")
 
-s4 <- s4 %>% tibble::column_to_rownames("Type") %>% as.matrix()
+s4 <- s4 %>%
+  tibble::column_to_rownames("Type") %>%
+  as.matrix()
 colnames(s4) <- gsub("\\.", "_", colnames(s4))
 
 RS_Nik_lab <- list(

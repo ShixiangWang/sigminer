@@ -209,11 +209,14 @@ get_components_mutex <- function(CN_features, XVersion = FALSE) {
   feature_names <- setdiff(names(CN_features), "LOH")
 
   purrr::map2(CN_features[feature_names], feature_names,
-              .f = call_component,
-              extra = if ("LOH" %in% names(CN_features)) {
-                CN_features$LOH
-              } else NULL,
-              XVersion = XVersion)
+    .f = call_component,
+    extra = if ("LOH" %in% names(CN_features)) {
+      CN_features$LOH
+    } else {
+      NULL
+    },
+    XVersion = XVersion
+  )
 }
 
 call_component <- function(f_dt, f_name, extra = NULL, XVersion = FALSE) {
@@ -227,12 +230,12 @@ call_component <- function(f_dt, f_name, extra = NULL, XVersion = FALSE) {
   } else if (f_name == "CN") {
     if (isFALSE(XVersion)) {
       f_dt$S_CN <- cut(f_dt$value,
-                       breaks = c(-Inf, 0:4, Inf),
-                       labels = c(as.character(0:4), "5+")
+        breaks = c(-Inf, 0:4, Inf),
+        labels = c(as.character(0:4), "5+")
       )
       f_dt$C_CN <- cut(f_dt$value,
-                       breaks = c(-Inf, 0:8, Inf),
-                       labels = c(as.character(0:8), "9+")
+        breaks = c(-Inf, 0:8, Inf),
+        labels = c(as.character(0:8), "9+")
       )
       if (!is.null(extra)) {
         f_dt$value <- NULL
@@ -256,8 +259,8 @@ call_component <- function(f_dt, f_name, extra = NULL, XVersion = FALSE) {
     } else {
       # XVersion CN
       f_dt$S_CN <- cut(f_dt$value,
-                       breaks = c(-Inf, 0:4, 8, Inf),
-                       labels = c(as.character(0:4), "5-8", "9+")
+        breaks = c(-Inf, 0:4, 8, Inf),
+        labels = c(as.character(0:4), "5-8", "9+")
       )
 
       if (!is.null(extra)) {
@@ -277,8 +280,11 @@ call_component <- function(f_dt, f_name, extra = NULL, XVersion = FALSE) {
               TRUE ~ .data$S_CN
             ),
             S_CN = factor(.data$S_CN,
-                          levels = c(as.character(0:4), "5-8", "9+",
-                                     paste0(c("2", "3+"), "LOH")))
+              levels = c(
+                as.character(0:4), "5-8", "9+",
+                paste0(c("2", "3+"), "LOH")
+              )
+            )
           ) %>%
           dplyr::select(-"CN_Value") %>%
           data.table::as.data.table()
@@ -440,7 +446,7 @@ get_matrix_mutex <- function(CN_components, indices = NULL) {
   # Combine LOH types
   if (any(grepl("LOH", colnames(ss_mat)))) {
     ss_mat <- as.data.frame(ss_mat)
-    all_types = unique(substr(colnames(ss_mat), 1, 5))
+    all_types <- unique(substr(colnames(ss_mat), 1, 5))
 
     for (i in all_types) {
       ss_mat[[paste0(i, "2+LOH")]] <- ss_mat[[paste0(i, "2+LOH:AA")]] +
@@ -485,8 +491,8 @@ get_matrix_mutex_xv <- function(CN_components, indices = NULL) {
   dt_s <- merged_dt[, colnames(merged_dt) == "sample" | startsWith(colnames(merged_dt), "S_"), with = FALSE]
 
   s_class_levels <- vector_to_combination(levels(dt_s$S_SS), levels(dt_s$S_CS),
-                                          levels(dt_s$S_CN), levels(dt_s$S_AB),
-                                          c_string = ":"
+    levels(dt_s$S_CN), levels(dt_s$S_AB),
+    c_string = ":"
   )
 
   dt_s$s_class <- paste(dt_s$S_SS, dt_s$S_CS, dt_s$S_CN, dt_s$S_AB, sep = ":")
@@ -496,7 +502,7 @@ get_matrix_mutex_xv <- function(CN_components, indices = NULL) {
 
   ## Delete 0 count classifications
   ## some classes have already been deleted in the previous step
-  allTypes = colnames(s_mat)
+  allTypes <- colnames(s_mat)
   class2rm <- grepl("LH:0", allTypes) |
     grepl("HL:0", allTypes) | grepl("LL:0", allTypes) |
     grepl("LH:1:BB", allTypes) |

@@ -29,3 +29,26 @@ handle_hyper_mutation <- function(nmf_matrix) {
   }
   return(t(x))
 }
+
+collapse_hyper_records <- function(mat) {
+  # Hyper marks in column names
+  hyper_index <- grepl("_\\[hyper\\]_", colnames(mat))
+  if (sum(hyper_index) > 0) {
+    H.hyper <- mat[, hyper_index, drop = FALSE]
+    H.nonhyper <- mat[, !hyper_index, drop = FALSE]
+    sample.hyper <- sapply(
+      colnames(H.hyper),
+      function(x) strsplit(x, "_\\[hyper\\]_")[[1]][[1]]
+    )
+    unique.hyper <- unique(sample.hyper)
+    n.hyper <- length(unique.hyper)
+    x.hyper <- array(0, dim = c(nrow(H.hyper), n.hyper))
+    for (i in 1:n.hyper) {
+      x.hyper[, i] <- rowSums(H.hyper[, sample.hyper %in% unique.hyper[i], drop = FALSE])
+    }
+    colnames(x.hyper) <- unique.hyper
+    rownames(x.hyper) <- rownames(mat)
+    mat <- cbind(H.nonhyper, x.hyper)
+  }
+  mat
+}

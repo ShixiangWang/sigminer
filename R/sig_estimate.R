@@ -30,10 +30,7 @@
 #' @param save_plots if `TRUE`, save signature number survey plot to local machine.
 #' @param plot_basename when save plots, set custom basename for file path.
 #' @param method specification of the NMF algorithm. Use 'brunet' as default.
-#' Available methods for nmf decompositions are 'brunet', 'lee', 'ls-nmf', 'nsNMF', 'offset'.
-#' @param pConstant A small positive value (like 1e-9) to add to the matrix.
-#' Use it ONLY if the functions throws
-#' an \code{non-conformable arrays} error.
+#' Available methods for NMF decompositions are 'brunet', 'lee', 'ls-nmf', 'nsNMF', 'offset'.
 #' @param verbose if `TRUE`, print extra message.
 #' @author Shixiang Wang
 #' @references Gaujoux, Renaud, and Cathal Seoighe. "A flexible R package for nonnegative matrix factorization." BMC bioinformatics 11.1 (2010): 367.
@@ -64,7 +61,6 @@ sig_estimate <-
            save_plots = FALSE,
            plot_basename = file.path(tempdir(), "nmf"),
            what = "all",
-           pConstant = NULL,
            verbose = FALSE) {
     mat <- t(nmf_matrix)
 
@@ -77,13 +73,8 @@ sig_estimate <-
       mat <- mat[, !ii, drop = FALSE]
     }
 
-    # To avoid error due to non-conformable arrays
-    if (!is.null(pConstant)) {
-      if (pConstant < 0 | pConstant == 0) {
-        stop("pConstant must be > 0")
-      }
-      mat <- mat + pConstant
-    }
+    # To avoid error due to NMF
+    mat <- check_nmf_matrix(mat)
 
     if (cores > 1) {
       estim.r <-

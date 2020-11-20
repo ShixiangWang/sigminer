@@ -25,9 +25,9 @@ show_group_enrichment <- function(df_enrich,
                                   fill_by_p_value = TRUE,
                                   fill_scale = scale_fill_gradient2(
                                     low = "blue", mid = "white", high = "red",
-                                    midpoint = ifelse(fill_by_p_value, 0, 1)),
+                                    midpoint = ifelse(fill_by_p_value, 0, 1)
+                                  ),
                                   ...) {
-
   if (fill_by_p_value) {
     df_enrich$p_value_up <- abs(log10(df_enrich$p_value))
     df_enrich$p_value_up <- data.table::fifelse(
@@ -42,20 +42,22 @@ show_group_enrichment <- function(df_enrich,
       dplyr::group_nest(.data$grp_var) %>%
       dplyr::mutate(
         gg = purrr::map(.data$data,
-                        plot_enrichment_simple,
-                        x = "enrich_var", y = "grp1",
-                        fill_scale = fill_scale,
-                        fill_by_p_value = fill_by_p_value,
-                        add_text_annotation = add_text_annotation)
+          plot_enrichment_simple,
+          x = "enrich_var", y = "grp1",
+          fill_scale = fill_scale,
+          fill_by_p_value = fill_by_p_value,
+          add_text_annotation = add_text_annotation
+        )
       ) -> xx
     p <- xx$gg
     names(p) <- xx$grp_var
-
   } else {
-    p <- plot_enrichment_simple(df_enrich, x = "enrich_var", y = "grp1",
-                           fill_scale = fill_scale,
-                           fill_by_p_value = fill_by_p_value,
-                           add_text_annotation = add_text_annotation) +
+    p <- plot_enrichment_simple(df_enrich,
+      x = "enrich_var", y = "grp1",
+      fill_scale = fill_scale,
+      fill_by_p_value = fill_by_p_value,
+      add_text_annotation = add_text_annotation
+    ) +
       facet_wrap(~grp_var, scales = scales, ...)
   }
 
@@ -71,16 +73,20 @@ plot_enrichment_simple <- function(data, x, y, fill_scale,
     data$p_value <- round(data$p_value, 3)
   }
 
-  p <- ggplot(data,
-              aes_string(
-                x = x,
-                y = y)) +
+  p <- ggplot(
+    data,
+    aes_string(
+      x = x,
+      y = y
+    )
+  ) +
     geom_tile(mapping = aes_string(fill = if (fill_by_p_value) "p_value_up" else "measure_observed")) +
     fill_scale +
     labs(
       x = "Variable",
       y = "Subgroup",
-      fill = if (fill_by_p_value) "log10\n(p-value)" else "Relative\nchange") +
+      fill = if (fill_by_p_value) "log10\n(p-value)" else "Relative\nchange"
+    ) +
     scale_x_discrete(expand = expansion(mult = c(0, 0))) +
     scale_y_discrete(expand = expansion(mult = c(0, 0)))
 

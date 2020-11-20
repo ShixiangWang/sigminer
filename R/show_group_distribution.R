@@ -48,8 +48,8 @@
 #'
 #' # Set custom group names
 #' p3 <- show_group_distribution(data,
-#'                         gvar = 2, dvar = 1,
-#'                         g_label = c("A"="X", "B"="Y", "C"="Z")
+#'   gvar = 2, dvar = 1,
+#'   g_label = c("A" = "X", "B" = "Y", "C" = "Z")
 #' )
 #' p3
 #' @testexamples

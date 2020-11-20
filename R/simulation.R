@@ -2,6 +2,7 @@
 #'
 #' - `simulate_signature()` - Simulate signatures from signature pool.
 #' - `simulate_catalogue()` - Simulate catalogs from signature/catalog pool.
+#' - `simulate_catalogue_matrix()` - Simulate a bootstrapped catalog matrix.
 #'
 #' @name simulation
 #' @param x a numeric vector representing a signature/catalog or matrix with rows representing
@@ -67,7 +68,7 @@ simulate_signature <- function(x, weights = NULL) {
   # Normalize all catalogue/signatures to 1
   mat2 <- apply(mat2, 2, function(x) x / sum(x, na.rm = TRUE))
 
-  if (!is.null(weights)) {
+  if (is.null(weights)) {
     weights <- rep(1L, ncol(mat2))
   }
 
@@ -85,4 +86,13 @@ simulate_catalogue <- function(x, n, weights = NULL) {
   out <- as.integer(table(factor(out, levels = seq_along(prob))))
   names(out) <- names(prob)
   out
+}
+
+#' @rdname simulation
+#' @export
+simulate_catalogue_matrix <- function(x) {
+  stopifnot(is.matrix(x))
+  apply(x, 1, function(catalog) {
+    simulate_catalogue(catalog, as.integer(sum(catalog)))
+  }) %>% t()
 }

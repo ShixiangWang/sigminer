@@ -4,11 +4,14 @@
 \alias{simulation}
 \alias{simulate_signature}
 \alias{simulate_catalogue}
+\alias{simulate_catalogue_matrix}
 \title{Simulation Analysis}
 \usage{
 simulate_signature(x, weights = NULL)
 
 simulate_catalogue(x, n, weights = NULL)
+
+simulate_catalogue_matrix(x)
 }
 \arguments{
 \item{x}{a numeric vector representing a signature/catalog or matrix with rows representing
@@ -25,6 +28,7 @@ a \code{matrix}.
 \itemize{
 \item \code{simulate_signature()} - Simulate signatures from signature pool.
 \item \code{simulate_catalogue()} - Simulate catalogs from signature/catalog pool.
+\item \code{simulate_catalogue_matrix()} - Simulate a bootstrapped catalog matrix.
 }
 }
 \examples{

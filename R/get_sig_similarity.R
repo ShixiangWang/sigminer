@@ -120,12 +120,16 @@ get_sig_similarity <- function(Signature, Ref = NULL,
     }
   }
 
-  sig_db <- match.arg(arg = sig_db,
-                      choices = c("legacy", "SBS", "DBS", "ID", "TSB",
-                                  "SBS_hg19", "SBS_hg38", "SBS_mm9", "SBS_mm10",
-                                  "DBS_hg19", "DBS_hg38", "DBS_mm9", "DBS_mm10",
-                                  "SBS_Nik_lab_Organ", "RS_Nik_lab_Organ",
-                                  "SBS_Nik_lab", "RS_Nik_lab"))
+  sig_db <- match.arg(
+    arg = sig_db,
+    choices = c(
+      "legacy", "SBS", "DBS", "ID", "TSB",
+      "SBS_hg19", "SBS_hg38", "SBS_mm9", "SBS_mm10",
+      "DBS_hg19", "DBS_hg38", "DBS_mm9", "DBS_mm10",
+      "SBS_Nik_lab_Organ", "RS_Nik_lab_Organ",
+      "SBS_Nik_lab", "RS_Nik_lab"
+    )
+  )
   method <- match.arg(arg = method, choices = c("cosine"))
 
   if (is.null(Ref)) {
@@ -248,13 +252,13 @@ get_sig_similarity <- function(Signature, Ref = NULL,
           max(corMat[i, ]), "]"
         )
         message("--Found ", .to_match,
-                " most similar to ", .be_match,
+          " most similar to ", .be_match,
           sep = ""
         )
         message(paste0("   ", ae))
       } else {
         message("--Found ", .to_match,
-                " most similar to ", .be_match,
+          " most similar to ", .be_match,
           paste0(" [similarity: ", max(corMat[i, ]), "]"),
           sep = ""
         )
@@ -316,40 +320,40 @@ get_sig_db <- function(sig_db = "legacy") {
   db_file <- switch(
     sig_db,
     legacy = system.file("extdata", "legacy_signatures.RDs",
-                         package = "maftools", mustWork = TRUE
+      package = "maftools", mustWork = TRUE
     ),
     SBS = system.file("extdata", "SBS_signatures.rds",
-                      package = "sigminer", mustWork = TRUE
+      package = "sigminer", mustWork = TRUE
     ),
     SBS_Nik_lab = system.file("extdata", "SBS_signatures_Nik_lab.rds",
-                              package = "sigminer", mustWork = TRUE
+      package = "sigminer", mustWork = TRUE
     ),
     SBS_Nik_lab_Organ = system.file("extdata", "SBS_signatures_Nik_lab_Organ.rds",
-                                    package = "sigminer", mustWork = TRUE
+      package = "sigminer", mustWork = TRUE
     ),
     RS_Nik_lab = system.file("extdata", "RS_signatures_Nik_lab.rds",
-                             package = "sigminer", mustWork = TRUE
+      package = "sigminer", mustWork = TRUE
     ),
     RS_Nik_lab_Organ = system.file("extdata", "RS_signatures_Nik_lab_Organ.rds",
-                                   package = "sigminer", mustWork = TRUE
+      package = "sigminer", mustWork = TRUE
     ),
     DBS = system.file("extdata", "DBS_signatures.rds",
-                      package = "sigminer", mustWork = TRUE
+      package = "sigminer", mustWork = TRUE
     ),
     ID = system.file("extdata", "ID_signatures.rds",
-                     package = "sigminer", mustWork = TRUE
+      package = "sigminer", mustWork = TRUE
     ),
     TSB = system.file("extdata", "TSB_signatures.rds",
-                      package = "sigminer", mustWork = TRUE
+      package = "sigminer", mustWork = TRUE
     ),
     {
       if (startsWith(sig_db, "SBS")) {
         system.file("extdata", "SBS_signatures_list.rds",
-                    package = "sigminer", mustWork = TRUE
+          package = "sigminer", mustWork = TRUE
         )
       } else if (startsWith(sig_db, "DBS")) {
         system.file("extdata", "DBS_signatures_list.rds",
-                    package = "sigminer", mustWork = TRUE
+          package = "sigminer", mustWork = TRUE
         )
       } else {
         stop("Bad input for option 'sig_db'!")

@@ -42,24 +42,7 @@ get_bayesian_result <- function(run_info) {
   Exposure <- scal_res$Exposure
 
   # Handle hyper mutant samples
-  hyper_index <- grepl("_\\[hyper\\]_", colnames(Exposure))
-  if (sum(hyper_index) > 0) {
-    H.hyper <- Exposure[, hyper_index, drop = FALSE]
-    H.nonhyper <- Exposure[, !hyper_index, drop = FALSE]
-    sample.hyper <- sapply(
-      colnames(H.hyper),
-      function(x) strsplit(x, "_\\[hyper\\]_")[[1]][[1]]
-    )
-    unique.hyper <- unique(sample.hyper)
-    n.hyper <- length(unique.hyper)
-    x.hyper <- array(0, dim = c(nrow(H.hyper), n.hyper))
-    for (i in 1:n.hyper) {
-      x.hyper[, i] <- rowSums(H.hyper[, sample.hyper %in% unique.hyper[i], drop = FALSE])
-    }
-    colnames(x.hyper) <- unique.hyper
-    rownames(x.hyper) <- rownames(Exposure)
-    Exposure <- cbind(H.nonhyper, x.hyper)
-  }
+  Exposure <- collapse_hyper_records(Exposure)
 
   Signature.norm <- apply(Signature, 2, function(x) x / sum(x, na.rm = TRUE))
   Exposure.norm <- apply(Exposure, 2, function(x) x / sum(x, na.rm = TRUE))

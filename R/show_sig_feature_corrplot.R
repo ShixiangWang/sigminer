@@ -76,7 +76,8 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
         Samples = .data$count,
         signature = factor(
           .data$signature,
-          levels = if(is.null(sig_orders)) unique(.data$signature) else sig_orders)
+          levels = if (is.null(sig_orders)) unique(.data$signature) else sig_orders
+        )
       ) %>%
       dplyr::filter(.data$feature %in% feature_list)
 
@@ -86,7 +87,8 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
       dplyr::mutate(
         signature = factor(
           .data$signature,
-          levels = if(is.null(sig_orders)) unique(.data$signature) else sig_orders)
+          levels = if (is.null(sig_orders)) unique(.data$signature) else sig_orders
+        )
       ) %>%
       dplyr::filter(.data$feature %in% feature_list)
   } else {
@@ -97,7 +99,8 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
         ),
         signature = factor(
           .data$signature,
-          levels = if(is.null(sig_orders)) unique(.data$signature) else sig_orders)
+          levels = if (is.null(sig_orders)) unique(.data$signature) else sig_orders
+        )
       ) %>%
       dplyr::filter(.data$feature %in% feature_list)
   }
@@ -181,7 +184,8 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
                                                         type) {
     p <- p + cowplot::theme_cowplot() +
       ggplot2::theme(axis.text.x = element_text(
-        angle = 90, vjust = 0.5, hjust = 1)) +
+        angle = 90, vjust = 0.5, hjust = 1
+      )) +
       ggplot2::labs(x = xlab, y = ylab)
     if (type == "co") {
       p <- p + labs(color = "Correlation\ncoefficient")

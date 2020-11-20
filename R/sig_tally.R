@@ -296,11 +296,13 @@ sig_tally.CopyNumber <- function(object,
   } else {
     # Method: Shixiang Wang, Ziyu Tao and Tao Wu, short with 'T'
     send_info("Step: getting copy number features.")
-    cn_features <- get_features_mutex(CN_data = cn_list,
-                                      add_loh = add_loh,
-                                      # 'X' for final version
-                                      XVersion = method == "X",
-                                      cores = cores)
+    cn_features <- get_features_mutex(
+      CN_data = cn_list,
+      add_loh = add_loh,
+      # 'X' for final version
+      XVersion = method == "X",
+      cores = cores
+    )
     send_success("Gotten.")
 
     send_info("Step: generating copy number components based on combination.")
@@ -310,10 +312,12 @@ sig_tally.CopyNumber <- function(object,
     send_info("Step: generating components by sample matrix.")
     if (method != "X") {
       cn_matrix_list <- get_matrix_mutex(cn_components,
-                                         indices = indices)
+        indices = indices
+      )
     } else {
       cn_matrix_list <- get_matrix_mutex_xv(cn_components,
-                                            indices = indices)
+        indices = indices
+      )
     }
 
     cn_matrix <- cn_matrix_list$ss_mat

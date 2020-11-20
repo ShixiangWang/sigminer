@@ -2,13 +2,14 @@
 
 context("File R/show_cor.R: @testexamples")
 
-test_that("Function show_cor() @ L47", {
+test_that("Function show_cor() @ L48", {
   
   data("mtcars")
   p1 <- show_cor(mtcars)
   p2 <- show_cor(mtcars,
-                 x_vars = colnames(mtcars)[1:4],
-                 y_vars = colnames(mtcars)[5:8])
+    x_vars = colnames(mtcars)[1:4],
+    y_vars = colnames(mtcars)[5:8]
+  )
   p3 <- show_cor(mtcars, vis_method = "circle", p_adj = "fdr")
   p1
   p1$cor
