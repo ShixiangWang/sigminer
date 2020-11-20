@@ -2,18 +2,9 @@
 # It is a bug of NMF package and now is not be addressed
 #
 # NMF::nmf - Input matrix x contains at least one null or NA-filled row
-# Add a small positive to avoid this error if any component vector sum is small
-check_nmf_matrix <- function(x, byrow = FALSE, threshold = 1e-12) {
-  if (byrow) {
-    if (any(rowSums(x) < threshold)) {
-      x <- x + threshold
-    }
-  } else {
-    if (any(colSums(x) < threshold)) {
-      x <- x + threshold
-    }
-  }
-  x
+# Just add a small positive values
+check_nmf_matrix <- function(x, threshold = 1e-20) {
+  x + threshold
 }
 
 # Source code from reporttools (https://github.com/cran/reporttools/blob/master/R/pairwise.fisher.test.r)

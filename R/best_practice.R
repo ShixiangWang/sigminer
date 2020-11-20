@@ -116,8 +116,7 @@ bp_extract_signatures <- function(nmf_matrix,
   }
 
   # 有必要的话添加一个极小的数，解决 NMF 包可能存在的异常报错问题
-  # 一个 component 之和不能为 0
-  # Here rows are samples
+  # 一个 component 之和不能为 0，还有其他一些可能引发的异常
   bt_catalog_list <- purrr::map(bt_catalog_list, check_nmf_matrix)
 
   catalogue_matrix <- t(nmf_matrix)

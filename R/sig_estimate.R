@@ -74,7 +74,7 @@ sig_estimate <-
     }
 
     # To avoid error due to NMF
-    mat <- check_nmf_matrix(mat, byrow = TRUE)
+    mat <- check_nmf_matrix(mat)
 
     if (cores > 1) {
       estim.r <-

@@ -45,7 +45,7 @@ sig_extract <- function(nmf_matrix,
   }
 
   # To avoid error due to NMF
-  mat <- check_nmf_matrix(mat, byrow = TRUE)
+  mat <- check_nmf_matrix(mat)
 
   nmf.res <- NMF::nmf(
     mat,
