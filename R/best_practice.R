@@ -288,8 +288,111 @@ bp_extract_signatures <- function(nmf_matrix,
 }
 
 # 获取一些指定的信息
-bp_get <- function() {
+bp_get_sig_obj <- function(obj, signum = NULL) {
+  assert_class(obj, "ExtractionResult")
+  if (is.null(signum)) {
+    message("When signum is NULL, output all signature objects as a list.")
+    obj$object
+  } else {
+    signum <- paste0("K", signum)
+    if (length(signum) > 1) {
+      obj$object[signum]
+    } else {
+      obj$object[[signum]]
+    }
+  }
+}
 
+bp_get_stats <- function(obj) {
+  assert_class(obj, "ExtractionResult")
+  obj[c("stats", "stats_signature", "stats_sample")]
+}
+
+bp_get_rank_score <- function(obj) {
+  assert_class(obj, "ExtractionResult")
+  obj[["rank_score"]]
+}
+
+bp_show_survey <- function(obj, scales = c("free_y", "free"), fixed_ratio = TRUE) {
+  assert_class(obj, "ExtractionResult")
+  scales <- match.arg(scales)
+
+  if (!is.data.frame(obj$rank_score)) {
+    message("Show survey cannot work when only one signature extracted.")
+    return(invisible())
+  }
+
+  cols <- c(
+    "signature_number",
+    "aggregated_score",
+    "silhouette",
+    "sample_cosine_distance",
+    "L2_error",
+    "exposure_positive_correlation",
+    "signature_similarity_within_cluster"
+  )
+
+  rs <- obj$rank_score[, cols]
+  nsig <- nrow(rs)
+  plot_df <- merge(
+    obj$stats,
+    rs[, c("signature_number", "aggregated_score")],
+    by = "signature_number"
+  ) %>%
+    dplyr::select(cols)
+  colnames(plot_df) <- colnames(rs) <- c("sn", "as", "sil", "cos", "err", "corr", "sim")
+  cn <- c("score", "silhouette", "distance", "error", "pos cor", "similarity")
+  names(cn) <- c("as", "sil", "cos", "err", "corr", "sim")
+
+  plot_df <- plot_df %>%
+    tidyr::pivot_longer(
+      cols = -"sn",
+      names_to = "type",
+      values_to = "measure"
+    )
+  rs <- rs %>%
+    tidyr::pivot_longer(
+      cols = -"sn",
+      names_to = "type",
+      values_to = "measure"
+    )
+  rs <- rs %>%
+    dplyr::group_by(.data$type) %>%
+    dplyr::mutate(rk = rank(.data$measure, na.last = FALSE)) %>%
+    dplyr::select(-"measure")
+
+  plot_df <- dplyr::left_join(plot_df, rs, by = c("sn", "type")) %>%
+    dplyr::mutate(
+      type = cn[.data$type],
+      type = factor(.data$type, levels = cn)
+    )
+
+  p <- ggplot(plot_df, aes_string(x = "sn", y = "measure")) +
+    geom_line() +
+    geom_point() +
+    geom_point(
+      data = dplyr::filter(
+        plot_df,
+        .data$rk == nsig & .data$type != "score"
+      ),
+      color = "orange"
+    ) +
+    geom_point(
+      data = dplyr::filter(
+        plot_df,
+        .data$rk == nsig & .data$type == "score"
+      ),
+      color = "red"
+    ) +
+    facet_wrap(~type, nrow = 2, scales = scales) +
+    cowplot::theme_cowplot() +
+    labs(x = NULL, y = NULL)
+
+  if (fixed_ratio) {
+    p <- p + theme(aspect.ratio = 1)
+  }
+
+  p
 }
 
 bp_attribute_activity <- function() {
