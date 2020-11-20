@@ -6,13 +6,13 @@
 #'
 #' These functions are combined to provide a best practice for optimally
 #' identifying mutational signatures and attributing their activities (exposures)
-#' in tumor samples. They are listed in order to use. See detail part see why
-#' and how the whole procedure works.
+#' in tumor samples. They are listed in order to use.
 #' - `bp_extract_signatures()` for extracting signatures.
 #' - `bp_show_survey()` for showing measures change under different
 #' signature numbers to help user select optimal signature number.
 #' At default, a aggregated score (named score) is generated from 5 measures to
-#' suggest the best solution. See details for more explanation.
+#' suggest the best solution. See section "Measure Explanation in Survey plot"
+#' for more explanation.
 #' - `bp_get_sig_obj()` for get a (list of) `Signature` object which is common
 #' used in **sigminer** for analysis and visualization.
 #' - `bp_attribute_activity()` for optimizing signature exposures.
@@ -21,6 +21,41 @@
 #' (specific signature number).
 #' - Extra: `bp_get_rank_score()` for obtaining rank score for all signature numbers.
 #'
+#' @details
+#' The signature extraction approach is adopted from reference #1, #2, and
+#' the whole best practice is adopted from the pipeline used by reference #3.
+#' I implement the whole procedure with R code based on the method description
+#' of papers. The code is well organized, tested and documented so user will
+#' find it pretty simple and useful. Besides, the structure of the results is
+#' very clear to see and also visualize like other approaches provided by **sigminer**.
+#'
+#' @section Measure Explanation in Survey Plot:
+#' The survey plot provides a pretty good way to facilitate the signature number
+#' selection. A `score` measure is calculated as the weighted mean of 5 important
+#' measures and visualized as the first sub-plot. The optimal number is highlighted
+#' with red color dot and the best values for 5 measures to be weighted are also
+#' highlighted with orange color dots. The detail of 6 measures shown in plot are
+#' explained as below.
+#' - `score` - a aggregated score based on rank scores from 5 measures below.
+#' The higher, the better. When two signature numbers have the same score,
+#' the larger signature number is preferred (this is a rare situation, you
+#' have to double check other measures).
+#' - `silhouette` - the average silhouette width for signatures, also named as ASW in reference #2.
+#' The signature number with silhouette decreases sharply is preferred.
+#' - `distance` - the average sample reconstructed cosine distance, the lower value is better.
+#' - `error` - the average sample reconstructed error calculated with L2 formula
+#' (i.e. L2 error). This lower value is better. This measure represents a
+#' similar concept like `distance` above, they are all used to quantify how well
+#' sample mutation profiles can be reconstructed from signatures, but `distance`
+#' cares the whole mutation profile similarity while `error` here cares value difference.
+#' - `pos cor` - the average positive signature exposure correlation coefficient.
+#' The lower value is better. This measure is constructed based on my understanding
+#' about signatures: mutational signatures are typically treated as independent
+#' recurrent patterns, so their activities are less correlated.
+#' - `similarity` - the average similarity within in a signature cluster. The higher
+#' value is better. In the practice, results from multiple NMF runs are clusterd
+#' with "clustering with match" algorithm proposed by reference #2. This value
+#' indicates if the signature profiles extracted from different NMF runs are similar.
 #' @inheritParams sig_estimate
 #' @param n_bootstrap number of bootstrapped (resampling) catalogs used.
 #' When it is `0`, the original (input) mutation catalog is used for NMF decomposition.
