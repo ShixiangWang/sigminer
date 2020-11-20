@@ -52,8 +52,9 @@
 #' The lower value is better. This measure is constructed based on my understanding
 #' about signatures: mutational signatures are typically treated as independent
 #' recurrent patterns, so their activities are less correlated.
-#' - `similarity` - the average similarity within in a signature cluster. The higher
-#' value is better. In the practice, results from multiple NMF runs are clusterd
+#' - `similarity` - the average similarity within in a signature cluster.
+#' Like `silhouette`, the point decreases sharply is preferred.
+#' In the practice, results from multiple NMF runs are clustered
 #' with "clustering with match" algorithm proposed by reference #2. This value
 #' indicates if the signature profiles extracted from different NMF runs are similar.
 #' @inheritParams sig_estimate
@@ -249,7 +250,7 @@ bp_extract_signatures <- function(nmf_matrix,
     ) %>% unlist()
     send_success(
       "NMF done for this solution. Current memory size used: ",
-      round(mem_used() / 2^30), "GB"
+      round(mem_used() / 2^20), "MB"
     )
   }
 
@@ -280,7 +281,7 @@ bp_extract_signatures <- function(nmf_matrix,
   }
   send_success(
     "Solution list processed. Current memory size used: ",
-    round(mem_used() / 2^30), "GB"
+    round(mem_used() / 2^20), "MB"
   )
 
   send_info("Merging and checking the solution data.")
@@ -305,8 +306,8 @@ bp_extract_signatures <- function(nmf_matrix,
       m <- length(to_add)
 
       mat_add <- matrix(rep(0, n * m),
-        nrow = m,
-        dimnames = list(to_add)
+                        nrow = m,
+                        dimnames = list(to_add)
       )
       obj$Signature <- rbind(obj$Signature, mat_add)
       obj$Signature.norm <- rbind(obj$Signature.norm, mat_add)
@@ -315,7 +316,7 @@ bp_extract_signatures <- function(nmf_matrix,
   }
   send_success(
     "Merged. Current memory size used: ",
-    round(mem_used() / 2^30), "GB"
+    round(mem_used() / 2^20), "MB"
   )
 
   if (nrow(solutions$stats) > 1) {
@@ -339,11 +340,53 @@ bp_extract_signatures <- function(nmf_matrix,
     solutions$rank_score <- NA
     solutions$suggested <- NA_integer_
   }
+
+  solutions$catalog_matrix <- raw_catalogue_matrix
   class(solutions) <- "ExtractionResult"
 
   send_success("Extraction procedure run successfully.")
   solutions
 }
+
+#' @param sim_threshold a similarity threshold for selecting samples to auto-rerun
+#' the extraction procedure (i.e. `bp_extract_signatures()`), default is `0.95`.
+#' @param max_iter the maximum iteration size, default is 10, i.e., at most run
+#' the extraction procedure 10 times.
+#' @rdname bp
+#' @export
+bp_extract_signatures_iter <- function(nmf_matrix,
+                                       range = 2:5,
+                                       sim_threshold = 0.95,
+                                       max_iter = 10L,
+                                       n_bootstrap = 20L,
+                                       n_nmf_run = 50,
+                                       RTOL = 1e-3, min_contribution = 0,
+                                       cores = min(4L, future::availableCores()),
+                                       seed = 123456L,
+                                       handle_hyper_mutation = TRUE,
+                                       report_integer_exposure = TRUE,
+                                       mpi_platform = FALSE) {
+  iter_list <- list()
+  for (i in seq_len(max_iter)) {
+    iter_list[[paste0("iter", i)]] <- bp_extract_signatures(
+      nmf_matrix = nmf_matrix,
+      range = range,
+      n_bootstrap = n_bootstrap,
+      n_nmf_run = n_nmf_run,
+      RTOL = RTOL,
+      min_contribution = min_contribution,
+      cores = cores,
+      seed = seed,
+      handle_hyper_mutation = handle_hyper_mutation,
+      report_integer_exposure = report_integer_exposure,
+      mpi_platform = mpi_platform
+    )
+    # 检查寻找需要重新运行的样本，修改 nmf_matrix
+  }
+  iter_list
+}
+
+# 需要对上述结果聚类得到最后的 signature 集合。
 
 #' @param obj a `ExtractionResult` object from [bp_extract_signatures()].
 #' @param signum a integer vector to extract the corresponding `Signature` object(s).
@@ -384,7 +427,10 @@ bp_get_rank_score <- function(obj) {
 #' of plot facet.
 #' @param fixed_ratio if `TRUE` (default), make the x/y axis ratio fixed.
 #' @export
-bp_show_survey <- function(obj, scales = c("free_y", "free"), fixed_ratio = TRUE) {
+bp_show_survey <- function(obj,
+                           add_score = TRUE,
+                           scales = c("free_y", "free"),
+                           fixed_ratio = TRUE) {
   assert_class(obj, "ExtractionResult")
   scales <- match.arg(scales)
 
@@ -399,8 +445,8 @@ bp_show_survey <- function(obj, scales = c("free_y", "free"), fixed_ratio = TRUE
     "silhouette",
     "sample_cosine_distance",
     "L2_error",
-    "exposure_positive_correlation",
-    "signature_similarity_within_cluster"
+    "signature_similarity_within_cluster",
+    "exposure_positive_correlation"
   )
 
   rs <- obj$rank_score[, cols]
@@ -411,9 +457,9 @@ bp_show_survey <- function(obj, scales = c("free_y", "free"), fixed_ratio = TRUE
     by = "signature_number"
   ) %>%
     dplyr::select(cols)
-  colnames(plot_df) <- colnames(rs) <- c("sn", "as", "sil", "cos", "err", "corr", "sim")
-  cn <- c("score", "silhouette", "distance", "error", "pos cor", "similarity")
-  names(cn) <- c("as", "sil", "cos", "err", "corr", "sim")
+  colnames(plot_df) <- colnames(rs) <- c("sn", "as", "sil", "cos", "err", "sim", "corr")
+  cn <- c("score", "silhouette", "distance", "error", "similarity", "pos cor")
+  names(cn) <- c("as", "sil", "cos", "err", "sim", "corr")
 
   plot_df <- plot_df %>%
     tidyr::pivot_longer(
@@ -429,7 +475,7 @@ bp_show_survey <- function(obj, scales = c("free_y", "free"), fixed_ratio = TRUE
     )
   rs <- rs %>%
     dplyr::group_by(.data$type) %>%
-    dplyr::mutate(rk = rank(.data$measure, na.last = FALSE)) %>%
+    dplyr::mutate(rk = rank(.data$measure, na.last = FALSE, ties.method = "first")) %>%
     dplyr::select(-"measure")
 
   plot_df <- dplyr::left_join(plot_df, rs, by = c("sn", "type")) %>%
@@ -438,27 +484,36 @@ bp_show_survey <- function(obj, scales = c("free_y", "free"), fixed_ratio = TRUE
       type = factor(.data$type, levels = cn)
     )
 
-  p <- ggplot(plot_df, aes_string(x = "sn", y = "measure")) +
-    geom_line() +
-    geom_point() +
-    geom_point(
-      data = dplyr::filter(
-        plot_df,
-        .data$rk == nsig & .data$type != "score"
-      ),
-      color = "orange"
-    ) +
-    geom_point(
-      data = dplyr::filter(
-        plot_df,
-        .data$rk == nsig & .data$type == "score"
-      ),
-      color = "red"
-    ) +
+  if (add_score) {
+    p <- ggplot(plot_df, aes_string(x = "sn", y = "measure")) +
+      geom_line() +
+      geom_point() +
+      geom_point(
+        data = dplyr::filter(
+          plot_df,
+          .data$rk == nsig & .data$type != "score"
+        ),
+        color = "orange"
+      ) +
+      geom_point(
+        data = dplyr::filter(
+          plot_df,
+          .data$rk == nsig & .data$type == "score"
+        ),
+        color = "red"
+      )
+  } else {
+    p <- ggplot(plot_df %>%
+                  dplyr::filter(.data$type != "score"),
+                aes_string(x = "sn", y = "measure")) +
+      geom_line() +
+      geom_point()
+  }
+
+  p <- p +
     facet_wrap(~type, nrow = 2, scales = scales) +
     cowplot::theme_cowplot() +
     labs(x = NULL, y = NULL)
-
   if (fixed_ratio) {
     p <- p + theme(aspect.ratio = 1)
   }
@@ -466,11 +521,77 @@ bp_show_survey <- function(obj, scales = c("free_y", "free"), fixed_ratio = TRUE
   p
 }
 
+#' @param input the input.
+#' @param sample_class a named string vector whose names are sample names
+#' and values are class labels (i.e. cancer subtype). If it is `NULL` (the default),
+#' treat all samples as one group.
 #' @rdname bp
-#' @param scales one of "free_y" (default) and "free" to control the scales
-#' of plot facet.
-#' @param fixed_ratio if `TRUE` (default), make the x/y axis ratio fixed.
 #' @export
-bp_attribute_activity <- function() {
+bp_attribute_activity <- function(input,
+                                  sample_class = NULL,
+                                  nmf_matrix = NULL) {
+  # logical: excludes class specific signatures if it contributes <0.01 similarity
+  #          while include global signatures if it add >0.05 similarity
 
+  if (inherits(input, "ExtractionResult")) {
+    if (is.null(nmf_matrix)) {
+      nmf_matrix <- t(input$catalog_matrix)
+    }
+
+    if (is.na(input$suggested)) {
+      # Only one Signature object
+      input <- input$object[[1]]
+    } else {
+      input <- bp_get_sig_obj(input, signum = input$suggested)
+    }
+  }
+
+  if (inherits(input, "Signature")) {
+    sig <- input$Signature.norm
+    expo <- input$Exposure.norm
+  } else {
+    # 其他的输入情况，待定
+  }
+
+  if (is.null(nmf_matrix)) {
+    stop("nmf_matrix cannot be NULL!")
+  }
+
+  exist_mat <- construct_sig_exist_matrix(expo, sample_class)
+
+  # 处理标记 1
+
+  # 处理可能的标记 2
+
+}
+
+# 构建一个 signature by sample 逻辑矩阵，
+# 先指示某个 signature 是否在某个样本中存在
+# 根据已知的 exposure 进行初始化，设定<0.05 相对贡献不存在
+# 0 表示不存在 signature，1 表示存在，2 表示全局 signature
+# 一开始的矩阵只可能是一个1和2构成的矩阵，后续的操作会进行填0操作
+construct_sig_exist_matrix <- function(expo, sample_class = NULL, cutoff = 0.05) {
+  out <- expo
+  if (is.null(sample_class)) {
+    # 没有群组标签（即1组），那么所有 signature 都有可能
+    out[,] <- 1L
+  } else {
+    # 只有 1 组标签也是如此
+    grps <- unique(sample_class)
+    if (length(grps) == 1L) {
+      out[,] <- 1L
+    } else {
+      out <- ifelse(out > cutoff, 1L, 0L) # 先初始化
+      # 用 group 标签覆盖样本标签
+      lapply(grps, function(grp) {
+        idx <- names(sample_class[sample_class == grp])
+        ex <- any(out[, idx] == 1L)
+        if (ex) {
+          out[, idx] <<- 1L
+        }
+      })
+      out[out == 0L] <- 2L # 还存在 0 的地方标记为全局 signature
+    }
+  }
+  return(out)
 }

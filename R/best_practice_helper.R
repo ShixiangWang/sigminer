@@ -427,7 +427,11 @@ get_expo_corr_stat <- function(x) {
 
       # 仅关注正相关
       corr <- corr[corr > 0]
-      if (length(corr) == 0) NA else corr
+      # 乘以一个数量权重
+      if (length(corr) == 0) NA else {
+        corr <- corr * (length(corr) / (rows * r))
+        corr
+      }
     })
   } else {
     d <- NA
@@ -659,12 +663,12 @@ rank_solutions <- function(stats) {
     "Calculating rank score for the measures: ",
     paste(measures, collapse = ", ")
   )
-  weights <- c(0.3, 0.25, 0.25, 0.1, 0.1)
+  weights <- c(0.3, 0.25, 0.25, 0.05, 0.15)
   send_info(
     "Corresponding weights for obtaining aggregated score are: ",
     paste(weights, collapse = ", ")
   )
-  types <- c("diff", "increase", "increase", "increase", "decrease")
+  types <- c("diff", "increase", "increase", "increase", "diff")
 
   rk <- purrr::map2_df(
     .x = stats[, measures],
