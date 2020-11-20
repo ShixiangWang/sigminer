@@ -85,21 +85,37 @@ p5
 
 > `sig_tally()` for RS is not supported.
 
-### Feature
+### Features
 
 -   supports a standard *de novo* pipeline for identification of **5** types of signatures: copy number, SBS, DBS, INDEL and RS (genome rearrangement signature).
 -   supports quantify exposure for one sample based on *known signatures*.
 -   supports two methods for calling copy number signatures: one is from Macintyre et al. 2018 and the other is created by our group.
 -   supports association and group analysis and visualization for signatures.
--   supports a Bayesian variant of NMF algorithm to enable optimal inferences for the number of signatures through the automatic relevance determination technique from **SignatureAnalyzer** package.
--   supports a caller for **SigProfiler**.
--   supports two plot styles for signature profile: 'default' (like **SignatureAnalyzer** package) and 'cosmic' (like **COSMIC** database).
 -   supports two types of signature exposures: relative exposure (relative contribution of signatures in each sample) and absolute exposure (estimated variation records of signatures in each sample).
 -   supports basic summary and visualization for profile of mutation (powered by **maftools**) and copy number.
 -   supports parallel computation by R packages **foreach**, **future** and **NMF**.
 -   efficient code powered by R packages **data.table** and **tidyverse**.
 -   elegant plots powered by R packages **ggplot2**, **ggpubr**, **cowplot** and **patchwork**.
 -   well tested by R package **testthat** and documented by R package **roxygen2**, **roxytest**, **pkgdown**, and etc. for both reliable and reproducible research.
+
+### Key Interfaces and Their Performance
+
+**Sigminer** provides many approaches to extract mutational signatures. To test their performance, I use 4 mutation catalog datasets (each catalog dataset is composed of 30 samples, 10 signatures are randomly assign to each sample with random signature exposure) from reference \#6. The following table show how many signatures can be recovered and the mean cosine similarity to COSMIC reference signatures for each method.
+
+| Approach      | Selection Way        | Setting                                               | Caller                        | Driver          | Set1       | Set2       | Set3            | Set4       | Success /Mean | Run time          | Recommand     |
+|---------------|----------------------|-------------------------------------------------------|-------------------------------|-----------------|------------|------------|-----------------|------------|---------------|-------------------|---------------|
+| Standard NMF  | Manual               | Default. 50 runs (estimation) + 100 runs (extraction) | `sig_estimate`, `sig_extract` | R               | 10 (0.884) | 10 (0.944) | 9 or 10 (0.998) | 10 (0.994) | \~90%/0.955   | \~1min (8 cores)  | YES :star: ⭐⭐ |
+| SigProfiler   | **Manual/Automatic** | Default. 100 runs + 8 cores                           | `sigprofiler_extract`         | Python/Anaconda | 10 (0.961) | 10 (0.999) | 10 (0.990)      | 10 (0.997) | 100%/0.987    | \~1h (8 cores)    | YES ⭐⭐⭐⭐      |
+| Best Practice | **Manual/Automatic** | Use bootstrapped catalog (1000 runs)                  | `bp_extract_signatures`       | R               | 10 (0.973) | 10 (0.990) | 10 (0.992)      | 10 (0.971) | 100%/0.981    | \~10min (8 cores) | YES ⭐⭐⭐⭐⭐     |
+| Best Practice | **Manual/Automatic** | Use original catalog (1000 runs)                      | `bp_extract_signatures`       | R               | 10 (0.987) | 9 (0.985)  | 10 (0.997)      | 9 (0.987)  | 50%/0.989     | \~10min (8 cores) | NO :star:     |
+| Bayesian NMF  | **Automatic**        | L1KL+optimal (20 runs)                                | `sig_auto_extract`            | R               | 10 (0.994) | 9 (0.997)  | 9 (0.998)       | 9 (0.999)  | 25%/0.997     | \~10min (8 cores) | YES ⭐⭐⭐:star  |
+| Bayesian NMF  | **Automatic**        | L1KL+stable (20runs)                                  | `sig_auto_extract`            | R               | 10 (0.994) | 9 (0.997)  | 10 (0.988)      | 9 (0.999)  | 50%/0.995     | \~10min (8 cores) | YES ⭐⭐⭐⭐      |
+| Bayesian NMF  | **Automatic**        | L2KL+optimal (20runs)                                 | `sig_auto_extract`            | R               | 12 (0.990) | 13 (0.988) | 12 (0.902)      | 12 (0.994) | 0%/0.969      | \~10min (8 cores) | NO :star:     |
+| Bayesian NMF  | **Automatic**        | L2KL+stable (20runs)                                  | `sig_auto_extract`            | R               | 12 (0.990) | 12 (0.988) | 12 (0.902)      | 12 (0.994) | 0%/0.969      | \~10min (8 cores) | NO :star:     |
+| Bayesian NMF  | **Automatic**        | L1WL2H+optimal (20runs)                               | `sig_auto_extract`            | R               | 9 (0.989)  | 9 (0.999)  | 9 (0.996)       | 9 (1.000)  | 0%/0.996      | \~10min (8 cores) | YES ⭐⭐⭐       |
+| Bayesian NMF  | **Automatic**        | L1WL2H+stable (20runs)                                | `sig_auto_extract`            | R               | 9 (0.989)  | 9 (0.999)  | 9 (0.996)       | 9 (1.000)  | 0%/0.996      | \~10min (8 cores) | YES ⭐⭐⭐⭐      |
+
+> NOTE: although Bayesian NMF approach with L1KL or L1WL2H prior cannot recover all 10 signatures here, but it is close to the true answer from initial signature number 20 in a automatic way, and the result signatures are highly similar to reference signatures. This also reminds us that we could not use this method to find signatures with small contributions in tumors.
 
 ## Installation
 
