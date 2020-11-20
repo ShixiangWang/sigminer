@@ -3,6 +3,10 @@
 \name{bp}
 \alias{bp}
 \alias{bp_extract_signatures}
+\alias{bp_get_sig_obj}
+\alias{bp_get_stats}
+\alias{bp_get_rank_score}
+\alias{bp_show_survey}
 \title{A Best Practice for Signature Extraction and Exposure (Activity) Attribution}
 \usage{
 bp_extract_signatures(
@@ -18,6 +22,14 @@ bp_extract_signatures(
   report_integer_exposure = TRUE,
   mpi_platform = FALSE
 )
+
+bp_get_sig_obj(obj, signum = NULL)
+
+bp_get_stats(obj)
+
+bp_get_rank_score(obj)
+
+bp_show_survey(obj, scales = c("free_y", "free"), fixed_ratio = TRUE)
 }
 \arguments{
 \item{nmf_matrix}{a \code{matrix} used for NMF decomposition with rows indicate samples and columns indicate components.}
@@ -33,8 +45,8 @@ At default, in total n_bootstrap x n_nmf_run (i.e. 1000) NMF runs are used
 for the task.}
 
 \item{RTOL}{a threshold proposed by Nature Cancer paper to control how to
-filter solutions of NMF. Default is \verb{0.1\%}, only NMF solutions with KLD
-(KL deviance) <= \verb{100.1\%} minimal KLD are kept.}
+filter solutions of NMF. Default is \verb{0.1\%} (from reference #2),
+only NMF solutions with KLD (KL deviance) <= \verb{100.1\%} minimal KLD are kept.}
 
 \item{min_contribution}{a component contribution threshold to filer out small
 contributed components.}
@@ -49,12 +61,51 @@ contributed components.}
 exposure by bootstrapping technique.}
 
 \item{mpi_platform}{keep for implementation.}
+
+\item{obj}{a \code{ExtractionResult} object from \code{\link[=bp_extract_signatures]{bp_extract_signatures()}}.}
+
+\item{signum}{a integer vector to extract the corresponding \code{Signature} object(s).
+If it is \code{NULL} (default), all will be returned.}
+
+\item{scales}{one of "free_y" (default) and "free" to control the scales
+of plot facet.}
+
+\item{fixed_ratio}{if \code{TRUE} (default), make the x/y axis ratio fixed.}
 }
 \value{
 It depends on the called function.
 }
 \description{
+These functions are combined to provide a best practice for optimally
+identifying mutational signatures and attributing their activities (exposures)
+in tumor samples. They are listed in order to use. See detail part see why
+and how the whole procedure works.
 \itemize{
 \item \code{bp_extract_signatures()} for extracting signatures.
+\item \code{bp_show_survey()} for showing measures change under different
+signature numbers to help user select optimal signature number.
+At default, a aggregated score (named score) is generated from 5 measures to
+suggest the best solution. See details for more explanation.
+\item \code{bp_get_sig_obj()} for get a (list of) \code{Signature} object which is common
+used in \strong{sigminer} for analysis and visualization.
+\item \code{bp_attribute_activity()} for optimizing signature exposures.
+\item Extra: \code{bp_get_stats}() for obtaining stats for signatures and samples of a solution.
+These stats are aggregated (averaged) as the stats for a solution
+(specific signature number).
+\item Extra: \code{bp_get_rank_score()} for obtaining rank score for all signature numbers.
 }
+}
+\references{
+Alexandrov, Ludmil B., et al. "Deciphering signatures of mutational processes operative in human cancer." Cell reports 3.1 (2013): 246-259.
+
+Degasperi, Andrea, et al. "A practical framework and online tool for mutational signature analyses show intertissue variation and driver dependencies." Nature cancer 1.2 (2020): 249-263.
+
+Alexandrov, Ludmil B., et al. “The repertoire of mutational signatures in human cancer.” Nature 578.7793 (2020): 94-101.
+}
+\seealso{
+See \link{sig_estimate}, \link{sig_extract}, \link{sig_auto_extract},
+\link{sigprofiler_extract} for other approaches.
+}
+\author{
+Shixiang Wang \href{mailto:w_shixiang@163.com}{w_shixiang@163.com}
 }

@@ -4,7 +4,22 @@
 
 #' A Best Practice for Signature Extraction and Exposure (Activity) Attribution
 #'
+#' These functions are combined to provide a best practice for optimally
+#' identifying mutational signatures and attributing their activities (exposures)
+#' in tumor samples. They are listed in order to use. See detail part see why
+#' and how the whole procedure works.
 #' - `bp_extract_signatures()` for extracting signatures.
+#' - `bp_show_survey()` for showing measures change under different
+#' signature numbers to help user select optimal signature number.
+#' At default, a aggregated score (named score) is generated from 5 measures to
+#' suggest the best solution. See details for more explanation.
+#' - `bp_get_sig_obj()` for get a (list of) `Signature` object which is common
+#' used in **sigminer** for analysis and visualization.
+#' - `bp_attribute_activity()` for optimizing signature exposures.
+#' - Extra: `bp_get_stats`() for obtaining stats for signatures and samples of a solution.
+#' These stats are aggregated (averaged) as the stats for a solution
+#' (specific signature number).
+#' - Extra: `bp_get_rank_score()` for obtaining rank score for all signature numbers.
 #'
 #' @inheritParams sig_estimate
 #' @param n_bootstrap number of bootstrapped (resampling) catalogs used.
@@ -13,8 +28,8 @@
 #' At default, in total n_bootstrap x n_nmf_run (i.e. 1000) NMF runs are used
 #' for the task.
 #' @param RTOL a threshold proposed by Nature Cancer paper to control how to
-#' filter solutions of NMF. Default is `0.1%`, only NMF solutions with KLD
-#' (KL deviance) <= `100.1%` minimal KLD are kept.
+#' filter solutions of NMF. Default is `0.1%` (from reference #2),
+#' only NMF solutions with KLD (KL deviance) <= `100.1%` minimal KLD are kept.
 #' @param min_contribution a component contribution threshold to filer out small
 #' contributed components.
 #' @param seed a random seed to make reproducible result.
@@ -25,6 +40,15 @@
 #'
 #' @return It depends on the called function.
 #' @name bp
+#' @author Shixiang Wang <w_shixiang@163.com>
+#' @references
+#' Alexandrov, Ludmil B., et al. "Deciphering signatures of mutational processes operative in human cancer." Cell reports 3.1 (2013): 246-259.
+#'
+#' Degasperi, Andrea, et al. "A practical framework and online tool for mutational signature analyses show intertissue variation and driver dependencies." Nature cancer 1.2 (2020): 249-263.
+#'
+#' Alexandrov, Ludmil B., et al. “The repertoire of mutational signatures in human cancer.” Nature 578.7793 (2020): 94-101.
+#' @seealso See [sig_estimate], [sig_extract], [sig_auto_extract],
+#' [sigprofiler_extract] for other approaches.
 NULL
 
 #' @rdname bp
@@ -286,7 +310,11 @@ bp_extract_signatures <- function(nmf_matrix,
   solutions
 }
 
-# 获取一些指定的信息
+#' @param obj a `ExtractionResult` object from [bp_extract_signatures()].
+#' @param signum a integer vector to extract the corresponding `Signature` object(s).
+#' If it is `NULL` (default), all will be returned.
+#' @rdname bp
+#' @export
 bp_get_sig_obj <- function(obj, signum = NULL) {
   assert_class(obj, "ExtractionResult")
   if (is.null(signum)) {
@@ -302,16 +330,25 @@ bp_get_sig_obj <- function(obj, signum = NULL) {
   }
 }
 
+#' @rdname bp
+#' @export
 bp_get_stats <- function(obj) {
   assert_class(obj, "ExtractionResult")
   obj[c("stats", "stats_signature", "stats_sample")]
 }
 
+#' @rdname bp
+#' @export
 bp_get_rank_score <- function(obj) {
   assert_class(obj, "ExtractionResult")
   obj[["rank_score"]]
 }
 
+#' @rdname bp
+#' @param scales one of "free_y" (default) and "free" to control the scales
+#' of plot facet.
+#' @param fixed_ratio if `TRUE` (default), make the x/y axis ratio fixed.
+#' @export
 bp_show_survey <- function(obj, scales = c("free_y", "free"), fixed_ratio = TRUE) {
   assert_class(obj, "ExtractionResult")
   scales <- match.arg(scales)

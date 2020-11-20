@@ -138,57 +138,39 @@ following papers.
 
 <img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
 
-## Acknowledgments
-
-If you use **NMF** package in R, please also cite:
-
-    Gaujoux, Renaud, and Cathal Seoighe. "A Flexible R Package for 
-        Nonnegative Matrix Factorization."" BMC Bioinformatics 11, no. 1 (December 2010).
-
-The method “M” for extracting copy number signatures was based in part
-on the source code from paper *Copy number signatures and mutational
-processes in ovarian carcinoma*, if you use this feature, please also
-cite:
-
-    Macintyre, Geoff, et al. "Copy number signatures and mutational
-        processes in ovarian carcinoma." Nature genetics 50.9 (2018): 1262.
-
-The code for extracting SBS signatures was based in part on the source
-code of the **maftools** package, if you use this feature, please also
-cite:
-
-    Mayakonda, Anand, et al. "Maftools: efficient and comprehensive analysis
-        of somatic variants in cancer." Genome research 28.11 (2018): 1747-1756.
-
-The code for extracting mutational signatures was based in part on the
-source code of the **SignatureAnalyzer** package, if you use this
-feature, please also cite:
-
-    Kim, Jaegil, et al. "Somatic ERCC2 mutations are associated with a distinct genomic
-        signature in urothelial tumors." Nature genetics 48.6 (2016): 600.
-
 ## References
 
-1.  Alexandrov, Ludmil B., et al. “The repertoire of mutational
-    signatures in human cancer.” Nature 578.7793 (2020): 94-101.
-2.  Macintyre, Geoff, et al. “Copy number signatures and mutational
-    processes in ovarian carcinoma.” Nature genetics 50.9 (2018): 1262.
-3.  Mayakonda, Anand, et al. “Maftools: efficient and comprehensive
+Please properly cite the following references when you are using any
+corresponding features. The references are also listed in the function
+documentation. Very thanks to the works, **sigminer** cannot be created
+without the giants.
+
+1.  Mayakonda, Anand, et al. “Maftools: efficient and comprehensive
     analysis of somatic variants in cancer.” Genome research 28.11
     (2018): 1747-1756.
-4.  Gaujoux, Renaud, and Cathal Seoighe. “A Flexible R Package for
+2.  Gaujoux, Renaud, and Cathal Seoighe. “A Flexible R Package for
     Nonnegative Matrix Factorization.”" BMC Bioinformatics 11, no. 1
     (December 2010).
-5.  H. Wickham. ggplot2: Elegant Graphics for Data Analysis.
+3.  H. Wickham. ggplot2: Elegant Graphics for Data Analysis.
     Springer-Verlag New York, 2016.
-6.  Tan, Vincent YF, and Cédric Févotte. “Automatic relevance
+4.  Kim, Jaegil, et al. “Somatic ERCC2 mutations are associated with a
+    distinct genomic signature in urothelial tumors.” Nature genetics
+    48.6 (2016): 600.
+5.  Alexandrov, Ludmil B., et al. “Deciphering signatures of mutational
+    processes operative in human cancer.” Cell reports 3.1 (2013):
+    246-259.
+6.  Degasperi, Andrea, et al. “A practical framework and online tool for
+    mutational signature analyses show intertissue variation and driver
+    dependencies.” Nature cancer 1.2 (2020): 249-263.
+7.  Alexandrov, Ludmil B., et al. “The repertoire of mutational
+    signatures in human cancer.” Nature 578.7793 (2020): 94-101.
+8.  Macintyre, Geoff, et al. “Copy number signatures and mutational
+    processes in ovarian carcinoma.” Nature genetics 50.9 (2018): 1262.
+9.  Tan, Vincent YF, and Cédric Févotte. “Automatic relevance
     determination in nonnegative matrix factorization with the/spl
     beta/-divergence.” IEEE Transactions on Pattern Analysis and Machine
     Intelligence 35.7 (2012): 1592-1605.
-7.  Kim, Jaegil, et al. “Somatic ERCC2 mutations are associated with a
-    distinct genomic signature in urothelial tumors.” Nature genetics
-    48.6 (2016): 600.
-8.  Bergstrom EN, Huang MN, Mahto U, Barnes M, Stratton MR, Rozen SG,
+10. Bergstrom EN, Huang MN, Mahto U, Barnes M, Stratton MR, Rozen SG,
     Alexandrov LB: SigProfilerMatrixGenerator: a tool for visualizing
     and exploring patterns of small mutational events. BMC Genomics
     2019, 20:685
@@ -205,7 +187,7 @@ written permission after contacting Shixiang Wang
 <wangshx@shanghaitech.edu.cn> or Xue-Song Liu
 <liuxs@shanghaitech.edu.cn>.
 
-MIT © 2019-2020 Shixiang Wang, Xue-Song Liu
+MIT © 2019-Present Shixiang Wang, Xue-Song Liu
 
 MIT © 2018 Geoffrey Macintyre
 
