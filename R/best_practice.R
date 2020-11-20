@@ -423,6 +423,8 @@ bp_get_rank_score <- function(obj) {
 }
 
 #' @rdname bp
+#' @param add_score if `FALSE`, don't show score and label optimal points by
+#' rank score.
 #' @param scales one of "free_y" (default) and "free" to control the scales
 #' of plot facet.
 #' @param fixed_ratio if `TRUE` (default), make the x/y axis ratio fixed.

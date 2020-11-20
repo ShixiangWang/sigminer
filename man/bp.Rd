@@ -3,15 +3,33 @@
 \name{bp}
 \alias{bp}
 \alias{bp_extract_signatures}
+\alias{bp_extract_signatures_iter}
 \alias{bp_get_sig_obj}
 \alias{bp_get_stats}
 \alias{bp_get_rank_score}
 \alias{bp_show_survey}
+\alias{bp_attribute_activity}
 \title{A Best Practice for Signature Extraction and Exposure (Activity) Attribution}
 \usage{
 bp_extract_signatures(
   nmf_matrix,
   range = 2:5,
+  n_bootstrap = 20L,
+  n_nmf_run = 50,
+  RTOL = 0.001,
+  min_contribution = 0,
+  cores = min(4L, future::availableCores()),
+  seed = 123456L,
+  handle_hyper_mutation = TRUE,
+  report_integer_exposure = TRUE,
+  mpi_platform = FALSE
+)
+
+bp_extract_signatures_iter(
+  nmf_matrix,
+  range = 2:5,
+  sim_threshold = 0.95,
+  max_iter = 10L,
   n_bootstrap = 20L,
   n_nmf_run = 50,
   RTOL = 0.001,
@@ -29,7 +47,14 @@ bp_get_stats(obj)
 
 bp_get_rank_score(obj)
 
-bp_show_survey(obj, scales = c("free_y", "free"), fixed_ratio = TRUE)
+bp_show_survey(
+  obj,
+  add_score = TRUE,
+  scales = c("free_y", "free"),
+  fixed_ratio = TRUE
+)
+
+bp_attribute_activity(input, sample_class = NULL, nmf_matrix = NULL)
 }
 \arguments{
 \item{nmf_matrix}{a \code{matrix} used for NMF decomposition with rows indicate samples and columns indicate components.}
@@ -62,15 +87,30 @@ exposure by bootstrapping technique.}
 
 \item{mpi_platform}{keep for implementation.}
 
+\item{sim_threshold}{a similarity threshold for selecting samples to auto-rerun
+the extraction procedure (i.e. \code{bp_extract_signatures()}), default is \code{0.95}.}
+
+\item{max_iter}{the maximum iteration size, default is 10, i.e., at most run
+the extraction procedure 10 times.}
+
 \item{obj}{a \code{ExtractionResult} object from \code{\link[=bp_extract_signatures]{bp_extract_signatures()}}.}
 
 \item{signum}{a integer vector to extract the corresponding \code{Signature} object(s).
 If it is \code{NULL} (default), all will be returned.}
 
+\item{add_score}{if \code{FALSE}, don't show score and label optimal points by
+rank score.}
+
 \item{scales}{one of "free_y" (default) and "free" to control the scales
 of plot facet.}
 
 \item{fixed_ratio}{if \code{TRUE} (default), make the x/y axis ratio fixed.}
+
+\item{input}{the input.}
+
+\item{sample_class}{a named string vector whose names are sample names
+and values are class labels (i.e. cancer subtype). If it is \code{NULL} (the default),
+treat all samples as one group.}
 }
 \value{
 It depends on the called function.
@@ -128,8 +168,9 @@ cares the whole mutation profile similarity while \code{error} here cares value 
 The lower value is better. This measure is constructed based on my understanding
 about signatures: mutational signatures are typically treated as independent
 recurrent patterns, so their activities are less correlated.
-\item \code{similarity} - the average similarity within in a signature cluster. The higher
-value is better. In the practice, results from multiple NMF runs are clusterd
+\item \code{similarity} - the average similarity within in a signature cluster.
+Like \code{silhouette}, the point decreases sharply is preferred.
+In the practice, results from multiple NMF runs are clustered
 with "clustering with match" algorithm proposed by reference #2. This value
 indicates if the signature profiles extracted from different NMF runs are similar.
 }
