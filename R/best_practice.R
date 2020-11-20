@@ -249,7 +249,7 @@ bp_extract_signatures <- function(nmf_matrix,
     ) %>% unlist()
     send_success(
       "NMF done for this solution. Current memory size used: ",
-      round(mem_used() / 2^20), "MB"
+      round(mem_used() / 2^30), "GB"
     )
   }
 
@@ -280,7 +280,7 @@ bp_extract_signatures <- function(nmf_matrix,
   }
   send_success(
     "Solution list processed. Current memory size used: ",
-    round(mem_used() / 2^20), "MB"
+    round(mem_used() / 2^30), "GB"
   )
 
   send_info("Merging and checking the solution data.")
@@ -315,7 +315,7 @@ bp_extract_signatures <- function(nmf_matrix,
   }
   send_success(
     "Merged. Current memory size used: ",
-    round(mem_used() / 2^20), "MB"
+    round(mem_used() / 2^30), "GB"
   )
 
   if (nrow(solutions$stats) > 1) {
@@ -466,6 +466,11 @@ bp_show_survey <- function(obj, scales = c("free_y", "free"), fixed_ratio = TRUE
   p
 }
 
+#' @rdname bp
+#' @param scales one of "free_y" (default) and "free" to control the scales
+#' of plot facet.
+#' @param fixed_ratio if `TRUE` (default), make the x/y axis ratio fixed.
+#' @export
 bp_attribute_activity <- function() {
 
 }
