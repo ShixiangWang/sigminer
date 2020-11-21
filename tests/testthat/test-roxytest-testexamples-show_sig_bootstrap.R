@@ -2,7 +2,7 @@
 
 context("File R/show_sig_bootstrap.R: @testexamples")
 
-test_that("[unknown alias] @ L103", {
+test_that("[unknown alias] @ L102", {
   
   
   if (require("BSgenome.Hsapiens.UCSC.hg19")) {
@@ -18,8 +18,7 @@ test_that("[unknown alias] @ L103", {
     mt_sig <- sig_extract(mt_tally$nmf_matrix,
       n_sig = 3,
       nrun = 2,
-      cores = 1,
-      pConstant = 1e-13
+      cores = 1
     )
   
     mat <- t(mt_tally$nmf_matrix)

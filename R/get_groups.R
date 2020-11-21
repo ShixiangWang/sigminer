@@ -38,17 +38,23 @@
 #' # Extract copy number signatures
 #' library(NMF)
 #' sig <- sig_extract(cn_tally_W$nmf_matrix, 2,
-#'   nrun = 10,
-#'   pConstant = 1e-13
+#'   nrun = 10
 #' )
 #'
 #' # Methods 'consensus' and 'samples' are from NMF::predict()
-#' get_groups(sig, method = "consensus", match_consensus = TRUE)
-#' get_groups(sig, method = "samples")
+#' g1 <- get_groups(sig, method = "consensus", match_consensus = TRUE)
+#' g1
+#' g2 <- get_groups(sig, method = "samples")
+#' g2
 #'
 #' # Use k-means clustering
-#' get_groups(sig, method = "k-means")
+#' g3 <- get_groups(sig, method = "k-means")
+#' g3
 #' }
+#' @testexamples
+#' expect_is(g1, "data.frame")
+#' expect_is(g2, "data.frame")
+#' expect_is(g3, "data.frame")
 #' @seealso [NMF::predict()], [show_groups].
 get_groups <- function(Signature,
                        method = c("consensus", "k-means", "exposure", "samples"),

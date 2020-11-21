@@ -50,8 +50,7 @@
 #'   mt_sig <- sig_extract(mt_tally$nmf_matrix,
 #'     n_sig = 3,
 #'     nrun = 2,
-#'     cores = 1,
-#'     pConstant = 1e-13
+#'     cores = 1
 #'   )
 #'
 #'   mat <- t(mt_tally$nmf_matrix)
