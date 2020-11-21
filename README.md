@@ -76,15 +76,16 @@ For pipeline tool, please see its co-evolutionary CLI
     **roxygen2**, **roxytest**, **pkgdown**, and etc. for both reliable
     and reproducible research.
 
-### Key Interfaces and Their Performance
+### Key Interfaces and Their Performances
 
 **Sigminer** provides many approaches to extract mutational signatures.
-To test their performance, I use 4 mutation catalog datasets (each
-catalog dataset is composed of 30 samples, 10 signatures are randomly
-assign to each sample with random signature exposure) from reference
-\#6. The following table show how many signatures can be recovered and
-the mean cosine similarity to COSMIC reference signatures for each
-method.
+To test their performances, I use 4 mutation catalog datasets (each
+mutation catalog dataset is composed of 30 samples, 10 COSMIC v2 (SBS)
+signatures are randomly assigned to each sample with random signature
+exposure) from reference \#6. The following table shows how many
+signatures can be recovered and the corresponding average cosine
+similarity to COSMIC reference signatures for each approach with
+settings.
 
 | Approach      | Selection Way        | Setting                                               | Caller                        | Recommend     | Driver          | Set1       | Set2       | Set3            | Set4       | Success /Mean | Run time          | Note                                                                                                                      |
 |:--------------|:---------------------|:------------------------------------------------------|:------------------------------|:--------------|:----------------|:-----------|:-----------|:----------------|:-----------|:--------------|:------------------|---------------------------------------------------------------------------------------------------------------------------|
@@ -149,9 +150,9 @@ following papers.
     medRxiv (2020)***
     <https://www.medrxiv.org/content/10.1101/2020.04.27.20082404v1>
 
--   **Shixiang Wang, Ziyu Tao, Tao Wu, Xue-Song Liu, Sigflow: An
+-   ***Shixiang Wang, Ziyu Tao, Tao Wu, Xue-Song Liu, Sigflow: An
     Automated And Comprehensive Pipeline For Cancer Genome Mutational
-    Signature Analysis, Bioinformatics, btaa895**,
+    Signature Analysis, Bioinformatics, btaa895***,
     <https://doi.org/10.1093/bioinformatics/btaa895>
 
 ------------------------------------------------------------------------
