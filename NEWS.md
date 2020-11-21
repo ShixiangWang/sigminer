@@ -1,15 +1,19 @@
-# sigminer 1.1.1
+# sigminer 1.2.0
 
 ## BUG REPORTS
 
 ## ENHANCEMENTS
 
+- Added benchmark results for different extraction approaches in README.
 - The threshold for `auto_reduce` in `sig_fit()` is modified from 0.99 to 0.95.
 - Removed `pConstant` option from `sig_extract()` and `sig_estimate()`. Now a
 auto-check function is created for avoiding the error from NMF package due to
 no contribution of a component in all samples.
 
 ## NEW FUNCTIONS
+
+- Added functions start with `bp_` which are combined to provide a best practice for extracting
+signatures in cancer researches. See more details, run `?bp` in your R console.
 
 ## DEPRECATED
 
