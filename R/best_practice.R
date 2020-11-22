@@ -410,10 +410,28 @@ bp_extract_signatures_iter <- function(nmf_matrix,
       nmf_matrix <- nmf_matrix[samp2rerun, ]
     }
   }
+  class(iter_list) <- "ExtractionResultList"
   iter_list
 }
 
 # 需要对上述结果聚类得到最后的 signature 集合。
+bp_cluster_iter_list <- function(x) {
+  stopifnot(inherits(x, "ExtractionResultList"))
+  if (length(x) < 2) {
+    stop("No need to cluster length-1 result list.")
+  }
+  all_list <- purrr::map(x, ~ bp_get_sig_obj(., .$suggested))
+  sig_list <- purrr::map(all_list, "Signature.norm")
+  sigmat <- purrr::imap(sig_list, function(x, y) {
+    colnames(x) <- paste(y, colnames(x), sep = ":")
+    x
+  }) %>% purrr::reduce(cbind)
+  cosdist <- 1 - cosineMatrix(sigmat, sigmat)
+  rownames(cosdist) <- colnames(cosdist) <- colnames(sigmat)
+  # Do clustering
+  cls <- stats::hclust(stats::as.dist(cosdist))
+  cls
+}
 
 #' @param obj a `ExtractionResult` object from [bp_extract_signatures()].
 #' @param signum a integer vector to extract the corresponding `Signature` object(s).
