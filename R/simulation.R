@@ -57,6 +57,10 @@ NULL
 #' @export
 simulate_signature <- function(x, weights = NULL) {
   stopifnot(is.numeric(x))
+  if (!requireNamespace("matrixStats")) {
+    message("'matrixStats' package is not available, installing it.")
+    eval(parse(text = "install.packages('matrixStats')"))
+  }
 
   if (is.vector(x)) {
     mat <- matrix(x, nrow = 1, byrow = TRUE)

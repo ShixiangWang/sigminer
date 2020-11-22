@@ -431,7 +431,9 @@ get_expo_corr_stat <- function(x) {
       # 仅关注正相关
       corr <- corr[corr > 0]
       # 乘以一个数量权重
-      if (length(corr) == 0) NA else {
+      if (length(corr) == 0) {
+        NA
+      } else {
         corr <- corr * (length(corr) / (rows * r))
         corr
       }
@@ -708,12 +710,12 @@ construct_sig_exist_matrix <- function(expo, sample_class = NULL, cutoff = 0.05)
   out <- expo
   if (is.null(sample_class)) {
     # 没有群组标签（即1组），那么所有 signature 都有可能
-    out[,] <- 1L
+    out[, ] <- 1L
   } else {
     # 只有 1 组标签也是如此
     grps <- unique(sample_class)
     if (length(grps) == 1L) {
-      out[,] <- 1L
+      out[, ] <- 1L
     } else {
       out <- ifelse(out > cutoff, 1L, 0L) # 先初始化
 
@@ -727,7 +729,7 @@ construct_sig_exist_matrix <- function(expo, sample_class = NULL, cutoff = 0.05)
       # 用 group 标签覆盖样本标签
       lapply(grps, function(grp) {
         idx <- names(sample_class[sample_class == grp])
-        ex <- sum(out[, idx] == 1L) > 2
+        ex <- sum(out[, idx] == 1L) > 5
         if (ex) {
           out[, idx] <<- 1L
         }
@@ -751,21 +753,24 @@ optimize_exposure_in_one_sample <- function(catalog,
   catalog_mat <- matrix(
     catalog,
     ncol = 1,
-    dimnames = list(rownames(sig_matrix), sample))
+    dimnames = list(rownames(sig_matrix), sample)
+  )
 
   # 先处理得到一个 baseline similarity 值
   message("Processing sample: ", sample)
   message("\t getting baseline similarity.")
   baseline <- .get_one_catalog_similarity(
     catalog_mat, flag1, sig_matrix,
-    return_all = TRUE)
+    return_all = TRUE
+  )
   message("\t\t", baseline$sim, " based on ", length(flag1), " signatures.")
 
   # 先处理标记 1，如果相似性降低小于 0.01，移除
   message("\t getting updated similarity by removing one signature in batch.")
   sim_rm <- purrr::map_dbl(
     flag1,
-    ~ .get_one_catalog_similarity(catalog_mat, setdiff(flag1, .), sig_matrix))
+    ~ .get_one_catalog_similarity(catalog_mat, setdiff(flag1, .), sig_matrix)
+  )
 
   rm_id <- sim_rm - baseline$sim >= -0.01 ## 会不会出现全都可以扔掉？待观测
 
@@ -775,7 +780,8 @@ optimize_exposure_in_one_sample <- function(catalog,
     if (length(flag1) > 0) {
       baseline <- .get_one_catalog_similarity(
         catalog_mat, flag1, sig_matrix,
-        return_all = TRUE)
+        return_all = TRUE
+      )
       message("\t\t", baseline$sim, " with ", length(flag1), " signatures left.")
     }
   } else {
@@ -787,7 +793,8 @@ optimize_exposure_in_one_sample <- function(catalog,
     message("\t getting updated similarity by adding one global signature in batch.")
     sim_add <- purrr::map_dbl(
       flag2,
-      ~ .get_one_catalog_similarity(catalog_mat, c(flag1, .), sig_matrix))
+      ~ .get_one_catalog_similarity(catalog_mat, c(flag1, .), sig_matrix)
+    )
 
     add_id <- sim_dd - baseline$sim > 0.05
 
@@ -795,7 +802,8 @@ optimize_exposure_in_one_sample <- function(catalog,
       flag1 <- sort(c(flag1, flag2[add_id]))
       baseline <- .get_one_catalog_similarity(
         catalog_mat, flag1, sig_matrix,
-        return_all = TRUE)
+        return_all = TRUE
+      )
       message("\t\t", baseline$sim, " with ", length(flag1), " signatures left.")
     } else {
       message("\t no global signature need to be added.")
@@ -811,7 +819,8 @@ optimize_exposure_in_one_sample <- function(catalog,
   expo <- matrix(
     expo,
     ncol = 1,
-    dimnames = list(colnames(sig_matrix), sample))
+    dimnames = list(colnames(sig_matrix), sample)
+  )
   list(
     expo = expo,
     similarity = baseline$sim
@@ -821,11 +830,13 @@ optimize_exposure_in_one_sample <- function(catalog,
 .get_one_catalog_similarity <- function(catalog_mat, flag, sig_matrix,
                                         return_all = FALSE) {
   expo <- suppressMessages(
-    sig_fit(catalogue_matrix = catalog_mat,
-            sig = sig_matrix[, flag, drop = FALSE],
-            method = "QP",
-            type = "absolute",
-            return_class = "matrix")
+    sig_fit(
+      catalogue_matrix = catalog_mat,
+      sig = sig_matrix[, flag, drop = FALSE],
+      method = "QP",
+      type = "absolute",
+      return_class = "matrix"
+    )
   )
   rec_catalog <- sig_matrix[, flag, drop = FALSE] %*% expo
   if (return_all) {
@@ -837,4 +848,3 @@ optimize_exposure_in_one_sample <- function(catalog,
     cosineMatrix(rec_catalog, catalog_mat)[1]
   }
 }
-

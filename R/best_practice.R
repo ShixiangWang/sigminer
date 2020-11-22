@@ -306,8 +306,8 @@ bp_extract_signatures <- function(nmf_matrix,
       m <- length(to_add)
 
       mat_add <- matrix(rep(0, n * m),
-                        nrow = m,
-                        dimnames = list(to_add)
+        nrow = m,
+        dimnames = list(to_add)
       )
       obj$Signature <- rbind(obj$Signature, mat_add)
       obj$Signature.norm <- rbind(obj$Signature.norm, mat_add)
@@ -368,7 +368,9 @@ bp_extract_signatures_iter <- function(nmf_matrix,
                                        mpi_platform = FALSE) {
   iter_list <- list()
   for (i in seq_len(max_iter)) {
-    iter_list[[paste0("iter", i)]] <- bp_extract_signatures(
+    message("Round #", i)
+    message("===============================")
+    bp <- bp_extract_signatures(
       nmf_matrix = nmf_matrix,
       range = range,
       n_bootstrap = n_bootstrap,
@@ -382,6 +384,31 @@ bp_extract_signatures_iter <- function(nmf_matrix,
       mpi_platform = mpi_platform
     )
     # 检查寻找需要重新运行的样本，修改 nmf_matrix
+    iter_list[[paste0("iter", i)]] <- bp
+    samp2rerun <- bp$stats_sample %>%
+      dplyr::filter(.data$signature_number == bp$suggested) %>%
+      dplyr::filter(.data$cosine_distance_mean > 1 - sim_threshold) %>%
+      dplyr::pull("sample")
+
+    nsamp <- dim(bp$catalog_matrix)[2]
+    if (length(samp2rerun) < 2L) {
+      if (length(samp2rerun) == 0) {
+        message("All samples passed the rerun threshold in round #", i)
+      } else {
+        message("Only one sample did not pass the rerun threshold in round #", i, ". Stop here.")
+      }
+      message("Return.")
+      break()
+    } else if (length(samp2rerun) == nsamp) {
+      message("All samples cannot pass rerun threshold in round #", i)
+      if (i == 1L) message("It is the first round, maybe your should lower the value.")
+      message("Return.")
+      break()
+    } else {
+      # Rerun
+      nmf_matrix <- t(bp$catalog_matrix)
+      nmf_matrix <- nmf_matrix[samp2rerun, ]
+    }
   }
   iter_list
 }
@@ -505,9 +532,11 @@ bp_show_survey <- function(obj,
         color = "red"
       )
   } else {
-    p <- ggplot(plot_df %>%
-                  dplyr::filter(.data$type != "score"),
-                aes_string(x = "sn", y = "measure")) +
+    p <- ggplot(
+      plot_df %>%
+        dplyr::filter(.data$type != "score"),
+      aes_string(x = "sn", y = "measure")
+    ) +
       geom_line() +
       geom_point()
   }
@@ -575,13 +604,15 @@ bp_attribute_activity <- function(input,
   exist_df <- exist_df[sig_order, , drop = FALSE]
 
   # Handle samples one by one (by columns)
-  out <- purrr::pmap(.l = list(
-    catalog = catalog_df,
-    flag_vector = exist_df,
-    sample = samp_order
-  ),
-  .f = optimize_exposure_in_one_sample,
-  sig_matrix = sig)
+  out <- purrr::pmap(
+    .l = list(
+      catalog = catalog_df,
+      flag_vector = exist_df,
+      sample = samp_order
+    ),
+    .f = optimize_exposure_in_one_sample,
+    sig_matrix = sig
+  )
   out <- purrr::transpose(out)
   expo <- purrr::reduce(out$expo, cbind)
   rel_expo <- apply(expo, 2, function(x) x / sum(x, na.rm = TRUE))
