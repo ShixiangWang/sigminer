@@ -5,7 +5,7 @@
 ## ENHANCEMENTS
 
 - Added benchmark results for different extraction approaches in README.
-- The threshold for `auto_reduce` in `sig_fit()` is modified from 0.99 to 0.95.
+- The threshold for `auto_reduce` in `sig_fit()` is modified from 0.99 to 0.95 and similarity update threshold updated from `>0` to `>=0.01`.
 - Removed `pConstant` option from `sig_extract()` and `sig_estimate()`. Now a
 auto-check function is created for avoiding the error from NMF package due to
 no contribution of a component in all samples.

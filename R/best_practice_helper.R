@@ -1,3 +1,6 @@
+
+# Extraction helpers ------------------------------------------------------
+
 process_solution <- function(slist, catalogue_matrix, report_integer_exposure = FALSE) {
   send_info("Normalizing solutions to get Signature and Exposure.")
   out <- purrr::map(slist, .f = normalize_solution) %>%
@@ -693,3 +696,145 @@ rank_solutions <- function(stats) {
 
   rk
 }
+
+# Activity helpers --------------------------------------------------------
+
+# 构建一个 signature by sample 逻辑矩阵，
+# 先指示某个 signature 是否在某个样本中存在
+# 根据已知的 exposure 进行初始化，设定<0.05 相对贡献不存在
+# 0 表示不存在 signature，1 表示存在，2 表示全局 signature
+# 一开始的矩阵只可能是一个1和2构成的矩阵，后续的操作会进行填0操作
+construct_sig_exist_matrix <- function(expo, sample_class = NULL, cutoff = 0.05) {
+  out <- expo
+  if (is.null(sample_class)) {
+    # 没有群组标签（即1组），那么所有 signature 都有可能
+    out[,] <- 1L
+  } else {
+    # 只有 1 组标签也是如此
+    grps <- unique(sample_class)
+    if (length(grps) == 1L) {
+      out[,] <- 1L
+    } else {
+      out <- ifelse(out > cutoff, 1L, 0L) # 先初始化
+
+      # Check sample_class
+      sample_class <- sample_class[colnames(expo)]
+
+      if (length(sample_class) != ncol(expo)) {
+        stop("Not all samples are assigned to a class (subtype).")
+      }
+
+      # 用 group 标签覆盖样本标签
+      lapply(grps, function(grp) {
+        idx <- names(sample_class[sample_class == grp])
+        ex <- any(out[, idx] == 1L)
+        if (ex) {
+          out[, idx] <<- 1L
+        }
+      })
+      out[out == 0L] <- 2L # 还存在 0 的地方标记为全局 signature
+    }
+  }
+  return(out)
+}
+
+
+optimize_exposure_in_one_sample <- function(catalog,
+                                            flag_vector, # a set of 1L or 2L
+                                            sample,
+                                            sig_matrix) {
+  force(flag_vector)
+  flag1_bk <- flag1 <- which(flag_vector == 1L)
+  flag2 <- which(flag_vector == 2L)
+
+  expo <- vector("numeric", length(flag_vector))
+  catalog_mat <- matrix(
+    catalog,
+    ncol = 1,
+    dimnames = list(rownames(sig_matrix), sample))
+
+  # 先处理得到一个 baseline similarity 值
+  message("Processing sample: ", sample)
+  message("\t getting baseline similarity.")
+  baseline <- .get_one_catalog_similarity(
+    catalog_mat, flag1, sig_matrix,
+    return_all = TRUE)
+  message("\t\t", baseline$sim, " based on ", length(flag1), " signatures.")
+
+  # 先处理标记 1，如果相似性降低小于 0.01，移除
+  message("\t getting updated similarity by removing one signature in batch.")
+  sim_rm <- purrr::map_dbl(
+    flag1,
+    ~ .get_one_catalog_similarity(catalog_mat, setdiff(flag1, .), sig_matrix))
+
+  rm_id <- sim_rm - baseline$sim >= -0.01 ## 会不会出现全都可以扔掉？待观测
+
+  if (any(rm_id)) {
+    flag1 <- flag1[!rm_id]
+
+    if (length(flag1) > 0) {
+      baseline <- .get_one_catalog_similarity(
+        catalog_mat, flag1, sig_matrix,
+        return_all = TRUE)
+      message("\t\t", baseline$sim, " with ", length(flag1), " signatures left.")
+    }
+  } else {
+    message("\t no signature need to be removed.")
+  }
+
+  # 然后再处理可能的标记 2，如果相似性增加大于 0.05，则加入
+  if (length(flag2) > 0) {
+    message("\t getting updated similarity by adding one global signature in batch.")
+    sim_add <- purrr::map_dbl(
+      flag2,
+      ~ .get_one_catalog_similarity(catalog_mat, c(flag1, .), sig_matrix))
+
+    add_id <- sim_dd - baseline$sim > 0.05
+
+    if (any(add_id)) {
+      flag1 <- sort(c(flag1, flag2[add_id]))
+      baseline <- .get_one_catalog_similarity(
+        catalog_mat, flag1, sig_matrix,
+        return_all = TRUE)
+      message("\t\t", baseline$sim, " with ", length(flag1), " signatures left.")
+    } else {
+      message("\t no global signature need to be added.")
+    }
+  }
+
+  # Output the result
+  if (length(flag1) == 0L) {
+    message("\t no signatures left in the whole procedure seems due to low similarity, just report baseline exposure.")
+    flag1 <- flag1_bk
+  }
+  expo[flag1] <- baseline$expo[, 1]
+  expo <- matrix(
+    expo,
+    ncol = 1,
+    dimnames = list(colnames(sig_matrix), sample))
+  list(
+    expo = expo,
+    similarity = baseline$sim
+  )
+}
+
+.get_one_catalog_similarity <- function(catalog_mat, flag, sig_matrix,
+                                        return_all = FALSE) {
+  expo <- suppressMessages(
+    sig_fit(catalogue_matrix = catalog_mat,
+            sig = sig_matrix[, flag, drop = FALSE],
+            method = "QP",
+            type = "absolute",
+            return_class = "matrix")
+  )
+  rec_catalog <- sig_matrix[, flag, drop = FALSE] %*% expo
+  if (return_all) {
+    list(
+      sim = cosineMatrix(rec_catalog, catalog_mat)[1],
+      expo = expo
+    )
+  } else {
+    cosineMatrix(rec_catalog, catalog_mat)[1]
+  }
+}
+

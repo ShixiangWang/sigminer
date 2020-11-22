@@ -54,7 +54,12 @@ bp_show_survey(
   fixed_ratio = TRUE
 )
 
-bp_attribute_activity(input, sample_class = NULL, nmf_matrix = NULL)
+bp_attribute_activity(
+  input,
+  sample_class = NULL,
+  nmf_matrix = NULL,
+  return_class = c("matrix", "data.table")
+)
 }
 \arguments{
 \item{nmf_matrix}{a \code{matrix} used for NMF decomposition with rows indicate samples and columns indicate components.}
@@ -106,11 +111,13 @@ of plot facet.}
 
 \item{fixed_ratio}{if \code{TRUE} (default), make the x/y axis ratio fixed.}
 
-\item{input}{the input.}
+\item{input}{result from \code{\link[=bp_extract_signatures]{bp_extract_signatures()}} or a Signature object.}
 
 \item{sample_class}{a named string vector whose names are sample names
 and values are class labels (i.e. cancer subtype). If it is \code{NULL} (the default),
 treat all samples as one group.}
+
+\item{return_class}{string, 'matrix' or 'data.table'.}
 }
 \value{
 It depends on the called function.
@@ -128,7 +135,7 @@ suggest the best solution. See section "Measure Explanation in Survey plot"
 for more explanation.
 \item \code{bp_get_sig_obj()} for get a (list of) \code{Signature} object which is common
 used in \strong{sigminer} for analysis and visualization.
-\item \code{bp_attribute_activity()} for optimizing signature exposures.
+\item \code{bp_attribute_activity()} for optimizing signature activities (exposures).
 \item Extra: \code{bp_get_stats}() for obtaining stats for signatures and samples of a solution.
 These stats are aggregated (averaged) as the stats for a solution
 (specific signature number).

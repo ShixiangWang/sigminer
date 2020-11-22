@@ -15,7 +15,7 @@
 #' for more explanation.
 #' - `bp_get_sig_obj()` for get a (list of) `Signature` object which is common
 #' used in **sigminer** for analysis and visualization.
-#' - `bp_attribute_activity()` for optimizing signature exposures.
+#' - `bp_attribute_activity()` for optimizing signature activities (exposures).
 #' - Extra: `bp_get_stats`() for obtaining stats for signatures and samples of a solution.
 #' These stats are aggregated (averaged) as the stats for a solution
 #' (specific signature number).
@@ -523,18 +523,21 @@ bp_show_survey <- function(obj,
   p
 }
 
-#' @param input the input.
+#' @param input result from [bp_extract_signatures()] or a Signature object.
 #' @param sample_class a named string vector whose names are sample names
 #' and values are class labels (i.e. cancer subtype). If it is `NULL` (the default),
 #' treat all samples as one group.
+#' @inheritParams sig_fit
 #' @rdname bp
 #' @export
 bp_attribute_activity <- function(input,
                                   sample_class = NULL,
-                                  nmf_matrix = NULL) {
+                                  nmf_matrix = NULL,
+                                  return_class = c("matrix", "data.table")) {
   # logical: excludes class specific signatures if it contributes <0.01 similarity
   #          while include global signatures if it add >0.05 similarity
 
+  return_class <- match.arg(return_class)
   if (inherits(input, "ExtractionResult")) {
     if (is.null(nmf_matrix)) {
       nmf_matrix <- t(input$catalog_matrix)
@@ -553,47 +556,51 @@ bp_attribute_activity <- function(input,
     expo <- input$Exposure.norm
   } else {
     # 其他的输入情况，待定
+    stop("Invalid input!")
   }
 
   if (is.null(nmf_matrix)) {
     stop("nmf_matrix cannot be NULL!")
   }
 
-  exist_mat <- construct_sig_exist_matrix(expo, sample_class)
+  # catalog matrix 的 component 顺序必须和 signature profile 矩阵保持一致
+  # 存在矩阵和 signature profile 矩阵中 signature 顺序必须一致
+  # 存在矩阵与 catalog matrix 中的 sample 顺序也必须一致
+  sig_order <- colnames(sig)
+  samp_order <- colnames(expo)
+  catalog_df <- as.data.frame(t(nmf_matrix))
+  catalog_df <- catalog_df[rownames(sig), samp_order, drop = FALSE]
+  exist_df <- construct_sig_exist_matrix(expo, sample_class) %>%
+    as.data.frame()
+  exist_df <- exist_df[sig_order, , drop = FALSE]
 
-  # 处理标记 1
+  # Handle samples one by one (by columns)
+  out <- purrr::pmap(.l = list(
+    catalog = catalog_df,
+    flag_vector = exist_df,
+    sample = samp_order
+  ),
+  .f = optimize_exposure_in_one_sample,
+  sig_matrix = sig)
+  out <- purrr::transpose(out)
+  expo <- purrr::reduce(out$expo, cbind)
+  rel_expo <- apply(expo, 2, function(x) x / sum(x, na.rm = TRUE))
+  sim <- purrr::reduce(out$similarity, c)
 
-  # 处理可能的标记 2
+  if (return_class == "data.table") {
+    expo <- .mat2dt(expo)
+    rel_expo <- .mat2dt(rel_expo)
+  }
 
+  list(
+    abs_activity = expo,
+    rel_activity = rel_expo,
+    similarity = sim
+  )
 }
 
-# 构建一个 signature by sample 逻辑矩阵，
-# 先指示某个 signature 是否在某个样本中存在
-# 根据已知的 exposure 进行初始化，设定<0.05 相对贡献不存在
-# 0 表示不存在 signature，1 表示存在，2 表示全局 signature
-# 一开始的矩阵只可能是一个1和2构成的矩阵，后续的操作会进行填0操作
-construct_sig_exist_matrix <- function(expo, sample_class = NULL, cutoff = 0.05) {
-  out <- expo
-  if (is.null(sample_class)) {
-    # 没有群组标签（即1组），那么所有 signature 都有可能
-    out[,] <- 1L
-  } else {
-    # 只有 1 组标签也是如此
-    grps <- unique(sample_class)
-    if (length(grps) == 1L) {
-      out[,] <- 1L
-    } else {
-      out <- ifelse(out > cutoff, 1L, 0L) # 先初始化
-      # 用 group 标签覆盖样本标签
-      lapply(grps, function(grp) {
-        idx <- names(sample_class[sample_class == grp])
-        ex <- any(out[, idx] == 1L)
-        if (ex) {
-          out[, idx] <<- 1L
-        }
-      })
-      out[out == 0L] <- 2L # 还存在 0 的地方标记为全局 signature
-    }
-  }
-  return(out)
+.mat2dt <- function(x) {
+  x %>%
+    t() %>%
+    data.table::as.data.table(keep.rownames = "sample")
 }
