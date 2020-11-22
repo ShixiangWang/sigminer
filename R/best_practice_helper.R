@@ -727,7 +727,7 @@ construct_sig_exist_matrix <- function(expo, sample_class = NULL, cutoff = 0.05)
       # 用 group 标签覆盖样本标签
       lapply(grps, function(grp) {
         idx <- names(sample_class[sample_class == grp])
-        ex <- any(out[, idx] == 1L)
+        ex <- sum(out[, idx] == 1L) > 2
         if (ex) {
           out[, idx] <<- 1L
         }
