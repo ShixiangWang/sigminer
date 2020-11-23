@@ -435,6 +435,8 @@ bp_extract_signatures <- function(nmf_matrix,
 #' the extraction procedure (i.e. `bp_extract_signatures()`), default is `0.95`.
 #' @param max_iter the maximum iteration size, default is 10, i.e., at most run
 #' the extraction procedure 10 times.
+#' @param cache_dir a directory for storing result for each round. If you
+#' don't want to use it, set it to `FALSE`.
 #' @rdname bp
 #' @export
 bp_extract_signatures_iter <- function(nmf_matrix,
@@ -447,7 +449,8 @@ bp_extract_signatures_iter <- function(nmf_matrix,
                                        cores = min(4L, future::availableCores()),
                                        seed = 123456L,
                                        handle_hyper_mutation = TRUE,
-                                       report_integer_exposure = TRUE) {
+                                       report_integer_exposure = TRUE,
+                                       cache_dir = getwd()) {
   iter_list <- list()
   for (i in seq_len(max_iter)) {
     message("Round #", i)
@@ -466,6 +469,21 @@ bp_extract_signatures_iter <- function(nmf_matrix,
     )
     # 检查寻找需要重新运行的样本，修改 nmf_matrix
     iter_list[[paste0("iter", i)]] <- bp
+
+    if (!isFALSE(cache_dir)) {
+      if (!dir.exists(cache_dir)) dir.create(cache_dir, recursive = TRUE)
+      j <- 1L
+      check_file <- file.path(cache_dir, paste0("job", j, "_round_1.rds"))
+      while (file.exists(check_file)) {
+        message("Cache file ", check_file, " exists, changing name...")
+        j <- j + 1L
+        check_file <- file.path(cache_dir, paste0("job", j, "_round_1.rds"))
+      }
+      cache_file <- file.path(cache_dir, paste0("job", j, "_round_", i, ".rds"))
+      message("Save round #", i, " result to ", cache_file)
+      saveRDS(bp, file = cache_file)
+    }
+
     samp2rerun <- bp$stats_sample %>%
       dplyr::filter(.data$signature_number == bp$suggested) %>%
       dplyr::filter(.data$cosine_distance_mean > 1 - sim_threshold) %>%

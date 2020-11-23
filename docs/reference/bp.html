@@ -198,7 +198,8 @@ These stats are aggregated (averaged) as the stats for a solution
   cores <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span><span class='op'>(</span><span class='fl'>4L</span>, <span class='fu'>future</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/future/man/re-exports.html'>availableCores</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>,
   seed <span class='op'>=</span> <span class='fl'>123456L</span>,
   handle_hyper_mutation <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  report_integer_exposure <span class='op'>=</span> <span class='cn'>TRUE</span>
+  report_integer_exposure <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  cache_dir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span><span class='op'>(</span><span class='op'>)</span>
 <span class='op'>)</span>
 
 <span class='fu'>bp_cluster_iter_list</span><span class='op'>(</span><span class='va'>x</span>, include_final_iteration <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
@@ -284,6 +285,11 @@ the extraction procedure (i.e. <code>bp_extract_signatures()</code>), default is
       <th>max_iter</th>
       <td><p>the maximum iteration size, default is 10, i.e., at most run
 the extraction procedure 10 times.</p></td>
+    </tr>
+    <tr>
+      <th>cache_dir</th>
+      <td><p>a directory for storing result for each round. If you
+don't want to use it, set it to <code>FALSE</code>.</p></td>
     </tr>
     <tr>
       <th>x</th>

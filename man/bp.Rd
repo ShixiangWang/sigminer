@@ -37,7 +37,8 @@ bp_extract_signatures_iter(
   cores = min(4L, future::availableCores()),
   seed = 123456L,
   handle_hyper_mutation = TRUE,
-  report_integer_exposure = TRUE
+  report_integer_exposure = TRUE,
+  cache_dir = getwd()
 )
 
 bp_cluster_iter_list(x, include_final_iteration = TRUE)
@@ -97,6 +98,9 @@ the extraction procedure (i.e. \code{bp_extract_signatures()}), default is \code
 
 \item{max_iter}{the maximum iteration size, default is 10, i.e., at most run
 the extraction procedure 10 times.}
+
+\item{cache_dir}{a directory for storing result for each round. If you
+don't want to use it, set it to \code{FALSE}.}
 
 \item{x}{result from \code{\link[=bp_extract_signatures_iter]{bp_extract_signatures_iter()}} or a list of
 \code{Signature} objects.}
