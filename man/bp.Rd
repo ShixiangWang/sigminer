@@ -22,8 +22,7 @@ bp_extract_signatures(
   cores = min(4L, future::availableCores()),
   seed = 123456L,
   handle_hyper_mutation = TRUE,
-  report_integer_exposure = TRUE,
-  mpi_platform = FALSE
+  report_integer_exposure = TRUE
 )
 
 bp_extract_signatures_iter(
@@ -38,8 +37,7 @@ bp_extract_signatures_iter(
   cores = min(4L, future::availableCores()),
   seed = 123456L,
   handle_hyper_mutation = TRUE,
-  report_integer_exposure = TRUE,
-  mpi_platform = FALSE
+  report_integer_exposure = TRUE
 )
 
 bp_cluster_iter_list(x, include_final_iteration = TRUE)
@@ -71,7 +69,8 @@ bp_attribute_activity(
 and values are sorted in increasing order. The results are notably returned in this order.}
 
 \item{n_bootstrap}{number of bootstrapped (resampling) catalogs used.
-When it is \code{0}, the original (input) mutation catalog is used for NMF decomposition.}
+When it is \code{0}, the original (input) mutation catalog is used for NMF decomposition,
+this is not recommended, just for testing, user should not set it to \code{0}.}
 
 \item{n_nmf_run}{number of NMF runs for each bootstrapped or original catalog.
 At default, in total n_bootstrap x n_nmf_run (i.e. 1000) NMF runs are used
@@ -92,8 +91,6 @@ contributed components.}
 
 \item{report_integer_exposure}{default is \code{TRUE}, report integer signature
 exposure by bootstrapping technique.}
-
-\item{mpi_platform}{keep for implementation.}
 
 \item{sim_threshold}{a similarity threshold for selecting samples to auto-rerun
 the extraction procedure (i.e. \code{bp_extract_signatures()}), default is \code{0.95}.}
@@ -202,7 +199,8 @@ data("simulated_catalogs")
 \donttest{
 # Here I reduce the values for n_bootstrap and n_nmf_run
 # for reducing the run time.
-# In practice, you should keep default or increase the values.
+# In practice, you should keep default or increase the values
+# for better estimation.
 #
 # The input data here is simulated from 10 mutational signatures
 e1 <- bp_extract_signatures(

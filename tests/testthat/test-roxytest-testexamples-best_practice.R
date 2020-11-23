@@ -8,7 +8,8 @@ test_that("[unknown alias] @ L175", {
   
   # Here I reduce the values for n_bootstrap and n_nmf_run
   # for reducing the run time.
-  # In practice, you should keep default or increase the values.
+  # In practice, you should keep default or increase the values
+  # for better estimation.
   #
   # The input data here is simulated from 10 mutational signatures
   e1 <- bp_extract_signatures(

@@ -183,8 +183,7 @@ These stats are aggregated (averaged) as the stats for a solution
   cores <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span><span class='op'>(</span><span class='fl'>4L</span>, <span class='fu'>future</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/future/man/re-exports.html'>availableCores</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>,
   seed <span class='op'>=</span> <span class='fl'>123456L</span>,
   handle_hyper_mutation <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  report_integer_exposure <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  mpi_platform <span class='op'>=</span> <span class='cn'>FALSE</span>
+  report_integer_exposure <span class='op'>=</span> <span class='cn'>TRUE</span>
 <span class='op'>)</span>
 
 <span class='fu'>bp_extract_signatures_iter</span><span class='op'>(</span>
@@ -199,8 +198,7 @@ These stats are aggregated (averaged) as the stats for a solution
   cores <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span><span class='op'>(</span><span class='fl'>4L</span>, <span class='fu'>future</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/future/man/re-exports.html'>availableCores</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>,
   seed <span class='op'>=</span> <span class='fl'>123456L</span>,
   handle_hyper_mutation <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  report_integer_exposure <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  mpi_platform <span class='op'>=</span> <span class='cn'>FALSE</span>
+  report_integer_exposure <span class='op'>=</span> <span class='cn'>TRUE</span>
 <span class='op'>)</span>
 
 <span class='fu'>bp_cluster_iter_list</span><span class='op'>(</span><span class='va'>x</span>, include_final_iteration <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
@@ -240,7 +238,8 @@ and values are sorted in increasing order. The results are notably returned in t
     <tr>
       <th>n_bootstrap</th>
       <td><p>number of bootstrapped (resampling) catalogs used.
-When it is <code>0</code>, the original (input) mutation catalog is used for NMF decomposition.</p></td>
+When it is <code>0</code>, the original (input) mutation catalog is used for NMF decomposition,
+this is not recommended, just for testing, user should not set it to <code>0</code>.</p></td>
     </tr>
     <tr>
       <th>n_nmf_run</th>
@@ -275,10 +274,6 @@ contributed components.</p></td>
       <th>report_integer_exposure</th>
       <td><p>default is <code>TRUE</code>, report integer signature
 exposure by bootstrapping technique.</p></td>
-    </tr>
-    <tr>
-      <th>mpi_platform</th>
-      <td><p>keep for implementation.</p></td>
     </tr>
     <tr>
       <th>sim_threshold</th>
@@ -402,7 +397,8 @@ indicates if the signature profiles extracted from different NMF runs are simila
 <span class='co'># \donttest{</span>
 <span class='co'># Here I reduce the values for n_bootstrap and n_nmf_run</span>
 <span class='co'># for reducing the run time.</span>
-<span class='co'># In practice, you should keep default or increase the values.</span>
+<span class='co'># In practice, you should keep default or increase the values</span>
+<span class='co'># for better estimation.</span>
 <span class='co'>#</span>
 <span class='co'># The input data here is simulated from 10 mutational signatures</span>
 <span class='va'>e1</span> <span class='op'>&lt;-</span> <span class='fu'>bp_extract_signatures</span><span class='op'>(</span>
