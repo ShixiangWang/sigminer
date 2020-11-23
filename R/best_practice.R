@@ -63,7 +63,8 @@
 #' indicates if the signature profiles extracted from different NMF runs are similar.
 #' @inheritParams sig_estimate
 #' @param n_bootstrap number of bootstrapped (resampling) catalogs used.
-#' When it is `0`, the original (input) mutation catalog is used for NMF decomposition.
+#' When it is `0`, the original (input) mutation catalog is used for NMF decomposition,
+#' this is not recommended, just for testing, user should not set it to `0`.
 #' @param n_nmf_run number of NMF runs for each bootstrapped or original catalog.
 #' At default, in total n_bootstrap x n_nmf_run (i.e. 1000) NMF runs are used
 #' for the task.
@@ -76,8 +77,8 @@
 #' @param handle_hyper_mutation default is `TRUE`, handle hyper-mutant samples.
 #' @param report_integer_exposure default is `TRUE`, report integer signature
 #' exposure by bootstrapping technique.
-#' @param mpi_platform try to use MPI framework for NMF parallel computation by `doMPI` package.
-#'
+#' @param mpi_workers try to use MPI framework for NMF parallel computation by `doMPI` package.
+#' Set an integer for worker number if you have the package installed.
 #' @return It depends on the called function.
 #' @name bp
 #' @author Shixiang Wang <w_shixiang@163.com>
@@ -94,7 +95,8 @@
 #' \donttest{
 #' # Here I reduce the values for n_bootstrap and n_nmf_run
 #' # for reducing the run time.
-#' # In practice, you should keep default or increase the values.
+#' # In practice, you should keep default or increase the values
+#' # for better estimation.
 #' #
 #' # The input data here is simulated from 10 mutational signatures
 #' e1 <- bp_extract_signatures(
@@ -185,7 +187,7 @@ bp_extract_signatures <- function(nmf_matrix,
                                   seed = 123456L,
                                   handle_hyper_mutation = TRUE,
                                   report_integer_exposure = TRUE,
-                                  mpi_platform = FALSE) {
+                                  mpi_workers = FALSE) {
   stopifnot(
     is.matrix(nmf_matrix),
     !is.null(rownames(nmf_matrix)), !is.null(colnames(nmf_matrix)),
@@ -196,7 +198,7 @@ bp_extract_signatures <- function(nmf_matrix,
     is.numeric(min_contribution),
     min_contribution >= 0, min_contribution <= 0.1,
     is.numeric(seed),
-    is.logical(handle_hyper_mutation), is.logical(mpi_platform)
+    is.logical(handle_hyper_mutation)
   )
   seed <- as.integer(seed)
   range <- sort(unique(range))
@@ -271,7 +273,7 @@ bp_extract_signatures <- function(nmf_matrix,
 
   send_info("Running NMF with brunet method (Lee-KLD).")
   # NMF with brunet method
-  if (isFALSE(mpi_platform)) {
+  if (isFALSE(mpi_workers)) {
     if (!requireNamespace("doFuture", quietly = TRUE)) {
       send_info("{.pkg doFuture} is recommended to install for improving computation.")
     } else {
@@ -282,7 +284,8 @@ bp_extract_signatures <- function(nmf_matrix,
     if (!eval(parse(text = "require(doMPI)"))) {
       stop("'doMPI' package is not available. Run install.packages('doMPI') to install it firstly.")
     }
-    eval(parse(text = "doMPI::startMPIcluster(count = cores)"))
+    mpi_workers <- as.integer(mpi_workers)
+    eval(parse(text = "doMPI::startMPIcluster(count = mpi_workers)"))
     eval(parse(text = "doMPI::registerDoMPI(cl)"))
     eval(parse(text = "on.exit(doMPI::closeCluster(cl), add = TRUE)"))
   }
