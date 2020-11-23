@@ -81,7 +81,7 @@ the suboptimal decomposition solution." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0.99</span>
       </span>
     </div>
 
@@ -288,6 +288,13 @@ i.e., suboptimal error is <code>1.05</code> times baseline error.</p></td>
   <span class='co'>## Input a list</span>
   <span class='fu'><a href='report_bootstrap_p_value.html'>report_bootstrap_p_value</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>samp1 <span class='op'>=</span> <span class='va'>H_bootstrap</span>, samp2 <span class='op'>=</span> <span class='va'>H_bootstrap</span><span class='op'>)</span><span class='op'>)</span>
 
+  <span class='co'>#   ## Find suboptimal decomposition</span>
+  <span class='co'>#   H_suboptimal &lt;- sig_fit_bootstrap(V[, 1], W,</span>
+  <span class='co'>#     n = 10,</span>
+  <span class='co'>#     type = "absolute",</span>
+  <span class='co'>#     method = "SA",</span>
+  <span class='co'>#     find_suboptimal = TRUE</span>
+  <span class='co'>#   )</span>
 <span class='op'>}</span>
 </pre>
   </div>
