@@ -76,7 +76,7 @@
 #' @param handle_hyper_mutation default is `TRUE`, handle hyper-mutant samples.
 #' @param report_integer_exposure default is `TRUE`, report integer signature
 #' exposure by bootstrapping technique.
-#' @param mpi_platform keep for implementation.
+#' @param mpi_platform try to use MPI framework for NMF parallel computation by `doMPI` package.
 #'
 #' @return It depends on the called function.
 #' @name bp
@@ -278,6 +278,13 @@ bp_extract_signatures <- function(nmf_matrix,
       doFuture::registerDoFuture()
       suppressWarnings(future::plan("multiprocess", workers = cores))
     }
+  } else {
+    if (!eval(parse(text = "require(doMPI)"))) {
+      stop("'doMPI' package is not available. Run install.packages('doMPI') to install it firstly.")
+    }
+    eval(parse(text = "doMPI::startMPIcluster(count = cores)"))
+    eval(parse(text = "doMPI::registerDoMPI(cl)"))
+    eval(parse(text = "on.exit(doMPI::closeCluster(cl), add = TRUE)"))
   }
 
   seeds <- seq(seed, length = n_bootstrap * n_nmf_run)

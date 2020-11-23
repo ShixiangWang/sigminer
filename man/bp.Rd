@@ -93,7 +93,7 @@ contributed components.}
 \item{report_integer_exposure}{default is \code{TRUE}, report integer signature
 exposure by bootstrapping technique.}
 
-\item{mpi_platform}{keep for implementation.}
+\item{mpi_platform}{try to use MPI framework for NMF parallel computation by \code{doMPI} package.}
 
 \item{sim_threshold}{a similarity threshold for selecting samples to auto-rerun
 the extraction procedure (i.e. \code{bp_extract_signatures()}), default is \code{0.95}.}
