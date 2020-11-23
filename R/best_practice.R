@@ -10,7 +10,7 @@
 #' - `bp_extract_signatures()` for extracting signatures.
 #' - `bp_show_survey()` for showing measures change under different
 #' signature numbers to help user select optimal signature number.
-#' At default, a aggregated score (named score) is generated from 5 measures to
+#' At default, an aggregated score (named score) is generated from 5 measures to
 #' suggest the best solution. See section "Measure Explanation in Survey plot"
 #' for more explanation.
 #' - `bp_get_sig_obj()` for get a (list of) `Signature` object which is common
@@ -40,7 +40,7 @@
 #' with red color dot and the best values for 5 measures to be weighted are also
 #' highlighted with orange color dots. The detail of 6 measures shown in plot are
 #' explained as below.
-#' - `score` - a aggregated score based on rank scores from 5 measures below.
+#' - `score` - an aggregated score based on rank scores from 5 measures below.
 #' The higher, the better. When two signature numbers have the same score,
 #' the larger signature number is preferred (this is a rare situation, you
 #' have to double check other measures).
@@ -435,6 +435,8 @@ bp_extract_signatures <- function(nmf_matrix,
 #' the extraction procedure (i.e. `bp_extract_signatures()`), default is `0.95`.
 #' @param max_iter the maximum iteration size, default is 10, i.e., at most run
 #' the extraction procedure 10 times.
+#' @param cache_dir a directory for storing result for each round. If you
+#' don't want to use it, set it to `FALSE`.
 #' @rdname bp
 #' @export
 bp_extract_signatures_iter <- function(nmf_matrix,
@@ -447,7 +449,8 @@ bp_extract_signatures_iter <- function(nmf_matrix,
                                        cores = min(4L, future::availableCores()),
                                        seed = 123456L,
                                        handle_hyper_mutation = TRUE,
-                                       report_integer_exposure = TRUE) {
+                                       report_integer_exposure = TRUE,
+                                       cache_dir = getwd()) {
   iter_list <- list()
   for (i in seq_len(max_iter)) {
     message("Round #", i)
@@ -466,6 +469,21 @@ bp_extract_signatures_iter <- function(nmf_matrix,
     )
     # 检查寻找需要重新运行的样本，修改 nmf_matrix
     iter_list[[paste0("iter", i)]] <- bp
+
+    if (!isFALSE(cache_dir)) {
+      if (!dir.exists(cache_dir)) dir.create(cache_dir, recursive = TRUE)
+      j <- 1L
+      check_file <- file.path(cache_dir, paste0("job", j, "_round_1.rds"))
+      while (file.exists(check_file)) {
+        message("Cache file ", check_file, " exists, changing name...")
+        j <- j + 1L
+        check_file <- file.path(cache_dir, paste0("job", j, "_round_1.rds"))
+      }
+      cache_file <- file.path(cache_dir, paste0("job", j, "_round_", i, ".rds"))
+      message("Save round #", i, " result to ", cache_file)
+      saveRDS(bp, file = cache_file)
+    }
+
     samp2rerun <- bp$stats_sample %>%
       dplyr::filter(.data$signature_number == bp$suggested) %>%
       dplyr::filter(.data$cosine_distance_mean > 1 - sim_threshold) %>%

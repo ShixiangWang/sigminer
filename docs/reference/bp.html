@@ -53,7 +53,7 @@ in tumor samples. They are listed in order to use.
 bp_extract_signatures() for extracting signatures.
 bp_show_survey() for showing measures change under different
 signature numbers to help user select optimal signature number.
-At default, a aggregated score (named score) is generated from 5 measures to
+At default, an aggregated score (named score) is generated from 5 measures to
 suggest the best solution. See section &quot;Measure Explanation in Survey plot&quot;
 for more explanation.
 bp_get_sig_obj() for get a (list of) Signature object which is common
@@ -155,7 +155,7 @@ in tumor samples. They are listed in order to use.</p><ul>
 <li><p><code>bp_extract_signatures()</code> for extracting signatures.</p></li>
 <li><p><code>bp_show_survey()</code> for showing measures change under different
 signature numbers to help user select optimal signature number.
-At default, a aggregated score (named score) is generated from 5 measures to
+At default, an aggregated score (named score) is generated from 5 measures to
 suggest the best solution. See section "Measure Explanation in Survey plot"
 for more explanation.</p></li>
 <li><p><code>bp_get_sig_obj()</code> for get a (list of) <code>Signature</code> object which is common
@@ -198,7 +198,8 @@ These stats are aggregated (averaged) as the stats for a solution
   cores <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span><span class='op'>(</span><span class='fl'>4L</span>, <span class='fu'>future</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/future/man/re-exports.html'>availableCores</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>,
   seed <span class='op'>=</span> <span class='fl'>123456L</span>,
   handle_hyper_mutation <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  report_integer_exposure <span class='op'>=</span> <span class='cn'>TRUE</span>
+  report_integer_exposure <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  cache_dir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span><span class='op'>(</span><span class='op'>)</span>
 <span class='op'>)</span>
 
 <span class='fu'>bp_cluster_iter_list</span><span class='op'>(</span><span class='va'>x</span>, include_final_iteration <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
@@ -286,6 +287,11 @@ the extraction procedure (i.e. <code>bp_extract_signatures()</code>), default is
 the extraction procedure 10 times.</p></td>
     </tr>
     <tr>
+      <th>cache_dir</th>
+      <td><p>a directory for storing result for each round. If you
+don't want to use it, set it to <code>FALSE</code>.</p></td>
+    </tr>
+    <tr>
       <th>x</th>
       <td><p>result from <code>bp_extract_signatures_iter()</code> or a list of
 <code>Signature</code> objects.</p></td>
@@ -356,7 +362,7 @@ measures and visualized as the first sub-plot. The optimal number is highlighted
 with red color dot and the best values for 5 measures to be weighted are also
 highlighted with orange color dots. The detail of 6 measures shown in plot are
 explained as below.</p><ul>
-<li><p><code>score</code> - a aggregated score based on rank scores from 5 measures below.
+<li><p><code>score</code> - an aggregated score based on rank scores from 5 measures below.
 The higher, the better. When two signature numbers have the same score,
 the larger signature number is preferred (this is a rare situation, you
 have to double check other measures).</p></li>

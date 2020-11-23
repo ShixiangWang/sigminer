@@ -670,7 +670,7 @@ rank_solutions <- function(stats) {
   )
   weights <- c(0.3, 0.25, 0.25, 0.05, 0.15)
   send_info(
-    "Corresponding weights for obtaining aggregated score are: ",
+    "Corresponding weights for obtaining the aggregated score are: ",
     paste(weights, collapse = ", ")
   )
   types <- c("diff", "increase", "increase", "increase", "diff")

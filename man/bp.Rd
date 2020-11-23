@@ -37,7 +37,8 @@ bp_extract_signatures_iter(
   cores = min(4L, future::availableCores()),
   seed = 123456L,
   handle_hyper_mutation = TRUE,
-  report_integer_exposure = TRUE
+  report_integer_exposure = TRUE,
+  cache_dir = getwd()
 )
 
 bp_cluster_iter_list(x, include_final_iteration = TRUE)
@@ -98,6 +99,9 @@ the extraction procedure (i.e. \code{bp_extract_signatures()}), default is \code
 \item{max_iter}{the maximum iteration size, default is 10, i.e., at most run
 the extraction procedure 10 times.}
 
+\item{cache_dir}{a directory for storing result for each round. If you
+don't want to use it, set it to \code{FALSE}.}
+
 \item{x}{result from \code{\link[=bp_extract_signatures_iter]{bp_extract_signatures_iter()}} or a list of
 \code{Signature} objects.}
 
@@ -137,7 +141,7 @@ in tumor samples. They are listed in order to use.
 \item \code{bp_extract_signatures()} for extracting signatures.
 \item \code{bp_show_survey()} for showing measures change under different
 signature numbers to help user select optimal signature number.
-At default, a aggregated score (named score) is generated from 5 measures to
+At default, an aggregated score (named score) is generated from 5 measures to
 suggest the best solution. See section "Measure Explanation in Survey plot"
 for more explanation.
 \item \code{bp_get_sig_obj()} for get a (list of) \code{Signature} object which is common
@@ -170,7 +174,7 @@ with red color dot and the best values for 5 measures to be weighted are also
 highlighted with orange color dots. The detail of 6 measures shown in plot are
 explained as below.
 \itemize{
-\item \code{score} - a aggregated score based on rank scores from 5 measures below.
+\item \code{score} - an aggregated score based on rank scores from 5 measures below.
 The higher, the better. When two signature numbers have the same score,
 the larger signature number is preferred (this is a rare situation, you
 have to double check other measures).
