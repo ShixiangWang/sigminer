@@ -51,6 +51,7 @@
 
 simulate_signature() - Simulate signatures from signature pool.
 simulate_catalogue() - Simulate catalogs from signature/catalog pool.
+simulate_catalogue_matrix() - Simulate a bootstrapped catalog matrix.
 
 " />
 <meta property="og:image" content="/logo.png" />
@@ -85,7 +86,7 @@ simulate_catalogue() - Simulate catalogs from signature/catalog pool.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0.99</span>
       </span>
     </div>
 
@@ -137,13 +138,16 @@ simulate_catalogue() - Simulate catalogs from signature/catalog pool.
 <ul>
 <li><p><code>simulate_signature()</code> - Simulate signatures from signature pool.</p></li>
 <li><p><code>simulate_catalogue()</code> - Simulate catalogs from signature/catalog pool.</p></li>
+<li><p><code>simulate_catalogue_matrix()</code> - Simulate a bootstrapped catalog matrix.</p></li>
 </ul>
 
     </div>
 
     <pre class="usage"><span class='fu'>simulate_signature</span><span class='op'>(</span><span class='va'>x</span>, weights <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
-<span class='fu'>simulate_catalogue</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>n</span>, weights <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+<span class='fu'>simulate_catalogue</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>n</span>, weights <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
+
+<span class='fu'>simulate_catalogue_matrix</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

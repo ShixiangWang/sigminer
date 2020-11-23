@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0.99</span>
       </span>
     </div>
 
@@ -138,7 +138,6 @@
   cores <span class='op'>=</span> <span class='fl'>1</span>,
   method <span class='op'>=</span> <span class='st'>"brunet"</span>,
   optimize <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  pConstant <span class='op'>=</span> <span class='cn'>NULL</span>,
   seed <span class='op'>=</span> <span class='fl'>123456</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
@@ -166,17 +165,11 @@ enough to achieve robust result.</p></td>
     <tr>
       <th>method</th>
       <td><p>specification of the NMF algorithm. Use 'brunet' as default.
-Available methods for nmf decompositions are 'brunet', 'lee', 'ls-nmf', 'nsNMF', 'offset'.</p></td>
+Available methods for NMF decompositions are 'brunet', 'lee', 'ls-nmf', 'nsNMF', 'offset'.</p></td>
     </tr>
     <tr>
       <th>optimize</th>
       <td><p>if <code>TRUE</code>, then refit the denovo signatures with QP method, see <a href='sig_fit.html'>sig_fit</a>.</p></td>
-    </tr>
-    <tr>
-      <th>pConstant</th>
-      <td><p>A small positive value (like 1e-9) to add to the matrix.
-Use it ONLY if the functions throws
-an <code>non-conformable arrays</code> error.</p></td>
     </tr>
     <tr>
       <th>seed</th>

@@ -82,7 +82,7 @@ min(||W*H - V||) where W and V are known." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0.99</span>
       </span>
     </div>
 
@@ -281,7 +281,7 @@ Nature genetics 48.6 (2016): 600.</p>
   <span class='va'>H_infer</span>
   <span class='va'>H</span>
 
-  <span class='va'>H_dt</span> <span class='op'>&lt;-</span> <span class='fu'>sig_fit</span><span class='op'>(</span><span class='va'>V</span>, <span class='va'>W</span>, method <span class='op'>=</span> <span class='st'>"QP"</span>, return_class <span class='op'>=</span> <span class='st'>"data.table"</span><span class='op'>)</span>
+  <span class='va'>H_dt</span> <span class='op'>&lt;-</span> <span class='fu'>sig_fit</span><span class='op'>(</span><span class='va'>V</span>, <span class='va'>W</span>, method <span class='op'>=</span> <span class='st'>"QP"</span>, auto_reduce <span class='op'>=</span> <span class='cn'>TRUE</span>, return_class <span class='op'>=</span> <span class='st'>"data.table"</span><span class='op'>)</span>
   <span class='va'>H_dt</span>
 
   <span class='co'>## Show results</span>
@@ -294,6 +294,21 @@ Nature genetics 48.6 (2016): 600.</p>
   <span class='fu'><a href='show_groups.html'>show_groups</a></span><span class='op'>(</span><span class='va'>z</span><span class='op'>)</span>
 <span class='op'>}</span>
 
+<span class='co'># if (requireNamespace("GenSA", quietly = TRUE)) {</span>
+<span class='co'>#   H_infer &lt;- sig_fit(V, W, method = "SA")</span>
+<span class='co'>#   H_infer</span>
+<span class='co'>#   H</span>
+<span class='co'>#</span>
+<span class='co'>#   H_dt &lt;- sig_fit(V, W, method = "SA", return_class = "data.table")</span>
+<span class='co'>#   H_dt</span>
+<span class='co'>#</span>
+<span class='co'>#   ## Modify arguments to method</span>
+<span class='co'>#   sig_fit(V, W, method = "SA", maxit = 10, temperature = 100)</span>
+<span class='co'>#</span>
+<span class='co'>#   ## Show results</span>
+<span class='co'>#   show_sig_fit(H_infer)</span>
+<span class='co'>#   show_sig_fit(H_dt)</span>
+<span class='co'># }</span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

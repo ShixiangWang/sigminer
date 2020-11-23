@@ -90,7 +90,8 @@ Suggests:
     testthat,
     tibble,
     scales,
-    matrixStats
+    matrixStats,
+    UCSCXenaTools
 LinkingTo: 
     Rcpp
 VignetteBuilder: 

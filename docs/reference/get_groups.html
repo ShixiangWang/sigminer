@@ -82,7 +82,7 @@ and return the membership in each cluster." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0.99</span>
       </span>
     </div>
 
@@ -198,16 +198,18 @@ about implementation please see source code of <code><a href='sig_extract.html'>
 <span class='co'># Extract copy number signatures</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://renozao.github.io/NMF'>NMF</a></span><span class='op'>)</span>
 <span class='va'>sig</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sig_extract.html'>sig_extract</a></span><span class='op'>(</span><span class='va'>cn_tally_W</span><span class='op'>$</span><span class='va'>nmf_matrix</span>, <span class='fl'>2</span>,
-  nrun <span class='op'>=</span> <span class='fl'>10</span>,
-  pConstant <span class='op'>=</span> <span class='fl'>1e-13</span>
+  nrun <span class='op'>=</span> <span class='fl'>10</span>
 <span class='op'>)</span>
 
 <span class='co'># Methods 'consensus' and 'samples' are from NMF::predict()</span>
-<span class='fu'>get_groups</span><span class='op'>(</span><span class='va'>sig</span>, method <span class='op'>=</span> <span class='st'>"consensus"</span>, match_consensus <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='fu'>get_groups</span><span class='op'>(</span><span class='va'>sig</span>, method <span class='op'>=</span> <span class='st'>"samples"</span><span class='op'>)</span>
+<span class='va'>g1</span> <span class='op'>&lt;-</span> <span class='fu'>get_groups</span><span class='op'>(</span><span class='va'>sig</span>, method <span class='op'>=</span> <span class='st'>"consensus"</span>, match_consensus <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='va'>g1</span>
+<span class='va'>g2</span> <span class='op'>&lt;-</span> <span class='fu'>get_groups</span><span class='op'>(</span><span class='va'>sig</span>, method <span class='op'>=</span> <span class='st'>"samples"</span><span class='op'>)</span>
+<span class='va'>g2</span>
 
 <span class='co'># Use k-means clustering</span>
-<span class='fu'>get_groups</span><span class='op'>(</span><span class='va'>sig</span>, method <span class='op'>=</span> <span class='st'>"k-means"</span><span class='op'>)</span>
+<span class='va'>g3</span> <span class='op'>&lt;-</span> <span class='fu'>get_groups</span><span class='op'>(</span><span class='va'>sig</span>, method <span class='op'>=</span> <span class='st'>"k-means"</span><span class='op'>)</span>
+<span class='va'>g3</span>
 <span class='co'># }</span>
 </pre>
   </div>

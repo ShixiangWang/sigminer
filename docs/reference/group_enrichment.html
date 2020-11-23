@@ -81,7 +81,7 @@ cases or mean measure in one subgroup and the remaining samples." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0.99</span>
       </span>
     </div>
 
@@ -216,10 +216,12 @@ for continuous variable, it stores value from <code><a href='https://rdrr.io/r/s
 <span class='va'>x1</span>
 
 <span class='co'># Only compare g1:e1, g2:e2</span>
-<span class='va'>x2</span> <span class='op'>&lt;-</span> <span class='fu'>group_enrichment</span><span class='op'>(</span><span class='va'>df</span>, grp_vars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"g1"</span>, <span class='st'>"g2"</span><span class='op'>)</span>,
-                       enrich_vars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"e1"</span>, <span class='st'>"e2"</span><span class='op'>)</span>,
-                       co_method <span class='op'>=</span> <span class='st'>"wilcox.test"</span>,
-                       cross <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+<span class='va'>x2</span> <span class='op'>&lt;-</span> <span class='fu'>group_enrichment</span><span class='op'>(</span><span class='va'>df</span>,
+  grp_vars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"g1"</span>, <span class='st'>"g2"</span><span class='op'>)</span>,
+  enrich_vars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"e1"</span>, <span class='st'>"e2"</span><span class='op'>)</span>,
+  co_method <span class='op'>=</span> <span class='st'>"wilcox.test"</span>,
+  cross <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span>
 <span class='va'>x2</span>
 
 <span class='co'># Visualization</span>

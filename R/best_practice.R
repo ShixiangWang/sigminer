@@ -15,7 +15,11 @@
 #' for more explanation.
 #' - `bp_get_sig_obj()` for get a (list of) `Signature` object which is common
 #' used in **sigminer** for analysis and visualization.
-#' - `bp_attribute_activity()` for optimizing signature exposures.
+#' - `bp_attribute_activity()` for optimizing signature activities (exposures).
+#' - `bp_extract_signatures_iter()` for extracting signature in a iteration way.
+#' - `bp_cluster_iter_list()` for clustering iterated signatures to help collapse
+#' multiple signatures into one. The result cluster can be visualized by
+#' `plot()` or `factoextra::fviz_dend()`.
 #' - Extra: `bp_get_stats`() for obtaining stats for signatures and samples of a solution.
 #' These stats are aggregated (averaged) as the stats for a solution
 #' (specific signature number).
@@ -306,8 +310,8 @@ bp_extract_signatures <- function(nmf_matrix,
       m <- length(to_add)
 
       mat_add <- matrix(rep(0, n * m),
-                        nrow = m,
-                        dimnames = list(to_add)
+        nrow = m,
+        dimnames = list(to_add)
       )
       obj$Signature <- rbind(obj$Signature, mat_add)
       obj$Signature.norm <- rbind(obj$Signature.norm, mat_add)
@@ -368,7 +372,9 @@ bp_extract_signatures_iter <- function(nmf_matrix,
                                        mpi_platform = FALSE) {
   iter_list <- list()
   for (i in seq_len(max_iter)) {
-    iter_list[[paste0("iter", i)]] <- bp_extract_signatures(
+    message("Round #", i)
+    message("===============================")
+    bp <- bp_extract_signatures(
       nmf_matrix = nmf_matrix,
       range = range,
       n_bootstrap = n_bootstrap,
@@ -382,11 +388,74 @@ bp_extract_signatures_iter <- function(nmf_matrix,
       mpi_platform = mpi_platform
     )
     # 检查寻找需要重新运行的样本，修改 nmf_matrix
+    iter_list[[paste0("iter", i)]] <- bp
+    samp2rerun <- bp$stats_sample %>%
+      dplyr::filter(.data$signature_number == bp$suggested) %>%
+      dplyr::filter(.data$cosine_distance_mean > 1 - sim_threshold) %>%
+      dplyr::pull("sample")
+
+    nsamp <- dim(bp$catalog_matrix)[2]
+    if (length(samp2rerun) < 2L) {
+      if (length(samp2rerun) == 0) {
+        message("All samples passed the rerun threshold in round #", i)
+      } else {
+        message("Only one sample did not pass the rerun threshold in round #", i, ". Stop here.")
+      }
+      message("Return.")
+      break()
+    } else if (length(samp2rerun) == nsamp) {
+      message("All samples cannot pass rerun threshold in round #", i)
+      if (i == 1L) message("It is the first round, maybe your should lower the value.")
+      message("Return.")
+      break()
+    } else {
+      # Rerun
+      nmf_matrix <- t(bp$catalog_matrix)
+      nmf_matrix <- nmf_matrix[samp2rerun, ]
+    }
   }
+  class(iter_list) <- "ExtractionResultList"
   iter_list
 }
 
-# 需要对上述结果聚类得到最后的 signature 集合。
+#' @param x result from [bp_extract_signatures_iter()] or a list of
+#' `Signature` objects.
+#' @param include_final_iteration if `FALSE`, exclude final iteration result
+#' from clustering for input from [bp_extract_signatures_iter()], not applied
+#' if input is a list of `Signature` objects.
+#' @rdname bp
+#' @export
+bp_cluster_iter_list <- function(x, include_final_iteration = TRUE) {
+  if (length(x) < 2) {
+    stop("No need to cluster length-1 result list.")
+  }
+  if (inherits(x, "ExtractionResultList")) {
+    x <- purrr::map(x, ~ bp_get_sig_obj(., .$suggested))
+    if (isFALSE(include_final_iteration)) {
+      x <- x[-length(x)]
+    }
+  }
+  if (!inherits(x[[1]], "Signature")) {
+    stop("The list element should be a Signature object.")
+  }
+
+  sig_list <- purrr::map(x, "Signature.norm")
+  sigmat <- purrr::imap(sig_list, function(x, y) {
+    colnames(x) <- paste(y, colnames(x), sep = ":")
+    x
+  }) %>% purrr::reduce(cbind)
+  cosdist <- 1 - cosineMatrix(sigmat, sigmat)
+  rownames(cosdist) <- colnames(cosdist) <- colnames(sigmat)
+  # Do clustering
+  cls <- stats::hclust(stats::as.dist(cosdist))
+  r <- list(
+    cluster = cls,
+    distance = cosdist,
+    sigmat = sigmat
+  )
+  class(r) <- "SignatureListClusters"
+  r
+}
 
 #' @param obj a `ExtractionResult` object from [bp_extract_signatures()].
 #' @param signum a integer vector to extract the corresponding `Signature` object(s).
@@ -505,9 +574,11 @@ bp_show_survey <- function(obj,
         color = "red"
       )
   } else {
-    p <- ggplot(plot_df %>%
-                  dplyr::filter(.data$type != "score"),
-                aes_string(x = "sn", y = "measure")) +
+    p <- ggplot(
+      plot_df %>%
+        dplyr::filter(.data$type != "score"),
+      aes_string(x = "sn", y = "measure")
+    ) +
       geom_line() +
       geom_point()
   }
@@ -523,18 +594,21 @@ bp_show_survey <- function(obj,
   p
 }
 
-#' @param input the input.
+#' @param input result from [bp_extract_signatures()] or a Signature object.
 #' @param sample_class a named string vector whose names are sample names
 #' and values are class labels (i.e. cancer subtype). If it is `NULL` (the default),
 #' treat all samples as one group.
+#' @inheritParams sig_fit
 #' @rdname bp
 #' @export
 bp_attribute_activity <- function(input,
                                   sample_class = NULL,
-                                  nmf_matrix = NULL) {
+                                  nmf_matrix = NULL,
+                                  return_class = c("matrix", "data.table")) {
   # logical: excludes class specific signatures if it contributes <0.01 similarity
   #          while include global signatures if it add >0.05 similarity
 
+  return_class <- match.arg(return_class)
   if (inherits(input, "ExtractionResult")) {
     if (is.null(nmf_matrix)) {
       nmf_matrix <- t(input$catalog_matrix)
@@ -553,47 +627,53 @@ bp_attribute_activity <- function(input,
     expo <- input$Exposure.norm
   } else {
     # 其他的输入情况，待定
+    stop("Invalid input!")
   }
 
   if (is.null(nmf_matrix)) {
     stop("nmf_matrix cannot be NULL!")
   }
 
-  exist_mat <- construct_sig_exist_matrix(expo, sample_class)
+  # catalog matrix 的 component 顺序必须和 signature profile 矩阵保持一致
+  # 存在矩阵和 signature profile 矩阵中 signature 顺序必须一致
+  # 存在矩阵与 catalog matrix 中的 sample 顺序也必须一致
+  sig_order <- colnames(sig)
+  samp_order <- colnames(expo)
+  catalog_df <- as.data.frame(t(nmf_matrix))
+  catalog_df <- catalog_df[rownames(sig), samp_order, drop = FALSE]
+  exist_df <- construct_sig_exist_matrix(expo, sample_class) %>%
+    as.data.frame()
+  exist_df <- exist_df[sig_order, , drop = FALSE]
 
-  # 处理标记 1
+  # Handle samples one by one (by columns)
+  out <- purrr::pmap(
+    .l = list(
+      catalog = catalog_df,
+      flag_vector = exist_df,
+      sample = samp_order
+    ),
+    .f = optimize_exposure_in_one_sample,
+    sig_matrix = sig
+  )
+  out <- purrr::transpose(out)
+  expo <- purrr::reduce(out$expo, cbind)
+  rel_expo <- apply(expo, 2, function(x) x / sum(x, na.rm = TRUE))
+  sim <- purrr::reduce(out$similarity, c)
 
-  # 处理可能的标记 2
+  if (return_class == "data.table") {
+    expo <- .mat2dt(expo)
+    rel_expo <- .mat2dt(rel_expo)
+  }
 
+  list(
+    abs_activity = expo,
+    rel_activity = rel_expo,
+    similarity = sim
+  )
 }
 
-# 构建一个 signature by sample 逻辑矩阵，
-# 先指示某个 signature 是否在某个样本中存在
-# 根据已知的 exposure 进行初始化，设定<0.05 相对贡献不存在
-# 0 表示不存在 signature，1 表示存在，2 表示全局 signature
-# 一开始的矩阵只可能是一个1和2构成的矩阵，后续的操作会进行填0操作
-construct_sig_exist_matrix <- function(expo, sample_class = NULL, cutoff = 0.05) {
-  out <- expo
-  if (is.null(sample_class)) {
-    # 没有群组标签（即1组），那么所有 signature 都有可能
-    out[,] <- 1L
-  } else {
-    # 只有 1 组标签也是如此
-    grps <- unique(sample_class)
-    if (length(grps) == 1L) {
-      out[,] <- 1L
-    } else {
-      out <- ifelse(out > cutoff, 1L, 0L) # 先初始化
-      # 用 group 标签覆盖样本标签
-      lapply(grps, function(grp) {
-        idx <- names(sample_class[sample_class == grp])
-        ex <- any(out[, idx] == 1L)
-        if (ex) {
-          out[, idx] <<- 1L
-        }
-      })
-      out[out == 0L] <- 2L # 还存在 0 的地方标记为全局 signature
-    }
-  }
-  return(out)
+.mat2dt <- function(x) {
+  x %>%
+    t() %>%
+    data.table::as.data.table(keep.rownames = "sample")
 }

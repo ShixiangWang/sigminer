@@ -111,7 +111,7 @@ if (requireNamespace("quadprog", quietly = TRUE)) {
   H_infer
   H
 
-  H_dt <- sig_fit(V, W, method = "QP", return_class = "data.table")
+  H_dt <- sig_fit(V, W, method = "QP", auto_reduce = TRUE, return_class = "data.table")
   H_dt
 
   ## Show results

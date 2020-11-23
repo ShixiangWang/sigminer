@@ -63,7 +63,7 @@
 #'   H_infer
 #'   H
 #'
-#'   H_dt <- sig_fit(V, W, method = "QP", return_class = "data.table")
+#'   H_dt <- sig_fit(V, W, method = "QP", auto_reduce = TRUE, return_class = "data.table")
 #'   H_dt
 #'
 #'   ## Show results
@@ -404,7 +404,7 @@ decompose_NNLS <- function(x, y, z, sig_matrix, type = "absolute", auto_reduce =
           abs_expo <- decompose_NNLS(x, 0, z, sig_matrix_update, type = "absolute")
           rec_update <- (abs_expo %*% t(sig_matrix_update))[1, ]
           sim_update <- cosine(rec_update, x)
-          if (sim_update < sim) {
+          if (sim_update < sim + 0.01) {
             break()
           }
           sim <- sim_update
@@ -475,7 +475,7 @@ decompose_QP <- function(x, y, z, P, type = "absolute", auto_reduce = FALSE, ...
           abs_expo <- decompose_QP(x, 0, z, sig_matrix_update, type = "absolute")
           rec_update <- (abs_expo %*% t(sig_matrix_update))[1, ]
           sim_update <- cosine(rec_update, x)
-          if (sim_update < sim) {
+          if (sim_update < sim + 0.01) {
             break()
           }
           sim <- sim_update
@@ -546,7 +546,7 @@ decompose_SA <- function(x, y, z, P, type = "absolute", auto_reduce = FALSE, ...
           abs_expo <- decompose_SA(x, 0, z, sig_matrix_update, type = "absolute")
           rec_update <- (abs_expo %*% t(sig_matrix_update))[1, ]
           sim_update <- cosine(rec_update, x)
-          if (sim_update < sim) {
+          if (sim_update < sim + 0.01) {
             break()
           }
           sim <- sim_update
