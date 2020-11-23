@@ -16,6 +16,10 @@
 #' - `bp_get_sig_obj()` for get a (list of) `Signature` object which is common
 #' used in **sigminer** for analysis and visualization.
 #' - `bp_attribute_activity()` for optimizing signature activities (exposures).
+#' - `bp_extract_signatures_iter()` for extracting signature in a iteration way.
+#' - `bp_cluster_iter_list()` for clustering iterated signatures to help collapse
+#' multiple signatures into one. The result cluster can be visualized by
+#' `plot()` or `factoextra::fviz_dend()`.
 #' - Extra: `bp_get_stats`() for obtaining stats for signatures and samples of a solution.
 #' These stats are aggregated (averaged) as the stats for a solution
 #' (specific signature number).
@@ -414,14 +418,28 @@ bp_extract_signatures_iter <- function(nmf_matrix,
   iter_list
 }
 
-# 需要对上述结果聚类得到最后的 signature 集合。
-bp_cluster_iter_list <- function(x) {
-  stopifnot(inherits(x, "ExtractionResultList"))
+#' @param x result from [bp_extract_signatures_iter()] or a list of
+#' `Signature` objects.
+#' @param include_final_iteration if `FALSE`, exclude final iteration result
+#' from clustering for input from [bp_extract_signatures_iter()], not applied
+#' if input is a list of `Signature` objects.
+#' @rdname bp
+#' @export
+bp_cluster_iter_list <- function(x, include_final_iteration = TRUE) {
   if (length(x) < 2) {
     stop("No need to cluster length-1 result list.")
   }
-  all_list <- purrr::map(x, ~ bp_get_sig_obj(., .$suggested))
-  sig_list <- purrr::map(all_list, "Signature.norm")
+  if (inherits(x, "ExtractionResultList")) {
+    x <- purrr::map(x, ~ bp_get_sig_obj(., .$suggested))
+    if (isFALSE(include_final_iteration)) {
+      x <- x[-length(x)]
+    }
+  }
+  if (!inherits(x[[1]], "Signature")) {
+    stop("The list element should be a Signature object.")
+  }
+
+  sig_list <- purrr::map(x, "Signature.norm")
   sigmat <- purrr::imap(sig_list, function(x, y) {
     colnames(x) <- paste(y, colnames(x), sep = ":")
     x
@@ -430,7 +448,13 @@ bp_cluster_iter_list <- function(x) {
   rownames(cosdist) <- colnames(cosdist) <- colnames(sigmat)
   # Do clustering
   cls <- stats::hclust(stats::as.dist(cosdist))
-  cls
+  r <- list(
+    cluster = cls,
+    distance = cosdist,
+    sigmat = sigmat
+  )
+  class(r) <- "SignatureListClusters"
+  r
 }
 
 #' @param obj a `ExtractionResult` object from [bp_extract_signatures()].

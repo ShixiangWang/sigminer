@@ -4,6 +4,7 @@
 \alias{bp}
 \alias{bp_extract_signatures}
 \alias{bp_extract_signatures_iter}
+\alias{bp_cluster_iter_list}
 \alias{bp_get_sig_obj}
 \alias{bp_get_stats}
 \alias{bp_get_rank_score}
@@ -40,6 +41,8 @@ bp_extract_signatures_iter(
   report_integer_exposure = TRUE,
   mpi_platform = FALSE
 )
+
+bp_cluster_iter_list(x, include_final_iteration = TRUE)
 
 bp_get_sig_obj(obj, signum = NULL)
 
@@ -98,6 +101,13 @@ the extraction procedure (i.e. \code{bp_extract_signatures()}), default is \code
 \item{max_iter}{the maximum iteration size, default is 10, i.e., at most run
 the extraction procedure 10 times.}
 
+\item{x}{result from \code{\link[=bp_extract_signatures_iter]{bp_extract_signatures_iter()}} or a list of
+\code{Signature} objects.}
+
+\item{include_final_iteration}{if \code{FALSE}, exclude final iteration result
+from clustering for input from \code{\link[=bp_extract_signatures_iter]{bp_extract_signatures_iter()}}, not applied
+if input is a list of \code{Signature} objects.}
+
 \item{obj}{a \code{ExtractionResult} object from \code{\link[=bp_extract_signatures]{bp_extract_signatures()}}.}
 
 \item{signum}{a integer vector to extract the corresponding \code{Signature} object(s).
@@ -136,6 +146,10 @@ for more explanation.
 \item \code{bp_get_sig_obj()} for get a (list of) \code{Signature} object which is common
 used in \strong{sigminer} for analysis and visualization.
 \item \code{bp_attribute_activity()} for optimizing signature activities (exposures).
+\item \code{bp_extract_signatures_iter()} for extracting signature in a iteration way.
+\item \code{bp_cluster_iter_list()} for clustering iterated signatures to help collapse
+multiple signatures into one. The result cluster can be visualized by
+\code{plot()} or \code{factoextra::fviz_dend()}.
 \item Extra: \code{bp_get_stats}() for obtaining stats for signatures and samples of a solution.
 These stats are aggregated (averaged) as the stats for a solution
 (specific signature number).
