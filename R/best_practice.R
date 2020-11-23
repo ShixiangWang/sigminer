@@ -89,6 +89,89 @@
 #' Alexandrov, Ludmil B., et al. “The repertoire of mutational signatures in human cancer.” Nature 578.7793 (2020): 94-101.
 #' @seealso See [sig_estimate], [sig_extract], [sig_auto_extract],
 #' [sigprofiler_extract] for other approaches.
+#' @examples
+#' data("simulated_catalogs")
+#' \donttest{
+#' # Here I reduce the values for n_bootstrap and n_nmf_run
+#' # for reducing the run time.
+#' # In practice, you should keep default or increase the values.
+#' #
+#' # The input data here is simulated from 10 mutational signatures
+#' e1 <- bp_extract_signatures(
+#'   t(simulated_catalogs$set1),
+#'   range = 8:12,
+#'   n_bootstrap = 5,
+#'   n_nmf_run = 10
+#' )
+#'
+#' # See the survey for different signature numbers
+#' # The suggested solution is marked as red dot
+#' # with highest integrated score.
+#' p1 <- bp_show_survey(e1)
+#' p1
+#' # You can also exclude plotting and highlighting the score
+#' p2 <- bp_show_survey(e1, add_score = FALSE)
+#' p2
+#'
+#' # Obtain the suggested solution from extraction result
+#' obj_suggested <- bp_get_sig_obj(e1, e1$suggested)
+#' obj_suggested
+#' # If you think the suggested signature number is not right
+#' # Just pick up the solution you want
+#' obj_s8 <- bp_get_sig_obj(e1, 8)
+#'
+#' # After extraction, you can assign the signatures
+#' # to reference COSMIC signatures
+#' # More see ?get_sig_similarity
+#' sim <- get_sig_similarity(obj_suggested)
+#' # Visualize the match result
+#' if (require(pheatmap)) {
+#'   pheatmap::pheatmap(sim$similarity)
+#' }
+#'
+#' # You already got the activities of signatures
+#' # in obj_suggested, however, you can still
+#' # try to optimize the result by removing a signature
+#' # in a sample if it contributes <0.01 similarity
+#' # For more controls, see its documentation
+#' expo <- bp_attribute_activity(e1, return_class = "data.table")
+#' expo$abs_activity
+#'
+#' # Iterative extraction:
+#' # This procedure will rerun extraction step
+#' # for those samples with reconstructed catalog similarity
+#' # lower than a threshold (default is 0.95)
+#' e2 <- bp_extract_signatures_iter(
+#'   t(simulated_catalogs$set1),
+#'   range = 9:11,
+#'   n_bootstrap = 5,
+#'   n_nmf_run = 5,
+#'   sim_threshold = 0.99
+#' )
+#' e2
+#' # When the procedure run multiple rounds
+#' # you can cluster the signatures from different rounds by
+#' # the following command
+#' # bp_cluster_iter_list(e2)
+#'
+#' ## Extra utilities
+#' rank_score <- bp_get_rank_score(e1)
+#' rank_score
+#' stats <- bp_get_stats(e2$iter1)
+#' # Get the mean reconstructed similarity
+#' 1 - stats$stats_sample$cosine_distance_mean
+#' }
+#' @testexamples
+#' expect_is(e1, "ExtractionResult")
+#' expect_is(e2, "ExtractionResultList")
+#' expect_is(p1, "ggplot")
+#' expect_is(p2, "ggplot")
+#' expect_is(obj_suggested, "Signature")
+#' expect_is(obj_s8, "Signature")
+#' expect_is(sim, "list")
+#' expect_is(expo, "list")
+#' expect_is(rank_score, "data.frame")
+#' expect_is(stats, "list")
 NULL
 
 #' @rdname bp

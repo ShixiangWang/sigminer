@@ -796,7 +796,7 @@ optimize_exposure_in_one_sample <- function(catalog,
       ~ .get_one_catalog_similarity(catalog_mat, c(flag1, .), sig_matrix)
     )
 
-    add_id <- sim_dd - baseline$sim > 0.05
+    add_id <- sim_add - baseline$sim > 0.05
 
     if (any(add_id)) {
       flag1 <- sort(c(flag1, flag2[add_id]))
