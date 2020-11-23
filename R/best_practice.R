@@ -77,8 +77,6 @@
 #' @param handle_hyper_mutation default is `TRUE`, handle hyper-mutant samples.
 #' @param report_integer_exposure default is `TRUE`, report integer signature
 #' exposure by bootstrapping technique.
-#' @param mpi_workers try to use MPI framework for NMF parallel computation by `doMPI` package.
-#' Set an integer for worker number if you have the package installed.
 #' @return It depends on the called function.
 #' @name bp
 #' @author Shixiang Wang <w_shixiang@163.com>
@@ -186,8 +184,7 @@ bp_extract_signatures <- function(nmf_matrix,
                                   cores = min(4L, future::availableCores()),
                                   seed = 123456L,
                                   handle_hyper_mutation = TRUE,
-                                  report_integer_exposure = TRUE,
-                                  mpi_workers = FALSE) {
+                                  report_integer_exposure = TRUE) {
   stopifnot(
     is.matrix(nmf_matrix),
     !is.null(rownames(nmf_matrix)), !is.null(colnames(nmf_matrix)),
@@ -273,23 +270,12 @@ bp_extract_signatures <- function(nmf_matrix,
 
   send_info("Running NMF with brunet method (Lee-KLD).")
   # NMF with brunet method
-  if (isFALSE(mpi_workers)) {
-    if (!requireNamespace("doFuture", quietly = TRUE)) {
-      send_info("{.pkg doFuture} is recommended to install for improving computation.")
-    } else {
-      doFuture::registerDoFuture()
-      suppressWarnings(future::plan("multiprocess", workers = cores))
-    }
+  if (!requireNamespace("doFuture", quietly = TRUE)) {
+    send_info("{.pkg doFuture} is recommended to install for improving computation.")
   } else {
-    if (!eval(parse(text = "require(doMPI)"))) {
-      stop("'doMPI' package is not available. Run install.packages('doMPI') to install it firstly.")
-    }
-    mpi_workers <- as.integer(mpi_workers)
-    eval(parse(text = "doMPI::startMPIcluster(count = mpi_workers)"))
-    eval(parse(text = "doMPI::registerDoMPI(cl)"))
-    eval(parse(text = "on.exit(doMPI::closeCluster(cl), add = TRUE)"))
+    doFuture::registerDoFuture()
+    suppressWarnings(future::plan("multiprocess", workers = cores))
   }
-
   seeds <- seq(seed, length = n_bootstrap * n_nmf_run)
   send_success("Seeds generated for reproducible research.")
 
@@ -461,8 +447,7 @@ bp_extract_signatures_iter <- function(nmf_matrix,
                                        cores = min(4L, future::availableCores()),
                                        seed = 123456L,
                                        handle_hyper_mutation = TRUE,
-                                       report_integer_exposure = TRUE,
-                                       mpi_platform = FALSE) {
+                                       report_integer_exposure = TRUE) {
   iter_list <- list()
   for (i in seq_len(max_iter)) {
     message("Round #", i)
@@ -477,8 +462,7 @@ bp_extract_signatures_iter <- function(nmf_matrix,
       cores = cores,
       seed = seed,
       handle_hyper_mutation = handle_hyper_mutation,
-      report_integer_exposure = report_integer_exposure,
-      mpi_platform = mpi_platform
+      report_integer_exposure = report_integer_exposure
     )
     # 检查寻找需要重新运行的样本，修改 nmf_matrix
     iter_list[[paste0("iter", i)]] <- bp
