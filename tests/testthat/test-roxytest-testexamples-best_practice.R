@@ -2,7 +2,7 @@
 
 context("File R/best_practice.R: @testexamples")
 
-test_that("[unknown alias] @ L175", {
+test_that("[unknown alias] @ L193", {
   
   data("simulated_catalogs")
   
@@ -18,6 +18,20 @@ test_that("[unknown alias] @ L175", {
     n_bootstrap = 5,
     n_nmf_run = 10
   )
+  
+  # Run all NMF runs in one batch
+  # This may redure run time for
+  # big project (>100 samples maybe?)
+  e2 <- bp_extract_signatures(
+    t(simulated_catalogs$set1),
+    range = 8:12,
+    n_bootstrap = 5,
+    n_nmf_run = 10,
+    one_batch = TRUE
+  )
+  
+  all.equal(e1, e2)
+  
   
   # See the survey for different signature numbers
   # The suggested solution is marked as red dot
@@ -56,14 +70,15 @@ test_that("[unknown alias] @ L175", {
   # This procedure will rerun extraction step
   # for those samples with reconstructed catalog similarity
   # lower than a threshold (default is 0.95)
-  e2 <- bp_extract_signatures_iter(
+  e3 <- bp_extract_signatures_iter(
     t(simulated_catalogs$set1),
     range = 9:11,
     n_bootstrap = 5,
     n_nmf_run = 5,
-    sim_threshold = 0.99
+    sim_threshold = 0.99,
+    cache_dir = FALSE
   )
-  e2
+  e3
   # When the procedure run multiple rounds
   # you can cluster the signatures from different rounds by
   # the following command
@@ -72,12 +87,13 @@ test_that("[unknown alias] @ L175", {
   ## Extra utilities
   rank_score <- bp_get_rank_score(e1)
   rank_score
-  stats <- bp_get_stats(e2$iter1)
+  stats <- bp_get_stats(e3$iter1)
   # Get the mean reconstructed similarity
   1 - stats$stats_sample$cosine_distance_mean
   
   expect_is(e1, "ExtractionResult")
-  expect_is(e2, "ExtractionResultList")
+  expect_is(e2, "ExtractionResult")
+  expect_is(e3, "ExtractionResultList")
   expect_is(p1, "ggplot")
   expect_is(p2, "ggplot")
   expect_is(obj_suggested, "Signature")

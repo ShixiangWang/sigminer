@@ -19,6 +19,7 @@ bp_extract_signatures(
   n_nmf_run = 50,
   RTOL = 0.001,
   min_contribution = 0,
+  one_batch = FALSE,
   cores = min(4L, future::availableCores()),
   seed = 123456L,
   handle_hyper_mutation = TRUE,
@@ -34,6 +35,7 @@ bp_extract_signatures_iter(
   n_nmf_run = 50,
   RTOL = 0.001,
   min_contribution = 0,
+  one_batch = FALSE,
   cores = min(4L, future::availableCores()),
   seed = 123456L,
   handle_hyper_mutation = TRUE,
@@ -83,6 +85,9 @@ only NMF solutions with KLD (KL deviance) <= \verb{100.1\%} minimal KLD are kept
 
 \item{min_contribution}{a component contribution threshold to filer out small
 contributed components.}
+
+\item{one_batch}{if \code{TRUE}, run tasks for different signature numbers in
+one batch to promote the computation efficiency.}
 
 \item{cores}{number of cpu cores to run NMF.}
 
@@ -214,6 +219,20 @@ e1 <- bp_extract_signatures(
   n_nmf_run = 10
 )
 
+# Run all NMF runs in one batch
+# This may redure run time for
+# big project (>100 samples maybe?)
+e2 <- bp_extract_signatures(
+  t(simulated_catalogs$set1),
+  range = 8:12,
+  n_bootstrap = 5,
+  n_nmf_run = 10,
+  one_batch = TRUE
+)
+
+all.equal(e1, e2)
+
+
 # See the survey for different signature numbers
 # The suggested solution is marked as red dot
 # with highest integrated score.
@@ -251,14 +270,15 @@ expo$abs_activity
 # This procedure will rerun extraction step
 # for those samples with reconstructed catalog similarity
 # lower than a threshold (default is 0.95)
-e2 <- bp_extract_signatures_iter(
+e3 <- bp_extract_signatures_iter(
   t(simulated_catalogs$set1),
   range = 9:11,
   n_bootstrap = 5,
   n_nmf_run = 5,
-  sim_threshold = 0.99
+  sim_threshold = 0.99,
+  cache_dir = FALSE
 )
-e2
+e3
 # When the procedure run multiple rounds
 # you can cluster the signatures from different rounds by
 # the following command
@@ -267,7 +287,7 @@ e2
 ## Extra utilities
 rank_score <- bp_get_rank_score(e1)
 rank_score
-stats <- bp_get_stats(e2$iter1)
+stats <- bp_get_stats(e3$iter1)
 # Get the mean reconstructed similarity
 1 - stats$stats_sample$cosine_distance_mean
 }

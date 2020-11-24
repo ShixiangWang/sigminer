@@ -73,6 +73,8 @@
 #' only NMF solutions with KLD (KL deviance) <= `100.1%` minimal KLD are kept.
 #' @param min_contribution a component contribution threshold to filer out small
 #' contributed components.
+#' @param one_batch if `TRUE`, run tasks for different signature numbers in
+#' one batch to promote the computation efficiency.
 #' @param seed a random seed to make reproducible result.
 #' @param handle_hyper_mutation default is `TRUE`, handle hyper-mutant samples.
 #' @param report_integer_exposure default is `TRUE`, report integer signature
@@ -103,6 +105,20 @@
 #'   n_bootstrap = 5,
 #'   n_nmf_run = 10
 #' )
+#'
+#' # Run all NMF runs in one batch
+#' # This may redure run time for
+#' # big project (>100 samples maybe?)
+#' e2 <- bp_extract_signatures(
+#'   t(simulated_catalogs$set1),
+#'   range = 8:12,
+#'   n_bootstrap = 5,
+#'   n_nmf_run = 10,
+#'   one_batch = TRUE
+#' )
+#'
+#' all.equal(e1, e2)
+#'
 #'
 #' # See the survey for different signature numbers
 #' # The suggested solution is marked as red dot
@@ -141,14 +157,15 @@
 #' # This procedure will rerun extraction step
 #' # for those samples with reconstructed catalog similarity
 #' # lower than a threshold (default is 0.95)
-#' e2 <- bp_extract_signatures_iter(
+#' e3 <- bp_extract_signatures_iter(
 #'   t(simulated_catalogs$set1),
 #'   range = 9:11,
 #'   n_bootstrap = 5,
 #'   n_nmf_run = 5,
-#'   sim_threshold = 0.99
+#'   sim_threshold = 0.99,
+#'   cache_dir = FALSE
 #' )
-#' e2
+#' e3
 #' # When the procedure run multiple rounds
 #' # you can cluster the signatures from different rounds by
 #' # the following command
@@ -157,13 +174,14 @@
 #' ## Extra utilities
 #' rank_score <- bp_get_rank_score(e1)
 #' rank_score
-#' stats <- bp_get_stats(e2$iter1)
+#' stats <- bp_get_stats(e3$iter1)
 #' # Get the mean reconstructed similarity
 #' 1 - stats$stats_sample$cosine_distance_mean
 #' }
 #' @testexamples
 #' expect_is(e1, "ExtractionResult")
-#' expect_is(e2, "ExtractionResultList")
+#' expect_is(e2, "ExtractionResult")
+#' expect_is(e3, "ExtractionResultList")
 #' expect_is(p1, "ggplot")
 #' expect_is(p2, "ggplot")
 #' expect_is(obj_suggested, "Signature")
@@ -181,6 +199,7 @@ bp_extract_signatures <- function(nmf_matrix,
                                   n_bootstrap = 20L,
                                   n_nmf_run = 50,
                                   RTOL = 1e-3, min_contribution = 0,
+                                  one_batch = FALSE,
                                   cores = min(4L, future::availableCores()),
                                   seed = 123456L,
                                   handle_hyper_mutation = TRUE,
@@ -207,6 +226,14 @@ bp_extract_signatures <- function(nmf_matrix,
       paste0(rownames(nmf_matrix)[ii], collapse = ", ")
     )
     nmf_matrix <- nmf_matrix[!ii, , drop = FALSE]
+  }
+
+  if (!requireNamespace("progress")) {
+    install.packages("progress")
+  }
+
+  if (!requireNamespace("progressr")) {
+    install.packages("progressr")
   }
 
   timer <- Sys.time()
@@ -280,63 +307,134 @@ bp_extract_signatures <- function(nmf_matrix,
   send_success("Seeds generated for reproducible research.")
 
   solutions <- list()
-  for (k in seq_along(range)) {
-    if (bt_flag) {
-      send_info(
-        "Extracting ", range[k], " signatures on ",
-        n_bootstrap, " bootstrapped catalogs with ",
-        n_nmf_run, " NMF runs for each."
-      )
-    } else {
-      send_info(
-        "Extracting ", range[k], " signatures on ",
-        "the original catalog with ",
-        n_nmf_run, " NMF runs in a parallel chunk."
-      )
-    }
-
-    solution_list <- suppressWarnings({
-      foreach(
-        s = seeds,
-        bt_matrix = bt_catalog_list[rep(seq_len(n_bootstrap), each = n_nmf_run)],
-        .packages = "NMF",
-        .export = c("k", "range"),
-        .verbose = FALSE
-      ) %dopar% {
-        NMF::nmf(t(bt_matrix), rank = range[k], method = "brunet", seed = s, nrun = 1L)
+  if (isFALSE(one_batch)) {
+    for (k in seq_along(range)) {
+      if (bt_flag) {
+        send_info(
+          "Extracting ", range[k], " signatures on ",
+          n_bootstrap, " bootstrapped catalogs with ",
+          n_nmf_run, " NMF runs for each."
+        )
+      } else {
+        send_info(
+          "Extracting ", range[k], " signatures on ",
+          "the original catalog with ",
+          n_nmf_run, " NMF runs in a parallel chunk."
+        )
       }
-    })
 
-    # Filter solutions with RTOL threshold
-    if (bt_flag) {
-      send_info("Keeping at most 10 NMF solutions with KLD within (1+RTOL) range of the best.")
-    } else {
-      send_info("Keeping at most 100 best NMF solutions.")
+      progressr::handlers("progress")
+      xs <- seq_along(seeds)
+
+      progressr::with_progress({
+        p <- progressr::progressor(along = xs)
+        solution_list <- suppressWarnings({
+          foreach(
+            s = seeds,
+            bt_matrix = bt_catalog_list[rep(seq_len(n_bootstrap), each = n_nmf_run)],
+            x = xs,
+            .packages = "NMF",
+            .export = c("k", "range"),
+            .verbose = FALSE
+          ) %dopar% {
+            p(sprintf("(NMF run #%-6d)", x))
+            NMF::nmf(t(bt_matrix), rank = range[k], method = "brunet", seed = s, nrun = 1L)
+          }
+        })
+      })
+
+      # Filter solutions with RTOL threshold
+      if (bt_flag) {
+        send_info("Keeping at most 10 NMF solutions with KLD within (1+RTOL) range of the best.")
+      } else {
+        send_info("Keeping at most 100 best NMF solutions.")
+      }
+      solutions[[paste0("K", range[k])]] <- purrr::map(
+        chunk2(solution_list, n_bootstrap),
+        .f = function(s) {
+          KLD_list <- sapply(s, NMF::deviance)
+          if (bt_flag) {
+            ki <- KLD_list <= min(KLD_list) * (1 + RTOL)
+            s <- s[ki]
+            if (length(s) > 10) {
+              # Limits 10 best runs
+              KLD_list <- KLD_list[ki]
+              s <- s[order(KLD_list)[1:10]]
+            }
+          } else if (length(s) > 100 & !bt_flag) {
+            s <- s[order(KLD_list)[1:100]]
+          }
+          s
+        }
+      ) %>% unlist()
+      send_success(
+        "NMF done for this solution. Current memory size used: ",
+        round(mem_used() / 2^20), "MB"
+      )
+      rm(solution_list)
+      invisible(gc(verbose = FALSE))
     }
-    solutions[[paste0("K", range[k])]] <- purrr::map(
-      chunk2(solution_list, n_bootstrap),
+  } else {
+    # Collapse all runs in one batch
+    if (isFALSE(bt_flag)) stop("One batch mode for original catalog is invalid!")
+    send_info(
+      "Extracting signatures from range ",
+      paste(range(range), collapse = ":"),
+      " on ", n_bootstrap, " bootstrapped catalogs with ",
+      n_nmf_run, " NMF runs for each catalog. Be patient..."
+    )
+    nrg <- length(range)
+    catalog_seqs <- rep(rep(seq_len(n_bootstrap), each = n_nmf_run), nrg)
+
+    progressr::handlers("progress")
+    xs <- seq_along(catalog_seqs)
+    progressr::with_progress({
+      p <- progressr::progressor(along = xs)
+      solution_list <- suppressWarnings({
+        foreach(
+          s = rep(seeds, nrg),
+          k = rep(range, each = length(seeds)),
+          bt_matrix = bt_catalog_list[catalog_seqs],
+          x = xs,
+          .packages = "NMF",
+          .verbose = FALSE
+        ) %dopar% {
+          p(sprintf("(NMF run #%-6d)", x))
+          NMF::nmf(t(bt_matrix), rank = k, method = "brunet", seed = s, nrun = 1L)
+        }
+      })
+    })
+    # signumber:bootstrap
+    solution_list <- chunk2(solution_list, nrg * n_bootstrap)
+    # Apply RTOL filter
+    solution_list <- purrr::map(
+      solution_list,
       .f = function(s) {
         KLD_list <- sapply(s, NMF::deviance)
-        if (bt_flag) {
-          ki <- KLD_list <= min(KLD_list) * (1 + RTOL)
-          s <- s[ki]
-          if (length(s) > 10) {
-            # Limits 10 best runs
-            KLD_list <- KLD_list[ki]
-            s <- s[order(KLD_list)[1:10]]
-          }
-        } else if (length(s) > 100 & !bt_flag) {
-          s <- s[order(KLD_list)[1:100]]
+        ki <- KLD_list <= min(KLD_list) * (1 + RTOL)
+        s <- s[ki]
+        if (length(s) > 10) {
+          # Limits 10 best runs
+          KLD_list <- KLD_list[ki]
+          s <- s[order(KLD_list)[1:10]]
         }
         s
       }
-    ) %>% unlist()
+    )
+    # Construct solutions same as non one-batch mode
+    for (i in seq_len(nrg)) {
+      idx <- seq((i - 1) * n_bootstrap + 1, length.out = n_bootstrap)
+      solutions[[paste0("K", range[i])]] <- unlist(solution_list[idx])
+    }
+
     send_success(
-      "NMF done for this solution. Current memory size used: ",
+      "NMF done for all solutions. Current memory size used: ",
       round(mem_used() / 2^20), "MB"
     )
-    rm(solution_list); invisible(gc(verbose = FALSE))
+    rm(solution_list)
+    invisible(gc(verbose = FALSE))
   }
+
 
   send_info("Starting process the solution list.")
   # Collect solutions
@@ -447,6 +545,7 @@ bp_extract_signatures_iter <- function(nmf_matrix,
                                        n_bootstrap = 20L,
                                        n_nmf_run = 50,
                                        RTOL = 1e-3, min_contribution = 0,
+                                       one_batch = FALSE,
                                        cores = min(4L, future::availableCores()),
                                        seed = 123456L,
                                        handle_hyper_mutation = TRUE,
@@ -463,6 +562,7 @@ bp_extract_signatures_iter <- function(nmf_matrix,
       n_nmf_run = n_nmf_run,
       RTOL = RTOL,
       min_contribution = min_contribution,
+      one_batch = one_batch,
       cores = cores,
       seed = seed,
       handle_hyper_mutation = handle_hyper_mutation,
