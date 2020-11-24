@@ -335,6 +335,7 @@ bp_extract_signatures <- function(nmf_matrix,
       "NMF done for this solution. Current memory size used: ",
       round(mem_used() / 2^20), "MB"
     )
+    rm(solution_list); invisible(gc(verbose = FALSE))
   }
 
   send_info("Starting process the solution list.")
