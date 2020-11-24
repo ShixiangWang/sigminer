@@ -78,19 +78,21 @@ Suggests:
     IRanges,
     knitr,
     markdown,
+    matrixStats,
     nnls,
     patchwork,
     pheatmap,
+    progress,
+    progressr,
     quadprog,
     R.utils,
     RColorBrewer,
     reticulate,
     rmarkdown,
     roxygen2,
+    scales,
     testthat,
     tibble,
-    scales,
-    matrixStats,
     UCSCXenaTools
 LinkingTo: 
     Rcpp

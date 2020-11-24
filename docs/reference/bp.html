@@ -180,7 +180,8 @@ These stats are aggregated (averaged) as the stats for a solution
   n_nmf_run <span class='op'>=</span> <span class='fl'>50</span>,
   RTOL <span class='op'>=</span> <span class='fl'>0.001</span>,
   min_contribution <span class='op'>=</span> <span class='fl'>0</span>,
-  cores <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span><span class='op'>(</span><span class='fl'>4L</span>, <span class='fu'>future</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/future/man/re-exports.html'>availableCores</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>,
+  one_batch <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  cores <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span><span class='op'>(</span><span class='fl'>4L</span>, <span class='fu'>future</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/future/man/availableCores.html'>availableCores</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>,
   seed <span class='op'>=</span> <span class='fl'>123456L</span>,
   handle_hyper_mutation <span class='op'>=</span> <span class='cn'>TRUE</span>,
   report_integer_exposure <span class='op'>=</span> <span class='cn'>TRUE</span>
@@ -195,7 +196,8 @@ These stats are aggregated (averaged) as the stats for a solution
   n_nmf_run <span class='op'>=</span> <span class='fl'>50</span>,
   RTOL <span class='op'>=</span> <span class='fl'>0.001</span>,
   min_contribution <span class='op'>=</span> <span class='fl'>0</span>,
-  cores <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span><span class='op'>(</span><span class='fl'>4L</span>, <span class='fu'>future</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/future/man/re-exports.html'>availableCores</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>,
+  one_batch <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  cores <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span><span class='op'>(</span><span class='fl'>4L</span>, <span class='fu'>future</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/future/man/availableCores.html'>availableCores</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>,
   seed <span class='op'>=</span> <span class='fl'>123456L</span>,
   handle_hyper_mutation <span class='op'>=</span> <span class='cn'>TRUE</span>,
   report_integer_exposure <span class='op'>=</span> <span class='cn'>TRUE</span>,
@@ -258,6 +260,11 @@ only NMF solutions with KLD (KL deviance) &lt;= <code>100.1%</code> minimal KLD 
       <th>min_contribution</th>
       <td><p>a component contribution threshold to filer out small
 contributed components.</p></td>
+    </tr>
+    <tr>
+      <th>one_batch</th>
+      <td><p>if <code>TRUE</code>, run tasks for different signature numbers in
+one batch to promote the computation efficiency.</p></td>
     </tr>
     <tr>
       <th>cores</th>
@@ -414,6 +421,20 @@ indicates if the signature profiles extracted from different NMF runs are simila
   n_nmf_run <span class='op'>=</span> <span class='fl'>10</span>
 <span class='op'>)</span>
 
+<span class='co'># Run all NMF runs in one batch</span>
+<span class='co'># This may redure run time for</span>
+<span class='co'># big project (&gt;100 samples maybe?)</span>
+<span class='va'>e2</span> <span class='op'>&lt;-</span> <span class='fu'>bp_extract_signatures</span><span class='op'>(</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/t.html'>t</a></span><span class='op'>(</span><span class='va'>simulated_catalogs</span><span class='op'>$</span><span class='va'>set1</span><span class='op'>)</span>,
+  range <span class='op'>=</span> <span class='fl'>8</span><span class='op'>:</span><span class='fl'>12</span>,
+  n_bootstrap <span class='op'>=</span> <span class='fl'>5</span>,
+  n_nmf_run <span class='op'>=</span> <span class='fl'>10</span>,
+  one_batch <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span>
+
+<span class='fu'><a href='https://rdrr.io/r/base/all.equal.html'>all.equal</a></span><span class='op'>(</span><span class='va'>e1</span>, <span class='va'>e2</span><span class='op'>)</span>
+
+
 <span class='co'># See the survey for different signature numbers</span>
 <span class='co'># The suggested solution is marked as red dot</span>
 <span class='co'># with highest integrated score.</span>
@@ -451,14 +472,15 @@ indicates if the signature profiles extracted from different NMF runs are simila
 <span class='co'># This procedure will rerun extraction step</span>
 <span class='co'># for those samples with reconstructed catalog similarity</span>
 <span class='co'># lower than a threshold (default is 0.95)</span>
-<span class='va'>e2</span> <span class='op'>&lt;-</span> <span class='fu'>bp_extract_signatures_iter</span><span class='op'>(</span>
+<span class='va'>e3</span> <span class='op'>&lt;-</span> <span class='fu'>bp_extract_signatures_iter</span><span class='op'>(</span>
   <span class='fu'><a href='https://rdrr.io/r/base/t.html'>t</a></span><span class='op'>(</span><span class='va'>simulated_catalogs</span><span class='op'>$</span><span class='va'>set1</span><span class='op'>)</span>,
   range <span class='op'>=</span> <span class='fl'>9</span><span class='op'>:</span><span class='fl'>11</span>,
   n_bootstrap <span class='op'>=</span> <span class='fl'>5</span>,
   n_nmf_run <span class='op'>=</span> <span class='fl'>5</span>,
-  sim_threshold <span class='op'>=</span> <span class='fl'>0.99</span>
+  sim_threshold <span class='op'>=</span> <span class='fl'>0.99</span>,
+  cache_dir <span class='op'>=</span> <span class='cn'>FALSE</span>
 <span class='op'>)</span>
-<span class='va'>e2</span>
+<span class='va'>e3</span>
 <span class='co'># When the procedure run multiple rounds</span>
 <span class='co'># you can cluster the signatures from different rounds by</span>
 <span class='co'># the following command</span>
@@ -467,7 +489,7 @@ indicates if the signature profiles extracted from different NMF runs are simila
 <span class='co'>## Extra utilities</span>
 <span class='va'>rank_score</span> <span class='op'>&lt;-</span> <span class='fu'>bp_get_rank_score</span><span class='op'>(</span><span class='va'>e1</span><span class='op'>)</span>
 <span class='va'>rank_score</span>
-<span class='va'>stats</span> <span class='op'>&lt;-</span> <span class='fu'>bp_get_stats</span><span class='op'>(</span><span class='va'>e2</span><span class='op'>$</span><span class='va'>iter1</span><span class='op'>)</span>
+<span class='va'>stats</span> <span class='op'>&lt;-</span> <span class='fu'>bp_get_stats</span><span class='op'>(</span><span class='va'>e3</span><span class='op'>$</span><span class='va'>iter1</span><span class='op'>)</span>
 <span class='co'># Get the mean reconstructed similarity</span>
 <span class='fl'>1</span> <span class='op'>-</span> <span class='va'>stats</span><span class='op'>$</span><span class='va'>stats_sample</span><span class='op'>$</span><span class='va'>cosine_distance_mean</span>
 <span class='co'># }</span>

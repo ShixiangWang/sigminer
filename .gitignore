@@ -10,3 +10,4 @@ data-raw/*.gtf.gz
 data-raw/SigProfiler*
 data-raw/*.csv
 data-raw/*.vcf
+*.rds
