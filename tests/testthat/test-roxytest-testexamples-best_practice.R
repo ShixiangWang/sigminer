@@ -2,7 +2,7 @@
 
 context("File R/best_practice.R: @testexamples")
 
-test_that("[unknown alias] @ L193", {
+test_that("[unknown alias] @ L197", {
   
   data("simulated_catalogs")
   
@@ -27,7 +27,8 @@ test_that("[unknown alias] @ L193", {
     range = 8:12,
     n_bootstrap = 5,
     n_nmf_run = 10,
-    one_batch = TRUE
+    one_batch = TRUE,
+    keep_cache = TRUE
   )
   
   all.equal(e1, e2)
@@ -75,8 +76,7 @@ test_that("[unknown alias] @ L193", {
     range = 9:11,
     n_bootstrap = 5,
     n_nmf_run = 5,
-    sim_threshold = 0.99,
-    cache_dir = FALSE
+    sim_threshold = 0.99
   )
   e3
   # When the procedure run multiple rounds
