@@ -370,8 +370,10 @@ bp_extract_signatures <- function(nmf_matrix,
                 seed = s, nrun = 1L
               )
               saveRDS(r, file = fl)
+              NULL
             } else {
               message("Cache run file ", fl, " already exists, skip.")
+              NULL
             }
           }
         })
@@ -452,8 +454,10 @@ bp_extract_signatures <- function(nmf_matrix,
               seed = s, nrun = 1L
             )
             saveRDS(r, file = fl)
+            NULL
           } else {
             message("Cache run file ", fl, " already exists, skip.")
+            NULL
           }
         }
       })
