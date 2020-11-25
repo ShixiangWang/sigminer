@@ -23,7 +23,9 @@ bp_extract_signatures(
   cores = min(4L, future::availableCores()),
   seed = 123456L,
   handle_hyper_mutation = TRUE,
-  report_integer_exposure = TRUE
+  report_integer_exposure = TRUE,
+  cache_dir = file.path(tempdir(), "sigminer_bp"),
+  keep_cache = FALSE
 )
 
 bp_extract_signatures_iter(
@@ -40,7 +42,8 @@ bp_extract_signatures_iter(
   seed = 123456L,
   handle_hyper_mutation = TRUE,
   report_integer_exposure = TRUE,
-  cache_dir = getwd()
+  cache_dir = file.path(tempdir(), "sigminer_bp"),
+  keep_cache = FALSE
 )
 
 bp_cluster_iter_list(x, include_final_iteration = TRUE)
@@ -98,14 +101,17 @@ one batch to promote the computation efficiency.}
 \item{report_integer_exposure}{default is \code{TRUE}, report integer signature
 exposure by bootstrapping technique.}
 
+\item{cache_dir}{a directory for storing intermediate result, also avoid
+repeated computation for same data.}
+
+\item{keep_cache}{default is \code{FALSE}, if \code{TRUE}, keep cache data.
+For small input data, it is not necessary.}
+
 \item{sim_threshold}{a similarity threshold for selecting samples to auto-rerun
 the extraction procedure (i.e. \code{bp_extract_signatures()}), default is \code{0.95}.}
 
 \item{max_iter}{the maximum iteration size, default is 10, i.e., at most run
 the extraction procedure 10 times.}
-
-\item{cache_dir}{a directory for storing result for each round. If you
-don't want to use it, set it to \code{FALSE}.}
 
 \item{x}{result from \code{\link[=bp_extract_signatures_iter]{bp_extract_signatures_iter()}} or a list of
 \code{Signature} objects.}
@@ -227,7 +233,8 @@ e2 <- bp_extract_signatures(
   range = 8:12,
   n_bootstrap = 5,
   n_nmf_run = 10,
-  one_batch = TRUE
+  one_batch = TRUE,
+  keep_cache = TRUE
 )
 
 all.equal(e1, e2)
@@ -275,8 +282,7 @@ e3 <- bp_extract_signatures_iter(
   range = 9:11,
   n_bootstrap = 5,
   n_nmf_run = 5,
-  sim_threshold = 0.99,
-  cache_dir = FALSE
+  sim_threshold = 0.99
 )
 e3
 # When the procedure run multiple rounds

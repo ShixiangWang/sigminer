@@ -79,6 +79,10 @@
 #' @param handle_hyper_mutation default is `TRUE`, handle hyper-mutant samples.
 #' @param report_integer_exposure default is `TRUE`, report integer signature
 #' exposure by bootstrapping technique.
+#' @param cache_dir a directory for storing intermediate result, also avoid
+#' repeated computation for same data.
+#' @param keep_cache default is `FALSE`, if `TRUE`, keep cache data.
+#' For small input data, it is not necessary.
 #' @return It depends on the called function.
 #' @name bp
 #' @author Shixiang Wang <w_shixiang@163.com>
@@ -114,7 +118,8 @@
 #'   range = 8:12,
 #'   n_bootstrap = 5,
 #'   n_nmf_run = 10,
-#'   one_batch = TRUE
+#'   one_batch = TRUE,
+#'   keep_cache = TRUE
 #' )
 #'
 #' all.equal(e1, e2)
@@ -162,8 +167,7 @@
 #'   range = 9:11,
 #'   n_bootstrap = 5,
 #'   n_nmf_run = 5,
-#'   sim_threshold = 0.99,
-#'   cache_dir = FALSE
+#'   sim_threshold = 0.99
 #' )
 #' e3
 #' # When the procedure run multiple rounds
@@ -203,7 +207,9 @@ bp_extract_signatures <- function(nmf_matrix,
                                   cores = min(4L, future::availableCores()),
                                   seed = 123456L,
                                   handle_hyper_mutation = TRUE,
-                                  report_integer_exposure = TRUE) {
+                                  report_integer_exposure = TRUE,
+                                  cache_dir = file.path(tempdir(), "sigminer_bp"),
+                                  keep_cache = FALSE) {
   stopifnot(
     is.matrix(nmf_matrix),
     !is.null(rownames(nmf_matrix)), !is.null(colnames(nmf_matrix)),
@@ -306,8 +312,25 @@ bp_extract_signatures <- function(nmf_matrix,
   seeds <- seq(seed, length = n_bootstrap * n_nmf_run)
   send_success("Seeds generated for reproducible research.")
 
+  # Construct cache file names
+  # signumber:seed
+  nrg <- length(range)
+  if (!dir.exists(cache_dir)) dir.create(cache_dir, recursive = TRUE)
+  cache_files <- file.path(
+    cache_dir,
+    paste0(
+      digest::digest(catalogue_matrix),
+      "_NMF_K",
+      rep(range, each = length(seeds)),
+      "_seed_",
+      rep(seeds, nrg),
+      ".rds"
+    )
+  )
+
   solutions <- list()
   if (isFALSE(one_batch)) {
+    cache_list <- chunk2(cache_files, n = nrg)
     for (k in seq_along(range)) {
       if (bt_flag) {
         send_info(
@@ -324,24 +347,44 @@ bp_extract_signatures <- function(nmf_matrix,
       }
 
       progressr::handlers("progress")
-      xs <- seq_along(seeds)
-
       progressr::with_progress({
-        p <- progressr::progressor(along = xs)
-        solution_list <- suppressWarnings({
+        p <- progressr::progressor(along = cache_list[[k]])
+        suppressWarnings({
           foreach(
             s = seeds,
             bt_matrix = bt_catalog_list[rep(seq_len(n_bootstrap), each = n_nmf_run)],
-            x = xs,
+            fl = cache_list[[k]],
             .packages = "NMF",
             .export = c("k", "range"),
             .verbose = FALSE
           ) %dopar% {
-            p(sprintf("(NMF run #%-6d)", x))
-            NMF::nmf(t(bt_matrix), rank = range[k], method = "brunet", seed = s, nrun = 1L)
+            p(sprintf("(Run K%-2s:seed-%s)", range[k], s))
+            if (!file.exists(fl)) {
+              r <- NMF::nmf(
+                t(bt_matrix),
+                rank = range[k],
+                method = "brunet",
+                seed = s, nrun = 1L
+              )
+              saveRDS(r, file = fl)
+            } else {
+              message("Cache run file ", fl, " already exists, skip.")
+            }
           }
         })
       })
+
+      send_info("Reading NMF run files...")
+      solution_list <- purrr::map(cache_list[[k]], readRDS)
+      send_success("Read successfully.")
+      if (!keep_cache) {
+        signal <- file.remove(cache_list[[k]])
+        if (all(signal)) {
+          send_success("NMF run files deleted.")
+        } else {
+          send_warning("Delete some or all NMF run files failed.")
+        }
+      }
 
       # Filter solutions with RTOL threshold
       if (bt_flag) {
@@ -383,27 +426,46 @@ bp_extract_signatures <- function(nmf_matrix,
       " on ", n_bootstrap, " bootstrapped catalogs with ",
       n_nmf_run, " NMF runs for each catalog. Be patient..."
     )
-    nrg <- length(range)
     catalog_seqs <- rep(rep(seq_len(n_bootstrap), each = n_nmf_run), nrg)
 
     progressr::handlers("progress")
-    xs <- seq_along(catalog_seqs)
     progressr::with_progress({
-      p <- progressr::progressor(along = xs)
-      solution_list <- suppressWarnings({
+      p <- progressr::progressor(along = cache_files)
+      suppressWarnings({
         foreach(
           s = rep(seeds, nrg),
           k = rep(range, each = length(seeds)),
           bt_matrix = bt_catalog_list[catalog_seqs],
-          x = xs,
+          fl = cache_files,
           .packages = "NMF",
           .verbose = FALSE
         ) %dopar% {
-          p(sprintf("(NMF run #%-6d)", x))
-          NMF::nmf(t(bt_matrix), rank = k, method = "brunet", seed = s, nrun = 1L)
+          p(sprintf("(Run K%-2s:seed-%s)", k, s))
+          if (!file.exists(fl)) {
+            r <- NMF::nmf(
+              t(bt_matrix),
+              rank = k,
+              method = "brunet",
+              seed = s, nrun = 1L
+            )
+            saveRDS(r, file = fl)
+          } else {
+            message("Cache run file ", fl, " already exists, skip.")
+          }
         }
       })
     })
+    send_info("Reading NMF run files...")
+    solution_list <- purrr::map(cache_files, readRDS)
+    send_success("Read successfully.")
+    if (!keep_cache) {
+      signal <- file.remove(cache_files)
+      if (all(signal)) {
+        send_success("NMF run files deleted.")
+      } else {
+        send_warning("Delete some or all NMF run files failed.")
+      }
+    }
     # signumber:bootstrap
     solution_list <- chunk2(solution_list, nrg * n_bootstrap)
     # Apply RTOL filter
@@ -450,8 +512,8 @@ bp_extract_signatures <- function(nmf_matrix,
     )
   } else {
     oplan <- future::plan()
-    future::plan("multiprocess", workers = cores)
-    on.exit(future::plan(oplan), add = TRUE)
+    future::plan("multiprocess", workers = cores, .skip = TRUE)
+    on.exit(future::plan(oplan), add = TRUE, after = FALSE)
     solutions <- furrr::future_map(
       solutions,
       .f = process_solution,
@@ -527,6 +589,7 @@ bp_extract_signatures <- function(nmf_matrix,
   class(solutions) <- "ExtractionResult"
 
   send_success("Extraction procedure run successfully.")
+
   solutions
 }
 
@@ -534,8 +597,6 @@ bp_extract_signatures <- function(nmf_matrix,
 #' the extraction procedure (i.e. `bp_extract_signatures()`), default is `0.95`.
 #' @param max_iter the maximum iteration size, default is 10, i.e., at most run
 #' the extraction procedure 10 times.
-#' @param cache_dir a directory for storing result for each round. If you
-#' don't want to use it, set it to `FALSE`.
 #' @rdname bp
 #' @export
 bp_extract_signatures_iter <- function(nmf_matrix,
@@ -550,8 +611,10 @@ bp_extract_signatures_iter <- function(nmf_matrix,
                                        seed = 123456L,
                                        handle_hyper_mutation = TRUE,
                                        report_integer_exposure = TRUE,
-                                       cache_dir = getwd()) {
+                                       cache_dir = file.path(tempdir(), "sigminer_bp"),
+                                       keep_cache = FALSE){
   iter_list <- list()
+  cache_file_list <- c()
   for (i in seq_len(max_iter)) {
     message("Round #", i)
     message("===============================")
@@ -566,24 +629,20 @@ bp_extract_signatures_iter <- function(nmf_matrix,
       cores = cores,
       seed = seed,
       handle_hyper_mutation = handle_hyper_mutation,
-      report_integer_exposure = report_integer_exposure
+      report_integer_exposure = report_integer_exposure,
+      cache_dir = cache_dir,
+      keep_cache = keep_cache
     )
     # 检查寻找需要重新运行的样本，修改 nmf_matrix
     iter_list[[paste0("iter", i)]] <- bp
 
-    if (!isFALSE(cache_dir)) {
-      if (!dir.exists(cache_dir)) dir.create(cache_dir, recursive = TRUE)
-      j <- 1L
-      check_file <- file.path(cache_dir, paste0("job", j, "_round_1.rds"))
-      while (file.exists(check_file)) {
-        message("Cache file ", check_file, " exists, changing name...")
-        j <- j + 1L
-        check_file <- file.path(cache_dir, paste0("job", j, "_round_1.rds"))
-      }
-      cache_file <- file.path(cache_dir, paste0("job", j, "_round_", i, ".rds"))
-      message("Save round #", i, " result to ", cache_file)
-      saveRDS(bp, file = cache_file)
-    }
+    if (!dir.exists(cache_dir)) dir.create(cache_dir, recursive = TRUE)
+    cache_file <- file.path(
+      cache_dir,
+      paste0(digest::digest(nmf_matrix), "_round_", i, ".rds"))
+    message("Save round #", i, " result to ", cache_file)
+    saveRDS(bp, file = cache_file)
+    cache_file_list <- c(cache_file_list, cache_file)
 
     samp2rerun <- bp$stats_sample %>%
       dplyr::filter(.data$signature_number == bp$suggested) %>%
@@ -610,6 +669,17 @@ bp_extract_signatures_iter <- function(nmf_matrix,
       nmf_matrix <- nmf_matrix[samp2rerun, ]
     }
   }
+
+  if (!keep_cache) {
+    signal <- unlink(cache_file_list, force = TRUE)
+    if (signal == 0L) {
+      message("Cache files deleted.")
+    } else {
+      warning("Cache files cannot be deleted.", immediate. = TRUE)
+    }
+  }
+
+  message("Done.")
   class(iter_list) <- "ExtractionResultList"
   iter_list
 }

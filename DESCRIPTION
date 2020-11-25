@@ -93,7 +93,8 @@ Suggests:
     scales,
     testthat,
     tibble,
-    UCSCXenaTools
+    UCSCXenaTools,
+    digest
 LinkingTo: 
     Rcpp
 VignetteBuilder: 
