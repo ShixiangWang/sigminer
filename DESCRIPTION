@@ -45,7 +45,7 @@ Imports:
     data.table,
     dplyr,
     foreach,
-    furrr,
+    furrr (>= 0.2.0),
     future,
     ggplot2 (>= 3.3.0),
     ggpubr,
