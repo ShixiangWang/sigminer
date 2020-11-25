@@ -75,6 +75,8 @@
 #' contributed components.
 #' @param one_batch if `TRUE`, run tasks for different signature numbers in
 #' one batch to promote the computation efficiency.
+#' @param cores_solution cores for processing solutions, default is `NULL`,
+#' it will be set automatically.
 #' @param seed a random seed to make reproducible result.
 #' @param handle_hyper_mutation default is `TRUE`, handle hyper-mutant samples.
 #' @param report_integer_exposure default is `TRUE`, report integer signature
@@ -205,6 +207,7 @@ bp_extract_signatures <- function(nmf_matrix,
                                   RTOL = 1e-3, min_contribution = 0,
                                   one_batch = FALSE,
                                   cores = min(4L, future::availableCores()),
+                                  cores_solution = NULL,
                                   seed = 123456L,
                                   handle_hyper_mutation = TRUE,
                                   report_integer_exposure = TRUE,
@@ -503,12 +506,6 @@ bp_extract_signatures <- function(nmf_matrix,
   # 先将所有 solution 标准化处理，得到 signature 和 activity
   # 然后针对 signature 使用 clustering with match 算法进行聚类
   # 聚类：使用 1 - cosine 相似性作为距离指标
-  # solutions <- purrr::map(
-  #   solutions,
-  #   .f = process_solution,
-  #   catalogue_matrix = catalogue_matrix,
-  #   report_integer_exposure = report_integer_exposure
-  # )
   if (sum(sapply(solutions, length)) < 200L & length(solutions) < 4) {
     solutions <- purrr::map(
       solutions,
@@ -517,6 +514,9 @@ bp_extract_signatures <- function(nmf_matrix,
       report_integer_exposure = report_integer_exposure
     )
   } else {
+    if (!is.null(cores_solution)) cores <- cores_solution
+    cores <- min(cores, length(solutions))
+    send_info(cores, " cores set for processing solutions.")
     oplan <- future::plan()
     future::plan("multiprocess", workers = cores, .skip = TRUE)
     on.exit(future::plan(oplan), add = TRUE, after = FALSE)
@@ -614,6 +614,7 @@ bp_extract_signatures_iter <- function(nmf_matrix,
                                        RTOL = 1e-3, min_contribution = 0,
                                        one_batch = FALSE,
                                        cores = min(4L, future::availableCores()),
+                                       cores_solution = NULL,
                                        seed = 123456L,
                                        handle_hyper_mutation = TRUE,
                                        report_integer_exposure = TRUE,
@@ -633,6 +634,7 @@ bp_extract_signatures_iter <- function(nmf_matrix,
       min_contribution = min_contribution,
       one_batch = one_batch,
       cores = cores,
+      cores_solution = cores_solution,
       seed = seed,
       handle_hyper_mutation = handle_hyper_mutation,
       report_integer_exposure = report_integer_exposure,
