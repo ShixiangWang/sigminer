@@ -503,6 +503,12 @@ bp_extract_signatures <- function(nmf_matrix,
   # 先将所有 solution 标准化处理，得到 signature 和 activity
   # 然后针对 signature 使用 clustering with match 算法进行聚类
   # 聚类：使用 1 - cosine 相似性作为距离指标
+  # solutions <- purrr::map(
+  #   solutions,
+  #   .f = process_solution,
+  #   catalogue_matrix = catalogue_matrix,
+  #   report_integer_exposure = report_integer_exposure
+  # )
   if (sum(sapply(solutions, length)) < 200L & length(solutions) < 4) {
     solutions <- purrr::map(
       solutions,

@@ -146,11 +146,14 @@ process_solution <- function(slist, catalogue_matrix, report_integer_exposure = 
 
 normalize_solution <- function(solution) {
   # solution is a NMF fit result
+  on.exit(invisible(gc()), add = TRUE)
 
   W2 <- W <- NMF::basis(solution)
   H2 <- H <- NMF::coef(solution)
   K <- ncol(W)
   KLD <- NMF::deviance(solution)
+  rm(solution)
+  invisible(gc())
 
   out <- c(helper_scale_nmf_matrix(W, H, K, handle_cn = FALSE),
     list(W = W2, H = H2),
@@ -162,6 +165,11 @@ normalize_solution <- function(solution) {
 
 # Transform data into Signature object
 tf_signature <- function(s, e, used_runs, catalogue_matrix = NULL) {
+  on.exit(invisible(gc()), add = TRUE)
+  send_info(
+    "Current memory size used: ",
+    round(mem_used() / 2^20), "MB"
+  )
   # If total_records is not NULL
   # generate integer counts based on resampling
   s.norm <- apply(s, 2, function(x) x / sum(x, na.rm = TRUE))
@@ -217,14 +225,27 @@ tf_signature <- function(s, e, used_runs, catalogue_matrix = NULL) {
   attr(obj, "used_runs") <- used_runs
   attr(obj, "method") <- "brunet"
   attr(obj, "call_method") <- "NMF with best practice"
+
+  send_info(
+    "Current memory size used: ",
+    round(mem_used() / 2^20), "MB"
+  )
   obj
 }
 
 get_stat_sigs <- function(runs) {
+  on.exit(invisible(gc()), add = TRUE)
+  send_info(
+    "Current memory size used: ",
+    round(mem_used() / 2^20), "MB"
+  )
+
   sig_list <- purrr::map(runs, "Signature")
   dm <- dim(sig_list[[1]])
   l <- length(sig_list)
   sig_array <- array(unlist(sig_list), dim = c(dm, l))
+  rm(sig_list)
+  invisible(gc())
   # signatures
   sig <- data.frame(
     signature_number = rep(dm[2], dm[2]),
@@ -270,7 +291,14 @@ get_stat_sigs <- function(runs) {
   expo_list <- purrr::map(runs, "Exposure")
   dm <- dim(expo_list[[1]])
   expo_array <- array(unlist(expo_list), dim = c(dm, l))
+  rm(sig_array, expo_list, runs)
+  invisible(gc())
   expo_cor <- get_expo_corr_stat(expo_array)
+
+  send_info(
+    "Current memory size used: ",
+    round(mem_used() / 2^20), "MB"
+  )
 
   list(
     signature = s,
@@ -279,10 +307,18 @@ get_stat_sigs <- function(runs) {
 }
 
 get_stat_samps <- function(runs, mat) {
+  on.exit(invisible(gc()), add = TRUE)
+
+  send_info(
+    "Current memory size used: ",
+    round(mem_used() / 2^20), "MB"
+  )
   expo_list <- purrr::map(runs, "Exposure")
   dm <- dim(expo_list[[1]]) # the second value of dm indicates how many samples
   l <- length(expo_list)
   expo_array <- array(unlist(expo_list), dim = c(dm, l))
+  rm(expo_list)
+  invisible(gc())
   # exposures
   e <- get_3d_array_stats(
     expo_array,
@@ -297,6 +333,8 @@ get_stat_samps <- function(runs, mat) {
   catalog_list <- purrr::map2(W_list, H_list, ~ .x %*% .y)
   dm2 <- dim(catalog_list[[1]])
   catalog_array <- array(unlist(catalog_list), dim = c(dm2, l))
+  rm(runs, expo_array, W_list, H_list, catalog_list)
+  invisible(gc())
 
   sim <- get_similarity_stats(
     catalog_array,
@@ -334,6 +372,11 @@ get_stat_samps <- function(runs, mat) {
     mat
   )
 
+  send_info(
+    "Current memory size used: ",
+    round(mem_used() / 2^20), "MB"
+  )
+
   list(
     exposure = e,
     stats = cbind(samp, sil_width, error)
@@ -341,6 +384,8 @@ get_stat_samps <- function(runs, mat) {
 }
 
 get_3d_array_stats <- function(x, ns = NULL) {
+  on.exit(invisible(gc()), add = TRUE)
+
   r <- list(
     mean = apply(x, c(1, 2), mean),
     sd = apply(x, c(1, 2), sd),
@@ -357,6 +402,8 @@ get_similarity_stats <- function(x,
                                  n,
                                  ns = NULL,
                                  type = "within-cluster") {
+  on.exit(invisible(gc()), add = TRUE)
+
   if (type == "within-cluster") {
     d <- lapply(seq_len(n), function(i) {
       x2 <- x[, i, ]
@@ -406,6 +453,8 @@ get_similarity_stats <- function(x,
 # Quantify the exposure correlation between different signatures with
 # Pearson coefficient
 get_expo_corr_stat <- function(x) {
+  on.exit(invisible(gc()), add = TRUE)
+
   n <- dim(x)[1] # n signatures
   r <- dim(x)[3] # r runs
 
@@ -455,6 +504,8 @@ get_expo_corr_stat <- function(x) {
 # The difference between reconstructed catalogs and the original catalog
 # 用相似性距离、L1、L2范数
 get_error_stats <- function(x, mat) {
+  on.exit(invisible(gc()), add = TRUE)
+
   n <- dim(mat)[2] # n samples
   r <- dim(x)[3] # r runs
 
@@ -559,6 +610,7 @@ get_min_orders <- function(mat) {
 # 4. 按平均距离对配对 run 进行排序，得到排序好的列表
 # 5. 初始化排序列表（步骤4的子集），按顺序利用算法逐步合并
 clustering_with_match <- function(match_list, n) {
+  on.exit(invisible(gc()), add = TRUE)
   # Input: a match list ordered by mean distance
   # This function implements the core step:
   #   collapse the match list into one data.table step by step
