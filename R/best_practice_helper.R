@@ -77,7 +77,9 @@ process_solution <- function(slist, catalogue_matrix, report_integer_exposure = 
   # 分为 signature 和 样本两种，取每个度量的最大、最小值、平均值以及 SD
   # 重构相似性，轮廓系数，
   # 聚类平均相似距离, 平均错误，Exposure 相关性等
+  send_info("Getting signature stats.")
   stat_sigs <- get_stat_sigs(out)
+  send_info("Getting sample stats.")
   stat_samps <- get_stat_samps(out, mat = catalogue_matrix)
   send_success("Done.")
 

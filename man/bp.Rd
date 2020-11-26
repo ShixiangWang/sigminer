@@ -21,7 +21,7 @@ bp_extract_signatures(
   min_contribution = 0,
   one_batch = FALSE,
   cores = min(4L, future::availableCores()),
-  cores_solution = NULL,
+  cores_solution = cores,
   seed = 123456L,
   handle_hyper_mutation = TRUE,
   report_integer_exposure = TRUE,
@@ -40,7 +40,7 @@ bp_extract_signatures_iter(
   min_contribution = 0,
   one_batch = FALSE,
   cores = min(4L, future::availableCores()),
-  cores_solution = NULL,
+  cores_solution = cores,
   seed = 123456L,
   handle_hyper_mutation = TRUE,
   report_integer_exposure = TRUE,
@@ -96,8 +96,7 @@ one batch to promote the computation efficiency.}
 
 \item{cores}{number of cpu cores to run NMF.}
 
-\item{cores_solution}{cores for processing solutions, default is \code{NULL},
-it will be set automatically.}
+\item{cores_solution}{cores for processing solutions, default is equal to argument \code{cores}.}
 
 \item{seed}{a random seed to make reproducible result.}
 
