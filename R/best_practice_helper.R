@@ -2,6 +2,7 @@
 # Extraction helpers ------------------------------------------------------
 
 process_solution <- function(slist, catalogue_matrix, report_integer_exposure = FALSE) {
+  on.exit(invisible(gc()), add = TRUE)
   send_info("Normalizing solutions to get Signature and Exposure.")
   out <- purrr::map(slist, .f = normalize_solution) %>%
     setNames(paste0("Run", seq_along(slist)))
@@ -150,18 +151,11 @@ normalize_solution <- function(solution) {
   # solution is a NMF fit result
   on.exit(invisible(gc()), add = TRUE)
 
-  W2 <- W <- NMF::basis(solution)
-  H2 <- H <- NMF::coef(solution)
-  K <- ncol(W)
-  KLD <- NMF::deviance(solution)
-  rm(solution)
-  invisible(gc())
-
-  out <- c(helper_scale_nmf_matrix(W, H, K, handle_cn = FALSE),
-    list(W = W2, H = H2),
-    KLD = KLD
+  out <- c(helper_scale_nmf_matrix(solution$W, solution$H, solution$K, handle_cn = FALSE),
+    list(W = solution$W, H = solution$H),
+    KLD = solution$KLD
   )
-  colnames(out$Signature) <- colnames(out$W) <- rownames(out$Exposure) <- rownames(out$H) <- paste0("S", seq_len(K))
+  colnames(out$Signature) <- colnames(out$W) <- rownames(out$Exposure) <- rownames(out$H) <- paste0("S", seq_len(solution$K))
   out
 }
 
@@ -185,7 +179,6 @@ tf_signature <- function(s, e, used_runs, catalogue_matrix = NULL) {
   }
 
   if (!is.null(catalogue_matrix)) {
-    set.seed(123)
     s2 <- purrr::map2(
       as.data.frame(s),
       round((colSums(s) / sum(colSums(s))) * sum(catalogue_matrix)),
@@ -197,7 +190,6 @@ tf_signature <- function(s, e, used_runs, catalogue_matrix = NULL) {
     colnames(s2) <- colnames(s)
     s <- s2
 
-    set.seed(123)
     if (nrow(e) < 2) {
       e2 <- matrix(colSums(catalogue_matrix), nrow = 1)
     } else {
