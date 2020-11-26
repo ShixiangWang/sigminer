@@ -395,6 +395,9 @@ bp_extract_signatures <- function(nmf_matrix,
 
       send_info("Reading NMF run files...")
       solution_list <- purrr::map(cache_list[[k]], readRDS)
+      if (inherits(solution_list[[1]], "NMFfit")) {
+        solution_list <- purrr::map(solution_list, extract_nmf)
+      }
       send_success("Read successfully.")
       if (!keep_cache) {
         signal <- file.remove(cache_list[[k]])
@@ -479,6 +482,9 @@ bp_extract_signatures <- function(nmf_matrix,
     })
     send_info("Reading NMF run files...")
     solution_list <- purrr::map(cache_files, readRDS)
+    if (inherits(solution_list[[1]], "NMFfit")) {
+      solution_list <- purrr::map(solution_list, extract_nmf)
+    }
     send_success("Read successfully.")
     if (!keep_cache) {
       signal <- file.remove(cache_files)
