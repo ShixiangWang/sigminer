@@ -211,7 +211,7 @@ bp_extract_signatures <- function(nmf_matrix,
                                   seed = 123456L,
                                   handle_hyper_mutation = TRUE,
                                   report_integer_exposure = TRUE,
-                                  only_core_stats = FALSE,
+                                  only_core_stats = nrow(nmf_matrix) > 100,
                                   cache_dir = file.path(tempdir(), "sigminer_bp"),
                                   keep_cache = FALSE) {
   stopifnot(
@@ -312,7 +312,7 @@ bp_extract_signatures <- function(nmf_matrix,
     send_info("{.pkg doFuture} is recommended to install for improving computation.")
   } else {
     doFuture::registerDoFuture()
-    suppressWarnings(future::plan("multiprocess", workers = cores))
+    suppressWarnings(future::plan("multiprocess", workers = cores, gc = TRUE))
   }
   seeds <- seq(seed, length = n_bootstrap * n_nmf_run)
   send_success("Seeds generated for reproducible research.")
@@ -372,6 +372,7 @@ bp_extract_signatures <- function(nmf_matrix,
             s = seeds,
             bt_matrix = bt_catalog_list[rep(seq_len(n_bootstrap), each = n_nmf_run)],
             fl = cache_list[[k]],
+            .inorder = FALSE,
             .packages = "NMF",
             .export = c("k", "range", "extract_solution"),
             .verbose = FALSE
@@ -461,7 +462,9 @@ bp_extract_signatures <- function(nmf_matrix,
           k = rep(range, each = length(seeds)),
           bt_matrix = bt_catalog_list[catalog_seqs],
           fl = cache_files,
+          .inorder = FALSE,
           .packages = "NMF",
+          .export = c("extract_solution"),
           .verbose = FALSE
         ) %dopar% {
           p(sprintf("(Run K%-2s:seed-%s)", k, s))
@@ -546,7 +549,7 @@ bp_extract_signatures <- function(nmf_matrix,
     cores <- min(cores, length(solutions))
     send_info(cores, " cores set for processing solutions.")
     oplan <- future::plan()
-    future::plan("multiprocess", workers = cores, .skip = TRUE)
+    future::plan("multiprocess", workers = cores, gc = TRUE, .skip = TRUE)
     on.exit(future::plan(oplan), add = TRUE, after = FALSE)
     solutions <- furrr::future_map(
       solutions,
@@ -647,9 +650,9 @@ bp_extract_signatures_iter <- function(nmf_matrix,
                                        seed = 123456L,
                                        handle_hyper_mutation = TRUE,
                                        report_integer_exposure = TRUE,
-                                       only_core_stats = FALSE,
+                                       only_core_stats = nrow(nmf_matrix) > 100,
                                        cache_dir = file.path(tempdir(), "sigminer_bp"),
-                                       keep_cache = FALSE){
+                                       keep_cache = FALSE) {
   iter_list <- list()
   cache_file_list <- c()
   for (i in seq_len(max_iter)) {
@@ -678,7 +681,8 @@ bp_extract_signatures_iter <- function(nmf_matrix,
     if (!dir.exists(cache_dir)) dir.create(cache_dir, recursive = TRUE)
     cache_file <- file.path(
       cache_dir,
-      paste0(digest::digest(nmf_matrix), "_round_", i, ".rds"))
+      paste0(digest::digest(nmf_matrix), "_round_", i, ".rds")
+    )
     message("Save round #", i, " result to ", cache_file)
     saveRDS(bp, file = cache_file)
     cache_file_list <- c(cache_file_list, cache_file)

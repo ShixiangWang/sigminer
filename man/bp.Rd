@@ -25,7 +25,7 @@ bp_extract_signatures(
   seed = 123456L,
   handle_hyper_mutation = TRUE,
   report_integer_exposure = TRUE,
-  only_core_stats = FALSE,
+  only_core_stats = nrow(nmf_matrix) > 100,
   cache_dir = file.path(tempdir(), "sigminer_bp"),
   keep_cache = FALSE
 )
@@ -45,7 +45,7 @@ bp_extract_signatures_iter(
   seed = 123456L,
   handle_hyper_mutation = TRUE,
   report_integer_exposure = TRUE,
-  only_core_stats = FALSE,
+  only_core_stats = nrow(nmf_matrix) > 100,
   cache_dir = file.path(tempdir(), "sigminer_bp"),
   keep_cache = FALSE
 )

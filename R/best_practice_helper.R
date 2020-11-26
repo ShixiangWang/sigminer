@@ -165,10 +165,7 @@ normalize_solution <- function(solution) {
 # Transform data into Signature object
 tf_signature <- function(s, e, used_runs, catalogue_matrix = NULL) {
   on.exit(invisible(gc()), add = TRUE)
-  send_info(
-    "Current memory size used: ",
-    round(mem_used() / 2^20), "MB"
-  )
+
   # If total_records is not NULL
   # generate integer counts based on resampling
   s.norm <- apply(s, 2, function(x) x / sum(x, na.rm = TRUE))
@@ -225,19 +222,11 @@ tf_signature <- function(s, e, used_runs, catalogue_matrix = NULL) {
   attr(obj, "method") <- "brunet"
   attr(obj, "call_method") <- "NMF with best practice"
 
-  send_info(
-    "Current memory size used: ",
-    round(mem_used() / 2^20), "MB"
-  )
   obj
 }
 
 get_stat_sigs <- function(runs) {
   on.exit(invisible(gc()), add = TRUE)
-  send_info(
-    "Current memory size used: ",
-    round(mem_used() / 2^20), "MB"
-  )
 
   send_info("\t getting exposure array.")
   sig_list <- purrr::map(runs, "Signature")
@@ -300,11 +289,6 @@ get_stat_sigs <- function(runs) {
   invisible(gc())
   expo_cor <- get_expo_corr_stat(expo_array)
 
-  send_info(
-    "Current memory size used: ",
-    round(mem_used() / 2^20), "MB"
-  )
-
   list(
     signature = s,
     stats = cbind(sig, KLD, sil_width, expo_cor, sim, cross_sim)
@@ -314,10 +298,6 @@ get_stat_sigs <- function(runs) {
 get_stat_samps <- function(runs, mat, only_core_stats = FALSE) {
   on.exit(invisible(gc()), add = TRUE)
 
-  send_info(
-    "\t current memory size used: ",
-    round(mem_used() / 2^20), "MB"
-  )
   send_info("\t getting exposure array.")
   expo_list <- purrr::map(runs, "Exposure")
   dm <- dim(expo_list[[1]]) # the second value of dm indicates how many samples
@@ -383,11 +363,6 @@ get_stat_samps <- function(runs, mat, only_core_stats = FALSE) {
   error <- get_error_stats(
     catalog_array,
     mat
-  )
-
-  send_info(
-    "Current memory size used: ",
-    round(mem_used() / 2^20), "MB"
   )
 
   list(
