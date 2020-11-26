@@ -301,7 +301,7 @@ bp_extract_signatures <- function(nmf_matrix,
 
   # 有必要的话添加一个极小的数，解决 NMF 包可能存在的异常报错问题
   # 一个 component 之和不能为 0，还有其他一些可能引发的异常
-  bt_catalog_list <- purrr::map(bt_catalog_list, check_nmf_matrix)
+  bt_catalog_list <- purrr::map(bt_catalog_list, ~ t(check_nmf_matrix(.)))
 
   catalogue_matrix <- t(nmf_matrix)
   send_success("Done.")
@@ -370,17 +370,20 @@ bp_extract_signatures <- function(nmf_matrix,
         suppressWarnings({
           foreach(
             s = seeds,
-            bt_matrix = bt_catalog_list[rep(seq_len(n_bootstrap), each = n_nmf_run)],
+            bt_idx = rep(seq_len(n_bootstrap), each = n_nmf_run),
             fl = cache_list[[k]],
             .inorder = FALSE,
             .packages = "NMF",
-            .export = c("k", "range", "extract_solution"),
+            .export = c("k", "range", "extract_solution", "bt_catalog_list"),
             .verbose = FALSE
           ) %dopar% {
             p(sprintf("(Run K%-2s:seed-%s)", range[k], s))
             if (!file.exists(fl)) {
+              cmat <- bt_catalog_list[[bt_idx]]
+              rm(bt_catalog_list)
+              invisible(gc())
               r <- NMF::nmf(
-                t(bt_matrix),
+                cmat,
                 rank = range[k],
                 method = "brunet",
                 seed = s, nrun = 1L
@@ -460,7 +463,7 @@ bp_extract_signatures <- function(nmf_matrix,
         foreach(
           s = rep(seeds, nrg),
           k = rep(range, each = length(seeds)),
-          bt_matrix = bt_catalog_list[catalog_seqs],
+          bt_idx = catalog_seqs,
           fl = cache_files,
           .inorder = FALSE,
           .packages = "NMF",
@@ -469,8 +472,11 @@ bp_extract_signatures <- function(nmf_matrix,
         ) %dopar% {
           p(sprintf("(Run K%-2s:seed-%s)", k, s))
           if (!file.exists(fl)) {
+            cmat <- bt_catalog_list[[bt_idx]]
+            rm(bt_catalog_list)
+            invisible(gc())
             r <- NMF::nmf(
-              t(bt_matrix),
+              cmat,
               rank = k,
               method = "brunet",
               seed = s, nrun = 1L
