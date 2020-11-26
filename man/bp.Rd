@@ -24,7 +24,7 @@ bp_extract_signatures(
   cores_solution = cores,
   seed = 123456L,
   handle_hyper_mutation = TRUE,
-  report_integer_exposure = TRUE,
+  report_integer_exposure = FALSE,
   only_core_stats = nrow(nmf_matrix) > 100,
   cache_dir = file.path(tempdir(), "sigminer_bp"),
   keep_cache = FALSE
@@ -44,7 +44,7 @@ bp_extract_signatures_iter(
   cores_solution = cores,
   seed = 123456L,
   handle_hyper_mutation = TRUE,
-  report_integer_exposure = TRUE,
+  report_integer_exposure = FALSE,
   only_core_stats = nrow(nmf_matrix) > 100,
   cache_dir = file.path(tempdir(), "sigminer_bp"),
   keep_cache = FALSE
@@ -104,7 +104,7 @@ one batch to promote the computation efficiency.}
 
 \item{handle_hyper_mutation}{default is \code{TRUE}, handle hyper-mutant samples.}
 
-\item{report_integer_exposure}{default is \code{TRUE}, report integer signature
+\item{report_integer_exposure}{if \code{TRUE}, report integer signature
 exposure by bootstrapping technique.}
 
 \item{only_core_stats}{if \code{TRUE}, only calculate the core stats for signatures and samples.}

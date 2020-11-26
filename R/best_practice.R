@@ -78,7 +78,7 @@
 #' @param cores_solution cores for processing solutions, default is equal to argument `cores`.
 #' @param seed a random seed to make reproducible result.
 #' @param handle_hyper_mutation default is `TRUE`, handle hyper-mutant samples.
-#' @param report_integer_exposure default is `TRUE`, report integer signature
+#' @param report_integer_exposure if `TRUE`, report integer signature
 #' exposure by bootstrapping technique.
 #' @param only_core_stats if `TRUE`, only calculate the core stats for signatures and samples.
 #' @param cache_dir a directory for storing intermediate result, also avoid
@@ -210,7 +210,7 @@ bp_extract_signatures <- function(nmf_matrix,
                                   cores_solution = cores,
                                   seed = 123456L,
                                   handle_hyper_mutation = TRUE,
-                                  report_integer_exposure = TRUE,
+                                  report_integer_exposure = FALSE,
                                   only_core_stats = nrow(nmf_matrix) > 100,
                                   cache_dir = file.path(tempdir(), "sigminer_bp"),
                                   keep_cache = FALSE) {
@@ -655,7 +655,7 @@ bp_extract_signatures_iter <- function(nmf_matrix,
                                        cores_solution = cores,
                                        seed = 123456L,
                                        handle_hyper_mutation = TRUE,
-                                       report_integer_exposure = TRUE,
+                                       report_integer_exposure = FALSE,
                                        only_core_stats = nrow(nmf_matrix) > 100,
                                        cache_dir = file.path(tempdir(), "sigminer_bp"),
                                        keep_cache = FALSE) {
