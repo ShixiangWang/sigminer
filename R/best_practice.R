@@ -80,6 +80,7 @@
 #' @param handle_hyper_mutation default is `TRUE`, handle hyper-mutant samples.
 #' @param report_integer_exposure default is `TRUE`, report integer signature
 #' exposure by bootstrapping technique.
+#' @param only_core_stats if `TRUE`, only calculate the core stats for signatures and samples.
 #' @param cache_dir a directory for storing intermediate result, also avoid
 #' repeated computation for same data.
 #' @param keep_cache default is `FALSE`, if `TRUE`, keep cache data.
@@ -210,6 +211,7 @@ bp_extract_signatures <- function(nmf_matrix,
                                   seed = 123456L,
                                   handle_hyper_mutation = TRUE,
                                   report_integer_exposure = TRUE,
+                                  only_core_stats = FALSE,
                                   cache_dir = file.path(tempdir(), "sigminer_bp"),
                                   keep_cache = FALSE) {
   stopifnot(
@@ -536,7 +538,8 @@ bp_extract_signatures <- function(nmf_matrix,
       solutions,
       .f = process_solution,
       catalogue_matrix = catalogue_matrix,
-      report_integer_exposure = report_integer_exposure
+      report_integer_exposure = report_integer_exposure,
+      only_core_stats = only_core_stats
     )
   } else {
     cores <- cores_solution
@@ -550,6 +553,7 @@ bp_extract_signatures <- function(nmf_matrix,
       .f = process_solution,
       catalogue_matrix = catalogue_matrix,
       report_integer_exposure = report_integer_exposure,
+      only_core_stats = only_core_stats,
       .progress = TRUE,
       .options = furrr::furrr_options(seed = seed)
     )
@@ -643,6 +647,7 @@ bp_extract_signatures_iter <- function(nmf_matrix,
                                        seed = 123456L,
                                        handle_hyper_mutation = TRUE,
                                        report_integer_exposure = TRUE,
+                                       only_core_stats = FALSE,
                                        cache_dir = file.path(tempdir(), "sigminer_bp"),
                                        keep_cache = FALSE){
   iter_list <- list()
@@ -663,6 +668,7 @@ bp_extract_signatures_iter <- function(nmf_matrix,
       seed = seed,
       handle_hyper_mutation = handle_hyper_mutation,
       report_integer_exposure = report_integer_exposure,
+      only_core_stats = only_core_stats,
       cache_dir = cache_dir,
       keep_cache = keep_cache
     )

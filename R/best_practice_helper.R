@@ -1,7 +1,9 @@
 
 # Extraction helpers ------------------------------------------------------
 
-process_solution <- function(slist, catalogue_matrix, report_integer_exposure = FALSE) {
+process_solution <- function(slist, catalogue_matrix,
+                             report_integer_exposure = FALSE,
+                             only_core_stats = FALSE) {
   on.exit(invisible(gc()), add = TRUE)
   send_info("Normalizing solutions to get Signature and Exposure.")
   out <- purrr::map(slist, .f = normalize_solution) %>%
@@ -81,7 +83,7 @@ process_solution <- function(slist, catalogue_matrix, report_integer_exposure = 
   send_info("Getting signature stats.")
   stat_sigs <- get_stat_sigs(out)
   send_info("Getting sample stats.")
-  stat_samps <- get_stat_samps(out, mat = catalogue_matrix)
+  stat_samps <- get_stat_samps(out, mat = catalogue_matrix, only_core_stats = only_core_stats)
   send_success("Done.")
 
   send_info("Outputing extraction result and corresponding stats.")
@@ -122,7 +124,8 @@ process_solution <- function(slist, catalogue_matrix, report_integer_exposure = 
     exposure_positive_correlation = mean(stats_signature$expo_pos_cor_mean),
     signature_similarity_within_cluster = mean(stats_signature$similarity_mean),
     signature_similarity_across_cluster = mean(stats_signature$cross_similarity_mean),
-    silhouette_sample = mean(stats_sample$silhouette), # 不同 runs 同一样本看作一个 cluster
+    silhouette_sample = if (isTRUE(only_core_stats)) NA else mean(stats_sample$silhouette),
+    # 不同 runs 同一样本看作一个 cluster
     # 展示的是样本间的区分度
     stringsAsFactors = FALSE
   )
@@ -308,7 +311,7 @@ get_stat_sigs <- function(runs) {
   )
 }
 
-get_stat_samps <- function(runs, mat) {
+get_stat_samps <- function(runs, mat, only_core_stats = FALSE) {
   on.exit(invisible(gc()), add = TRUE)
 
   send_info(
@@ -341,32 +344,34 @@ get_stat_samps <- function(runs, mat) {
   rm(runs, expo_array, W_list, H_list, catalog_list)
   invisible(gc())
 
-  send_info("\t summarizing sample profile similarity.")
-  sim <- get_similarity_stats(
-    catalog_array,
-    n = dm2[2],
-    ns = c(
-      "similarity_mean", "similarity_sd",
-      "similarity_min", "similarity_max"
+  if (isFALSE(only_core_stats)) {
+    send_info("\t summarizing sample profile similarity.")
+    sim <- get_similarity_stats(
+      catalog_array,
+      n = dm2[2],
+      ns = c(
+        "similarity_mean", "similarity_sd",
+        "similarity_min", "similarity_max"
+      )
     )
-  )
 
-  # cluster silhouette
-  send_info("\t summarizing sample-wise profile similarity.")
-  cross_sim <- get_similarity_stats(
-    catalog_array,
-    n = dm2[2],
-    ns = c(
-      "cross_similarity_mean", "cross_similarity_sd",
-      "cross_similarity_min", "cross_similarity_max"
-    ),
-    type = "between-cluster"
-  )
-  b <- 1 - cross_sim$cross_similarity_mean
-  a <- 1 - sim$similarity_mean
-  sil_width <- data.frame(
-    silhouette = (b - a) / pmax(a, b)
-  )
+    # cluster silhouette
+    send_info("\t summarizing sample-wise profile similarity.")
+    cross_sim <- get_similarity_stats(
+      catalog_array,
+      n = dm2[2],
+      ns = c(
+        "cross_similarity_mean", "cross_similarity_sd",
+        "cross_similarity_min", "cross_similarity_max"
+      ),
+      type = "between-cluster"
+    )
+    b <- 1 - cross_sim$cross_similarity_mean
+    a <- 1 - sim$similarity_mean
+    sil_width <- data.frame(
+      silhouette = (b - a) / pmax(a, b)
+    )
+  }
 
   samp <- data.frame(
     signature_number = rep(dm[1], ncol(mat)),
@@ -387,7 +392,7 @@ get_stat_samps <- function(runs, mat) {
 
   list(
     exposure = e,
-    stats = cbind(samp, sil_width, error)
+    stats = if (only_core_stats) cbind(samp, error) else cbind(samp, sil_width, error)
   )
 }
 

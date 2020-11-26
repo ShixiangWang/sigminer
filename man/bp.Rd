@@ -25,6 +25,7 @@ bp_extract_signatures(
   seed = 123456L,
   handle_hyper_mutation = TRUE,
   report_integer_exposure = TRUE,
+  only_core_stats = FALSE,
   cache_dir = file.path(tempdir(), "sigminer_bp"),
   keep_cache = FALSE
 )
@@ -44,6 +45,7 @@ bp_extract_signatures_iter(
   seed = 123456L,
   handle_hyper_mutation = TRUE,
   report_integer_exposure = TRUE,
+  only_core_stats = FALSE,
   cache_dir = file.path(tempdir(), "sigminer_bp"),
   keep_cache = FALSE
 )
@@ -104,6 +106,8 @@ one batch to promote the computation efficiency.}
 
 \item{report_integer_exposure}{default is \code{TRUE}, report integer signature
 exposure by bootstrapping technique.}
+
+\item{only_core_stats}{if \code{TRUE}, only calculate the core stats for signatures and samples.}
 
 \item{cache_dir}{a directory for storing intermediate result, also avoid
 repeated computation for same data.}
