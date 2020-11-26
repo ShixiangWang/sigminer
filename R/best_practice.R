@@ -525,20 +525,29 @@ bp_extract_signatures <- function(nmf_matrix,
   # 先将所有 solution 标准化处理，得到 signature 和 activity
   # 然后针对 signature 使用 clustering with match 算法进行聚类
   # 聚类：使用 1 - cosine 相似性作为距离指标
-  cores <- min(cores_solution, length(solutions))
-  send_info(cores, " cores set for processing solutions.")
-  oplan <- future::plan()
-  future::plan("multiprocess", workers = cores, .skip = TRUE)
-  on.exit(future::plan(oplan), add = TRUE, after = FALSE)
-  solutions <- furrr::future_map(
-    solutions,
-    .f = process_solution,
-    catalogue_matrix = catalogue_matrix,
-    report_integer_exposure = report_integer_exposure,
-    .progress = TRUE,
-    .options = furrr::furrr_options(seed = TRUE)
-  )
-
+  if ((sum(sapply(solutions, length)) < 200L & length(solutions) < 4) | cores_solution == 1) {
+    solutions <- purrr::map(
+      solutions,
+      .f = process_solution,
+      catalogue_matrix = catalogue_matrix,
+      report_integer_exposure = report_integer_exposure
+    )
+  } else {
+    cores <- cores_solution
+    cores <- min(cores, length(solutions))
+    send_info(cores, " cores set for processing solutions.")
+    oplan <- future::plan()
+    future::plan("multiprocess", workers = cores, .skip = TRUE)
+    on.exit(future::plan(oplan), add = TRUE, after = FALSE)
+    solutions <- furrr::future_map(
+      solutions,
+      .f = process_solution,
+      catalogue_matrix = catalogue_matrix,
+      report_integer_exposure = report_integer_exposure,
+      .progress = TRUE,
+      .options = furrr::furrr_options(seed = seed)
+    )
+  }
   send_success(
     "Solution list processed. Current memory size used: ",
     round(mem_used() / 2^20), "MB"

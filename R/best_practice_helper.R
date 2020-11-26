@@ -179,6 +179,7 @@ tf_signature <- function(s, e, used_runs, catalogue_matrix = NULL) {
   }
 
   if (!is.null(catalogue_matrix)) {
+    set.seed(123, kind = "L'Ecuyer-CMRG")
     s2 <- purrr::map2(
       as.data.frame(s),
       round((colSums(s) / sum(colSums(s))) * sum(catalogue_matrix)),
@@ -193,6 +194,7 @@ tf_signature <- function(s, e, used_runs, catalogue_matrix = NULL) {
     if (nrow(e) < 2) {
       e2 <- matrix(colSums(catalogue_matrix), nrow = 1)
     } else {
+      set.seed(123, kind = "L'Ecuyer-CMRG")
       e2 <- purrr::map2(
         as.data.frame(e),
         colSums(catalogue_matrix),
@@ -234,6 +236,7 @@ get_stat_sigs <- function(runs) {
     round(mem_used() / 2^20), "MB"
   )
 
+  send_info("\t getting exposure array.")
   sig_list <- purrr::map(runs, "Signature")
   dm <- dim(sig_list[[1]])
   l <- length(sig_list)
@@ -245,6 +248,8 @@ get_stat_sigs <- function(runs) {
     signature_number = rep(dm[2], dm[2]),
     signature = seq_len(dm[2]) # Rename it outside the function
   )
+
+  send_info("\t summarizing signatures from different runs.")
   s <- get_3d_array_stats(
     sig_array,
     c(
@@ -252,6 +257,8 @@ get_stat_sigs <- function(runs) {
       "signature_min", "signature_max"
     )
   )
+
+  send_info("\t summarizing sample profile similarity.")
   sim <- get_similarity_stats(
     sig_array,
     n = dm[2],
@@ -262,6 +269,7 @@ get_stat_sigs <- function(runs) {
   )
 
   # cluster silhouette
+  send_info("\t summarizing signature-wise profile similarity.")
   cross_sim <- get_similarity_stats(
     sig_array,
     n = dm[2],
@@ -304,9 +312,10 @@ get_stat_samps <- function(runs, mat) {
   on.exit(invisible(gc()), add = TRUE)
 
   send_info(
-    "Current memory size used: ",
+    "\t current memory size used: ",
     round(mem_used() / 2^20), "MB"
   )
+  send_info("\t getting exposure array.")
   expo_list <- purrr::map(runs, "Exposure")
   dm <- dim(expo_list[[1]]) # the second value of dm indicates how many samples
   l <- length(expo_list)
@@ -314,6 +323,7 @@ get_stat_samps <- function(runs, mat) {
   rm(expo_list)
   invisible(gc())
   # exposures
+  send_info("\t summarizing exposures from different runs.")
   e <- get_3d_array_stats(
     expo_array,
     c(
@@ -322,6 +332,7 @@ get_stat_samps <- function(runs, mat) {
     )
   )
   # get catalog array
+  send_info("\t getting catalog array.")
   W_list <- purrr::map(runs, "W")
   H_list <- purrr::map(runs, "H")
   catalog_list <- purrr::map2(W_list, H_list, ~ .x %*% .y)
@@ -330,6 +341,7 @@ get_stat_samps <- function(runs, mat) {
   rm(runs, expo_array, W_list, H_list, catalog_list)
   invisible(gc())
 
+  send_info("\t summarizing sample profile similarity.")
   sim <- get_similarity_stats(
     catalog_array,
     n = dm2[2],
@@ -340,6 +352,7 @@ get_stat_samps <- function(runs, mat) {
   )
 
   # cluster silhouette
+  send_info("\t summarizing sample-wise profile similarity.")
   cross_sim <- get_similarity_stats(
     catalog_array,
     n = dm2[2],
@@ -361,6 +374,7 @@ get_stat_samps <- function(runs, mat) {
   )
 
   # 重构 error：包括 重构相似度
+  send_info("\t summarizing sample profile reconstruction stats.")
   error <- get_error_stats(
     catalog_array,
     mat
