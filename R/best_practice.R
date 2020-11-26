@@ -331,6 +331,19 @@ bp_extract_signatures <- function(nmf_matrix,
     )
   )
 
+  extract_nmf <- function(solution) {
+    W <- NMF::basis(solution)
+    H <- NMF::coef(solution)
+    K <- ncol(W)
+    KLD <- NMF::deviance(solution)
+    return(list(
+      W = W,
+      H = H,
+      K = K,
+      KLD = KLD
+    ))
+  }
+
   solutions <- list()
   if (isFALSE(one_batch)) {
     cache_list <- chunk2(cache_files, n = nrg)
@@ -358,7 +371,7 @@ bp_extract_signatures <- function(nmf_matrix,
             bt_matrix = bt_catalog_list[rep(seq_len(n_bootstrap), each = n_nmf_run)],
             fl = cache_list[[k]],
             .packages = "NMF",
-            .export = c("k", "range"),
+            .export = c("k", "range", "extract_solution"),
             .verbose = FALSE
           ) %dopar% {
             p(sprintf("(Run K%-2s:seed-%s)", range[k], s))
@@ -369,6 +382,7 @@ bp_extract_signatures <- function(nmf_matrix,
                 method = "brunet",
                 seed = s, nrun = 1L
               )
+              r <- extract_nmf(r)
               saveRDS(r, file = fl)
               NULL
             } else {
@@ -400,7 +414,7 @@ bp_extract_signatures <- function(nmf_matrix,
       solutions[[paste0("K", range[k])]] <- purrr::map(
         chunk2(solution_list, n_bootstrap),
         .f = function(s) {
-          KLD_list <- sapply(s, NMF::deviance)
+          KLD_list <- purrr::map_dbl(s, "KLD")
           if (bt_flag) {
             ki <- KLD_list <= min(KLD_list) * (1 + RTOL)
             s <- s[ki]
@@ -414,7 +428,7 @@ bp_extract_signatures <- function(nmf_matrix,
           }
           s
         }
-      ) %>% unlist()
+      ) %>% purrr::flatten()
       send_success(
         "NMF done for this solution. Current memory size used: ",
         round(mem_used() / 2^20), "MB"
@@ -453,6 +467,7 @@ bp_extract_signatures <- function(nmf_matrix,
               method = "brunet",
               seed = s, nrun = 1L
             )
+            r <- extract_nmf(r)
             saveRDS(r, file = fl)
             NULL
           } else {
@@ -479,7 +494,7 @@ bp_extract_signatures <- function(nmf_matrix,
     solution_list <- purrr::map(
       solution_list,
       .f = function(s) {
-        KLD_list <- sapply(s, NMF::deviance)
+        KLD_list <- purrr::map_dbl(s, "KLD")
         ki <- KLD_list <= min(KLD_list) * (1 + RTOL)
         s <- s[ki]
         if (length(s) > 10) {
@@ -493,7 +508,7 @@ bp_extract_signatures <- function(nmf_matrix,
     # Construct solutions same as non one-batch mode
     for (i in seq_len(nrg)) {
       idx <- seq((i - 1) * n_bootstrap + 1, length.out = n_bootstrap)
-      solutions[[paste0("K", range[i])]] <- unlist(solution_list[idx])
+      solutions[[paste0("K", range[i])]] <- purrr::flatten(solution_list[idx])
     }
 
     send_success(
@@ -530,7 +545,7 @@ bp_extract_signatures <- function(nmf_matrix,
       catalogue_matrix = catalogue_matrix,
       report_integer_exposure = report_integer_exposure,
       .progress = TRUE,
-      .options = furrr::furrr_options(seed = TRUE)
+      .options = furrr::furrr_options(seed = seed)
     )
   }
   send_success(
