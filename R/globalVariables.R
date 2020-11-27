@@ -2,3 +2,5 @@
 utils::globalVariables(
   c("AMP", "DEL", "mean_rep", "bt_matrix", "s", "fl", "bt_idx")
 )
+
+options(future.rng.onMisuse = "ignore", future.globals.maxSize = Inf)

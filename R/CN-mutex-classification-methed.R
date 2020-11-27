@@ -10,7 +10,7 @@ get_features_mutex <- function(CN_data,
                                XVersion = FALSE,
                                cores = 1) {
   oplan <- future::plan()
-  future::plan("multiprocess", workers = cores)
+  future::plan(set_future_strategy(), workers = cores, gc = TRUE)
   on.exit(future::plan(oplan), add = TRUE)
 
   if (XVersion) {

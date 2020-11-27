@@ -144,7 +144,7 @@ sig_auto_extract <- function(nmf_matrix = NULL,
     }
 
     oplan <- future::plan()
-    future::plan("multiprocess", workers = cores)
+    future::plan(set_future_strategy(), workers = cores, gc = TRUE)
     on.exit(future::plan(oplan), add = TRUE)
 
     furrr::future_map(seq_len(nrun), function(i, method, filelist, skip) {

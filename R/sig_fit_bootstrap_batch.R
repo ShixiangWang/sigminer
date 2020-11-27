@@ -133,7 +133,7 @@ sig_fit_bootstrap_batch <- function(catalogue_matrix,
 
   if (use_parallel) {
     oplan <- future::plan()
-    future::plan("multiprocess", workers = future::availableCores())
+    future::plan(set_future_strategy(), workers = future::availableCores())
     on.exit(future::plan(oplan), add = TRUE)
     bt_list <- furrr::future_map2(as.data.frame(catalogue_matrix), colnames(catalogue_matrix), call_bt,
       y = rownames(catalogue_matrix), methods = methods, n = n, ..., .progress = TRUE,

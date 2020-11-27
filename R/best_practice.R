@@ -312,7 +312,7 @@ bp_extract_signatures <- function(nmf_matrix,
     send_info("{.pkg doFuture} is recommended to install for improving computation.")
   } else {
     doFuture::registerDoFuture()
-    suppressWarnings(future::plan("multiprocess", workers = cores, gc = TRUE))
+    future::plan(set_future_strategy(), workers = cores, gc = TRUE)
   }
   seeds <- seq(seed, length = n_bootstrap * n_nmf_run)
   send_success("Seeds generated for reproducible research.")
@@ -367,36 +367,32 @@ bp_extract_signatures <- function(nmf_matrix,
       progressr::handlers("progress")
       progressr::with_progress({
         p <- progressr::progressor(along = cache_list[[k]])
-        suppressWarnings({
-          foreach(
-            s = seeds,
-            bt_idx = rep(seq_len(n_bootstrap), each = n_nmf_run),
-            fl = cache_list[[k]],
-            .inorder = FALSE,
-            .packages = "NMF",
-            .export = c("k", "range", "extract_solution", "bt_catalog_list"),
-            .verbose = FALSE
-          ) %dopar% {
-            p(sprintf("(Run K%-2s:seed-%s)", range[k], s))
-            if (!file.exists(fl)) {
-              cmat <- bt_catalog_list[[bt_idx]]
-              rm(bt_catalog_list)
-              invisible(gc())
-              r <- NMF::nmf(
-                cmat,
-                rank = range[k],
-                method = "brunet",
-                seed = s, nrun = 1L
-              )
-              r <- extract_nmf(r)
-              saveRDS(r, file = fl)
-              NULL
-            } else {
-              message("Cache run file ", fl, " already exists, skip.")
-              NULL
-            }
+        foreach(
+          s = seeds,
+          bt_idx = rep(seq_len(n_bootstrap), each = n_nmf_run),
+          fl = cache_list[[k]],
+          .inorder = FALSE,
+          .packages = "NMF",
+          .export = c("k", "range", "extract_solution", "bt_catalog_list"),
+          .verbose = FALSE
+        ) %dopar% {
+          p(sprintf("(Run K%-2s:seed-%s)", range[k], s))
+          if (!file.exists(fl)) {
+            invisible(gc())
+            r <- NMF::nmf(
+              bt_catalog_list[[bt_idx]],
+              rank = range[k],
+              method = "brunet",
+              seed = s, nrun = 1L
+            )
+            r <- extract_nmf(r)
+            saveRDS(r, file = fl)
+            NULL
+          } else {
+            message("Cache run file ", fl, " already exists, skip.")
+            NULL
           }
-        })
+        }
       })
 
       send_info("Reading NMF run files...")
@@ -459,37 +455,33 @@ bp_extract_signatures <- function(nmf_matrix,
     progressr::handlers("progress")
     progressr::with_progress({
       p <- progressr::progressor(along = cache_files)
-      suppressWarnings({
-        foreach(
-          s = rep(seeds, nrg),
-          k = rep(range, each = length(seeds)),
-          bt_idx = catalog_seqs,
-          fl = cache_files,
-          .inorder = FALSE,
-          .packages = "NMF",
-          .export = c("extract_solution"),
-          .verbose = FALSE
-        ) %dopar% {
-          p(sprintf("(Run K%-2s:seed-%s)", k, s))
-          if (!file.exists(fl)) {
-            cmat <- bt_catalog_list[[bt_idx]]
-            rm(bt_catalog_list)
-            invisible(gc())
-            r <- NMF::nmf(
-              cmat,
-              rank = k,
-              method = "brunet",
-              seed = s, nrun = 1L
-            )
-            r <- extract_nmf(r)
-            saveRDS(r, file = fl)
-            NULL
-          } else {
-            message("Cache run file ", fl, " already exists, skip.")
-            NULL
-          }
+      foreach(
+        s = rep(seeds, nrg),
+        k = rep(range, each = length(seeds)),
+        bt_idx = catalog_seqs,
+        fl = cache_files,
+        .inorder = FALSE,
+        .packages = "NMF",
+        .export = c("extract_solution"),
+        .verbose = FALSE
+      ) %dopar% {
+        p(sprintf("(Run K%-2s:seed-%s)", k, s))
+        if (!file.exists(fl)) {
+          invisible(gc())
+          r <- NMF::nmf(
+            bt_catalog_list[[bt_idx]],
+            rank = k,
+            method = "brunet",
+            seed = s, nrun = 1L
+          )
+          r <- extract_nmf(r)
+          saveRDS(r, file = fl)
+          NULL
+        } else {
+          message("Cache run file ", fl, " already exists, skip.")
+          NULL
         }
-      })
+      }
     })
     send_info("Reading NMF run files...")
     solution_list <- purrr::map(cache_files, readRDS)
@@ -555,7 +547,7 @@ bp_extract_signatures <- function(nmf_matrix,
     cores <- min(cores, length(solutions))
     send_info(cores, " cores set for processing solutions.")
     oplan <- future::plan()
-    future::plan("multiprocess", workers = cores, gc = TRUE, .skip = TRUE)
+    future::plan(set_future_strategy(), workers = cores, gc = TRUE, .skip = TRUE)
     on.exit(future::plan(oplan), add = TRUE, after = FALSE)
     solutions <- furrr::future_map(
       solutions,

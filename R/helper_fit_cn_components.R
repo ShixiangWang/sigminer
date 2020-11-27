@@ -14,9 +14,6 @@ fitComponent <-
     control@minprior <- min_prior
     control@iter.max <- niter
 
-    old_opt <- options()
-    options(future.rng.onMisue = "ignore")
-    on.exit(options(old_opt))
     set.seed(seed, kind = "L'Ecuyer-CMRG")
 
     stepFlexmix_v2 <- function(..., k = NULL, nrep = 3, verbose = TRUE, drop = TRUE,
@@ -28,7 +25,7 @@ fitComponent <-
         send_info("{.pkg doFuture} is recommended to install for improving computation.")
       } else {
         doFuture::registerDoFuture()
-        future::plan("multiprocess", workers = cores)
+        future::plan(set_future_strategy(), workers = cores, gc = TRUE)
       }
 
       MYCALL <- match.call()
