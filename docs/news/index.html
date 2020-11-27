@@ -137,6 +137,7 @@
 <h2 class="hasAnchor">
 <a href="#enhancements" class="anchor"></a>ENHANCEMENTS</h2>
 <ul>
+<li>User now can directly use <code><a href="../reference/sig_extract.html">sig_extract()</a></code> and <code><a href="../reference/sig_auto_extract.html">sig_auto_extract()</a></code> instead of loading NMF package firstly.</li>
 <li>Added benchmark results for different extraction approaches in README.</li>
 <li>The threshold for <code>auto_reduce</code> in <code><a href="../reference/sig_fit.html">sig_fit()</a></code> is modified from 0.99 to 0.95 and similarity update threshold updated from <code>&gt;0</code> to <code>&gt;=0.01</code>.</li>
 <li>Removed <code>pConstant</code> option from <code><a href="../reference/sig_extract.html">sig_extract()</a></code> and <code><a href="../reference/sig_estimate.html">sig_estimate()</a></code>. Now a auto-check function is created for avoiding the error from NMF package due to no contribution of a component in all samples.</li>
