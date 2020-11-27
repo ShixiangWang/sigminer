@@ -26,6 +26,7 @@ bp_extract_signatures(
   handle_hyper_mutation = TRUE,
   report_integer_exposure = FALSE,
   only_core_stats = nrow(nmf_matrix) > 100,
+  nmf_backend = c("doFuture", "doParallel"),
   cache_dir = file.path(tempdir(), "sigminer_bp"),
   keep_cache = FALSE
 )
@@ -46,6 +47,7 @@ bp_extract_signatures_iter(
   handle_hyper_mutation = TRUE,
   report_integer_exposure = FALSE,
   only_core_stats = nrow(nmf_matrix) > 100,
+  nmf_backend = c("doFuture", "doParallel"),
   cache_dir = file.path(tempdir(), "sigminer_bp"),
   keep_cache = FALSE
 )
@@ -108,6 +110,8 @@ one batch to promote the computation efficiency.}
 exposure by bootstrapping technique.}
 
 \item{only_core_stats}{if \code{TRUE}, only calculate the core stats for signatures and samples.}
+
+\item{nmf_backend}{parallel backend.}
 
 \item{cache_dir}{a directory for storing intermediate result, also avoid
 repeated computation for same data.}

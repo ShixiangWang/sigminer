@@ -94,7 +94,9 @@ Suggests:
     testthat,
     tibble,
     UCSCXenaTools,
-    digest
+    digest,
+    parallel,
+    doParallel
 LinkingTo: 
     Rcpp
 VignetteBuilder: 

@@ -81,6 +81,7 @@
 #' @param report_integer_exposure if `TRUE`, report integer signature
 #' exposure by bootstrapping technique.
 #' @param only_core_stats if `TRUE`, only calculate the core stats for signatures and samples.
+#' @param nmf_backend parallel backend.
 #' @param cache_dir a directory for storing intermediate result, also avoid
 #' repeated computation for same data.
 #' @param keep_cache default is `FALSE`, if `TRUE`, keep cache data.
@@ -212,6 +213,7 @@ bp_extract_signatures <- function(nmf_matrix,
                                   handle_hyper_mutation = TRUE,
                                   report_integer_exposure = FALSE,
                                   only_core_stats = nrow(nmf_matrix) > 100,
+                                  nmf_backend = c("doFuture", "doParallel"),
                                   cache_dir = file.path(tempdir(), "sigminer_bp"),
                                   keep_cache = FALSE) {
   stopifnot(
@@ -229,6 +231,7 @@ bp_extract_signatures <- function(nmf_matrix,
   )
   seed <- as.integer(seed)
   range <- sort(unique(range))
+  nmf_backend <- match.arg(nmf_backend)
 
   ii <- rowSums(nmf_matrix) < 0.01
   if (any(ii)) {
@@ -307,14 +310,17 @@ bp_extract_signatures <- function(nmf_matrix,
   send_success("Done.")
 
   send_info("Running NMF with brunet method (Lee-KLD).")
-  # NMF with brunet method
-  if (!requireNamespace("doFuture", quietly = TRUE)) {
-    send_info("{.pkg doFuture} is recommended to install for improving computation.")
-  } else {
+  if (nmf_backend == "doFuture") {
+    send_info("Using doFuture as NMF parallel backend")
     options(future.globals.maxSize = 104857600000)
     send_info("Setting maximum allowed future global size: ", getOption("future.globals.maxSize") / 1048576, " MB")
     doFuture::registerDoFuture()
     future::plan(set_future_strategy(), workers = cores, gc = TRUE)
+  } else {
+    send_info("Using doParallel as NMF parallel backend")
+    cl <- parallel::makeCluster(cores)
+    doParallel::registerDoParallel(cl)
+    on.exit(parallel::stopCluster(cl), add = TRUE)
   }
   seeds <- seq(seed, length = n_bootstrap * n_nmf_run)
   send_success("Seeds generated for reproducible research.")
@@ -375,7 +381,7 @@ bp_extract_signatures <- function(nmf_matrix,
           fl = cache_list[[k]],
           .inorder = FALSE,
           .packages = "NMF",
-          .export = c("k", "range", "extract_solution", "bt_catalog_list"),
+          #.export = c("k", "range", "extract_nmf", "bt_catalog_list", "p"),
           .verbose = FALSE
         ) %dopar% {
           p(sprintf("(Run K%-2s:seed-%s)", range[k], s))
@@ -464,7 +470,7 @@ bp_extract_signatures <- function(nmf_matrix,
         fl = cache_files,
         .inorder = FALSE,
         .packages = "NMF",
-        .export = c("extract_solution"),
+        #.export = c("extract_nmf", "p"),
         .verbose = FALSE
       ) %dopar% {
         p(sprintf("(Run K%-2s:seed-%s)", k, s))
@@ -651,6 +657,7 @@ bp_extract_signatures_iter <- function(nmf_matrix,
                                        handle_hyper_mutation = TRUE,
                                        report_integer_exposure = FALSE,
                                        only_core_stats = nrow(nmf_matrix) > 100,
+                                       nmf_backend = c("doFuture", "doParallel"),
                                        cache_dir = file.path(tempdir(), "sigminer_bp"),
                                        keep_cache = FALSE) {
   iter_list <- list()
