@@ -39,7 +39,7 @@ bp_extract_signatures_iter(
   RTOL = 0.001,
   min_contribution = 0,
   cores = min(4L, future::availableCores()),
-  cores_solution = cores,
+  cores_solution = min(cores, length(range)),
   seed = 123456L,
   handle_hyper_mutation = TRUE,
   report_integer_exposure = FALSE,

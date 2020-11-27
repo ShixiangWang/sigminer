@@ -512,13 +512,14 @@ bp_extract_signatures_iter <- function(nmf_matrix,
                                        n_nmf_run = 50,
                                        RTOL = 1e-3, min_contribution = 0,
                                        cores = min(4L, future::availableCores()),
-                                       cores_solution = cores,
+                                       cores_solution = min(cores, length(range)),
                                        seed = 123456L,
                                        handle_hyper_mutation = TRUE,
                                        report_integer_exposure = FALSE,
                                        only_core_stats = nrow(nmf_matrix) > 100,
                                        cache_dir = file.path(tempdir(), "sigminer_bp"),
                                        keep_cache = FALSE) {
+  force(only_core_stats)
   iter_list <- list()
   cache_file_list <- c()
   for (i in seq_len(max_iter)) {
