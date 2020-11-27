@@ -9,13 +9,9 @@ check_nmf_matrix <- function(x, threshold = 1e-20) {
 
 set_future_strategy <- function() {
   if (packageVersion("future") >= "1.20.0") {
-    if (future::supportsMulticore()) {
-      "multicore"
-    } else {
-      "multisession"
-    }
+    "multisession"
   } else {
-   "multiprocess"
+    "multiprocess"
   }
 }
 
