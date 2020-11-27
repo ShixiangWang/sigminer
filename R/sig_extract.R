@@ -17,7 +17,6 @@
 #'   package = "sigminer", mustWork = TRUE
 #' ))
 #' # Extract copy number signatures
-#' library(NMF)
 #' res <- sig_extract(cn_tally_M$nmf_matrix, 2, nrun = 1)
 #' }
 #' @testexamples
@@ -32,6 +31,7 @@ sig_extract <- function(nmf_matrix,
                         method = "brunet",
                         optimize = FALSE,
                         seed = 123456, ...) {
+  eval(parse(text = "suppressMessages(library('NMF'))"))
   # transpose matrix
   mat <- t(nmf_matrix)
 

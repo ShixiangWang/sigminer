@@ -47,7 +47,6 @@ load(system.file("extdata", "toy_copynumber_tally_M.RData",
   package = "sigminer", mustWork = TRUE
 ))
 # Extract copy number signatures
-library(NMF)
 res <- sig_extract(cn_tally_M$nmf_matrix, 2, nrun = 1)
 }
 }

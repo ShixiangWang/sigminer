@@ -4,6 +4,7 @@
 
 ## ENHANCEMENTS
 
+- User now can directly use `sig_extract()` and `sig_auto_extract()` instead of loading NMF package firstly.
 - Added benchmark results for different extraction approaches in README.
 - The threshold for `auto_reduce` in `sig_fit()` is modified from 0.99 to 0.95 and similarity update threshold updated from `>0` to `>=0.01`.
 - Removed `pConstant` option from `sig_extract()` and `sig_estimate()`. Now a

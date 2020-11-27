@@ -19,14 +19,12 @@ bp_extract_signatures(
   n_nmf_run = 50,
   RTOL = 0.001,
   min_contribution = 0,
-  one_batch = FALSE,
   cores = min(4L, future::availableCores()),
-  cores_solution = cores,
+  cores_solution = min(cores, length(range)),
   seed = 123456L,
   handle_hyper_mutation = TRUE,
   report_integer_exposure = FALSE,
   only_core_stats = nrow(nmf_matrix) > 100,
-  nmf_backend = c("doFuture", "doParallel"),
   cache_dir = file.path(tempdir(), "sigminer_bp"),
   keep_cache = FALSE
 )
@@ -40,14 +38,12 @@ bp_extract_signatures_iter(
   n_nmf_run = 50,
   RTOL = 0.001,
   min_contribution = 0,
-  one_batch = FALSE,
   cores = min(4L, future::availableCores()),
   cores_solution = cores,
   seed = 123456L,
   handle_hyper_mutation = TRUE,
   report_integer_exposure = FALSE,
   only_core_stats = nrow(nmf_matrix) > 100,
-  nmf_backend = c("doFuture", "doParallel"),
   cache_dir = file.path(tempdir(), "sigminer_bp"),
   keep_cache = FALSE
 )
@@ -95,9 +91,6 @@ only NMF solutions with KLD (KL deviance) <= \verb{100.1\%} minimal KLD are kept
 \item{min_contribution}{a component contribution threshold to filer out small
 contributed components.}
 
-\item{one_batch}{if \code{TRUE}, run tasks for different signature numbers in
-one batch to promote the computation efficiency.}
-
 \item{cores}{number of cpu cores to run NMF.}
 
 \item{cores_solution}{cores for processing solutions, default is equal to argument \code{cores}.}
@@ -110,8 +103,6 @@ one batch to promote the computation efficiency.}
 exposure by bootstrapping technique.}
 
 \item{only_core_stats}{if \code{TRUE}, only calculate the core stats for signatures and samples.}
-
-\item{nmf_backend}{parallel backend.}
 
 \item{cache_dir}{a directory for storing intermediate result, also avoid
 repeated computation for same data.}
@@ -237,20 +228,6 @@ e1 <- bp_extract_signatures(
   n_nmf_run = 10
 )
 
-# Run all NMF runs in one batch
-# This may redure run time for
-# big project (>100 samples maybe?)
-e2 <- bp_extract_signatures(
-  t(simulated_catalogs$set1),
-  range = 8:12,
-  n_bootstrap = 5,
-  n_nmf_run = 10,
-  one_batch = TRUE,
-  keep_cache = TRUE
-)
-
-all.equal(e1, e2)
-
 
 # See the survey for different signature numbers
 # The suggested solution is marked as red dot
@@ -289,14 +266,14 @@ expo$abs_activity
 # This procedure will rerun extraction step
 # for those samples with reconstructed catalog similarity
 # lower than a threshold (default is 0.95)
-e3 <- bp_extract_signatures_iter(
+e2 <- bp_extract_signatures_iter(
   t(simulated_catalogs$set1),
   range = 9:11,
   n_bootstrap = 5,
   n_nmf_run = 5,
   sim_threshold = 0.99
 )
-e3
+e2
 # When the procedure run multiple rounds
 # you can cluster the signatures from different rounds by
 # the following command
@@ -305,7 +282,7 @@ e3
 ## Extra utilities
 rank_score <- bp_get_rank_score(e1)
 rank_score
-stats <- bp_get_stats(e3$iter1)
+stats <- bp_get_stats(e2$iter1)
 # Get the mean reconstructed similarity
 1 - stats$stats_sample$cosine_distance_mean
 }

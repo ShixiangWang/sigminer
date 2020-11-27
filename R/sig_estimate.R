@@ -41,7 +41,6 @@
 #'   package = "sigminer", mustWork = TRUE
 #' ))
 #' \dontrun{
-#' library(NMF)
 #' cn_estimate <- sig_estimate(cn_tally_M$nmf_matrix,
 #'   cores = 1, nrun = 5,
 #'   verbose = TRUE
@@ -62,6 +61,8 @@ sig_estimate <-
            plot_basename = file.path(tempdir(), "nmf"),
            what = "all",
            verbose = FALSE) {
+
+    eval(parse(text = "suppressMessages(library('NMF'))"))
     mat <- t(nmf_matrix)
 
     ii <- colSums(mat) < 0.01

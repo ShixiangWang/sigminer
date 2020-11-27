@@ -82,8 +82,6 @@ Suggests:
     nnls,
     patchwork,
     pheatmap,
-    progress,
-    progressr,
     quadprog,
     R.utils,
     RColorBrewer,
@@ -95,8 +93,7 @@ Suggests:
     tibble,
     UCSCXenaTools,
     digest,
-    parallel,
-    doParallel
+    synchronicity
 LinkingTo: 
     Rcpp
 VignetteBuilder: 

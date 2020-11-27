@@ -2,14 +2,13 @@
 
 context("File R/sig_extract.R: @testexamples")
 
-test_that("Function sig_extract() @ L28", {
+test_that("Function sig_extract() @ L27", {
   
   
   load(system.file("extdata", "toy_copynumber_tally_M.RData",
     package = "sigminer", mustWork = TRUE
   ))
   # Extract copy number signatures
-  library(NMF)
   res <- sig_extract(cn_tally_M$nmf_matrix, 2, nrun = 1)
   
   expect_s3_class(res, "Signature")

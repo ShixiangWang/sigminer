@@ -708,7 +708,7 @@ rank_solutions <- function(stats) {
     "Calculating rank score for the measures: ",
     paste(measures, collapse = ", ")
   )
-  weights <- c(0.3, 0.25, 0.25, 0.05, 0.15)
+  weights <- c(0.25, 0.2, 0.2, 0.1, 0.25)
   send_info(
     "Corresponding weights for obtaining the aggregated score are: ",
     paste(weights, collapse = ", ")
