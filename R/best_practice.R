@@ -311,6 +311,8 @@ bp_extract_signatures <- function(nmf_matrix,
   if (!requireNamespace("doFuture", quietly = TRUE)) {
     send_info("{.pkg doFuture} is recommended to install for improving computation.")
   } else {
+    options(future.globals.maxSize = 104857600000)
+    send_info("Maximum allowed size: ", getOption("future.globals.maxSize") / 1048576, " MB")
     doFuture::registerDoFuture()
     future::plan(set_future_strategy(), workers = cores, gc = TRUE)
   }
