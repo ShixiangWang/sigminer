@@ -72,7 +72,7 @@ both types should be close. \strong{Only used when method is "Macintyre"}.}
 from \link{CopyNumber} object. \strong{Only used when method is "Macintyre"}.}
 
 \item{cores}{number of computer cores to run this task.
-You can use \code{\link[future:availableCores]{future::availableCores()}} function to check how
+You can use \code{\link[future:re-exports]{future::availableCores()}} function to check how
 many cores you can use.}
 
 \item{seed}{seed number. \strong{Only used when method is "Macintyre"}.}

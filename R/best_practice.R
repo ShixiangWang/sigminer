@@ -16,6 +16,9 @@
 #' - `bp_get_sig_obj()` for get a (list of) `Signature` object which is common
 #' used in **sigminer** for analysis and visualization.
 #' - `bp_attribute_activity()` for optimizing signature activities (exposures).
+#' You can also use [sig_extract] to get optimal NMF result from multiple NMF runs.
+#' Besides, you can use [sig_fit] to quantify exposures based on signatures extracted
+#' from `bp_extract_signatures()`.
 #' - `bp_extract_signatures_iter()` for extracting signature in a iteration way.
 #' - `bp_cluster_iter_list()` for clustering iterated signatures to help collapse
 #' multiple signatures into one. The result cluster can be visualized by

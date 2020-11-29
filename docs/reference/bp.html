@@ -59,6 +59,9 @@ for more explanation.
 bp_get_sig_obj() for get a (list of) Signature object which is common
 used in sigminer for analysis and visualization.
 bp_attribute_activity() for optimizing signature activities (exposures).
+You can also use sig_extract to get optimal NMF result from multiple NMF runs.
+Besides, you can use sig_fit to quantify exposures based on signatures extracted
+from bp_extract_signatures().
 bp_extract_signatures_iter() for extracting signature in a iteration way.
 bp_cluster_iter_list() for clustering iterated signatures to help collapse
 multiple signatures into one. The result cluster can be visualized by
@@ -160,7 +163,10 @@ suggest the best solution. See section "Measure Explanation in Survey plot"
 for more explanation.</p></li>
 <li><p><code>bp_get_sig_obj()</code> for get a (list of) <code>Signature</code> object which is common
 used in <strong>sigminer</strong> for analysis and visualization.</p></li>
-<li><p><code>bp_attribute_activity()</code> for optimizing signature activities (exposures).</p></li>
+<li><p><code>bp_attribute_activity()</code> for optimizing signature activities (exposures).
+You can also use <a href='sig_extract.html'>sig_extract</a> to get optimal NMF result from multiple NMF runs.
+Besides, you can use <a href='sig_fit.html'>sig_fit</a> to quantify exposures based on signatures extracted
+from <code>bp_extract_signatures()</code>.</p></li>
 <li><p><code>bp_extract_signatures_iter()</code> for extracting signature in a iteration way.</p></li>
 <li><p><code>bp_cluster_iter_list()</code> for clustering iterated signatures to help collapse
 multiple signatures into one. The result cluster can be visualized by
@@ -180,7 +186,7 @@ These stats are aggregated (averaged) as the stats for a solution
   n_nmf_run <span class='op'>=</span> <span class='fl'>50</span>,
   RTOL <span class='op'>=</span> <span class='fl'>0.001</span>,
   min_contribution <span class='op'>=</span> <span class='fl'>0</span>,
-  cores <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span><span class='op'>(</span><span class='fl'>4L</span>, <span class='fu'>future</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/future/man/availableCores.html'>availableCores</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>,
+  cores <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span><span class='op'>(</span><span class='fl'>4L</span>, <span class='fu'>future</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/future/man/re-exports.html'>availableCores</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>,
   cores_solution <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span><span class='op'>(</span><span class='va'>cores</span>, <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>range</span><span class='op'>)</span><span class='op'>)</span>,
   seed <span class='op'>=</span> <span class='fl'>123456L</span>,
   handle_hyper_mutation <span class='op'>=</span> <span class='cn'>TRUE</span>,
@@ -199,7 +205,7 @@ These stats are aggregated (averaged) as the stats for a solution
   n_nmf_run <span class='op'>=</span> <span class='fl'>50</span>,
   RTOL <span class='op'>=</span> <span class='fl'>0.001</span>,
   min_contribution <span class='op'>=</span> <span class='fl'>0</span>,
-  cores <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span><span class='op'>(</span><span class='fl'>4L</span>, <span class='fu'>future</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/future/man/availableCores.html'>availableCores</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>,
+  cores <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span><span class='op'>(</span><span class='fl'>4L</span>, <span class='fu'>future</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/future/man/re-exports.html'>availableCores</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>,
   cores_solution <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span><span class='op'>(</span><span class='va'>cores</span>, <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>range</span><span class='op'>)</span><span class='op'>)</span>,
   seed <span class='op'>=</span> <span class='fl'>123456L</span>,
   handle_hyper_mutation <span class='op'>=</span> <span class='cn'>TRUE</span>,
