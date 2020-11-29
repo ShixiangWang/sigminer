@@ -360,7 +360,7 @@ bp_extract_signatures <- function(nmf_matrix,
           method = "brunet",
           seed = seed,
           nrun = n_nmf_run,
-          .options = paste0("mkp", cores)
+          .options = paste0("v", if (ncol(bt_catalog_list[[i]]) > 100) 4 else 1, "mkp", cores)
         )
         r <- purrr::map(r@.Data, extract_nmf)
         # Filter solutions with RTOL threshold
