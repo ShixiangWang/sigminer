@@ -370,7 +370,7 @@ bp_extract_signatures <- function(nmf_matrix,
       eval(parse(text = "suppressMessages(library('NMF'))"))
     }
 
-    call_nmf <- function(i) {
+    call_nmf <- function(i, cores = 1L) {
       if (!file.exists(fl[i])) {
         send_info(sprintf(
           "Running signature number %s for %s catalog %d.",
@@ -418,7 +418,16 @@ bp_extract_signatures <- function(nmf_matrix,
       }
     }
 
-    purrr::map(seq_len(n_bootstrap), call_nmf)
+    if (n_bootstrap >= 10 * n_nmf_run) {
+      oplan <- future::plan()
+      future::plan(set_future_strategy(), workers = cores, gc = TRUE)
+      on.exit(future::plan(oplan), add = TRUE, after = FALSE)
+      furrr::future_map(seq_len(n_bootstrap), call_nmf, cores = 1L,
+                        .progress = TRUE,
+                        .options = furrr::furrr_options(seed = TRUE))
+    } else {
+      purrr::map(seq_len(n_bootstrap), call_nmf, cores = cores)
+    }
 
     send_info("Reading NMF run files...")
     solutions[[paste0("K", range[k])]] <- purrr::map(cache_list[[k]], readRDS) %>%
