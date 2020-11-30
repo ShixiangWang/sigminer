@@ -370,7 +370,7 @@ bp_extract_signatures <- function(nmf_matrix,
       eval(parse(text = "suppressMessages(library('NMF'))"))
     }
 
-    purrr::map(seq_len(n_bootstrap), function(i) {
+    call_nmf <- function(i) {
       if (!file.exists(fl[i])) {
         send_info(sprintf(
           "Running signature number %s for %s catalog %d.",
@@ -387,7 +387,12 @@ bp_extract_signatures <- function(nmf_matrix,
             nrun = n_nmf_run,
             .options = paste0("v", if (ncol(bt_catalog_list[[i]]) > 100) 4 else 1, "mkp", cores)
           )
-          r <- purrr::map(r@.Data, extract_nmf)
+          if (inherits(r, "NMFfit")) {
+            r <- list(r)
+          } else {
+            r <- r@.Data
+          }
+          r <- purrr::map(r, extract_nmf)
         } else {
           send_info("Calling Python as backend to run NMF.")
           r <- pyNMF(
@@ -411,7 +416,9 @@ bp_extract_signatures <- function(nmf_matrix,
       } else {
         send_info("Cache run file ", fl[i], " already exists, skip.")
       }
-    })
+    }
+
+    purrr::map(seq_len(n_bootstrap), call_nmf)
 
     send_info("Reading NMF run files...")
     solutions[[paste0("K", range[k])]] <- purrr::map(cache_list[[k]], readRDS) %>%
