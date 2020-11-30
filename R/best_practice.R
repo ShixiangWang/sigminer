@@ -376,7 +376,8 @@ bp_extract_signatures <- function(nmf_matrix,
           "Running signature number %s for %s catalog %d.",
           range[k],
           if (bt_flag) "bootstrapped" else "observed",
-          i))
+          i
+        ))
         if (isFALSE(pynmf)) {
           r <- NMF::nmf(
             bt_catalog_list[[i]],
@@ -552,7 +553,10 @@ bp_extract_signatures_iter <- function(nmf_matrix,
                                        report_integer_exposure = FALSE,
                                        only_core_stats = nrow(nmf_matrix) > 100,
                                        cache_dir = file.path(tempdir(), "sigminer_bp"),
-                                       keep_cache = FALSE) {
+                                       keep_cache = FALSE,
+                                       pynmf = FALSE,
+                                       use_conda = FALSE,
+                                       py_path = "/Users/wsx/anaconda3/bin/python") {
   force(only_core_stats)
   iter_list <- list()
   cache_file_list <- c()
@@ -573,7 +577,10 @@ bp_extract_signatures_iter <- function(nmf_matrix,
       report_integer_exposure = report_integer_exposure,
       only_core_stats = only_core_stats,
       cache_dir = cache_dir,
-      keep_cache = keep_cache
+      keep_cache = keep_cache,
+      pynmf = pynmf,
+      use_conda = use_conda,
+      py_path = py_path
     )
     # 检查寻找需要重新运行的样本，修改 nmf_matrix
     iter_list[[paste0("iter", i)]] <- bp
@@ -912,10 +919,10 @@ env_install <- function(use_conda, py_path, pkg, pkg_version) {
 
   if (use_conda) {
     tryCatch(reticulate::conda_binary(),
-             error = function(e) {
-               message("Cannot find conda binary, installing miniconda...")
-               reticulate::install_miniconda()
-             }
+      error = function(e) {
+        message("Cannot find conda binary, installing miniconda...")
+        reticulate::install_miniconda()
+      }
     )
 
     ## Prepare conda environment and packages
@@ -928,8 +935,8 @@ env_install <- function(use_conda, py_path, pkg, pkg_version) {
         message("Installing packages, be patient...")
         message("======")
         reticulate::conda_install("sigminer_sigprofiler",
-                                  packages = paste0(pkg, "==", pkg_version),
-                                  pip = TRUE
+          packages = paste0(pkg, "==", pkg_version),
+          pip = TRUE
         )
         reticulate::use_condaenv("sigminer_sigprofiler", required = TRUE)
       }

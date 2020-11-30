@@ -74,55 +74,7 @@ sigprofiler_extract <- function(nmf_matrix, output, range = 2:5, nrun = 10L,
     dir.create(output, recursive = TRUE)
   }
 
-  if (!requireNamespace("reticulate")) {
-    stop("Package 'reticulate' is required, please install it firstly!")
-  }
-
-  if (use_conda) {
-    tryCatch(reticulate::conda_binary(),
-      error = function(e) {
-        message("Cannot find conda binary, installing miniconda...")
-        reticulate::install_miniconda()
-      }
-    )
-
-    ## Prepare conda environment and packages
-    tryCatch(
-      reticulate::use_condaenv("sigminer_sigprofiler", required = TRUE),
-      error = function(e) {
-        message("Conda environment not detected, creat it and install required packages.")
-        message("======")
-        reticulate::conda_create("sigminer_sigprofiler")
-        message("Installing packages, be patient...")
-        message("======")
-        reticulate::conda_install("sigminer_sigprofiler",
-          packages = paste0("SigProfilerExtractor==", sigprofiler_version),
-          pip = TRUE
-        )
-        reticulate::use_condaenv("sigminer_sigprofiler", required = TRUE)
-      }
-    )
-
-    message("Python and conda environment configuration.")
-    message("====================")
-    print(reticulate::py_config())
-  } else {
-    if (is.null(py_path)) {
-      if (!reticulate::py_available(initialize = TRUE)) {
-        stop("Python is not available!")
-      }
-      config <- reticulate::py_config()
-      print(config)
-      reticulate::use_python(config$python)
-    } else {
-      reticulate::use_python(py_path, required = TRUE)
-    }
-  }
-
-  if (!reticulate::py_module_available("SigProfilerExtractor")) {
-    message("Python module 'SigProfilerExtractor' not found, try installing it...")
-    reticulate::py_install(paste0("SigProfilerExtractor==", sigprofiler_version), pip = TRUE)
-  }
+  env_install(use_conda, py_path, pkg = "SigProfilerExtractor", pkg_version = sigprofiler_version)
 
   init_method <- match.arg(init_method)
   cores <- as.integer(cores)
