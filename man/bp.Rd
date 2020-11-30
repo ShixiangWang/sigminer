@@ -26,7 +26,10 @@ bp_extract_signatures(
   report_integer_exposure = FALSE,
   only_core_stats = nrow(nmf_matrix) > 100,
   cache_dir = file.path(tempdir(), "sigminer_bp"),
-  keep_cache = FALSE
+  keep_cache = FALSE,
+  pynmf = FALSE,
+  use_conda = FALSE,
+  py_path = "/Users/wsx/anaconda3/bin/python"
 )
 
 bp_extract_signatures_iter(
@@ -109,6 +112,16 @@ repeated computation for same data.}
 
 \item{keep_cache}{default is \code{FALSE}, if \code{TRUE}, keep cache data.
 For small input data, it is not necessary.}
+
+\item{pynmf}{if \code{TRUE}, use Python NMF driver \href{http://nimfa.biolab.si/index.html}{Nimfa}.
+The seed currently is not used by this implementation, so the only way to reproduce
+your result is setting \code{keep_cache = TRUE}.}
+
+\item{use_conda}{if \code{TRUE}, create an independent conda environment to run NMF.}
+
+\item{py_path}{path to Python executable file, e.g. '/Users/wsx/anaconda3/bin/python'. In my
+test, it is more stable than \code{use_conda=TRUE}. You can install the Nimfa package by yourself
+or set \code{use_conda} to \code{TRUE} to install required Python environment, and then set this option.}
 
 \item{sim_threshold}{a similarity threshold for selecting samples to auto-rerun
 the extraction procedure (i.e. \code{bp_extract_signatures()}), default is \code{0.95}.}

@@ -86,6 +86,13 @@
 #' repeated computation for same data.
 #' @param keep_cache default is `FALSE`, if `TRUE`, keep cache data.
 #' For small input data, it is not necessary.
+#' @param pynmf if `TRUE`, use Python NMF driver [Nimfa](http://nimfa.biolab.si/index.html).
+#' The seed currently is not used by this implementation, so the only way to reproduce
+#' your result is setting `keep_cache = TRUE`.
+#' @param use_conda if `TRUE`, create an independent conda environment to run NMF.
+#' @param py_path path to Python executable file, e.g. '/Users/wsx/anaconda3/bin/python'. In my
+#' test, it is more stable than `use_conda=TRUE`. You can install the Nimfa package by yourself
+#' or set `use_conda` to `TRUE` to install required Python environment, and then set this option.
 #' @return It depends on the called function.
 #' @name bp
 #' @author Shixiang Wang <w_shixiang@163.com>
@@ -198,7 +205,10 @@ bp_extract_signatures <- function(nmf_matrix,
                                   report_integer_exposure = FALSE,
                                   only_core_stats = nrow(nmf_matrix) > 100,
                                   cache_dir = file.path(tempdir(), "sigminer_bp"),
-                                  keep_cache = FALSE) {
+                                  keep_cache = FALSE,
+                                  pynmf = FALSE,
+                                  use_conda = FALSE,
+                                  py_path = "/Users/wsx/anaconda3/bin/python") {
   stopifnot(
     is.matrix(nmf_matrix),
     !is.null(rownames(nmf_matrix)), !is.null(colnames(nmf_matrix)),
@@ -284,7 +294,11 @@ bp_extract_signatures <- function(nmf_matrix,
 
   # 有必要的话添加一个极小的数，解决 NMF 包可能存在的异常报错问题
   # 一个 component 之和不能为 0，还有其他一些可能引发的异常
-  bt_catalog_list <- purrr::map(bt_catalog_list, ~ t(check_nmf_matrix(.)))
+  if (pynmf) {
+    bt_catalog_list <- purrr::map(bt_catalog_list, t)
+  } else {
+    bt_catalog_list <- purrr::map(bt_catalog_list, ~ t(check_nmf_matrix(.)))
+  }
   catalogue_matrix <- t(nmf_matrix)
   send_success("Done.")
 
@@ -349,7 +363,13 @@ bp_extract_signatures <- function(nmf_matrix,
     }
 
     fl <- cache_list[[k]]
-    eval(parse(text = "suppressMessages(library('NMF'))"))
+
+    if (pynmf) {
+      env_install(use_conda, py_path, pkg = "nimfa", pkg_version = "1.4.0")
+    } else {
+      eval(parse(text = "suppressMessages(library('NMF'))"))
+    }
+
     purrr::map(seq_len(n_bootstrap), function(i) {
       if (!file.exists(fl[i])) {
         send_info(sprintf(
@@ -357,15 +377,26 @@ bp_extract_signatures <- function(nmf_matrix,
           range[k],
           if (bt_flag) "bootstrapped" else "observed",
           i))
-        r <- NMF::nmf(
-          bt_catalog_list[[i]],
-          rank = range[k],
-          method = "brunet",
-          seed = seed,
-          nrun = n_nmf_run,
-          .options = paste0("v", if (ncol(bt_catalog_list[[i]]) > 100) 4 else 1, "mkp", cores)
-        )
-        r <- purrr::map(r@.Data, extract_nmf)
+        if (isFALSE(pynmf)) {
+          r <- NMF::nmf(
+            bt_catalog_list[[i]],
+            rank = range[k],
+            method = "brunet",
+            seed = seed,
+            nrun = n_nmf_run,
+            .options = paste0("v", if (ncol(bt_catalog_list[[i]]) > 100) 4 else 1, "mkp", cores)
+          )
+          r <- purrr::map(r@.Data, extract_nmf)
+        } else {
+          send_info("Calling Python as backend to run NMF.")
+          r <- pyNMF(
+            bt_catalog_list[[i]],
+            rank = range[k],
+            seed = seed,
+            nrun = n_nmf_run,
+            cores = cores
+          )
+        }
         # Filter solutions with RTOL threshold
         if (bt_flag) {
           send_info("Keeping at most 10 NMF solutions with KLD within (1+RTOL) range of the best.")
@@ -854,4 +885,74 @@ bp_attribute_activity <- function(input,
   x %>%
     t() %>%
     data.table::as.data.table(keep.rownames = "sample")
+}
+
+
+# Py NMF ------------------------------------------------------------------
+
+pyNMF <- function(V, rank, seed = seed, nrun = 1L, cores = 1L) {
+  rank <- as.integer(rank)
+  nrun <- as.integer(nrun)
+  cores <- as.integer(cores)
+  reticulate::source_python(system.file("py", "nmf.py", package = "sigminer", mustWork = TRUE))
+  res <- MultiNMF(V, rank, nrun, cores) %>% purrr::flatten()
+  res <- purrr::map(res, function(x) {
+    rownames(x$W) <- rownames(V)
+    colnames(x$H) <- colnames(V)
+    x
+  })
+  res
+}
+
+# Install python environment
+env_install <- function(use_conda, py_path, pkg, pkg_version) {
+  if (!requireNamespace("reticulate")) {
+    stop("Package 'reticulate' is required, please install it firstly!")
+  }
+
+  if (use_conda) {
+    tryCatch(reticulate::conda_binary(),
+             error = function(e) {
+               message("Cannot find conda binary, installing miniconda...")
+               reticulate::install_miniconda()
+             }
+    )
+
+    ## Prepare conda environment and packages
+    tryCatch(
+      reticulate::use_condaenv("sigminer_sigprofiler", required = TRUE),
+      error = function(e) {
+        message("Conda environment not detected, creat it and install required packages.")
+        message("======")
+        reticulate::conda_create("sigminer_sigprofiler")
+        message("Installing packages, be patient...")
+        message("======")
+        reticulate::conda_install("sigminer_sigprofiler",
+                                  packages = paste0(pkg, "==", pkg_version),
+                                  pip = TRUE
+        )
+        reticulate::use_condaenv("sigminer_sigprofiler", required = TRUE)
+      }
+    )
+
+    message("Python and conda environment configuration.")
+    message("====================")
+    print(reticulate::py_config())
+  } else {
+    if (is.null(py_path)) {
+      if (!reticulate::py_available(initialize = TRUE)) {
+        stop("Python is not available!")
+      }
+      config <- reticulate::py_config()
+      print(config)
+      reticulate::use_python(config$python)
+    } else {
+      reticulate::use_python(py_path, required = TRUE)
+    }
+  }
+
+  if (!reticulate::py_module_available(pkg)) {
+    message("Python module ", pkg, " not found, try installing it...")
+    reticulate::py_install(paste0(pkg, "==", pkg_version), pip = TRUE)
+  }
 }
