@@ -945,6 +945,9 @@ env_install <- function(use_conda, py_path, pkg, pkg_version) {
     tryCatch(
       reticulate::use_condaenv("sigminer_sigprofiler", required = TRUE),
       error = function(e) {
+        if (grepl("failed to initialize requested version of Python", e$message)) {
+          stop(e$message, ". Please restart R and try again.")
+        }
         message("Conda environment not detected, creat it and install required packages.")
         message("======")
         reticulate::conda_create("sigminer_sigprofiler")
@@ -967,15 +970,25 @@ env_install <- function(use_conda, py_path, pkg, pkg_version) {
         stop("Python is not available!")
       }
       config <- reticulate::py_config()
-      print(config)
-      reticulate::use_python(config$python)
+      reticulate::use_python(config$python, required = TRUE)
     } else {
       reticulate::use_python(py_path, required = TRUE)
     }
   }
 
+  message("Python environment configuration.")
+  message("====================")
+  print(reticulate::py_config())
+
   if (!reticulate::py_module_available(pkg)) {
     message("Python module ", pkg, " not found, try installing it...")
     reticulate::py_install(paste0(pkg, "==", pkg_version), pip = TRUE)
+  }
+
+  if (pkg != "SigProfilerExtractor") {
+    if (!reticulate::py_module_available("multiprocess")) {
+      message("Python module multiprocess not found, try installing it...")
+      reticulate::py_install("multiprocess", pip = TRUE)
+    }
   }
 }

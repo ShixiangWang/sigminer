@@ -1,4 +1,5 @@
-import multiprocessing
+#!/usr/bin/env python3
+import multiprocess
 import numpy as np
 import nimfa
 from itertools import repeat
@@ -31,14 +32,17 @@ def NMF2(i, V, rank):
 
 def MultiNMF(V, rank, nrun, cores):
   '''Run NMF for a target matrix multiple times'''
-  available_cores = multiprocessing.cpu_count()
+  available_cores = multiprocess.cpu_count()
   if available_cores < cores:
     print("Only %d cores available but %d cores requested, reset it to available number." %(available_cores, cores))
     cores = available_cores
   xs = range(nrun)
   v = list()
-  with multiprocessing.Pool(processes=cores) as p:
+  with multiprocess.Pool(processes=cores) as p:
     v.append(p.starmap(NMF2, zip(xs, repeat(V), repeat(rank))))
     
   return tuple(v)
   
+# if __name__ == "__main__":
+#   V = np.array([[1, 2, 3], [4, 5, 6], [6, 7, 8]])
+#   MultiNMF(V, 2, 2, 2)
