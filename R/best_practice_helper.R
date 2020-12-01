@@ -459,7 +459,8 @@ get_expo_corr_stat <- function(x) {
         for (rn in seq_len(r)) {
           corr[j] <- stats::cor(
             x1[1, , rn],
-            x2[row, , rn]
+            x2[row, , rn],
+            method = "spearman"
           )
           j <- j + 1L
         }
