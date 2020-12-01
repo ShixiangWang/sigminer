@@ -1,6 +1,6 @@
 ## Use to handle the CRAN check NOTE
 utils::globalVariables(
-  c("AMP", "DEL", "mean_rep", "bt_matrix", "s", "fl", "bt_idx", "MultiNMF")
+  c("AMP", "DEL", "mean_rep", "bt_matrix", "s", "fl", "bt_idx", "MultiVNMF")
 )
 
 options(future.rng.onMisuse = "ignore", future.globals.maxSize = Inf)

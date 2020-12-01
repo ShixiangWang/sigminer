@@ -304,17 +304,29 @@ bp_extract_signatures <- function(nmf_matrix,
 
   # Construct cache file names
   if (!dir.exists(cache_dir)) dir.create(cache_dir, recursive = TRUE)
-  cache_files <- file.path(
-    cache_dir,
-    paste0(
-      digest::digest(list(catalogue_matrix, seed)),
-      "_NMF_K",
-      rep(range, each = length(bt_catalog_list)),
-      if (bt_flag) "_bt_catalog_" else "_observed_catalog_",
-      seq_len(n_bootstrap),
-      ".rds"
+  if (pynmf) {
+    cache_files <- file.path(
+      cache_dir,
+      paste0(
+        digest::digest(list(catalogue_matrix, seed)),
+        "_pyNMF_K",
+        range,
+        ".rds"
+      )
     )
-  )
+  } else {
+    cache_files <- file.path(
+      cache_dir,
+      paste0(
+        digest::digest(list(catalogue_matrix, seed)),
+        "_NMF_K",
+        rep(range, each = length(bt_catalog_list)),
+        if (bt_flag) "_bt_catalog_" else "_observed_catalog_",
+        seq_len(n_bootstrap),
+        ".rds"
+      )
+    )
+  }
 
   extract_nmf <- function(solution) {
     W <- NMF::basis(solution)
@@ -365,20 +377,47 @@ bp_extract_signatures <- function(nmf_matrix,
     fl <- cache_list[[k]]
 
     if (pynmf) {
+      # Use Python nimfa package
       env_install(use_conda, py_path, pkg = "nimfa", pkg_version = "1.4.0")
-    } else {
-      eval(parse(text = "suppressMessages(library('NMF'))"))
-    }
+      send_info("Calling Python as backend to run NMF.")
+      if (!file.exists(fl[1])) {
+        slist <- call_pynmf(bt_catalog_list, range[k], n_nmf_run, cores)
+        # Filter solutions with RTOL threshold
+        if (bt_flag) {
+          send_info("Keeping at most 10 NMF solutions with KLD within (1+RTOL) range of the best.")
+        } else {
+          send_info("Keeping at most 100 best NMF solutions.")
+        }
+        slist <- purrr::map(chunk2(slist, length(bt_catalog_list)),
+          filter_nmf,
+          bt_flag = bt_flag, RTOL = RTOL
+        ) %>%
+          purrr::flatten()
 
-    call_nmf <- function(i, cores = 1L) {
-      if (!file.exists(fl[i])) {
-        send_info(sprintf(
-          "Running signature number %s for %s catalog %d.",
-          range[k],
-          if (bt_flag) "bootstrapped" else "observed",
-          i
-        ))
-        if (isFALSE(pynmf)) {
+        solutions[[paste0("K", range[k])]] <- slist
+        if (keep_cache) {
+          send_info("Saving cache file to ", fl[1])
+          saveRDS(slist, file = fl[1])
+        }
+
+        rm(slist)
+        invisible(gc())
+      } else {
+        send_info("Cache run file ", fl[1], " already exists, skip.")
+      }
+    } else {
+      # Use R NMF package
+      eval(parse(text = "suppressMessages(library('NMF'))"))
+
+      call_nmf <- function(i, cores = 1L) {
+        if (!file.exists(fl[i])) {
+          send_info(sprintf(
+            "Running signature number %s for %s catalog %d.",
+            range[k],
+            if (bt_flag) "bootstrapped" else "observed",
+            i
+          ))
+
           r <- NMF::nmf(
             bt_catalog_list[[i]],
             rank = range[k],
@@ -393,52 +432,46 @@ bp_extract_signatures <- function(nmf_matrix,
             r <- r@.Data
           }
           r <- purrr::map(r, extract_nmf)
+
+          # Filter solutions with RTOL threshold
+          if (bt_flag) {
+            send_info("Keeping at most 10 NMF solutions with KLD within (1+RTOL) range of the best.")
+          } else {
+            send_info("Keeping at most 100 best NMF solutions.")
+          }
+          r <- filter_nmf(r, bt_flag, RTOL)
+          saveRDS(r, file = fl[i])
+          rm(r)
+          invisible(gc())
         } else {
-          send_info("Calling Python as backend to run NMF.")
-          r <- pyNMF(
-            bt_catalog_list[[i]],
-            rank = range[k],
-            seed = seed,
-            nrun = n_nmf_run,
-            cores = cores
-          )
+          send_info("Cache run file ", fl[i], " already exists, skip.")
         }
-        # Filter solutions with RTOL threshold
-        if (bt_flag) {
-          send_info("Keeping at most 10 NMF solutions with KLD within (1+RTOL) range of the best.")
-        } else {
-          send_info("Keeping at most 100 best NMF solutions.")
-        }
-        r <- filter_nmf(r, bt_flag, RTOL)
-        saveRDS(r, file = fl[i])
-        rm(r)
-        invisible(gc())
-      } else {
-        send_info("Cache run file ", fl[i], " already exists, skip.")
       }
-    }
 
-    if (n_bootstrap >= 10 * n_nmf_run) {
-      oplan <- future::plan()
-      future::plan(set_future_strategy(), workers = cores, gc = TRUE)
-      on.exit(future::plan(oplan), add = TRUE, after = FALSE)
-      furrr::future_map(seq_len(n_bootstrap), call_nmf, cores = 1L,
-                        .progress = TRUE,
-                        .options = furrr::furrr_options(seed = TRUE))
-    } else {
-      purrr::map(seq_len(n_bootstrap), call_nmf, cores = cores)
-    }
-
-    send_info("Reading NMF run files...")
-    solutions[[paste0("K", range[k])]] <- purrr::map(cache_list[[k]], readRDS) %>%
-      purrr::flatten()
-    send_success("Read successfully.")
-    if (!keep_cache) {
-      signal <- file.remove(cache_list[[k]])
-      if (all(signal)) {
-        send_success("NMF run files deleted.")
+      if (n_bootstrap >= 10 * n_nmf_run) {
+        oplan <- future::plan()
+        future::plan(set_future_strategy(), workers = cores, gc = TRUE)
+        on.exit(future::plan(oplan), add = TRUE, after = FALSE)
+        furrr::future_map(seq_len(n_bootstrap), call_nmf,
+          cores = 1L,
+          .progress = TRUE,
+          .options = furrr::furrr_options(seed = TRUE)
+        )
       } else {
-        send_warning("Delete some or all NMF run files failed.")
+        purrr::map(seq_len(n_bootstrap), call_nmf, cores = cores)
+      }
+
+      send_info("Reading NMF run files...")
+      solutions[[paste0("K", range[k])]] <- purrr::map(cache_list[[k]], readRDS) %>%
+        purrr::flatten()
+      send_success("Read successfully.")
+      if (!keep_cache) {
+        signal <- file.remove(cache_list[[k]])
+        if (all(signal)) {
+          send_success("NMF run files deleted.")
+        } else {
+          send_warning("Delete some or all NMF run files failed.")
+        }
       }
     }
 
@@ -913,15 +946,32 @@ bp_attribute_activity <- function(input,
 
 # Py NMF ------------------------------------------------------------------
 
-pyNMF <- function(V, rank, seed = seed, nrun = 1L, cores = 1L) {
+# pyNMF <- function(V, rank, seed = seed, nrun = 1L, cores = 1L) {
+#   rank <- as.integer(rank)
+#   nrun <- as.integer(nrun)
+#   cores <- as.integer(cores)
+#   reticulate::source_python(system.file("py", "nmf.py", package = "sigminer", mustWork = TRUE))
+#   res <- MultiNMF(V, rank, nrun, cores) %>% purrr::flatten()
+#   res <- purrr::map(res, function(x) {
+#     rownames(x$W) <- rownames(V)
+#     colnames(x$H) <- colnames(V)
+#     x
+#   })
+#   res
+# }
+
+call_pynmf <- function(V_list, rank, nrun = 1L, cores = 1L) {
+  on.exit(invisible(gc()))
   rank <- as.integer(rank)
   nrun <- as.integer(nrun)
   cores <- as.integer(cores)
   reticulate::source_python(system.file("py", "nmf.py", package = "sigminer", mustWork = TRUE))
-  res <- MultiNMF(V, rank, nrun, cores) %>% purrr::flatten()
+  res <- MultiVNMF(V_list, rank, nrun, cores) %>%
+    purrr::flatten() %>%
+    purrr::flatten()
   res <- purrr::map(res, function(x) {
-    rownames(x$W) <- rownames(V)
-    colnames(x$H) <- colnames(V)
+    rownames(x$W) <- rownames(V_list[[1]])
+    colnames(x$H) <- colnames(V_list[[1]])
     x
   })
   res
@@ -974,11 +1024,11 @@ env_install <- function(use_conda, py_path, pkg, pkg_version) {
     } else {
       reticulate::use_python(py_path, required = TRUE)
     }
-  }
 
-  message("Python environment configuration.")
-  message("====================")
-  print(reticulate::py_config())
+    message("Python environment configuration.")
+    message("====================")
+    print(reticulate::py_config())
+  }
 
   if (!reticulate::py_module_available(pkg)) {
     message("Python module ", pkg, " not found, try installing it...")
