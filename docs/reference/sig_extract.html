@@ -138,6 +138,9 @@
   cores <span class='op'>=</span> <span class='fl'>1</span>,
   method <span class='op'>=</span> <span class='st'>"brunet"</span>,
   optimize <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  pynmf <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  use_conda <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  py_path <span class='op'>=</span> <span class='st'>"/Users/wsx/anaconda3/bin/python"</span>,
   seed <span class='op'>=</span> <span class='fl'>123456</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
@@ -170,6 +173,22 @@ Available methods for NMF decompositions are 'brunet', 'lee', 'ls-nmf', 'nsNMF',
     <tr>
       <th>optimize</th>
       <td><p>if <code>TRUE</code>, then refit the denovo signatures with QP method, see <a href='sig_fit.html'>sig_fit</a>.</p></td>
+    </tr>
+    <tr>
+      <th>pynmf</th>
+      <td><p>if <code>TRUE</code>, use Python NMF driver <a href='http://nimfa.biolab.si/index.html'>Nimfa</a>.
+The seed currently is not used by this implementation, so the only way to reproduce
+your result is setting <code>keep_cache = TRUE</code>.</p></td>
+    </tr>
+    <tr>
+      <th>use_conda</th>
+      <td><p>if <code>TRUE</code>, create an independent conda environment to run NMF.</p></td>
+    </tr>
+    <tr>
+      <th>py_path</th>
+      <td><p>path to Python executable file, e.g. '/Users/wsx/anaconda3/bin/python'. In my
+test, it is more stable than <code>use_conda=TRUE</code>. You can install the Nimfa package by yourself
+or set <code>use_conda</code> to <code>TRUE</code> to install required Python environment, and then set this option.</p></td>
     </tr>
     <tr>
       <th>seed</th>
