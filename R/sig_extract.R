@@ -30,6 +30,9 @@ sig_extract <- function(nmf_matrix,
                         cores = 1,
                         method = "brunet",
                         optimize = FALSE,
+                        pynmf = FALSE,
+                        use_conda = FALSE,
+                        py_path = "/Users/wsx/anaconda3/bin/python",
                         seed = 123456, ...) {
   eval(parse(text = "suppressMessages(library('NMF'))"))
   # transpose matrix
@@ -44,26 +47,31 @@ sig_extract <- function(nmf_matrix,
     mat <- mat[, !ii, drop = FALSE]
   }
 
-  # To avoid error due to NMF
-  mat <- check_nmf_matrix(mat)
+  if (isFALSE(pynmf)) {
+    # To avoid error due to NMF
+    mat <- check_nmf_matrix(mat)
 
-  nmf.res <- NMF::nmf(
-    mat,
-    n_sig,
-    seed = seed,
-    nrun = nrun,
-    method = method,
-    .opt = paste0("p", cores),
-    ...
-  )
+    nmf.res <- NMF::nmf(
+      mat,
+      n_sig,
+      seed = seed,
+      nrun = nrun,
+      method = method,
+      .opt = paste0("vp", cores),
+      ...
+    )
 
 
-  # Signature loading
-  W <- NMF::basis(nmf.res)
-  # Exposure loading
-  H <- NMF::coef(nmf.res)
-  # Signature number
-  K <- ncol(W)
+    # Signature loading
+    W <- NMF::basis(nmf.res)
+    # Exposure loading
+    H <- NMF::coef(nmf.res)
+    # Signature number
+    K <- ncol(W)
+  } else {
+    message("Calling python as backend...")
+    env_install(use_conda, py_path, pkg = "nimfa", pkg_version = "1.4.0")
+  }
 
   ## has_cn just used for method 'W' and 'M' in copy number signature
   has_cn <- grepl("^CN[^C]", rownames(W)) | startsWith(rownames(W), "copynumber")

@@ -27,22 +27,36 @@ def NMF(V, rank):
   print('Stop at iteration #: %d' % nmf_fit.summary()["n_iter"])
   return {"W":W, "H":nmf_fit.coef(), "K":K, "KLD":nmf_fit.distance(metric='kl')}
 
-# def NMF2(i, V, rank):
-#   print("Starting NMF run: %d." %i)
-#   return NMF(V, rank)
-# 
-# def MultiNMF(V, rank, nrun, cores):
-#   '''Run NMF for a target matrix multiple times'''
-#   available_cores = multiprocess.cpu_count()
-#   if available_cores < cores:
-#     print("Only %d cores available but %d cores requested, reset it to available number." %(available_cores, cores))
-#     cores = available_cores
-#   xs = range(1, nrun + 1)
-#   v = list()
-#   with multiprocess.Pool(processes=cores) as p:
-#     v.append(p.starmap(NMF3, zip(xs, repeat(V), repeat(rank))))
-#     
-#   return tuple(v)
+def NMF2(i, V, rank):
+  print("Starting NMF run: %d." %i)
+  return NMF(V, rank)
+
+def MultiNMF(V, rank, nrun, cores, return_best = True):
+  '''Run NMF for a target matrix multiple times'''
+  available_cores = multiprocess.cpu_count()
+  if available_cores < cores:
+    print("Only %d cores available but %d cores requested, reset it to available number." %(available_cores, cores))
+    cores = available_cores
+  xs = range(1, nrun + 1)
+  with multiprocess.Pool(processes=cores) as p:
+    v = p.starmap(NMF2, zip(xs, repeat(V), repeat(rank)))
+
+  if return_best:
+    print("Compare KLD and return the best.")
+    l = len(v)
+    kld = v[0]["KLD"]
+    idx = 0
+    for i in range(1, l):
+      k = v[i]["KLD"]
+      print("KLD to compare: %s, KLD to be compared: %s" %(k, kld))
+      if kld > k:
+        print("Current KLD value updated to %s" %k)
+        kld = k
+        idx = i
+    print("Return the %s run" %idx+1)
+    v = v[idx]
+
+  return v
 
 def NMF3(i, V, rank):
   print("Starting NMF run: %d." %i)
