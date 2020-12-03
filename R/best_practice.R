@@ -207,7 +207,7 @@ bp_extract_signatures <- function(nmf_matrix,
                                   cache_dir = file.path(tempdir(), "sigminer_bp"),
                                   keep_cache = FALSE,
                                   pynmf = FALSE,
-                                  use_conda = FALSE,
+                                  use_conda = TRUE,
                                   py_path = "/Users/wsx/anaconda3/bin/python") {
   stopifnot(
     is.matrix(nmf_matrix),
@@ -944,21 +944,7 @@ bp_attribute_activity <- function(input,
 }
 
 
-# Py NMF ------------------------------------------------------------------
-
-# pyNMF <- function(V, rank, seed = seed, nrun = 1L, cores = 1L) {
-#   rank <- as.integer(rank)
-#   nrun <- as.integer(nrun)
-#   cores <- as.integer(cores)
-#   reticulate::source_python(system.file("py", "nmf.py", package = "sigminer", mustWork = TRUE))
-#   res <- MultiNMF(V, rank, nrun, cores) %>% purrr::flatten()
-#   res <- purrr::map(res, function(x) {
-#     rownames(x$W) <- rownames(V)
-#     colnames(x$H) <- colnames(V)
-#     x
-#   })
-#   res
-# }
+# Python NMF ------------------------------------------------------------------
 
 call_pynmf <- function(V_list, rank, nrun = 1L, cores = 1L) {
   on.exit(invisible(gc()))

@@ -3,6 +3,7 @@
 #' Do NMF de-composition and then extract signatures.
 #'
 #' @inheritParams sig_estimate
+#' @inheritParams bp_extract_signatures
 #' @param n_sig number of signature. Please run [sig_estimate] to select a suitable value.
 #' @param optimize if `TRUE`, then refit the denovo signatures with QP method, see [sig_fit].
 #' @param ... other arguments passed to [NMF::nmf()].
@@ -31,7 +32,7 @@ sig_extract <- function(nmf_matrix,
                         method = "brunet",
                         optimize = FALSE,
                         pynmf = FALSE,
-                        use_conda = FALSE,
+                        use_conda = TRUE,
                         py_path = "/Users/wsx/anaconda3/bin/python",
                         seed = 123456, ...) {
   eval(parse(text = "suppressMessages(library('NMF'))"))
@@ -61,7 +62,6 @@ sig_extract <- function(nmf_matrix,
       ...
     )
 
-
     # Signature loading
     W <- NMF::basis(nmf.res)
     # Exposure loading
@@ -71,6 +71,15 @@ sig_extract <- function(nmf_matrix,
   } else {
     message("Calling python as backend...")
     env_install(use_conda, py_path, pkg = "nimfa", pkg_version = "1.4.0")
+    reticulate::source_python(system.file("py", "nmf.py", package = "sigminer", mustWork = TRUE))
+
+    result <- MultiNMF(mat, as.integer(n_sig), as.integer(nrun), as.integer(cores))
+    W <- result$W
+    H <- result$H
+    K <- result$K
+
+    rownames(W) <- rownames(mat)
+    colnames(H) <- colnames(mat)
   }
 
   ## has_cn just used for method 'W' and 'M' in copy number signature
@@ -148,7 +157,7 @@ sig_extract <- function(nmf_matrix,
     Exposure.norm = Exposure.norm,
     K = K,
     Raw = list(
-      nmf_obj = nmf.res,
+      nmf_obj = if (exists("nmf.res")) nmf.res else NULL,
       W = W,
       H = H
     )

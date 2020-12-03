@@ -48,12 +48,12 @@ def MultiNMF(V, rank, nrun, cores, return_best = True):
     idx = 0
     for i in range(1, l):
       k = v[i]["KLD"]
-      print("KLD to compare: %s, KLD to be compared: %s" %(k, kld))
+      print("KLD to compare: %f, KLD to be compared: %f" %(k, kld))
       if kld > k:
-        print("Current KLD value updated to %s" %k)
+        print("Current KLD value updated to %f" %k)
         kld = k
         idx = i
-    print("Return the %s run" %idx+1)
+    print("Return the run #%d" %(idx+1))
     v = v[idx]
 
   return v

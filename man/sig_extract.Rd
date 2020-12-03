@@ -11,6 +11,9 @@ sig_extract(
   cores = 1,
   method = "brunet",
   optimize = FALSE,
+  pynmf = FALSE,
+  use_conda = TRUE,
+  py_path = "/Users/wsx/anaconda3/bin/python",
   seed = 123456,
   ...
 )
@@ -29,6 +32,16 @@ enough to achieve robust result.}
 Available methods for NMF decompositions are 'brunet', 'lee', 'ls-nmf', 'nsNMF', 'offset'.}
 
 \item{optimize}{if \code{TRUE}, then refit the denovo signatures with QP method, see \link{sig_fit}.}
+
+\item{pynmf}{if \code{TRUE}, use Python NMF driver \href{http://nimfa.biolab.si/index.html}{Nimfa}.
+The seed currently is not used by this implementation, so the only way to reproduce
+your result is setting \code{keep_cache = TRUE}.}
+
+\item{use_conda}{if \code{TRUE}, create an independent conda environment to run NMF.}
+
+\item{py_path}{path to Python executable file, e.g. '/Users/wsx/anaconda3/bin/python'. In my
+test, it is more stable than \code{use_conda=TRUE}. You can install the Nimfa package by yourself
+or set \code{use_conda} to \code{TRUE} to install required Python environment, and then set this option.}
 
 \item{seed}{specification of the starting point or seeding method, which will compute a starting point,
 usually using data from the target matrix in order to provide a good guess.}

@@ -28,7 +28,7 @@ bp_extract_signatures(
   cache_dir = file.path(tempdir(), "sigminer_bp"),
   keep_cache = FALSE,
   pynmf = FALSE,
-  use_conda = FALSE,
+  use_conda = TRUE,
   py_path = "/Users/wsx/anaconda3/bin/python"
 )
 
@@ -48,7 +48,10 @@ bp_extract_signatures_iter(
   report_integer_exposure = FALSE,
   only_core_stats = nrow(nmf_matrix) > 100,
   cache_dir = file.path(tempdir(), "sigminer_bp"),
-  keep_cache = FALSE
+  keep_cache = FALSE,
+  pynmf = FALSE,
+  use_conda = FALSE,
+  py_path = "/Users/wsx/anaconda3/bin/python"
 )
 
 bp_cluster_iter_list(x, include_final_iteration = TRUE)
