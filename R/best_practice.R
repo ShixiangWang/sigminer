@@ -403,7 +403,9 @@ bp_extract_signatures <- function(nmf_matrix,
         rm(slist)
         invisible(gc())
       } else {
-        send_info("Cache run file ", fl[1], " already exists, skip.")
+        send_info("Cache run file ", fl[1], " already exists, skip calling.")
+        send_info("Reading cache file...")
+        solutions[[paste0("K", range[k])]] <- readRDS(fl[1])
       }
     } else {
       # Use R NMF package
