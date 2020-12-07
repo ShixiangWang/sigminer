@@ -34,8 +34,7 @@ Available methods for NMF decompositions are 'brunet', 'lee', 'ls-nmf', 'nsNMF',
 \item{optimize}{if \code{TRUE}, then refit the denovo signatures with QP method, see \link{sig_fit}.}
 
 \item{pynmf}{if \code{TRUE}, use Python NMF driver \href{http://nimfa.biolab.si/index.html}{Nimfa}.
-The seed currently is not used by this implementation, so the only way to reproduce
-your result is setting \code{keep_cache = TRUE}.}
+The seed currently is not used by this implementation.}
 
 \item{use_conda}{if \code{TRUE}, create an independent conda environment to run NMF.}
 

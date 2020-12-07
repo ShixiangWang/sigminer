@@ -2,7 +2,7 @@
 
 context("File R/sig_extract.R: @testexamples")
 
-test_that("Function sig_extract() @ L28", {
+test_that("Function sig_extract() @ L30", {
   
   
   load(system.file("extdata", "toy_copynumber_tally_M.RData",
