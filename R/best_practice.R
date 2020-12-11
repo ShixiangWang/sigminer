@@ -902,7 +902,7 @@ bp_attribute_activity <- function(input,
   }
 
   if (!is.null(sample_class)) {
-    samps <- names(samps)
+    samps <- names(sample_class)
     if (any(duplicated(samps))) {
       stop("A sample cannot be assigned to two groups!")
     }
@@ -910,12 +910,14 @@ bp_attribute_activity <- function(input,
     if (length(samps) != ncol(expo) | !all(idx)) {
       n_total <- ncol(expo)
       samps2 <- colnames(expo)[idx]
-      warning(
-        n_total - length(samps2),
-        " samples cannot be found in 'sample_class, they will be removed!",
-        immediate. = TRUE)
-      expo <- expo[, samps2, drop = FALSE]
-      nmf_matrix <- nmf_matrix[samps2, ]
+      if (n_total - length(samps2) > 0) {
+        warning(
+          n_total - length(samps2),
+          " samples cannot be found in 'sample_class', they will be removed!",
+          immediate. = TRUE)
+        expo <- expo[, samps2, drop = FALSE]
+        nmf_matrix <- nmf_matrix[samps2, ]
+      }
       sample_class <- sample_class[samps2]
     }
   }
