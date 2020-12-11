@@ -902,7 +902,7 @@ bp_attribute_activity <- function(input,
   }
 
   if (!is.null(sample_class)) {
-    samps <- name(samps)
+    samps <- names(samps)
     if (any(duplicated(samps))) {
       stop("A sample cannot be assigned to two groups!")
     }
