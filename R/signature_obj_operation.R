@@ -1,7 +1,7 @@
 #' Obtain or Modify Signature Information
 #'
 #' @param sig a `Signature` object obtained either from [sig_extract] or [sig_auto_extract].
-#' @rdname sig_operation
+#' @name sig_operation
 #' @return a `Signature` object or data.
 #' @export
 #'
