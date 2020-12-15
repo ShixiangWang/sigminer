@@ -61,7 +61,6 @@ sig_estimate <-
            plot_basename = file.path(tempdir(), "nmf"),
            what = "all",
            verbose = FALSE) {
-
     eval(parse(text = "suppressMessages(library('NMF'))"))
     mat <- t(nmf_matrix)
 

@@ -808,10 +808,7 @@ optimize_exposure_in_one_sample_bt <- function(catalog,
   expo <- rowMedians(out$expo, na.rm = TRUE)
   sim <- median(out$cosine, na.rm = TRUE)
 
-  # set exposures of a signature to zero if more than 5% of
-  #          the bootstrapped exposure values (empirical P = 0.05) are
-  #          below the threshold of 5% of total mutations in the sample.
-  th <- sum(catalog) * 0.05
+  th <- sum(catalog) * 0.01
   reset_idx <- apply(out$expo, 1, function(x) {
     mean(x < th, na.rm = TRUE) > 0.05
   })

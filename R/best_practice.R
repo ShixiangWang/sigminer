@@ -881,7 +881,7 @@ bp_attribute_activity <- function(input,
   # logical for bt: get median exposure value from signature fitting,
   #          we set exposures of a signature to zero if more than 5% of
   #          the bootstrapped exposure values (empirical P = 0.05) are
-  #          below the threshold of 5% of total mutations in the sample.
+  #          below the threshold of 1% of total mutations in the sample.
   # logical for stepwise: excludes class specific signatures if it contributes <0.01 similarity
   #          while include global signatures if it add >0.05 similarity
 
@@ -949,8 +949,12 @@ bp_attribute_activity <- function(input,
   if (use_parallel) {
     oplan <- future::plan()
     future::plan(set_future_strategy(),
-                 workers = if (is.logical(use_parallel))
-                   future::availableCores() else use_parallel)
+      workers = if (is.logical(use_parallel)) {
+        future::availableCores()
+      } else {
+        use_parallel
+      }
+    )
     on.exit(future::plan(oplan), add = TRUE)
   }
 

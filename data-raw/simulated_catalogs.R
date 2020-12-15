@@ -5,7 +5,7 @@ data1 <- readxl::read_excel("data-raw/NC-Supp-data.xlsx", sheet = 1)
 data2 <- readxl::read_excel("data-raw/NC-Supp-data.xlsx", sheet = 2)
 data3 <- readxl::read_excel("data-raw/NC-Supp-data.xlsx", sheet = 3)
 data4 <- readxl::read_excel("data-raw/NC-Supp-data.xlsx", sheet = 4)
-#data5 <- readxl::read_excel("data-raw/NC-Supp-data.xlsx", sheet = 5)
+# data5 <- readxl::read_excel("data-raw/NC-Supp-data.xlsx", sheet = 5)
 
 simulated_catalogs <- list(
   data1, data2, data3, data4
