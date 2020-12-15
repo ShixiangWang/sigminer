@@ -190,7 +190,6 @@ sig_fit_bootstrap <- function(catalog,
       catalog_mat <- matrix(catalog_mat, ncol = 1)
       rownames(catalog_mat) <- names(catalog)
     }
-
     Args$catalogue_matrix <- catalog_mat
 
     cli::cli_status_update(id = sb, "{symbol$arrow_right} Total {n} times, starting no.{i}.")
@@ -199,9 +198,10 @@ sig_fit_bootstrap <- function(catalog,
       base::do.call("sig_fit", args = Args)
     )
   })
-
-  cli::cli_status_clear(sb)
-  send_success("Bootstrap done.")
+  cli::cli_status_clear(
+    sb,
+    result = "done",
+    msg_done = "Bootstrap done.")
 
   expo <- res[1, ]
   expo <- sapply(expo, cbind)

@@ -796,7 +796,6 @@ optimize_exposure_in_one_sample_bt <- function(catalog,
     dimnames = list(rownames(sig_matrix), sample)
   )
 
-  message("Processing sample: ", sample)
   out <- sig_fit_bootstrap(
     catalog_mat,
     sig_matrix[, flag1, drop = FALSE],

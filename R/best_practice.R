@@ -941,10 +941,16 @@ bp_attribute_activity <- function(input,
   sig_order <- colnames(sig)
   samp_order <- colnames(expo)
   catalog_df <- as.data.frame(t(nmf_matrix))
+  catalog_samp <- colnames(catalog_df)
+  ix <- samp_order %in% catalog_samp
+  if (!all(ix)) {
+    message("The following samples have no original catalogs, they will be removed.")
+    message("\t", paste(samp_order[!ix], collapse = ", "))
+    samp_order <- samp_order[ix]
+  }
   catalog_df <- catalog_df[rownames(sig), samp_order, drop = FALSE]
-  exist_df <- construct_sig_exist_matrix(expo, sample_class) %>%
-    as.data.frame()
-  exist_df <- exist_df[sig_order, , drop = FALSE]
+  exist_df <- as.data.frame(construct_sig_exist_matrix(expo, sample_class))
+  exist_df <- exist_df[sig_order, samp_order, drop = FALSE]
 
   if (use_parallel) {
     oplan <- future::plan()
