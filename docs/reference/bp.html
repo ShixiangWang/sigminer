@@ -240,7 +240,9 @@ These stats are aggregated (averaged) as the stats for a solution
   <span class='va'>input</span>,
   sample_class <span class='op'>=</span> <span class='cn'>NULL</span>,
   nmf_matrix <span class='op'>=</span> <span class='cn'>NULL</span>,
-  return_class <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"matrix"</span>, <span class='st'>"data.table"</span><span class='op'>)</span>
+  method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"bt"</span>, <span class='st'>"stepwise"</span><span class='op'>)</span>,
+  return_class <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"matrix"</span>, <span class='st'>"data.table"</span><span class='op'>)</span>,
+  use_parallel <span class='op'>=</span> <span class='cn'>FALSE</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -382,6 +384,12 @@ of plot facet.</p></td>
       <td><p>a named string vector whose names are sample names
 and values are class labels (i.e. cancer subtype). If it is <code>NULL</code> (the default),
 treat all samples as one group.</p></td>
+    </tr>
+    <tr>
+      <th>method</th>
+      <td><p>one of 'bt' (use bootstrap exposure median) or
+'stepwise' (stepwise reduce and update signatures then do signature fitting
+with last signature sets).</p></td>
     </tr>
     <tr>
       <th>return_class</th>
