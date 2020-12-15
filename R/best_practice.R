@@ -869,6 +869,7 @@ bp_show_survey <- function(obj,
 #' 'stepwise' (stepwise reduce and update signatures then do signature fitting
 #' with last signature sets).
 #' @inheritParams sig_fit
+#' @inheritParams sig_fit_bootstrap_batch
 #' @rdname bp
 #' @export
 bp_attribute_activity <- function(input,
@@ -945,11 +946,16 @@ bp_attribute_activity <- function(input,
     as.data.frame()
   exist_df <- exist_df[sig_order, , drop = FALSE]
 
+  if (use_parallel) {
+    oplan <- future::plan()
+    future::plan(set_future_strategy(),
+                 workers = if (is.logical(use_parallel))
+                   future::availableCores() else use_parallel)
+    on.exit(future::plan(oplan), add = TRUE)
+  }
+
   if (method == "bt") {
     if (use_parallel) {
-      oplan <- future::plan()
-      future::plan(set_future_strategy(), workers = future::availableCores())
-      on.exit(future::plan(oplan), add = TRUE)
       out <- suppressMessages(
         furrr::future_pmap(
           .l = list(
@@ -977,9 +983,6 @@ bp_attribute_activity <- function(input,
   } else {
     # Handle samples one by one (by columns)
     if (use_parallel) {
-      oplan <- future::plan()
-      future::plan(set_future_strategy(), workers = future::availableCores())
-      on.exit(future::plan(oplan), add = TRUE)
       out <- suppressMessages(
         furrr::future_pmap(
           .l = list(

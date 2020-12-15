@@ -31,7 +31,8 @@ than this value will be filtered out.}
 
 \item{p_val_thresholds}{a vector of relative exposure threshold for calculating p values.}
 
-\item{use_parallel}{if \code{TRUE}, use parallel computation based on \strong{furrr} package.}
+\item{use_parallel}{if \code{TRUE}, use parallel computation based on \strong{furrr} package.
+It can also be an integer for specifying cores.}
 
 \item{seed}{random seed to reproduce the result.}
 

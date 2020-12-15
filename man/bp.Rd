@@ -165,6 +165,9 @@ treat all samples as one group.}
 with last signature sets).}
 
 \item{return_class}{string, 'matrix' or 'data.table'.}
+
+\item{use_parallel}{if \code{TRUE}, use parallel computation based on \strong{furrr} package.
+It can also be an integer for specifying cores.}
 }
 \value{
 It depends on the called function.

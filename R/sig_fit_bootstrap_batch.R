@@ -9,6 +9,7 @@
 #' than this value will be filtered out.
 #' @param p_val_thresholds a vector of relative exposure threshold for calculating p values.
 #' @param use_parallel if `TRUE`, use parallel computation based on **furrr** package.
+#' It can also be an integer for specifying cores.
 #' @param seed random seed to reproduce the result.
 #' @param job_id a job ID, default is `NULL`, can be a string. When not `NULL`, all bootstrapped results
 #' will be saved to local machine location defined by `result_dir`. This is very useful for running
@@ -133,7 +134,9 @@ sig_fit_bootstrap_batch <- function(catalogue_matrix,
 
   if (use_parallel) {
     oplan <- future::plan()
-    future::plan(set_future_strategy(), workers = future::availableCores())
+    future::plan(set_future_strategy(),
+                 workers = if (is.logical(use_parallel))
+                   future::availableCores() else use_parallel)
     on.exit(future::plan(oplan), add = TRUE)
     bt_list <- furrr::future_map2(as.data.frame(catalogue_matrix), colnames(catalogue_matrix), call_bt,
       y = rownames(catalogue_matrix), methods = methods, n = n, ..., .progress = TRUE,
