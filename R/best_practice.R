@@ -865,17 +865,28 @@ bp_show_survey <- function(obj,
 #' @param sample_class a named string vector whose names are sample names
 #' and values are class labels (i.e. cancer subtype). If it is `NULL` (the default),
 #' treat all samples as one group.
+#' @param method one of 'bt' (use bootstrap exposure median) or
+#' 'stepwise' (stepwise reduce and update signatures then do signature fitting
+#' with last signature sets).
 #' @inheritParams sig_fit
 #' @rdname bp
 #' @export
 bp_attribute_activity <- function(input,
                                   sample_class = NULL,
                                   nmf_matrix = NULL,
-                                  return_class = c("matrix", "data.table")) {
-  # logical: excludes class specific signatures if it contributes <0.01 similarity
+                                  method = c("bt", "stepwise"),
+                                  return_class = c("matrix", "data.table"),
+                                  use_parallel = FALSE) {
+  # logical for bt: get median exposure value from signature fitting,
+  #          we set exposures of a signature to zero if more than 5% of
+  #          the bootstrapped exposure values (empirical P = 0.05) are
+  #          below the threshold of 5% of total mutations in the sample.
+  # logical for stepwise: excludes class specific signatures if it contributes <0.01 similarity
   #          while include global signatures if it add >0.05 similarity
 
+  method <- match.arg(method)
   return_class <- match.arg(return_class)
+
   if (inherits(input, "ExtractionResult")) {
     if (is.null(nmf_matrix)) {
       nmf_matrix <- t(input$catalog_matrix)
@@ -914,7 +925,8 @@ bp_attribute_activity <- function(input,
         warning(
           n_total - length(samps2),
           " samples cannot be found in 'sample_class', they will be removed!",
-          immediate. = TRUE)
+          immediate. = TRUE
+        )
         expo <- expo[, samps2, drop = FALSE]
         nmf_matrix <- nmf_matrix[samps2, ]
       }
@@ -933,16 +945,67 @@ bp_attribute_activity <- function(input,
     as.data.frame()
   exist_df <- exist_df[sig_order, , drop = FALSE]
 
-  # Handle samples one by one (by columns)
-  out <- purrr::pmap(
-    .l = list(
-      catalog = catalog_df,
-      flag_vector = exist_df,
-      sample = samp_order
-    ),
-    .f = optimize_exposure_in_one_sample,
-    sig_matrix = sig
-  )
+  if (method == "bt") {
+    if (use_parallel) {
+      oplan <- future::plan()
+      future::plan(set_future_strategy(), workers = future::availableCores())
+      on.exit(future::plan(oplan), add = TRUE)
+      out <- suppressMessages(
+        furrr::future_pmap(
+          .l = list(
+            catalog = catalog_df,
+            flag_vector = exist_df,
+            sample = samp_order
+          ),
+          .f = optimize_exposure_in_one_sample_bt,
+          sig_matrix = sig,
+          .progress = TRUE,
+          .options = furrr::furrr_options(seed = TRUE)
+        )
+      )
+    } else {
+      out <- purrr::pmap(
+        .l = list(
+          catalog = catalog_df,
+          flag_vector = exist_df,
+          sample = samp_order
+        ),
+        .f = optimize_exposure_in_one_sample_bt,
+        sig_matrix = sig
+      )
+    }
+  } else {
+    # Handle samples one by one (by columns)
+    if (use_parallel) {
+      oplan <- future::plan()
+      future::plan(set_future_strategy(), workers = future::availableCores())
+      on.exit(future::plan(oplan), add = TRUE)
+      out <- suppressMessages(
+        furrr::future_pmap(
+          .l = list(
+            catalog = catalog_df,
+            flag_vector = exist_df,
+            sample = samp_order
+          ),
+          .f = optimize_exposure_in_one_sample,
+          sig_matrix = sig,
+          .progress = TRUE,
+          .options = furrr::furrr_options(seed = TRUE)
+        )
+      )
+    } else {
+      out <- purrr::pmap(
+        .l = list(
+          catalog = catalog_df,
+          flag_vector = exist_df,
+          sample = samp_order
+        ),
+        .f = optimize_exposure_in_one_sample,
+        sig_matrix = sig
+      )
+    }
+  }
+
   out <- purrr::transpose(out)
   expo <- purrr::reduce(out$expo, cbind)
   rel_expo <- apply(expo, 2, function(x) x / sum(x, na.rm = TRUE))

@@ -73,7 +73,9 @@ bp_attribute_activity(
   input,
   sample_class = NULL,
   nmf_matrix = NULL,
-  return_class = c("matrix", "data.table")
+  method = c("bt", "stepwise"),
+  return_class = c("matrix", "data.table"),
+  use_parallel = FALSE
 )
 }
 \arguments{
@@ -157,6 +159,10 @@ of plot facet.}
 \item{sample_class}{a named string vector whose names are sample names
 and values are class labels (i.e. cancer subtype). If it is \code{NULL} (the default),
 treat all samples as one group.}
+
+\item{method}{one of 'bt' (use bootstrap exposure median) or
+'stepwise' (stepwise reduce and update signatures then do signature fitting
+with last signature sets).}
 
 \item{return_class}{string, 'matrix' or 'data.table'.}
 }

@@ -781,7 +781,60 @@ construct_sig_exist_matrix <- function(expo, sample_class = NULL, cutoff = 0.05)
   return(out)
 }
 
+## Bootstrap approach
+optimize_exposure_in_one_sample_bt <- function(catalog,
+                                               flag_vector, # a set of 1L or 2L
+                                               sample,
+                                               sig_matrix) {
+  force(flag_vector)
+  expo2 <- vector("numeric", length(flag_vector))
+  flag1 <- which(flag_vector == 1L)
 
+  catalog_mat <- matrix(
+    catalog,
+    ncol = 1,
+    dimnames = list(rownames(sig_matrix), sample)
+  )
+
+  message("Processing sample: ", sample)
+  out <- sig_fit_bootstrap(
+    catalog_mat,
+    sig_matrix[, flag1, drop = FALSE],
+    n = 100,
+    type = "absolute"
+  )
+
+  # Use median
+  expo <- rowMedians(out$expo, na.rm = TRUE)
+  sim <- median(out$cosine, na.rm = TRUE)
+
+  # set exposures of a signature to zero if more than 5% of
+  #          the bootstrapped exposure values (empirical P = 0.05) are
+  #          below the threshold of 5% of total mutations in the sample.
+  th <- sum(catalog) * 0.05
+  reset_idx <- apply(out$expo, 1, function(x) {
+    mean(x < th, na.rm = TRUE) > 0.05
+  })
+
+  if (any(reset_idx)) {
+    expo[reset_idx] <- 0
+  }
+
+  expo2[flag1] <- expo
+  expo <- matrix(
+    expo2,
+    ncol = 1,
+    dimnames = list(colnames(sig_matrix), sample)
+  )
+
+  list(
+    expo = expo,
+    similarity = sim
+  )
+}
+
+
+## Stepwise approach
 optimize_exposure_in_one_sample <- function(catalog,
                                             flag_vector, # a set of 1L or 2L
                                             sample,
