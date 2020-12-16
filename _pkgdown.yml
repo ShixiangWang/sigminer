@@ -16,6 +16,7 @@ reference:
     - read_copynumber_seqz
     - read_maf
     - read_vcf
+    - read_xena_variants
     - CopyNumber-class
     - MAF-class
     - subset.CopyNumber

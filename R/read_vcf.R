@@ -1,4 +1,4 @@
-#' Read VCF files as MAF object
+#' Read VCF Files as MAF Object
 #'
 #' @param vcfs VCF file paths.
 #' @param samples sample names for VCF files.
@@ -97,5 +97,74 @@ read_vcf <- function(vcfs, samples = NULL, genome_build = c("hg19", "hg38"), kee
     isTCGA = FALSE,
     vc_nonSyn = "Unknown",
     verbose = verbose
+  )
+}
+
+#' Read UCSC Xena Variant Format Data as MAF Object
+#'
+#' @param path a path to variant file.
+#'
+#' @return a `MAF` object.
+#' @export
+#'
+#' @examples
+#' if (requireNamespace("UCSCXenaTools")) {
+#'   library(UCSCXenaTools)
+#'   options(use_hiplot = TRUE)
+#'   example_file <- XenaGenerate(subset = XenaDatasets == "mc3/ACC_mc3.txt") %>%
+#'     XenaQuery() %>%
+#'     XenaDownload()
+#'   x <- read_xena_variants(example_file$destfiles)
+#'   x@data
+#'   y <- sig_tally(x)
+#'   y
+#' }
+#' @testexamples
+#' if (requireNamespace("UCSCXenaTools")) {
+#'   expect_is(y, "list")
+#' }
+read_xena_variants <- function(path) {
+  dt <- data.table::fread(path)
+
+  detect_name <- function(x, y, z) {
+    if (x %in% z) x else y
+  }
+
+  data.table::setnames(
+    dt,
+    old = c(detect_name("Sample_ID", "sample", colnames(dt)),
+            "gene",
+            detect_name("chrom", "chr", colnames(dt)),
+            "start", "end",
+            detect_name("ref", "reference", colnames(dt)),
+            "alt"),
+    new = c("Tumor_Sample_Barcode", "Hugo_Symbol", "Chromosome",
+            "Start_Position", "End_Position", "Reference_Allele", "Tumor_Seq_Allele2"))
+
+  dt$Variant_Type <- dplyr::case_when(
+    nchar(dt$Reference_Allele) == 1L & nchar(dt$Tumor_Seq_Allele2) == 1L ~ "SNP",
+    nchar(dt$Reference_Allele) < nchar(dt$Tumor_Seq_Allele2) ~ "INS",
+    nchar(dt$Reference_Allele) > nchar(dt$Tumor_Seq_Allele2) ~ "DEL",
+    nchar(dt$Reference_Allele) == 2L & nchar(dt$Tumor_Seq_Allele2) == 2L ~ "DNP",
+    nchar(dt$Reference_Allele) == 3L & nchar(dt$Tumor_Seq_Allele2) == 3L ~ "TNP",
+    TRUE ~ "Unknown"
+  )
+  dt$Variant_Classification <- "Unknown"
+  dt$Hugo_Symbol <- "Unknown"
+
+  maftools::read.maf(
+    dt,
+    clinicalData = NULL,
+    removeDuplicatedVariants = TRUE,
+    useAll = TRUE,
+    gisticAllLesionsFile = NULL,
+    gisticAmpGenesFile = NULL,
+    gisticDelGenesFile = NULL,
+    gisticScoresFile = NULL,
+    cnLevel = "all",
+    cnTable = NULL,
+    isTCGA = FALSE,
+    vc_nonSyn = "Unknown",
+    verbose = FALSE
   )
 }

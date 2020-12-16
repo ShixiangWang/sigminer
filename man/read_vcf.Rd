@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_vcf.R
 \name{read_vcf}
 \alias{read_vcf}
-\title{Read VCF files as MAF object}
+\title{Read VCF Files as MAF Object}
 \usage{
 read_vcf(
   vcfs,
@@ -27,7 +27,7 @@ read_vcf(
 a \link{MAF}.
 }
 \description{
-Read VCF files as MAF object
+Read VCF Files as MAF Object
 }
 \examples{
 vcfs <- list.files(system.file("extdata", package = "sigminer"), "*.vcf", full.names = TRUE)
