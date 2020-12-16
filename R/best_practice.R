@@ -873,6 +873,10 @@ bp_show_survey <- function(obj,
 #' @param method one of 'bt' (use bootstrap exposure median) or
 #' 'stepwise' (stepwise reduce and update signatures then do signature fitting
 #' with last signature sets).
+#' @param bt_use_prop this parameter is only used for `bt` method to reset
+#' low contributing signature activity (relative activity `<0.01`). If `TRUE`,
+#' use empirical P value calculation way (i.e. proportion, used by reference `#2`),
+#' otherwise a `t.test` is applied.
 #' @inheritParams sig_fit
 #' @inheritParams sig_fit_bootstrap_batch
 #' @rdname bp
@@ -881,10 +885,16 @@ bp_attribute_activity <- function(input,
                                   sample_class = NULL,
                                   nmf_matrix = NULL,
                                   method = c("bt", "stepwise"),
+                                  bt_use_prop = FALSE,
                                   return_class = c("matrix", "data.table"),
                                   use_parallel = FALSE) {
   # logical for bt: get median exposure value from signature fitting,
-  #          we set exposures of a signature to zero if more than 5% of
+  #          we set exposures of a signature to zero if
+  #          (1) bootstrapped exposure distribution is significantly less
+  #              than the threshold of 1% of total mutations with t.test.
+  #              If a t.test is impractical, then (2) is applied.
+  #              In common sense, program will never run (2).
+  #          (2) more than 5% of
   #          the bootstrapped exposure values (empirical P = 0.05) are
   #          below the threshold of 1% of total mutations in the sample.
   # logical for stepwise: excludes class specific signatures if it contributes <0.01 similarity
@@ -980,6 +990,7 @@ bp_attribute_activity <- function(input,
           ),
           .f = optimize_exposure_in_one_sample_bt,
           sig_matrix = sig,
+          bt_use_prop = bt_use_prop,
           .progress = TRUE,
           .options = furrr::furrr_options(seed = TRUE)
         )
@@ -992,7 +1003,8 @@ bp_attribute_activity <- function(input,
           sample = samp_order
         ),
         .f = optimize_exposure_in_one_sample_bt,
-        sig_matrix = sig
+        sig_matrix = sig,
+        bt_use_prop = bt_use_prop
       )
     }
   } else {

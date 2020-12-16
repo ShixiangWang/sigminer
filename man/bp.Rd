@@ -74,6 +74,7 @@ bp_attribute_activity(
   sample_class = NULL,
   nmf_matrix = NULL,
   method = c("bt", "stepwise"),
+  bt_use_prop = FALSE,
   return_class = c("matrix", "data.table"),
   use_parallel = FALSE
 )
@@ -163,6 +164,11 @@ treat all samples as one group.}
 \item{method}{one of 'bt' (use bootstrap exposure median) or
 'stepwise' (stepwise reduce and update signatures then do signature fitting
 with last signature sets).}
+
+\item{bt_use_prop}{this parameter is only used for \code{bt} method to reset
+low contributing signature activity (relative activity \verb{<0.01}). If \code{TRUE},
+use empirical P value calculation way (i.e. proportion, used by reference \verb{#2}),
+otherwise a \code{t.test} is applied.}
 
 \item{return_class}{string, 'matrix' or 'data.table'.}
 

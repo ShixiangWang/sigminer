@@ -785,7 +785,8 @@ construct_sig_exist_matrix <- function(expo, sample_class = NULL, cutoff = 0.05)
 optimize_exposure_in_one_sample_bt <- function(catalog,
                                                flag_vector, # a set of 1L or 2L
                                                sample,
-                                               sig_matrix) {
+                                               sig_matrix,
+                                               bt_use_prop = FALSE) {
   force(flag_vector)
   expo2 <- vector("numeric", length(flag_vector))
   flag1 <- which(flag_vector == 1L)
@@ -808,9 +809,21 @@ optimize_exposure_in_one_sample_bt <- function(catalog,
   sim <- median(out$cosine, na.rm = TRUE)
 
   th <- sum(catalog) * 0.01
-  reset_idx <- apply(out$expo, 1, function(x) {
-    mean(x < th, na.rm = TRUE) > 0.05
-  })
+  reset_idx <- if (bt_use_prop) {
+    apply(out$expo, 1, function(x) {
+      mean(x < th, na.rm = TRUE) > 0.05
+    })
+  } else {
+    apply(out$expo, 1, function(x) {
+      p <- my.t.test.p.value(x, mu = th, alternative = "greater")
+      if (is.na(p)) {
+        message("NA result detected from t.test, use empirical p value (proportion).")
+        p <- mean(x < th, na.rm = TRUE)
+      }
+
+      p > 0.05
+    })
+  }
 
   if (any(reset_idx)) {
     expo[reset_idx] <- 0

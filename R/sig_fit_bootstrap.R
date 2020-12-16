@@ -263,7 +263,7 @@ bootstrap_p_value <- function(x, y) {
       p <- my.t.test.p.value(xi, mu = yi, alternative = "greater")
       if (is.na(p)) {
         send_warning("NA result detected from t.test, reporting proportion as p value.")
-        p <- mean(xi <= yi)
+        p <- mean(xi < yi, na.rm = TRUE)
       }
       p
     })
