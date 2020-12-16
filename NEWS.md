@@ -16,6 +16,7 @@ no contribution of a component in all samples.
 
 - Added functions start with `bp_` which are combined to provide a best practice for extracting
 signatures in cancer researches. See more details, run `?bp` in your R console.
+- `get_sig_rec_similarity()` for getting reconstructed profile similarity for `Signature` object (#293).
 
 ## DEPRECATED
 

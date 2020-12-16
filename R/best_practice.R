@@ -16,6 +16,7 @@
 #' - `bp_get_sig_obj()` for get a (list of) `Signature` object which is common
 #' used in **sigminer** for analysis and visualization.
 #' - `bp_attribute_activity()` for optimizing signature activities (exposures).
+#' NOTE: the activities from extraction step may be better!
 #' You can also use [sig_extract] to get optimal NMF result from multiple NMF runs.
 #' Besides, you can use [sig_fit] to quantify exposures based on signatures extracted
 #' from `bp_extract_signatures()`.
@@ -137,6 +138,10 @@
 #' # Just pick up the solution you want
 #' obj_s8 <- bp_get_sig_obj(e1, 8)
 #'
+#' # Track the reconstructed profile similarity
+#' rec_sim <- get_sig_rec_similarity(obj_s8, t(simulated_catalogs$set1))
+#' rec_sim
+#'
 #' # After extraction, you can assign the signatures
 #' # to reference COSMIC signatures
 #' # More see ?get_sig_similarity
@@ -148,9 +153,8 @@
 #'
 #' # You already got the activities of signatures
 #' # in obj_suggested, however, you can still
-#' # try to optimize the result by removing a signature
-#' # in a sample if it contributes <0.01 similarity
-#' # For more controls, see its documentation
+#' # try to optimize the result.
+#' # NOTE: the optimization step may not truly optimize the result!
 #' expo <- bp_attribute_activity(e1, return_class = "data.table")
 #' expo$abs_activity
 #'
@@ -186,6 +190,7 @@
 #' expect_is(obj_suggested, "Signature")
 #' expect_is(obj_s8, "Signature")
 #' expect_is(sim, "list")
+#' expect_is(rec_sim, "data.table")
 #' expect_is(expo, "list")
 #' expect_is(rank_score, "data.frame")
 #' expect_is(stats, "list")

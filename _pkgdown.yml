@@ -86,6 +86,7 @@ reference:
     desc: Analyze signatures and output the result to visualization.
     contents:
     - get_sig_similarity
+    - get_sig_rec_similarity
     - get_sig_exposure
     - get_sig_feature_association
     - get_tidy_association

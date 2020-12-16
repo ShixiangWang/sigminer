@@ -59,6 +59,7 @@ for more explanation.
 bp_get_sig_obj() for get a (list of) Signature object which is common
 used in sigminer for analysis and visualization.
 bp_attribute_activity() for optimizing signature activities (exposures).
+NOTE: the activities from extraction step may be better!
 You can also use sig_extract to get optimal NMF result from multiple NMF runs.
 Besides, you can use sig_fit to quantify exposures based on signatures extracted
 from bp_extract_signatures().
@@ -164,6 +165,7 @@ for more explanation.</p></li>
 <li><p><code>bp_get_sig_obj()</code> for get a (list of) <code>Signature</code> object which is common
 used in <strong>sigminer</strong> for analysis and visualization.</p></li>
 <li><p><code>bp_attribute_activity()</code> for optimizing signature activities (exposures).
+NOTE: the activities from extraction step may be better!
 You can also use <a href='sig_extract.html'>sig_extract</a> to get optimal NMF result from multiple NMF runs.
 Besides, you can use <a href='sig_fit.html'>sig_fit</a> to quantify exposures based on signatures extracted
 from <code>bp_extract_signatures()</code>.</p></li>
@@ -492,6 +494,10 @@ indicates if the signature profiles extracted from different NMF runs are simila
 <span class='co'># Just pick up the solution you want</span>
 <span class='va'>obj_s8</span> <span class='op'>&lt;-</span> <span class='fu'>bp_get_sig_obj</span><span class='op'>(</span><span class='va'>e1</span>, <span class='fl'>8</span><span class='op'>)</span>
 
+<span class='co'># Track the reconstructed profile similarity</span>
+<span class='va'>rec_sim</span> <span class='op'>&lt;-</span> <span class='fu'><a href='get_sig_rec_similarity.html'>get_sig_rec_similarity</a></span><span class='op'>(</span><span class='va'>obj_s8</span>, <span class='fu'><a href='https://rdrr.io/r/base/t.html'>t</a></span><span class='op'>(</span><span class='va'>simulated_catalogs</span><span class='op'>$</span><span class='va'>set1</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>rec_sim</span>
+
 <span class='co'># After extraction, you can assign the signatures</span>
 <span class='co'># to reference COSMIC signatures</span>
 <span class='co'># More see ?get_sig_similarity</span>
@@ -503,9 +509,8 @@ indicates if the signature profiles extracted from different NMF runs are simila
 
 <span class='co'># You already got the activities of signatures</span>
 <span class='co'># in obj_suggested, however, you can still</span>
-<span class='co'># try to optimize the result by removing a signature</span>
-<span class='co'># in a sample if it contributes &lt;0.01 similarity</span>
-<span class='co'># For more controls, see its documentation</span>
+<span class='co'># try to optimize the result.</span>
+<span class='co'># NOTE: the optimization step may not truly optimize the result!</span>
 <span class='va'>expo</span> <span class='op'>&lt;-</span> <span class='fu'>bp_attribute_activity</span><span class='op'>(</span><span class='va'>e1</span>, return_class <span class='op'>=</span> <span class='st'>"data.table"</span><span class='op'>)</span>
 <span class='va'>expo</span><span class='op'>$</span><span class='va'>abs_activity</span>
 
