@@ -4,6 +4,7 @@
 
 ## ENHANCEMENTS
 
+- A new option `cut_p_value` is added to `show_group_enrichment()` to cut continous p values as binned regions.
 - A Python backend for `sig_extract()` is provided.
 - User now can directly use `sig_extract()` and `sig_auto_extract()` instead of loading NMF package firstly.
 - Added benchmark results for different extraction approaches in README.
