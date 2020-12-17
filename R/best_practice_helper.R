@@ -787,6 +787,7 @@ optimize_exposure_in_one_sample_bt <- function(catalog,
                                                sample,
                                                sig_matrix,
                                                bt_use_prop = FALSE) {
+  on.exit(invisible(gc()), add = TRUE)
   force(flag_vector)
   expo2 <- vector("numeric", length(flag_vector))
   flag1 <- which(flag_vector == 1L)
@@ -848,6 +849,7 @@ optimize_exposure_in_one_sample <- function(catalog,
                                             flag_vector, # a set of 1L or 2L
                                             sample,
                                             sig_matrix) {
+  on.exit(invisible(gc()), add = TRUE)
   force(flag_vector)
   flag1_bk <- flag1 <- which(flag_vector == 1L)
   flag2 <- which(flag_vector == 2L)
