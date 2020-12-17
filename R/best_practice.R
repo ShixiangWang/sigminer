@@ -975,6 +975,7 @@ bp_attribute_activity <- function(input,
   if (!dir.exists(act_tmp_dir)) {
     dir.create(act_tmp_dir, recursive = TRUE)
   }
+  message("Set cache dir: ", act_tmp_dir)
 
   if (use_parallel) {
     oplan <- future::plan()
