@@ -76,7 +76,8 @@ bp_attribute_activity(
   method = c("bt", "stepwise"),
   bt_use_prop = FALSE,
   return_class = c("matrix", "data.table"),
-  use_parallel = FALSE
+  use_parallel = FALSE,
+  cache_dir = file.path(tempdir(), "sigminer_attribute_activity")
 )
 }
 \arguments{
@@ -113,8 +114,7 @@ exposure by bootstrapping technique.}
 
 \item{only_core_stats}{if \code{TRUE}, only calculate the core stats for signatures and samples.}
 
-\item{cache_dir}{a directory for storing intermediate result, also avoid
-repeated computation for same data.}
+\item{cache_dir}{a directory for keep temp result files.}
 
 \item{keep_cache}{default is \code{FALSE}, if \code{TRUE}, keep cache data.
 For small input data, it is not necessary.}

@@ -786,11 +786,14 @@ optimize_exposure_in_one_sample_bt <- function(catalog,
                                                flag_vector, # a set of 1L or 2L
                                                sample,
                                                sig_matrix,
+                                               tmp_dir,
                                                bt_use_prop = FALSE) {
   on.exit(invisible(gc()), add = TRUE)
   force(flag_vector)
   expo2 <- vector("numeric", length(flag_vector))
   flag1 <- which(flag_vector == 1L)
+
+  message("Handling sample: ", sample)
 
   catalog_mat <- matrix(
     catalog,
@@ -831,16 +834,22 @@ optimize_exposure_in_one_sample_bt <- function(catalog,
   }
 
   expo2[flag1] <- expo
-  expo <- matrix(
-    expo2,
-    ncol = 1,
-    dimnames = list(colnames(sig_matrix), sample)
-  )
 
-  list(
-    expo = expo,
-    similarity = sim
+  tmpf_expo <- file.path(
+    tmp_dir,
+    paste0(sample, "_expo.rds")
   )
+  message("Save expo result to temp file ", tmpf_expo)
+  saveRDS(expo2, file = tmpf_expo)
+
+  tmpf_sim <- file.path(
+    tmp_dir,
+    paste0(sample, "_sim.rds")
+  )
+  message("Save similarity result to temp file ", tmpf_sim)
+  saveRDS(sim, file = tmpf_sim)
+
+  NULL
 }
 
 
@@ -848,7 +857,8 @@ optimize_exposure_in_one_sample_bt <- function(catalog,
 optimize_exposure_in_one_sample <- function(catalog,
                                             flag_vector, # a set of 1L or 2L
                                             sample,
-                                            sig_matrix) {
+                                            sig_matrix,
+                                            tmp_dir) {
   on.exit(invisible(gc()), add = TRUE)
   force(flag_vector)
   flag1_bk <- flag1 <- which(flag_vector == 1L)
@@ -921,15 +931,22 @@ optimize_exposure_in_one_sample <- function(catalog,
     flag1 <- flag1_bk
   }
   expo[flag1] <- baseline$expo[, 1]
-  expo <- matrix(
-    expo,
-    ncol = 1,
-    dimnames = list(colnames(sig_matrix), sample)
+
+  tmpf_expo <- file.path(
+    tmp_dir,
+    paste0(sample, "_expo.rds")
   )
-  list(
-    expo = expo,
-    similarity = baseline$sim
+  message("Save expo result to temp file ", tmpf_expo)
+  saveRDS(expo, file = tmpf_expo)
+
+  tmpf_sim <- file.path(
+    tmp_dir,
+    paste0(sample, "_sim.rds")
   )
+  message("Save similarity result to temp file ", tmpf_sim)
+  saveRDS(baseline$sim, file = tmpf_sim)
+
+  NULL
 }
 
 .get_one_catalog_similarity <- function(catalog_mat, flag, sig_matrix,

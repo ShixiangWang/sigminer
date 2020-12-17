@@ -877,6 +877,7 @@ bp_show_survey <- function(obj,
 #' low contributing signature activity (relative activity `<0.01`). If `TRUE`,
 #' use empirical P value calculation way (i.e. proportion, used by reference `#2`),
 #' otherwise a `t.test` is applied.
+#' @param cache_dir a directory for keep temp result files.
 #' @inheritParams sig_fit
 #' @inheritParams sig_fit_bootstrap_batch
 #' @rdname bp
@@ -887,7 +888,8 @@ bp_attribute_activity <- function(input,
                                   method = c("bt", "stepwise"),
                                   bt_use_prop = FALSE,
                                   return_class = c("matrix", "data.table"),
-                                  use_parallel = FALSE) {
+                                  use_parallel = FALSE,
+                                  cache_dir = file.path(tempdir(), "sigminer_attribute_activity")) {
   # logical for bt: get median exposure value from signature fitting,
   #          we set exposures of a signature to zero if
   #          (1) bootstrapped exposure distribution is significantly less
@@ -899,6 +901,8 @@ bp_attribute_activity <- function(input,
   #          below the threshold of 1% of total mutations in the sample.
   # logical for stepwise: excludes class specific signatures if it contributes <0.01 similarity
   #          while include global signatures if it add >0.05 similarity
+
+  set.seed(123456, kind = "L'Ecuyer-CMRG")
 
   method <- match.arg(method)
   return_class <- match.arg(return_class)
@@ -967,6 +971,11 @@ bp_attribute_activity <- function(input,
   exist_df <- as.data.frame(construct_sig_exist_matrix(expo, sample_class))
   exist_df <- exist_df[sig_order, samp_order, drop = FALSE]
 
+  act_tmp_dir <- cache_dir
+  if (!dir.exists(act_tmp_dir)) {
+    dir.create(act_tmp_dir, recursive = TRUE)
+  }
+
   if (use_parallel) {
     oplan <- future::plan()
     future::plan(set_future_strategy(),
@@ -981,7 +990,7 @@ bp_attribute_activity <- function(input,
 
   if (method == "bt") {
     if (use_parallel) {
-      out <- suppressMessages(
+      suppressMessages(
         furrr::future_pmap(
           .l = list(
             catalog = catalog_df,
@@ -990,13 +999,14 @@ bp_attribute_activity <- function(input,
           ),
           .f = optimize_exposure_in_one_sample_bt,
           sig_matrix = sig,
+          tmp_dir = act_tmp_dir,
           bt_use_prop = bt_use_prop,
           .progress = TRUE,
           .options = furrr::furrr_options(seed = TRUE)
         )
       )
     } else {
-      out <- purrr::pmap(
+      purrr::pmap(
         .l = list(
           catalog = catalog_df,
           flag_vector = exist_df,
@@ -1004,13 +1014,14 @@ bp_attribute_activity <- function(input,
         ),
         .f = optimize_exposure_in_one_sample_bt,
         sig_matrix = sig,
+        tmp_dir = act_tmp_dir,
         bt_use_prop = bt_use_prop
       )
     }
   } else {
     # Handle samples one by one (by columns)
     if (use_parallel) {
-      out <- suppressMessages(
+      suppressMessages(
         furrr::future_pmap(
           .l = list(
             catalog = catalog_df,
@@ -1019,27 +1030,47 @@ bp_attribute_activity <- function(input,
           ),
           .f = optimize_exposure_in_one_sample,
           sig_matrix = sig,
+          tmp_dir = act_tmp_dir,
           .progress = TRUE,
           .options = furrr::furrr_options(seed = TRUE)
         )
       )
     } else {
-      out <- purrr::pmap(
+      purrr::pmap(
         .l = list(
           catalog = catalog_df,
           flag_vector = exist_df,
           sample = samp_order
         ),
         .f = optimize_exposure_in_one_sample,
-        sig_matrix = sig
+        sig_matrix = sig,
+        tmp_dir = act_tmp_dir
       )
     }
   }
 
-  out <- purrr::transpose(out)
-  expo <- purrr::reduce(out$expo, cbind)
+  message()
+  message("Reading result files...")
+  expo_files <- file.path(
+    act_tmp_dir,
+    paste0(samp_order, "_expo.rds")
+  )
+  sim_files <- file.path(
+    act_tmp_dir,
+    paste0(samp_order, "_sim.rds")
+  )
+  expo <- purrr::map(expo_files, readRDS)
+  sim <- purrr::map_dbl(sim_files, readRDS)
+  expo <- purrr::reduce(expo, c)
+  expo <- matrix(expo, ncol = length(samp_order))
+  rownames(expo) <- sig_order
+  colnames(expo) <- samp_order
+
   rel_expo <- apply(expo, 2, function(x) x / sum(x, na.rm = TRUE))
-  sim <- purrr::reduce(out$similarity, c)
+
+  message("Removing cache files")
+  unlink(act_tmp_dir, recursive = TRUE)
+  message("Done.")
 
   if (return_class == "data.table") {
     expo <- .mat2dt(expo)
