@@ -681,12 +681,7 @@ bp_extract_signatures_iter <- function(nmf_matrix,
   }
 
   if (!keep_cache) {
-    signal <- unlink(cache_file_list, force = TRUE)
-    if (signal == 0L) {
-      message("Cache files deleted.")
-    } else {
-      warning("Cache files cannot be deleted.", immediate. = TRUE)
-    }
+    on.exit(unlink(cache_file_list, force = TRUE), add = TRUE)
   }
 
   message("Done.")
