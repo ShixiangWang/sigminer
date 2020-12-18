@@ -788,66 +788,71 @@ optimize_exposure_in_one_sample_bt <- function(catalog,
                                                sig_matrix,
                                                tmp_dir,
                                                bt_use_prop = FALSE) {
-  on.exit(invisible(gc()), add = TRUE)
-  force(flag_vector)
-  expo2 <- vector("numeric", length(flag_vector))
-  flag1 <- which(flag_vector == 1L)
-
-  message("Handling sample: ", sample)
-
-  catalog_mat <- matrix(
-    catalog,
-    ncol = 1,
-    dimnames = list(rownames(sig_matrix), sample)
-  )
-
-  out <- sig_fit_bootstrap(
-    catalog_mat,
-    sig_matrix[, flag1, drop = FALSE],
-    n = 100,
-    type = "absolute"
-  )
-
-  # Use median
-  expo <- rowMedians(out$expo, na.rm = TRUE)
-  sim <- median(out$cosine, na.rm = TRUE)
-
-  th <- sum(catalog) * 0.01
-  reset_idx <- if (bt_use_prop) {
-    apply(out$expo, 1, function(x) {
-      mean(x < th, na.rm = TRUE) > 0.05
-    })
-  } else {
-    apply(out$expo, 1, function(x) {
-      p <- my.t.test.p.value(x, mu = th, alternative = "greater")
-      if (is.na(p)) {
-        message("NA result detected from t.test, use empirical p value (proportion).")
-        p <- mean(x < th, na.rm = TRUE)
-      }
-
-      p > 0.05
-    })
-  }
-
-  if (any(reset_idx)) {
-    expo[reset_idx] <- 0
-  }
-
-  expo2[flag1] <- expo
-
   tmpf_expo <- file.path(
     tmp_dir,
     paste0(sample, "_expo.rds")
   )
-  message("Save expo result to temp file ", tmpf_expo)
-  saveRDS(expo2, file = tmpf_expo)
-
   tmpf_sim <- file.path(
     tmp_dir,
     paste0(sample, "_sim.rds")
   )
-  message("Save similarity result to temp file ", tmpf_sim)
-  saveRDS(sim, file = tmpf_sim)
+
+  if (all(file.exists(tmpf_expo), file.exists(tmpf_sim))) {
+    message("ALL result file exists, skipping...")
+  } else {
+    on.exit(invisible(gc()), add = TRUE)
+    force(flag_vector)
+    expo2 <- vector("numeric", length(flag_vector))
+    flag1 <- which(flag_vector == 1L)
+
+    message("Handling sample: ", sample)
+
+    catalog_mat <- matrix(
+      catalog,
+      ncol = 1,
+      dimnames = list(rownames(sig_matrix), sample)
+    )
+
+    out <- sig_fit_bootstrap(
+      catalog_mat,
+      sig_matrix[, flag1, drop = FALSE],
+      n = 100,
+      type = "absolute"
+    )
+
+    # Use median
+    expo <- rowMedians(out$expo, na.rm = TRUE)
+    sim <- median(out$cosine, na.rm = TRUE)
+
+    th <- sum(catalog) * 0.01
+    reset_idx <- if (bt_use_prop) {
+      apply(out$expo, 1, function(x) {
+        mean(x < th, na.rm = TRUE) > 0.05
+      })
+    } else {
+      apply(out$expo, 1, function(x) {
+        p <- my.t.test.p.value(x, mu = th, alternative = "greater")
+        if (is.na(p)) {
+          message("NA result detected from t.test, use empirical p value (proportion).")
+          p <- mean(x < th, na.rm = TRUE)
+        }
+
+        p > 0.05
+      })
+    }
+
+    if (any(reset_idx)) {
+      expo[reset_idx] <- 0
+    }
+
+    expo2[flag1] <- expo
+
+    message("Save expo result to temp file ", tmpf_expo)
+    saveRDS(expo2, file = tmpf_expo)
+
+    message("Save similarity result to temp file ", tmpf_sim)
+    saveRDS(sim, file = tmpf_sim)
+  }
 
   NULL
 }
@@ -859,92 +864,98 @@ optimize_exposure_in_one_sample <- function(catalog,
                                             sample,
                                             sig_matrix,
                                             tmp_dir) {
-  on.exit(invisible(gc()), add = TRUE)
-  force(flag_vector)
-  flag1_bk <- flag1 <- which(flag_vector == 1L)
-  flag2 <- which(flag_vector == 2L)
-
-  expo <- vector("numeric", length(flag_vector))
-  catalog_mat <- matrix(
-    catalog,
-    ncol = 1,
-    dimnames = list(rownames(sig_matrix), sample)
-  )
-
-  # 先处理得到一个 baseline similarity 值
-  message("Processing sample: ", sample)
-  message("\t getting baseline similarity.")
-  baseline <- .get_one_catalog_similarity(
-    catalog_mat, flag1, sig_matrix,
-    return_all = TRUE
-  )
-  message("\t\t", baseline$sim, " based on ", length(flag1), " signatures.")
-
-  # 先处理标记 1，如果相似性降低小于 0.01，移除
-  message("\t getting updated similarity by removing one signature in batch.")
-  sim_rm <- purrr::map_dbl(
-    flag1,
-    ~ .get_one_catalog_similarity(catalog_mat, setdiff(flag1, .), sig_matrix)
-  )
-
-  rm_id <- sim_rm - baseline$sim >= -0.01 ## 会不会出现全都可以扔掉？待观测
-
-  if (any(rm_id)) {
-    flag1 <- flag1[!rm_id]
-
-    if (length(flag1) > 0) {
-      baseline <- .get_one_catalog_similarity(
-        catalog_mat, flag1, sig_matrix,
-        return_all = TRUE
-      )
-      message("\t\t", baseline$sim, " with ", length(flag1), " signatures left.")
-    }
-  } else {
-    message("\t no signature need to be removed.")
-  }
-
-  # 然后再处理可能的标记 2，如果相似性增加大于 0.05，则加入
-  if (length(flag2) > 0) {
-    message("\t getting updated similarity by adding one global signature in batch.")
-    sim_add <- purrr::map_dbl(
-      flag2,
-      ~ .get_one_catalog_similarity(catalog_mat, c(flag1, .), sig_matrix)
-    )
-
-    add_id <- sim_add - baseline$sim > 0.05
-
-    if (any(add_id)) {
-      flag1 <- sort(c(flag1, flag2[add_id]))
-      baseline <- .get_one_catalog_similarity(
-        catalog_mat, flag1, sig_matrix,
-        return_all = TRUE
-      )
-      message("\t\t", baseline$sim, " with ", length(flag1), " signatures left.")
-    } else {
-      message("\t no global signature need to be added.")
-    }
-  }
-
-  # Output the result
-  if (length(flag1) == 0L) {
-    message("\t no signatures left in the whole procedure seems due to low similarity, just report baseline exposure.")
-    flag1 <- flag1_bk
-  }
-  expo[flag1] <- baseline$expo[, 1]
 
   tmpf_expo <- file.path(
     tmp_dir,
     paste0(sample, "_expo.rds")
   )
-  message("Save expo result to temp file ", tmpf_expo)
-  saveRDS(expo, file = tmpf_expo)
-
   tmpf_sim <- file.path(
     tmp_dir,
     paste0(sample, "_sim.rds")
   )
-  message("Save similarity result to temp file ", tmpf_sim)
-  saveRDS(baseline$sim, file = tmpf_sim)
+
+  if (all(file.exists(tmpf_expo), file.exists(tmpf_sim))) {
+    message("ALL result file exists, skipping...")
+  } else {
+    on.exit(invisible(gc()), add = TRUE)
+    force(flag_vector)
+    flag1_bk <- flag1 <- which(flag_vector == 1L)
+    flag2 <- which(flag_vector == 2L)
+
+    expo <- vector("numeric", length(flag_vector))
+    catalog_mat <- matrix(
+      catalog,
+      ncol = 1,
+      dimnames = list(rownames(sig_matrix), sample)
+    )
+
+    # 先处理得到一个 baseline similarity 值
+    message("Processing sample: ", sample)
+    message("\t getting baseline similarity.")
+    baseline <- .get_one_catalog_similarity(
+      catalog_mat, flag1, sig_matrix,
+      return_all = TRUE
+    )
+    message("\t\t", baseline$sim, " based on ", length(flag1), " signatures.")
+
+    # 先处理标记 1，如果相似性降低小于 0.01，移除
+    message("\t getting updated similarity by removing one signature in batch.")
+    sim_rm <- purrr::map_dbl(
+      flag1,
+      ~ .get_one_catalog_similarity(catalog_mat, setdiff(flag1, .), sig_matrix)
+    )
+
+    rm_id <- sim_rm - baseline$sim >= -0.01 ## 会不会出现全都可以扔掉？待观测
+
+    if (any(rm_id)) {
+      flag1 <- flag1[!rm_id]
+
+      if (length(flag1) > 0) {
+        baseline <- .get_one_catalog_similarity(
+          catalog_mat, flag1, sig_matrix,
+          return_all = TRUE
+        )
+        message("\t\t", baseline$sim, " with ", length(flag1), " signatures left.")
+      }
+    } else {
+      message("\t no signature need to be removed.")
+    }
+
+    # 然后再处理可能的标记 2，如果相似性增加大于 0.05，则加入
+    if (length(flag2) > 0) {
+      message("\t getting updated similarity by adding one global signature in batch.")
+      sim_add <- purrr::map_dbl(
+        flag2,
+        ~ .get_one_catalog_similarity(catalog_mat, c(flag1, .), sig_matrix)
+      )
+
+      add_id <- sim_add - baseline$sim > 0.05
+
+      if (any(add_id)) {
+        flag1 <- sort(c(flag1, flag2[add_id]))
+        baseline <- .get_one_catalog_similarity(
+          catalog_mat, flag1, sig_matrix,
+          return_all = TRUE
+        )
+        message("\t\t", baseline$sim, " with ", length(flag1), " signatures left.")
+      } else {
+        message("\t no global signature need to be added.")
+      }
+    }
+
+    # Output the result
+    if (length(flag1) == 0L) {
+      message("\t no signatures left in the whole procedure seems due to low similarity, just report baseline exposure.")
+      flag1 <- flag1_bk
+    }
+    expo[flag1] <- baseline$expo[, 1]
+
+    message("Save expo result to temp file ", tmpf_expo)
+    saveRDS(expo, file = tmpf_expo)
+
+    message("Save similarity result to temp file ", tmpf_sim)
+    saveRDS(baseline$sim, file = tmpf_sim)
+  }
 
   NULL
 }
