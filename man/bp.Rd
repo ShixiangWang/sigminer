@@ -77,7 +77,8 @@ bp_attribute_activity(
   bt_use_prop = FALSE,
   return_class = c("matrix", "data.table"),
   use_parallel = FALSE,
-  cache_dir = file.path(tempdir(), "sigminer_attribute_activity")
+  cache_dir = file.path(tempdir(), "sigminer_attribute_activity"),
+  keep_cache = FALSE
 )
 }
 \arguments{
@@ -116,8 +117,7 @@ exposure by bootstrapping technique.}
 
 \item{cache_dir}{a directory for keep temp result files.}
 
-\item{keep_cache}{default is \code{FALSE}, if \code{TRUE}, keep cache data.
-For small input data, it is not necessary.}
+\item{keep_cache}{if \code{TRUE}, keep cache results.}
 
 \item{pynmf}{if \code{TRUE}, use Python NMF driver \href{http://nimfa.biolab.si/index.html}{Nimfa}.
 The seed currently is not used by this implementation, so the only way to reproduce

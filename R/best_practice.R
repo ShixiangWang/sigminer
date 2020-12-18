@@ -877,6 +877,7 @@ bp_show_survey <- function(obj,
 #' use empirical P value calculation way (i.e. proportion, used by reference `#2`),
 #' otherwise a `t.test` is applied.
 #' @param cache_dir a directory for keep temp result files.
+#' @param keep_cache if `TRUE`, keep cache results.
 #' @inheritParams sig_fit
 #' @inheritParams sig_fit_bootstrap_batch
 #' @rdname bp
@@ -888,7 +889,8 @@ bp_attribute_activity <- function(input,
                                   bt_use_prop = FALSE,
                                   return_class = c("matrix", "data.table"),
                                   use_parallel = FALSE,
-                                  cache_dir = file.path(tempdir(), "sigminer_attribute_activity")) {
+                                  cache_dir = file.path(tempdir(), "sigminer_attribute_activity"),
+                                  keep_cache = FALSE) {
   # logical for bt: get median exposure value from signature fitting,
   #          we set exposures of a signature to zero if
   #          (1) bootstrapped exposure distribution is significantly less
@@ -1072,14 +1074,17 @@ bp_attribute_activity <- function(input,
 
   rel_expo <- apply(expo, 2, function(x) x / sum(x, na.rm = TRUE))
 
-  message("Removing cache files")
-  unlink(act_tmp_dir, recursive = TRUE)
-  message("Done.")
+  if (!keep_cache) {
+    message("Clean cache files when exits.")
+    on.exit(unlink(act_tmp_dir, recursive = TRUE, force = TRUE), add = TRUE)
+  }
 
   if (return_class == "data.table") {
     expo <- .mat2dt(expo)
     rel_expo <- .mat2dt(rel_expo)
   }
+
+  message("Done.")
 
   list(
     abs_activity = expo,
