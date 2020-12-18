@@ -462,7 +462,9 @@ bp_extract_signatures <- function(nmf_matrix,
         furrr::future_map(seq_len(n_bootstrap), call_nmf,
           cores = 1L,
           .progress = TRUE,
-          .options = furrr::furrr_options(seed = TRUE)
+          .options = furrr::furrr_options(
+            seed = TRUE,
+            stdout = FALSE)
         )
       } else {
         purrr::map(seq_len(n_bootstrap), call_nmf, cores = cores)
@@ -516,7 +518,9 @@ bp_extract_signatures <- function(nmf_matrix,
       report_integer_exposure = report_integer_exposure,
       only_core_stats = only_core_stats,
       .progress = TRUE,
-      .options = furrr::furrr_options(seed = seed)
+      .options = furrr::furrr_options(
+        seed = seed,
+        stdout = FALSE)
     )
   }
   send_success(
@@ -1003,7 +1007,9 @@ bp_attribute_activity <- function(input,
           tmp_dir = act_tmp_dir,
           bt_use_prop = bt_use_prop,
           .progress = TRUE,
-          .options = furrr::furrr_options(seed = TRUE)
+          .options = furrr::furrr_options(
+            seed = TRUE,
+            stdout = FALSE)
         )
       )
     } else {
@@ -1033,7 +1039,9 @@ bp_attribute_activity <- function(input,
           sig_matrix = sig,
           tmp_dir = act_tmp_dir,
           .progress = TRUE,
-          .options = furrr::furrr_options(seed = TRUE)
+          .options = furrr::furrr_options(
+            seed = TRUE,
+            stdout = FALSE)
         )
       )
     } else {

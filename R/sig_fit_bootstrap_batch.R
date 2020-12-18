@@ -144,7 +144,7 @@ sig_fit_bootstrap_batch <- function(catalogue_matrix,
     on.exit(future::plan(oplan), add = TRUE)
     bt_list <- furrr::future_map2(as.data.frame(catalogue_matrix), colnames(catalogue_matrix), call_bt,
       y = rownames(catalogue_matrix), methods = methods, n = n, ..., .progress = TRUE,
-      .options = furrr::furrr_options(seed = TRUE) # set options
+      .options = furrr::furrr_options(seed = TRUE, stdout = FALSE) # set options
     )
   } else {
     bt_list <- purrr::map2(as.data.frame(catalogue_matrix), colnames(catalogue_matrix), call_bt,
