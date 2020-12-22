@@ -11,8 +11,8 @@ show_group_enrichment(
   add_text_annotation = TRUE,
   fill_by_p_value = TRUE,
   cut_p_value = FALSE,
-  fill_scale = scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint
-    = ifelse(fill_by_p_value, 0, 1)),
+  fill_scale = scale_fill_gradient2(low = "#08A76B", mid = "white", high = "red",
+    midpoint = ifelse(fill_by_p_value, 0, 1)),
   ...
 )
 }

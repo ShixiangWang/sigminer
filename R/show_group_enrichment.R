@@ -27,7 +27,7 @@ show_group_enrichment <- function(df_enrich,
                                   fill_by_p_value = TRUE,
                                   cut_p_value = FALSE,
                                   fill_scale = scale_fill_gradient2(
-                                    low = "blue", mid = "white", high = "red",
+                                    low = "#08A76B", mid = "white", high = "red",
                                     midpoint = ifelse(fill_by_p_value, 0, 1)
                                   ),
                                   ...) {
@@ -100,7 +100,7 @@ plot_enrichment_simple <- function(data, x, y, fill_scale,
       scale_fill_manual(
         drop = FALSE,
         na.value = "grey",
-        values = c("blue", "lightblue", "white", "orange", "red")
+        values = c("#08A76B", "#98FF97", "white", "orange", "red")
       )
   } else {
     p <- p +
@@ -121,7 +121,8 @@ plot_enrichment_simple <- function(data, x, y, fill_scale,
     p <- p +
       geom_text(mapping = aes_string(
         label = if (fill_by_p_value) "measure_observed" else "p_value"
-      ))
+      ),
+      size = 3)
   }
 
   p
