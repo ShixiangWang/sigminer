@@ -3,7 +3,7 @@
 #
 # NMF::nmf - Input matrix x contains at least one null or NA-filled row
 # Just add a small positive values
-check_nmf_matrix <- function(x, threshold = 1e-20) {
+check_nmf_matrix <- function(x, threshold = 1e-12) {
   x + threshold
 }
 
