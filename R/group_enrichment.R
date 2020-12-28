@@ -9,6 +9,7 @@
 #' @param enrich_vars character vector specifying measure variables to be compared.
 #' If variable is not numeric, only binary cases are accepted in the form of
 #' `TRUE/FALSE` or `P/N` (P for positive cases and N for negative cases).
+#' Of note, `NA` values set to negative cases.
 #' @param cross logical, default is `TRUE`, combine all situations provided by
 #' `grp_vars` and `enrich_vars`. For examples, `c('A', 'B')` and `c('C', 'D')`
 #' will construct 4 combinations(i.e. "AC", "AD", "BC" and "BD"). A variable can
@@ -124,16 +125,16 @@ enrich_one <- function(x, y, df, method = "t.test") {
     # t.test or wilcox.test
     cmp <- purrr::map_df(grps, function(z, x, y, df, method = "t.test") {
       message("Handing pair ", x, ":", y, " - group: ", z)
-      df$Group <- data.table::fifelse(df[[x]] %in% z, z, "Other", na = "Other")
-      df$Group <- factor(x = df$Group, levels = c(z, "Other"))
-      df$Cval <- df[[y]]
+      df$.Group <- data.table::fifelse(df[[x]] %in% z, z, ".Other", na = ".Other")
+      df$.Group <- factor(x = df$.Group, levels = c(z, ".Other"))
+      df$.Cval <- df[[y]]
 
       # Only keep rows with valid values
-      df <- df[, c("Group", "Cval")][is.finite(df$Cval), ]
+      df <- df[, c(".Group", ".Cval")][is.finite(df$.Cval), ]
 
       .test <- if (method == "t.test") stats::t.test else stats::wilcox.test
       cmp <- tryCatch(
-        .test(Cval ~ Group, data = df),
+        .test(.Cval ~ .Group, data = df),
         error = function(e) {
           message("  An error occur when testing, it will be skipped. Info:")
           message("    ", e$message)
@@ -141,12 +142,12 @@ enrich_one <- function(x, y, df, method = "t.test") {
         }
       )
 
-      data_range <- range(df$Cval)
+      data_range <- range(df$.Cval)
       grp_sum <- df %>%
-        dplyr::group_by(.data$Group) %>%
+        dplyr::group_by(.data$.Group) %>%
         dplyr::summarise(
           n = dplyr::n(),
-          measure = mean(.data$Cval),
+          measure = mean(.data$.Cval),
           .groups = "drop"
         ) %>%
         dplyr::mutate(
@@ -186,6 +187,7 @@ enrich_one <- function(x, y, df, method = "t.test") {
       if (!all(na.omit(df[[y]]) %in% c("P", "N"))) {
         stop("When input is string vector, just 'P' and 'N' are supported!")
       }
+      df$Ctype <- df[[y]]
     } else {
       stop("Unsupported input for non-numeric variable, convert it to P/N or TRUE/FALSE!")
     }
@@ -193,11 +195,11 @@ enrich_one <- function(x, y, df, method = "t.test") {
     cmp <- purrr::map_df(grps, function(z, x, y, df) {
       message("Handing pair ", x, ":", y, " - group: ", z)
 
-      df$Group <- data.table::fifelse(df[[x]] %in% z, z, "Other", na = "Other")
-      df$Group <- factor(x = df$Group, levels = c(z, "Other"))
-      df$Ctype <- factor(x = df[[y]], levels = c("P", "N"))
-      df.tbl <- with(df, table(Group, Ctype))
-      df.tbl <- df.tbl[c(z, "Other"), c("P", "N")]
+      df$.Group <- data.table::fifelse(df[[x]] %in% z, z, ".Other", na = ".Other")
+      df$.Group <- factor(x = df$.Group, levels = c(z, ".Other"))
+      df$Ctype <- factor(x = df$Ctype, levels = c("P", "N"))
+      df.tbl <- with(df, table(.Group, Ctype))
+      df.tbl <- df.tbl[c(z, ".Other"), c("P", "N")]
 
       cmp <- tryCatch(
         fisher.test(df.tbl),

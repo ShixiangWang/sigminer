@@ -20,7 +20,8 @@ into subgroups (at least 2 subgroups, otherwise this variable will be skipped).}
 
 \item{enrich_vars}{character vector specifying measure variables to be compared.
 If variable is not numeric, only binary cases are accepted in the form of
-\code{TRUE/FALSE} or \code{P/N} (P for positive cases and N for negative cases).}
+\code{TRUE/FALSE} or \code{P/N} (P for positive cases and N for negative cases).
+Of note, \code{NA} values set to negative cases.}
 
 \item{cross}{logical, default is \code{TRUE}, combine all situations provided by
 \code{grp_vars} and \code{enrich_vars}. For examples, \code{c('A', 'B')} and \code{c('C', 'D')}
