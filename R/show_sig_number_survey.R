@@ -114,7 +114,7 @@ show_sig_number_survey <- function(object, x = "rank",
       scale_x_continuous(breaks = unique(survey[[x]]), labels = unique(survey[[x]])) +
       scale_y_continuous(name = left_name) +
       cowplot::theme_cowplot() +
-      xlab("Number of signature")
+      xlab("Total signatures")
   } else {
     # Show two-axis plot
     survey$new_right <- norm2rg(

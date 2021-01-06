@@ -2,7 +2,7 @@
 
 context("File R/best_practice.R: @testexamples")
 
-test_that("[unknown alias] @ L197", {
+test_that("[unknown alias] @ L204", {
   
   data("simulated_catalogs")
   
@@ -28,6 +28,10 @@ test_that("[unknown alias] @ L197", {
   # You can also exclude plotting and highlighting the score
   p2 <- bp_show_survey(e1, add_score = FALSE)
   p2
+  
+  # You can also plot a simplified version
+  p3 <- bp_show_survey2(e1)
+  p3
   
   # Obtain the suggested solution from extraction result
   obj_suggested <- bp_get_sig_obj(e1, e1$suggested)
@@ -83,6 +87,7 @@ test_that("[unknown alias] @ L197", {
   expect_is(e1, "ExtractionResult")
   expect_is(e2, "ExtractionResultList")
   expect_is(p1, "ggplot")
+  expect_is(p2, "ggplot")
   expect_is(p2, "ggplot")
   expect_is(obj_suggested, "Signature")
   expect_is(obj_s8, "Signature")

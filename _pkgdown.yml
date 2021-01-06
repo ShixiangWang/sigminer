@@ -39,6 +39,7 @@ reference:
     - bp_get_sig_obj
     - bp_get_stats
     - bp_show_survey
+    - bp_show_survey2
   - title: Core pipeline 2 - signature exposure fitting and optimization
     desc: Quantify exposure in at least one sample with reference signatures. It can also be used to optimize signature exposure from pipeline 1 and analyze exposure instability.
     contents:

@@ -706,7 +706,7 @@ rank_solutions <- function(stats) {
     "exposure_positive_correlation", "signature_similarity_within_cluster"
   )
   send_info(
-    "Calculating rank score for the measures: ",
+    "Calculating integrated rank score based on the measures: ",
     paste(measures, collapse = ", ")
   )
   weights <- c(0.25, 0.2, 0.2, 0.1, 0.25)

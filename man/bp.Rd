@@ -8,6 +8,7 @@
 \alias{bp_get_sig_obj}
 \alias{bp_get_stats}
 \alias{bp_get_rank_score}
+\alias{bp_show_survey2}
 \alias{bp_show_survey}
 \alias{bp_attribute_activity}
 \title{A Best Practice for Signature Extraction and Exposure (Activity) Attribution}
@@ -61,6 +62,20 @@ bp_get_sig_obj(obj, signum = NULL)
 bp_get_stats(obj)
 
 bp_get_rank_score(obj)
+
+bp_show_survey2(
+  obj,
+  x = "signature_number",
+  left_y = "silhouette",
+  right_y = "L2_error",
+  left_name = left_y,
+  right_name = right_y,
+  left_color = "black",
+  right_color = "red",
+  left_shape = 16,
+  right_shape = 18,
+  shape_size = 4
+)
 
 bp_show_survey(
   obj,
@@ -147,6 +162,24 @@ if input is a list of \code{Signature} objects.}
 \item{signum}{a integer vector to extract the corresponding \code{Signature} object(s).
 If it is \code{NULL} (default), all will be returned.}
 
+\item{left_y}{column name for left y axis.}
+
+\item{right_y}{column name for right y axis.}
+
+\item{left_name}{label name for left y axis.}
+
+\item{right_name}{label name for right y axis.}
+
+\item{left_color}{color for left axis.}
+
+\item{right_color}{color for right axis.}
+
+\item{left_shape}{shape setting.}
+
+\item{right_shape}{shape setting.}
+
+\item{shape_size}{shape setting.}
+
 \item{add_score}{if \code{FALSE}, don't show score and label optimal points by
 rank score.}
 
@@ -189,6 +222,8 @@ signature numbers to help user select optimal signature number.
 At default, an aggregated score (named score) is generated from 5 measures to
 suggest the best solution. See section "Measure Explanation in Survey plot"
 for more explanation.
+\item \code{bp_show_survey2()} for showing simplified signature number survey like
+\code{\link[=show_sig_number_survey]{show_sig_number_survey()}}.
 \item \code{bp_get_sig_obj()} for get a (list of) \code{Signature} object which is common
 used in \strong{sigminer} for analysis and visualization.
 \item \code{bp_attribute_activity()} for optimizing signature activities (exposures).
@@ -272,6 +307,10 @@ p1
 # You can also exclude plotting and highlighting the score
 p2 <- bp_show_survey(e1, add_score = FALSE)
 p2
+
+# You can also plot a simplified version
+p3 <- bp_show_survey2(e1)
+p3
 
 # Obtain the suggested solution from extraction result
 obj_suggested <- bp_get_sig_obj(e1, e1$suggested)

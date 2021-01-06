@@ -13,6 +13,8 @@
 #' At default, an aggregated score (named score) is generated from 5 measures to
 #' suggest the best solution. See section "Measure Explanation in Survey plot"
 #' for more explanation.
+#' - `bp_show_survey2()` for showing simplified signature number survey like
+#' [show_sig_number_survey()].
 #' - `bp_get_sig_obj()` for get a (list of) `Signature` object which is common
 #' used in **sigminer** for analysis and visualization.
 #' - `bp_attribute_activity()` for optimizing signature activities (exposures).
@@ -131,6 +133,10 @@
 #' p2 <- bp_show_survey(e1, add_score = FALSE)
 #' p2
 #'
+#' # You can also plot a simplified version
+#' p3 <- bp_show_survey2(e1)
+#' p3
+#'
 #' # Obtain the suggested solution from extraction result
 #' obj_suggested <- bp_get_sig_obj(e1, e1$suggested)
 #' obj_suggested
@@ -186,6 +192,7 @@
 #' expect_is(e1, "ExtractionResult")
 #' expect_is(e2, "ExtractionResultList")
 #' expect_is(p1, "ggplot")
+#' expect_is(p2, "ggplot")
 #' expect_is(p2, "ggplot")
 #' expect_is(obj_suggested, "Signature")
 #' expect_is(obj_s8, "Signature")
@@ -760,6 +767,34 @@ bp_get_stats <- function(obj) {
 bp_get_rank_score <- function(obj) {
   assert_class(obj, "ExtractionResult")
   obj[["rank_score"]]
+}
+
+#' @rdname bp
+#' @inheritParams show_sig_number_survey
+#' @export
+bp_show_survey2 <- function(obj,
+                            x = "signature_number",
+                            left_y = "silhouette", right_y = "L2_error",
+                            left_name = left_y, right_name = right_y,
+                            left_color = "black", right_color = "red",
+                            left_shape = 16, right_shape = 18, shape_size = 4) {
+  stopifnot(class(obj) == "ExtractionResult" | is.data.frame(obj))
+  if (class(obj) == "ExtractionResult") {
+    obj <- obj$stats
+  }
+
+  message("Variables can be used: ", paste(colnames(obj), collapse = ", "))
+
+  show_sig_number_survey(
+    object = obj,
+    x = x,
+    left_y = left_y, right_y = right_y,
+    left_name = left_name, right_name = right_name,
+    left_color = left_color, right_color = right_color,
+    left_shape = left_shape, right_shape = right_shape,
+    shape_size = shape_size
+  )
+
 }
 
 #' @rdname bp

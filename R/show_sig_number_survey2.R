@@ -42,7 +42,7 @@ show_sig_number_survey2 <- function(x, y = NULL, what = c(
                                       "dispersion", "evar", "sparseness", "sparseness.basis", "sparseness.coef",
                                       "silhouette", "silhouette.coef", "silhouette.basis", "silhouette.consensus"
                                     ),
-                                    na.rm = FALSE, xlab = "Number of signature",
+                                    na.rm = FALSE, xlab = "Total signatures",
                                     ylab = "", main = "Signature number survey using NMF package") {
 
   # Useless, just store it in case I need

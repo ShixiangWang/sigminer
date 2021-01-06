@@ -15,6 +15,7 @@ no contribution of a component in all samples.
 
 ## NEW FUNCTIONS
 
+- `bp_show_survey2()` to plot a simplified version for signature number survey (#330).
 - `read_xena_variants()` to read variant data from UCSC Xena as a `MAF` object for signature analysis.
 - `get_sig_rec_similarity()` for getting reconstructed profile similarity for `Signature` object (#293).
 - Added functions start with `bp_` which are combined to provide a best practice for extracting
