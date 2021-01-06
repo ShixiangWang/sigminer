@@ -1,22 +1,22 @@
 Package: sigminer
 Title: Extract, Analyze and Visualize Mutational Signatures for
     Genomic Variations
-Version: 1.1.0.99
+Version: 1.2.0
 Authors@R: 
     c(person(given = "Shixiang",
              family = "Wang",
              role = c("aut", "cre"),
              email = "w_shixiang@163.com",
              comment = c(ORCID = "0000-0001-9855-7357")),
+      person(given = "Ziyu",
+             family = "Tao",
+             role = c("aut", "ctb")),
       person(given = "Xue-Song",
              family = "Liu",
              role = c("aut", "ctb"),
              comment = c(ORCID = "0000-0002-7736-0077")),
       person(given = "Tao",
              family = "Wu",
-             role = c("aut", "ctb")),
-      person(given = "Ziyu",
-             family = "Tao",
              role = c("aut", "ctb")),
       person(given = "Geoffrey",
              family = "Macintyre",
@@ -66,6 +66,7 @@ Suggests:
     circlize,
     cluster,
     covr,
+    digest,
     doFuture,
     flexmix,
     GenomicRanges,
@@ -89,11 +90,10 @@ Suggests:
     rmarkdown,
     roxygen2,
     scales,
+    synchronicity,
     testthat,
     tibble,
-    UCSCXenaTools,
-    digest,
-    synchronicity
+    UCSCXenaTools
 LinkingTo: 
     Rcpp
 VignetteBuilder: 

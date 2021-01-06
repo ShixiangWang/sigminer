@@ -56,6 +56,8 @@ signature numbers to help user select optimal signature number.
 At default, an aggregated score (named score) is generated from 5 measures to
 suggest the best solution. See section &quot;Measure Explanation in Survey plot&quot;
 for more explanation.
+bp_show_survey2() for showing simplified signature number survey like
+show_sig_number_survey().
 bp_get_sig_obj() for get a (list of) Signature object which is common
 used in sigminer for analysis and visualization.
 bp_attribute_activity() for optimizing signature activities (exposures).
@@ -105,7 +107,7 @@ Extra: bp_get_rank_score() for obtaining rank score for all signature numbers.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0.99</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
       </span>
     </div>
 
@@ -113,7 +115,7 @@ Extra: bp_get_rank_score() for obtaining rank score for all signature numbers.
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -130,7 +132,7 @@ Extra: bp_get_rank_score() for obtaining rank score for all signature numbers.
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/ShixiangWang/sigminer/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -162,6 +164,8 @@ signature numbers to help user select optimal signature number.
 At default, an aggregated score (named score) is generated from 5 measures to
 suggest the best solution. See section "Measure Explanation in Survey plot"
 for more explanation.</p></li>
+<li><p><code>bp_show_survey2()</code> for showing simplified signature number survey like
+<code><a href='show_sig_number_survey.html'>show_sig_number_survey()</a></code>.</p></li>
 <li><p><code>bp_get_sig_obj()</code> for get a (list of) <code>Signature</code> object which is common
 used in <strong>sigminer</strong> for analysis and visualization.</p></li>
 <li><p><code>bp_attribute_activity()</code> for optimizing signature activities (exposures).
@@ -230,6 +234,20 @@ These stats are aggregated (averaged) as the stats for a solution
 <span class='fu'>bp_get_stats</span><span class='op'>(</span><span class='va'>obj</span><span class='op'>)</span>
 
 <span class='fu'>bp_get_rank_score</span><span class='op'>(</span><span class='va'>obj</span><span class='op'>)</span>
+
+<span class='fu'>bp_show_survey2</span><span class='op'>(</span>
+  <span class='va'>obj</span>,
+  x <span class='op'>=</span> <span class='st'>"signature_number"</span>,
+  left_y <span class='op'>=</span> <span class='st'>"silhouette"</span>,
+  right_y <span class='op'>=</span> <span class='st'>"L2_error"</span>,
+  left_name <span class='op'>=</span> <span class='va'>left_y</span>,
+  right_name <span class='op'>=</span> <span class='va'>right_y</span>,
+  left_color <span class='op'>=</span> <span class='st'>"black"</span>,
+  right_color <span class='op'>=</span> <span class='st'>"red"</span>,
+  left_shape <span class='op'>=</span> <span class='fl'>16</span>,
+  right_shape <span class='op'>=</span> <span class='fl'>18</span>,
+  shape_size <span class='op'>=</span> <span class='fl'>4</span>
+<span class='op'>)</span>
 
 <span class='fu'>bp_show_survey</span><span class='op'>(</span>
   <span class='va'>obj</span>,
@@ -365,6 +383,42 @@ if input is a list of <code>Signature</code> objects.</p></td>
 If it is <code>NULL</code> (default), all will be returned.</p></td>
     </tr>
     <tr>
+      <th>left_y</th>
+      <td><p>column name for left y axis.</p></td>
+    </tr>
+    <tr>
+      <th>right_y</th>
+      <td><p>column name for right y axis.</p></td>
+    </tr>
+    <tr>
+      <th>left_name</th>
+      <td><p>label name for left y axis.</p></td>
+    </tr>
+    <tr>
+      <th>right_name</th>
+      <td><p>label name for right y axis.</p></td>
+    </tr>
+    <tr>
+      <th>left_color</th>
+      <td><p>color for left axis.</p></td>
+    </tr>
+    <tr>
+      <th>right_color</th>
+      <td><p>color for right axis.</p></td>
+    </tr>
+    <tr>
+      <th>left_shape</th>
+      <td><p>shape setting.</p></td>
+    </tr>
+    <tr>
+      <th>right_shape</th>
+      <td><p>shape setting.</p></td>
+    </tr>
+    <tr>
+      <th>shape_size</th>
+      <td><p>shape setting.</p></td>
+    </tr>
+    <tr>
       <th>add_score</th>
       <td><p>if <code>FALSE</code>, don't show score and label optimal points by
 rank score.</p></td>
@@ -495,6 +549,10 @@ indicates if the signature profiles extracted from different NMF runs are simila
 <span class='va'>p2</span> <span class='op'>&lt;-</span> <span class='fu'>bp_show_survey</span><span class='op'>(</span><span class='va'>e1</span>, add_score <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 <span class='va'>p2</span>
 
+<span class='co'># You can also plot a simplified version</span>
+<span class='va'>p3</span> <span class='op'>&lt;-</span> <span class='fu'>bp_show_survey2</span><span class='op'>(</span><span class='va'>e1</span><span class='op'>)</span>
+<span class='va'>p3</span>
+
 <span class='co'># Obtain the suggested solution from extraction result</span>
 <span class='va'>obj_suggested</span> <span class='op'>&lt;-</span> <span class='fu'>bp_get_sig_obj</span><span class='op'>(</span><span class='va'>e1</span>, <span class='va'>e1</span><span class='op'>$</span><span class='va'>suggested</span><span class='op'>)</span>
 <span class='va'>obj_suggested</span>
@@ -558,7 +616,7 @@ indicates if the signature profiles extracted from different NMF runs are simila
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://orcid.org/0000-0001-9855-7357'>Shixiang Wang</a>, <a href='https://orcid.org/0000-0002-7736-0077'>Xue-Song Liu</a>, Tao Wu, Ziyu Tao.</p>
+  <p>Developed by <a href='https://orcid.org/0000-0001-9855-7357'>Shixiang Wang</a>, Ziyu Tao, <a href='https://orcid.org/0000-0002-7736-0077'>Xue-Song Liu</a>, Tao Wu.</p>
 </div>
 
 <div class="pkgdown">
