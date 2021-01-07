@@ -99,8 +99,8 @@ show_sig_number_survey <- function(object, x = "rank",
                                    left_name = left_y, right_name = toupper(right_y),
                                    left_color = "black", right_color = "red",
                                    left_shape = 16, right_shape = 18, shape_size = 4) {
-  stopifnot(class(object) == "Survey" | is.data.frame(object))
-  if (class(object) == "Survey") {
+  stopifnot(is(object, "Survey") | is.data.frame(object))
+  if (is(object, "Survey")) {
     survey <- object$survey
   } else {
     survey <- object
