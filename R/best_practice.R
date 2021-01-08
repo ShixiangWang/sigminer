@@ -777,7 +777,8 @@ bp_show_survey2 <- function(obj,
                             left_y = "silhouette", right_y = "L2_error",
                             left_name = left_y, right_name = right_y,
                             left_color = "black", right_color = "red",
-                            left_shape = 16, right_shape = 18, shape_size = 4) {
+                            left_shape = 16, right_shape = 18,
+                            shape_size = 4, highlight = NULL) {
   stopifnot(class(obj) == "ExtractionResult" | is.data.frame(obj))
   if (class(obj) == "ExtractionResult") {
     obj <- obj$stats
@@ -792,7 +793,7 @@ bp_show_survey2 <- function(obj,
     left_name = left_name, right_name = right_name,
     left_color = left_color, right_color = right_color,
     left_shape = left_shape, right_shape = right_shape,
-    shape_size = shape_size
+    shape_size = shape_size, highlight = highlight
   )
 
 }

@@ -74,7 +74,8 @@ bp_show_survey2(
   right_color = "red",
   left_shape = 16,
   right_shape = 18,
-  shape_size = 4
+  shape_size = 4,
+  highlight = NULL
 )
 
 bp_show_survey(
@@ -179,6 +180,8 @@ If it is \code{NULL} (default), all will be returned.}
 \item{right_shape}{shape setting.}
 
 \item{shape_size}{shape setting.}
+
+\item{highlight}{a \code{integer} to highlight a \code{x}.}
 
 \item{add_score}{if \code{FALSE}, don't show score and label optimal points by
 rank score.}

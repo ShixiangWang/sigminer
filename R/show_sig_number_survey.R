@@ -19,6 +19,7 @@
 #' @param left_color color for left axis.
 #' @param right_color color for right axis.
 #' @param left_shape,right_shape,shape_size shape setting.
+#' @param highlight a `integer` to highlight a `x`.
 #' @return a `ggplot` object
 #' @export
 #'
@@ -98,7 +99,8 @@ show_sig_number_survey <- function(object, x = "rank",
                                    left_y = "cophenetic", right_y = "rss",
                                    left_name = left_y, right_name = toupper(right_y),
                                    left_color = "black", right_color = "red",
-                                   left_shape = 16, right_shape = 18, shape_size = 4) {
+                                   left_shape = 16, right_shape = 18,
+                                   shape_size = 4, highlight = NULL) {
   stopifnot(is(object, "Survey") | is.data.frame(object))
   if (is(object, "Survey")) {
     survey <- object$survey
@@ -135,7 +137,7 @@ show_sig_number_survey <- function(object, x = "rank",
         )
       ) +
       cowplot::theme_cowplot() +
-      xlab("Number of signature") +
+      xlab("Total signatures") +
       theme(
         axis.title.y.left = element_text(color = left_color),
         axis.text.y.left = element_text(color = left_color),
@@ -143,6 +145,10 @@ show_sig_number_survey <- function(object, x = "rank",
         axis.text.y.right = element_text(color = right_color),
         panel.border = element_rect(colour = "black", fill = NA, size = 1)
       )
+  }
+
+  if (!is.null(highlight)) {
+    p <- p + geom_vline(xintercept = highlight, linetype = 2, size = 1, color = "blue")
   }
 
   return(p)

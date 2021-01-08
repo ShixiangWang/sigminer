@@ -2,7 +2,7 @@
 
 context("File R/show_sig_number_survey.R: @tests")
 
-test_that("Function show_sig_number_survey() @ L97", {
+test_that("Function show_sig_number_survey() @ L98", {
   load(system.file("extdata", "toy_copynumber_tally_M.RData",
     package = "sigminer", mustWork = TRUE
   ))

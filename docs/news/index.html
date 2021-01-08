@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0.99</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0.99</span>
       </span>
     </div>
 
@@ -87,7 +87,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -104,7 +104,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/ShixiangWang/sigminer/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -125,9 +125,9 @@
       <small>Source: <a href='https://github.com/ShixiangWang/sigminer/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="sigminer-120" class="section level1">
-<h1 class="page-header" data-toc-text="1.2.0">
-<a href="#sigminer-120" class="anchor"></a>sigminer 1.2.0<small> Unreleased </small>
+    <div id="sigminer-121" class="section level1">
+<h1 class="page-header" data-toc-text="1.2.1">
+<a href="#sigminer-121" class="anchor"></a>sigminer 1.2.1<small> Unreleased </small>
 </h1>
 <div id="bug-reports" class="section level2">
 <h2 class="hasAnchor">
@@ -137,6 +137,30 @@
 <h2 class="hasAnchor">
 <a href="#enhancements" class="anchor"></a>ENHANCEMENTS</h2>
 <ul>
+<li>A new option <code>highlight</code> is added to <code><a href="../reference/show_sig_number_survey.html">show_sig_number_survey()</a></code> and <code><a href="../reference/bp.html">bp_show_survey2()</a></code> to highlight a selected number.</li>
+</ul>
+</div>
+<div id="new-functions" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-functions" class="anchor"></a>NEW FUNCTIONS</h2>
+</div>
+<div id="deprecated" class="section level2">
+<h2 class="hasAnchor">
+<a href="#deprecated" class="anchor"></a>DEPRECATED</h2>
+</div>
+</div>
+    <div id="sigminer-120" class="section level1">
+<h1 class="page-header" data-toc-text="1.2.0">
+<a href="#sigminer-120" class="anchor"></a>sigminer 1.2.0<small> Unreleased </small>
+</h1>
+<div id="bug-reports-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-reports-1" class="anchor"></a>BUG REPORTS</h2>
+</div>
+<div id="enhancements-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#enhancements-1" class="anchor"></a>ENHANCEMENTS</h2>
+<ul>
 <li>A new option <code>cut_p_value</code> is added to <code><a href="../reference/show_group_enrichment.html">show_group_enrichment()</a></code> to cut continous p values as binned regions.</li>
 <li>A Python backend for <code><a href="../reference/sig_extract.html">sig_extract()</a></code> is provided.</li>
 <li>User now can directly use <code><a href="../reference/sig_extract.html">sig_extract()</a></code> and <code><a href="../reference/sig_auto_extract.html">sig_auto_extract()</a></code> instead of loading NMF package firstly.</li>
@@ -145,10 +169,12 @@
 <li>Removed <code>pConstant</code> option from <code><a href="../reference/sig_extract.html">sig_extract()</a></code> and <code><a href="../reference/sig_estimate.html">sig_estimate()</a></code>. Now a auto-check function is created for avoiding the error from NMF package due to no contribution of a component in all samples.</li>
 </ul>
 </div>
-<div id="new-functions" class="section level2">
+<div id="new-functions-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-functions" class="anchor"></a>NEW FUNCTIONS</h2>
+<a href="#new-functions-1" class="anchor"></a>NEW FUNCTIONS</h2>
 <ul>
+<li>
+<code><a href="../reference/bp.html">bp_show_survey2()</a></code> to plot a simplified version for signature number survey (<a href='https://github.com/ShixiangWang/sigminer/issues/330'>#330</a>).</li>
 <li>
 <code><a href="../reference/read_xena_variants.html">read_xena_variants()</a></code> to read variant data from UCSC Xena as a <code>MAF</code> object for signature analysis.</li>
 <li>
@@ -156,9 +182,9 @@
 <li>Added functions start with <code>bp_</code> which are combined to provide a best practice for extracting signatures in cancer researches. See more details, run <code><a href="../reference/bp.html">?bp</a></code> in your R console.</li>
 </ul>
 </div>
-<div id="deprecated" class="section level2">
+<div id="deprecated-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#deprecated" class="anchor"></a>DEPRECATED</h2>
+<a href="#deprecated-1" class="anchor"></a>DEPRECATED</h2>
 </div>
 </div>
     <div id="sigminer-110" class="section level1">
@@ -448,7 +474,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://orcid.org/0000-0001-9855-7357'>Shixiang Wang</a>, <a href='https://orcid.org/0000-0002-7736-0077'>Xue-Song Liu</a>, Tao Wu, Ziyu Tao.</p>
+  <p>Developed by <a href='https://orcid.org/0000-0001-9855-7357'>Shixiang Wang</a>, Ziyu Tao, <a href='https://orcid.org/0000-0002-7736-0077'>Xue-Song Liu</a>, Tao Wu.</p>
 </div>
 
 <div class="pkgdown">

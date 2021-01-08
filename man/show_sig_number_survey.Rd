@@ -15,7 +15,8 @@ show_sig_number_survey(
   right_color = "red",
   left_shape = 16,
   right_shape = 18,
-  shape_size = 4
+  shape_size = 4,
+  highlight = NULL
 )
 }
 \arguments{
@@ -38,6 +39,8 @@ one measure.}
 \item{right_color}{color for right axis.}
 
 \item{left_shape, right_shape, shape_size}{shape setting.}
+
+\item{highlight}{a \code{integer} to highlight a \code{x}.}
 }
 \value{
 a \code{ggplot} object

@@ -107,7 +107,7 @@ Extra: bp_get_rank_score() for obtaining rank score for all signature numbers.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0.99</span>
       </span>
     </div>
 
@@ -246,7 +246,8 @@ These stats are aggregated (averaged) as the stats for a solution
   right_color <span class='op'>=</span> <span class='st'>"red"</span>,
   left_shape <span class='op'>=</span> <span class='fl'>16</span>,
   right_shape <span class='op'>=</span> <span class='fl'>18</span>,
-  shape_size <span class='op'>=</span> <span class='fl'>4</span>
+  shape_size <span class='op'>=</span> <span class='fl'>4</span>,
+  highlight <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span>
 
 <span class='fu'>bp_show_survey</span><span class='op'>(</span>
@@ -417,6 +418,10 @@ If it is <code>NULL</code> (default), all will be returned.</p></td>
     <tr>
       <th>shape_size</th>
       <td><p>shape setting.</p></td>
+    </tr>
+    <tr>
+      <th>highlight</th>
+      <td><p>a <code>integer</code> to highlight a <code>x</code>.</p></td>
     </tr>
     <tr>
       <th>add_score</th>

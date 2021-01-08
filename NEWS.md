@@ -1,3 +1,15 @@
+# sigminer 1.2.1
+
+## BUG REPORTS
+
+## ENHANCEMENTS
+
+- A new option `highlight` is added to `show_sig_number_survey()` and `bp_show_survey2()` to highlight a selected number.
+
+## NEW FUNCTIONS
+
+## DEPRECATED
+
 # sigminer 1.2.0
 
 ## BUG REPORTS
