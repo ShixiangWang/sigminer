@@ -4,6 +4,7 @@
 
 ## ENHANCEMENTS
 
+- Added a quick start vignette.
 - A new option `highlight` is added to `show_sig_number_survey()` and `bp_show_survey2()` to highlight a selected number.
 
 ## NEW FUNCTIONS

@@ -30,7 +30,7 @@ test_that("[unknown alias] @ L204", {
   p2
   
   # You can also plot a simplified version
-  p3 <- bp_show_survey2(e1)
+  p3 <- bp_show_survey2(e1, highlight = 10)
   p3
   
   # Obtain the suggested solution from extraction result

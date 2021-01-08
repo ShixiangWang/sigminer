@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title> • sigminer</title>
+<title>A Quick Start of sigminer Package • sigminer</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="">
+<script src="../pkgdown.js"></script><meta property="og:title" content="A Quick Start of sigminer Package">
 <meta property="og:description" content="sigminer">
 <meta property="og:image" content="/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0.99</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
       </span>
     </div>
 
@@ -80,8 +80,10 @@
       </header><script src="sigminer_files/header-attrs-2.6/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip></h1>
+      <h1 data-toc-skip>A Quick Start of sigminer Package</h1>
+                        <h4 class="author">Shixiang Wang ( <a href="mailto:wangshx@shanghaitech.edu.cn" class="email">wangshx@shanghaitech.edu.cn</a> )</h4>
             
+            <h4 class="date">2021-01-08</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ShixiangWang/sigminer/blob/master/vignettes/sigminer.Rmd"><code>vignettes/sigminer.Rmd</code></a></small>
       <div class="hidden name"><code>sigminer.Rmd</code></div>
@@ -90,16 +92,86 @@
 
     
     
-<!--
-%\VignetteEngine{knitr}
-%\VignetteIndexEntry{sigminer vignette}
--->
+<p>Assume you have already gotten a catalog matrix (sample-by-component) like below:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ShixiangWang/sigminer">sigminer</a></span><span class="op">)</span>
+<span class="co">#&gt; sigminer version 1.2.1, run hello() to see usage and citation.</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"simulated_catalogs"</span><span class="op">)</span>
+<span class="va">mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">simulated_catalogs</span><span class="op">$</span><span class="va">set1</span><span class="op">)</span>
+
+<span class="va">mat</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>
+<span class="co">#&gt;          A[C&gt;A]A A[C&gt;A]C A[C&gt;A]G A[C&gt;A]T C[C&gt;A]A</span>
+<span class="co">#&gt; Sample_1     911     761      88     744     883</span>
+<span class="co">#&gt; Sample_2     195     175      19     174     225</span>
+<span class="co">#&gt; Sample_3      95      51      12      55     142</span>
+<span class="co">#&gt; Sample_4     131      71      14      77     170</span>
+<span class="co">#&gt; Sample_5      33      10       2      14      55</span></code></pre></div>
+<p>Extract signatures with:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Here I reduce the values for n_bootstrap and n_nmf_run for reducing the run time.  In practice, you</span>
+<span class="co"># should keep default or increase the values for better estimation.  The input data here is simulated</span>
+<span class="co"># from 10 mutational signatures</span>
+<span class="va">e1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bp.html">bp_extract_signatures</a></span><span class="op">(</span><span class="va">mat</span>, range <span class="op">=</span> <span class="fl">8</span><span class="op">:</span><span class="fl">12</span>, n_bootstrap <span class="op">=</span> <span class="fl">5</span>, n_nmf_run <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></code></pre></div>
+<p>Check which signature number is proper:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/bp.html">bp_show_survey2</a></span><span class="op">(</span><span class="va">e1</span>, highlight <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
+<span class="co">#&gt; Variables can be used: signature_number, silhouette, sample_cosine_distance, L1_error, L2_error, exposure_positive_correlation, signature_similarity_within_cluster, signature_similarity_across_cluster, silhouette_sample</span></code></pre></div>
+<p><img src="sigminer_files/figure-html/unnamed-chunk-5-1.png" width="384" style="display: block; margin: auto;"></p>
+<p>Get the <code>10</code> signatures:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bp.html">bp_get_sig_obj</a></span><span class="op">(</span><span class="va">e1</span>, <span class="fl">10</span><span class="op">)</span></code></pre></div>
+<p>Show signature profile:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/show_sig_profile.html">show_sig_profile</a></span><span class="op">(</span><span class="va">obj</span>, mode <span class="op">=</span> <span class="st">"SBS"</span>, style <span class="op">=</span> <span class="st">"cosmic"</span><span class="op">)</span></code></pre></div>
+<p><img src="sigminer_files/figure-html/unnamed-chunk-7-1.png" width="960" style="display: block; margin: auto;"> Show signature activity (a.k.a. exposure) profile:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/show_sig_exposure.html">show_sig_exposure</a></span><span class="op">(</span><span class="va">obj</span>, rm_space <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<p><img src="sigminer_files/figure-html/unnamed-chunk-8-1.png" width="768" style="display: block; margin: auto;"></p>
+<p>Calculate the similarity to COSMIC reference signatures:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_sig_similarity.html">get_sig_similarity</a></span><span class="op">(</span><span class="va">obj</span>, sig_db <span class="op">=</span> <span class="st">"SBS"</span><span class="op">)</span>
+<span class="co">#&gt; -Comparing against COSMIC signatures</span>
+<span class="co">#&gt; ------------------------------------</span>
+<span class="co">#&gt; --Found Sig1 most similar to SBS12</span>
+<span class="co">#&gt;    Aetiology: Unknown [similarity: 0.932]</span>
+<span class="co">#&gt; --Found Sig2 most similar to SBS13</span>
+<span class="co">#&gt;    Aetiology: Activity of APOBEC family of cytidine deaminases [similarity: 0.97]</span>
+<span class="co">#&gt; --Found Sig3 most similar to SBS5</span>
+<span class="co">#&gt;    Aetiology: Unknown (clock-like signature) [similarity: 0.95]</span>
+<span class="co">#&gt; --Found Sig4 most similar to SBS3</span>
+<span class="co">#&gt;    Aetiology: Defective homologous recombination DNA damage repair [similarity: 0.927]</span>
+<span class="co">#&gt; --Found Sig5 most similar to SBS8</span>
+<span class="co">#&gt;    Aetiology: Unknown [similarity: 0.934]</span>
+<span class="co">#&gt; --Found Sig6 most similar to SBS18</span>
+<span class="co">#&gt;    Aetiology: Damage by reactive oxygen species [similarity: 0.975]</span>
+<span class="co">#&gt; --Found Sig7 most similar to SBS1</span>
+<span class="co">#&gt;    Aetiology: Spontaneous deamination of 5-methylcytosine (clock-like signature) [similarity: 0.76]</span>
+<span class="co">#&gt; --Found Sig8 most similar to SBS6</span>
+<span class="co">#&gt;    Aetiology: Defective DNA mismatch repair [similarity: 0.957]</span>
+<span class="co">#&gt; --Found Sig9 most similar to SBS17b</span>
+<span class="co">#&gt;    Aetiology: Unknown [similarity: 0.888]</span>
+<span class="co">#&gt; --Found Sig10 most similar to SBS2</span>
+<span class="co">#&gt;    Aetiology: Activity of APOBEC family of cytidine deaminases [similarity: 0.986]</span>
+<span class="co">#&gt; ------------------------------------</span>
+<span class="co">#&gt; Return result invisiblely.</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va">pheatmap</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+    <span class="fu">pheatmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pheatmap/man/pheatmap.html">pheatmap</a></span><span class="op">(</span><span class="va">sim</span><span class="op">$</span><span class="va">similarity</span><span class="op">)</span>
+<span class="op">}</span></code></pre></div>
+<p><img src="sigminer_files/figure-html/unnamed-chunk-10-1.png" width="960" style="display: block; margin: auto;"></p>
+<div id="more" class="section level2">
+<h2 class="hasAnchor">
+<a href="#more" class="anchor"></a>More</h2>
+<p>Please go to <a href="https://shixiangwang.github.io/sigminer/reference/index.html" class="uri">https://shixiangwang.github.io/sigminer/reference/index.html</a> for well organized functions and documentation.</p>
 <p>Please go to <a href="https://shixiangwang.github.io/sigminer-doc/" class="uri">https://shixiangwang.github.io/sigminer-doc/</a> or <a href="https://shixiangwang.gitee.io/sigminer-doc/" class="uri">https://shixiangwang.gitee.io/sigminer-doc/</a> (for Chinese readers) for full vignette.</p>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-      </div>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
+</div>
 
 </div>
 
