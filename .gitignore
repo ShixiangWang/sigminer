@@ -11,3 +11,4 @@ data-raw/SigProfiler*
 data-raw/*.csv
 data-raw/*.vcf
 *.rds
+!vignettes/*.rds
