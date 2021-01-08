@@ -11,7 +11,7 @@ A list of matrix
 Generate from code under data_raw/
 }
 \description{
-Data from \url{https://doi.org/10.1038/s43018-020-0027-5}.
+Data from \doi{10.1038/s43018-020-0027-5}.
 5 simulated mutation catalogs are used by the paper but only 4 are available.
 The data are simulated from COSMIC mutational signatures 1, 2, 3, 5, 6, 8,
 12, 13, 17 and 18. Each sample is a linear combination of 5 randomly selected

@@ -108,6 +108,7 @@ read_vcf <- function(vcfs, samples = NULL, genome_build = c("hg19", "hg38"), kee
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' if (requireNamespace("UCSCXenaTools")) {
 #'   library(UCSCXenaTools)
 #'   options(use_hiplot = TRUE)
@@ -118,6 +119,7 @@ read_vcf <- function(vcfs, samples = NULL, genome_build = c("hg19", "hg38"), kee
 #'   x@data
 #'   y <- sig_tally(x)
 #'   y
+#' }
 #' }
 #' @testexamples
 #' if (requireNamespace("UCSCXenaTools")) {
@@ -132,14 +134,19 @@ read_xena_variants <- function(path) {
 
   data.table::setnames(
     dt,
-    old = c(detect_name("Sample_ID", "sample", colnames(dt)),
-            "gene",
-            detect_name("chrom", "chr", colnames(dt)),
-            "start", "end",
-            detect_name("ref", "reference", colnames(dt)),
-            "alt"),
-    new = c("Tumor_Sample_Barcode", "Hugo_Symbol", "Chromosome",
-            "Start_Position", "End_Position", "Reference_Allele", "Tumor_Seq_Allele2"))
+    old = c(
+      detect_name("Sample_ID", "sample", colnames(dt)),
+      "gene",
+      detect_name("chrom", "chr", colnames(dt)),
+      "start", "end",
+      detect_name("ref", "reference", colnames(dt)),
+      "alt"
+    ),
+    new = c(
+      "Tumor_Sample_Barcode", "Hugo_Symbol", "Chromosome",
+      "Start_Position", "End_Position", "Reference_Allele", "Tumor_Seq_Allele2"
+    )
+  )
 
   dt$Variant_Type <- dplyr::case_when(
     nchar(dt$Reference_Allele) == 1L & nchar(dt$Tumor_Seq_Allele2) == 1L ~ "SNP",

@@ -42,7 +42,7 @@
 #' - sTDP_size: sTDP region size (Mb).
 #' - lTDP_size: lTDP region size(Mb).
 #' - Chromoth_state: chromothripsis state score,
-#' according to reference <http://dx.doi.org/10.1016/j.cell.2013.02.023>,
+#' according to reference \doi{10.1016/j.cell.2013.02.023},
 #' chromothripsis frequently leads to massive loss of segments on
 #' the affected chromosome with segmental losses being interspersed with regions displaying
 #' normal (disomic) copy-number (e.g., copy-number states oscillating between

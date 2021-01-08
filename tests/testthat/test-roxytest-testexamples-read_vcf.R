@@ -2,7 +2,8 @@
 
 context("File R/read_vcf.R: @testexamples")
 
-test_that("Function read_xena_variants() @ L126", {
+test_that("Function read_xena_variants() @ L128", {
+  
   
   if (requireNamespace("UCSCXenaTools")) {
     library(UCSCXenaTools)
@@ -15,6 +16,7 @@ test_that("Function read_xena_variants() @ L126", {
     y <- sig_tally(x)
     y
   }
+  
   if (requireNamespace("UCSCXenaTools")) {
     expect_is(y, "list")
   }

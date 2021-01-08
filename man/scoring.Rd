@@ -46,7 +46,7 @@ TD represents segment with copy number greater than 2.
 \item sTDP_size: sTDP region size (Mb).
 \item lTDP_size: lTDP region size(Mb).
 \item Chromoth_state: chromothripsis state score,
-according to reference \url{http://dx.doi.org/10.1016/j.cell.2013.02.023},
+according to reference \doi{10.1016/j.cell.2013.02.023},
 chromothripsis frequently leads to massive loss of segments on
 the affected chromosome with segmental losses being interspersed with regions displaying
 normal (disomic) copy-number (e.g., copy-number states oscillating between

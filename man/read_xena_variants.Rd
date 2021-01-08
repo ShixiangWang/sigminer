@@ -16,6 +16,7 @@ a \code{MAF} object.
 Read UCSC Xena Variant Format Data as MAF Object
 }
 \examples{
+\donttest{
 if (requireNamespace("UCSCXenaTools")) {
   library(UCSCXenaTools)
   options(use_hiplot = TRUE)
@@ -26,5 +27,6 @@ if (requireNamespace("UCSCXenaTools")) {
   x@data
   y <- sig_tally(x)
   y
+}
 }
 }
