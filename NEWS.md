@@ -1,5 +1,7 @@
 # sigminer 1.2.1
 
+- Updated author list.
+
 ## BUG REPORTS
 
 ## ENHANCEMENTS
