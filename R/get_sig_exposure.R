@@ -56,38 +56,14 @@ get_sig_exposure <- function(Signature,
 
   type <- match.arg(type)
 
-  if (type == "absolute") {
-    h <- t(h) %>%
-      as.data.frame() %>%
-      tibble::rownames_to_column(var = "sample") %>%
-      data.table::as.data.table()
-    return(h)
-  } else {
-    h.norm <- apply(h, 2, function(x) x / sum(x))
-    if (nrow(h) == 1L) {
-      h.norm <- t(as.matrix(h.norm))
-      rownames(h.norm) <- rownames(h)
-    }
-    h.norm <- t(h.norm) %>%
-      as.data.frame() %>%
-      tibble::rownames_to_column(var = "sample") %>%
-      dplyr::mutate_at(
-        dplyr::vars(dplyr::starts_with("Sig")),
-        ~ ifelse(. <= rel_threshold, 0, .)
-      )
+  h <- t(h) %>%
+    as.data.frame() %>%
+    tibble::rownames_to_column(var = "sample") %>%
+    data.table::as.data.table()
+  if (type == "absolute") return(h)
+  h_norm <- h[, -1] / rowSums(h[, -1])
+  h_norm[h_norm <= rel_threshold] <- 0
+  h_norm <- na.omit(cbind(h[, 1], h_norm))
+  return(h_norm)
 
-    na_data <- h.norm %>%
-      dplyr::filter(is.na(.data$Sig1))
-
-    if (nrow(na_data) > 0) {
-      message("Filtering out the samples with no signature exposure:")
-      message(paste(na_data$sample, collapse = " "))
-    }
-
-    h.norm <- h.norm %>%
-      dplyr::filter(!is.na(.data$Sig1)) %>%
-      data.table::as.data.table()
-
-    return(h.norm)
-  }
 }

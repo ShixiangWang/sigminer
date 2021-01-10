@@ -1,3 +1,15 @@
+# sigminer 1.2.2
+
+## BUG REPORTS
+
+## ENHANCEMENTS
+
+- Updated the internal code for getting relative activity in `get_sig_exposure()`.
+
+## NEW FUNCTIONS
+
+## DEPRECATED
+
 # sigminer 1.2.1
 
 - Updated author list.
