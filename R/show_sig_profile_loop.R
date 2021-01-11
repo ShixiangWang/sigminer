@@ -34,6 +34,12 @@ show_sig_profile_loop <- function(Signature, sig_names = NULL,
     stop("Invalid input for 'Signature'", call. = FALSE)
   }
 
+  if (!startsWith(colnames(Sig)[1], "Sig")) {
+    name_bk <- colnames(Sig)
+    colnames(Sig) <- paste0("Sig", seq_len(ncol(Sig)))
+    if (is.null(sig_names)) sig_names <- name_bk
+  }
+
   x_lab_bk <- x_lab
   nc <- ncol(Sig)
   plist <- list()

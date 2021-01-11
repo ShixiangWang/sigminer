@@ -2,6 +2,8 @@
 
 ## BUG REPORTS
 
+- Fixed bug using custom signature name in `show_sig_profile_loop()`.
+
 ## ENHANCEMENTS
 
 - Updated the internal code for getting relative activity in `get_sig_exposure()`.
