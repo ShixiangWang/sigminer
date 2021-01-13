@@ -728,7 +728,7 @@ bp_cluster_iter_list <- function(x, k = NULL, include_final_iteration = TRUE) {
   rownames(cosdist) <- colnames(cosdist) <- colnames(sigmat)
   # Do clustering
   distobj <- stats::as.dist(cosdist)
-  cls <- stats::hclust(distobj)
+  cls <- stats::hclust(distobj, method = "average")
   if (is.null(k)) {
     # Set default k sequence
     k <- seq(2, max(sapply(sig_list, ncol)))
