@@ -793,7 +793,7 @@ bp_get_clustered_sigs <- function(SigClusters, cluster_label) {
         SigClusters$sigmat[, ., drop = FALSE],
         t(t(rowMeans(SigClusters$sigmat[, ., drop = FALSE]))))))
   sim_sig_to_grp_mean <- purrr::map_df(sim_sig_to_grp_mean, ~data.frame(sim = .), .id = "grp_sig")
-  sim_sig_to_grp_mean$grp_sig <- paste0("Sig", sim_sig_to_grp_mean)
+  sim_sig_to_grp_mean$grp_sig <- paste0("Sig", sim_sig_to_grp_mean$grp_sig)
 
   return(
     list(
