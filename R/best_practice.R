@@ -26,7 +26,7 @@
 #' - `bp_cluster_iter_list()` for clustering iterated signatures to help collapse
 #' multiple signatures into one. The result cluster can be visualized by
 #' `plot()` or `factoextra::fviz_dend()`.
-#' - `bp_get_consensus_sigs()` for getting consensus signatures from signature clusters.
+#' - `bp_get_clustered_sigs()` for getting clustered (grouped) mean signatures from signature clusters.
 #' - Extra: `bp_get_stats`() for obtaining stats for signatures and samples of a solution.
 #' These stats are aggregated (averaged) as the stats for a solution
 #' (specific signature number).
@@ -776,18 +776,29 @@ bp_get_cluster_index_list <- function(x) {
 #' from `SigClusters$sil_df`.
 #' @rdname bp
 #' @export
-bp_get_consensus_sigs <- function(SigClusters, cluster_label) {
+bp_get_clustered_sigs <- function(SigClusters, cluster_label) {
   sig_idx <- bp_get_cluster_index_list(cluster_label)
   sig_map <- purrr::map(sig_idx, ~colnames(SigClusters$sigmat)[.])
   names(sig_map) <- paste0("Sig", names(sig_map))
-  consensus_sigs <- purrr::reduce(
+  grp_sigs <- purrr::reduce(
     purrr::map(sig_idx, ~t(t(rowMeans(SigClusters$sigmat[, ., drop = FALSE])))),
     cbind
   )
-  colnames(consensus_sigs) <- names(sig_map)
+  colnames(grp_sigs) <- names(sig_map)
+
+  sim_sig_to_grp_mean <- purrr::map(
+    sig_idx,
+    ~as.numeric(
+      cosine(
+        SigClusters$sigmat[, ., drop = FALSE],
+        t(t(rowMeans(SigClusters$sigmat[, ., drop = FALSE]))))))
+  sim_sig_to_grp_mean <- purrr::map_df(sim_sig_to_grp_mean, ~data.frame(sim = .), .id = "grp_sig")
+  sim_sig_to_grp_mean$grp_sig <- paste0("Sig", sim_sig_to_grp_mean)
+
   return(
     list(
-      consensus_sigs = consensus_sigs,
+      grp_sigs = grp_sigs,
+      sim_sig_to_grp_mean = sim_sig_to_grp_mean,
       sig_map = sig_map
     )
   )

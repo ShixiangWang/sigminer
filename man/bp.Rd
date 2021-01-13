@@ -5,7 +5,7 @@
 \alias{bp_extract_signatures}
 \alias{bp_extract_signatures_iter}
 \alias{bp_cluster_iter_list}
-\alias{bp_get_consensus_sigs}
+\alias{bp_get_clustered_sigs}
 \alias{bp_get_sig_obj}
 \alias{bp_get_stats}
 \alias{bp_get_rank_score}
@@ -58,7 +58,7 @@ bp_extract_signatures_iter(
 
 bp_cluster_iter_list(x, k = NULL, include_final_iteration = TRUE)
 
-bp_get_consensus_sigs(SigClusters, cluster_label)
+bp_get_clustered_sigs(SigClusters, cluster_label)
 
 bp_get_sig_obj(obj, signum = NULL)
 
@@ -248,7 +248,7 @@ from \code{bp_extract_signatures()}.
 \item \code{bp_cluster_iter_list()} for clustering iterated signatures to help collapse
 multiple signatures into one. The result cluster can be visualized by
 \code{plot()} or \code{factoextra::fviz_dend()}.
-\item \code{bp_get_consensus_sigs()} for getting consensus signatures from signature clusters.
+\item \code{bp_get_clustered_sigs()} for getting clustered (grouped) mean signatures from signature clusters.
 \item Extra: \code{bp_get_stats}() for obtaining stats for signatures and samples of a solution.
 These stats are aggregated (averaged) as the stats for a solution
 (specific signature number).
