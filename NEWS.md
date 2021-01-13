@@ -10,6 +10,8 @@
 
 ## NEW FUNCTIONS
 
+- `bp_get_clustered_sigs()` to get clustered mean signatures.
+
 ## DEPRECATED
 
 # sigminer 1.2.1
