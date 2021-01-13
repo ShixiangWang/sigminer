@@ -5,6 +5,7 @@
 \alias{bp_extract_signatures}
 \alias{bp_extract_signatures_iter}
 \alias{bp_cluster_iter_list}
+\alias{bp_get_consensus_sigs}
 \alias{bp_get_sig_obj}
 \alias{bp_get_stats}
 \alias{bp_get_rank_score}
@@ -55,7 +56,9 @@ bp_extract_signatures_iter(
   py_path = "/Users/wsx/anaconda3/bin/python"
 )
 
-bp_cluster_iter_list(x, include_final_iteration = TRUE)
+bp_cluster_iter_list(x, k = NULL, include_final_iteration = TRUE)
+
+bp_get_consensus_sigs(SigClusters, cluster_label)
 
 bp_get_sig_obj(obj, signum = NULL)
 
@@ -154,9 +157,16 @@ the extraction procedure 10 times.}
 \item{x}{result from \code{\link[=bp_extract_signatures_iter]{bp_extract_signatures_iter()}} or a list of
 \code{Signature} objects.}
 
+\item{k}{an integer sequence specifying the cluster number to get silhouette.}
+
 \item{include_final_iteration}{if \code{FALSE}, exclude final iteration result
 from clustering for input from \code{\link[=bp_extract_signatures_iter]{bp_extract_signatures_iter()}}, not applied
 if input is a list of \code{Signature} objects.}
+
+\item{SigClusters}{result from \code{\link[=bp_cluster_iter_list]{bp_cluster_iter_list()}}.}
+
+\item{cluster_label}{cluster labels for a specified cluster number, obtain it
+from \code{SigClusters$sil_df}.}
 
 \item{obj}{a \code{ExtractionResult} object from \code{\link[=bp_extract_signatures]{bp_extract_signatures()}}.}
 
@@ -238,6 +248,7 @@ from \code{bp_extract_signatures()}.
 \item \code{bp_cluster_iter_list()} for clustering iterated signatures to help collapse
 multiple signatures into one. The result cluster can be visualized by
 \code{plot()} or \code{factoextra::fviz_dend()}.
+\item \code{bp_get_consensus_sigs()} for getting consensus signatures from signature clusters.
 \item Extra: \code{bp_get_stats}() for obtaining stats for signatures and samples of a solution.
 These stats are aggregated (averaged) as the stats for a solution
 (specific signature number).

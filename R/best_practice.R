@@ -26,6 +26,7 @@
 #' - `bp_cluster_iter_list()` for clustering iterated signatures to help collapse
 #' multiple signatures into one. The result cluster can be visualized by
 #' `plot()` or `factoextra::fviz_dend()`.
+#' - `bp_get_consensus_sigs()` for getting consensus signatures from signature clusters.
 #' - Extra: `bp_get_stats`() for obtaining stats for signatures and samples of a solution.
 #' These stats are aggregated (averaged) as the stats for a solution
 #' (specific signature number).
@@ -698,12 +699,13 @@ bp_extract_signatures_iter <- function(nmf_matrix,
 
 #' @param x result from [bp_extract_signatures_iter()] or a list of
 #' `Signature` objects.
+#' @param k an integer sequence specifying the cluster number to get silhouette.
 #' @param include_final_iteration if `FALSE`, exclude final iteration result
 #' from clustering for input from [bp_extract_signatures_iter()], not applied
 #' if input is a list of `Signature` objects.
 #' @rdname bp
 #' @export
-bp_cluster_iter_list <- function(x, include_final_iteration = TRUE) {
+bp_cluster_iter_list <- function(x, k = NULL, include_final_iteration = TRUE) {
   if (length(x) < 2) {
     stop("No need to cluster length-1 result list.")
   }
@@ -725,14 +727,70 @@ bp_cluster_iter_list <- function(x, include_final_iteration = TRUE) {
   cosdist <- 1 - cosineMatrix(sigmat, sigmat)
   rownames(cosdist) <- colnames(cosdist) <- colnames(sigmat)
   # Do clustering
-  cls <- stats::hclust(stats::as.dist(cosdist))
+  distobj <- stats::as.dist(cosdist)
+  cls <- stats::hclust(distobj)
+  if (is.null(k)) {
+    # Set default k sequence
+    k <- seq(2, max(sapply(sig_list, ncol)))
+  }
+  sil_df <- purrr::map_df(
+    k,
+    function(x) {
+      cls <- cluster::silhouette(cutree(cls, k = x), distobj)
+      cbind(
+        data.frame(signame = rownames(cosdist),
+                   k = x),
+        data.frame(cls[, 1:3])
+      )
+    })
+  sil_summary <- sil_df %>%
+    dplyr::group_by(.data$k) %>%
+    dplyr::summarise(
+      min = min(.data$sil_width, na.rm = TRUE),
+      mean = mean(.data$sil_width, na.rm = TRUE),
+      max = max(.data$sil_width, na.rm = TRUE),
+      sd = sd(.data$sil_width, na.rm = TRUE)
+    ) %>% as.data.frame()
   r <- list(
     cluster = cls,
     distance = cosdist,
+    sil_df = sil_df,
+    sil_summary = sil_summary,
     sigmat = sigmat
   )
   class(r) <- "SignatureListClusters"
   r
+}
+
+bp_get_cluster_index_list <- function(x) {
+  rg <- range(x)
+  sq <- seq(rg[1], rg[2])
+  y <- purrr::map(sq, ~which(x == .))
+  names(y) <- as.character(sq)
+  y
+}
+
+
+#' @param SigClusters result from [bp_cluster_iter_list()].
+#' @param cluster_label cluster labels for a specified cluster number, obtain it
+#' from `SigClusters$sil_df`.
+#' @rdname bp
+#' @export
+bp_get_consensus_sigs <- function(SigClusters, cluster_label) {
+  sig_idx <- bp_get_cluster_index_list(cluster_label)
+  sig_map <- purrr::map(sig_idx, ~colnames(SigClusters$sigmat)[.])
+  names(sig_map) <- paste0("Sig", names(sig_map))
+  consensus_sigs <- purrr::reduce(
+    purrr::map(sig_idx, ~t(t(rowMeans(SigClusters$sigmat[, ., drop = FALSE])))),
+    cbind
+  )
+  colnames(consensus_sigs) <- names(sig_map)
+  return(
+    list(
+      consensus_sigs = consensus_sigs,
+      sig_map = sig_map
+    )
+  )
 }
 
 #' @param obj a `ExtractionResult` object from [bp_extract_signatures()].
