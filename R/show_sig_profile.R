@@ -432,12 +432,12 @@ show_sig_profile <- function(Signature,
     mat %>%
       dplyr::mutate(
         is_clustered = startsWith(.data$context, "clustered"),
-        type = sub("(non-)?clustered_([^_]+)_?.*", "\\2", .data$context),
+        type = sub("(non-)?clustered:([^:]+):?.*", "\\2", .data$context),
         base = paste(ifelse(.data$is_clustered, "C", "N"), .data$type, sep = "-"),
         base = sub("-trans", "", .data$base)
       ) %>%
       dplyr::select(-c("is_clustered", "type")) -> mat
-    mat$context <- sub("^.*_([^_]+)$", "\\1", mat$context)
+    mat$context <- sub("^.*:([^:]+)$", "\\1", mat$context)
 
     mat <- tidyr::gather(mat, class, signature, -c("context", "base"))
 
