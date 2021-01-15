@@ -38,6 +38,7 @@ SBS_Nik_lab_Organ <- list(
 saveRDS(SBS_Nik_lab_Organ, file = "inst/extdata/SBS_signatures_Nik_lab_Organ.rds")
 
 s2 <- s2 %>%
+  dplyr::mutate(Type = gsub("_", ":", Type)) %>%
   tibble::column_to_rownames("Type") %>%
   as.matrix()
 s2_names <- colnames(s2)
@@ -57,7 +58,7 @@ colnames(s2) <- s2_map$V1
 RS_Nik_lab_Organ <- list(
   db = s2,
   aetiology = s2_map %>% tibble::column_to_rownames("V1") %>% setNames("aetiology"),
-  date = "2020/10/20"
+  date = "2021/01/15"
 )
 
 saveRDS(RS_Nik_lab_Organ, file = "inst/extdata/RS_signatures_Nik_lab_Organ.rds")
@@ -81,6 +82,7 @@ SBS_Nik_lab <- list(
 saveRDS(SBS_Nik_lab, file = "inst/extdata/SBS_signatures_Nik_lab.rds")
 
 s4 <- s4 %>%
+  dplyr::mutate(Type = gsub("_", ":", Type)) %>%
   tibble::column_to_rownames("Type") %>%
   as.matrix()
 colnames(s4) <- gsub("\\.", "_", colnames(s4))
@@ -91,7 +93,7 @@ RS_Nik_lab <- list(
     V1 = colnames(s4),
     V2 = "See https://doi.org/10.1038/s43018-020-0027-5"
   ) %>% tibble::column_to_rownames("V1") %>% setNames("aetiology"),
-  date = "2020/10/20"
+  date = "2021/01/15"
 )
 
 saveRDS(RS_Nik_lab, file = "inst/extdata/RS_signatures_Nik_lab.rds")

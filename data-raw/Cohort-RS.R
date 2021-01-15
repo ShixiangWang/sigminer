@@ -5,7 +5,7 @@ library(readxl)
 brca560 <- read_excel("data-raw/BRCA-RS.xlsx", sheet = 2)
 brca560_2 <- brca560 %>%
   dplyr::mutate(
-    class = paste(Type, gsub(":", "_", Size), sep = "_"),
+    class = paste(Type, Size, sep = ":"),
     class = gsub("k", "K", class)
   ) %>%
   dplyr::select(-Type, -Size) %>%
@@ -54,8 +54,8 @@ usarc2 <- usarc %>%
     cluster = ifelse(cluster == "clustered", "clustered", "non-clustered"),
     size = sub("k", "K", size)
   ) %>%
-  tidyr::unite(col = "class", c("cluster", "type", "size"), sep = "_") %>%
-  dplyr::mutate(class = gsub("_NA", "", class)) %>%
+  tidyr::unite(col = "class", c("cluster", "type", "size"), sep = ":") %>%
+  dplyr::mutate(class = gsub(":NA", "", class)) %>%
   tibble::column_to_rownames("class")
 
 rownames(usarc2)
