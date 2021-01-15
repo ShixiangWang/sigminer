@@ -24,6 +24,7 @@
 #' **Note**: the signature profile for different genome builds are basically same.
 #' And specific database (e.g. 'SBS_mm10') contains less signatures than all COSMIC
 #' signatures (because some signatures are not detected from Alexandrov, Ludmil B., et al. (2020)).
+#' For all available options, check the parameter setting.
 #'
 #' @param db_type only used when `sig_db` is enabled.
 #' "" for keeping default, "human-exome" for transforming to exome frequency of component,
@@ -86,7 +87,14 @@
 #' expect_equal(length(s5), 4L)
 #' expect_is(s6, "list")
 get_sig_similarity <- function(Signature, Ref = NULL,
-                               sig_db = "legacy",
+                               sig_db = c(
+                                 "legacy", "SBS", "DBS", "ID", "TSB",
+                                 "SBS_Nik_lab", "RS_Nik_lab",
+                                 "RS_BRCA560", "RS_USARC", "CNS_USARC",
+                                 "SBS_hg19", "SBS_hg38", "SBS_mm9", "SBS_mm10",
+                                 "DBS_hg19", "DBS_hg38", "DBS_mm9", "DBS_mm10",
+                                 "SBS_Nik_lab_Organ", "RS_Nik_lab_Organ",
+                               ),
                                db_type = c("", "human-exome", "human-genome"),
                                method = "cosine",
                                normalize = c("row", "feature"),
@@ -120,16 +128,7 @@ get_sig_similarity <- function(Signature, Ref = NULL,
     }
   }
 
-  sig_db <- match.arg(
-    arg = sig_db,
-    choices = c(
-      "legacy", "SBS", "DBS", "ID", "TSB",
-      "SBS_hg19", "SBS_hg38", "SBS_mm9", "SBS_mm10",
-      "DBS_hg19", "DBS_hg38", "DBS_mm9", "DBS_mm10",
-      "SBS_Nik_lab_Organ", "RS_Nik_lab_Organ",
-      "SBS_Nik_lab", "RS_Nik_lab"
-    )
-  )
+  sig_db <- match.arg(arg = sig_db)
   method <- match.arg(arg = method, choices = c("cosine"))
 
   if (is.null(Ref)) {
@@ -282,90 +281,4 @@ get_sig_similarity <- function(Signature, Ref = NULL,
   class(res) <- c("similarity", class(res))
 
   invisible(res)
-}
-
-
-# Get Reference Signature Database ----------------------------------------
-
-#' Obtain Reference Signatures
-#'
-#' The signatures and their aetiologies mainly obtained from COSMIC database
-#' (SigProfiler results) and cleaned before saving into
-#' **sigminer** package.
-#'
-#' @inheritParams get_sig_similarity
-#'
-#' @return a `list`.
-#' @export
-#' @seealso [get_sig_similarity], [sig_fit] and [show_cosmic_sig_profile].
-#'
-#' @examples
-#' s1 <- get_sig_db()
-#' s2 <- get_sig_db("DBS")
-#' s3 <- get_sig_db("DBS_mm10")
-#' s4 <- get_sig_db("SBS_Nik_lab")
-#' s5 <- get_sig_db("RS_Nik_lab")
-#' s1
-#' s2
-#' s3
-#' s4
-#' s5
-#' @testexamples
-#' expect_is(s1, "list")
-#' expect_is(s2, "list")
-#' expect_is(s3, "list")
-#' expect_is(s4, "list")
-#' expect_is(s5, "list")
-get_sig_db <- function(sig_db = "legacy") {
-  db_file <- switch(
-    sig_db,
-    legacy = system.file("extdata", "legacy_signatures.RDs",
-      package = "maftools", mustWork = TRUE
-    ),
-    SBS = system.file("extdata", "SBS_signatures.rds",
-      package = "sigminer", mustWork = TRUE
-    ),
-    SBS_Nik_lab = system.file("extdata", "SBS_signatures_Nik_lab.rds",
-      package = "sigminer", mustWork = TRUE
-    ),
-    SBS_Nik_lab_Organ = system.file("extdata", "SBS_signatures_Nik_lab_Organ.rds",
-      package = "sigminer", mustWork = TRUE
-    ),
-    RS_Nik_lab = system.file("extdata", "RS_signatures_Nik_lab.rds",
-      package = "sigminer", mustWork = TRUE
-    ),
-    RS_Nik_lab_Organ = system.file("extdata", "RS_signatures_Nik_lab_Organ.rds",
-      package = "sigminer", mustWork = TRUE
-    ),
-    DBS = system.file("extdata", "DBS_signatures.rds",
-      package = "sigminer", mustWork = TRUE
-    ),
-    ID = system.file("extdata", "ID_signatures.rds",
-      package = "sigminer", mustWork = TRUE
-    ),
-    TSB = system.file("extdata", "TSB_signatures.rds",
-      package = "sigminer", mustWork = TRUE
-    ),
-    {
-      if (startsWith(sig_db, "SBS")) {
-        system.file("extdata", "SBS_signatures_list.rds",
-          package = "sigminer", mustWork = TRUE
-        )
-      } else if (startsWith(sig_db, "DBS")) {
-        system.file("extdata", "DBS_signatures_list.rds",
-          package = "sigminer", mustWork = TRUE
-        )
-      } else {
-        stop("Bad input for option 'sig_db'!")
-      }
-    }
-  )
-  sigs_db <- readRDS(file = db_file)
-  if (!"db" %in% names(sigs_db)) {
-    sigs_db$db <- sigs_db[[sub(".*_", "", sig_db)]]
-    sigs_db <- sigs_db[c("db", "aetiology", "date")]
-  }
-  ## Make sure column-sum is 1, i.e. normalized
-  sigs_db$db <- apply(sigs_db$db, 2, function(x) x / sum(x))
-  sigs_db
 }

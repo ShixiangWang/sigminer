@@ -46,7 +46,8 @@ In addition, it can be one of "SBS_Nik_lab_Organ", "RS_Nik_lab_Organ",
 Degasperi, Andrea, et al. (2020) (reference #2).
 \strong{Note}: the signature profile for different genome builds are basically same.
 And specific database (e.g. 'SBS_mm10') contains less signatures than all COSMIC
-signatures (because some signatures are not detected from Alexandrov, Ludmil B., et al. (2020)).}
+signatures (because some signatures are not detected from Alexandrov, Ludmil B., et al. (2020)).
+For all available options, check the parameter setting.}
 
 \item{db_type}{only used when \code{sig_db} is enabled.
 "" for keeping default, "human-exome" for transforming to exome frequency of component,

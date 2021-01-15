@@ -8,7 +8,10 @@ sig_fit(
   catalogue_matrix,
   sig,
   sig_index = NULL,
-  sig_db = "legacy",
+  sig_db = c("legacy", "SBS", "DBS", "ID", "TSB", "SBS_Nik_lab", "RS_Nik_lab",
+    "RS_BRCA560", "RS_USARC", "CNS_USARC", "SBS_hg19", "SBS_hg38", "SBS_mm9", "SBS_mm10",
+    "DBS_hg19", "DBS_hg38", "DBS_mm9", "DBS_mm10", "SBS_Nik_lab_Organ",
+    "RS_Nik_lab_Organ", ),
   db_type = c("", "human-exome", "human-genome"),
   show_index = TRUE,
   method = c("QP", "NNLS", "SA"),
@@ -43,7 +46,8 @@ In addition, it can be one of "SBS_Nik_lab_Organ", "RS_Nik_lab_Organ",
 Degasperi, Andrea, et al. (2020) (reference #2).
 \strong{Note}: the signature profile for different genome builds are basically same.
 And specific database (e.g. 'SBS_mm10') contains less signatures than all COSMIC
-signatures (because some signatures are not detected from Alexandrov, Ludmil B., et al. (2020)).}
+signatures (because some signatures are not detected from Alexandrov, Ludmil B., et al. (2020)).
+For all available options, check the parameter setting.}
 
 \item{db_type}{only used when \code{sig_db} is enabled.
 "" for keeping default, "human-exome" for transforming to exome frequency of component,

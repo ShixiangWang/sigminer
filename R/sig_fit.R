@@ -97,7 +97,14 @@
 sig_fit <- function(catalogue_matrix,
                     sig,
                     sig_index = NULL,
-                    sig_db = "legacy",
+                    sig_db = c(
+                      "legacy", "SBS", "DBS", "ID", "TSB",
+                      "SBS_Nik_lab", "RS_Nik_lab",
+                      "RS_BRCA560", "RS_USARC", "CNS_USARC",
+                      "SBS_hg19", "SBS_hg38", "SBS_mm9", "SBS_mm10",
+                      "DBS_hg19", "DBS_hg38", "DBS_mm9", "DBS_mm10",
+                      "SBS_Nik_lab_Organ", "RS_Nik_lab_Organ",
+                    ),
                     db_type = c("", "human-exome", "human-genome"),
                     show_index = TRUE,
                     method = c("QP", "NNLS", "SA"),
@@ -133,6 +140,8 @@ sig_fit <- function(catalogue_matrix,
     send_success("Signature index detected.")
     send_info("Checking signature database in package.")
 
+    # TODO RS
+    sig_db <- match.arg(sig_db)
     sigs_db <- get_sig_db(sig_db)
     sigs <- sigs_db$db
 
