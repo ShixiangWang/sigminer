@@ -86,7 +86,7 @@ SigProfiler." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1.999</span>
       </span>
     </div>
 
@@ -146,7 +146,10 @@ SigProfiler.</p>
     <pre class="usage"><span class='fu'>get_sig_similarity</span><span class='op'>(</span>
   <span class='va'>Signature</span>,
   Ref <span class='op'>=</span> <span class='cn'>NULL</span>,
-  sig_db <span class='op'>=</span> <span class='st'>"legacy"</span>,
+  sig_db <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"legacy"</span>, <span class='st'>"SBS"</span>, <span class='st'>"DBS"</span>, <span class='st'>"ID"</span>, <span class='st'>"TSB"</span>, <span class='st'>"SBS_Nik_lab"</span>, <span class='st'>"RS_Nik_lab"</span>,
+    <span class='st'>"RS_BRCA560"</span>, <span class='st'>"RS_USARC"</span>, <span class='st'>"CNS_USARC"</span>, <span class='st'>"SBS_hg19"</span>, <span class='st'>"SBS_hg38"</span>, <span class='st'>"SBS_mm9"</span>, <span class='st'>"SBS_mm10"</span>,
+    <span class='st'>"DBS_hg19"</span>, <span class='st'>"DBS_hg38"</span>, <span class='st'>"DBS_mm9"</span>, <span class='st'>"DBS_mm10"</span>, <span class='st'>"SBS_Nik_lab_Organ"</span>,
+    <span class='st'>"RS_Nik_lab_Organ"</span><span class='op'>)</span>,
   db_type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>""</span>, <span class='st'>"human-exome"</span>, <span class='st'>"human-genome"</span><span class='op'>)</span>,
   method <span class='op'>=</span> <span class='st'>"cosine"</span>,
   normalize <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"row"</span>, <span class='st'>"feature"</span><span class='op'>)</span>,
@@ -182,7 +185,8 @@ In addition, it can be one of "SBS_Nik_lab_Organ", "RS_Nik_lab_Organ",
 Degasperi, Andrea, et al. (2020) (reference #2).
 <strong>Note</strong>: the signature profile for different genome builds are basically same.
 And specific database (e.g. 'SBS_mm10') contains less signatures than all COSMIC
-signatures (because some signatures are not detected from Alexandrov, Ludmil B., et al. (2020)).</p></td>
+signatures (because some signatures are not detected from Alexandrov, Ludmil B., et al. (2020)).
+For all available options, check the parameter setting.</p></td>
     </tr>
     <tr>
       <th>db_type</th>
@@ -232,6 +236,8 @@ The remove operation will be done after normalization. Default is <code>NULL</co
 
     <p>Alexandrov, Ludmil B., et al. "The repertoire of mutational signatures in human cancer." Nature 578.7793 (2020): 94-101.</p>
 <p>Degasperi, Andrea, et al. "A practical framework and online tool for mutational signature analyses show intertissue variation and driver dependencies." Nature cancer 1.2 (2020): 249-263.</p>
+<p>Steele, Christopher D., et al. "Undifferentiated sarcomas develop through distinct evolutionary pathways." Cancer Cell 35.3 (2019): 441-456.</p>
+<p>Nik-Zainal, Serena, et al. "Landscape of somatic mutations in 560 breast cancer whole-genome sequences." Nature 534.7605 (2016): 47-54.</p>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Shixiang Wang <a href='mailto:w_shixiang@163.com'>w_shixiang@163.com</a></p>

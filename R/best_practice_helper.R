@@ -251,6 +251,7 @@ get_stat_sigs <- function(runs) {
   )
 
   send_info("\t summarizing sample profile similarity.")
+  # 每个 signature 看作一个类，看一个类中不同 runs 结果的相似性
   sim <- get_similarity_stats(
     sig_array,
     n = dm[2],
@@ -406,6 +407,7 @@ get_similarity_stats <- function(x,
       }
     })
   } else if (type == "between-cluster") {
+    # 找出最近的组（平均相似性最高）
     d <- lapply(seq_len(n), function(i) {
       if (dim(x)[2] >= 2) {
         x1 <- x[, i, ]
@@ -416,10 +418,21 @@ get_similarity_stats <- function(x,
         }
         if (is.null(dim(x2))) {
           x2 <- matrix(x2, ncol = 1)
+          cosineMatrix(x1, x2)
+        } else {
+          # x2 是 3 维
+          d2 <- dim(x2)[2]
+          sim_list <- lapply(seq_len(d2), function(k) {
+            mat <- cosineMatrix(x1, x2[, k, ])
+            if (ncol(mat) > 1) {
+              mat[upper.tri(mat)]
+            } else {
+              mat
+            }
+          })
         }
-
-        dim(x2) <- c(dim(x1)[1], prod(dim(x2)) / dim(x1)[1])
-        cosineMatrix(x1, x2)
+        #dim(x2) <- c(dim(x1)[1], prod(dim(x2)) / dim(x1)[1])
+        sim_list[[which.max(sapply(sim_list, mean))]]
       } else {
         NA
       }

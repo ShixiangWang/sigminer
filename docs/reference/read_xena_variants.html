@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1.999</span>
       </span>
     </div>
 
@@ -147,7 +147,8 @@
     <p>a <code>MAF</code> object.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span><span class='op'>(</span><span class='st'>"UCSCXenaTools"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+    <pre class="examples"><span class='co'># \donttest{</span>
+<span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span><span class='op'>(</span><span class='st'>"UCSCXenaTools"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
   <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://docs.ropensci.org/UCSCXenaTools/'>UCSCXenaTools</a></span><span class='op'>)</span>
   <span class='fu'><a href='https://rdrr.io/r/base/options.html'>options</a></span><span class='op'>(</span>use_hiplot <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
   <span class='va'>example_file</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://docs.ropensci.org/UCSCXenaTools/reference/XenaGenerate.html'>XenaGenerate</a></span><span class='op'>(</span>subset <span class='op'>=</span> <span class='va'>XenaDatasets</span> <span class='op'>==</span> <span class='st'>"mc3/ACC_mc3.txt"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
@@ -158,6 +159,7 @@
   <span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sig_tally.html'>sig_tally</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
   <span class='va'>y</span>
 <span class='op'>}</span>
+<span class='co'># }</span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

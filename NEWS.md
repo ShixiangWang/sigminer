@@ -2,10 +2,13 @@
 
 ## BUG REPORTS
 
+- Fixed bug in silhouette calculation in `bp_extract_signatures()` (#332).
+PAY ATTENTION: this may affect results.
 - Fixed bug using custom signature name in `show_sig_profile_loop()`.
 
 ## ENHANCEMENTS
 
+- Included new (RS) reference signatures.
 - Updated the internal code for getting relative activity in `get_sig_exposure()`.
 
 ## NEW FUNCTIONS

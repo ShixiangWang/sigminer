@@ -207,9 +207,12 @@ of plot facet.}
 and values are class labels (i.e. cancer subtype). If it is \code{NULL} (the default),
 treat all samples as one group.}
 
-\item{method}{one of 'bt' (use bootstrap exposure median) or
-'stepwise' (stepwise reduce and update signatures then do signature fitting
-with last signature sets).}
+\item{method}{one of 'bt' (use bootstrap exposure median, from reference #2,
+\strong{the most recommended way in my personal view}) or stepwise'
+(stepwise reduce and update signatures then do signature fitting
+with last signature sets, from reference #2, the result tends to assign
+the contribution of removed signatures to the remaining signatures,
+\strong{maybe I misunderstand the paper method? PAY ATTENTION}).}
 
 \item{bt_use_prop}{this parameter is only used for \code{bt} method to reset
 low contributing signature activity (relative activity \verb{<0.01}). If \code{TRUE},
@@ -245,7 +248,8 @@ You can also use \link{sig_extract} to get optimal NMF result from multiple NMF 
 Besides, you can use \link{sig_fit} to quantify exposures based on signatures extracted
 from \code{bp_extract_signatures()}.
 \item \code{bp_extract_signatures_iter()} for extracting signature in a iteration way.
-\item \code{bp_cluster_iter_list()} for clustering iterated signatures to help collapse
+\item \code{bp_cluster_iter_list()} for clustering (\code{hclust} with average linkage)
+iterated signatures to help collapse
 multiple signatures into one. The result cluster can be visualized by
 \code{plot()} or \code{factoextra::fviz_dend()}.
 \item \code{bp_get_clustered_sigs()} for getting clustered (grouped) mean signatures from signature clusters.

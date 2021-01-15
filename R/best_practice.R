@@ -23,7 +23,8 @@
 #' Besides, you can use [sig_fit] to quantify exposures based on signatures extracted
 #' from `bp_extract_signatures()`.
 #' - `bp_extract_signatures_iter()` for extracting signature in a iteration way.
-#' - `bp_cluster_iter_list()` for clustering iterated signatures to help collapse
+#' - `bp_cluster_iter_list()` for clustering (`hclust` with average linkage)
+#' iterated signatures to help collapse
 #' multiple signatures into one. The result cluster can be visualized by
 #' `plot()` or `factoextra::fviz_dend()`.
 #' - `bp_get_clustered_sigs()` for getting clustered (grouped) mean signatures from signature clusters.
@@ -978,9 +979,12 @@ bp_show_survey <- function(obj,
 #' @param sample_class a named string vector whose names are sample names
 #' and values are class labels (i.e. cancer subtype). If it is `NULL` (the default),
 #' treat all samples as one group.
-#' @param method one of 'bt' (use bootstrap exposure median) or
-#' 'stepwise' (stepwise reduce and update signatures then do signature fitting
-#' with last signature sets).
+#' @param method one of 'bt' (use bootstrap exposure median, from reference #2,
+#' **the most recommended way in my personal view**) or stepwise'
+#' (stepwise reduce and update signatures then do signature fitting
+#' with last signature sets, from reference #2, the result tends to assign
+#' the contribution of removed signatures to the remaining signatures,
+#' **maybe I misunderstand the paper method? PAY ATTENTION**).
 #' @param bt_use_prop this parameter is only used for `bt` method to reset
 #' low contributing signature activity (relative activity `<0.01`). If `TRUE`,
 #' use empirical P value calculation way (i.e. proportion, used by reference `#2`),

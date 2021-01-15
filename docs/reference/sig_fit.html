@@ -82,7 +82,7 @@ min(||W*H - V||) where W and V are known." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1.999</span>
       </span>
     </div>
 
@@ -139,7 +139,10 @@ catalogue <code>V</code> with known signatures <code>W</code> by solving the min
   <span class='va'>catalogue_matrix</span>,
   <span class='va'>sig</span>,
   sig_index <span class='op'>=</span> <span class='cn'>NULL</span>,
-  sig_db <span class='op'>=</span> <span class='st'>"legacy"</span>,
+  sig_db <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"legacy"</span>, <span class='st'>"SBS"</span>, <span class='st'>"DBS"</span>, <span class='st'>"ID"</span>, <span class='st'>"TSB"</span>, <span class='st'>"SBS_Nik_lab"</span>, <span class='st'>"RS_Nik_lab"</span>,
+    <span class='st'>"RS_BRCA560"</span>, <span class='st'>"RS_USARC"</span>, <span class='st'>"CNS_USARC"</span>, <span class='st'>"SBS_hg19"</span>, <span class='st'>"SBS_hg38"</span>, <span class='st'>"SBS_mm9"</span>, <span class='st'>"SBS_mm10"</span>,
+    <span class='st'>"DBS_hg19"</span>, <span class='st'>"DBS_hg38"</span>, <span class='st'>"DBS_mm9"</span>, <span class='st'>"DBS_mm10"</span>, <span class='st'>"SBS_Nik_lab_Organ"</span>,
+    <span class='st'>"RS_Nik_lab_Organ"</span>, <span class='op'>)</span>,
   db_type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>""</span>, <span class='st'>"human-exome"</span>, <span class='st'>"human-genome"</span><span class='op'>)</span>,
   show_index <span class='op'>=</span> <span class='cn'>TRUE</span>,
   method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"QP"</span>, <span class='st'>"NNLS"</span>, <span class='st'>"SA"</span><span class='op'>)</span>,
@@ -184,7 +187,8 @@ In addition, it can be one of "SBS_Nik_lab_Organ", "RS_Nik_lab_Organ",
 Degasperi, Andrea, et al. (2020) (reference #2).
 <strong>Note</strong>: the signature profile for different genome builds are basically same.
 And specific database (e.g. 'SBS_mm10') contains less signatures than all COSMIC
-signatures (because some signatures are not detected from Alexandrov, Ludmil B., et al. (2020)).</p></td>
+signatures (because some signatures are not detected from Alexandrov, Ludmil B., et al. (2020)).
+For all available options, check the parameter setting.</p></td>
     </tr>
     <tr>
       <th>db_type</th>

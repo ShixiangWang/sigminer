@@ -66,9 +66,11 @@ You can also use sig_extract to get optimal NMF result from multiple NMF runs.
 Besides, you can use sig_fit to quantify exposures based on signatures extracted
 from bp_extract_signatures().
 bp_extract_signatures_iter() for extracting signature in a iteration way.
-bp_cluster_iter_list() for clustering iterated signatures to help collapse
+bp_cluster_iter_list() for clustering (hclust with average linkage)
+iterated signatures to help collapse
 multiple signatures into one. The result cluster can be visualized by
 plot() or factoextra::fviz_dend().
+bp_get_clustered_sigs() for getting clustered (grouped) mean signatures from signature clusters.
 Extra: bp_get_stats() for obtaining stats for signatures and samples of a solution.
 These stats are aggregated (averaged) as the stats for a solution
 (specific signature number).
@@ -107,7 +109,7 @@ Extra: bp_get_rank_score() for obtaining rank score for all signature numbers.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1.999</span>
       </span>
     </div>
 
@@ -174,9 +176,11 @@ You can also use <a href='sig_extract.html'>sig_extract</a> to get optimal NMF r
 Besides, you can use <a href='sig_fit.html'>sig_fit</a> to quantify exposures based on signatures extracted
 from <code>bp_extract_signatures()</code>.</p></li>
 <li><p><code>bp_extract_signatures_iter()</code> for extracting signature in a iteration way.</p></li>
-<li><p><code>bp_cluster_iter_list()</code> for clustering iterated signatures to help collapse
+<li><p><code>bp_cluster_iter_list()</code> for clustering (<code>hclust</code> with average linkage)
+iterated signatures to help collapse
 multiple signatures into one. The result cluster can be visualized by
 <code><a href='https://rdrr.io/r/graphics/plot.default.html'>plot()</a></code> or <code><a href='https://rdrr.io/pkg/factoextra/man/fviz_dend.html'>factoextra::fviz_dend()</a></code>.</p></li>
+<li><p><code>bp_get_clustered_sigs()</code> for getting clustered (grouped) mean signatures from signature clusters.</p></li>
 <li><p>Extra: <code>bp_get_stats</code>() for obtaining stats for signatures and samples of a solution.
 These stats are aggregated (averaged) as the stats for a solution
 (specific signature number).</p></li>
@@ -227,7 +231,9 @@ These stats are aggregated (averaged) as the stats for a solution
   py_path <span class='op'>=</span> <span class='st'>"/Users/wsx/anaconda3/bin/python"</span>
 <span class='op'>)</span>
 
-<span class='fu'>bp_cluster_iter_list</span><span class='op'>(</span><span class='va'>x</span>, include_final_iteration <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='fu'>bp_cluster_iter_list</span><span class='op'>(</span><span class='va'>x</span>, k <span class='op'>=</span> <span class='cn'>NULL</span>, include_final_iteration <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+
+<span class='fu'>bp_get_clustered_sigs</span><span class='op'>(</span><span class='va'>SigClusters</span>, <span class='va'>cluster_label</span><span class='op'>)</span>
 
 <span class='fu'>bp_get_sig_obj</span><span class='op'>(</span><span class='va'>obj</span>, signum <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
@@ -369,10 +375,23 @@ the extraction procedure 10 times.</p></td>
 <code>Signature</code> objects.</p></td>
     </tr>
     <tr>
+      <th>k</th>
+      <td><p>an integer sequence specifying the cluster number to get silhouette.</p></td>
+    </tr>
+    <tr>
       <th>include_final_iteration</th>
       <td><p>if <code>FALSE</code>, exclude final iteration result
 from clustering for input from <code>bp_extract_signatures_iter()</code>, not applied
 if input is a list of <code>Signature</code> objects.</p></td>
+    </tr>
+    <tr>
+      <th>SigClusters</th>
+      <td><p>result from <code>bp_cluster_iter_list()</code>.</p></td>
+    </tr>
+    <tr>
+      <th>cluster_label</th>
+      <td><p>cluster labels for a specified cluster number, obtain it
+from <code>SigClusters$sil_df</code>.</p></td>
     </tr>
     <tr>
       <th>obj</th>
@@ -449,9 +468,12 @@ treat all samples as one group.</p></td>
     </tr>
     <tr>
       <th>method</th>
-      <td><p>one of 'bt' (use bootstrap exposure median) or
-'stepwise' (stepwise reduce and update signatures then do signature fitting
-with last signature sets).</p></td>
+      <td><p>one of 'bt' (use bootstrap exposure median, from reference #2,
+<strong>the most recommended way in my personal view</strong>) or stepwise'
+(stepwise reduce and update signatures then do signature fitting
+with last signature sets, from reference #2, the result tends to assign
+the contribution of removed signatures to the remaining signatures,
+<strong>maybe I misunderstand the paper method? PAY ATTENTION</strong>).</p></td>
     </tr>
     <tr>
       <th>bt_use_prop</th>
