@@ -19,11 +19,11 @@ CN40_map <- usarc %>%
       type == "del" ~ "0-1"
     ),
     size = dplyr::case_when(
-      size_min < 0 & size_max < 1 ~ paste0("0-", 1000*size_max, "Kb"),
-      #size_min < 0 & size_max >= 1 ~ paste0("0-", size_max, "Mb")
+      size_min < 0 & size_max < 1 ~ paste0("0-", 1000 * size_max, "Kb"),
+      # size_min < 0 & size_max >= 1 ~ paste0("0-", size_max, "Mb")
       is.infinite(size_max) ~ paste0(">", size_min, "Mb"),
-      size_max < 1 ~ paste0(1000*size_min, "Kb-", 1000*size_max, "Kb"),
-      size_min < 1 & size_max == 1 ~ paste0(1000*size_min, "Kb-", size_max, "Mb"),
+      size_max < 1 ~ paste0(1000 * size_min, "Kb-", 1000 * size_max, "Kb"),
+      size_min < 1 & size_max == 1 ~ paste0(1000 * size_min, "Kb-", size_max, "Mb"),
       size_min >= 1 ~ paste0(size_min, "Mb-", size_max, "Mb")
     )
   ) %>%

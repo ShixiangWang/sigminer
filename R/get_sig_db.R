@@ -50,49 +50,49 @@ get_sig_db <- function(sig_db = "legacy") {
   db_file <- switch(
     sig_db,
     legacy = system.file("extdata", "legacy_signatures.RDs",
-                         package = "maftools", mustWork = TRUE
+      package = "maftools", mustWork = TRUE
     ),
     SBS = system.file("extdata", "SBS_signatures.rds",
-                      package = "sigminer", mustWork = TRUE
+      package = "sigminer", mustWork = TRUE
     ),
     SBS_Nik_lab = system.file("extdata", "SBS_signatures_Nik_lab.rds",
-                              package = "sigminer", mustWork = TRUE
+      package = "sigminer", mustWork = TRUE
     ),
     SBS_Nik_lab_Organ = system.file("extdata", "SBS_signatures_Nik_lab_Organ.rds",
-                                    package = "sigminer", mustWork = TRUE
+      package = "sigminer", mustWork = TRUE
     ),
     RS_Nik_lab = system.file("extdata", "RS_signatures_Nik_lab.rds",
-                             package = "sigminer", mustWork = TRUE
+      package = "sigminer", mustWork = TRUE
     ),
     RS_Nik_lab_Organ = system.file("extdata", "RS_signatures_Nik_lab_Organ.rds",
-                                   package = "sigminer", mustWork = TRUE
+      package = "sigminer", mustWork = TRUE
     ),
     RS_BRCA560 = system.file("extdata", "RS_signatures_BRCA560.rds",
-                                   package = "sigminer", mustWork = TRUE
+      package = "sigminer", mustWork = TRUE
     ),
     RS_USARC = system.file("extdata", "RS_signatures_USARC.rds",
-                                   package = "sigminer", mustWork = TRUE
+      package = "sigminer", mustWork = TRUE
     ),
     CNS_USARC = system.file("extdata", "CNS_signatures_USARC.rds",
-                           package = "sigminer", mustWork = TRUE
+      package = "sigminer", mustWork = TRUE
     ),
     DBS = system.file("extdata", "DBS_signatures.rds",
-                      package = "sigminer", mustWork = TRUE
+      package = "sigminer", mustWork = TRUE
     ),
     ID = system.file("extdata", "ID_signatures.rds",
-                     package = "sigminer", mustWork = TRUE
+      package = "sigminer", mustWork = TRUE
     ),
     TSB = system.file("extdata", "TSB_signatures.rds",
-                      package = "sigminer", mustWork = TRUE
+      package = "sigminer", mustWork = TRUE
     ),
     {
       if (startsWith(sig_db, "SBS")) {
         system.file("extdata", "SBS_signatures_list.rds",
-                    package = "sigminer", mustWork = TRUE
+          package = "sigminer", mustWork = TRUE
         )
       } else if (startsWith(sig_db, "DBS")) {
         system.file("extdata", "DBS_signatures_list.rds",
-                    package = "sigminer", mustWork = TRUE
+          package = "sigminer", mustWork = TRUE
         )
       } else {
         stop("Bad input for option 'sig_db'!")

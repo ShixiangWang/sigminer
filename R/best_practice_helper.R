@@ -431,7 +431,7 @@ get_similarity_stats <- function(x,
             }
           })
         }
-        #dim(x2) <- c(dim(x1)[1], prod(dim(x2)) / dim(x1)[1])
+        # dim(x2) <- c(dim(x1)[1], prod(dim(x2)) / dim(x1)[1])
         sim_list[[which.max(sapply(sim_list, mean))]]
       } else {
         NA
@@ -877,7 +877,6 @@ optimize_exposure_in_one_sample <- function(catalog,
                                             sample,
                                             sig_matrix,
                                             tmp_dir) {
-
   tmpf_expo <- file.path(
     tmp_dir,
     paste0(sample, "_expo.rds")

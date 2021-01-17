@@ -201,7 +201,8 @@ sig_fit_bootstrap <- function(catalog,
   cli::cli_status_clear(
     sb,
     result = "done",
-    msg_done = "Bootstrap done.")
+    msg_done = "Bootstrap done."
+  )
 
   expo <- res[1, ]
   expo <- sapply(expo, cbind)

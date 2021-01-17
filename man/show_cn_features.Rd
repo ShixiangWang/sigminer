@@ -22,7 +22,7 @@ show_cn_features(
 \item{features}{a feature \code{list} generate from \link{sig_tally} function.}
 
 \item{method}{method for feature classification, can be one of "Macintyre" ("M"),
-"Wang" ("W").}
+"Wang" ("W"), "S" (for method described in Steele et al. 2019).}
 
 \item{rm_outlier}{default is \code{FALSE}, if \code{TRUE}, remove outliers. Only
 works when method is "Wang" ("W").}

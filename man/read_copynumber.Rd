@@ -104,6 +104,8 @@ cn <- read_copynumber(segTabs,
   seg_cols = c("chromosome", "start", "end", "segVal"),
   genome_measure = "wg", complement = TRUE, add_loh = TRUE
 )
+# Use tally method "S" (Steele et al.)
+tally_s <- sig_tally(cn, method = "S")
 
 tab_file <- system.file("extdata", "metastatic_tumor.segtab.txt",
   package = "sigminer", mustWork = TRUE

@@ -8,6 +8,7 @@ PAY ATTENTION: this may affect results.
 
 ## ENHANCEMENTS
 
+- Added new method "S" (from Steele et al. 2019) for tallying copy number data.
 - Included new (RS) reference signatures.
 - Updated the internal code for getting relative activity in `get_sig_exposure()`.
 

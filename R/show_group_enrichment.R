@@ -119,10 +119,12 @@ plot_enrichment_simple <- function(data, x, y, fill_scale,
 
   if (add_text_annotation) {
     p <- p +
-      geom_text(mapping = aes_string(
-        label = if (fill_by_p_value) "measure_observed" else "p_value"
-      ),
-      size = 3)
+      geom_text(
+        mapping = aes_string(
+          label = if (fill_by_p_value) "measure_observed" else "p_value"
+        ),
+        size = 3
+      )
   }
 
   p

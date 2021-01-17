@@ -24,7 +24,8 @@ get_sig_rec_similarity <- function(Signature, nmf_matrix) {
   sim <- purrr::map2_dbl(
     as.data.frame(raw_catalog),
     as.data.frame(rec_catalog),
-    cosineVector)
+    cosineVector
+  )
 
   data.table::data.table(
     sample = cross_samps,

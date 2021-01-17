@@ -49,7 +49,7 @@ sig_tally(object, ...)
 corresponding class (e.g. \code{CopyNumber}).}
 
 \item{method}{method for feature classification, can be one of "Macintyre" ("M"),
-"Wang" ("W").}
+"Wang" ("W"), "S" (for method described in Steele et al. 2019).}
 
 \item{ignore_chrs}{Chromsomes to ignore from analysis. e.g. chrX and chrY.}
 
@@ -178,6 +178,8 @@ cn_tally_W <- sig_tally(cn, method = "W")
 # Use method designed by Macintyre et al.
 cn_tally_M <- sig_tally(cn, method = "M")
 }
+# Use method designed by Steele et al.
+# See example in read_copynumber
 \donttest{
 # Prepare SBS signature analysis
 laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
@@ -210,6 +212,9 @@ processes in ovarian carcinoma." Nature genetics 50.9 (2018): 1262.
 
 Wang, Shixiang, et al. "Copy number signature analyses in prostate cancer reveal
 distinct etiologies and clinical outcomes." medRxiv (2020).
+
+Steele, Christopher D., et al. "Undifferentiated sarcomas develop through
+distinct evolutionary pathways." Cancer Cell 35.3 (2019): 441-456.
 
 Mayakonda, Anand, et al. "Maftools: efficient and comprehensive analysis of somatic variants in cancer." Genome research 28.11 (2018): 1747-1756.
 

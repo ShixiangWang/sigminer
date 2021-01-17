@@ -61,6 +61,8 @@
 #'   seg_cols = c("chromosome", "start", "end", "segVal"),
 #'   genome_measure = "wg", complement = TRUE, add_loh = TRUE
 #' )
+#' # Use tally method "S" (Steele et al.)
+#' tally_s <- sig_tally(cn, method = "S")
 #'
 #' tab_file <- system.file("extdata", "metastatic_tumor.segtab.txt",
 #'   package = "sigminer", mustWork = TRUE
@@ -71,6 +73,7 @@
 #' expect_s4_class(cn, "CopyNumber")
 #' expect_s4_class(cn_subset, "CopyNumber")
 #' expect_s4_class(cn2, "CopyNumber")
+#' expect_is(tally_s, "list")
 #' @seealso [read_maf] for reading mutation data to [MAF] object.
 read_copynumber <- function(input,
                             pattern = NULL,
@@ -395,6 +398,12 @@ read_copynumber <- function(input,
     if (!"minor_cn" %in% colnames(data_df)) {
       send_stop("When you want to add LOH infor, a column named as 'minor_cn' should exist!")
     }
+    # Make sure the minor_cn is really minor copy
+    data_df$minor_cn <- pmin(
+      data_df$segVal - data_df$minor_cn,
+      data_df$minor_cn
+    )
+    # Determine a LOH label
     data_df$loh <- data_df$segVal >= 1 & data_df$minor_cn == 0 &
       (data_df$end - data_df$start > loh_min_len - 1)
     # We don't label sex chromosomes

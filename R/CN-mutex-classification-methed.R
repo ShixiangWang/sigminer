@@ -568,6 +568,64 @@ classDT2Matrix <- function(dt, samp_col, component_col) {
   mat %>% as.matrix()
 }
 
+
+# New CN class from Cancer Cell -------------------------------------------
+
+get_matrix_mutex_sv <- function(dt) {
+  dt$segLen <- (dt$end - dt$start + 1) / 1e6 # Scale to Mb
+  dt$.LOHstatus <- ifelse(dt$loh, "LOH", "het")
+  dt$.LOHstatus[dt$CN == 0] <- "homdel"
+
+  Map_CN40 <- data.table::fread(
+    system.file(
+      "extdata", "CN40-Map.txt",
+      package = "sigminer"
+    )
+  )
+  map40 <- Map_CN40$label2
+  names(map40) <- Map_CN40$label1
+
+  Map_CN48 <- data.table::fread(
+    system.file(
+      "extdata", "CN48-Map.txt",
+      package = "sigminer"
+    )
+  )
+  map48 <- Map_CN48$label2
+  names(map48) <- Map_CN48$label1
+
+  # CN40
+  dt$.CN1 <- cut(dt$segVal,
+    breaks = c(-0.5, 1.5, 2.5, 4.5, Inf),
+    labels = c("del", "neut", "dup", "amp")
+  )
+  dt$.Len1 <- cut(dt$segLen, breaks = c(-0.01, 0.01, 0.1, 1, 10, Inf)) %>% as.character()
+  dt$.Label1 <- map40[paste(dt$.CN1, dt$.LOHstatus, dt$.Len1, sep = ":")]
+  dt$.Label1 <- factor(dt$.Label1, levels = Map_CN40$label2)
+  mat40 <- classDT2Matrix(dt, samp_col = "sample", component_col = ".Label1")
+
+  # CN48
+  dt$.CN2 <- cut(
+    dt$segVal,
+    breaks = c(-0.5, 1.5, 2.5, 4.5, 8.5, Inf),
+    labels = c("del", "neut", "dup", "quad", "amp")
+  )
+  dt$.Len2 <- data.table::fifelse(
+    dt$.LOHstatus == "homdel",
+    cut(dt$segLen, breaks = c(-0.01, 0.1, 1, Inf)) %>% as.character(),
+    cut(dt$segLen, breaks = c(-0.01, 0.1, 1, 10, 40, Inf)) %>% as.character()
+  )
+  dt$.Label2 <- map48[paste(dt$.CN2, dt$.LOHstatus, dt$.Len2, sep = ":")]
+  dt$.Label2 <- factor(dt$.Label2, levels = Map_CN48$label2)
+  mat48 <- classDT2Matrix(dt, samp_col = "sample", component_col = ".Label2")
+
+  return(list(
+    data = dt,
+    CN40 = mat40,
+    CN48 = mat48
+  ))
+}
+
 utils::globalVariables(
   c(".N")
 )

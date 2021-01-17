@@ -46,6 +46,8 @@
 #' # Use method designed by Macintyre et al.
 #' cn_tally_M <- sig_tally(cn, method = "M")
 #' }
+#' # Use method designed by Steele et al.
+#' # See example in read_copynumber
 #' \donttest{
 #' # Prepare SBS signature analysis
 #' laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools")
@@ -126,7 +128,7 @@ sig_tally <- function(object, ...) {
 #' @describeIn sig_tally Returns copy number features, components and component-by-sample matrix
 #' @param indices integer vector indicating segments to keep.
 #' @param method method for feature classification, can be one of "Macintyre" ("M"),
-#' "Wang" ("W").
+#' "Wang" ("W"), "S" (for method described in Steele et al. 2019).
 #' @param add_loh flag to add LOH classifications.
 #' @param feature_setting a `data.frame` used for classification.
 #' **Only used when method is "Wang" ("W")**.
@@ -173,6 +175,9 @@ sig_tally <- function(object, ...) {
 #'
 #' Wang, Shixiang, et al. "Copy number signature analyses in prostate cancer reveal
 #' distinct etiologies and clinical outcomes." medRxiv (2020).
+#'
+#' Steele, Christopher D., et al. "Undifferentiated sarcomas develop through
+#' distinct evolutionary pathways." Cancer Cell 35.3 (2019): 441-456.
 #' @export
 sig_tally.CopyNumber <- function(object,
                                  method = "Wang",
@@ -191,7 +196,7 @@ sig_tally.CopyNumber <- function(object,
                                  keep_only_matrix = FALSE,
                                  ...) {
   stopifnot(is.logical(reference_components) | is.list(reference_components) | is.null(reference_components))
-  method <- match.arg(method, choices = c("Macintyre", "M", "Wang", "W", "Tao & Wang", "T", "X"))
+  method <- match.arg(method, choices = c("Macintyre", "M", "Wang", "W", "Tao & Wang", "T", "X", "S"))
 
   if (startsWith(method, "T") | method == "X") {
     send_warning("Currently, the method 'T' is in experimental stage, please don't use it for now!")
@@ -293,6 +298,12 @@ sig_tally.CopyNumber <- function(object,
     }
     # cn_matrix[is.na(cn_matrix)] <- 0L
     feature_setting$n_obs <- colSums(cn_matrix, na.rm = TRUE)
+  } else if (startsWith(method, "S")) {
+    # When use method "S", join_adj_seg should set to FALSE in read_copynumber
+    mat_list <- get_matrix_mutex_sv(data.table::rbindlist(cn_list, idcol = "sample"))
+    cn_features <- NULL
+    cn_components <- mat_list$data
+    cn_matrix <- mat_list$CN40
   } else {
     # Method: Shixiang Wang, Ziyu Tao and Tao Wu, short with 'T'
     send_info("Step: getting copy number features.")
@@ -343,9 +354,11 @@ sig_tally.CopyNumber <- function(object,
       para_df <- "Message: No this info for method T."
     } else if (startsWith(method, "X")) {
       para_df <- "Message: No this info for method X."
+    } else if (startsWith(method, "S")) {
+      para_df <- "Message: No this info for method S."
     }
 
-    if (startsWith(method, "T") | method == "X") {
+    if (startsWith(method, "T") | method == "X" | method == "S") {
       res_list <- list(
         features = cn_features,
         components = cn_components,
@@ -356,11 +369,17 @@ sig_tally.CopyNumber <- function(object,
             simplified_matrix = cn_matrix_list$ss_mat,
             standard_matrix = cn_matrix_list$s_mat
           )
-        } else {
+        } else if (method == "X") {
           list(
             simplified_matrix = cn_matrix_list$ss_mat,
             standard_matrix = cn_matrix_list$s_mat,
             complex_matrix = cn_matrix_list$c_mat
+          )
+        } else {
+          # Method "S"
+          list(
+            CN40 = mat_list$CN40,
+            CN48 = mat_list$CN48
           )
         }
       )

@@ -473,7 +473,8 @@ bp_extract_signatures <- function(nmf_matrix,
           .progress = TRUE,
           .options = furrr::furrr_options(
             seed = TRUE,
-            stdout = FALSE)
+            stdout = FALSE
+          )
         )
       } else {
         purrr::map(seq_len(n_bootstrap), call_nmf, cores = cores)
@@ -529,7 +530,8 @@ bp_extract_signatures <- function(nmf_matrix,
       .progress = TRUE,
       .options = furrr::furrr_options(
         seed = seed,
-        stdout = FALSE)
+        stdout = FALSE
+      )
     )
   }
   send_success(
@@ -739,11 +741,14 @@ bp_cluster_iter_list <- function(x, k = NULL, include_final_iteration = TRUE) {
     function(x) {
       cls <- cluster::silhouette(cutree(cls, k = x), distobj)
       cbind(
-        data.frame(signame = rownames(cosdist),
-                   k = x),
+        data.frame(
+          signame = rownames(cosdist),
+          k = x
+        ),
         data.frame(cls[, 1:3])
       )
-    })
+    }
+  )
   sil_summary <- sil_df %>%
     dplyr::group_by(.data$k) %>%
     dplyr::summarise(
@@ -751,7 +756,8 @@ bp_cluster_iter_list <- function(x, k = NULL, include_final_iteration = TRUE) {
       mean = mean(.data$sil_width, na.rm = TRUE),
       max = max(.data$sil_width, na.rm = TRUE),
       sd = sd(.data$sil_width, na.rm = TRUE)
-    ) %>% as.data.frame()
+    ) %>%
+    as.data.frame()
   r <- list(
     cluster = cls,
     distance = cosdist,
@@ -766,7 +772,7 @@ bp_cluster_iter_list <- function(x, k = NULL, include_final_iteration = TRUE) {
 bp_get_cluster_index_list <- function(x) {
   rg <- range(x)
   sq <- seq(rg[1], rg[2])
-  y <- purrr::map(sq, ~which(x == .))
+  y <- purrr::map(sq, ~ which(x == .))
   names(y) <- as.character(sq)
   y
 }
@@ -779,25 +785,29 @@ bp_get_cluster_index_list <- function(x) {
 #' @export
 bp_get_clustered_sigs <- function(SigClusters, cluster_label) {
   sig_idx <- bp_get_cluster_index_list(cluster_label)
-  sig_map <- purrr::map(sig_idx, ~colnames(SigClusters$sigmat)[.])
+  sig_map <- purrr::map(sig_idx, ~ colnames(SigClusters$sigmat)[.])
   names(sig_map) <- paste0("Sig", names(sig_map))
   grp_sigs <- purrr::reduce(
-    purrr::map(sig_idx, ~t(t(rowMeans(SigClusters$sigmat[, ., drop = FALSE])))),
+    purrr::map(sig_idx, ~ t(t(rowMeans(SigClusters$sigmat[, ., drop = FALSE])))),
     cbind
   )
   colnames(grp_sigs) <- names(sig_map)
 
   sim_sig_to_grp_mean <- purrr::map(
     sig_idx,
-    ~as.numeric(
+    ~ as.numeric(
       cosine(
         SigClusters$sigmat[, ., drop = FALSE],
-        t(t(rowMeans(SigClusters$sigmat[, ., drop = FALSE]))))))
+        t(t(rowMeans(SigClusters$sigmat[, ., drop = FALSE])))
+      )
+    )
+  )
   sim_sig_to_grp_mean <- purrr::map2_df(
     sim_sig_to_grp_mean,
     sig_idx,
-    ~data.frame(sig = colnames(SigClusters$sigmat)[.y], sim = .x),
-    .id = "grp_sig")
+    ~ data.frame(sig = colnames(SigClusters$sigmat)[.y], sim = .x),
+    .id = "grp_sig"
+  )
   sim_sig_to_grp_mean$grp_sig <- paste0("Sig", sim_sig_to_grp_mean$grp_sig)
 
   return(
@@ -869,7 +879,6 @@ bp_show_survey2 <- function(obj,
     left_shape = left_shape, right_shape = right_shape,
     shape_size = shape_size, highlight = highlight
   )
-
 }
 
 #' @rdname bp
@@ -1119,7 +1128,8 @@ bp_attribute_activity <- function(input,
           .progress = TRUE,
           .options = furrr::furrr_options(
             seed = TRUE,
-            stdout = FALSE)
+            stdout = FALSE
+          )
         )
       )
     } else {
@@ -1151,7 +1161,8 @@ bp_attribute_activity <- function(input,
           .progress = TRUE,
           .options = furrr::furrr_options(
             seed = TRUE,
-            stdout = FALSE)
+            stdout = FALSE
+          )
         )
       )
     } else {

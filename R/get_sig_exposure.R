@@ -60,10 +60,11 @@ get_sig_exposure <- function(Signature,
     as.data.frame() %>%
     tibble::rownames_to_column(var = "sample") %>%
     data.table::as.data.table()
-  if (type == "absolute") return(h)
+  if (type == "absolute") {
+    return(h)
+  }
   h_norm <- h[, -1] / rowSums(h[, -1])
   h_norm[h_norm <= rel_threshold] <- 0
   h_norm <- na.omit(cbind(h[, 1], h_norm))
   return(h_norm)
-
 }
