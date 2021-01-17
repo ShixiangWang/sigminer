@@ -103,7 +103,7 @@ sig_fit <- function(catalogue_matrix,
                       "RS_BRCA560", "RS_USARC", "CNS_USARC",
                       "SBS_hg19", "SBS_hg38", "SBS_mm9", "SBS_mm10",
                       "DBS_hg19", "DBS_hg38", "DBS_mm9", "DBS_mm10",
-                      "SBS_Nik_lab_Organ", "RS_Nik_lab_Organ",
+                      "SBS_Nik_lab_Organ", "RS_Nik_lab_Organ"
                     ),
                     db_type = c("", "human-exome", "human-genome"),
                     show_index = TRUE,
