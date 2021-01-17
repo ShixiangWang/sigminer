@@ -179,7 +179,9 @@ show_sig_profile <- function(Signature,
   }
 
   mode <- match.arg(mode)
-  method <- match.arg(method, choices = c("Macintyre", "M", "Wang", "W", "Tao & Wang", "T", "X"))
+  method <- match.arg(
+    method,
+    choices = c("Macintyre", "M", "Wang", "W", "Tao & Wang", "T", "X", "S"))
   normalize <- match.arg(normalize)
   style <- match.arg(style)
 
@@ -278,6 +280,46 @@ show_sig_profile <- function(Signature,
           levels = comp_orders
         ),
         base = factor(.data$base, levels = f_orders),
+        class = factor(class, levels = colnames(Sig))
+      )
+    } else if (startsWith(method, "S")) {
+      if (!nrow(mat) %in% c(40, 48)) {
+        send_stop("Data for 'S' method should have 40 or 48 components!")
+      }
+      mat <- mat %>%
+        tidyr::separate("context",
+                        into = c("cn", "loh", "size"),
+                        remove = FALSE, sep = ":") %>%
+        dplyr::mutate(
+          base = .data$loh,
+          context = paste(.data$cn, .data$size, sep = ":"),
+          size = factor(
+            .data$size,
+            levels = c(
+              "0-10Kb",
+              "0-100Kb",
+              "10Kb-100Kb",
+              "100Kb-1Mb",
+              "1Mb-10Mb",
+              "10Mb-40Mb",
+              ">1Mb",
+              ">10Mb",
+              ">40Mb"
+            ))
+        ) %>%
+        dplyr::arrange(.data$cn, .data$size)
+      #context_lvls <- vector_to_combination(mat$cn, ":", mat$size)
+
+      mat <- tidyr::gather(
+        mat %>% dplyr::select(-c("cn", "loh", "size")),
+        class, signature, -c("context", "base"))
+
+      mat <- dplyr::mutate(
+        mat,
+        context = factor(
+          .data$context,
+          levels = unique(.data$context)),
+        base = factor(.data$base, c("homdel", "LOH", "het")),
         class = factor(class, levels = colnames(Sig))
       )
     } else {

@@ -348,3 +348,9 @@ cn <- read_copynumber(
   join_adj_seg = FALSE)
 dt <- cn@data
 dt
+
+s <- get_sig_db("CNS_USARC")
+show_sig_profile(t(mat40), mode = "copynumber", method = "S", check_sig_names = FALSE, style = "cosmic")
+show_sig_profile(t(mat48), mode = "copynumber", method = "S", check_sig_names = FALSE, style = "cosmic")
+show_sig_profile(s$db, mode = "copynumber", method = "S", check_sig_names = FALSE, style = "cosmic")
+
