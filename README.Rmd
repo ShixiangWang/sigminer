@@ -161,10 +161,10 @@ x <- cran_stats(c("sigminer"))
 
 if (!is.null(x)) {
    #head(x)
-   ggplot(x, aes(end, downloads, group=package, color=package)) +
+   ggplot(x, aes(end, cumsum(downloads), group=package, color=package)) +
        geom_line() + geom_point(aes(shape=package)) + 
     theme_minimal() + theme(legend.position = "none") +
-    labs(x = "Time")
+    labs(x = "Time", y = "Cumulative downloads")
 }
 ```
 
