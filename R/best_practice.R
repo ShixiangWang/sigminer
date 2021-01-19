@@ -190,19 +190,19 @@
 #' # Get the mean reconstructed similarity
 #' 1 - stats$stats_sample$cosine_distance_mean
 #' }
-#' @testexamples
-#' expect_is(e1, "ExtractionResult")
-#' expect_is(e2, "ExtractionResultList")
-#' expect_is(p1, "ggplot")
-#' expect_is(p2, "ggplot")
-#' expect_is(p2, "ggplot")
-#' expect_is(obj_suggested, "Signature")
-#' expect_is(obj_s8, "Signature")
-#' expect_is(sim, "list")
-#' expect_is(rec_sim, "data.table")
-#' expect_is(expo, "list")
-#' expect_is(rank_score, "data.frame")
-#' expect_is(stats, "list")
+# @testexamples
+# expect_is(e1, "ExtractionResult")
+# expect_is(e2, "ExtractionResultList")
+# expect_is(p1, "ggplot")
+# expect_is(p2, "ggplot")
+# expect_is(p2, "ggplot")
+# expect_is(obj_suggested, "Signature")
+# expect_is(obj_s8, "Signature")
+# expect_is(sim, "list")
+# expect_is(rec_sim, "data.table")
+# expect_is(expo, "list")
+# expect_is(rank_score, "data.frame")
+# expect_is(stats, "list")
 NULL
 
 #' @rdname bp
