@@ -419,7 +419,6 @@ get_similarity_stats <- function(x,
         if (dim(x2)[3] == 1) {
           dx2 <- dim(x2)
           dim(x2) <- c(dx2[1], dx2[2] * dx2[3])
-          x2 <- x2[, , 1]
           cosineMatrix(x1, x2)
         } else {
           # x2 是 3 维，且第 3 维不止 1
