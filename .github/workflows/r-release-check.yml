@@ -80,7 +80,7 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           remotes::install_github("r-lib/covr", force = TRUE)
-          covr::codecov()
+          covr::codecov(quiet = FALSE)
         shell: Rscript {0}
 
       - name: Upload check results
