@@ -79,7 +79,7 @@ jobs:
       - name: Test coverage (on Linux)
         if: runner.os == 'Linux'
         run: |
-          remotes::install_github("r-lib/covr")
+          remotes::install_github("r-lib/covr", force = TRUE)
           covr::codecov()
         shell: Rscript {0}
 
