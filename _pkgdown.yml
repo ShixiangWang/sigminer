@@ -104,6 +104,7 @@ reference:
     - show_group_mapping
     - enrich_component_strand_bias
     - simulation
+    - get_shannon_diversity_index
   - title: Package datasets
     desc: Datasets used for signature identification and analysis (some stored in `extdata/`).
     contents:

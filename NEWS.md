@@ -8,8 +8,9 @@ PAY ATTENTION: this may affect results.
 
 ## ENHANCEMENTS
 
-- Added new method "S" (from Steele et al. 2019) for tallying copy number data.
-- Included new (RS) reference signatures.
+- Added `get_shannon_diversity_index()` to get diversity index for signatures (#333).
+- Added new method "S" (from Steele et al. 2019) for tallying copy number data (#329).
+- Included new (RS) reference signatures (related to #331).
 - Updated the internal code for getting relative activity in `get_sig_exposure()`.
 
 ## NEW FUNCTIONS
