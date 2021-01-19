@@ -411,16 +411,18 @@ get_similarity_stats <- function(x,
     d <- lapply(seq_len(n), function(i) {
       if (dim(x)[2] >= 2) {
         x1 <- x[, i, ]
-        x2 <- x[, -i, ]
+        x2 <- x[, -i, , drop = FALSE]
 
         if (is.null(dim(x1))) {
           x1 <- matrix(x1, ncol = 1)
         }
-        if (is.null(dim(x2))) {
-          x2 <- matrix(x2, ncol = 1)
+        if (dim(x2)[3] == 1) {
+          dx2 <- dim(x2)
+          dim(x2) <- c(dx2[1], dx2[2] * dx2[3])
+          x2 <- x2[, , 1]
           cosineMatrix(x1, x2)
         } else {
-          # x2 是 3 维
+          # x2 是 3 维，且第 3 维不止 1
           d2 <- dim(x2)[2]
           sim_list <- lapply(seq_len(d2), function(k) {
             mat <- cosineMatrix(x1, x2[, k, ])
