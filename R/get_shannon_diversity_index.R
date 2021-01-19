@@ -42,7 +42,7 @@ get_shannon_diversity_index <- function(rel_expo, cutoff = 0.001) {
   dplyr::bind_cols(
     dt[, !num_idx, drop = FALSE],
     data.frame(
-      diversity_index = rowSums(dt[, num_idx])
+      diversity_index = rowSums(dt[, num_idx, drop = FALSE])
     )
   ) %>%
     data.table::as.data.table()
