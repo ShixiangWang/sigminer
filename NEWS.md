@@ -8,6 +8,8 @@ PAY ATTENTION: this may affect results.
 
 ## ENHANCEMENTS
 
+- Updated `ms` strategy in `sig_auto_extract()` by assigning each signature to its
+best matched reference signatures.
 - Added `get_shannon_diversity_index()` to get diversity index for signatures (#333).
 - Added new method "S" (from Steele et al. 2019) for tallying copy number data (#329).
 - Included new (RS) reference signatures (related to #331).

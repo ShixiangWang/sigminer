@@ -211,8 +211,9 @@ sig_auto_extract <- function(nmf_matrix = NULL,
         sim <- suppressMessages(get_sig_similarity(xz$Signature.norm, ref))
       }
       sim <- sim$similarity
-      y <- diag(sim)
-      names(y) <- colnames(sim)[seq_along(y)]
+      yid <- apply(sim, 1, which.max)
+      y <- apply(sim, 1, max)
+      names(y) <- colnames(sim)[yid]
       y
     }, ref = ref_sigs)
 
@@ -220,11 +221,14 @@ sig_auto_extract <- function(nmf_matrix = NULL,
       "Run#", summary.run$Run, ":",
       "K#", summary.run$K
     )
+
     sims <- sapply(sim_list, mean)
     summary.run$similarity_to_ref <- as.numeric(sims)
     ind <- order(sims, decreasing = TRUE)
     message("Solutions ordered by mean cosine similarity to references:")
     print(sims[ind])
+    message("Details:")
+    print(sim_list)
     best_row <- summary.run[ind[1], ]
     summary.run <- summary.run %>%
       dplyr::arrange(dplyr::desc(.data$similarity_to_ref))
