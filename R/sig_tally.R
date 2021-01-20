@@ -369,17 +369,16 @@ sig_tally.CopyNumber <- function(object,
             simplified_matrix = cn_matrix_list$ss_mat,
             standard_matrix = cn_matrix_list$s_mat
           )
-        } else if (method == "X") {
+        } else if (method == "S") {
+          list(
+            CN40 = mat_list$CN40,
+            CN48 = mat_list$CN48
+          )
+        } else {
           list(
             simplified_matrix = cn_matrix_list$ss_mat,
             standard_matrix = cn_matrix_list$s_mat,
             complex_matrix = cn_matrix_list$c_mat
-          )
-        } else {
-          # Method "S"
-          list(
-            CN40 = mat_list$CN40,
-            CN48 = mat_list$CN48
           )
         }
       )
