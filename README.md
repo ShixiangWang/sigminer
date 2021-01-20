@@ -15,6 +15,8 @@ issues](https://img.shields.io/github/issues-closed/ShixiangWang/sigminer.svg)](
 [![Lines Of
 Code](https://tokei.rs/b1/github/ShixiangWang/sigminer?category=code)](https://github.com/ShixiangWang/sigminer)
 [![HitCount](https://hits.dwyl.com/ShixiangWang/sigminer.svg)](https://hits.dwyl.com/ShixiangWang/sigminer/)
+[![install with
+bioconda](https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat-square)](https://anaconda.org/bioconda/r-sigminer/)
 
 ## Overview
 
@@ -124,6 +126,13 @@ with:
 remotes::install_github("ShixiangWang/sigminer", dependencies = TRUE)
 # For Chinese users, run 
 remotes::install_git("https://gitee.com/ShixiangWang/sigminer", dependencies = TRUE)
+```
+
+You can also install **sigminer** from conda `bioconda` channel with
+
+``` sh
+# Please note version number of the bioconda release
+conda install -c bioconda r-sigminer
 ```
 
 ## Usage
