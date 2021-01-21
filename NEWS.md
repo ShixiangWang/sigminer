@@ -8,6 +8,7 @@ PAY ATTENTION: this may affect results.
 
 ## ENHANCEMENTS
 
+- Subset signatures to plot is available by `sig_names` option.
 - sigminer is available in bioconda channel: <https://anaconda.org/bioconda/r-sigminer/>
 - Updated `ms` strategy in `sig_auto_extract()` by assigning each signature to its
 best matched reference signatures.

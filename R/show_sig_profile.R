@@ -52,7 +52,7 @@
 #' @param y_expand y expand height for plotting params of copy number signatures.
 #' @param digits digits for plotting params of copy number signatures.
 #' @param font_scale a number used to set font scale.
-#' @param sig_names set name of signatures, can be a character vector.
+#' @param sig_names subset signatures or set name of signatures, can be a character vector.
 #' Default is `NULL`, prefix 'Sig' plus number is used.
 #' @param sig_orders set order of signatures, can be a character vector.
 #' Default is `NULL`, the signatures are ordered by alphabetical order.
@@ -205,6 +205,7 @@ show_sig_profile <- function(Signature,
         grepl(y, x)
       }))
     }), ]
+    if (nrow(Sig) < 1) stop("Bad filters, no component kept!")
   }
 
   ## Check if it has transcription labels
@@ -521,11 +522,20 @@ show_sig_profile <- function(Signature,
 
   # >>>>>>> Set signature name and order
   if (!is.null(sig_names)) {
-    if (length(sig_names) != length(unique(mat[["class"]]))) {
-      stop("The length of input signature names is not equal to signature number!")
+    uq_names <- unique(mat[["class"]])
+    if (length(sig_names) != length(uq_names)) {
+      if (all(sig_names %in% uq_names)) {
+        # Filter signatures
+        message("Only plot selected signatures.")
+        mat <- mat %>% dplyr::filter(.data$class %in% sig_names)
+      } else {
+        stop("The length of input signature names is not equal to signature number!")
+      }
+    } else {
+      # Change signature names
+      names(sig_names) <- paste0("Sig_", seq_along(sig_names))
+      mat[["class"]] <- sig_names[mat[["class"]]]
     }
-    names(sig_names) <- paste0("Sig_", seq_along(sig_names))
-    mat[["class"]] <- sig_names[mat[["class"]]]
   }
 
   if (!is.null(sig_orders) & !is.numeric(sig_orders)) {

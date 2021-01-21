@@ -18,7 +18,7 @@ show_sig_profile_loop(
 or just a raw signature matrix with row representing components (motifs) and column
 representing signatures (column names must start with 'Sig').}
 
-\item{sig_names}{set name of signatures, can be a character vector.
+\item{sig_names}{subset signatures or set name of signatures, can be a character vector.
 Default is \code{NULL}, prefix 'Sig' plus number is used.}
 
 \item{ncol}{(optional) Number of columns in the plot grid.}
