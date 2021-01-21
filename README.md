@@ -132,7 +132,11 @@ You can also install **sigminer** from conda `bioconda` channel with
 
 ``` sh
 # Please note version number of the bioconda release
-conda install -c bioconda r-sigminer
+
+# You can install an individual environment firstly with
+# conda create -n sigminer
+# conda activate sigminer
+conda install -c bioconda -c conda-forge r-sigminer
 ```
 
 ## Usage

@@ -15,7 +15,7 @@ issues](https://img.shields.io/github/issues-closed/ShixiangWang/sigminer.svg)](
 
 从 CRAN 上安装稳定版本：
 
-``` r
+```r
 install.packages("sigminer", dependencies = TRUE)
 # Or
 BiocManager::install("sigminer", dependencies = TRUE)
@@ -23,8 +23,19 @@ BiocManager::install("sigminer", dependencies = TRUE)
 
 从 Gitee 上安装开发版本：
 
-``` r
+```r
 remotes::install_git("https://gitee.com/ShixiangWang/sigminer", dependencies = TRUE)
+```
+
+使用 conda：
+
+```sh
+# 注意：bioconda 版本可能不是最新版本
+
+# 你可以先安装一个独立的 conda 环境
+# conda create -n sigminer
+# conda activate sigminer
+conda install -c bioconda -c conda-forge r-sigminer
 ```
 
 ## 使用文档
