@@ -8,12 +8,13 @@ show_sig_profile(
   Signature,
   mode = c("SBS", "copynumber", "DBS", "ID", "RS"),
   method = "Wang",
+  by_context = FALSE,
   normalize = c("row", "column", "raw", "feature"),
   y_tr = NULL,
   filters = NULL,
   feature_setting = sigminer::CN.features,
   style = c("default", "cosmic"),
-  palette = use_color_style(style, mode, method),
+  palette = use_color_style(style, ifelse(by_context, "SBS", mode), method),
   set_gradient_color = FALSE,
   free_space = "free_x",
   rm_panel_border = style == "cosmic",
@@ -52,6 +53,8 @@ representing signatures (column names must start with 'Sig').}
 
 \item{method}{method for copy number feature classification in \link{sig_tally},
 can be one of "Macintyre" ("M"), "Wang" ("W").}
+
+\item{by_context}{for specific use.}
 
 \item{normalize}{one of 'row', 'column', 'raw' and "feature", for row normalization (signature),
 column normalization (component), raw data, row normalization by feature, respectively.
