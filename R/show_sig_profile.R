@@ -371,7 +371,7 @@ show_sig_profile <- function(Signature,
           dplyr::mutate(
             segLen = dplyr::case_when(
               .data$segLen == "S" ~ "<50Kb",
-              .data$segLen == "M" ~ "50Kb-500Kb",
+              .data$segLen == "M" ~ "50-500Kb",
               .data$segLen == "L" ~ "500Kb-5Mb",
               .data$segLen == "E" ~ ">5Mb"
             ),
@@ -381,7 +381,7 @@ show_sig_profile <- function(Signature,
               .data$segLen,
               levels = c(
                 "<50Kb",
-                "50Kb-500Kb",
+                "50-500Kb",
                 "500Kb-5Mb",
                 ">5Mb"
               )
