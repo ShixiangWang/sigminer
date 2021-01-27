@@ -60,7 +60,7 @@ sigprofiler_extract <- function(nmf_matrix, output, range = 2:5, nrun = 10L,
                                 genome_build = c("hg19", "hg38", "mm10"),
                                 use_conda = FALSE,
                                 py_path = NULL,
-                                sigprofiler_version = "1.0.17") {
+                                sigprofiler_version = "1.1.0") {
   output <- path.expand(output)
   genome_build <- match.arg(genome_build)
 
