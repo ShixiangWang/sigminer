@@ -1296,6 +1296,10 @@ env_install <- function(use_conda, py_path, pkg, pkg_version) {
     print(reticulate::py_config())
   }
 
+  if (!reticulate::py_module_available("torch")) {
+    message("torch not found, try installing it...")
+    reticulate::py_install("torch==1.5.1", pip = TRUE, pip_options = "-f https://download.pytorch.org/whl/torch_stable.html")
+  }
   if (!reticulate::py_module_available(pkg)) {
     message("Python module ", pkg, " not found, try installing it...")
     reticulate::py_install(paste0(pkg, "==", pkg_version), pip = TRUE)
