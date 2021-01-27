@@ -1,0 +1,3 @@
+[submodule "inst/sigflow"]
+	path = inst/sigflow
+	url = https://github.com/ShixiangWang/sigflow
