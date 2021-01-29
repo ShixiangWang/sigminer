@@ -235,9 +235,8 @@ in tumor samples. They are listed in order to use.
 \item \code{bp_extract_signatures()} for extracting signatures.
 \item \code{bp_show_survey()} for showing measures change under different
 signature numbers to help user select optimal signature number.
-At default, an aggregated score (named score) is generated from 5 measures to
-suggest the best solution. See section "Measure Explanation in Survey plot"
-for more explanation.
+At default, an aggregated score (named score) is generated to
+suggest the best solution.
 \item \code{bp_show_survey2()} for showing simplified signature number survey like
 \code{\link[=show_sig_number_survey]{show_sig_number_survey()}}.
 \item \code{bp_get_sig_obj()} for get a (list of) \code{Signature} object which is common
@@ -270,13 +269,13 @@ very clear to see and also visualize like other approaches provided by \strong{s
 \section{Measure Explanation in Survey Plot}{
 
 The survey plot provides a pretty good way to facilitate the signature number
-selection. A \code{score} measure is calculated as the weighted mean of 5 important
+selection. A \code{score} measure is calculated as the weighted mean of selected
 measures and visualized as the first sub-plot. The optimal number is highlighted
-with red color dot and the best values for 5 measures to be weighted are also
+with red color dot and the best values for each measures are also
 highlighted with orange color dots. The detail of 6 measures shown in plot are
 explained as below.
 \itemize{
-\item \code{score} - an aggregated score based on rank scores from 5 measures below.
+\item \code{score} - an aggregated score based on rank scores from selected measures below.
 The higher, the better. When two signature numbers have the same score,
 the larger signature number is preferred (this is a rare situation, you
 have to double check other measures).
