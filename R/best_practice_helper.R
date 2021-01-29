@@ -693,15 +693,7 @@ rank_solutions <- function(stats) {
     "silhouette", "sample_cosine_distance", "L2_error",
     "exposure_positive_correlation", "signature_similarity_within_cluster"
   )
-  send_info(
-    "Calculating integrated rank score based on the measures: ",
-    paste(measures, collapse = ", ")
-  )
-  weights <- c(0.25, 0.2, 0.2, 0.1, 0.25)
-  send_info(
-    "Corresponding weights for obtaining the aggregated score are: ",
-    paste(weights, collapse = ", ")
-  )
+
   types <- c("diff", "increase", "increase", "increase", "diff")
 
   rk <- purrr::map2_df(
@@ -722,7 +714,17 @@ rank_solutions <- function(stats) {
     }
   )
 
-  rk$aggregated_score <- as.numeric(as.matrix(rk) %*% weights)
+  measure2 <- c("silhouette", "L2_error")
+  send_info(
+    "Calculating integrated rank score based on the measures: ",
+    paste(measure2, collapse = ", ")
+  )
+  weights <- c(0.4, 0.6)
+  send_info(
+    "Corresponding weights for obtaining the aggregated score are: ",
+    paste(weights, collapse = ", ")
+  )
+  rk$aggregated_score <- as.numeric(as.matrix(rk)[, measure2] %*% weights)
   rk <- cbind(data.frame(signature_number = stats$signature_number), rk)
 
   rk
