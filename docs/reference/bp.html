@@ -53,9 +53,8 @@ in tumor samples. They are listed in order to use.
 bp_extract_signatures() for extracting signatures.
 bp_show_survey() for showing measures change under different
 signature numbers to help user select optimal signature number.
-At default, an aggregated score (named score) is generated from 5 measures to
-suggest the best solution. See section &quot;Measure Explanation in Survey plot&quot;
-for more explanation.
+At default, an aggregated score (named score) is generated to
+suggest the best solution.
 bp_show_survey2() for showing simplified signature number survey like
 show_sig_number_survey().
 bp_get_sig_obj() for get a (list of) Signature object which is common
@@ -109,7 +108,7 @@ Extra: bp_get_rank_score() for obtaining rank score for all signature numbers.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1.999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.4</span>
       </span>
     </div>
 
@@ -163,9 +162,8 @@ in tumor samples. They are listed in order to use.</p><ul>
 <li><p><code>bp_extract_signatures()</code> for extracting signatures.</p></li>
 <li><p><code>bp_show_survey()</code> for showing measures change under different
 signature numbers to help user select optimal signature number.
-At default, an aggregated score (named score) is generated from 5 measures to
-suggest the best solution. See section "Measure Explanation in Survey plot"
-for more explanation.</p></li>
+At default, an aggregated score (named score) is generated to
+suggest the best solution.</p></li>
 <li><p><code>bp_show_survey2()</code> for showing simplified signature number survey like
 <code><a href='show_sig_number_survey.html'>show_sig_number_survey()</a></code>.</p></li>
 <li><p><code>bp_get_sig_obj()</code> for get a (list of) <code>Signature</code> object which is common
@@ -509,12 +507,12 @@ very clear to see and also visualize like other approaches provided by <strong>s
     
 
 <p>The survey plot provides a pretty good way to facilitate the signature number
-selection. A <code>score</code> measure is calculated as the weighted mean of 5 important
+selection. A <code>score</code> measure is calculated as the weighted mean of selected
 measures and visualized as the first sub-plot. The optimal number is highlighted
-with red color dot and the best values for 5 measures to be weighted are also
+with red color dot and the best values for each measures are also
 highlighted with orange color dots. The detail of 6 measures shown in plot are
 explained as below.</p><ul>
-<li><p><code>score</code> - an aggregated score based on rank scores from 5 measures below.
+<li><p><code>score</code> - an aggregated score based on rank scores from selected measures below.
 The higher, the better. When two signature numbers have the same score,
 the larger signature number is preferred (this is a rare situation, you
 have to double check other measures).</p></li>

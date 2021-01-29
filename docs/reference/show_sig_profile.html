@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1.999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.4</span>
       </span>
     </div>
 
@@ -135,12 +135,13 @@
   <span class='va'>Signature</span>,
   mode <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"SBS"</span>, <span class='st'>"copynumber"</span>, <span class='st'>"DBS"</span>, <span class='st'>"ID"</span>, <span class='st'>"RS"</span><span class='op'>)</span>,
   method <span class='op'>=</span> <span class='st'>"Wang"</span>,
+  by_context <span class='op'>=</span> <span class='cn'>FALSE</span>,
   normalize <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"row"</span>, <span class='st'>"column"</span>, <span class='st'>"raw"</span>, <span class='st'>"feature"</span><span class='op'>)</span>,
   y_tr <span class='op'>=</span> <span class='cn'>NULL</span>,
   filters <span class='op'>=</span> <span class='cn'>NULL</span>,
   feature_setting <span class='op'>=</span> <span class='fu'>sigminer</span><span class='fu'>::</span><span class='va'><a href='CN.features.html'>CN.features</a></span>,
   style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"default"</span>, <span class='st'>"cosmic"</span><span class='op'>)</span>,
-  palette <span class='op'>=</span> <span class='fu'><a href='use_color_style.html'>use_color_style</a></span><span class='op'>(</span><span class='va'>style</span>, <span class='va'>mode</span>, <span class='va'>method</span><span class='op'>)</span>,
+  palette <span class='op'>=</span> <span class='fu'><a href='use_color_style.html'>use_color_style</a></span><span class='op'>(</span><span class='va'>style</span>, <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>by_context</span>, <span class='st'>"SBS"</span>, <span class='va'>mode</span><span class='op'>)</span>, <span class='va'>method</span><span class='op'>)</span>,
   set_gradient_color <span class='op'>=</span> <span class='cn'>FALSE</span>,
   free_space <span class='op'>=</span> <span class='st'>"free_x"</span>,
   rm_panel_border <span class='op'>=</span> <span class='va'>style</span> <span class='op'>==</span> <span class='st'>"cosmic"</span>,
@@ -187,6 +188,10 @@ representing signatures (column names must start with 'Sig').</p></td>
       <th>method</th>
       <td><p>method for copy number feature classification in <a href='sig_tally.html'>sig_tally</a>,
 can be one of "Macintyre" ("M"), "Wang" ("W").</p></td>
+    </tr>
+    <tr>
+      <th>by_context</th>
+      <td><p>for specific use.</p></td>
     </tr>
     <tr>
       <th>normalize</th>
