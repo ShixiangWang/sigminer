@@ -62,6 +62,7 @@ sig_estimate <-
            what = "all",
            verbose = FALSE) {
     eval(parse(text = "suppressMessages(library('NMF'))"))
+    if (cores > 1) cores <- min(cores, future::availableCores())
     mat <- t(nmf_matrix)
 
     ii <- colSums(mat) < 0.01
@@ -85,7 +86,7 @@ sig_estimate <-
           nrun = nrun,
           verbose = verbose,
           seed = seed,
-          .opt = paste0("P", cores)
+          .opt = paste0("p", cores)
         )
     } else {
       estim.r <-
@@ -118,7 +119,7 @@ sig_estimate <-
             nrun = nrun,
             verbose = verbose,
             seed = seed,
-            .opt = paste0("P", cores)
+            .opt = paste0("p", cores)
           )
       } else {
         estim.r.random <-
