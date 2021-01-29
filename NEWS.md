@@ -1,3 +1,20 @@
+# sigminer 1.2.4
+
+## BUG REPORTS
+
+- Fixed the assign problem about match pair in `bp_extract_signatures()` 
+with `lpSolve` package instead of using my problematic code.
+
+## ENHANCEMENTS
+
+- Add cores check.
+- Upgraded SP to v1.1.0 (need test).
+- Try installing Torch before SP (need test).
+
+## NEW FUNCTIONS
+
+## DEPRECATED
+
 # sigminer 1.2.2
 
 ## BUG REPORTS

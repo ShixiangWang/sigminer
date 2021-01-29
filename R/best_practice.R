@@ -253,6 +253,9 @@ bp_extract_signatures <- function(nmf_matrix,
   if (!requireNamespace("synchronicity")) {
     install.packages("synchronicity")
   }
+  if (!requireNamespace("lpSolve")) {
+    install.packages("lpSolve")
+  }
 
   timer <- Sys.time()
   send_info("Best practice for signature extraction started.")

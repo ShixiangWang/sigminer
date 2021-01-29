@@ -567,22 +567,8 @@ get_matches <- function(mat, runs) {
   index_uniq <- unique(match_index)
   if (length(match_index) != length(index_uniq)) {
     # Some signatures in the first run is matched by more than once
-    # Order the columns by cum minimum distance
-    min_orders <- get_min_orders(mat)
-    # Assign the match by the order
-    index_uniq <- vector("integer", length = length(match_index))
-    for (i in seq_along(min_orders)) {
-      values_order <- order(mat[, min_orders[i]])
-
-      for (j in seq_along(values_order)) {
-        # possible index
-        pi <- which(values_order == j)
-        if (index_uniq[pi] == 0L) {
-          index_uniq[pi] <- min_orders[i]
-          break()
-        }
-      }
-    }
+    # Solve it with lpSolve package
+    index_uniq <- apply(lpSolve::lp.assign(mat)$solution, 1, which.max)
   }
   out <- data.table::data.table(
     v1 = rownames(mat),
@@ -590,18 +576,6 @@ get_matches <- function(mat, runs) {
   )
   colnames(out) <- runs
   out
-}
-
-get_min_orders <- function(mat) {
-  cummins <- apply(mat, 2, function(x) {
-    cumsum(sort(x))
-  }) %>% t()
-  colnames(cummins) <- paste0("ord", seq_len(ncol(cummins)))
-  cummins %>%
-    dplyr::as_tibble() %>%
-    dplyr::mutate(.i = dplyr::row_number()) %>%
-    dplyr::arrange_at(colnames(cummins)) %>%
-    dplyr::pull(".i")
 }
 
 # My implementation of clustering with match algorithm proposed
