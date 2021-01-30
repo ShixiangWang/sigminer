@@ -6,6 +6,8 @@
 #' @param force_y_limit default is `TRUE`, force multiple plots
 #' @param highlight_genes gene list to highlight.
 #' have same y ranges. You can also set a length-2 numeric value.
+#' @param repel if `TRUE` (default is `FALSE`), repel highlight genes to
+#' avoid overlap.
 #'
 #' @return a (list of) `ggplot` object.
 #' @export
@@ -57,6 +59,7 @@ show_cn_group_profile <- function(data,
                                   resolution_factor = 1L,
                                   force_y_limit = TRUE,
                                   highlight_genes = NULL,
+                                  repel = FALSE,
                                   nrow = NULL, ncol = NULL,
                                   return_plotlist = FALSE) {
   stopifnot(is.data.frame(data) | inherits(data, "CopyNumber"))
@@ -131,17 +134,19 @@ show_cn_group_profile <- function(data,
   ))
 
   if (!is.null(highlight_genes)) {
-    if (genome_build == "mm10") {
-      gene_dt <- readRDS(system.file("extdata", "mouse_mm10_gene_info.rds",
-        package = "sigminer"
-      ))
-    } else {
-      gene_dt <- readRDS(
-        system.file("extdata", paste0("human_", genome_build, "_gene_info.rds"),
-          package = "sigminer"
-        )
+    gene_file <- switch(
+      genome_build,
+      mm10 = file.path(
+        system.file("extdata", package = "sigminer"),
+        "mouse_mm10_gene_info.rds"
+      ),
+      file.path(
+        system.file("extdata", package = "sigminer"),
+        paste0("human_", genome_build, "_gene_info.rds")
       )
-    }
+    )
+    if (!file.exists(gene_file)) query_remote_data(basename(gene_file))
+    gene_dt <- readRDS(gene_file)
     gene_dt <- gene_dt[gene_dt$gene_name %in% highlight_genes][
       , c("chrom", "start", "end", "gene_name")
     ]
@@ -176,11 +181,11 @@ show_cn_group_profile <- function(data,
   grp_data <- dplyr::group_split(merge_df, .data$grp_name)
 
   if (length(grp_data) == 1) {
-    gg <- plot_cn_summary(grp_data[[1]], coord_df, fill_area = fill_area, cols = cols)
+    gg <- plot_cn_summary(grp_data[[1]], coord_df, fill_area = fill_area, cols = cols, repel = repel)
   } else {
     gglist <- purrr::map(
       grp_data,
-      ~ plot_cn_summary(., coord_df, fill_area = fill_area, cols = cols) +
+      ~ plot_cn_summary(., coord_df, fill_area = fill_area, cols = cols, repel = repel) +
         ggplot2::labs(title = .$grp_name[1])
     )
 
@@ -205,7 +210,8 @@ show_cn_group_profile <- function(data,
 }
 
 
-plot_cn_summary <- function(plot_df, coord_df, fill_area = TRUE, cols = c("red", "blue")) {
+plot_cn_summary <- function(plot_df, coord_df, fill_area = TRUE, cols = c("red", "blue"),
+                            repel = FALSE) {
   h_df <- na.omit(plot_df)
 
   plot_df <- dplyr::bind_rows(
@@ -242,7 +248,8 @@ plot_cn_summary <- function(plot_df, coord_df, fill_area = TRUE, cols = c("red",
     )
 
   if (nrow(h_df) > 0) {
-    p <- p + ggrepel::geom_text_repel(
+    text_fun <- if (repel) ggrepel::geom_text_repel else geom_text
+    p <- p + text_fun(
       aes(
         x = (.data$start + .data$end) / 2,
         y = max(data_amp$freq) - 0.02,

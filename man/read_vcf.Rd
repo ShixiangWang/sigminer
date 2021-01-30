@@ -7,7 +7,7 @@
 read_vcf(
   vcfs,
   samples = NULL,
-  genome_build = c("hg19", "hg38"),
+  genome_build = c("hg19", "hg38", "mm10"),
   keep_only_pass = TRUE,
   verbose = TRUE
 )
@@ -31,8 +31,10 @@ Read VCF Files as MAF Object
 }
 \examples{
 vcfs <- list.files(system.file("extdata", package = "sigminer"), "*.vcf", full.names = TRUE)
+\donttest{
 maf <- read_vcf(vcfs)
 maf <- read_vcf(vcfs, keep_only_pass = FALSE)
+}
 }
 \seealso{
 \link{read_maf}, \link{read_copynumber}

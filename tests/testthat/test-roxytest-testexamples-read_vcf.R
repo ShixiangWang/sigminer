@@ -2,7 +2,18 @@
 
 context("File R/read_vcf.R: @testexamples")
 
-test_that("Function read_xena_variants() @ L128", {
+test_that("Function read_vcf() @ L20", {
+  
+  vcfs <- list.files(system.file("extdata", package = "sigminer"), "*.vcf", full.names = TRUE)
+  
+  maf <- read_vcf(vcfs)
+  maf <- read_vcf(vcfs, keep_only_pass = FALSE)
+  
+  expect_is(maf, "MAF")
+})
+
+
+test_that("Function read_xena_variants() @ L136", {
   
   
   if (requireNamespace("UCSCXenaTools")) {

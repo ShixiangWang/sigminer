@@ -7,9 +7,11 @@ with `lpSolve` package instead of using my problematic code.
 
 ## ENHANCEMENTS
 
-- Add cores check.
+- Supported `mm10` in `read_vcf()`.
+- Removed large data files and store them in Zenodo to reduce package size.
+- Added cores check.
 - Upgraded SP to v1.1.0 (need test).
-- Try installing Torch before SP (need test).
+- Tried installing Torch before SP (need test).
 
 ## NEW FUNCTIONS
 

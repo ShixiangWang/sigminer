@@ -15,6 +15,7 @@ show_cn_group_profile(
   resolution_factor = 1L,
   force_y_limit = TRUE,
   highlight_genes = NULL,
+  repel = FALSE,
   nrow = NULL,
   ncol = NULL,
   return_plotlist = FALSE
@@ -46,6 +47,9 @@ When it is \code{2}, use compute frequency in each half cytoband.}
 
 \item{highlight_genes}{gene list to highlight.
 have same y ranges. You can also set a length-2 numeric value.}
+
+\item{repel}{if \code{TRUE} (default is \code{FALSE}), repel highlight genes to
+avoid overlap.}
 
 \item{nrow}{number of rows in the plot grid when multiple samples are selected.}
 

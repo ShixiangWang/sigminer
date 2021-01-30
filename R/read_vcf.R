@@ -11,9 +11,13 @@
 #' @seealso [read_maf], [read_copynumber]
 #' @examples
 #' vcfs <- list.files(system.file("extdata", package = "sigminer"), "*.vcf", full.names = TRUE)
+#' \donttest{
 #' maf <- read_vcf(vcfs)
 #' maf <- read_vcf(vcfs, keep_only_pass = FALSE)
-read_vcf <- function(vcfs, samples = NULL, genome_build = c("hg19", "hg38"), keep_only_pass = TRUE, verbose = TRUE) {
+#' }
+#' @testexamples
+#' expect_is(maf, "MAF")
+read_vcf <- function(vcfs, samples = NULL, genome_build = c("hg19", "hg38", "mm10"), keep_only_pass = TRUE, verbose = TRUE) {
   genome_build <- match.arg(genome_build)
   vcfs_name <- vcfs
   if (verbose) message("Reading file(s): ", paste(vcfs, collapse = ", "))
@@ -62,15 +66,19 @@ read_vcf <- function(vcfs, samples = NULL, genome_build = c("hg19", "hg38"), kee
   vcfs$Hugo_Symbol <- "Unknown"
 
   # Annotate gene symbol
-  if (genome_build == "hg19") {
-    annot_file <- system.file("extdata", "human_hg19_gene_info.rds", package = "sigminer", mustWork = TRUE)
-    gene_dt <- readRDS(annot_file)
-  } else {
-    annot_file <- system.file("extdata", "human_hg38_gene_info.rds", package = "sigminer", mustWork = TRUE)
-    gene_dt <- readRDS(annot_file)
-  }
+  gene_file <- switch(
+    genome_build,
+    mm10 = file.path(
+      system.file("extdata", package = "sigminer"),
+      "mouse_mm10_gene_info.rds"),
+    file.path(
+      system.file("extdata", package = "sigminer"),
+      paste0("human_", genome_build, "_gene_info.rds")
+    ))
+  if (!file.exists(gene_file)) query_remote_data(basename(gene_file))
+  gene_dt <- readRDS(gene_file)
 
-  if (verbose) message("Annotating mutations to first matched gene based on database ", annot_file, "...")
+  if (verbose) message("Annotating mutations to first matched gene based on database ", gene_file, "...")
   dt <- gene_dt[, c("chrom", "start", "end", "gene_name")]
   data.table::setkey(dt, "chrom", "start", "end")
 

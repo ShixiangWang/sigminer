@@ -2,7 +2,7 @@
 
 context("File R/show_cn_group_profile.R: @testexamples")
 
-test_that("Function show_cn_group_profile() @ L50", {
+test_that("Function show_cn_group_profile() @ L52", {
   
   load(system.file("extdata", "toy_copynumber.RData",
     package = "sigminer", mustWork = TRUE
