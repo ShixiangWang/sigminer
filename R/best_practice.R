@@ -1299,9 +1299,15 @@ env_install <- function(use_conda, py_path, pkg, pkg_version) {
     print(reticulate::py_config())
   }
 
-  if (!reticulate::py_module_available("torch")) {
+  if (pkg == "SigProfilerExtractor" & !reticulate::py_module_available("torch")) {
     message("torch not found, try installing it...")
-    reticulate::py_install("torch==1.5.1", pip = TRUE, pip_options = "-f https://download.pytorch.org/whl/torch_stable.html")
+    tryCatch(
+      reticulate::py_install("torch==1.5.1", pip = TRUE),
+      error = function(e) {
+        message("Cannot install torch just with pip, try again with source from https://download.pytorch.org/whl/torch_stable.html")
+        reticulate::py_install("torch==1.5.1", pip = TRUE, pip_options = "-f https://download.pytorch.org/whl/torch_stable.html")
+      }
+    )
   }
   if (!reticulate::py_module_available(pkg)) {
     message("Python module ", pkg, " not found, try installing it...")

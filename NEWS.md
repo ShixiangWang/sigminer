@@ -1,3 +1,16 @@
+# sigminer 1.2.5
+
+## BUG REPORTS
+
+
+## ENHANCEMENTS
+
+- Enhanced `torch` check.
+
+## NEW FUNCTIONS
+
+## DEPRECATED
+
 # sigminer 1.2.4
 
 ## BUG REPORTS
