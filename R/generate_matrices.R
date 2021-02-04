@@ -246,13 +246,15 @@ generate_matrix_SBS <- function(query, ref_genome, genome_build = "hg19", add_tr
   }
 
   if (add_trans_bias) {
-    send_info("Return SBS-384 as major matrix.")
+    send_info("Return SBS-192 as major matrix.")
+    SBS_192 <- SBS_384[, grepl('T:|U:', colnames(SBS_384))]
     res <- list(
       nmf_matrix = SBS_384,
       all_matrices = list(
         SBS_6 = SBS_6,
         SBS_24 = SBS_24,
         SBS_96 = SBS_96,
+        SBS_192 = SBS_192,
         SBS_384 = SBS_384,
         SBS_1536 = SBS_1536,
         SBS_6144 = SBS_6144
