@@ -160,7 +160,8 @@ getClustered_v1 <- function(sv_profiles, threshold = NULL) {
     x[, c("sample", "clustered", "Index"), with = FALSE]
   })
 
-  clustered_dt <- plyr::ldply(clustered, data.frame, .id = NULL) %>%
+  # clustered_dt <- plyr::ldply(clustered, data.frame, .id = NULL)
+  clustered_dt <- do.call(rbind,lapply(clustered, data.frame)) %>%
     .[, c("sample", "clustered", "Index")] %>%
     data.table::as.data.table()
   colnames(clustered_dt) <- c("sample", "value", "Index")
