@@ -266,7 +266,7 @@ get_matrix_sv <- function(CN_components, indices = NULL) {
 
   merged_dt <- purrr::reduce(CN_components, merge, by = c("sample", "Index"), all = TRUE)
   dt_mg <- merged_dt
-  sv_class_levels <- sigminer:::vector_to_combination(
+  sv_class_levels <- vector_to_combination(
     levels(dt_mg$C_clustered),
     levels(dt_mg$C_type),
     levels(dt_mg$C_size),
@@ -285,7 +285,7 @@ get_matrix_sv <- function(CN_components, indices = NULL) {
     )
   dt_mg$sv_class <- factor(dt_mg$sv_class, levels = sv_class_levels)
 
-  sv_mat <- sigminer:::classDT2Matrix(dt_mg, samp_col = "sample", component_col = "sv_class") %>%
+  sv_mat <- classDT2Matrix(dt_mg, samp_col = "sample", component_col = "sv_class") %>%
     as.data.frame()
 
   sv_mat <- as.matrix(sv_mat[, sort(colnames(sv_mat))])
