@@ -83,7 +83,7 @@ bp_show_survey2(
 
 bp_show_survey(
   obj,
-  add_score = TRUE,
+  add_score = FALSE,
   scales = c("free_y", "free"),
   fixed_ratio = TRUE
 )

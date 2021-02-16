@@ -5,6 +5,7 @@
 
 ## ENHANCEMENTS
 
+- Modified the default visualization of `bp_show_survey()`.
 - Enhanced `torch` check.
 
 ## NEW FUNCTIONS
