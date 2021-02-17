@@ -103,7 +103,8 @@ Suggests:
     synchronicity,
     testthat,
     tibble,
-    UCSCXenaTools
+    UCSCXenaTools,
+    copynumber
 LinkingTo: 
     Rcpp
 VignetteBuilder: 
