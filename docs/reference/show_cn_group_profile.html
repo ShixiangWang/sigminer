@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.5</span>
       </span>
     </div>
 
@@ -142,6 +142,7 @@
   resolution_factor <span class='op'>=</span> <span class='fl'>1L</span>,
   force_y_limit <span class='op'>=</span> <span class='cn'>TRUE</span>,
   highlight_genes <span class='op'>=</span> <span class='cn'>NULL</span>,
+  repel <span class='op'>=</span> <span class='cn'>FALSE</span>,
   nrow <span class='op'>=</span> <span class='cn'>NULL</span>,
   ncol <span class='op'>=</span> <span class='cn'>NULL</span>,
   return_plotlist <span class='op'>=</span> <span class='cn'>FALSE</span>
@@ -195,6 +196,11 @@ When it is <code>2</code>, use compute frequency in each half cytoband.</p></td>
       <th>highlight_genes</th>
       <td><p>gene list to highlight.
 have same y ranges. You can also set a length-2 numeric value.</p></td>
+    </tr>
+    <tr>
+      <th>repel</th>
+      <td><p>if <code>TRUE</code> (default is <code>FALSE</code>), repel highlight genes to
+avoid overlap.</p></td>
     </tr>
     <tr>
       <th>nrow</th>

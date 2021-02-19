@@ -27,7 +27,7 @@
 #' set `sigminer.copynumber.max` to a proper value (the best is consistent
 #' with [read_copynumber]).
 #'
-#' @param object a [CopyNumber] object or [MAF] object or SV object (from [read_sv]).
+#' @param object a [CopyNumber] object or [MAF] object or SV object (from [read_sv_as_rs]).
 #' @param ... custom setting for operating object. Detail see S3 method for
 #' corresponding class (e.g. `CopyNumber`).
 #' @return a `list` contains a `matrix` used for NMF de-composition.
@@ -395,25 +395,25 @@ sig_tally.CopyNumber <- function(object,
   }
 }
 
-#' @describeIn sig_tally Returns rearrangement sample-by-component matrix
+#' @describeIn sig_tally Returns genome rearrangement sample-by-component matrix
 #' @export
 sig_tally.RS <- function(object, keep_only_matrix = FALSE, ...) {
   svlist <- get_svlist(object)
-  message("Successfully get RS list!")
+  send_success("Successfully get RS list!")
 
   sv_features <- get_features_sv(svlist)
-  message("Successfully get RS features!")
+  send_success("Successfully get RS features!")
 
   sv_component <- get_components_sv(sv_features)
-  message("Successfully get RS component!")
+  send_success("Successfully get RS component!")
 
   sv_matrix_list <- get_matrix_sv(CN_components = sv_component)
-  message("Successfully get RS matrix!")
+  send_success("Successfully get RS matrix!")
 
   res_list <- list(
     features = sv_features,
     components = sv_component,
-    nmf_matrix = sv_matrix_list$SV_32,
+    nmf_matrix = sv_matrix_list$RS_32,
     all_matrices = sv_matrix_list
   )
 

@@ -9,14 +9,14 @@
 #'
 #' @examples
 #' sv <- readRDS(system.file("extdata", "toy_sv.rds", package = "sigminer", mustWork = TRUE))
-#' rs <- read_rs(sv)
+#' rs <- read_sv_as_rs(sv)
 #' \donttest{
 #' tally_rs <- sig_tally(rs)
 #' }
 #' @testexamples
 #' expect_is(rs, "RS")
 #' expect_is(tally_rs, "list")
-read_rs <- function(input) {
+read_sv_as_rs <- function(input) {
   if (is.data.frame(x = input)) {
     input <- data.table::as.data.table(input)
   } else {
@@ -65,19 +65,15 @@ read_rs <- function(input) {
 }
 
 # split by sample and collect in a list : svlist --------------------------
-# imitate : sigminer::get_cnlist()
 get_svlist <- function(data) {
   index <- seq(1, nrow(data))
   data$Index <- index
   res <- split(data, by = "sample")
 }
 
-
 # get size
 getRearrSize_v1 <- function(sv_profiles) {
-  # sv_profiles <- svlist
   rearrsize <- purrr::map_df(sv_profiles, function(x) {
-    # x <- sv_profiles$PD26851a[1]
     if (x$svclass == "translocation") x$rearrsize <- NA
     length <- x$end2 - x$start1
     if (length < 1000) x$rearrsize <- "<1Kb"
@@ -94,9 +90,6 @@ getRearrSize_v1 <- function(sv_profiles) {
     data.table::as.data.table()
   rearrsize[order(rearrsize$Index)]
 }
-
-
-
 
 # copy from UCL-Research-Department-of-Pathology/RESIN --------------------
 getDists <- function(chrom1, pos1, chrom2, pos2, doPCF = FALSE) {
@@ -129,13 +122,8 @@ getDists <- function(chrom1, pos1, chrom2, pos2, doPCF = FALSE) {
   return(dists)
 }
 
-
-
 # get clustered -----------------------------------------------------------
 getClustered_v1 <- function(sv_profiles, threshold = NULL) {
-  # sv_profiles <- svlist
-  # x <- sv_profiles$PD26879a
-  # x <- sv_profiles$PD26851a
   # threshold = NULL
   # each list each row apply function
   clustered <- purrr::map(sv_profiles, function(x) {
@@ -193,10 +181,7 @@ getType_v1 <- function(sv_profiles) {
 }
 
 
-
-
 # get features list -------------------------------------------------------
-# imitate : get_features_wang
 get_features_sv <- function(sv_data) {
   field <- c(
     "clustered",
@@ -255,8 +240,6 @@ call_component <- function(f_dt, f_name) {
 }
 
 
-
-
 # get sv matrix
 get_matrix_sv <- function(CN_components, indices = NULL) {
   merged_dt <- purrr::reduce(CN_components, merge, by = c("sample", "Index"), all = TRUE)
@@ -288,7 +271,7 @@ get_matrix_sv <- function(CN_components, indices = NULL) {
   sv_mat_32 <- sv_mat[, !(grepl("<1Kb", colnames(sv_mat)))]
 
   return(list(
-    SV_32 = sv_mat_32,
-    SV_38 = sv_mat
+    RS_32 = sv_mat_32,
+    RS_38 = sv_mat
   ))
 }

@@ -86,7 +86,7 @@ by bold fonts (you can ignore them if you don't use &quot;M&quot; method)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.5</span>
       </span>
     </div>
 
@@ -168,6 +168,9 @@ by bold fonts</strong> (you can ignore them if you don't use "M" method).</p>
   <span class='va'>...</span>
 <span class='op'>)</span>
 
+<span class='co'># S3 method for RS</span>
+<span class='fu'>sig_tally</span><span class='op'>(</span><span class='va'>object</span>, keep_only_matrix <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span>
+
 <span class='co'># S3 method for MAF</span>
 <span class='fu'>sig_tally</span><span class='op'>(</span>
   <span class='va'>object</span>,
@@ -186,7 +189,7 @@ by bold fonts</strong> (you can ignore them if you don't use "M" method).</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>object</th>
-      <td><p>a <a href='CopyNumber-class.html'>CopyNumber</a> object or <a href='MAF-class.html'>MAF</a> object.</p></td>
+      <td><p>a <a href='CopyNumber-class.html'>CopyNumber</a> object or <a href='MAF-class.html'>MAF</a> object or SV object (from <a href='read_sv_as_rs.html'>read_sv_as_rs</a>).</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -345,6 +348,7 @@ with <a href='read_copynumber.html'>read_copynumber</a>).</p></li>
     
 <ul>
 <li><p><code>CopyNumber</code>: Returns copy number features, components and component-by-sample matrix</p></li>
+<li><p><code>RS</code>: Returns genome rearrangement sample-by-component matrix</p></li>
 <li><p><code>MAF</code>: Returns SBS mutation sample-by-component matrix and APOBEC enrichment</p></li>
 </ul>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>

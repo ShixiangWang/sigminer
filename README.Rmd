@@ -84,7 +84,6 @@ p5 <- show_cosmic_sig_profile(sig_index = c("R1", "R2", "R3"), sig_db = "RS_Nik_
 p5
 ```
 
-> `sig_tally()` for RS is not supported.
 
 ### Features
 

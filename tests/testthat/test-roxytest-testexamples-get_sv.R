@@ -2,10 +2,10 @@
 
 context("File R/get_sv.R: @testexamples")
 
-test_that("Function read_rs() @ L19", {
+test_that("Function read_sv_as_rs() @ L19", {
   
   sv <- readRDS(system.file("extdata", "toy_sv.rds", package = "sigminer", mustWork = TRUE))
-  rs <- read_rs(sv)
+  rs <- read_sv_as_rs(sv)
   
   tally_rs <- sig_tally(rs)
   

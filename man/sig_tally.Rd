@@ -46,7 +46,7 @@ sig_tally(object, ...)
 )
 }
 \arguments{
-\item{object}{a \link{CopyNumber} object or \link{MAF} object or SV object (from \link{read_sv}).}
+\item{object}{a \link{CopyNumber} object or \link{MAF} object or SV object (from \link{read_sv_as_rs}).}
 
 \item{...}{custom setting for operating object. Detail see S3 method for
 corresponding class (e.g. \code{CopyNumber}).}
@@ -167,7 +167,7 @@ with \link{read_copynumber}).
 \itemize{
 \item \code{CopyNumber}: Returns copy number features, components and component-by-sample matrix
 
-\item \code{RS}: Returns rearrangement sample-by-component matrix
+\item \code{RS}: Returns genome rearrangement sample-by-component matrix
 
 \item \code{MAF}: Returns SBS mutation sample-by-component matrix and APOBEC enrichment
 }}

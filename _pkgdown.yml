@@ -15,6 +15,7 @@ reference:
     - read_copynumber
     - read_copynumber_seqz
     - read_maf
+    - read_sv_as_rs
     - read_vcf
     - read_xena_variants
     - CopyNumber-class

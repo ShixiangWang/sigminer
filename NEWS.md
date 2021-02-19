@@ -2,13 +2,14 @@
 
 ## BUG REPORTS
 
-
 ## ENHANCEMENTS
 
 - Modified the default visualization of `bp_show_survey()`.
 - Enhanced `torch` check.
 
 ## NEW FUNCTIONS
+
+- `read_sv_as_rs()` and `sig_tally.RS()` for simplified genome rearrangement classification matrix generation (experimental).
 
 ## DEPRECATED
 

@@ -50,8 +50,6 @@ For pipeline tool, please see its co-evolutionary CLI
 
 <img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
 
-> `sig_tally()` for RS is not supported.
-
 ### Features
 
 -   supports a standard *de novo* pipeline for identification of **5**
