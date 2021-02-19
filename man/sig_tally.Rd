@@ -3,6 +3,7 @@
 \name{sig_tally}
 \alias{sig_tally}
 \alias{sig_tally.CopyNumber}
+\alias{sig_tally.RS}
 \alias{sig_tally.MAF}
 \title{Tally a Genomic Alteration Object}
 \usage{
@@ -30,6 +31,8 @@ sig_tally(object, ...)
   ...
 )
 
+\method{sig_tally}{RS}(object, keep_only_matrix = FALSE, ...)
+
 \method{sig_tally}{MAF}(
   object,
   mode = c("SBS", "DBS", "ID", "ALL"),
@@ -43,7 +46,7 @@ sig_tally(object, ...)
 )
 }
 \arguments{
-\item{object}{a \link{CopyNumber} object or \link{MAF} object.}
+\item{object}{a \link{CopyNumber} object or \link{MAF} object or SV object (from \link{read_sv}).}
 
 \item{...}{custom setting for operating object. Detail see S3 method for
 corresponding class (e.g. \code{CopyNumber}).}
@@ -72,7 +75,7 @@ both types should be close. \strong{Only used when method is "Macintyre"}.}
 from \link{CopyNumber} object. \strong{Only used when method is "Macintyre"}.}
 
 \item{cores}{number of computer cores to run this task.
-You can use \code{\link[future:availableCores]{future::availableCores()}} function to check how
+You can use \code{\link[future:re-exports]{future::availableCores()}} function to check how
 many cores you can use.}
 
 \item{seed}{seed number. \strong{Only used when method is "Macintyre"}.}
@@ -163,6 +166,8 @@ with \link{read_copynumber}).
 \section{Methods (by class)}{
 \itemize{
 \item \code{CopyNumber}: Returns copy number features, components and component-by-sample matrix
+
+\item \code{RS}: Returns rearrangement sample-by-component matrix
 
 \item \code{MAF}: Returns SBS mutation sample-by-component matrix and APOBEC enrichment
 }}

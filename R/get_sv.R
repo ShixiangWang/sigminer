@@ -1,12 +1,25 @@
-# Handling SV classes -------------------------------------------------------
+# Handling RS classes -------------------------------------------------------
 
-# read sv -----------------------------------------------------------------
-read_sv <- function(input) {
-  # read sv file and convert it to data.table
+#' Read Structural Variation Data as RS object
+#'
+#' @param input a `data.frame` or a file with the following columns:
+#' "sample", "chr1", "start1", "end1", "chr2", "start2", "end2", "strand1", "strand2", "svclass"
+#' @return a `list`
+#' @export
+#'
+#' @examples
+#' sv <- readRDS(system.file("extdata", "toy_sv.rds", package = "sigminer", mustWork = TRUE))
+#' rs <- read_rs(sv)
+#' \donttest{
+#' tally_rs <- sig_tally(rs)
+#' }
+#' @testexamples
+#' expect_is(rs, "RS")
+#' expect_is(tally_rs, "list")
+read_rs <- function(input) {
   if (is.data.frame(x = input)) {
     input <- data.table::as.data.table(input)
-  }
-  else {
+  } else {
     input <- data.table::fread(
       file = input,
       data.table = TRUE, header = TRUE
@@ -22,13 +35,13 @@ read_sv <- function(input) {
     "svclass"
   )
 
-  colnames(input)  = tolower(colnames(input))
-  idx = necessary.fields %in% colnames(input)
+  colnames(input) <- tolower(colnames(input))
+  idx <- necessary.fields %in% colnames(input)
   if (!all(idx)) {
     stop(
       "Missing required fields from SV: ",
       paste(missing.fileds[!idx], collapse = "")
-      )
+    )
   }
 
   # message missing fields
@@ -39,20 +52,17 @@ read_sv <- function(input) {
     # stop if any of required.fields are missing
   }
 
-
   # drop unnecessary fields
   input <- subset(input, select = necessary.fields)
 
   # chromosome "chr+number" to "number"
-  input$chr1 <- ifelse(grepl("chr",input$chr1), sub("chr","",input$chr1), input$chr1)
-  input$chr2 <- ifelse(grepl("chr",input$chr2), sub("chr","",input$chr2), input$chr2)
+  input$chr1 <- ifelse(grepl("chr", input$chr1), sub("chr", "", input$chr1), input$chr1)
+  input$chr2 <- ifelse(grepl("chr", input$chr2), sub("chr", "", input$chr2), input$chr2)
 
-  message("succesfully read sv!")
+  class(input) <- c("RS", class(input))
+  message("succesfully read RS!")
   return(input)
 }
-
-
-
 
 # split by sample and collect in a list : svlist --------------------------
 # imitate : sigminer::get_cnlist()
@@ -146,13 +156,10 @@ getClustered_v1 <- function(sv_profiles, threshold = NULL) {
       # return(rep("unclustered",length(chrom1)))
     } else {
       # which rearrangements are in clustered regions
-      # print(paste0(regions$chrom,":",regions$start.pos,"-",regions$end.pos))
       regionGR <- as(paste0(regions$chrom, ":", regions$start.pos, "-", regions$end.pos), "GRanges")
       clustered <- rep("non-clustered", length = length(pos1))
-      # print(paste0(chrom1,":",pos1,"-",pos1))
       index1 <- IRanges::findOverlaps(as(paste0(chrom1, ":", pos1, "-", pos1), "GRanges"), regionGR)@from
       if (length(index1) > 0) clustered[index1] <- "clustered"
-      # print(paste0(chrom2,":",pos2,"-",pos2))
       index2 <- IRanges::findOverlaps(as(paste0(chrom2, ":", pos2, "-", pos2), "GRanges"), regionGR)@from
       if (length(index2) > 0) clustered[index2] <- "clustered"
     }
@@ -161,7 +168,7 @@ getClustered_v1 <- function(sv_profiles, threshold = NULL) {
   })
 
   # clustered_dt <- plyr::ldply(clustered, data.frame, .id = NULL)
-  clustered_dt <- do.call(rbind,lapply(clustered, data.frame)) %>%
+  clustered_dt <- do.call(rbind, lapply(clustered, data.frame)) %>%
     .[, c("sample", "clustered", "Index")] %>%
     data.table::as.data.table()
   colnames(clustered_dt) <- c("sample", "value", "Index")
@@ -171,7 +178,6 @@ getClustered_v1 <- function(sv_profiles, threshold = NULL) {
 
 # get type ----------------------------------------------------------------
 getType_v1 <- function(sv_profiles) {
-  # sv_profiles <- svlist
   type <- purrr::map_df(sv_profiles, function(x) {
     # x <- sv_profiles$PD26851a[1]
     if (x$svclass == "deletion") x$type <- "del"
@@ -230,19 +236,10 @@ get_components_sv <- function(CN_features) {
 
   purrr::map2(CN_features[feature_names], feature_names,
     .f = call_component
-    # ,
-    # extra = if ("LOH" %in% names(CN_features)) {
-    #   CN_features$LOH
-    # } else {
-    #   NULL
-    # },
-    # XVersion = XVersion
   )
 }
 
 call_component <- function(f_dt, f_name) {
-  # f_dt <- CN_features[feature_names]$clustered
-  # f_name <- feature_names[1]
   f_dt <- data.table::copy(f_dt)
   if (f_name == "clustered") {
     f_dt$C_clustered <- factor(f_dt$value, levels = c("clustered", "non-clustered"))
@@ -262,8 +259,6 @@ call_component <- function(f_dt, f_name) {
 
 # get sv matrix
 get_matrix_sv <- function(CN_components, indices = NULL) {
-  # CN_components <- test_component
-
   merged_dt <- purrr::reduce(CN_components, merge, by = c("sample", "Index"), all = TRUE)
   dt_mg <- merged_dt
   sv_class_levels <- vector_to_combination(
@@ -290,32 +285,10 @@ get_matrix_sv <- function(CN_components, indices = NULL) {
 
   sv_mat <- as.matrix(sv_mat[, sort(colnames(sv_mat))])
 
-  sv_mat_32 <- sv_mat[,!(grepl("<1Kb",colnames(sv_mat)))]
+  sv_mat_32 <- sv_mat[, !(grepl("<1Kb", colnames(sv_mat)))]
 
-  return(list(svmat_38 = sv_mat,
-              svmat_32 =sv_mat_32))
-}
-
-
-# sig_tally_sv
-sig_tally.SV <- function(object) {
-  svlist <- get_svlist(object)
-  print("successfully get svlist!")
-
-  sv_features <- get_features_sv(svlist)
-  print("successfully get sv features!")
-
-  sv_component <- get_components_sv(sv_features)
-  print("successfully get sv component!")
-
-  sv_matrix <- get_matrix_sv(CN_components = sv_component)
-  print("successfully get sv matrix!")
-
-
-  res_list <- list(
-    features = sv_features,
-    components = sv_component,
-    all_matrix = sv_matrix
-  )
-  return(res_list)
+  return(list(
+    SV_32 = sv_mat_32,
+    SV_38 = sv_mat
+  ))
 }
