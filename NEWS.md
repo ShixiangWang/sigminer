@@ -1,3 +1,17 @@
+# sigminer 1.3.0
+
+## BUG REPORTS
+
+## ENHANCEMENTS
+
+- Removed unnecessary CN classifications code in recent development.
+
+## NEW FUNCTIONS
+
+## DEPRECATED
+
+- Dropped copy number "M"" method to avoid misguiding user to use/read wrong signature profile and keep code simple.
+
 # sigminer 1.2.5
 
 ## BUG REPORTS

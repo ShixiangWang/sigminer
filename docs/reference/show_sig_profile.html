@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.0</span>
       </span>
     </div>
 
@@ -187,7 +187,7 @@ representing signatures (column names must start with 'Sig').</p></td>
     <tr>
       <th>method</th>
       <td><p>method for copy number feature classification in <a href='sig_tally.html'>sig_tally</a>,
-can be one of "Macintyre" ("M"), "Wang" ("W").</p></td>
+can be one of "Wang" ("W"), "S".</p></td>
     </tr>
     <tr>
       <th>by_context</th>
@@ -228,8 +228,7 @@ default use a built-in palette according to parameter <code>style</code>.</p></t
     <tr>
       <th>set_gradient_color</th>
       <td><p>default is <code>FALSE</code>, if <code>TRUE</code>, use gradient colors
-to fill bars.
-<strong>This is very useful when signatures are extracted from "Macintyre" method and <code>normalize</code> is 'column'.</strong></p></td>
+to fill bars.</p></td>
     </tr>
     <tr>
       <th>free_space</th>
@@ -373,40 +372,12 @@ a matrix, i.e., all signatures (colnames) must start with 'Sig'.</p></td>
 <span class='op'>)</span>
 <span class='va'>p2</span>
 
-<span class='co'># Load copy number signature from method "M"</span>
-<span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_signature_by_M.RData"</span>,
-  package <span class='op'>=</span> <span class='st'>"sigminer"</span>, mustWork <span class='op'>=</span> <span class='cn'>TRUE</span>
-<span class='op'>)</span><span class='op'>)</span>
-<span class='co'># Show signature profile</span>
-<span class='co'># The 'column' normalization is consistent with</span>
-<span class='co'># original paper</span>
-<span class='va'>p3</span> <span class='op'>&lt;-</span> <span class='fu'>show_sig_profile</span><span class='op'>(</span><span class='va'>sig</span>,
-  paint_axis_text <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  mode <span class='op'>=</span> <span class='st'>"copynumber"</span>,
-  method <span class='op'>=</span> <span class='st'>"M"</span>, normalize <span class='op'>=</span> <span class='st'>"column"</span>
-<span class='op'>)</span>
-<span class='va'>p3</span>
-
-<span class='co'># Add params label</span>
-<span class='co'># =================</span>
-<span class='co'># Load copy number prepare object</span>
-<span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_tally_M.RData"</span>,
-  package <span class='op'>=</span> <span class='st'>"sigminer"</span>, mustWork <span class='op'>=</span> <span class='cn'>TRUE</span>
-<span class='op'>)</span><span class='op'>)</span>
-<span class='va'>params</span> <span class='op'>&lt;-</span> <span class='fu'><a href='get_tidy_parameter.html'>get_tidy_parameter</a></span><span class='op'>(</span><span class='va'>cn_tally_M</span><span class='op'>$</span><span class='va'>components</span><span class='op'>)</span>
-<span class='va'>p4</span> <span class='op'>&lt;-</span> <span class='fu'>show_sig_profile</span><span class='op'>(</span><span class='va'>sig</span>,
-  mode <span class='op'>=</span> <span class='st'>"copynumber"</span>,
-  method <span class='op'>=</span> <span class='st'>"M"</span>, normalize <span class='op'>=</span> <span class='st'>"column"</span>,
-  params <span class='op'>=</span> <span class='va'>params</span>, y_expand <span class='op'>=</span> <span class='fl'>2</span>
-<span class='op'>)</span>
-<span class='va'>p4</span>
-
 <span class='co'># Visualize rearrangement signatures</span>
 <span class='va'>s</span> <span class='op'>&lt;-</span> <span class='fu'><a href='get_sig_db.html'>get_sig_db</a></span><span class='op'>(</span><span class='st'>"RS_Nik_lab"</span><span class='op'>)</span>
 <span class='va'>ss</span> <span class='op'>&lt;-</span> <span class='va'>s</span><span class='op'>$</span><span class='va'>db</span><span class='op'>[</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>]</span>
 <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>ss</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Sig1"</span>, <span class='st'>"Sig2"</span>, <span class='st'>"Sig3"</span><span class='op'>)</span>
-<span class='va'>p5</span> <span class='op'>&lt;-</span> <span class='fu'>show_sig_profile</span><span class='op'>(</span><span class='va'>ss</span>, mode <span class='op'>=</span> <span class='st'>"RS"</span>, style <span class='op'>=</span> <span class='st'>"cosmic"</span><span class='op'>)</span>
-<span class='va'>p5</span>
+<span class='va'>p3</span> <span class='op'>&lt;-</span> <span class='fu'>show_sig_profile</span><span class='op'>(</span><span class='va'>ss</span>, mode <span class='op'>=</span> <span class='st'>"RS"</span>, style <span class='op'>=</span> <span class='st'>"cosmic"</span><span class='op'>)</span>
+<span class='va'>p3</span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
