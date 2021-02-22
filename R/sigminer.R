@@ -12,7 +12,6 @@
 #' @importFrom dplyr progress_estimated
 #' @importFrom future plan
 #' @importFrom furrr future_pmap
-#' @importFrom foreach foreach %dopar%
 #' @importFrom graphics hist
 #' @importFrom grDevices colorRampPalette pdf dev.off
 #' @importFrom stats as.formula t.test fisher.test pairwise.table quantile setNames dist kmeans
