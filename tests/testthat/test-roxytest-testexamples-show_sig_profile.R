@@ -2,7 +2,7 @@
 
 context("File R/show_sig_profile.R: @testexamples")
 
-test_that("Function show_sig_profile() @ L135", {
+test_that("Function show_sig_profile() @ L104", {
   
   # Load SBS signature
   load(system.file("extdata", "toy_mutational_signature.RData",
@@ -29,45 +29,15 @@ test_that("Function show_sig_profile() @ L135", {
   )
   p2
   
-  # Load copy number signature from method "M"
-  load(system.file("extdata", "toy_copynumber_signature_by_M.RData",
-    package = "sigminer", mustWork = TRUE
-  ))
-  # Show signature profile
-  # The 'column' normalization is consistent with
-  # original paper
-  p3 <- show_sig_profile(sig,
-    paint_axis_text = FALSE,
-    mode = "copynumber",
-    method = "M", normalize = "column"
-  )
-  p3
-  
-  # Add params label
-  # =================
-  # Load copy number prepare object
-  load(system.file("extdata", "toy_copynumber_tally_M.RData",
-    package = "sigminer", mustWork = TRUE
-  ))
-  params <- get_tidy_parameter(cn_tally_M$components)
-  p4 <- show_sig_profile(sig,
-    mode = "copynumber",
-    method = "M", normalize = "column",
-    params = params, y_expand = 2
-  )
-  p4
-  
   # Visualize rearrangement signatures
   s <- get_sig_db("RS_Nik_lab")
   ss <- s$db[, 1:3]
   colnames(ss) <- c("Sig1", "Sig2", "Sig3")
-  p5 <- show_sig_profile(ss, mode = "RS", style = "cosmic")
-  p5
+  p3 <- show_sig_profile(ss, mode = "RS", style = "cosmic")
+  p3
   expect_s3_class(p1, "ggplot")
   expect_s3_class(p11, "ggplot")
   expect_s3_class(p2, "ggplot")
   expect_s3_class(p3, "ggplot")
-  expect_s3_class(p4, "ggplot")
-  expect_s3_class(p5, "ggplot")
 })
 

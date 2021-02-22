@@ -2,15 +2,10 @@
 
 context("File R/show_catalogue.R: @testexamples")
 
-test_that("Function show_catalogue() @ L28", {
+test_that("Function show_catalogue() @ L23", {
   
-  load(system.file("extdata", "toy_copynumber_tally_M.RData",
-    package = "sigminer", mustWork = TRUE
-  ))
-  p <- show_catalogue(cn_tally_M,
-    mode = "copynumber", method = "M",
-    style = "cosmic", paint_axis_text = FALSE
-  )
+  data("simulated_catalogs")
+  p <- show_catalogue(simulated_catalogs$set1, style = "cosmic")
   p
   expect_s3_class(p, "ggplot")
 })

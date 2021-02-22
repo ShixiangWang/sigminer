@@ -5,8 +5,7 @@
 #' so it can be further extended to other mutation cases.
 #' **Please read details about how to set sex for identifying copy number signatures**.
 #' Please read <https://osf.io/s93d5/> for the generation of SBS, DBS and ID (INDEL)
-#' components. **Of note, many options are designed for method "M" only, and they are highlighted
-#' by bold fonts** (you can ignore them if you don't use "M" method).
+#' components.
 #'
 #' For identifying copy number signatures, we have to derive copy number
 #' features firstly. Due to the difference of copy number values in sex chromosomes
@@ -43,8 +42,6 @@
 #' \donttest{
 #' # Use method designed by Wang, Shixiang et al.
 #' cn_tally_W <- sig_tally(cn, method = "W")
-#' # Use method designed by Macintyre et al.
-#' cn_tally_M <- sig_tally(cn, method = "M")
 #' }
 #' # Use method designed by Steele et al.
 #' # See example in read_copynumber
@@ -78,14 +75,11 @@
 #' load(system.file("extdata", "toy_copynumber.RData",
 #'   package = "sigminer", mustWork = TRUE
 #' ))
-#' # Use method designed by Macintyre et al.
-#' cn_tally_M <- sig_tally(cn, method = "M")
 #' # Use method designed by Wang, Shixiang et al.
 #' cn_tally_W <- sig_tally(cn, method = "W")
 #' # Use method designed by Tao & Wang.
 #' cn_tally_T <- sig_tally(cn, method = "T")
 #'
-#' expect_equal(length(cn_tally_M), length(cn_tally_W))
 #' expect_equal(length(cn_tally_T), 5L)
 #'
 #' ## for SBS
@@ -127,7 +121,7 @@ sig_tally <- function(object, ...) {
 
 #' @describeIn sig_tally Returns copy number features, components and component-by-sample matrix
 #' @param indices integer vector indicating segments to keep.
-#' @param method method for feature classification, can be one of "Macintyre" ("M"),
+#' @param method method for feature classification, can be one of
 #' "Wang" ("W"), "S" (for method described in Steele et al. 2019).
 #' @param add_loh flag to add LOH classifications.
 #' @param feature_setting a `data.frame` used for classification.
@@ -135,44 +129,12 @@ sig_tally <- function(object, ...) {
 #' Default is [CN.features]. Users can also set custom input with "feature",
 #' "min" and "max" columns available. Valid features can be printed by
 #' `unique(CN.features$feature)`.
-#' @param type one of "probability", "count". Default is "probability", return a matrix
-#' with the sum of posterior probabilities for each components. If set to 'count',
-#' return a matrix with event count assigned to each components. The result for
-#' both types should be close. **Only used when method is "Macintyre"**.
-#' @param reference_components default is `FALSE`, calculate mixture components
-#' from [CopyNumber] object. **Only used when method is "Macintyre"**.
 #' @param cores number of computer cores to run this task.
 #' You can use [future::availableCores()] function to check how
 #' many cores you can use.
-#' @param seed seed number. **Only used when method is "Macintyre"**.
-#' @param min_comp minimal number of components to fit, default is 2.
-#' Can also be a vector with length 6, which apply to each feature.
-#' **Only used when method is "Macintyre"**.
-#' @param max_comp maximal number of components to fit, default is 15.
-#' Can also be a vector with length 6, which apply to each feature.
-#' **Only used when method is "Macintyre"**.
-#' @param min_prior the minimum relative size of components, default is 0.001.
-#' Details about custom setting please refer to **flexmix** package.
-#' **Only used when method is "Macintyre"**.
-#' @param model_selection model selection strategy, default is 'BIC'.
-#' Details about custom setting please refer to **flexmix** package.
-#' **Only used when method is "Macintyre"**.
-#' @param threshold default is `0.1`. Sometimes, the result components
-#' include adjacent distributions with similar mu
-#' (two and more distribution are very close), we use this threshold
-#' to obtain a more meaningful fit with less components.
-#' **Only used when method is "Macintyre"**.
-#' @param nrep number of run times for each value of component,
-#' keep only the solution with maximum likelihood.
-#' **Only used when method is "Macintyre"**.
-#' @param niter the maximum number of iterations.
-#' **Only used when method is "Macintyre"**.
 #' @param keep_only_matrix if `TRUE`, keep only matrix for signature extraction.
 #' For a `MAF` object, this will just return the most useful matrix.
 #' @references
-#' Macintyre, Geoff, et al. "Copy number signatures and mutational
-#' processes in ovarian carcinoma." Nature genetics 50.9 (2018): 1262.
-#'
 #' Wang, Shixiang, et al. "Copy number signature analyses in prostate cancer reveal
 #' distinct etiologies and clinical outcomes." medRxiv (2020).
 #'
@@ -185,18 +147,10 @@ sig_tally.CopyNumber <- function(object,
                                  indices = NULL,
                                  add_loh = FALSE,
                                  feature_setting = sigminer::CN.features,
-                                 type = c("probability", "count"),
-                                 reference_components = FALSE,
-                                 cores = 1, seed = 123456,
-                                 min_comp = 2, max_comp = 15,
-                                 min_prior = 0.001,
-                                 model_selection = "BIC",
-                                 threshold = 0.1,
-                                 nrep = 1, niter = 1000,
                                  keep_only_matrix = FALSE,
                                  ...) {
   stopifnot(is.logical(reference_components) | is.list(reference_components) | is.null(reference_components))
-  method <- match.arg(method, choices = c("Macintyre", "M", "Wang", "W", "Tao & Wang", "T", "X", "S"))
+  method <- match.arg(method, choices = c("Wang", "W", "Tao & Wang", "T", "X", "S"))
 
   if (startsWith(method, "T") | method == "X") {
     send_warning("Currently, the method 'T' is in experimental stage, please don't use it for now!")
@@ -206,52 +160,7 @@ sig_tally.CopyNumber <- function(object,
     cn_list <- get_cnlist(object, ignore_chrs = ignore_chrs)
   }
 
-  if (startsWith(method, "M")) {
-    if (!requireNamespace("flexmix", quietly = TRUE)) {
-      send_stop("Please install 'flexmix' package firstly.")
-    }
-
-    # Method: Macintyre
-    type <- match.arg(type)
-
-    send_info("Step: getting copy number features.")
-    cn_features <- get_features(
-      CN_data = cn_list, cores = cores,
-      genome_build = object@genome_build
-    )
-    cn_features <- lapply(cn_features, function(x) as.data.frame(x))
-    send_success("Gotten.")
-
-    send_info("Step: fitting copy number components.")
-    if (is.null(reference_components) | is.list(reference_components)) {
-      send_success("Reference components detected.")
-      cn_components <- reference_components
-    } else {
-      cn_components <- get_components(
-        CN_features = cn_features, seed = seed,
-        min_comp = min_comp, max_comp = max_comp,
-        min_prior = min_prior,
-        model_selection = model_selection,
-        threshold = threshold,
-        nrep = nrep, niter = niter, cores = cores
-      )
-      send_success("Components fitted.")
-    }
-
-    if (type == "count") {
-      send_info("Step: calculating the sum of cluster count based on posterior probabilities.")
-      cn_matrix <- get_matrix(cn_features, cn_components,
-        type = "count",
-        cores = cores
-      )
-    } else {
-      send_info("Step: calculating the sum of posterior probabilities.")
-      cn_matrix <- get_matrix(cn_features, cn_components,
-        type = "probability",
-        cores = cores
-      )
-    }
-  } else if (startsWith(method, "W")) {
+  if (startsWith(method, "W")) {
     # Method: Wang Shixiang, 'W'
 
     send_info("Step: getting copy number features.")
@@ -343,12 +252,7 @@ sig_tally.CopyNumber <- function(object,
   if (keep_only_matrix) {
     cn_matrix
   } else {
-    if (startsWith(method, "M")) {
-      if (is.null(cn_components)) {
-        cn_components <- readRDS(file.path(tempdir(), "Nat_Gen_component_parameters.rds"))
-      }
-      para_df <- get_tidy_parameter(cn_components)
-    } else if (startsWith(method, "W")) {
+    if (startsWith(method, "W")) {
       para_df <- feature_setting
     } else if (startsWith(method, "T")) {
       para_df <- "Message: No this info for method T."

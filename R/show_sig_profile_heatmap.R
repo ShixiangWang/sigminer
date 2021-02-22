@@ -74,7 +74,7 @@ show_sig_profile_heatmap <- function(Signature, mode = c("SBS", "DBS"),
 
   mode <- match.arg(mode)
   ## TODO: only support "Tao & Wang" for mode "copynumber"
-  # method <- match.arg(method, choices = c("Macintyre", "M", "Wang", "W", "Tao & Wang", "T"))
+  # method <- match.arg(method, choices = c("Wang", "W", "Tao & Wang", "T"))
   normalize <- match.arg(normalize)
 
   if (normalize == "row") {
