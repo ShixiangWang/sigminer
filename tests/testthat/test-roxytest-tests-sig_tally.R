@@ -2,19 +2,16 @@
 
 context("File R/sig_tally.R: @tests")
 
-test_that("Function sig_tally() @ L120", {
+test_that("Function sig_tally() @ L114", {
   ## Load copy number object
   load(system.file("extdata", "toy_copynumber.RData",
     package = "sigminer", mustWork = TRUE
   ))
-  # Use method designed by Macintyre et al.
-  cn_tally_M <- sig_tally(cn, method = "M")
   # Use method designed by Wang, Shixiang et al.
   cn_tally_W <- sig_tally(cn, method = "W")
   # Use method designed by Tao & Wang.
   cn_tally_T <- sig_tally(cn, method = "T")
   
-  expect_equal(length(cn_tally_M), length(cn_tally_W))
   expect_equal(length(cn_tally_T), 5L)
   
   ## for SBS

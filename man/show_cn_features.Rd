@@ -6,10 +6,9 @@
 \usage{
 show_cn_features(
   features,
-  method = "Macintyre",
+  method = "Wang",
   rm_outlier = FALSE,
   ylab = NULL,
-  log_segsize = TRUE,
   log_y = FALSE,
   return_plotlist = FALSE,
   base_size = 12,
@@ -21,16 +20,13 @@ show_cn_features(
 \arguments{
 \item{features}{a feature \code{list} generate from \link{sig_tally} function.}
 
-\item{method}{method for feature classification, can be one of "Macintyre" ("M"),
+\item{method}{method for feature classification, can be one of
 "Wang" ("W"), "S" (for method described in Steele et al. 2019).}
 
 \item{rm_outlier}{default is \code{FALSE}, if \code{TRUE}, remove outliers. Only
 works when method is "Wang" ("W").}
 
 \item{ylab}{lab of y axis.}
-
-\item{log_segsize}{default is \code{TRUE}, show \code{log10} based segsize, only
-works for input from "Macintyre" ("M") method.}
 
 \item{log_y}{logical, if \code{TRUE}, show \code{log10} based y axis, only
 works for input from "Wang" ("W") method.}
@@ -51,12 +47,4 @@ a \code{ggplot} object
 }
 \description{
 Show Copy Number Feature Distributions
-}
-\examples{
-# Load copy number prepare object
-load(system.file("extdata", "toy_copynumber_tally_M.RData",
-  package = "sigminer", mustWork = TRUE
-))
-p <- show_cn_features(cn_tally_M$features)
-p
 }

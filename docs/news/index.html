@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.0</span>
       </span>
     </div>
 
@@ -125,9 +125,9 @@
       <small>Source: <a href='https://github.com/ShixiangWang/sigminer/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="sigminer-125" class="section level1">
-<h1 class="page-header" data-toc-text="1.2.5">
-<a href="#sigminer-125" class="anchor"></a>sigminer 1.2.5<small> Unreleased </small>
+    <div id="sigminer-130" class="section level1">
+<h1 class="page-header" data-toc-text="1.3.0">
+<a href="#sigminer-130" class="anchor"></a>sigminer 1.3.0<small> Unreleased </small>
 </h1>
 <div id="bug-reports" class="section level2">
 <h2 class="hasAnchor">
@@ -137,37 +137,64 @@
 <h2 class="hasAnchor">
 <a href="#enhancements" class="anchor"></a>ENHANCEMENTS</h2>
 <ul>
-<li>Modified the default visualization of <code><a href="../reference/bp.html">bp_show_survey()</a></code>.</li>
-<li>Enhanced <code>torch</code> check.</li>
+<li>Removed unnecessary CN classifications code in recent development.</li>
 </ul>
 </div>
 <div id="new-functions" class="section level2">
 <h2 class="hasAnchor">
 <a href="#new-functions" class="anchor"></a>NEW FUNCTIONS</h2>
+</div>
+<div id="deprecated" class="section level2">
+<h2 class="hasAnchor">
+<a href="#deprecated" class="anchor"></a>DEPRECATED</h2>
+<ul>
+<li>Dropped copy number “M”" method to avoid misguiding user to use/read wrong signature profile and keep code simple.</li>
+</ul>
+</div>
+</div>
+    <div id="sigminer-125" class="section level1">
+<h1 class="page-header" data-toc-text="1.2.5">
+<a href="#sigminer-125" class="anchor"></a>sigminer 1.2.5<small> 2021-02-20 </small>
+</h1>
+<div id="bug-reports-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-reports-1" class="anchor"></a>BUG REPORTS</h2>
+</div>
+<div id="enhancements-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#enhancements-1" class="anchor"></a>ENHANCEMENTS</h2>
+<ul>
+<li>Modified the default visualization of <code><a href="../reference/bp.html">bp_show_survey()</a></code>.</li>
+<li>Enhanced <code>torch</code> check.</li>
+</ul>
+</div>
+<div id="new-functions-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-functions-1" class="anchor"></a>NEW FUNCTIONS</h2>
 <ul>
 <li>
 <code><a href="../reference/read_sv_as_rs.html">read_sv_as_rs()</a></code> and <code><a href="../reference/sig_tally.html">sig_tally.RS()</a></code> for simplified genome rearrangement classification matrix generation (experimental).</li>
 </ul>
 </div>
-<div id="deprecated" class="section level2">
+<div id="deprecated-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#deprecated" class="anchor"></a>DEPRECATED</h2>
+<a href="#deprecated-1" class="anchor"></a>DEPRECATED</h2>
 </div>
 </div>
     <div id="sigminer-124" class="section level1">
 <h1 class="page-header" data-toc-text="1.2.4">
 <a href="#sigminer-124" class="anchor"></a>sigminer 1.2.4<small> 2021-01-30 </small>
 </h1>
-<div id="bug-reports-1" class="section level2">
+<div id="bug-reports-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-reports-1" class="anchor"></a>BUG REPORTS</h2>
+<a href="#bug-reports-2" class="anchor"></a>BUG REPORTS</h2>
 <ul>
 <li>Fixed the assign problem about match pair in <code><a href="../reference/bp.html">bp_extract_signatures()</a></code> with <code>lpSolve</code> package instead of using my problematic code.</li>
 </ul>
 </div>
-<div id="enhancements-1" class="section level2">
+<div id="enhancements-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#enhancements-1" class="anchor"></a>ENHANCEMENTS</h2>
+<a href="#enhancements-2" class="anchor"></a>ENHANCEMENTS</h2>
 <ul>
 <li>Supported <code>mm10</code> in <code><a href="../reference/read_vcf.html">read_vcf()</a></code>.</li>
 <li>Removed large data files and store them in Zenodo to reduce package size.</li>
@@ -176,30 +203,30 @@
 <li>Tried installing Torch before SP (need test).</li>
 </ul>
 </div>
-<div id="new-functions-1" class="section level2">
+<div id="new-functions-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-functions-1" class="anchor"></a>NEW FUNCTIONS</h2>
+<a href="#new-functions-2" class="anchor"></a>NEW FUNCTIONS</h2>
 </div>
-<div id="deprecated-1" class="section level2">
+<div id="deprecated-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#deprecated-1" class="anchor"></a>DEPRECATED</h2>
+<a href="#deprecated-2" class="anchor"></a>DEPRECATED</h2>
 </div>
 </div>
     <div id="sigminer-122" class="section level1">
 <h1 class="page-header" data-toc-text="1.2.2">
 <a href="#sigminer-122" class="anchor"></a>sigminer 1.2.2<small> Unreleased </small>
 </h1>
-<div id="bug-reports-2" class="section level2">
+<div id="bug-reports-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-reports-2" class="anchor"></a>BUG REPORTS</h2>
+<a href="#bug-reports-3" class="anchor"></a>BUG REPORTS</h2>
 <ul>
 <li>Fixed bug in silhouette calculation in <code><a href="../reference/bp.html">bp_extract_signatures()</a></code> (<a href='https://github.com/ShixiangWang/sigminer/issues/332'>#332</a>). PAY ATTENTION: this may affect results.</li>
 <li>Fixed bug using custom signature name in <code><a href="../reference/show_sig_profile_loop.html">show_sig_profile_loop()</a></code>.</li>
 </ul>
 </div>
-<div id="enhancements-2" class="section level2">
+<div id="enhancements-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#enhancements-2" class="anchor"></a>ENHANCEMENTS</h2>
+<a href="#enhancements-3" class="anchor"></a>ENHANCEMENTS</h2>
 <ul>
 <li>Subset signatures to plot is available by <code>sig_names</code> option.</li>
 <li>sigminer is available in bioconda channel: <a href="https://anaconda.org/bioconda/r-sigminer/" class="uri">https://anaconda.org/bioconda/r-sigminer/</a>
@@ -211,17 +238,17 @@
 <li>Updated the internal code for getting relative activity in <code><a href="../reference/get_sig_exposure.html">get_sig_exposure()</a></code>.</li>
 </ul>
 </div>
-<div id="new-functions-2" class="section level2">
+<div id="new-functions-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-functions-2" class="anchor"></a>NEW FUNCTIONS</h2>
+<a href="#new-functions-3" class="anchor"></a>NEW FUNCTIONS</h2>
 <ul>
 <li>
 <code><a href="../reference/bp.html">bp_get_clustered_sigs()</a></code> to get clustered mean signatures.</li>
 </ul>
 </div>
-<div id="deprecated-2" class="section level2">
+<div id="deprecated-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#deprecated-2" class="anchor"></a>DEPRECATED</h2>
+<a href="#deprecated-3" class="anchor"></a>DEPRECATED</h2>
 </div>
 </div>
     <div id="sigminer-121" class="section level1">
@@ -231,31 +258,6 @@
 <ul>
 <li>Updated author list.</li>
 </ul>
-<div id="bug-reports-3" class="section level2">
-<h2 class="hasAnchor">
-<a href="#bug-reports-3" class="anchor"></a>BUG REPORTS</h2>
-</div>
-<div id="enhancements-3" class="section level2">
-<h2 class="hasAnchor">
-<a href="#enhancements-3" class="anchor"></a>ENHANCEMENTS</h2>
-<ul>
-<li>Added a quick start vignette.</li>
-<li>A new option <code>highlight</code> is added to <code><a href="../reference/show_sig_number_survey.html">show_sig_number_survey()</a></code> and <code><a href="../reference/bp.html">bp_show_survey2()</a></code> to highlight a selected number.</li>
-</ul>
-</div>
-<div id="new-functions-3" class="section level2">
-<h2 class="hasAnchor">
-<a href="#new-functions-3" class="anchor"></a>NEW FUNCTIONS</h2>
-</div>
-<div id="deprecated-3" class="section level2">
-<h2 class="hasAnchor">
-<a href="#deprecated-3" class="anchor"></a>DEPRECATED</h2>
-</div>
-</div>
-    <div id="sigminer-120" class="section level1">
-<h1 class="page-header" data-toc-text="1.2.0">
-<a href="#sigminer-120" class="anchor"></a>sigminer 1.2.0<small> Unreleased </small>
-</h1>
 <div id="bug-reports-4" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bug-reports-4" class="anchor"></a>BUG REPORTS</h2>
@@ -263,6 +265,31 @@
 <div id="enhancements-4" class="section level2">
 <h2 class="hasAnchor">
 <a href="#enhancements-4" class="anchor"></a>ENHANCEMENTS</h2>
+<ul>
+<li>Added a quick start vignette.</li>
+<li>A new option <code>highlight</code> is added to <code><a href="../reference/show_sig_number_survey.html">show_sig_number_survey()</a></code> and <code><a href="../reference/bp.html">bp_show_survey2()</a></code> to highlight a selected number.</li>
+</ul>
+</div>
+<div id="new-functions-4" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-functions-4" class="anchor"></a>NEW FUNCTIONS</h2>
+</div>
+<div id="deprecated-4" class="section level2">
+<h2 class="hasAnchor">
+<a href="#deprecated-4" class="anchor"></a>DEPRECATED</h2>
+</div>
+</div>
+    <div id="sigminer-120" class="section level1">
+<h1 class="page-header" data-toc-text="1.2.0">
+<a href="#sigminer-120" class="anchor"></a>sigminer 1.2.0<small> Unreleased </small>
+</h1>
+<div id="bug-reports-5" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-reports-5" class="anchor"></a>BUG REPORTS</h2>
+</div>
+<div id="enhancements-5" class="section level2">
+<h2 class="hasAnchor">
+<a href="#enhancements-5" class="anchor"></a>ENHANCEMENTS</h2>
 <ul>
 <li>A new option <code>cut_p_value</code> is added to <code><a href="../reference/show_group_enrichment.html">show_group_enrichment()</a></code> to cut continous p values as binned regions.</li>
 <li>A Python backend for <code><a href="../reference/sig_extract.html">sig_extract()</a></code> is provided.</li>
@@ -272,9 +299,9 @@
 <li>Removed <code>pConstant</code> option from <code><a href="../reference/sig_extract.html">sig_extract()</a></code> and <code><a href="../reference/sig_estimate.html">sig_estimate()</a></code>. Now a auto-check function is created for avoiding the error from NMF package due to no contribution of a component in all samples.</li>
 </ul>
 </div>
-<div id="new-functions-4" class="section level2">
+<div id="new-functions-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-functions-4" class="anchor"></a>NEW FUNCTIONS</h2>
+<a href="#new-functions-5" class="anchor"></a>NEW FUNCTIONS</h2>
 <ul>
 <li>
 <code><a href="../reference/bp.html">bp_show_survey2()</a></code> to plot a simplified version for signature number survey (<a href='https://github.com/ShixiangWang/sigminer/issues/330'>#330</a>).</li>
@@ -285,9 +312,9 @@
 <li>Added functions start with <code>bp_</code> which are combined to provide a best practice for extracting signatures in cancer researches. See more details, run <code><a href="../reference/bp.html">?bp</a></code> in your R console.</li>
 </ul>
 </div>
-<div id="deprecated-4" class="section level2">
+<div id="deprecated-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#deprecated-4" class="anchor"></a>DEPRECATED</h2>
+<a href="#deprecated-5" class="anchor"></a>DEPRECATED</h2>
 </div>
 </div>
     <div id="sigminer-110" class="section level1">

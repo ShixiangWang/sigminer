@@ -52,8 +52,7 @@ This is a generic function,
 so it can be further extended to other mutation cases.
 Please read details about how to set sex for identifying copy number signatures.
 Please read https://osf.io/s93d5/ for the generation of SBS, DBS and ID (INDEL)
-components. Of note, many options are designed for method &quot;M&quot; only, and they are highlighted
-by bold fonts (you can ignore them if you don't use &quot;M&quot; method)." />
+components." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -86,7 +85,7 @@ by bold fonts (you can ignore them if you don't use &quot;M&quot; method)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.0</span>
       </span>
     </div>
 
@@ -139,8 +138,7 @@ This is a generic function,
 so it can be further extended to other mutation cases.
 <strong>Please read details about how to set sex for identifying copy number signatures</strong>.
 Please read <a href='https://osf.io/s93d5/'>https://osf.io/s93d5/</a> for the generation of SBS, DBS and ID (INDEL)
-components. <strong>Of note, many options are designed for method "M" only, and they are highlighted
-by bold fonts</strong> (you can ignore them if you don't use "M" method).</p>
+components.</p>
     </div>
 
     <pre class="usage"><span class='fu'>sig_tally</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>...</span><span class='op'>)</span>
@@ -153,17 +151,6 @@ by bold fonts</strong> (you can ignore them if you don't use "M" method).</p>
   indices <span class='op'>=</span> <span class='cn'>NULL</span>,
   add_loh <span class='op'>=</span> <span class='cn'>FALSE</span>,
   feature_setting <span class='op'>=</span> <span class='fu'>sigminer</span><span class='fu'>::</span><span class='va'><a href='CN.features.html'>CN.features</a></span>,
-  type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"probability"</span>, <span class='st'>"count"</span><span class='op'>)</span>,
-  reference_components <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  cores <span class='op'>=</span> <span class='fl'>1</span>,
-  seed <span class='op'>=</span> <span class='fl'>123456</span>,
-  min_comp <span class='op'>=</span> <span class='fl'>2</span>,
-  max_comp <span class='op'>=</span> <span class='fl'>15</span>,
-  min_prior <span class='op'>=</span> <span class='fl'>0.001</span>,
-  model_selection <span class='op'>=</span> <span class='st'>"BIC"</span>,
-  threshold <span class='op'>=</span> <span class='fl'>0.1</span>,
-  nrep <span class='op'>=</span> <span class='fl'>1</span>,
-  niter <span class='op'>=</span> <span class='fl'>1000</span>,
   keep_only_matrix <span class='op'>=</span> <span class='cn'>FALSE</span>,
   <span class='va'>...</span>
 <span class='op'>)</span>
@@ -198,7 +185,7 @@ corresponding class (e.g. <code>CopyNumber</code>).</p></td>
     </tr>
     <tr>
       <th>method</th>
-      <td><p>method for feature classification, can be one of "Macintyre" ("M"),
+      <td><p>method for feature classification, can be one of
 "Wang" ("W"), "S" (for method described in Steele et al. 2019).</p></td>
     </tr>
     <tr>
@@ -220,71 +207,6 @@ corresponding class (e.g. <code>CopyNumber</code>).</p></td>
 Default is <a href='CN.features.html'>CN.features</a>. Users can also set custom input with "feature",
 "min" and "max" columns available. Valid features can be printed by
 <code><a href='https://rdrr.io/r/base/unique.html'>unique(CN.features$feature)</a></code>.</p></td>
-    </tr>
-    <tr>
-      <th>type</th>
-      <td><p>one of "probability", "count". Default is "probability", return a matrix
-with the sum of posterior probabilities for each components. If set to 'count',
-return a matrix with event count assigned to each components. The result for
-both types should be close. <strong>Only used when method is "Macintyre"</strong>.</p></td>
-    </tr>
-    <tr>
-      <th>reference_components</th>
-      <td><p>default is <code>FALSE</code>, calculate mixture components
-from <a href='CopyNumber-class.html'>CopyNumber</a> object. <strong>Only used when method is "Macintyre"</strong>.</p></td>
-    </tr>
-    <tr>
-      <th>cores</th>
-      <td><p>number of computer cores to run this task.
-You can use <code><a href='https://rdrr.io/pkg/future/man/re-exports.html'>future::availableCores()</a></code> function to check how
-many cores you can use.</p></td>
-    </tr>
-    <tr>
-      <th>seed</th>
-      <td><p>seed number. <strong>Only used when method is "Macintyre"</strong>.</p></td>
-    </tr>
-    <tr>
-      <th>min_comp</th>
-      <td><p>minimal number of components to fit, default is 2.
-Can also be a vector with length 6, which apply to each feature.
-<strong>Only used when method is "Macintyre"</strong>.</p></td>
-    </tr>
-    <tr>
-      <th>max_comp</th>
-      <td><p>maximal number of components to fit, default is 15.
-Can also be a vector with length 6, which apply to each feature.
-<strong>Only used when method is "Macintyre"</strong>.</p></td>
-    </tr>
-    <tr>
-      <th>min_prior</th>
-      <td><p>the minimum relative size of components, default is 0.001.
-Details about custom setting please refer to <strong>flexmix</strong> package.
-<strong>Only used when method is "Macintyre"</strong>.</p></td>
-    </tr>
-    <tr>
-      <th>model_selection</th>
-      <td><p>model selection strategy, default is 'BIC'.
-Details about custom setting please refer to <strong>flexmix</strong> package.
-<strong>Only used when method is "Macintyre"</strong>.</p></td>
-    </tr>
-    <tr>
-      <th>threshold</th>
-      <td><p>default is <code>0.1</code>. Sometimes, the result components
-include adjacent distributions with similar mu
-(two and more distribution are very close), we use this threshold
-to obtain a more meaningful fit with less components.
-<strong>Only used when method is "Macintyre"</strong>.</p></td>
-    </tr>
-    <tr>
-      <th>nrep</th>
-      <td><p>number of run times for each value of component,
-keep only the solution with maximum likelihood.
-<strong>Only used when method is "Macintyre"</strong>.</p></td>
-    </tr>
-    <tr>
-      <th>niter</th>
-      <td><p>the maximum number of iterations.
-<strong>Only used when method is "Macintyre"</strong>.</p></td>
     </tr>
     <tr>
       <th>keep_only_matrix</th>
@@ -318,6 +240,12 @@ SigProfilerMatrixGenerator, the reason is unknown (may be caused by annotation f
     <tr>
       <th>use_syn</th>
       <td><p>Logical. If <code>TRUE</code>, include synonymous variants in analysis.</p></td>
+    </tr>
+    <tr>
+      <th>cores</th>
+      <td><p>number of computer cores to run this task.
+You can use <code><a href='https://rdrr.io/pkg/future/man/re-exports.html'>future::availableCores()</a></code> function to check how
+many cores you can use.</p></td>
     </tr>
     </table>
 
@@ -353,9 +281,7 @@ with <a href='read_copynumber.html'>read_copynumber</a>).</p></li>
 </ul>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Macintyre, Geoff, et al. "Copy number signatures and mutational
-processes in ovarian carcinoma." Nature genetics 50.9 (2018): 1262.</p>
-<p>Wang, Shixiang, et al. "Copy number signature analyses in prostate cancer reveal
+    <p>Wang, Shixiang, et al. "Copy number signature analyses in prostate cancer reveal
 distinct etiologies and clinical outcomes." medRxiv (2020).</p>
 <p>Steele, Christopher D., et al. "Undifferentiated sarcomas develop through
 distinct evolutionary pathways." Cancer Cell 35.3 (2019): 441-456.</p>
@@ -378,8 +304,6 @@ distinct evolutionary pathways." Cancer Cell 35.3 (2019): 441-456.</p>
 <span class='co'># \donttest{</span>
 <span class='co'># Use method designed by Wang, Shixiang et al.</span>
 <span class='va'>cn_tally_W</span> <span class='op'>&lt;-</span> <span class='fu'>sig_tally</span><span class='op'>(</span><span class='va'>cn</span>, method <span class='op'>=</span> <span class='st'>"W"</span><span class='op'>)</span>
-<span class='co'># Use method designed by Macintyre et al.</span>
-<span class='va'>cn_tally_M</span> <span class='op'>&lt;-</span> <span class='fu'>sig_tally</span><span class='op'>(</span><span class='va'>cn</span>, method <span class='op'>=</span> <span class='st'>"M"</span><span class='op'>)</span>
 <span class='co'># }</span>
 <span class='co'># Use method designed by Steele et al.</span>
 <span class='co'># See example in read_copynumber</span>

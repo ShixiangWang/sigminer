@@ -6,11 +6,10 @@
 \usage{
 show_cn_components(
   parameters,
-  method = "Macintyre",
+  method = "Wang",
   show_weights = TRUE,
   log_segsize = TRUE,
   log_y = FALSE,
-  auto_transform = TRUE,
   return_plotlist = FALSE,
   base_size = 12,
   nrow = 2,
@@ -22,20 +21,14 @@ show_cn_components(
 \item{parameters}{a \code{data.frame} contain parameter components, obtain this
 from \link{sig_tally} function.}
 
-\item{method}{method for feature classification, can be one of "Macintyre" ("M"),
+\item{method}{method for feature classification, can be one of
 "Wang" ("W"), "S" (for method described in Steele et al. 2019).}
 
 \item{show_weights}{default is \code{TRUE}, show weights for each component.
 Only used when method is "Macintyre".}
 
-\item{log_segsize}{default is \code{TRUE}, show \code{log10} based segsize, only
-works for input from "Macintyre" ("M") method.}
-
 \item{log_y}{logical, if \code{TRUE}, show \code{log10} based y axis, only
 works for input from "Wang" ("W") method.}
-
-\item{auto_transform}{default is \code{TRUE}, it will auto increase the \code{SD} for components
-for showing them better in the plot. Only used when method is "Macintyre".}
 
 \item{return_plotlist}{if \code{TRUE}, return a list of ggplot objects but a combined plot.}
 
@@ -52,23 +45,7 @@ vertically ("v") aligned. Options are "none" (default), "hv" (align in both dire
 a \code{ggplot} object
 }
 \description{
-Show mixture fit model components ("Macintyre" ("M") method) or
-standard classified components ("Wang" ("W") method) for copy number data.
-}
-\examples{
-load(system.file("extdata", "toy_copynumber_tally_M.RData",
-  package = "sigminer", mustWork = TRUE
-))
-p1 <- show_cn_components(cn_tally_M$parameters)
-p1
-p2 <- show_cn_components(cn_tally_M$parameters, show_weights = FALSE)
-p2
-
-load(system.file("extdata", "toy_copynumber_tally_W.RData",
-  package = "sigminer", mustWork = TRUE
-))
-p3 <- show_cn_components(cn_tally_W$parameters, method = "W")
-p3
+Show classified components ("Wang" ("W") method) for copy number data.
 }
 \author{
 Shixiang Wang \href{mailto:w_shixiang@163.com}{w_shixiang@163.com}

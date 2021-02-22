@@ -21,8 +21,6 @@
 #' @return a `list`. For 'co' features, 'measure' means correlation coefficient.
 #' For 'ca' features, 'measure' means difference in means of signature exposure.
 #' @export
-#' @references Macintyre, Geoff, et al. "Copy number signatures and mutational processes in ovarian carcinoma."
-#' Nature genetics 50.9 (2018): 1262.
 #' @seealso [get_tidy_association]
 get_sig_feature_association <- function(data, cols_to_sigs, cols_to_features, type = "ca",
                                         method_co = c("spearman", "pearson", "kendall"), method_ca = stats::wilcox.test,

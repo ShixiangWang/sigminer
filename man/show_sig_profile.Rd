@@ -52,7 +52,7 @@ representing signatures (column names must start with 'Sig').}
 'DBS', 'ID' and 'RS' (genome rearrangement signature).}
 
 \item{method}{method for copy number feature classification in \link{sig_tally},
-can be one of "Macintyre" ("M"), "Wang" ("W").}
+can be one of "Wang" ("W"), "S".}
 
 \item{by_context}{for specific use.}
 
@@ -77,8 +77,7 @@ parameter \code{set_gradient_color} is \code{FALSE}.}
 default use a built-in palette according to parameter \code{style}.}
 
 \item{set_gradient_color}{default is \code{FALSE}, if \code{TRUE}, use gradient colors
-to fill bars.
-\strong{This is very useful when signatures are extracted from "Macintyre" method and \code{normalize} is 'column'.}}
+to fill bars.}
 
 \item{free_space}{default is 'free_x'. If "fixed", all panels have the same size.
 If "free_y" their height will be proportional to the length of the y scale;
@@ -170,40 +169,12 @@ p2 <- show_sig_profile(sig,
 )
 p2
 
-# Load copy number signature from method "M"
-load(system.file("extdata", "toy_copynumber_signature_by_M.RData",
-  package = "sigminer", mustWork = TRUE
-))
-# Show signature profile
-# The 'column' normalization is consistent with
-# original paper
-p3 <- show_sig_profile(sig,
-  paint_axis_text = FALSE,
-  mode = "copynumber",
-  method = "M", normalize = "column"
-)
-p3
-
-# Add params label
-# =================
-# Load copy number prepare object
-load(system.file("extdata", "toy_copynumber_tally_M.RData",
-  package = "sigminer", mustWork = TRUE
-))
-params <- get_tidy_parameter(cn_tally_M$components)
-p4 <- show_sig_profile(sig,
-  mode = "copynumber",
-  method = "M", normalize = "column",
-  params = params, y_expand = 2
-)
-p4
-
 # Visualize rearrangement signatures
 s <- get_sig_db("RS_Nik_lab")
 ss <- s$db[, 1:3]
 colnames(ss) <- c("Sig1", "Sig2", "Sig3")
-p5 <- show_sig_profile(ss, mode = "RS", style = "cosmic")
-p5
+p3 <- show_sig_profile(ss, mode = "RS", style = "cosmic")
+p3
 }
 \seealso{
 \link{show_sig_profile_loop}, \link{show_sig_profile_heatmap}

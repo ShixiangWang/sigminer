@@ -48,10 +48,6 @@ for a binary association variable, samples will be divided into two groups and M
 is performed to test for differences in signature exposure medians between the two groups.
 See \link{get_tidy_association} for cleaning association result.
 }
-\references{
-Macintyre, Geoff, et al. "Copy number signatures and mutational processes in ovarian carcinoma."
-Nature genetics 50.9 (2018): 1262.
-}
 \seealso{
 \link{get_tidy_association}
 }
