@@ -67,16 +67,20 @@ get_svlist <- function(data) {
 # get size
 getRearrSize_v1 <- function(sv_profiles) {
   rearrsize <- purrr::map_df(sv_profiles, function(x) {
-    if (x$svclass == "translocation") x$rearrsize <- NA
-    length <- x$end2 - x$start1
-    if (length < 1000) x$rearrsize <- "<1Kb"
-    if (length >= 1000 & length < 10000) x$rearrsize <- "1-10Kb"
-    if (length >= 10000 & length < 100000) x$rearrsize <- "10-100Kb"
-    if (length >= 100000 & length < 1000000) x$rearrsize <- "100Kb-1Mb"
-    if (length >= 1000000 & length <= 10000000) x$rearrsize <- "1Mb-10Mb"
-    if (length > 10000000) x$rearrsize <- ">10Mb"
-    x[, c("sample", "rearrsize", "Index"), with = FALSE]
-    # x[, c("sample", "rearrsize")]
+    x %>%
+      dplyr::mutate(
+        length = x$end2 - x$start1,
+        rearrsize = dplyr::case_when(
+          .data$svclass == "translocation" ~ NA_character_,
+          .data$length < 1000 ~ "<1Kb",
+          .data$length >= 1000 & .data$length < 10000 ~ "1-10Kb",
+          .data$length >= 10000 & .data$length < 100000 ~ "10-100Kb",
+          .data$length >= 100000 & .data$length < 1000000 ~ "100Kb-1Mb",
+          .data$length >= 1000000 & .data$length <= 10000000 ~ "1Mb-10Mb",
+          .data$length > 10000000 ~ ">10Mb"
+        )
+      ) %>%
+      dplyr::select_at(c("sample", "rearrsize", "Index"))
   })
   colnames(rearrsize) <- c("sample", "value", "Index")
   rearrsize <- rearrsize %>%
@@ -159,12 +163,11 @@ getClustered_v1 <- function(sv_profiles, threshold = NULL) {
 
 # get type ----------------------------------------------------------------
 getType_v1 <- function(sv_profiles) {
+  type_map <- c("del", "inv", "tds", "trans")
+  names(type_map) <- c("deletion", "inversion", "tandem-duplication", "translocation")
+
   type <- purrr::map_df(sv_profiles, function(x) {
-    # x <- sv_profiles$PD26851a[1]
-    if (x$svclass == "deletion") x$type <- "del"
-    if (x$svclass == "inversion") x$type <- "inv"
-    if (x$svclass == "tandem-duplication") x$type <- "tds"
-    if (x$svclass == "translocation") x$type <- "trans"
+    x$type <- as.character(type_map[x$svclass])
     x[, c("sample", "type", "Index"), with = FALSE]
   })
   colnames(type) <- c("sample", "value", "Index")
