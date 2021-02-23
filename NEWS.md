@@ -1,4 +1,4 @@
-# sigminer 1.3.0
+# sigminer 2.0.0
 
 ## BUG REPORTS
 
