@@ -209,10 +209,11 @@ sig_tally.CopyNumber <- function(object,
     feature_setting$n_obs <- colSums(cn_matrix, na.rm = TRUE)
   } else if (startsWith(method, "S")) {
     # When use method "S", join_adj_seg should set to FALSE in read_copynumber
+    send_info("When you use method 'S', please make sure you have set 'join_adj_seg' to FALSE in 'read_copynumber() in the previous step!")
     mat_list <- get_matrix_mutex_sv(data.table::rbindlist(cn_list, idcol = "sample"))
     cn_features <- NULL
     cn_components <- mat_list$data
-    cn_matrix <- mat_list$CN40
+    cn_matrix <- mat_list$CN_40
   } else {
     # Method: Shixiang Wang, Ziyu Tao and Tao Wu, short with 'T'
     send_info("Step: getting copy number features.")
@@ -275,8 +276,8 @@ sig_tally.CopyNumber <- function(object,
           )
         } else if (method == "S") {
           list(
-            CN40 = mat_list$CN40,
-            CN48 = mat_list$CN48
+            CN_40 = mat_list$CN_40,
+            CN_48 = mat_list$CN_48
           )
         } else {
           list(
