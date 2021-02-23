@@ -13,3 +13,4 @@ data-raw/*.vcf
 *.rds
 !inst/extdata/*.rds
 !vignettes/*.rds
+inst/extdata/human_hg*_gene_info.rds

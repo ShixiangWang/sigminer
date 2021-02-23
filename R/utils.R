@@ -14,6 +14,13 @@ query_remote_data <- function(x) {
   )
 }
 
+# Normalize data to specified range
+norm2rg <- function(x, rg) {
+  stopifnot(length(rg) == 2)
+  k <- diff(rg) / diff(range(x))
+  rg[1] + k * (x - min(x))
+}
+
 # Check data may cause NMF error
 # It is a bug of NMF package and now is not be addressed
 #

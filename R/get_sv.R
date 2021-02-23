@@ -36,28 +36,21 @@ read_sv_as_rs <- function(input) {
   )
 
   colnames(input) <- tolower(colnames(input))
+
   idx <- necessary.fields %in% colnames(input)
   if (!all(idx)) {
     stop(
-      "Missing required fields from SV: ",
-      paste(missing.fileds[!idx], collapse = "")
+      "Missing required columns from input: ",
+      paste(necessary.fields[!idx], collapse = ", ")
     )
-  }
-
-  # message missing fields
-  missing.fileds <- necessary.fields[!necessary.fields %in% colnames(input)] # check if any of them are missing
-
-  if (length(missing.fileds) > 0) {
-    missing.fileds <- paste(missing.fileds[1], sep = ",", collapse = ", ")
-    # stop if any of required.fields are missing
   }
 
   # drop unnecessary fields
   input <- subset(input, select = necessary.fields)
 
   # chromosome "chr+number" to "number"
-  input$chr1 <- ifelse(grepl("chr", input$chr1), sub("chr", "", input$chr1), input$chr1)
-  input$chr2 <- ifelse(grepl("chr", input$chr2), sub("chr", "", input$chr2), input$chr2)
+  input$chr1 <- sub("chr", "", input$chr1)
+  input$chr2 <- sub("chr", "", input$chr2)
 
   class(input) <- c("RS", class(input))
   message("succesfully read RS!")
@@ -74,16 +67,20 @@ get_svlist <- function(data) {
 # get size
 getRearrSize_v1 <- function(sv_profiles) {
   rearrsize <- purrr::map_df(sv_profiles, function(x) {
-    if (x$svclass == "translocation") x$rearrsize <- NA
-    length <- x$end2 - x$start1
-    if (length < 1000) x$rearrsize <- "<1Kb"
-    if (length >= 1000 & length < 10000) x$rearrsize <- "1-10Kb"
-    if (length >= 10000 & length < 100000) x$rearrsize <- "10-100Kb"
-    if (length >= 100000 & length < 1000000) x$rearrsize <- "100Kb-1Mb"
-    if (length >= 1000000 & length <= 10000000) x$rearrsize <- "1Mb-10Mb"
-    if (length > 10000000) x$rearrsize <- ">10Mb"
-    x[, c("sample", "rearrsize", "Index"), with = FALSE]
-    # x[, c("sample", "rearrsize")]
+    x %>%
+      dplyr::mutate(
+        length = x$end2 - x$start1,
+        rearrsize = dplyr::case_when(
+          .data$svclass == "translocation" ~ NA_character_,
+          .data$length < 1000 ~ "<1Kb",
+          .data$length >= 1000 & .data$length < 10000 ~ "1-10Kb",
+          .data$length >= 10000 & .data$length < 100000 ~ "10-100Kb",
+          .data$length >= 100000 & .data$length < 1000000 ~ "100Kb-1Mb",
+          .data$length >= 1000000 & .data$length <= 10000000 ~ "1Mb-10Mb",
+          .data$length > 10000000 ~ ">10Mb"
+        )
+      ) %>%
+      dplyr::select_at(c("sample", "rearrsize", "Index"))
   })
   colnames(rearrsize) <- c("sample", "value", "Index")
   rearrsize <- rearrsize %>%
@@ -117,7 +114,7 @@ getDists <- function(chrom1, pos1, chrom2, pos2, doPCF = FALSE) {
     if (!doPCF) {
       return(forCN[, 3])
     }
-    return(list(info = forCN, seg = suppressMessages(copynumber::pcf(forCN, gamma = 25, kmin = 10))))
+    return(list(info = forCN, seg = copynumber::pcf(forCN, gamma = 25, kmin = 10)))
   }, simplify = FALSE)
   return(dists)
 }
@@ -166,12 +163,11 @@ getClustered_v1 <- function(sv_profiles, threshold = NULL) {
 
 # get type ----------------------------------------------------------------
 getType_v1 <- function(sv_profiles) {
+  type_map <- c("del", "inv", "tds", "trans")
+  names(type_map) <- c("deletion", "inversion", "tandem-duplication", "translocation")
+
   type <- purrr::map_df(sv_profiles, function(x) {
-    # x <- sv_profiles$PD26851a[1]
-    if (x$svclass == "deletion") x$type <- "del"
-    if (x$svclass == "inversion") x$type <- "inv"
-    if (x$svclass == "tandem-duplication") x$type <- "tds"
-    if (x$svclass == "translocation") x$type <- "trans"
+    x$type <- as.character(type_map[x$svclass])
     x[, c("sample", "type", "Index"), with = FALSE]
   })
   colnames(type) <- c("sample", "value", "Index")
