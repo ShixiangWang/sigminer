@@ -2,7 +2,7 @@
 
 context("File R/best_practice.R: @testexamples")
 
-test_that("[unknown alias] @ L211", {
+test_that("[unknown alias] @ L210", {
   
   data("simulated_catalogs")
   
@@ -69,7 +69,6 @@ test_that("[unknown alias] @ L211", {
   
   
   expect_is(e1, "ExtractionResult")
-  expect_is(e2, "ExtractionResultList")
   expect_is(p1, "ggplot")
   expect_is(p2, "ggplot")
   expect_is(p2, "ggplot")
