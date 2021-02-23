@@ -199,7 +199,6 @@
 #' }
 #' @testexamples
 #' expect_is(e1, "ExtractionResult")
-#' expect_is(e2, "ExtractionResultList")
 #' expect_is(p1, "ggplot")
 #' expect_is(p2, "ggplot")
 #' expect_is(p2, "ggplot")
