@@ -621,8 +621,8 @@ get_matrix_mutex_sv <- function(dt) {
 
   return(list(
     data = dt,
-    CN40 = mat40,
-    CN48 = mat48
+    CN_40 = mat40,
+    CN_48 = mat48
   ))
 }
 
