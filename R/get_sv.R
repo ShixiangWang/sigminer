@@ -36,28 +36,21 @@ read_sv_as_rs <- function(input) {
   )
 
   colnames(input) <- tolower(colnames(input))
+
   idx <- necessary.fields %in% colnames(input)
   if (!all(idx)) {
     stop(
-      "Missing required fields from SV: ",
-      paste(missing.fileds[!idx], collapse = "")
+      "Missing required columns from input: ",
+      paste(necessary.fields[!idx], collapse = ", ")
     )
-  }
-
-  # message missing fields
-  missing.fileds <- necessary.fields[!necessary.fields %in% colnames(input)] # check if any of them are missing
-
-  if (length(missing.fileds) > 0) {
-    missing.fileds <- paste(missing.fileds[1], sep = ",", collapse = ", ")
-    # stop if any of required.fields are missing
   }
 
   # drop unnecessary fields
   input <- subset(input, select = necessary.fields)
 
   # chromosome "chr+number" to "number"
-  input$chr1 <- ifelse(grepl("chr", input$chr1), sub("chr", "", input$chr1), input$chr1)
-  input$chr2 <- ifelse(grepl("chr", input$chr2), sub("chr", "", input$chr2), input$chr2)
+  input$chr1 <- sub("chr", "", input$chr1)
+  input$chr2 <- sub("chr", "", input$chr2)
 
   class(input) <- c("RS", class(input))
   message("succesfully read RS!")
@@ -117,7 +110,7 @@ getDists <- function(chrom1, pos1, chrom2, pos2, doPCF = FALSE) {
     if (!doPCF) {
       return(forCN[, 3])
     }
-    return(list(info = forCN, seg = suppressMessages(copynumber::pcf(forCN, gamma = 25, kmin = 10))))
+    return(list(info = forCN, seg = copynumber::pcf(forCN, gamma = 25, kmin = 10)))
   }, simplify = FALSE)
   return(dists)
 }
