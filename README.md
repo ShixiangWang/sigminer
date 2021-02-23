@@ -57,8 +57,6 @@ For pipeline tool, please see its co-evolutionary CLI
     rearrangement signature).
 -   supports quantify exposure for one sample based on *known
     signatures*.
--   supports two methods for calling copy number signatures: one is from
-    Macintyre et al. 2018 and the other is created by our group.
 -   supports association and group analysis and visualization for
     signatures.
 -   supports two types of signature exposures: relative exposure
@@ -222,8 +220,6 @@ written permission after contacting Shixiang Wang
 <liuxs@shanghaitech.edu.cn>.
 
 MIT © 2019-Present Shixiang Wang, Xue-Song Liu
-
-MIT © 2018 Geoffrey Macintyre
 
 MIT © 2018 Anand Mayakonda
 

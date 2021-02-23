@@ -147,9 +147,9 @@ sig_tally.CopyNumber <- function(object,
                                  indices = NULL,
                                  add_loh = FALSE,
                                  feature_setting = sigminer::CN.features,
+                                 cores = 1,
                                  keep_only_matrix = FALSE,
                                  ...) {
-  stopifnot(is.logical(reference_components) | is.list(reference_components) | is.null(reference_components))
   method <- match.arg(method, choices = c("Wang", "W", "Tao & Wang", "T", "X", "S"))
 
   if (startsWith(method, "T") | method == "X") {

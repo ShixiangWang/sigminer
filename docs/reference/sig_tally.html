@@ -85,7 +85,7 @@ components." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
       </span>
     </div>
 
@@ -151,6 +151,7 @@ components.</p>
   indices <span class='op'>=</span> <span class='cn'>NULL</span>,
   add_loh <span class='op'>=</span> <span class='cn'>FALSE</span>,
   feature_setting <span class='op'>=</span> <span class='fu'>sigminer</span><span class='fu'>::</span><span class='va'><a href='CN.features.html'>CN.features</a></span>,
+  cores <span class='op'>=</span> <span class='fl'>1</span>,
   keep_only_matrix <span class='op'>=</span> <span class='cn'>FALSE</span>,
   <span class='va'>...</span>
 <span class='op'>)</span>
@@ -209,6 +210,12 @@ Default is <a href='CN.features.html'>CN.features</a>. Users can also set custom
 <code><a href='https://rdrr.io/r/base/unique.html'>unique(CN.features$feature)</a></code>.</p></td>
     </tr>
     <tr>
+      <th>cores</th>
+      <td><p>number of computer cores to run this task.
+You can use <code><a href='https://rdrr.io/pkg/future/man/re-exports.html'>future::availableCores()</a></code> function to check how
+many cores you can use.</p></td>
+    </tr>
+    <tr>
       <th>keep_only_matrix</th>
       <td><p>if <code>TRUE</code>, keep only matrix for signature extraction.
 For a <code>MAF</code> object, this will just return the most useful matrix.</p></td>
@@ -240,12 +247,6 @@ SigProfilerMatrixGenerator, the reason is unknown (may be caused by annotation f
     <tr>
       <th>use_syn</th>
       <td><p>Logical. If <code>TRUE</code>, include synonymous variants in analysis.</p></td>
-    </tr>
-    <tr>
-      <th>cores</th>
-      <td><p>number of computer cores to run this task.
-You can use <code><a href='https://rdrr.io/pkg/future/man/re-exports.html'>future::availableCores()</a></code> function to check how
-many cores you can use.</p></td>
     </tr>
     </table>
 

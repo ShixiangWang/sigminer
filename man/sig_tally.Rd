@@ -16,6 +16,7 @@ sig_tally(object, ...)
   indices = NULL,
   add_loh = FALSE,
   feature_setting = sigminer::CN.features,
+  cores = 1,
   keep_only_matrix = FALSE,
   ...
 )
@@ -55,6 +56,10 @@ Default is \link{CN.features}. Users can also set custom input with "feature",
 "min" and "max" columns available. Valid features can be printed by
 \code{unique(CN.features$feature)}.}
 
+\item{cores}{number of computer cores to run this task.
+You can use \code{\link[future:re-exports]{future::availableCores()}} function to check how
+many cores you can use.}
+
 \item{keep_only_matrix}{if \code{TRUE}, keep only matrix for signature extraction.
 For a \code{MAF} object, this will just return the most useful matrix.}
 
@@ -75,10 +80,6 @@ For a \code{MAF} object, this will just return the most useful matrix.}
 SigProfilerMatrixGenerator, the reason is unknown (may be caused by annotation file).}
 
 \item{use_syn}{Logical. If \code{TRUE}, include synonymous variants in analysis.}
-
-\item{cores}{number of computer cores to run this task.
-You can use \code{\link[future:re-exports]{future::availableCores()}} function to check how
-many cores you can use.}
 }
 \value{
 a \code{list} contains a \code{matrix} used for NMF de-composition.
