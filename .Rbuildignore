@@ -22,3 +22,4 @@ tests
 cran_check.R
 inst/figures
 inst/sigflow
+^\.github$
