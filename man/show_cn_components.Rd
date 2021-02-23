@@ -8,7 +8,6 @@ show_cn_components(
   parameters,
   method = "Wang",
   show_weights = TRUE,
-  log_segsize = TRUE,
   log_y = FALSE,
   return_plotlist = FALSE,
   base_size = 12,
