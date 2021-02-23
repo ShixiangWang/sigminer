@@ -2,7 +2,7 @@
 
 context("File R/best_practice.R: @testexamples")
 
-test_that("[unknown alias] @ L205", {
+test_that("[unknown alias] @ L211", {
   
   data("simulated_catalogs")
   
@@ -12,12 +12,18 @@ test_that("[unknown alias] @ L205", {
   # for better estimation.
   #
   # The input data here is simulated from 10 mutational signatures
-  e1 <- bp_extract_signatures(
-    t(simulated_catalogs$set1),
-    range = 8:12,
-    n_bootstrap = 5,
-    n_nmf_run = 10
-  )
+  
+  # e1 <- bp_extract_signatures(
+  #   t(simulated_catalogs$set1),
+  #   range = 8:12,
+  #   n_bootstrap = 5,
+  #   n_nmf_run = 10
+  # )
+  #
+  # To avoid computation in examples,
+  # Here just load the result
+  # (e1$signature and e1$exposure set to NA to reduce package size)
+  load(system.file("extdata", "e1.RData", package = "sigminer"))
   
   
   # See the survey for different signature numbers
@@ -60,29 +66,7 @@ test_that("[unknown alias] @ L205", {
   expo <- bp_attribute_activity(e1, return_class = "data.table")
   expo$abs_activity
   
-  # Iterative extraction:
-  # This procedure will rerun extraction step
-  # for those samples with reconstructed catalog similarity
-  # lower than a threshold (default is 0.95)
-  e2 <- bp_extract_signatures_iter(
-    t(simulated_catalogs$set1),
-    range = 9:11,
-    n_bootstrap = 5,
-    n_nmf_run = 5,
-    sim_threshold = 0.99
-  )
-  e2
-  # When the procedure run multiple rounds
-  # you can cluster the signatures from different rounds by
-  # the following command
-  # bp_cluster_iter_list(e2)
   
-  ## Extra utilities
-  rank_score <- bp_get_rank_score(e1)
-  rank_score
-  stats <- bp_get_stats(e2$iter1)
-  # Get the mean reconstructed similarity
-  1 - stats$stats_sample$cosine_distance_mean
   
   expect_is(e1, "ExtractionResult")
   expect_is(e2, "ExtractionResultList")
@@ -94,7 +78,5 @@ test_that("[unknown alias] @ L205", {
   expect_is(sim, "list")
   expect_is(rec_sim, "data.table")
   expect_is(expo, "list")
-  expect_is(rank_score, "data.frame")
-  expect_is(stats, "list")
 })
 

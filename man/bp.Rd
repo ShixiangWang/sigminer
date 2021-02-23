@@ -308,12 +308,18 @@ data("simulated_catalogs")
 # for better estimation.
 #
 # The input data here is simulated from 10 mutational signatures
-e1 <- bp_extract_signatures(
-  t(simulated_catalogs$set1),
-  range = 8:12,
-  n_bootstrap = 5,
-  n_nmf_run = 10
-)
+
+# e1 <- bp_extract_signatures(
+#   t(simulated_catalogs$set1),
+#   range = 8:12,
+#   n_bootstrap = 5,
+#   n_nmf_run = 10
+# )
+#
+# To avoid computation in examples,
+# Here just load the result
+# (e1$signature and e1$exposure set to NA to reduce package size)
+load(system.file("extdata", "e1.RData", package = "sigminer"))
 
 
 # See the survey for different signature numbers
@@ -355,7 +361,9 @@ if (require(pheatmap)) {
 # NOTE: the optimization step may not truly optimize the result!
 expo <- bp_attribute_activity(e1, return_class = "data.table")
 expo$abs_activity
+}
 
+\dontrun{
 # Iterative extraction:
 # This procedure will rerun extraction step
 # for those samples with reconstructed catalog similarity
