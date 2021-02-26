@@ -8,7 +8,17 @@ read_sv_as_rs(input)
 }
 \arguments{
 \item{input}{a \code{data.frame} or a file with the following columns:
-"sample", "chr1", "start1", "end1", "chr2", "start2", "end2", "strand1", "strand2", "svclass"}
+"sample", "chr1", "start1", "end1", "chr2", "start2", "end2", "strand1", "strand2", "svclass".
+If column "svclass" already exists in input, "strand1" and "strand2" are no more need.
+If lack of "svclass", \code{read_sv_as_rs} will compute it by "strand1","strand2"(strand1/strand2),"chr1" and "chr2":
+
+inversion (+/-) and (-/+), if mates on the same chromosome
+
+deletion (+/+), if mates on the same chromosome
+
+tandem-duplication (-/-), if mates on the same chromosome
+
+translocation, if mates are on different chromosomes}
 }
 \value{
 a \code{list}
