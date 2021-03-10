@@ -4,6 +4,7 @@
 
 ## ENHANCEMENTS
 
+- Enhanced `show_group_enrichment()` (#353).
 - Removed unnecessary CN classifications code in recent development.
 
 ## NEW FUNCTIONS
