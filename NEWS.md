@@ -2,6 +2,8 @@
 
 ## BUG REPORTS
 
+- Fix classification bug due to repeated function name `call_component`.
+
 ## ENHANCEMENTS
 
 - Added data check and filter in `output_tally()` and `show_catalogue()`.

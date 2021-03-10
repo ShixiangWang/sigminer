@@ -216,11 +216,11 @@ get_components_sv <- function(CN_features) {
   # 【pre】feature_names <- setdiff(names(CN_features), "LOH")
 
   purrr::map2(CN_features[feature_names], feature_names,
-    .f = call_component
+    .f = call_component_sv
   )
 }
 
-call_component <- function(f_dt, f_name) {
+call_component_sv <- function(f_dt, f_name) {
   f_dt <- data.table::copy(f_dt)
   if (f_name == "clustered") {
     f_dt$C_clustered <- factor(f_dt$value, levels = c("clustered", "non-clustered"))
