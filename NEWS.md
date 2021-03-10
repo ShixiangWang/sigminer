@@ -4,6 +4,7 @@
 
 ## ENHANCEMENTS
 
+- Added data check and filter in `output_tally()` and `show_catalogue()`.
 - Enhanced `show_group_enrichment()` (#353).
 - Removed unnecessary CN classifications code in recent development.
 
