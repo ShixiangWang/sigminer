@@ -48,6 +48,18 @@ show_catalogue <- function(catalogue,
     colnames(mat) <- "Total"
   } else {
     mat <- mat[, samples, drop = FALSE]
+    ii <- colSums(mat) < 0.01
+    if (any(ii)) {
+      message(
+        "The follow samples dropped due to null catalogue:\n\t",
+        paste0(colnames(mat)[ii], collapse = ", ")
+      )
+      mat <- mat[, !ii, drop = FALSE]
+      if (ncol(mat) < 1) {
+        warning("No sample left. Please check mutation number of your input!", immediate. = TRUE)
+        return(invisible(NULL))
+      }
+    }
   }
 
   mode <- match.arg(mode)

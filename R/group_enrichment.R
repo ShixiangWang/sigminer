@@ -244,5 +244,6 @@ enrich_one <- function(x, y, df, method = "t.test") {
     )
   }
 
+  cmp$fdr <- stats::p.adjust(cmp$p_value, method = "fdr")
   return(cmp)
 }

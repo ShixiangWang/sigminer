@@ -18,6 +18,15 @@ output_tally <- function(x, result_dir, mut_type = "SBS") {
     x <- x$nmf_matrix %>% t()
   }
 
+  ii <- colSums(x) < 0.01
+  if (any(ii)) {
+    message(
+      "The follow samples dropped due to null catalogue:\n\t",
+      paste0(colnames(x)[ii], collapse = ", ")
+    )
+    x <- x[, !ii, drop = FALSE]
+  }
+
   data.table::fwrite(x %>% as.data.frame() %>% data.table::setDT(keep.rownames = TRUE),
     sep = ",",
     file = file.path(result_dir, paste0(mut_type, "_tally.csv"))

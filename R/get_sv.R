@@ -44,7 +44,6 @@ read_sv_as_rs <- function(input) {
     "chr1", "start1", "end1",
     "chr2", "start2", "end2"
   )
-
   colnames(input) <- tolower(colnames(input))
 
   idx <- necessary.fields %in% colnames(input)
@@ -79,7 +78,7 @@ read_sv_as_rs <- function(input) {
   return(input)
 }
 
-# split by sample and collect in a list : svlist --------------------------
+# split by sample and collect in a list: svlist --------------------------
 get_svlist <- function(data) {
   index <- seq(1, nrow(data))
   data$Index <- index
@@ -100,7 +99,7 @@ get_svclass <- function(data) {
 
 
 # get size
-getRearrSize_v1 <- function(sv_profiles) {
+getRearrSize <- function(sv_profiles) {
   rearrsize <- purrr::map_df(sv_profiles, function(x) {
     x %>%
       dplyr::mutate(
@@ -155,7 +154,8 @@ getDists <- function(chrom1, pos1, chrom2, pos2, doPCF = FALSE) {
 }
 
 # get clustered -----------------------------------------------------------
-getClustered_v1 <- function(sv_profiles, threshold = NULL) {
+
+getClustered <- function(sv_profiles, threshold = NULL) {
   # each list each row apply function
   clustered <- purrr::map(sv_profiles, function(x) {
     # get pos and chrom
@@ -187,16 +187,15 @@ getClustered_v1 <- function(sv_profiles, threshold = NULL) {
     x[, c("sample", "clustered", "Index"), with = FALSE]
   })
 
-  clustered_dt <- do.call(rbind, lapply(clustered, data.frame)) %>%
-    .[, c("sample", "clustered", "Index")] %>%
-    data.table::as.data.table()
+
+  clustered_dt <- data.table::rbindlist(clustered)
   colnames(clustered_dt) <- c("sample", "value", "Index")
   clustered_dt[order(clustered_dt$Index)]
 }
 
 
 # get type ----------------------------------------------------------------
-getType_v1 <- function(sv_profiles) {
+getType <- function(sv_profiles) {
   type_map <- c("del", "inv", "tds", "trans")
   names(type_map) <- c("deletion", "inversion", "tandem-duplication", "translocation")
 
@@ -221,16 +220,16 @@ get_features_sv <- function(sv_data) {
   .get_feature <- function(i) {
     if (i == "clustered") {
       print("Getting clustered info...")
-      zz <- getClustered_v1(sv_data)
+      zz <- getClustered(sv_data)
       zz
     }
     else if (i == "type") {
       print("Getting type of segment ...")
-      getType_v1(sv_data)
+      getType(sv_data)
     }
     else if (i == "size") {
       print("Getting distance of two rearrange segments ...")
-      getRearrSize_v1(sv_data)
+      getRearrSize(sv_data)
     }
   }
   res <- furrr::future_map(field, .get_feature,
@@ -241,19 +240,14 @@ get_features_sv <- function(sv_data) {
   res
 }
 
-
-# get cn component
-# input : cn_feature, output : get_component_sv
 get_components_sv <- function(CN_features) {
   feature_names <- names(CN_features)
-  # 【pre】feature_names <- setdiff(names(CN_features), "LOH")
-
   purrr::map2(CN_features[feature_names], feature_names,
-    .f = call_component
+    .f = call_component_sv
   )
 }
 
-call_component <- function(f_dt, f_name) {
+call_component_sv <- function(f_dt, f_name) {
   f_dt <- data.table::copy(f_dt)
   if (f_name == "clustered") {
     f_dt$C_clustered <- factor(f_dt$value, levels = c("clustered", "non-clustered"))
@@ -268,8 +262,7 @@ call_component <- function(f_dt, f_name) {
   f_dt
 }
 
-
-# get sv matrix
+# get matrix -------------------------------------------------------
 get_matrix_sv <- function(CN_components, indices = NULL) {
   merged_dt <- purrr::reduce(CN_components, merge, by = c("sample", "Index"), all = TRUE)
   dt_mg <- merged_dt
