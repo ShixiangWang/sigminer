@@ -3,13 +3,23 @@
 #' Read Structural Variation Data as RS object
 #'
 #' @param input a `data.frame` or a file with the following columns:
-#' "sample", "chr1", "start1", "end1", "chr2", "start2", "end2", "strand1", "strand2", "svclass"
+#' "sample", "chr1", "start1", "end1", "chr2", "start2", "end2", "strand1", "strand2", "svclass".
+#' NOTE: If column "svclass" already exists in input, "strand1" and "strand2" are optional.
+#' If "svclass" is not provided, `read_sv_as_rs()` will compute it by
+#' "strand1","strand2"(strand1/strand2),"chr1" and "chr2":
+#' - translocation, if mates are on different chromosomes.
+#' - inversion (+/-) and (-/+), if mates on the same chromosome.
+#' - deletion (+/+), if mates on the same chromosome.
+#' - tandem-duplication (-/-), if mates on the same chromosome.
 #' @return a `list`
 #' @export
 #'
 #' @examples
 #' sv <- readRDS(system.file("extdata", "toy_sv.rds", package = "sigminer", mustWork = TRUE))
 #' rs <- read_sv_as_rs(sv)
+#' # svclass is optional
+#' rs2 <- read_sv_as_rs(sv[, setdiff(colnames(sv), "svclass")])
+#' identical(rs, rs2)
 #' \donttest{
 #' tally_rs <- sig_tally(rs)
 #' }
@@ -30,9 +40,7 @@ read_sv_as_rs <- function(input) {
   necessary.fields <- c(
     "sample",
     "chr1", "start1", "end1",
-    "chr2", "start2", "end2",
-    "strand1", "strand2",
-    "svclass"
+    "chr2", "start2", "end2"
   )
   colnames(input) <- tolower(colnames(input))
 
@@ -44,12 +52,24 @@ read_sv_as_rs <- function(input) {
     )
   }
 
+  # check svclass present or not.
+  # If not, generate it.
+  if (!"svclass" %in% colnames(input)) {
+    if (all(c("strand1", "strand2") %in% colnames(input))) {
+      input <- get_svclass(input)
+    } else {
+      stop(
+        "Can't computate because of missing additional columns: 'strand1' and 'strand2'"
+      )
+    }
+  }
+
   # drop unnecessary fields
-  input <- subset(input, select = necessary.fields)
+  input <- subset(input, select = c(necessary.fields, "svclass"))
 
   # chromosome "chr+number" to "number"
-  input$chr1 <- sub("chr", "", input$chr1)
-  input$chr2 <- sub("chr", "", input$chr2)
+  input$chr1 <- sub("chr", "", input$chr1, ignore.case = TRUE)
+  input$chr2 <- sub("chr", "", input$chr2, ignore.case = TRUE)
 
   class(input) <- c("RS", class(input))
   message("succesfully read RS!")
@@ -62,6 +82,19 @@ get_svlist <- function(data) {
   data$Index <- index
   res <- split(data, by = "sample")
 }
+
+# get svclass
+get_svclass <- function(data) {
+  data %>% dplyr::mutate(
+    svclass = dplyr::case_when(
+      .data$chr1 != .data$chr2 ~ "translocation",
+      .data$strand1 != .data$strand2 ~ "inversion",
+      .data$strand1 == "-" & .data$strand2 == "-" ~ "tandem-duplication",
+      .data$strand1 == "+" & .data$strand2 == "+" ~ "deletion"
+    )
+  )
+}
+
 
 # get size
 getRearrSize <- function(sv_profiles) {
@@ -119,8 +152,8 @@ getDists <- function(chrom1, pos1, chrom2, pos2, doPCF = FALSE) {
 }
 
 # get clustered -----------------------------------------------------------
+
 getClustered <- function(sv_profiles, threshold = NULL) {
-  # threshold = NULL
   # each list each row apply function
   clustered <- purrr::map(sv_profiles, function(x) {
     # get pos and chrom
@@ -128,16 +161,17 @@ getClustered <- function(sv_profiles, threshold = NULL) {
     pos2 <- x$start2
     chrom1 <- x$chr1
     chrom2 <- x$chr2
+
     # get segments per chromosome
     dists <- getDists(chrom1, pos1, chrom2, pos2, doPCF = TRUE)
     if (is.null(threshold)) threshold <- 0.1 * mean(unlist(sapply(dists, FUN = function(x) x$info[, 3])), na.rm = TRUE)
+
     # which segments are below threshold
     regions <- do.call(rbind, sapply(dists, FUN = function(x) {
       x$seg[which(x$seg$mean < threshold), ]
     }, simplify = FALSE))
     if (nrow(regions) == 0) {
       clustered <- rep("non-clustered", length(chrom1))
-      # return(rep("unclustered",length(chrom1)))
     } else {
       # which rearrangements are in clustered regions
       regionGR <- as(paste0(regions$chrom, ":", regions$start.pos, "-", regions$end.pos), "GRanges")
@@ -150,6 +184,7 @@ getClustered <- function(sv_profiles, threshold = NULL) {
     x$clustered <- clustered
     x[, c("sample", "clustered", "Index"), with = FALSE]
   })
+
 
   clustered_dt <- data.table::rbindlist(clustered)
   colnames(clustered_dt) <- c("sample", "value", "Index")

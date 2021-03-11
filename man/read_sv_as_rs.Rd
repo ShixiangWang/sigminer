@@ -8,7 +8,16 @@ read_sv_as_rs(input)
 }
 \arguments{
 \item{input}{a \code{data.frame} or a file with the following columns:
-"sample", "chr1", "start1", "end1", "chr2", "start2", "end2", "strand1", "strand2", "svclass"}
+"sample", "chr1", "start1", "end1", "chr2", "start2", "end2", "strand1", "strand2", "svclass".
+NOTE: If column "svclass" already exists in input, "strand1" and "strand2" are optional.
+If "svclass" is not provided, \code{read_sv_as_rs()} will compute it by
+"strand1","strand2"(strand1/strand2),"chr1" and "chr2":
+\itemize{
+\item translocation, if mates are on different chromosomes.
+\item inversion (+/-) and (-/+), if mates on the same chromosome.
+\item deletion (+/+), if mates on the same chromosome.
+\item tandem-duplication (-/-), if mates on the same chromosome.
+}}
 }
 \value{
 a \code{list}
@@ -19,6 +28,9 @@ Read Structural Variation Data as RS object
 \examples{
 sv <- readRDS(system.file("extdata", "toy_sv.rds", package = "sigminer", mustWork = TRUE))
 rs <- read_sv_as_rs(sv)
+# svclass is optional
+rs2 <- read_sv_as_rs(sv[, setdiff(colnames(sv), "svclass")])
+identical(rs, rs2)
 \donttest{
 tally_rs <- sig_tally(rs)
 }
