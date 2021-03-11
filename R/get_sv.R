@@ -4,24 +4,22 @@
 #'
 #' @param input a `data.frame` or a file with the following columns:
 #' "sample", "chr1", "start1", "end1", "chr2", "start2", "end2", "strand1", "strand2", "svclass".
-#' If column "svclass" already exists in input, "strand1" and "strand2" are no more need.
-#' If lack of "svclass", `read_sv_as_rs` will compute it by "strand1","strand2"(strand1/strand2),"chr1" and "chr2":
-#'
-#' translocation, if mates are on different chromosomes
-#'
-#' inversion (+/-) and (-/+), if mates on the same chromosome
-#'
-#' deletion (+/+), if mates on the same chromosome
-#'
-#' tandem-duplication (-/-), if mates on the same chromosome
-#'
-#'
+#' NOTE: If column "svclass" already exists in input, "strand1" and "strand2" are optional.
+#' If "svclass" is not provided, `read_sv_as_rs()` will compute it by
+#' "strand1","strand2"(strand1/strand2),"chr1" and "chr2":
+#' - translocation, if mates are on different chromosomes.
+#' - inversion (+/-) and (-/+), if mates on the same chromosome.
+#' - deletion (+/+), if mates on the same chromosome.
+#' - tandem-duplication (-/-), if mates on the same chromosome.
 #' @return a `list`
 #' @export
 #'
 #' @examples
 #' sv <- readRDS(system.file("extdata", "toy_sv.rds", package = "sigminer", mustWork = TRUE))
 #' rs <- read_sv_as_rs(sv)
+#' # svclass is optional
+#' rs2 <- read_sv_as_rs(sv[, setdiff(colnames(sv), "svclass")])
+#' identical(rs, rs2)
 #' \donttest{
 #' tally_rs <- sig_tally(rs)
 #' }
@@ -54,24 +52,24 @@ read_sv_as_rs <- function(input) {
     )
   }
 
-  #check svclass present or not.
-  #If not, generate it.
-  if (! "svclass" %in% colnames(input)){
-    if ("strand1" %in% colnames(input) & "strand2" %in% colnames(input)){
+  # check svclass present or not.
+  # If not, generate it.
+  if (!"svclass" %in% colnames(input)) {
+    if (all(c("strand1", "strand2") %in% colnames(input))) {
       input <- get_svclass(input)
-    }else {
+    } else {
       stop(
-        "Can't computate because of missing additional columns: strand1 and strand2"
+        "Can't computate because of missing additional columns: 'strand1' and 'strand2'"
       )
-      }
     }
+  }
 
   # drop unnecessary fields
-  input <- subset(input, select = c(necessary.fields,"svclass"))
+  input <- subset(input, select = c(necessary.fields, "svclass"))
 
   # chromosome "chr+number" to "number"
-  input$chr1 <- sub("chr|Chr", "", input$chr1)
-  input$chr2 <- sub("chr|Chr", "", input$chr2)
+  input$chr1 <- sub("chr", "", input$chr1, ignore.case = TRUE)
+  input$chr2 <- sub("chr", "", input$chr2, ignore.case = TRUE)
 
   class(input) <- c("RS", class(input))
   message("succesfully read RS!")
@@ -87,14 +85,14 @@ get_svlist <- function(data) {
 
 # get svclass
 get_svclass <- function(data) {
-  data <- dplyr::mutate(data,
-                        svclass = dplyr::case_when(
-                          .data$chr1 != .data$chr2 ~ "translocation",
-                          .data$strand1 != .data$strand2 ~ "inversion",
-                          .data$strand1 == "-"  & .data$strand2 == "-" ~ "tandem-duplication",
-                          .data$strand1 == "+"  & .data$strand2 == "+" ~ "deletion"
-                        )
-                        )
+  data %>% dplyr::mutate(
+    svclass = dplyr::case_when(
+      .data$chr1 != .data$chr2 ~ "translocation",
+      .data$strand1 != .data$strand2 ~ "inversion",
+      .data$strand1 == "-" & .data$strand2 == "-" ~ "tandem-duplication",
+      .data$strand1 == "+" & .data$strand2 == "+" ~ "deletion"
+    )
+  )
 }
 
 
