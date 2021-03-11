@@ -1,4 +1,4 @@
-#' Get Reconstructed Profile Cosine Similarity
+#' Get Reconstructed Profile Cosine Similarity, RSS, etc.
 #'
 #' See [bp_extract_signatures] for examples.
 #'
@@ -9,8 +9,21 @@
 #' @export
 get_sig_rec_similarity <- function(Signature, nmf_matrix) {
   stopifnot(inherits(Signature, "Signature"), is.matrix(nmf_matrix))
+  flag_rss = TRUE
+  has_cn <- any(grepl("^CN[^C]", colnames(nmf_matrix)) | startsWith(colnames(nmf_matrix), "copynumber"))
+
   raw_catalog <- t(nmf_matrix)
-  rec_catalog <- Signature$Signature.norm %*% Signature$Exposure
+  if (has_cn) {
+    # CN Method W
+    if (!is.null(Signature$Raw$W)) {
+      rec_catalog <- Signature$Raw$W %*% Signature$Raw$H
+    } else {
+      warning("Cannot calculate reconstructed profile without raw W and H for CN 'W'/'M' method.")
+      return(invisible(NULL))
+    }
+  } else {
+    rec_catalog <- Signature$Signature.norm %*% Signature$Exposure
+  }
   cross_samps <- intersect(colnames(raw_catalog), colnames(rec_catalog))
   cross_comps <- intersect(rownames(raw_catalog), rownames(rec_catalog))
 
@@ -24,11 +37,37 @@ get_sig_rec_similarity <- function(Signature, nmf_matrix) {
   sim <- purrr::map2_dbl(
     as.data.frame(raw_catalog),
     as.data.frame(rec_catalog),
-    cosineVector
+    sigminer:::cosineVector
   )
+
+  if (flag_rss) {
+    get_rss <- function(x, y) {
+      sum((x - y)^2)
+    }
+    get_unexplained_variance = function(x, y) {
+      get_rss(x, y) / sum(x^2)
+    }
+
+    rss <- purrr::map2_dbl(
+      as.data.frame(raw_catalog),
+      as.data.frame(rec_catalog),
+      get_rss
+    )
+
+    unexplained_variance <- purrr::map2_dbl(
+      as.data.frame(raw_catalog),
+      as.data.frame(rec_catalog),
+      get_unexplained_variance
+    )
+  } else {
+    rss <- NULL
+    unexplained_variance <- NULL
+  }
 
   data.table::data.table(
     sample = cross_samps,
-    similarity = sim
+    similarity = sim,
+    rss = rss,
+    unexplained_variance = unexplained_variance
   )
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_reconstructed_similarity.R
 \name{get_sig_rec_similarity}
 \alias{get_sig_rec_similarity}
-\title{Get Reconstructed Profile Cosine Similarity}
+\title{Get Reconstructed Profile Cosine Similarity, RSS, etc.}
 \usage{
 get_sig_rec_similarity(Signature, nmf_matrix)
 }

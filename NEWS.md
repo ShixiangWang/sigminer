@@ -2,10 +2,11 @@
 
 ## BUG REPORTS
 
-- Fix classification bug due to repeated function name `call_component`.
+- Fixed classification bug due to repeated function name `call_component`.
 
 ## ENHANCEMENTS
 
+- Added RSS and unexplained variance calculation in `get_sig_rec_similarity()`.
 - Added data check and filter in `output_tally()` and `show_catalogue()`.
 - Enhanced `show_group_enrichment()` (#353).
 - Removed unnecessary CN classifications code in recent development.
