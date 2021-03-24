@@ -3,9 +3,11 @@
 ## BUG REPORTS
 
 - Fixed classification bug due to repeated function name `call_component`.
+- Fixed the bug when `read_vcf()` with `##` commented VCF files.
 
 ## ENHANCEMENTS
 
+- Updated `keep_only_pass` to `FALSE` at default.
 - Added RSS and unexplained variance calculation in `get_sig_rec_similarity()`.
 - Added data check and filter in `output_tally()` and `show_catalogue()`.
 - Enhanced `show_group_enrichment()` (#353).

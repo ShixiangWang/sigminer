@@ -139,7 +139,15 @@
     <tr>
       <th>input</th>
       <td><p>a <code>data.frame</code> or a file with the following columns:
-"sample", "chr1", "start1", "end1", "chr2", "start2", "end2", "strand1", "strand2", "svclass"</p></td>
+"sample", "chr1", "start1", "end1", "chr2", "start2", "end2", "strand1", "strand2", "svclass".
+NOTE: If column "svclass" already exists in input, "strand1" and "strand2" are optional.
+If "svclass" is not provided, <code>read_sv_as_rs()</code> will compute it by
+"strand1","strand2"(strand1/strand2),"chr1" and "chr2":</p><ul>
+<li><p>translocation, if mates are on different chromosomes.</p></li>
+<li><p>inversion (+/-) and (-/+), if mates on the same chromosome.</p></li>
+<li><p>deletion (+/+), if mates on the same chromosome.</p></li>
+<li><p>tandem-duplication (-/-), if mates on the same chromosome.</p></li>
+</ul></td>
     </tr>
     </table>
 
@@ -150,6 +158,9 @@
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='va'>sv</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>readRDS</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"toy_sv.rds"</span>, package <span class='op'>=</span> <span class='st'>"sigminer"</span>, mustWork <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>rs</span> <span class='op'>&lt;-</span> <span class='fu'>read_sv_as_rs</span><span class='op'>(</span><span class='va'>sv</span><span class='op'>)</span>
+<span class='co'># svclass is optional</span>
+<span class='va'>rs2</span> <span class='op'>&lt;-</span> <span class='fu'>read_sv_as_rs</span><span class='op'>(</span><span class='va'>sv</span><span class='op'>[</span>, <span class='fu'><a href='https://rdrr.io/r/base/sets.html'>setdiff</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>sv</span><span class='op'>)</span>, <span class='st'>"svclass"</span><span class='op'>)</span><span class='op'>]</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span><span class='op'>(</span><span class='va'>rs</span>, <span class='va'>rs2</span><span class='op'>)</span>
 <span class='co'># \donttest{</span>
 <span class='va'>tally_rs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sig_tally.html'>sig_tally</a></span><span class='op'>(</span><span class='va'>rs</span><span class='op'>)</span>
 <span class='co'># }</span>

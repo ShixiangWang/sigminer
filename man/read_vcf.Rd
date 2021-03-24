@@ -8,7 +8,7 @@ read_vcf(
   vcfs,
   samples = NULL,
   genome_build = c("hg19", "hg38", "mm10"),
-  keep_only_pass = TRUE,
+  keep_only_pass = FALSE,
   verbose = TRUE
 )
 }
@@ -27,13 +27,14 @@ read_vcf(
 a \link{MAF}.
 }
 \description{
-Read VCF Files as MAF Object
+MAF file is more recommended. In this function, we will mimic
+the MAF object from the key \code{c(1, 2, 4, 5, 7)} columns of VCF file.
 }
 \examples{
 vcfs <- list.files(system.file("extdata", package = "sigminer"), "*.vcf", full.names = TRUE)
 \donttest{
 maf <- read_vcf(vcfs)
-maf <- read_vcf(vcfs, keep_only_pass = FALSE)
+maf <- read_vcf(vcfs, keep_only_pass = TRUE)
 }
 }
 \seealso{

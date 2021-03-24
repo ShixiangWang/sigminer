@@ -130,7 +130,6 @@ reference:
     - sig_convert
     - get_genome_annotation
     - get_bayesian_result
-    - get_tidy_parameter
     - get_adj_p
     - use_color_style
     - add_h_arrow
