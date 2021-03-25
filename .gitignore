@@ -14,3 +14,4 @@ data-raw/*.vcf
 !inst/extdata/*.rds
 !vignettes/*.rds
 inst/extdata/human_hg*_gene_info.rds
+inst/extdata/COSMIC_*

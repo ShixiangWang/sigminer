@@ -23,3 +23,4 @@ cran_check.R
 inst/figures
 inst/sigflow
 ^\.github$
+inst/extdata/COSMIC_*

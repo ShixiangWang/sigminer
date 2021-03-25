@@ -103,7 +103,12 @@ sig_fit <- function(catalogue_matrix,
                       "RS_BRCA560", "RS_USARC", "CNS_USARC",
                       "SBS_hg19", "SBS_hg38", "SBS_mm9", "SBS_mm10",
                       "DBS_hg19", "DBS_hg38", "DBS_mm9", "DBS_mm10",
-                      "SBS_Nik_lab_Organ", "RS_Nik_lab_Organ"
+                      "SBS_Nik_lab_Organ", "RS_Nik_lab_Organ",
+                      "latest_SBS_GRCh37", "latest_DBS_GRCh37", "latest_ID_GRCh37",
+                      "latest_SBS_GRCh38", "latest_DBS_GRCh38",
+                      "latest_SBS_mm9", "latest_DBS_mm9",
+                      "latest_SBS_mm10", "latest_DBS_mm10",
+                      "latest_SBS_rn6", "latest_DBS_rn6"
                     ),
                     db_type = c("", "human-exome", "human-genome"),
                     show_index = TRUE,
@@ -126,6 +131,11 @@ sig_fit <- function(catalogue_matrix,
 
   if (is.null(sig_index)) {
     send_info("Signature index not detected.")
+    if (is.null(as.list(match.call())[["sig"]])) {
+      send_error("'sig' cannot be found. If you want to use 'sig_db' as reference signatures,\nyou may forget to set the 'sig_index'?")
+      send_stop("Exit.")
+    }
+
     if (inherits(sig, "Signature")) {
       send_success("Signature object detected.")
       sig_matrix <- sig$Signature
@@ -140,7 +150,6 @@ sig_fit <- function(catalogue_matrix,
     send_success("Signature index detected.")
     send_info("Checking signature database in package.")
 
-    # TODO RS
     sig_db <- match.arg(sig_db)
     sigs_db <- get_sig_db(sig_db)
     sigs <- sigs_db$db

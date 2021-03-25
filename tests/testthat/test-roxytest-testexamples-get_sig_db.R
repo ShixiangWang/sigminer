@@ -2,7 +2,7 @@
 
 context("File R/get_sig_db.R: @testexamples")
 
-test_that("Function get_sig_db() @ L49", {
+test_that("Function get_sig_db() @ L48", {
   
   s1 <- get_sig_db()
   s2 <- get_sig_db("SBS")

@@ -10,7 +10,6 @@
 #' - COSMIC v3 ID (indel) signatures.
 #' - SBS and RS (rearrangement) signatures from Nik lab 2020 Nature Cancer paper.
 #' - RS signatures from BRCA560 and USARC cohorts.
-#'
 #' @inheritParams get_sig_similarity
 #'
 #' @return a `list`.
@@ -94,6 +93,55 @@ get_sig_db <- function(sig_db = "legacy") {
         system.file("extdata", "DBS_signatures_list.rds",
           package = "sigminer", mustWork = TRUE
         )
+      } else if (startsWith(sig_db, "latest_")){
+        latest_version <- "v3.2"
+        #v3.2_SBS_GRCh37.txt
+        sig_db2 <- sub("latest_", "", sig_db)
+
+        file_dir <- switch(
+          sig_db,
+          latest_SBS_GRCh37 = "452",
+          latest_DBS_GRCh37 = "446",
+          latest_ID_GRCh37 = "451",
+          latest_SBS_GRCh38 = "453",
+          latest_DBS_GRCh38 = "447",
+          latest_SBS_mm9 = "454",
+          latest_DBS_mm9 = "448",
+          latest_SBS_mm10 = "455",
+          latest_DBS_mm10 = "449",
+          latest_SBS_rn6 = "456",
+          latest_DBS_rn6 = "450",
+          stop("Bad input!"))
+
+        data_url <- file.path("https://cancer.sanger.ac.uk/signatures/documents", file_dir,
+                              paste0("COSMIC_", latest_version, "_", sig_db2, ".txt"))
+        db_file <- file.path(
+          system.file("extdata", package = "sigminer"),
+          paste0("COSMIC_", latest_version, "_", sig_db2, ".rds"))
+        # 读入后需要处理下
+        if (!file.exists(db_file)) {
+          message("The data is not available in local, obtain it from COSMIC: https://cancer.sanger.ac.uk/signatures/downloads/")
+          data <- tryCatch(
+            data.table::fread(data_url, data.table = FALSE) %>%
+              tibble::column_to_rownames("Type") %>%
+              as.matrix(),
+            error = function(e) {
+              message(e$message)
+              stop("The data cannot be downloaded, please check your internet or contact the developer.")
+            }
+          )
+          message("Transforming and saving to ", db_file)
+          adata <- list(
+            db = data,
+            aetiology = data.frame(
+              V1 = colnames(data),
+              V2 = "See COSMIC https://cancer.sanger.ac.uk/signatures/"
+            ) %>% tibble::column_to_rownames("V1") %>% setNames("aetiology"),
+            date = latest_version
+          )
+          saveRDS(adata, file = db_file)
+        }
+        db_file
       } else {
         stop("Bad input for option 'sig_db'!")
       }

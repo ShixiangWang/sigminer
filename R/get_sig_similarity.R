@@ -21,6 +21,9 @@
 #' In addition, it can be one of "SBS_Nik_lab_Organ", "RS_Nik_lab_Organ",
 #' "SBS_Nik_lab", "RS_Nik_lab" to refer reference signatures from
 #' Degasperi, Andrea, et al. (2020) (reference #2).
+#' **UPDATE**, the latest version of reference version can be automatically
+#' downloaded and loaded from <https://cancer.sanger.ac.uk/signatures/downloads/>
+#' when a option with `latest_` prefix is specified (e.g. "latest_SBS_GRCh37").
 #' **Note**: the signature profile for different genome builds are basically same.
 #' And specific database (e.g. 'SBS_mm10') contains less signatures than all COSMIC
 #' signatures (because some signatures are not detected from Alexandrov, Ludmil B., et al. (2020)).
@@ -97,7 +100,12 @@ get_sig_similarity <- function(Signature, Ref = NULL,
                                  "RS_BRCA560", "RS_USARC", "CNS_USARC",
                                  "SBS_hg19", "SBS_hg38", "SBS_mm9", "SBS_mm10",
                                  "DBS_hg19", "DBS_hg38", "DBS_mm9", "DBS_mm10",
-                                 "SBS_Nik_lab_Organ", "RS_Nik_lab_Organ"
+                                 "SBS_Nik_lab_Organ", "RS_Nik_lab_Organ",
+                                 "latest_SBS_GRCh37", "latest_DBS_GRCh37", "latest_ID_GRCh37",
+                                 "latest_SBS_GRCh38", "latest_DBS_GRCh38",
+                                 "latest_SBS_mm9", "latest_DBS_mm9",
+                                 "latest_SBS_mm10", "latest_DBS_mm10",
+                                 "latest_SBS_rn6", "latest_DBS_rn6"
                                ),
                                db_type = c("", "human-exome", "human-genome"),
                                method = "cosine",

@@ -44,6 +44,9 @@ COSMIC v3 reference signatures from Alexandrov, Ludmil B., et al. (2020) (refere
 In addition, it can be one of "SBS_Nik_lab_Organ", "RS_Nik_lab_Organ",
 "SBS_Nik_lab", "RS_Nik_lab" to refer reference signatures from
 Degasperi, Andrea, et al. (2020) (reference #2).
+\strong{UPDATE}, the latest version of reference version can be automatically
+downloaded and loaded from \url{https://cancer.sanger.ac.uk/signatures/downloads/}
+when a option with \code{latest_} prefix is specified (e.g. "latest_SBS_GRCh37").
 \strong{Note}: the signature profile for different genome builds are basically same.
 And specific database (e.g. 'SBS_mm10') contains less signatures than all COSMIC
 signatures (because some signatures are not detected from Alexandrov, Ludmil B., et al. (2020)).
