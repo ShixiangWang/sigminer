@@ -7,6 +7,19 @@
 
 ## ENHANCEMENTS
 
+- Added support for latest COSMIC v3.2 as reference signatures. You can obtain them by
+
+```r
+for (i in c("latest_SBS_GRCh37", "latest_DBS_GRCh37", "latest_ID_GRCh37",
+            "latest_SBS_GRCh38", "latest_DBS_GRCh38",
+            "latest_SBS_mm9", "latest_DBS_mm9",
+            "latest_SBS_mm10", "latest_DBS_mm10",
+            "latest_SBS_rn6", "latest_DBS_rn6")) {
+  message(i)
+  get_sig_db(i)
+}
+```
+
 - Updated `keep_only_pass` to `FALSE` at default.
 - Added RSS and unexplained variance calculation in `get_sig_rec_similarity()`.
 - Added data check and filter in `output_tally()` and `show_catalogue()`.

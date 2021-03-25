@@ -132,11 +132,32 @@
 <div id="bug-reports" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bug-reports" class="anchor"></a>BUG REPORTS</h2>
+<ul>
+<li>Fixed classification bug due to repeated function name <code>call_component</code>.</li>
+<li>Fixed the bug when <code><a href="../reference/read_vcf.html">read_vcf()</a></code> with <code>##</code> commented VCF files.</li>
+</ul>
 </div>
 <div id="enhancements" class="section level2">
 <h2 class="hasAnchor">
 <a href="#enhancements" class="anchor"></a>ENHANCEMENTS</h2>
 <ul>
+<li>Added support for latest COSMIC v3.2 as reference signatures. You can obtain them by</li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
+<span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"latest_SBS_GRCh37"</span>, <span class="st">"latest_DBS_GRCh37"</span>, <span class="st">"latest_ID_GRCh37"</span>,
+            <span class="st">"latest_SBS_GRCh38"</span>, <span class="st">"latest_DBS_GRCh38"</span>,
+            <span class="st">"latest_SBS_mm9"</span>, <span class="st">"latest_DBS_mm9"</span>,
+            <span class="st">"latest_SBS_mm10"</span>, <span class="st">"latest_DBS_mm10"</span>,
+            <span class="st">"latest_SBS_rn6"</span>, <span class="st">"latest_DBS_rn6"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/message.html">message</a></span><span class="op">(</span><span class="va">i</span><span class="op">)</span>
+  <span class="fu"><a href="../reference/get_sig_db.html">get_sig_db</a></span><span class="op">(</span><span class="va">i</span><span class="op">)</span>
+<span class="op">}</span></code></pre></div>
+<ul>
+<li>Updated <code>keep_only_pass</code> to <code>FALSE</code> at default.</li>
+<li>Added RSS and unexplained variance calculation in <code><a href="../reference/get_sig_rec_similarity.html">get_sig_rec_similarity()</a></code>.</li>
+<li>Added data check and filter in <code><a href="../reference/output_tally.html">output_tally()</a></code> and <code><a href="../reference/show_catalogue.html">show_catalogue()</a></code>.</li>
+<li>Enhanced <code><a href="../reference/show_group_enrichment.html">show_group_enrichment()</a></code> (<a href='https://github.com/ShixiangWang/sigminer/issues/353'>#353</a>).</li>
 <li>Removed unnecessary CN classifications code in recent development.</li>
 </ul>
 </div>
@@ -267,7 +288,7 @@
 <a href="#enhancements-4" class="anchor"></a>ENHANCEMENTS</h2>
 <ul>
 <li>Added a quick start vignette.</li>
-<li>A new option <code>highlight</code> is added to <code><a href="../reference/show_sig_number_survey.html">show_sig_number_survey()</a></code> and <code><a href="../reference/bp.html">bp_show_survey2()</a></code> to highlight a selected number.</li>
+<li>A new option <code>highlight</code> is added to <code><a href="../reference/sig_estimate.html">show_sig_number_survey()</a></code> and <code><a href="../reference/bp.html">bp_show_survey2()</a></code> to highlight a selected number.</li>
 </ul>
 </div>
 <div id="new-functions-4" class="section level2">
