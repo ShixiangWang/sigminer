@@ -31,8 +31,12 @@ get_sig_cancer_type_index <- function(
                                       source = c("PCAWG", "TCGA", "nonPCAWG"),
                                       keyword = NULL) {
   if (!is.null(keyword)) {
-    df1 <- readRDS(system.file("extdata", "cosmic2_record_by_cancer.rds", package = "sigminer", mustWork = TRUE))
-    df2 <- readRDS(system.file("extdata", "signature_record_by_cancer.rds", package = "sigminer", mustWork = TRUE))
+    print(dir(system.file("extdata", package = "sigminer", mustWork = TRUE)))
+    df1_file <- system.file("extdata", "cosmic2_record_by_cancer.rds", package = "sigminer", mustWork = TRUE)
+    df1 <- readRDS(df1_file)
+    print(df1_file)
+    df2_file <- system.file("extdata", "signature_record_by_cancer.rds", package = "sigminer", mustWork = TRUE)
+    df2 <- readRDS(df2_file)
     colnames(df1)[1] <- "name"
     colnames(df2)[1] <- "name"
 
