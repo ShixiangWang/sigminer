@@ -30,7 +30,7 @@ get_sig_cancer_type_index <- function(
                                       seq_type = c("WGS", "WES"),
                                       source = c("PCAWG", "TCGA", "nonPCAWG"),
                                       keyword = NULL) {
-  print(dir(system.file("extdata", package = "sigminer", mustWork = TRUE)))
+
   if (!is.null(keyword)) {
     df1_file <- system.file("extdata", "cosmic2_record_by_cancer.rds", package = "sigminer", mustWork = TRUE)
     df1 <- readRDS(df1_file)

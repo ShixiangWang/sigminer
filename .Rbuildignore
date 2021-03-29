@@ -24,4 +24,4 @@ inst/figures
 inst/sigflow
 ^\.github$
 inst/extdata/human_hg*_gene_info.rds
-inst/extdata/COSMIC_*
+inst/extdata/COSMIC_v3.2*
