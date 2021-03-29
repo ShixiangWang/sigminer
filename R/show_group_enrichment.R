@@ -128,7 +128,7 @@ plot_enrichment_simple <- function(data, x, y, fill_scale,
     }
     orders <- data2 %>%
       dplyr::group_split(.data$grp_var, .keep = FALSE) %>%
-      purrr:::map(get_cluster_order) %>%
+      purrr::map(get_cluster_order) %>%
       purrr::reduce(c) %>%
       unique()
     message("All subgroup orders: ", paste(orders, collapse = ", "))
