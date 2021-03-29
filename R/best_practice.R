@@ -1278,9 +1278,14 @@ env_install <- function(use_conda, py_path, pkg, pkg_version) {
         }
         message("Conda environment not detected, creat it and install required packages.")
         message("======")
-        reticulate::conda_create("sigminer_sigprofiler")
+        reticulate::conda_create("sigminer_sigprofiler", packages = "python=3.7")
         message("Installing packages, be patient...")
         message("======")
+        # reticulate::conda_install("sigminer_sigprofiler",
+        #                           packages = "torch==1.5.1",
+        #                           pip = TRUE,
+        #                           pip_options = "-f https://download.pytorch.org/whl/torch_stable.html"
+        # )
         reticulate::conda_install("sigminer_sigprofiler",
           packages = paste0(pkg, "==", pkg_version),
           pip = TRUE
