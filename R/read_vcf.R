@@ -84,7 +84,11 @@ read_vcf <- function(vcfs, samples = NULL, genome_build = c("hg19", "hg38", "mm1
       system.file("extdata", package = "sigminer"),
       paste0("human_", genome_build, "_gene_info.rds")
     ))
-  if (!file.exists(gene_file)) query_remote_data(basename(gene_file))
+  ok <- TRUE
+  if (!file.exists(gene_file)) ok <- query_remote_data(basename(gene_file))
+  if (!ok) {
+    return(invisible(NULL))
+  }
   gene_dt <- readRDS(gene_file)
 
   if (verbose) message("Annotating mutations to first matched gene based on database ", gene_file, "...")

@@ -145,7 +145,11 @@ show_cn_group_profile <- function(data,
         paste0("human_", genome_build, "_gene_info.rds")
       )
     )
-    if (!file.exists(gene_file)) query_remote_data(basename(gene_file))
+    ok <- TRUE
+    if (!file.exists(gene_file)) ok <- query_remote_data(basename(gene_file))
+    if (!ok) {
+      return(invisible(NULL))
+    }
     gene_dt <- readRDS(gene_file)
     gene_dt <- gene_dt[gene_dt$gene_name %in% highlight_genes][
       , c("chrom", "start", "end", "gene_name")
