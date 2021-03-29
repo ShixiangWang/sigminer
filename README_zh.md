@@ -16,8 +16,7 @@ issues](https://img.shields.io/github/issues-closed/ShixiangWang/sigminer.svg)](
 从 CRAN 上安装稳定版本：
 
 ```r
-install.packages("sigminer", dependencies = TRUE)
-# Or
+install.packages("BiocManager")
 BiocManager::install("sigminer", dependencies = TRUE)
 ```
 

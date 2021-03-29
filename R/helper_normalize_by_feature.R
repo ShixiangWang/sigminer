@@ -1,5 +1,4 @@
 helper_normalize_by_feature <- function(w, feature_setting = sigminer::CN.features) {
-
   mat <- as.data.frame(w)
   mat$context <- rownames(mat)
 
@@ -17,11 +16,11 @@ helper_normalize_by_feature <- function(w, feature_setting = sigminer::CN.featur
   comp_orders <- feature_setting$component[feature_setting$feature %in% f_orders]
 
   mat <- dplyr::mutate(mat,
-                       context = factor(.data$context,
-                                        levels = comp_orders
-                       ),
-                       base = factor(.data$base, levels = f_orders),
-                       class = factor(class)
+    context = factor(.data$context,
+      levels = comp_orders
+    ),
+    base = factor(.data$base, levels = f_orders),
+    class = factor(class)
   )
 
 

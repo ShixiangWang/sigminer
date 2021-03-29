@@ -13,7 +13,7 @@ test_that("Function read_vcf() @ L23", {
 })
 
 
-test_that("Function read_xena_variants() @ L145", {
+test_that("Function read_xena_variants() @ L151", {
   
   
   if (requireNamespace("UCSCXenaTools")) {

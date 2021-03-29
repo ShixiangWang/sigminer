@@ -79,11 +79,13 @@ read_vcf <- function(vcfs, samples = NULL, genome_build = c("hg19", "hg38", "mm1
     genome_build,
     mm10 = file.path(
       system.file("extdata", package = "sigminer"),
-      "mouse_mm10_gene_info.rds"),
+      "mouse_mm10_gene_info.rds"
+    ),
     file.path(
       system.file("extdata", package = "sigminer"),
       paste0("human_", genome_build, "_gene_info.rds")
-    ))
+    )
+  )
   ok <- TRUE
   if (!file.exists(gene_file)) ok <- query_remote_data(basename(gene_file))
   if (!ok) {

@@ -298,7 +298,7 @@ show_sig_number_survey <- function(object, x = "rank",
       scale_y_continuous(
         name = left_name,
         sec.axis = sec_axis(~ norm2rg(., range(survey[[right_y]])),
-                            name = right_name
+          name = right_name
         )
       ) +
       cowplot::theme_cowplot() +
@@ -339,12 +339,12 @@ show_sig_number_survey <- function(object, x = "rank",
 #' @return - show_sig_number_survey2: a `ggplot` object
 #' @export
 show_sig_number_survey2 <- function(x, y = NULL, what = c(
-  "all", "cophenetic", "rss", "residuals",
-  "dispersion", "evar", "sparseness", "sparseness.basis", "sparseness.coef",
-  "silhouette", "silhouette.coef", "silhouette.basis", "silhouette.consensus"
-),
-na.rm = FALSE, xlab = "Total signatures",
-ylab = "", main = "Signature number survey using NMF package") {
+                                      "all", "cophenetic", "rss", "residuals",
+                                      "dispersion", "evar", "sparseness", "sparseness.basis", "sparseness.coef",
+                                      "silhouette", "silhouette.coef", "silhouette.basis", "silhouette.consensus"
+                                    ),
+                                    na.rm = FALSE, xlab = "Total signatures",
+                                    ylab = "", main = "Signature number survey using NMF package") {
 
   # Useless, just store it in case I need
   # to modify in the future
@@ -387,8 +387,8 @@ ylab = "", main = "Signature number survey using NMF package") {
     measure.type[grep("\\.basis$", names(measure.type))] <- "Basis"
     measure.type <- factor(measure.type)
     pdata <- tidyr::pivot_longer(cbind(rank = x, vals),
-                                 cols = colnames(vals),
-                                 names_to = "variable"
+      cols = colnames(vals),
+      names_to = "variable"
     )
     pdata$Type <- measure.type[as.character(pdata$variable)]
     pdata$Measure <- gsub("^([^.]+).*", "\\1", pdata$variable)

@@ -110,8 +110,7 @@ settings.
 You can install the stable release of **sigminer** from CRAN with:
 
 ``` r
-install.packages("sigminer", dependencies = TRUE)
-# Or
+install.packages("BiocManager")
 BiocManager::install("sigminer", dependencies = TRUE)
 ```
 

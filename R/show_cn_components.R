@@ -68,5 +68,4 @@ show_cn_components <- function(parameters,
     }
     p
   }
-
 }

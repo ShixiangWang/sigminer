@@ -36,7 +36,8 @@ get_shannon_diversity_index <- function(rel_expo, cutoff = 0.001) {
   dt <- rel_expo %>%
     dplyr::mutate_if(
       is.numeric,
-      ~ifelse(. > cutoff, -.*log(.), 0)) %>%
+      ~ ifelse(. > cutoff, -. * log(.), 0)
+    ) %>%
     as.data.frame()
   num_idx <- sapply(dt, is.numeric)
   dplyr::bind_cols(

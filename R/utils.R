@@ -3,13 +3,14 @@ query_remote_data <- function(x) {
   x_url <- paste0("https://zenodo.org/record/4480398/files/", x)
   x_dest <- file.path(system.file("extdata", package = "sigminer"), x)
   message("Downloading ", x_url, " to ", x_dest)
-  tryCatch({
-    download.file(
-      url = x_url,
-      destfile = x_dest
-    )
-    TRUE
-  },
+  tryCatch(
+    {
+      download.file(
+        url = x_url,
+        destfile = x_dest
+      )
+      TRUE
+    },
     error = function(e) {
       warning("Failed downloading the data.", immediate. = TRUE)
       FALSE

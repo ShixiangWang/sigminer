@@ -93,9 +93,9 @@ get_sig_db <- function(sig_db = "legacy") {
         system.file("extdata", "DBS_signatures_list.rds",
           package = "sigminer", mustWork = TRUE
         )
-      } else if (startsWith(sig_db, "latest_")){
+      } else if (startsWith(sig_db, "latest_")) {
         latest_version <- "v3.2"
-        #v3.2_SBS_GRCh37.txt
+        # v3.2_SBS_GRCh37.txt
         sig_db2 <- sub("latest_", "", sig_db)
 
         file_dir <- switch(
@@ -111,13 +111,17 @@ get_sig_db <- function(sig_db = "legacy") {
           latest_DBS_mm10 = "449",
           latest_SBS_rn6 = "456",
           latest_DBS_rn6 = "450",
-          stop("Bad input!"))
+          stop("Bad input!")
+        )
 
-        data_url <- file.path("https://cancer.sanger.ac.uk/signatures/documents", file_dir,
-                              paste0("COSMIC_", latest_version, "_", sig_db2, ".txt"))
+        data_url <- file.path(
+          "https://cancer.sanger.ac.uk/signatures/documents", file_dir,
+          paste0("COSMIC_", latest_version, "_", sig_db2, ".txt")
+        )
         db_file <- file.path(
           system.file("extdata", package = "sigminer"),
-          paste0("COSMIC_", latest_version, "_", sig_db2, ".rds"))
+          paste0("COSMIC_", latest_version, "_", sig_db2, ".rds")
+        )
         # 读入后需要处理下
         if (!file.exists(db_file)) {
           message("The data is not available in local, obtain it from COSMIC: https://cancer.sanger.ac.uk/signatures/downloads/")

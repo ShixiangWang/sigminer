@@ -9,7 +9,7 @@
 #' @export
 get_sig_rec_similarity <- function(Signature, nmf_matrix) {
   stopifnot(inherits(Signature, "Signature"), is.matrix(nmf_matrix))
-  flag_rss = TRUE
+  flag_rss <- TRUE
   has_cn <- any(grepl("^CN[^C]", colnames(nmf_matrix)) | startsWith(colnames(nmf_matrix), "copynumber"))
 
   raw_catalog <- t(nmf_matrix)
@@ -44,7 +44,7 @@ get_sig_rec_similarity <- function(Signature, nmf_matrix) {
     get_rss <- function(x, y) {
       sum((x - y)^2)
     }
-    get_unexplained_variance = function(x, y) {
+    get_unexplained_variance <- function(x, y) {
       get_rss(x, y) / sum(x^2)
     }
 
