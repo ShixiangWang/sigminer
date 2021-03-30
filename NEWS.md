@@ -2,6 +2,7 @@
 
 ## BUG REPORTS
 
+- Fixed the SigProfiler installation error due to Python version in conda environment.
 - Fixed classification bug due to repeated function name `call_component`.
 - Fixed the bug when `read_vcf()` with `##` commented VCF files.
 
@@ -23,7 +24,7 @@ for (i in c("latest_SBS_GRCh37", "latest_DBS_GRCh37", "latest_ID_GRCh37",
 - Updated `keep_only_pass` to `FALSE` at default.
 - Added RSS and unexplained variance calculation in `get_sig_rec_similarity()`.
 - Added data check and filter in `output_tally()` and `show_catalogue()`.
-- Enhanced `show_group_enrichment()` (#353).
+- Enhanced `show_group_enrichment()` (#353) & added a new option to cluster rows.
 - Removed unnecessary CN classifications code in recent development.
 
 ## NEW FUNCTIONS
