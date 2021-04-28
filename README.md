@@ -32,11 +32,6 @@ For pipeline tool, please see its co-evolutionary CLI
 
 **SBS signatures**:
 
-    #> Warning in file(con, "r"): URL 'https://bioconductor.org/config.yaml': Timeout
-    #> of 60 seconds was reached
-    #> Warning in file(con, "r"): URL 'http://bioconductor.org/config.yaml': Timeout of
-    #> 60 seconds was reached
-
 <img src="man/figures/README-unnamed-chunk-1-1.png" width="100%" />
 
 **Copy number signatures**:
