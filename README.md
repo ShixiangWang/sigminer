@@ -14,7 +14,6 @@ status](https://codecov.io/gh/ShixiangWang/sigminer/branch/master/graph/badge.sv
 issues](https://img.shields.io/github/issues-closed/ShixiangWang/sigminer.svg)](https://github.com/ShixiangWang/sigminer/issues?q=is%3Aissue+is%3Aclosed)
 [![Lines Of
 Code](https://tokei.rs/b1/github/ShixiangWang/sigminer?category=code)](https://github.com/ShixiangWang/sigminer)
-[![HitCount](https://hits.dwyl.com/ShixiangWang/sigminer.svg)](https://hits.dwyl.com/ShixiangWang/sigminer/)
 [![install with
 bioconda](https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat-square)](https://anaconda.org/bioconda/r-sigminer/)
 
@@ -31,6 +30,9 @@ For pipeline tool, please see its co-evolutionary CLI
 [sigflow](https://github.com/ShixiangWang/sigflow).
 
 **SBS signatures**:
+
+    #> Warning in file(con, "r"): URL 'https://bioconductor.org/config.yaml': Timeout
+    #> of 60 seconds was reached
 
 <img src="man/figures/README-unnamed-chunk-1-1.png" width="100%" />
 
