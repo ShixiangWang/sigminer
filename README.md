@@ -14,6 +14,7 @@ status](https://codecov.io/gh/ShixiangWang/sigminer/branch/master/graph/badge.sv
 issues](https://img.shields.io/github/issues-closed/ShixiangWang/sigminer.svg)](https://github.com/ShixiangWang/sigminer/issues?q=is%3Aissue+is%3Aclosed)
 [![Lines Of
 Code](https://tokei.rs/b1/github/ShixiangWang/sigminer?category=code)](https://github.com/ShixiangWang/sigminer)
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FShixiangWang%2Fsigminer&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
 [![install with
 bioconda](https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat-square)](https://anaconda.org/bioconda/r-sigminer/)
 
@@ -33,6 +34,8 @@ For pipeline tool, please see its co-evolutionary CLI
 
     #> Warning in file(con, "r"): URL 'https://bioconductor.org/config.yaml': Timeout
     #> of 60 seconds was reached
+    #> Warning in file(con, "r"): URL 'http://bioconductor.org/config.yaml': Timeout of
+    #> 60 seconds was reached
 
 <img src="man/figures/README-unnamed-chunk-1-1.png" width="100%" />
 
