@@ -104,7 +104,7 @@ NULL
 #' @docType data
 #' @name transcript.mm10
 #' @format A `data.table`
-#' @source from GENCODE release M25 <ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M25/gencode.vM25.annotation.gtf.gz>
+#' @source from GENCODE release M25.
 #' @examples
 #' data(transcript.mm10)
 NULL

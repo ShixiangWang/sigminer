@@ -8,7 +8,7 @@
 A \code{data.table}
 }
 \source{
-from GENCODE release M25 \url{ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M25/gencode.vM25.annotation.gtf.gz}
+from GENCODE release M25.
 }
 \description{
 Merged Transcript Location at Genome Build mm10

@@ -1,3 +1,8 @@
+# sigminer 2.0.1
+
+- Removed FTP link as CRAN suggested (#359).
+- Updated README.
+
 # sigminer 2.0.0
 
 ## BUG REPORTS
