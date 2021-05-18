@@ -116,7 +116,7 @@ read_copynumber <- function(input,
   }
 
   # get chromosome lengths
-  if (genome_build == "mm10"|"mm9") {
+  if (genome_build %in% c("mm10","mm9")) {
     valid_chr <- c(paste0("chr", 1:19), "chrX", "chrY")
   } else {
     valid_chr <- c(paste0("chr", 1:22), "chrX", "chrY")
