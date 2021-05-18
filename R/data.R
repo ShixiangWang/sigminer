@@ -28,6 +28,15 @@ NULL
 #' data(centromeres.mm10)
 NULL
 
+#' Location of Centromeres at Genome Build mm9
+#' @docType data
+#' @name centromeres.mm9
+#' @format A data.frame
+#' @source Generate from <https://hgdownload.soe.ucsc.edu/goldenPath/mm9/database>
+#' @examples
+#' data(centromeres.mm9)
+NULL
+
 #' Chromosome Size of Genome Build hg19
 #' @docType data
 #' @name chromsize.hg19
@@ -54,7 +63,14 @@ NULL
 #' @examples
 #' data(chromsize.mm10)
 NULL
-
+#' Chromosome Size of Genome Build mm9
+#' @docType data
+#' @name chromsize.mm9
+#' @format A data.frame
+#' @source Generate from UCSC gold path <http://hgdownload.cse.ucsc.edu/goldenPath/mm9/bigZips/mm9.chrom.sizes>
+#' @examples
+#' data(chromsize.mm9)
+NULL
 #' Location of Chromosome Cytobands at Genome Build hg19
 #' @docType data
 #' @name cytobands.hg19
@@ -81,7 +97,14 @@ NULL
 #' @examples
 #' data(cytobands.mm10)
 NULL
-
+#' Location of Chromosome Cytobands at Genome Build mm9
+#' @docType data
+#' @name cytobands.mm9
+#' @format A data.frame
+#' @source from UCSC <http://hgdownload.cse.ucsc.edu/goldenpath/mm9/database/cytoBand.txt.gz>
+#' @examples
+#' data(cytobands.mm9)
+NULL
 #' Merged Transcript Location at Genome Build hg19
 #' @docType data
 #' @name transcript.hg19
@@ -108,7 +131,14 @@ NULL
 #' @examples
 #' data(transcript.mm10)
 NULL
-
+#' Merged Transcript Location at Genome Build mm9
+#' @docType data
+#' @name transcript.mm9
+#' @format A `data.table`
+#' @source from UCSC <http://hgdownload.cse.ucsc.edu/goldenPath/mm9/database/transcriptome.txt.gz>
+#' @examples
+#' data(transcript.mm9)
+NULL 
 #' Classification Table of Copy Number Features Devised by Wang et al. for Method 'W'
 #' @docType data
 #' @name CN.features
