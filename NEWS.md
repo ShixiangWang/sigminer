@@ -1,5 +1,6 @@
 # sigminer 2.0.1
 
+- Supported `mm9` genome.
 - Removed FTP link as CRAN suggested (#359).
 - Updated README.
 

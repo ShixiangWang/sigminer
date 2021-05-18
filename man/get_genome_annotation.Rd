@@ -7,7 +7,7 @@
 get_genome_annotation(
   data_type = c("chr_size", "centro_loc", "cytobands", "transcript"),
   chrs = paste0("chr", c(1:22, "X", "Y")),
-  genome_build = c("hg19", "hg38", "mm10")
+  genome_build = c("hg19", "hg38", "mm10", "mm9")
 )
 }
 \arguments{
