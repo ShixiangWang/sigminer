@@ -163,7 +163,7 @@ get_LengthFraction <- function(CN_data,
     paste0("chr", segTab$chromosome)
   )
 
-  if (genome_build == "mm10"|"mm9") {
+  if (genome_build %in% c("mm10","mm9")) {
     valid_chr <- c(paste0("chr", 1:19), "chrX", "chrY")
 
     if (!all(segTab$chromosome %in% valid_chr)) {
@@ -448,7 +448,7 @@ get_cnsummary_sample <- function(segTab, genome_build = c("hg19", "hg38", "mm10"
   segTab$start <- as.numeric(segTab$start)
   segTab$end <- as.numeric(segTab$end)
 
-  if (genome_build == "mm10"|"mm9") {
+  if (genome_build %in% c("mm10","mm9")) {
     autosome <- paste0("chr", 1:19)
   } else {
     autosome <- paste0("chr", 1:22)
