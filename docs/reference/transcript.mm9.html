@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get Genome Annotation — get_genome_annotation • sigminer</title>
+<title>Merged Transcript Location at Genome Build mm9 — transcript.mm9 • sigminer</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Get Genome Annotation — get_genome_annotation" />
-<meta property="og:description" content="Get Genome Annotation" />
+<meta property="og:title" content="Merged Transcript Location at Genome Build mm9 — transcript.mm9" />
+<meta property="og:description" content="Merged Transcript Location at Genome Build mm9" />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -122,63 +122,26 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get Genome Annotation</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ShixiangWang/sigminer/blob/master/R/get_genome_annotation.R'><code>R/get_genome_annotation.R</code></a></small>
-    <div class="hidden name"><code>get_genome_annotation.Rd</code></div>
+    <h1>Merged Transcript Location at Genome Build mm9</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ShixiangWang/sigminer/blob/master/R/data.R'><code>R/data.R</code></a></small>
+    <div class="hidden name"><code>transcript.mm9.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Get Genome Annotation</p>
+    <p>Merged Transcript Location at Genome Build mm9</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_genome_annotation</span><span class='op'>(</span>
-  data_type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"chr_size"</span>, <span class='st'>"centro_loc"</span>, <span class='st'>"cytobands"</span>, <span class='st'>"transcript"</span><span class='op'>)</span>,
-  chrs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"chr"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>22</span>, <span class='st'>"X"</span>, <span class='st'>"Y"</span><span class='op'>)</span><span class='op'>)</span>,
-  genome_build <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"hg19"</span>, <span class='st'>"hg38"</span>, <span class='st'>"mm10"</span>, <span class='st'>"mm9"</span><span class='op'>)</span>
-<span class='op'>)</span></pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>data_type</th>
-      <td><p>'chr_size' for chromosome size,
-'centro_loc' for location of centromeres,
-'cytobands' for location of chromosome cytobands
-and 'transcript' for location of transcripts.</p></td>
-    </tr>
-    <tr>
-      <th>chrs</th>
-      <td><p>chromosomes start with 'chr'</p></td>
-    </tr>
-    <tr>
-      <th>genome_build</th>
-      <td><p>one of 'hg19', 'hg38'</p></td>
-    </tr>
-    </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>a <code>data.frame</code> containing annotation data</p>
+    <p>A <code>data.table</code></p>
+    <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
+
+    <p>from UCSC <a href='http://hgdownload.cse.ucsc.edu/goldenPath/mm9/database/transcriptome.txt.gz'>http://hgdownload.cse.ucsc.edu/goldenPath/mm9/database/transcriptome.txt.gz</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='va'>df1</span> <span class='op'>&lt;-</span> <span class='fu'>get_genome_annotation</span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>df1</span>
-
-<span class='va'>df2</span> <span class='op'>&lt;-</span> <span class='fu'>get_genome_annotation</span><span class='op'>(</span>genome_build <span class='op'>=</span> <span class='st'>"hg38"</span><span class='op'>)</span>
-<span class='va'>df2</span>
-
-<span class='va'>df3</span> <span class='op'>&lt;-</span> <span class='fu'>get_genome_annotation</span><span class='op'>(</span>data_type <span class='op'>=</span> <span class='st'>"centro_loc"</span><span class='op'>)</span>
-<span class='va'>df3</span>
-
-<span class='va'>df4</span> <span class='op'>&lt;-</span> <span class='fu'>get_genome_annotation</span><span class='op'>(</span>data_type <span class='op'>=</span> <span class='st'>"centro_loc"</span>, genome_build <span class='op'>=</span> <span class='st'>"hg38"</span><span class='op'>)</span>
-<span class='va'>df4</span>
-
-<span class='va'>df5</span> <span class='op'>&lt;-</span> <span class='fu'>get_genome_annotation</span><span class='op'>(</span>data_type <span class='op'>=</span> <span class='st'>"cytobands"</span><span class='op'>)</span>
-<span class='va'>df5</span>
-
-<span class='va'>df6</span> <span class='op'>&lt;-</span> <span class='fu'>get_genome_annotation</span><span class='op'>(</span>data_type <span class='op'>=</span> <span class='st'>"cytobands"</span>, genome_build <span class='op'>=</span> <span class='st'>"hg38"</span><span class='op'>)</span>
-<span class='va'>df6</span>
+    <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>transcript.mm9</span><span class='op'>)</span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
