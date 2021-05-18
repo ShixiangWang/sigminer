@@ -2,7 +2,7 @@ citHeader("To cite sigminer in publications use:")
 
 citEntry(
   entry    = "Article",
-  title    = "Copy number signature analyses in prostate cancer reveal distinct etiologies and clinical outcomes",
+  title    = "Copy number signature analysis tool and its application in prostate cancer reveals distinct mutational processes and clinical outcomes",
   author   = personList(as.person("Shixiang Wang"),
                        as.person("Huimin Li"),
                        as.person("Minfang Song"),
@@ -13,14 +13,17 @@ citEntry(
                        as.person("Kai Wu"),
                        as.person("Xue-Song Liu")
                        ),
-  journal  = "medRxiv",
-  year     = 2020,
-#  volume   = 145,
-#  number   = 10,
-#  pages    = "2840--2849",
-  url      = "https://www.medrxiv.org/content/10.1101/2020.04.27.20082404v1",
+  journal  = "Plos Genetics",
+  year     = 2021,
+  volume   = 17,
+  number   = 5,
+  pages    = "e1009557",
+  url      = "https://doi.org/10.1093/bioinformatics/btaa895",
   textVersion = paste(
-    "Wang, Shixiang, et al. \"Copy number signature analyses in prostate cancer reveal distinct etiologies and clinical outcomes\"",
-    "medRxiv (2020)."
+    "Wang S, Li H, Song M, Tao Z, Wu T, He Z, et al. (2021) Copy",
+    "number signature analysis tool and its application in prostate",
+    "cancer reveals distinct mutational processes and clinical outcomes.",
+    "PLoS Genet 17(5): e1009557.",
+    "https://doi.org/10.1371/journal.pgen.1009557"
   )
 )
