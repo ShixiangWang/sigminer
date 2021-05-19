@@ -32,7 +32,14 @@ NULL
 #' @docType data
 #' @name centromeres.mm9
 #' @format A data.frame
-#' @source Generate from <https://hgdownload.soe.ucsc.edu/goldenPath/mm9/database/gap.txt.gz>
+#' @source Generate from <https://hgdownload.soe.ucsc.edu/goldenPath/mm9/database/>
+#' with code:
+#' ```sh
+#' for i in $(seq 1 19) X Y;
+#' do
+#' wget https://hgdownload.soe.ucsc.edu/goldenPath/mm9/database/chr${i}_gap.txt.gz
+#' done
+#' ```
 #' @examples
 #' data(centromeres.mm9)
 NULL
