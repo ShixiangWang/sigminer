@@ -332,9 +332,9 @@ sig_tally.RS <- function(object, keep_only_matrix = FALSE, ...) {
 
 #' @describeIn sig_tally Returns SBS mutation sample-by-component matrix and APOBEC enrichment
 #' @param mode type of mutation matrix to extract, can be one of 'SBS', 'DBS' and 'ID'.
-#' @param ref_genome 'BSgenome.Hsapiens.UCSC.hg19', 'BSgenome.Hsapiens.UCSC.hg38' and
-#' 'BSgenome.Mmusculus.UCSC.mm10' etc.
-#' @param genome_build genome build 'hg19', 'hg38' or "mm10", if not set, guess it by `ref_genome`.
+#' @param ref_genome 'BSgenome.Hsapiens.UCSC.hg19', 'BSgenome.Hsapiens.UCSC.hg38',
+#' 'BSgenome.Mmusculus.UCSC.mm10',  'BSgenome.Mmusculus.UCSC.mm9', etc.
+#' @param genome_build genome build 'hg19', 'hg38', 'mm9' or "mm10", if not set, guess it by `ref_genome`.
 #' @param add_trans_bias if `TRUE`, consider transcriptional bias categories.
 #' 'T:' for Transcribed (the variant is on the transcribed strand);
 #' 'U:' for Un-transcribed (the variant is on the untranscribed strand);
@@ -391,6 +391,8 @@ sig_tally.MAF <- function(object, mode = c("SBS", "DBS", "ID", "ALL"),
       genome_build <- "hg38"
     } else if (grepl("mm10$", ref_genome)) {
       genome_build <- "mm10"
+    } else if (grepl("mm9$", ref_genome)) {
+      genome_build <- "mm9"
     } else {
       send_stop("Cannot guess the genome build, please set it by hand!")
     }

@@ -67,8 +67,7 @@ nnit <- function(mat,
   while (sum(is.na(lab)) > 0) {
     lab.ii <- which(is.na(lab))
     dmat.m <- dmat[lab.ii, lab.ii]
-    ii <- switch(
-      method,
+    ii <- switch(method,
       maxd = which.max(rowSums(dmat.m)),
       mind = which.min(rowSums(dmat.m)),
       random = sample.int(nrow(dmat.m), 1),
@@ -111,8 +110,7 @@ kmvar <- function(mat,
   labs <- rep(NA, nrow(mat))
   clsizes <- rep(0, k)
 
-  ptord <- switch(
-    method,
+  ptord <- switch(method,
     maxd = order(-apply(centd, 1, max)),
     mind = order(apply(centd, 1, min)),
     random = sample.int(nrow(mat)),

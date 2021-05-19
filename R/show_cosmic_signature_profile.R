@@ -28,8 +28,7 @@ show_cosmic_sig_profile <- function(sig_index = NULL, show_index = TRUE, sig_db 
   sigs <- sigs_db$db
   aetiology <- sigs_db$aetiology
 
-  avail_index <- switch(
-    sig_db,
+  avail_index <- switch(sig_db,
     legacy = substring(colnames(sigs), 8),
     SBS = substring(colnames(sigs), 4),
     DBS = substring(colnames(sigs), 4),

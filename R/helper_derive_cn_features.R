@@ -222,15 +222,14 @@ getCN <- function(abs_profiles) {
 
 # Number of Chromosome with CNV
 getNChrV <- function(abs_profiles, genome_build = "hg38") {
-  genome_build <- match.arg(genome_build, choices = c("hg19", "hg38","mm10","mm9"))
+  genome_build <- match.arg(genome_build, choices = c("hg19", "hg38", "mm10", "mm9"))
   abs_profiles <- handle_sex(abs_profiles)
 
   if (genome_build %in% c("hg19", "hg38")) {
     chrs <- c(paste0("chr", 1:22), "chrX")
-  } else 
-    {
+  } else {
     chrs <- c(paste0("chr", 1:19), "chrX")
-    }
+  }
 
   cn <- purrr::map_df(abs_profiles, function(x) {
     x <- x[x$chromosome %in% chrs, c("sample", "chromosome", "segVal"), with = FALSE]
@@ -247,7 +246,7 @@ getNChrV <- function(abs_profiles, genome_build = "hg38") {
 # The chromosome sequences (using integer as index) with copy number variation
 # The count of this result represents the burden (contribution) of chromosome
 getBoChr <- function(abs_profiles, genome_build = "hg38") {
-  genome_build <- match.arg(genome_build, choices = c("hg19", "hg38","mm10","mm9"))
+  genome_build <- match.arg(genome_build, choices = c("hg19", "hg38", "mm10", "mm9"))
   abs_profiles <- handle_sex(abs_profiles)
 
   if (genome_build %in% c("hg19", "hg38")) {
@@ -255,7 +254,7 @@ getBoChr <- function(abs_profiles, genome_build = "hg38") {
     # Create a dict for mapping
     chrs_map <- as.character(1:23)
     names(chrs_map) <- chrs
-  }else {
+  } else {
     chrs <- c(paste0("chr", 1:19), "chrX")
     chrs_map <- as.character(1:20)
     names(chrs_map) <- chrs
@@ -280,14 +279,14 @@ getBoChr <- function(abs_profiles, genome_build = "hg38") {
 
 # The minimal number of chromosome with 50% CNV
 getNC50 <- function(abs_profiles, genome_build = "hg38") {
-  genome_build <- match.arg(genome_build, choices = c("hg19", "hg38","mm10","mm9"))
+  genome_build <- match.arg(genome_build, choices = c("hg19", "hg38", "mm10", "mm9"))
   abs_profiles <- handle_sex(abs_profiles)
 
   if (genome_build %in% c("hg19", "hg38")) {
     chrs <- c(paste0("chr", 1:22), "chrX")
-  }else {
+  } else {
     chrs <- c(paste0("chr", 1:19), "chrX")
-    }
+  }
 
   cn <- purrr::map_df(abs_profiles, function(x) {
     x <- x[x$chromosome %in% chrs, c("sample", "chromosome", "segVal"), with = FALSE]
@@ -348,7 +347,8 @@ count_components_wrapper <- function(feature_df, f_name, feature_setting) {
       sample = list(samps)
     ) %>%
     tidyr::unnest(cols = c("count", "sample")) %>%
-    tidyr::pivot_wider(names_from = "sample", values_from = "count", values_fill = list(count = 0L)) %>% # Should not have NA value, but take case of it with 0
+    tidyr::pivot_wider(names_from = "sample", values_from = "count", values_fill = list(count = 0L)) %>%
+    # Should not have NA value, but take case of it with 0
     data.table::as.data.table()
 
   # Same result as above

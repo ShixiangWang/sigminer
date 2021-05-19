@@ -159,11 +159,11 @@ usethis::use_data(cytobands.mm9, overwrite = TRUE)
 
 
 # Centromeres -------------------------------------------------------------
-##shell
- # for i in $(seq 1 19) X Y;
- #  do
- #  "https://hgdownload.soe.ucsc.edu/goldenPath/mm9/database/chr${i}_gap.txt.gz";
- #  done
+## shell
+# for i in $(seq 1 19) X Y;
+#  do
+#  "https://hgdownload.soe.ucsc.edu/goldenPath/mm9/database/chr${i}_gap.txt.gz";
+#  done
 
 
 centromeres.mm9 <- data.table::fread("data-raw/mm9.gap")
@@ -234,4 +234,3 @@ colnames(gene_mm9)[1:4] <- c("chrom", "start", "end", "strand")
 
 ## Save to extdata
 saveRDS(gene_mm9, file = "inst/extdata/mouse_mm9_gene_info.rds")
-

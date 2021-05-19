@@ -17,7 +17,7 @@ sigprofiler_extract(
   init_method = c("nndsvd_min", "random", "alexandrov-lab-custom", "nndsvd", "nndsvda",
     "nndsvdar"),
   cores = -1L,
-  genome_build = c("hg19", "hg38", "mm10"),
+  genome_build = c("hg19", "hg38", "mm10", "mm9"),
   use_conda = FALSE,
   py_path = NULL,
   sigprofiler_version = "1.1.0"

@@ -31,7 +31,7 @@
 #' @param use_all default is `FALSE`. If `True`, use all columns from raw input.
 #' @param min_segnum minimal number of copy number segments within a sample.
 #' @param max_copynumber bigger copy number within a sample will be reset to this value.
-#' @param genome_build genome build version, should be 'hg19', 'hg38' or 'mm10'.
+#' @param genome_build genome build version, should be 'hg19', 'hg38', 'mm9' or 'mm10'.
 #' @param genome_measure default is 'called', can be 'wg' or 'called'.
 #' Set 'called' will use called segments size to compute total size for CNA burden calculation,
 #' this option is useful for WES and target sequencing.
@@ -88,7 +88,7 @@ read_copynumber <- function(input,
                             use_all = add_loh,
                             min_segnum = 0L,
                             max_copynumber = 20L,
-                            genome_build = c("hg19", "hg38", "mm10","mm9"),
+                            genome_build = c("hg19", "hg38", "mm10", "mm9"),
                             genome_measure = c("called", "wg"),
                             complement = FALSE,
                             ...) {
@@ -116,7 +116,7 @@ read_copynumber <- function(input,
   }
 
   # get chromosome lengths
-  if (genome_build %in% c("mm10","mm9")) {
+  if (genome_build %in% c("mm10", "mm9")) {
     valid_chr <- c(paste0("chr", 1:19), "chrX", "chrY")
   } else {
     valid_chr <- c(paste0("chr", 1:22), "chrX", "chrY")

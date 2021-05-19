@@ -7,7 +7,7 @@
 read_vcf(
   vcfs,
   samples = NULL,
-  genome_build = c("hg19", "hg38", "mm10"),
+  genome_build = c("hg19", "hg38", "mm10", "mm9"),
   keep_only_pass = FALSE,
   verbose = TRUE
 )

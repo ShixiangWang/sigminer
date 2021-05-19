@@ -9,7 +9,7 @@ show_cn_circos(
   samples = NULL,
   show_title = TRUE,
   chrs = paste0("chr", 1:22),
-  genome_build = c("hg19", "hg38", "mm10"),
+  genome_build = c("hg19", "hg38", "mm10", "mm9"),
   col = NULL,
   side = "inside",
   ...

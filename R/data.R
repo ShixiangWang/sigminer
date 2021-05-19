@@ -138,7 +138,7 @@ NULL
 #' @source from UCSC <http://hgdownload.cse.ucsc.edu/goldenPath/mm9/database/transcriptome.txt.gz>
 #' @examples
 #' data(transcript.mm9)
-NULL 
+NULL
 #' Classification Table of Copy Number Features Devised by Wang et al. for Method 'W'
 #' @docType data
 #' @name CN.features

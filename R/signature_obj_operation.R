@@ -32,8 +32,7 @@ sig_modify_names <- function(sig, new_names) {
     stop("The new names should have same length as old names!")
   }
 
-  colnames(sig$Signature) <- colnames(sig$Signature.norm) <- colnames(sig$Raw$W) <-
-    rownames(sig$Exposure) <- rownames(sig$Exposure.norm) <- rownames(sig$Raw$H) <- new_names
+  colnames(sig$Signature) <- colnames(sig$Signature.norm) <- colnames(sig$Raw$W) <- rownames(sig$Exposure) <- rownames(sig$Exposure.norm) <- rownames(sig$Raw$H) <- new_names
 
   attr(sig, "tag") <- paste0("Older names:", paste(ns, collapse = ","), ";")
   sig

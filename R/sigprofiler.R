@@ -57,7 +57,7 @@ sigprofiler_extract <- function(nmf_matrix, output, range = 2:5, nrun = 10L,
                                   "nndsvd", "nndsvda", "nndsvdar"
                                 ),
                                 cores = -1L,
-                                genome_build = c("hg19", "hg38", "mm10"),
+                                genome_build = c("hg19", "hg38", "mm10", "mm9"),
                                 use_conda = FALSE,
                                 py_path = NULL,
                                 sigprofiler_version = "1.1.0") {
@@ -67,7 +67,7 @@ sigprofiler_extract <- function(nmf_matrix, output, range = 2:5, nrun = 10L,
   genome_build <- switch(genome_build,
     hg19 = "GRCh37",
     hg38 = "GRCh38",
-    mm10 = "mm10"
+    genome_build
   )
 
   if (!dir.exists(output)) {
@@ -339,8 +339,7 @@ read_sigprofiler_solution <- function(x, order_by_expo = FALSE) {
       Exposure.norm <- Exposure.norm[sig_orders, , drop = FALSE]
       Signature <- Signature[, sig_orders, drop = FALSE]
       Signature.norm <- Signature.norm[, sig_orders, drop = FALSE]
-      rownames(Exposure) <- rownames(Exposure.norm) <-
-        colnames(Signature) <- colnames(Signature.norm) <- paste0("Sig", seq_along(sig_orders))
+      rownames(Exposure) <- rownames(Exposure.norm) <- colnames(Signature) <- colnames(Signature.norm) <- paste0("Sig", seq_along(sig_orders))
       stat_sigs$Signatures <- sig_orders
     }
   }

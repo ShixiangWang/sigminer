@@ -46,8 +46,7 @@
 #' expect_is(s8, "list")
 #' expect_is(s9, "list")
 get_sig_db <- function(sig_db = "legacy") {
-  db_file <- switch(
-    sig_db,
+  db_file <- switch(sig_db,
     legacy = system.file("extdata", "legacy_signatures.RDs",
       package = "maftools", mustWork = TRUE
     ),
@@ -98,8 +97,7 @@ get_sig_db <- function(sig_db = "legacy") {
         # v3.2_SBS_GRCh37.txt
         sig_db2 <- sub("latest_", "", sig_db)
 
-        file_dir <- switch(
-          sig_db,
+        file_dir <- switch(sig_db,
           latest_SBS_GRCh37 = "452",
           latest_DBS_GRCh37 = "446",
           latest_ID_GRCh37 = "451",

@@ -116,8 +116,7 @@ show_sig_bootstrap_exposure <- function(bt_result, sample = NULL, signatures = N
   plot_fun <- match.arg(plot_fun)
   agg_fun <- match.arg(agg_fun)
   agg_mode <- FALSE
-  plot_fun <- switch(
-    plot_fun,
+  plot_fun <- switch(plot_fun,
     boxplot = ggpubr::ggboxplot,
     violin = ggpubr::ggviolin
   )
@@ -213,8 +212,7 @@ show_sig_bootstrap_error <- function(bt_result, sample = NULL,
   plot_fun <- match.arg(plot_fun)
   agg_fun <- match.arg(agg_fun)
   agg_mode <- FALSE
-  plot_fun <- switch(
-    plot_fun,
+  plot_fun <- switch(plot_fun,
     boxplot = ggpubr::ggboxplot,
     violin = ggpubr::ggviolin
   )
@@ -302,8 +300,7 @@ show_sig_bootstrap_stability <- function(bt_result, signatures = NULL,
                                          ...) {
   stopifnot(is.list(bt_result))
   plot_fun <- match.arg(plot_fun)
-  plot_fun <- switch(
-    plot_fun,
+  plot_fun <- switch(plot_fun,
     boxplot = ggpubr::ggboxplot,
     violin = ggpubr::ggviolin
   )

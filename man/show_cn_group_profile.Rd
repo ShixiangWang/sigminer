@@ -10,7 +10,7 @@ show_cn_group_profile(
   fill_area = TRUE,
   cols = NULL,
   chrs = paste0("chr", c(1:22, "X")),
-  genome_build = c("hg19", "hg38", "mm10"),
+  genome_build = c("hg19", "hg38", "mm10", "mm9"),
   cutoff = 2L,
   resolution_factor = 1L,
   force_y_limit = TRUE,

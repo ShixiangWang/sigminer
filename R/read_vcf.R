@@ -20,7 +20,8 @@
 #' }
 #' @testexamples
 #' expect_is(maf, "MAF")
-read_vcf <- function(vcfs, samples = NULL, genome_build = c("hg19", "hg38", "mm10"), keep_only_pass = FALSE, verbose = TRUE) {
+read_vcf <- function(vcfs, samples = NULL, genome_build = c("hg19", "hg38", "mm10", "mm9"),
+                     keep_only_pass = FALSE, verbose = TRUE) {
   genome_build <- match.arg(genome_build)
   vcfs_name <- vcfs
   if (verbose) message("Reading file(s): ", paste(vcfs, collapse = ", "))
@@ -75,8 +76,11 @@ read_vcf <- function(vcfs, samples = NULL, genome_build = c("hg19", "hg38", "mm1
   vcfs$Hugo_Symbol <- "Unknown"
 
   # Annotate gene symbol
-  gene_file <- switch(
-    genome_build,
+  gene_file <- switch(genome_build,
+    mm9 = file.path(
+      system.file("extdata", package = "sigminer"),
+      "mouse_mm9_gene_info.rds"
+    ),
     mm10 = file.path(
       system.file("extdata", package = "sigminer"),
       "mouse_mm10_gene_info.rds"

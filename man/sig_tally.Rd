@@ -65,10 +65,10 @@ For a \code{MAF} object, this will just return the most useful matrix.}
 
 \item{mode}{type of mutation matrix to extract, can be one of 'SBS', 'DBS' and 'ID'.}
 
-\item{ref_genome}{'BSgenome.Hsapiens.UCSC.hg19', 'BSgenome.Hsapiens.UCSC.hg38' and
-'BSgenome.Mmusculus.UCSC.mm10' etc.}
+\item{ref_genome}{'BSgenome.Hsapiens.UCSC.hg19', 'BSgenome.Hsapiens.UCSC.hg38',
+'BSgenome.Mmusculus.UCSC.mm10',  'BSgenome.Mmusculus.UCSC.mm9', etc.}
 
-\item{genome_build}{genome build 'hg19', 'hg38' or "mm10", if not set, guess it by \code{ref_genome}.}
+\item{genome_build}{genome build 'hg19', 'hg38', 'mm9' or "mm10", if not set, guess it by \code{ref_genome}.}
 
 \item{add_trans_bias}{if \code{TRUE}, consider transcriptional bias categories.
 'T:' for Transcribed (the variant is on the transcribed strand);

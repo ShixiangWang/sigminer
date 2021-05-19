@@ -1,6 +1,6 @@
 # Download to extdata/
 query_remote_data <- function(x) {
-  x_url <- paste0("https://zenodo.org/record/4480398/files/", x)
+  x_url <- paste0("https://zenodo.org/record/4771552/files/", x)
   x_dest <- file.path(system.file("extdata", package = "sigminer"), x)
   message("Downloading ", x_url, " to ", x_dest)
   tryCatch(

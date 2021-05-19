@@ -21,8 +21,7 @@ show_sig_fit <- function(fit_result, samples = NULL, signatures = NULL,
                          add = "jitter", add.params = list(alpha = 0.3),
                          ...) {
   fun_setting <- plot_fun <- match.arg(plot_fun)
-  plot_fun <- switch(
-    plot_fun,
+  plot_fun <- switch(plot_fun,
     boxplot = ggpubr::ggboxplot,
     violin = ggpubr::ggviolin,
     scatter = ggpubr::ggscatter

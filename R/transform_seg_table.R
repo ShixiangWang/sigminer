@@ -21,7 +21,7 @@
 #' expect_is(x, "data.table")
 #' expect_is(x2, "data.table")
 transform_seg_table <- function(data,
-                                genome_build = c("hg19", "hg38", "mm10"),
+                                genome_build = c("hg19", "hg38", "mm10", "mm9"),
                                 ref_type = c("cytoband", "gene"),
                                 values_fill = NA,
                                 values_fn = function(x, ...) {
@@ -59,22 +59,22 @@ transform_seg_table <- function(data,
     )
     annot$start <- annot$start + 1L
   } else {
-    if (genome_build == "mm10") {
-      # Not support for now
-      annot_file <- system.file("extdata", "mouse_mm10_gene_info.rds",
-        package = "sigminer", mustWork = TRUE
-      )
-    } else {
-      annot_file <- system.file("extdata", paste0("human_", genome_build, "_gene_info.rds"),
-        package = "sigminer", mustWork = TRUE
-      )
+    annot_file <- system.file(
+      "extdata",
+      paste0(if (startsWith(genome_build, "mm")) "mouse_"
+             else "human_", genome_build, "_gene_info.rds"),
+      package = "sigminer", mustWork = TRUE)
+
+    ok <- TRUE
+    if (!file.exists(annot_file)) ok <- query_remote_data(basename(annot_file))
+    if (!ok) {
+      return(invisible(NULL))
     }
 
     annot <- readRDS(annot_file)
     annot <- annot[, c("chrom", "start", "end", "gene_name", "gene_type")]
     colnames(annot)[4] <- "band"
   }
-
 
   data.table::setDT(annot)
   ## Control the resolution

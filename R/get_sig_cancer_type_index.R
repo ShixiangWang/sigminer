@@ -25,8 +25,7 @@
 #' expect_is(l3, "list")
 #' expect_is(l4, "list")
 #' expect_null(l5)
-get_sig_cancer_type_index <- function(
-                                      sig_type = c("legacy", "SBS", "DBS", "ID"),
+get_sig_cancer_type_index <- function(sig_type = c("legacy", "SBS", "DBS", "ID"),
                                       seq_type = c("WGS", "WES"),
                                       source = c("PCAWG", "TCGA", "nonPCAWG"),
                                       keyword = NULL) {

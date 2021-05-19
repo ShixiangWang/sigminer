@@ -164,8 +164,7 @@ sig_fit <- function(catalogue_matrix,
       sigs <- sig_convert(sig = sigs, from = "human-genome", to = "human-exome")
     }
 
-    avail_index <- switch(
-      sig_db,
+    avail_index <- switch(sig_db,
       legacy = substring(colnames(sigs), 8),
       SBS = substring(colnames(sigs), 4),
       DBS = substring(colnames(sigs), 4),
