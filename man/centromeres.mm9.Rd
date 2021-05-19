@@ -8,7 +8,7 @@
 A data.frame
 }
 \source{
-Generate from \url{https://hgdownload.soe.ucsc.edu/goldenPath/mm9/database}
+Generate from \url{https://hgdownload.soe.ucsc.edu/goldenPath/mm9/database/gap.txt.gz}
 }
 \description{
 Location of Centromeres at Genome Build mm9
