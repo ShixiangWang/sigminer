@@ -200,7 +200,7 @@ output_sig <- function(sig, result_dir, mut_type = "SBS") {
   } else if (sig$K <= 19) {
     args_expo <- c(args_expo, style = "default")
   } else if (sig$K <= 27) {
-    args_expo <- c(args_expo, palette = list(sigminer:::letter_colors))
+    args_expo <- c(args_expo, palette = list(letter_colors))
   } else {
     message("Note: Too many signatures (N>27). Plotting is skipped.")
     message("Please plot it with function `show_sig_exposure()` by your own.")
