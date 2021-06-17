@@ -1,3 +1,8 @@
+# sigminer 2.0.2
+
+- Fixed `output_sig()` error in handling exposure plot with >9 signatures (#366).
+- Added `limitsize = FALSE` for `ggsave()` or `ggsave2()` for handling big figure.
+
 # sigminer 2.0.1
 
 - Supported `mm9` genome build.

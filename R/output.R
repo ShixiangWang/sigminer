@@ -41,7 +41,8 @@ output_tally <- function(x, result_dir, mut_type = "SBS") {
   }
 
   ggsave(file.path(result_dir, paste0(mut_type, "_tally_total.pdf")),
-    plot = p_total, width = 12, height = 3
+    plot = p_total, width = 12, height = 3,
+    limitsize = FALSE
   )
 
   samp_dir <- file.path(result_dir, paste0(mut_type, "_tally_per_sample"))
@@ -122,7 +123,8 @@ output_sig <- function(sig, result_dir, mut_type = "SBS") {
       attr(sig, "call_method"), "_exposure_distribution_relative.pdf"
     )
   ),
-  plot = p, height = 4, width = 1 * sig$K
+  plot = p, height = 4, width = 1 * sig$K,
+  limitsize = FALSE
   )
 
   expo_abs <- get_sig_exposure(sig)
@@ -145,7 +147,8 @@ output_sig <- function(sig, result_dir, mut_type = "SBS") {
       attr(sig, "call_method"), "_exposure_distribution_absolute.pdf"
     )
   ),
-  plot = p, height = 4, width = 1 * sig$K
+  plot = p, height = 4, width = 1 * sig$K,
+  limitsize = FALSE
   )
 
   message("Outputing sample clusters based on relative signature exposures.")
@@ -179,18 +182,45 @@ output_sig <- function(sig, result_dir, mut_type = "SBS") {
     p <- show_sig_profile(sig, mode = "copynumber", normalize = "feature", style = "cosmic")
   }
   ggsave(file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_signature_profile.pdf")),
-    plot = p, width = 12, height = 2 * sig$K
+    plot = p, width = 12, height = 2 * sig$K,
+    limitsize = FALSE
   )
 
   message("Outputing signature exposure plot.")
+
   if (ncol(sig$Exposure) < 50) {
-    p <- show_sig_exposure(sig, style = "cosmic", hide_samps = FALSE)
+    args_expo <- list(sig, hide_samps = FALSE)
   } else {
-    p <- show_sig_exposure(sig, style = "cosmic", hide_samps = TRUE, rm_space = TRUE)
+    args_expo <- list(sig, hide_samps = TRUE, rm_space = TRUE)
   }
-  cowplot::save_plot(file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_exposure_profile.pdf")),
-    plot = p
-  )
+
+  slient_expo <- FALSE
+  if (sig$K <= 9) {
+    args_expo <- c(args_expo, style = "cosmic")
+  } else if (sig$K <= 19) {
+    args_expo <- c(args_expo, style = "default")
+  } else if (sig$K <= 27) {
+    args_expo <- c(args_expo, palette = list(sigminer:::letter_colors))
+  } else {
+    message("Note: Too many signatures (N>27). Plotting is skipped.")
+    message("Please plot it with function `show_sig_exposure()` by your own.")
+    slient_expo <- TRUE
+  }
+
+  if (!slient_expo) {
+    p <- do.call("show_sig_exposure", args_expo)
+
+    cowplot::ggsave2(file.path(
+      result_dir, paste0(
+        mut_type, "_", attr(sig, "call_method"),
+        "_exposure_profile.pdf"
+      )
+    ),
+    plot = p,
+    width = 12, height = 6 * (sig$K / 10),
+    limitsize = FALSE
+    )
+  }
 
   ## Similar analysis and output
   if (mut_type != "CN") {
@@ -310,16 +340,20 @@ output_fit <- function(x, result_dir, mut_type = "SBS") {
   }
 
   ggsave(file.path(result_dir, paste0(mut_type, "_fitting_absolute_exposure_boxplot.pdf")),
-    plot = p1, width = width, height = height
+    plot = p1, width = width, height = height,
+    limitsize = FALSE
   )
   ggsave(file.path(result_dir, paste0(mut_type, "_fitting_absolute_exposure_violin.pdf")),
-    plot = p2, width = width, height = height
+    plot = p2, width = width, height = height,
+    limitsize = FALSE
   )
   ggsave(file.path(result_dir, paste0(mut_type, "_fitting_relative_exposure_boxplot.pdf")),
-    plot = p3, width = width, height = height
+    plot = p3, width = width, height = height,
+    limitsize = FALSE
   )
   ggsave(file.path(result_dir, paste0(mut_type, "_fitting_relative_exposure_violin.pdf")),
-    plot = p4, width = width, height = height
+    plot = p4, width = width, height = height,
+    limitsize = FALSE
   )
 }
 
@@ -371,10 +405,12 @@ output_bootstrap <- function(x, result_dir, mut_type = "SBS") {
   }
 
   ggsave(file.path(result_dir, paste0(mut_type, "_bootstrap_signature_instability_boxplot.pdf")),
-    plot = p1, width = width, height = height
+    plot = p1, width = width, height = height,
+    limitsize = FALSE
   )
   ggsave(file.path(result_dir, paste0(mut_type, "_bootstrap_absolute_exposure_boxplot.pdf")),
-    plot = p2, width = width, height = height
+    plot = p2, width = width, height = height,
+    limitsize = FALSE
   )
 
   samps <- unique(x$expo$sample)
@@ -390,7 +426,8 @@ output_bootstrap <- function(x, result_dir, mut_type = "SBS") {
       p <- show_sig_bootstrap_exposure(x, sample = i) + theme(legend.position = "none") + ggpubr::rotate_x_text()
     }
     ggsave(file.path(samp_dir, paste0(i, ".pdf")),
-      plot = p, width = width, height = height
+      plot = p, width = width, height = height,
+      limitsize = FALSE
     )
   }
 }
