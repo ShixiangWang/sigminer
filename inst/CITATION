@@ -18,7 +18,7 @@ citEntry(
   volume   = 17,
   number   = 5,
   pages    = "e1009557",
-  url      = "https://doi.org/10.1093/bioinformatics/btaa895",
+  url      = "https://doi.org/10.1371/journal.pgen.1009557",
   textVersion = paste(
     "Wang S, Li H, Song M, Tao Z, Wu T, He Z, et al. (2021) Copy",
     "number signature analysis tool and its application in prostate",
