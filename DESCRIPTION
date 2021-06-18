@@ -35,7 +35,7 @@ Description: Genomic alterations including single nucleotide
     cancer initialization and development. Due to the specificity of
     molecular lesions caused by genomic alterations, we can generate
     characteristic alteration spectra, called 'signature' (Wang, Shixiang,
-    et al.  (2020) <DOI:10.1101/2020.04.27.20082404> & Alexandrov, Ludmil
+    et al.  (2020) <DOI:10.1371/journal.pgen.1009557> & Alexandrov, Ludmil
     B., et al. (2020) <DOI:10.1038/s41586-020-1943-3>).  This package helps
     users to extract, analyze and visualize signatures from genomic
     alteration records, thus providing new insight into cancer study.
