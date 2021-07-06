@@ -99,7 +99,7 @@ sigprofiler_extract <- function(nmf_matrix, output, range = 2:5, nrun = 10L,
 
   in_df <- nmf_matrix %>%
     as.data.frame() %>%
-    tibble::rownames_to_column("MutationType")
+    tibble::rownames_to_column("Mutation Types")
 
   tmp_dir <- basename(tempfile(pattern = "dir"))
   tmp_dir_full <- file.path(tempdir(), tmp_dir)
