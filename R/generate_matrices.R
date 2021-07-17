@@ -457,6 +457,23 @@ search_DBS <- function(x) {
 
 # INDELs (ID) -------------------------------------------------------------
 
+adjust_indels <- function(query) {
+  query %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(cN = nchar(Biobase::lcPrefixC(c(.data$Reference_Allele, .data$Tumor_Seq_Allele2), ignore.case = TRUE))) %>%
+    dplyr::mutate(
+      Start_Position = .data$Start_Position + .data$cN,
+      Reference_Allele = substring(.data$Reference_Allele, .data$cN + 1L),
+      Tumor_Seq_Allele2 = substring(.data$Tumor_Seq_Allele2, .data$cN + 1L)
+    ) %>%
+    dplyr::ungroup() %>%
+    dplyr::mutate(
+      Reference_Allele = ifelse(.data$Reference_Allele == "", "-", .data$Reference_Allele),
+      Tumor_Seq_Allele2 = ifelse(.data$Tumor_Seq_Allele2 == "", "-", .data$Tumor_Seq_Allele2)
+    ) %>%
+    data.table::as.data.table()
+}
+
 generate_matrix_INDEL <- function(query, ref_genome, genome_build = "hg19", add_trans_bias = FALSE) {
   send_info("INDEL matrix generation - start.")
 
@@ -493,6 +510,8 @@ generate_matrix_INDEL <- function(query, ref_genome, genome_build = "hg19", add_
     Tumor_Seq_Allele2,
     Reference_Allele
   )]
+  ## Adjust un-standard variant formats
+  query <- adjust_indels(query)
   ## Seach 'complex' motif
   query[, ID_motif := ifelse(Reference_Allele != "-" & Tumor_Seq_Allele2 != "-",
     "complex", NA_character_

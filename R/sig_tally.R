@@ -370,6 +370,7 @@ sig_tally.MAF <- function(object, mode = c("SBS", "DBS", "ID", "ALL"),
     send_stop("Could not find any installed BSgenomes. Use {.code BSgenome::available.genomes()} for options.")
   }
 
+  send_info("We would assume you marked all variants' position in + strand.")
   if (is.null(ref_genome)) {
     send_info("User did not set {.code ref_genome}.")
     send_success("Found following BSgenome installtions. Using first entry.\n")
