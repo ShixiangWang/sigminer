@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.3</span>
       </span>
     </div>
 
@@ -77,13 +77,13 @@
 
       
 
-      </header><script src="sigminer_files/header-attrs-2.7/header-attrs.js"></script><div class="row">
+      </header><script src="sigminer_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>A Quick Start of sigminer Package</h1>
                         <h4 class="author">Shixiang Wang ( <a href="mailto:wangshx@shanghaitech.edu.cn" class="email">wangshx@shanghaitech.edu.cn</a> )</h4>
             
-            <h4 class="date">2021-05-19</h4>
+            <h4 class="date">2021-07-18</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ShixiangWang/sigminer/blob/master/vignettes/sigminer.Rmd"><code>vignettes/sigminer.Rmd</code></a></small>
       <div class="hidden name"><code>sigminer.Rmd</code></div>
@@ -95,7 +95,7 @@
 <p>Assume you have already gotten a catalog matrix (sample-by-component) like below:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ShixiangWang/sigminer">sigminer</a></span><span class="op">)</span>
-<span class="co">#&gt; sigminer version 2.0.1</span>
+<span class="co">#&gt; sigminer version 2.0.3</span>
 <span class="co">#&gt; - Star me at https://github.com/ShixiangWang/sigminer</span>
 <span class="co">#&gt; - Run hello() to see usage and citation.</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"simulated_catalogs"</span><span class="op">)</span>
@@ -110,9 +110,9 @@
 <span class="co">#&gt; Sample_5      33      10       2      14      55</span></code></pre></div>
 <p>Extract signatures with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Here I reduce the values for n_bootstrap and n_nmf_run for reducing the run time.  In practice, you</span>
-<span class="co"># should keep default or increase the values for better estimation.  The input data here is simulated</span>
-<span class="co"># from 10 mutational signatures</span>
+<code class="sourceCode R"><span class="co"># Here I reduce the values for n_bootstrap and n_nmf_run for reducing the run time.  In practice,</span>
+<span class="co"># you should keep default or increase the values for better estimation.  The input data here is</span>
+<span class="co"># simulated from 10 mutational signatures</span>
 <span class="va">e1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bp.html">bp_extract_signatures</a></span><span class="op">(</span><span class="va">mat</span>, range <span class="op">=</span> <span class="fl">8</span><span class="op">:</span><span class="fl">12</span>, n_bootstrap <span class="op">=</span> <span class="fl">5</span>, n_nmf_run <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></code></pre></div>
 <p>Check which signature number is proper:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -124,7 +124,8 @@
 <code class="sourceCode R"><span class="va">obj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bp.html">bp_get_sig_obj</a></span><span class="op">(</span><span class="va">e1</span>, <span class="fl">10</span><span class="op">)</span></code></pre></div>
 <p>Show signature profile:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/show_sig_profile.html">show_sig_profile</a></span><span class="op">(</span><span class="va">obj</span>, mode <span class="op">=</span> <span class="st">"SBS"</span>, style <span class="op">=</span> <span class="st">"cosmic"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/show_sig_profile.html">show_sig_profile</a></span><span class="op">(</span><span class="va">obj</span>, mode <span class="op">=</span> <span class="st">"SBS"</span>, style <span class="op">=</span> <span class="st">"cosmic"</span><span class="op">)</span>
+<span class="co">#&gt; Warning: `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.</span></code></pre></div>
 <p><img src="sigminer_files/figure-html/unnamed-chunk-7-1.png" width="960" style="display: block; margin: auto;"> Show signature activity (a.k.a. exposure) profile:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/show_sig_exposure.html">show_sig_exposure</a></span><span class="op">(</span><span class="va">obj</span>, rm_space <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>

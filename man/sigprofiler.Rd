@@ -20,7 +20,7 @@ sigprofiler_extract(
   genome_build = c("hg19", "hg38", "mm10", "mm9"),
   use_conda = FALSE,
   py_path = NULL,
-  sigprofiler_version = "1.1.0"
+  sigprofiler_version = "1.1.3"
 )
 
 sigprofiler_import(
