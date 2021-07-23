@@ -121,7 +121,7 @@ sig_fit_bootstrap_batch <- function(catalogue_matrix,
     out_list <- list()
     send_info("Processing sample {.code ", sample, "}.")
     for (m in methods) {
-      out <- sig_fit_bootstrap(x, n = n, method = m, ...)
+      out <- suppressMessages(sig_fit_bootstrap(x, n = n, method = m, ...))
       out_list[[m]] <- out
     }
     if (!is.null(job_id)) {
