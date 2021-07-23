@@ -8,13 +8,16 @@ get_sig_db(sig_db = "legacy")
 }
 \arguments{
 \item{sig_db}{default 'legacy', it can be 'legacy' (for \href{https://cancer.sanger.ac.uk/cosmic/signatures_v2.tt/}{COSMIC v2 'SBS'}),
-'SBS', 'DBS', 'ID' and 'TSB' (for \href{https://cancer.sanger.ac.uk/cosmic/signatures/}{COSMIV v3.1 signatures}).
+'SBS', 'DBS', 'ID' and 'TSB' (for \href{https://cancer.sanger.ac.uk/cosmic/signatures/}{COSMIV v3.1 signatures})
+for small scale mutations.
 For more specific details, it can also be 'SBS_hg19', 'SBS_hg38',
 'SBS_mm9', 'SBS_mm10', 'DBS_hg19', 'DBS_hg38', 'DBS_mm9', 'DBS_mm10' to use
 COSMIC v3 reference signatures from Alexandrov, Ludmil B., et al. (2020) (reference #1).
 In addition, it can be one of "SBS_Nik_lab_Organ", "RS_Nik_lab_Organ",
 "SBS_Nik_lab", "RS_Nik_lab" to refer reference signatures from
-Degasperi, Andrea, et al. (2020) (reference #2).
+Degasperi, Andrea, et al. (2020) (reference #2);
+"RS_BRCA560", "RS_USARC" to reference signatures from BRCA560 and USARC cohorts;
+"CNS_USARC" (40 categories), "CNS_TCGA" (48 categories) to reference copy number signatures from USARC cohort and TCGA.
 \strong{UPDATE}, the latest version of reference version can be automatically
 downloaded and loaded from \url{https://cancer.sanger.ac.uk/signatures/downloads/}
 when a option with \code{latest_} prefix is specified (e.g. "latest_SBS_GRCh37").
@@ -38,6 +41,7 @@ mainly obtained from COSMIC database
 \item COSMIC v3 ID (indel) signatures.
 \item SBS and RS (rearrangement) signatures from Nik lab 2020 Nature Cancer paper.
 \item RS signatures from BRCA560 and USARC cohorts.
+\item Copy number signatures from USARC cohort and TCGA.
 }
 }
 \examples{
@@ -50,6 +54,8 @@ s6 <- get_sig_db("ID")
 s7 <- get_sig_db("RS_BRCA560")
 s8 <- get_sig_db("RS_USARC")
 s9 <- get_sig_db("RS_Nik_lab")
+s10 <- get_sig_db("CNS_USARC")
+s11 <- get_sig_db("CNS_TCGA")
 s1
 s2
 s3
@@ -59,6 +65,15 @@ s6
 s7
 s8
 s9
+s10
+s11
+}
+\references{
+\itemize{
+\item Steele, Christopher D., et al. "Signatures of copy number alterations in human cancer." bioRxiv (2021).
+\item Alexandrov, Ludmil B., et al. "The repertoire of mutational signatures in human cancer." Nature 578.7793 (2020): 94-101.
+\item Steele, Christopher D., et al. "Undifferentiated sarcomas develop through distinct evolutionary pathways." Cancer Cell 35.3 (2019): 441-456.
+}
 }
 \seealso{
 \link{get_sig_similarity}, \link{sig_fit} and \link{show_cosmic_sig_profile}.

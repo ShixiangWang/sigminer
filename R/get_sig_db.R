@@ -10,11 +10,16 @@
 #' - COSMIC v3 ID (indel) signatures.
 #' - SBS and RS (rearrangement) signatures from Nik lab 2020 Nature Cancer paper.
 #' - RS signatures from BRCA560 and USARC cohorts.
+#' - Copy number signatures from USARC cohort and TCGA.
 #' @inheritParams get_sig_similarity
 #'
 #' @return a `list`.
 #' @export
 #' @seealso [get_sig_similarity], [sig_fit] and [show_cosmic_sig_profile].
+#' @references
+#' - Steele, Christopher D., et al. "Signatures of copy number alterations in human cancer." bioRxiv (2021).
+#' - Alexandrov, Ludmil B., et al. "The repertoire of mutational signatures in human cancer." Nature 578.7793 (2020): 94-101.
+#' - Steele, Christopher D., et al. "Undifferentiated sarcomas develop through distinct evolutionary pathways." Cancer Cell 35.3 (2019): 441-456.
 #'
 #' @examples
 #' s1 <- get_sig_db()
@@ -26,6 +31,8 @@
 #' s7 <- get_sig_db("RS_BRCA560")
 #' s8 <- get_sig_db("RS_USARC")
 #' s9 <- get_sig_db("RS_Nik_lab")
+#' s10 <- get_sig_db("CNS_USARC")
+#' s11 <- get_sig_db("CNS_TCGA")
 #' s1
 #' s2
 #' s3
@@ -35,6 +42,8 @@
 #' s7
 #' s8
 #' s9
+#' s10
+#' s11
 #' @testexamples
 #' expect_is(s1, "list")
 #' expect_is(s2, "list")
@@ -45,6 +54,8 @@
 #' expect_is(s7, "list")
 #' expect_is(s8, "list")
 #' expect_is(s9, "list")
+#' expect_is(s10, "list")
+#' expect_is(s11, "list")
 get_sig_db <- function(sig_db = "legacy") {
   db_file <- switch(sig_db,
     legacy = system.file("extdata", "legacy_signatures.RDs",
@@ -73,6 +84,9 @@ get_sig_db <- function(sig_db = "legacy") {
     ),
     CNS_USARC = system.file("extdata", "CNS_signatures_USARC.rds",
       package = "sigminer", mustWork = TRUE
+    ),
+    CNS_TCGA = system.file("extdata", "CNS_signatures_TCGA.rds",
+                            package = "sigminer", mustWork = TRUE
     ),
     DBS = system.file("extdata", "DBS_signatures.rds",
       package = "sigminer", mustWork = TRUE

@@ -14,13 +14,16 @@
 #' More please see examples.
 #' @param Ref default is `NULL`, can be a same object as `Signature`.
 #' @param sig_db default 'legacy', it can be 'legacy' (for [COSMIC v2 'SBS'](https://cancer.sanger.ac.uk/cosmic/signatures_v2.tt/)),
-#' 'SBS', 'DBS', 'ID' and 'TSB' (for [COSMIV v3.1 signatures](https://cancer.sanger.ac.uk/cosmic/signatures/)).
+#' 'SBS', 'DBS', 'ID' and 'TSB' (for [COSMIV v3.1 signatures](https://cancer.sanger.ac.uk/cosmic/signatures/))
+#' for small scale mutations.
 #' For more specific details, it can also be 'SBS_hg19', 'SBS_hg38',
 #' 'SBS_mm9', 'SBS_mm10', 'DBS_hg19', 'DBS_hg38', 'DBS_mm9', 'DBS_mm10' to use
 #' COSMIC v3 reference signatures from Alexandrov, Ludmil B., et al. (2020) (reference #1).
 #' In addition, it can be one of "SBS_Nik_lab_Organ", "RS_Nik_lab_Organ",
 #' "SBS_Nik_lab", "RS_Nik_lab" to refer reference signatures from
-#' Degasperi, Andrea, et al. (2020) (reference #2).
+#' Degasperi, Andrea, et al. (2020) (reference #2);
+#' "RS_BRCA560", "RS_USARC" to reference signatures from BRCA560 and USARC cohorts;
+#' "CNS_USARC" (40 categories), "CNS_TCGA" (48 categories) to reference copy number signatures from USARC cohort and TCGA.
 #' **UPDATE**, the latest version of reference version can be automatically
 #' downloaded and loaded from <https://cancer.sanger.ac.uk/signatures/downloads/>
 #' when a option with `latest_` prefix is specified (e.g. "latest_SBS_GRCh37").
@@ -52,6 +55,8 @@
 #' Steele, Christopher D., et al. "Undifferentiated sarcomas develop through distinct evolutionary pathways." Cancer Cell 35.3 (2019): 441-456.
 #'
 #' Nik-Zainal, Serena, et al. "Landscape of somatic mutations in 560 breast cancer whole-genome sequences." Nature 534.7605 (2016): 47-54.
+#'
+#' Steele, Christopher D., et al. "Signatures of copy number alterations in human cancer." bioRxiv (2021).
 #' @return a `list` containing smilarities, aetiologies if available, best match and RSS.
 #' @export
 #'
@@ -97,7 +102,7 @@ get_sig_similarity <- function(Signature, Ref = NULL,
                                sig_db = c(
                                  "legacy", "SBS", "DBS", "ID", "TSB",
                                  "SBS_Nik_lab", "RS_Nik_lab",
-                                 "RS_BRCA560", "RS_USARC", "CNS_USARC",
+                                 "RS_BRCA560", "RS_USARC", "CNS_USARC", "CNS_TCGA",
                                  "SBS_hg19", "SBS_hg38", "SBS_mm9", "SBS_mm10",
                                  "DBS_hg19", "DBS_hg38", "DBS_mm9", "DBS_mm10",
                                  "SBS_Nik_lab_Organ", "RS_Nik_lab_Organ",

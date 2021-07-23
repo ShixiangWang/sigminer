@@ -63,3 +63,29 @@ CNS_USARC <- list(
 )
 
 saveRDS(CNS_USARC, file = "inst/extdata/CNS_signatures_USARC.rds")
+
+
+# PANCAN CNS ---------------------
+download.file("https://raw.githubusercontent.com/AlexandrovLab/SigProfilerExtractor/master/SigProfilerExtractor/data/CNV_signatures.txt", destfile = "data-raw/CNV_signatures.txt")
+
+library(tidyverse)
+
+# Extracting from 9873 primary cancer samples
+# ref: https://www.biorxiv.org/content/10.1101/2021.04.30.441940v1.full
+# data source: https://github.com/AlexandrovLab/SigProfilerExtractor/tree/master/SigProfilerExtractor/data
+cns <- read_tsv("data-raw/CNV_signatures.txt")
+colnames(cns)[1] <- "class"
+
+cns <- column_to_rownames(cns, "class")
+colSums(cns)
+
+CNS_TCGA <- list(
+  db = as.matrix(cns),
+  aetiology = data.frame(
+    V1 = colnames(cns),
+    V2 = "See https://doi.org/10.1101/2021.04.30.441940"
+  ) %>% tibble::column_to_rownames("V1") %>% setNames("aetiology"),
+  date = "2021/07/23"
+)
+
+saveRDS(CNS_TCGA, file = "inst/extdata/CNS_signatures_TCGA.rds")

@@ -1,3 +1,8 @@
+# sigminer 2.0.4
+
+- Included TCGA copy number signatures from SigProfiler.
+- Updated docs.
+
 # sigminer 2.0.3
 
 - Preprocessed INDELs before labeling them in `sig_tally()` (#370).

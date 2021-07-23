@@ -57,6 +57,7 @@ COSMIC v3 DBS signatures.
 COSMIC v3 ID (indel) signatures.
 SBS and RS (rearrangement) signatures from Nik lab 2020 Nature Cancer paper.
 RS signatures from BRCA560 and USARC cohorts.
+Copy number signatures from USARC cohort and TCGA.
 
 " />
 <meta property="og:image" content="/logo.png" />
@@ -91,7 +92,7 @@ RS signatures from BRCA560 and USARC cohorts.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.4</span>
       </span>
     </div>
 
@@ -149,6 +150,7 @@ mainly obtained from COSMIC database
 <li><p>COSMIC v3 ID (indel) signatures.</p></li>
 <li><p>SBS and RS (rearrangement) signatures from Nik lab 2020 Nature Cancer paper.</p></li>
 <li><p>RS signatures from BRCA560 and USARC cohorts.</p></li>
+<li><p>Copy number signatures from USARC cohort and TCGA.</p></li>
 </ul>
 
     </div>
@@ -161,13 +163,16 @@ mainly obtained from COSMIC database
     <tr>
       <th>sig_db</th>
       <td><p>default 'legacy', it can be 'legacy' (for <a href='https://cancer.sanger.ac.uk/cosmic/signatures_v2.tt/'>COSMIC v2 'SBS'</a>),
-'SBS', 'DBS', 'ID' and 'TSB' (for <a href='https://cancer.sanger.ac.uk/cosmic/signatures/'>COSMIV v3.1 signatures</a>).
+'SBS', 'DBS', 'ID' and 'TSB' (for <a href='https://cancer.sanger.ac.uk/cosmic/signatures/'>COSMIV v3.1 signatures</a>)
+for small scale mutations.
 For more specific details, it can also be 'SBS_hg19', 'SBS_hg38',
 'SBS_mm9', 'SBS_mm10', 'DBS_hg19', 'DBS_hg38', 'DBS_mm9', 'DBS_mm10' to use
 COSMIC v3 reference signatures from Alexandrov, Ludmil B., et al. (2020) (reference #1).
 In addition, it can be one of "SBS_Nik_lab_Organ", "RS_Nik_lab_Organ",
 "SBS_Nik_lab", "RS_Nik_lab" to refer reference signatures from
-Degasperi, Andrea, et al. (2020) (reference #2).
+Degasperi, Andrea, et al. (2020) (reference #2);
+"RS_BRCA560", "RS_USARC" to reference signatures from BRCA560 and USARC cohorts;
+"CNS_USARC" (40 categories), "CNS_TCGA" (48 categories) to reference copy number signatures from USARC cohort and TCGA.
 <strong>UPDATE</strong>, the latest version of reference version can be automatically
 downloaded and loaded from <a href='https://cancer.sanger.ac.uk/signatures/downloads/'>https://cancer.sanger.ac.uk/signatures/downloads/</a>
 when a option with <code>latest_</code> prefix is specified (e.g. "latest_SBS_GRCh37").
@@ -181,6 +186,15 @@ For all available options, check the parameter setting.</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>a <code>list</code>.</p>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    
+<ul>
+<li><p>Steele, Christopher D., et al. "Signatures of copy number alterations in human cancer." bioRxiv (2021).</p></li>
+<li><p>Alexandrov, Ludmil B., et al. "The repertoire of mutational signatures in human cancer." Nature 578.7793 (2020): 94-101.</p></li>
+<li><p>Steele, Christopher D., et al. "Undifferentiated sarcomas develop through distinct evolutionary pathways." Cancer Cell 35.3 (2019): 441-456.</p></li>
+</ul>
+
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='get_sig_similarity.html'>get_sig_similarity</a>, <a href='sig_fit.html'>sig_fit</a> and <a href='show_cosmic_sig_profile.html'>show_cosmic_sig_profile</a>.</p></div>
@@ -195,6 +209,8 @@ For all available options, check the parameter setting.</p></td>
 <span class='va'>s7</span> <span class='op'>&lt;-</span> <span class='fu'>get_sig_db</span><span class='op'>(</span><span class='st'>"RS_BRCA560"</span><span class='op'>)</span>
 <span class='va'>s8</span> <span class='op'>&lt;-</span> <span class='fu'>get_sig_db</span><span class='op'>(</span><span class='st'>"RS_USARC"</span><span class='op'>)</span>
 <span class='va'>s9</span> <span class='op'>&lt;-</span> <span class='fu'>get_sig_db</span><span class='op'>(</span><span class='st'>"RS_Nik_lab"</span><span class='op'>)</span>
+<span class='va'>s10</span> <span class='op'>&lt;-</span> <span class='fu'>get_sig_db</span><span class='op'>(</span><span class='st'>"CNS_USARC"</span><span class='op'>)</span>
+<span class='va'>s11</span> <span class='op'>&lt;-</span> <span class='fu'>get_sig_db</span><span class='op'>(</span><span class='st'>"CNS_TCGA"</span><span class='op'>)</span>
 <span class='va'>s1</span>
 <span class='va'>s2</span>
 <span class='va'>s3</span>
@@ -204,6 +220,8 @@ For all available options, check the parameter setting.</p></td>
 <span class='va'>s7</span>
 <span class='va'>s8</span>
 <span class='va'>s9</span>
+<span class='va'>s10</span>
+<span class='va'>s11</span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
