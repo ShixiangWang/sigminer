@@ -75,6 +75,7 @@ library(tidyverse)
 # data source: https://github.com/AlexandrovLab/SigProfilerExtractor/tree/master/SigProfilerExtractor/data
 cns <- read_tsv("data-raw/CNV_signatures.txt")
 colnames(cns)[1] <- "class"
+cns$class <- gsub("k", "K", cns$class)
 
 cns <- column_to_rownames(cns, "class")
 colSums(cns)
