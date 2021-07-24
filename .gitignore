@@ -14,3 +14,7 @@ data-raw/*.vcf
 !vignettes/*.rds
 inst/extdata/human_hg*_gene_info.rds
 inst/extdata/COSMIC_v3.2*
+data-raw/human_hg19_gene_info.rds
+data-raw/human_hg38_gene_info.rds
+data-raw/mouse_mm10_gene_info.rds
+inst/extdata/mouse_mm9_gene_info.rds
