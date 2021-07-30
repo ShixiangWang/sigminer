@@ -1,5 +1,8 @@
 # sigminer 2.0.4
 
+- Fixed INDEL classification.
+- Fixed end position determination in `read_vcf()`.
+- Updated INDEL adjustment.
 - Included TCGA copy number signatures from SigProfiler.
 - Updated docs.
 

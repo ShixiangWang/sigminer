@@ -469,7 +469,8 @@ adjust_indels <- function(query) {
     dplyr::ungroup() %>%
     dplyr::mutate(
       Reference_Allele = ifelse(.data$Reference_Allele == "", "-", .data$Reference_Allele),
-      Tumor_Seq_Allele2 = ifelse(.data$Tumor_Seq_Allele2 == "", "-", .data$Tumor_Seq_Allele2)
+      Tumor_Seq_Allele2 = ifelse(.data$Tumor_Seq_Allele2 == "", "-", .data$Tumor_Seq_Allele2),
+      End_Position = .data$Start_Position + nchar(.data$Reference_Allele) - 1L
     ) %>%
     data.table::as.data.table()
 }
@@ -528,7 +529,6 @@ generate_matrix_INDEL <- function(query, ref_genome, genome_build = "hg19", add_
   ## Get first INDEL base
   query[, mut_base := substr(ID_type, 1, 1)]
 
-  ## 这里可能存在问题
   ## Query sequence
   query[, upstream := as.character(
     BSgenome::getSeq(
@@ -538,12 +538,14 @@ generate_matrix_INDEL <- function(query, ref_genome, genome_build = "hg19", add_
       end = Start_Position - 1
     )
   )]
+
+  # NOTE: deletion variants should start from Start_Position
   query[, downstream := as.character(
     BSgenome::getSeq(
       x = ref_genome,
       names = Chromosome,
-      start = End_Position + 1,
-      end = End_Position + 250
+      start = ifelse(Variant_Type == "Ins", Start_Position, End_Position + 1),
+      end = ifelse(Variant_Type == "Ins", Start_Position + 249, End_Position + 250)
     )
   )]
   send_success("Reference sequences queried from genome.")
@@ -575,7 +577,9 @@ generate_matrix_INDEL <- function(query, ref_genome, genome_build = "hg19", add_
   query[, mut_base := ifelse(ID_len > 1, "R", mut_base)]
 
   ## 这里可能有问题 M 标记
-  query[, mut_base := ifelse(ID_len > 1 & count_repeat == 0 & count_homosize > 0, "M", mut_base)]
+  query[, mut_base := ifelse(Variant_Type == "Del" &
+                               ID_len > 1 & count_repeat == 0 &
+                               count_homosize > 0, "M", mut_base)]
 
   ## Generate variables to handle strand bias labeling
   query[, should_reverse := sapply(ID_type, is_all_purine)]

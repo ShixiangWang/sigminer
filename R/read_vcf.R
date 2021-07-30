@@ -61,9 +61,7 @@ read_vcf <- function(vcfs, samples = NULL, genome_build = c("hg19", "hg38", "mm1
     paste0("chr", vcfs$Chromosome)
   )
 
-  # 如果是删除的话，是有问题的，
-  # 起始和终止位点只要看参考Allele就可以。
-  vcfs$End_Position <- vcfs$Start_Position + pmax(nchar(vcfs$Reference_Allele), nchar(vcfs$Tumor_Seq_Allele2)) - 1L
+  vcfs$End_Position <- vcfs$Start_Position + nchar(vcfs$Reference_Allele) - 1L
 
   if (verbose) message("Annotating Variant Type...")
   vcfs$Variant_Type <- dplyr::case_when(
