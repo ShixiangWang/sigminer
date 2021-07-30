@@ -503,6 +503,8 @@ generate_matrix_INDEL <- function(query, ref_genome, genome_build = "hg19", add_
     # , "non_matching"
   )
 
+  ## Adjust un-standard variant formats
+  query <- adjust_indels(query)
   ## Update Variant_Type
   query[, Variant_Type := ifelse(Variant_Type == "INS", "Ins", "Del")]
   ## Set ID type
@@ -510,8 +512,6 @@ generate_matrix_INDEL <- function(query, ref_genome, genome_build = "hg19", add_
     Tumor_Seq_Allele2,
     Reference_Allele
   )]
-  ## Adjust un-standard variant formats
-  query <- adjust_indels(query)
   ## Seach 'complex' motif
   query[, ID_motif := ifelse(Reference_Allele != "-" & Tumor_Seq_Allele2 != "-",
     "complex", NA_character_
@@ -528,6 +528,7 @@ generate_matrix_INDEL <- function(query, ref_genome, genome_build = "hg19", add_
   ## Get first INDEL base
   query[, mut_base := substr(ID_type, 1, 1)]
 
+  ## 这里可能存在问题
   ## Query sequence
   query[, upstream := as.character(
     BSgenome::getSeq(
@@ -572,6 +573,8 @@ generate_matrix_INDEL <- function(query, ref_genome, genome_build = "hg19", add_
   query[, mut_base := ifelse(should_reverse, conv[mut_base], mut_base)]
   ## For length-n (n>1) INDEL
   query[, mut_base := ifelse(ID_len > 1, "R", mut_base)]
+
+  ## 这里可能有问题 M 标记
   query[, mut_base := ifelse(ID_len > 1 & count_repeat == 0 & count_homosize > 0, "M", mut_base)]
 
   ## Generate variables to handle strand bias labeling
