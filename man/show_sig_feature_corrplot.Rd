@@ -18,7 +18,7 @@ show_sig_feature_corrplot(
     midpoint = 0),
   ca_gradient_colors = co_gradient_colors,
   plot_ratio = "auto",
-  breaks_count = c(0L, 200L, 400L, 600L, 800L, 1020L)
+  breaks_count = NULL
 )
 }
 \arguments{
@@ -70,7 +70,10 @@ load(system.file("extdata", "asso_data.RData",
   package = "sigminer", mustWork = TRUE
 ))
 
-p <- show_sig_feature_corrplot(tidy_data.seqz.feature, p_val = 0.05)
+p <- show_sig_feature_corrplot(
+            tidy_data.seqz.feature,
+            p_val = 0.05,
+            breaks_count = c(0L,200L, 400L, 600L, 800L, 1020L))
 p
 }
 \seealso{

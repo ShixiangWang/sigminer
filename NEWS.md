@@ -1,5 +1,6 @@
 # sigminer 2.0.4
 
+- Enhanced error handling in `show_sig_feature_corrplot()` (#376).
 - Fixed INDEL classification.
 - Fixed end position determination in `read_vcf()`.
 - Updated INDEL adjustment.

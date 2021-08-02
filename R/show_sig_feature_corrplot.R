@@ -33,7 +33,10 @@
 #'   package = "sigminer", mustWork = TRUE
 #' ))
 #'
-#' p <- show_sig_feature_corrplot(tidy_data.seqz.feature, p_val = 0.05)
+#' p <- show_sig_feature_corrplot(
+#'             tidy_data.seqz.feature,
+#'             p_val = 0.05,
+#'             breaks_count = c(0L,200L, 400L, 600L, 800L, 1020L))
 #' p
 #' @testexamples
 #' expect_s3_class(p, "ggplot")
@@ -52,10 +55,7 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
                                       ),
                                       ca_gradient_colors = co_gradient_colors,
                                       plot_ratio = "auto",
-                                      breaks_count = c(
-                                        0L,
-                                        200L, 400L, 600L, 800L, 1020L
-                                      )) {
+                                      breaks_count = NULL) {
   if (!requireNamespace("patchwork", quietly = TRUE)) {
     message("'patchwork' package is required to use this feature.")
     return(invisible(NULL))
@@ -92,11 +92,17 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
       ) %>%
       dplyr::filter(.data$feature %in% feature_list)
   } else {
+    nlevels <- tryCatch(
+      cut(tidy_cor$count,
+          breaks = breaks_count),
+      error = function(e) {
+        message(e$message)
+        stop("Cannot cut sample size with option breaks_count, please check your sample size range.")
+      }
+    )
     data <- tidy_cor %>%
       dplyr::mutate(
-        Samples = cut(.data$count,
-          breaks = breaks_count
-        ),
+        Samples = nlevels,
         signature = factor(
           .data$signature,
           levels = if (is.null(sig_orders)) unique(.data$signature) else sig_orders
@@ -109,6 +115,11 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
   if (drop) {
     data <- data %>%
       dplyr::filter(.data$p <= p_val)
+
+    if (nrow(data) < 1) {
+      stop("No data left after filtering, please set drop=FALSE.")
+    }
+
   } else {
     # Fill measure with 0, so the feature is kept with blank
     data <- data %>%
@@ -153,11 +164,13 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
       ))
 
       if (is.null(breaks_count)) {
-        p <- p +
-          ggplot2::scale_size_binned(
-            limits = size_limits,
-            guide = ggplot2::guide_bins(show.limits = TRUE)
-          )
+        if (!diff(size_limits) < 2) {
+          p <- p +
+            ggplot2::scale_size_binned(
+              limits = size_limits,
+              guide = ggplot2::guide_bins(show.limits = TRUE)
+            )
+        }
       } else {
         p <- p + ggplot2::scale_size_discrete(drop = FALSE)
       }
@@ -211,7 +224,7 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
         axis.text.x = element_blank(),
         axis.ticks.x = element_blank()
       )
-      ca <- gglist$ca + guides(size = FALSE) +
+      ca <- gglist$ca + guides(size = "none") +
         labs(y = NULL)
       co + ca + patchwork::plot_layout(
         byrow = TRUE, heights = heights,
@@ -225,7 +238,7 @@ show_sig_feature_corrplot <- function(tidy_cor, feature_list,
         axis.text.x = element_blank(),
         axis.ticks.x = element_blank()
       )
-      ca <- gglist$ca + ggplot2::guides(size = FALSE) +
+      ca <- gglist$ca + ggplot2::guides(size = "none") +
         labs(y = NULL)
       co + ca + patchwork::plot_layout(
         byrow = TRUE, heights = heights,

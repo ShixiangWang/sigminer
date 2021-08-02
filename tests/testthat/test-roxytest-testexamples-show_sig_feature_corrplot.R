@@ -2,7 +2,7 @@
 
 # File R/show_sig_feature_corrplot.R: @testexamples
 
-test_that("Function show_sig_feature_corrplot() @ L41", {
+test_that("Function show_sig_feature_corrplot() @ L44", {
   
   
   # The data is generated from Wang, Shixiang et al.
@@ -10,7 +10,10 @@ test_that("Function show_sig_feature_corrplot() @ L41", {
     package = "sigminer", mustWork = TRUE
   ))
   
-  p <- show_sig_feature_corrplot(tidy_data.seqz.feature, p_val = 0.05)
+  p <- show_sig_feature_corrplot(
+              tidy_data.seqz.feature,
+              p_val = 0.05,
+              breaks_count = c(0L,200L, 400L, 600L, 800L, 1020L))
   p
   expect_s3_class(p, "ggplot")
 })
