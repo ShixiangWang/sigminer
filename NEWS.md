@@ -1,3 +1,7 @@
+# sigminer 2.0.5
+
+- Added option to `get_Aneuploidy_score()` to remove short arms of chr13/14/15/21/22 from calculation.
+
 # sigminer 2.0.4
 
 - Implemented Cohen-Sharir method-like Aneuploidy Score.

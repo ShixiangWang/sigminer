@@ -12,9 +12,12 @@
 #' @param ploidy_df default is `NULL`, compute ploidy by segment-size weighted copy number
 #' aross autosome, see [get_cn_ploidy]. You can also provide a `data.frame` with 'sample'
 #' and 'ploidy' columns.
+#' @param rm_black_arms if `TRUE`, remove short arms of chr13/14/15/21/22 from calculation
+#' as documented in reference #3.
 #' @references
 #' - Cohen-Sharir, Y., McFarland, J. M., Abdusamad, M., Marquis, C., Bernhard, S. V., Kazachkova, M., ... & Ben-David, U. (2021). Aneuploidy renders cancer cells vulnerable to mitotic checkpoint inhibition. Nature, 1-6.
 #' - Logic reference: <https://github.com/quevedor2/aneuploidy_score/>.
+#' - Taylor, Alison M., et al. "Genomic and functional approaches to understanding cancer aneuploidy." Cancer cell 33.4 (2018): 676-689.
 #'
 #' @return A `data.frame`
 #' @export
@@ -39,7 +42,7 @@
 #' expect_equal(nrow(df), 10L)
 #' expect_equal(nrow(df2), 10L)
 #' expect_equal(nrow(df3), 10L)
-get_Aneuploidy_score <- function(data, ploidy_df = NULL, genome_build = "hg19") {
+get_Aneuploidy_score <- function(data, ploidy_df = NULL, genome_build = "hg19", rm_black_arms = FALSE) {
   stopifnot(is.data.frame(data) | inherits(data, "CopyNumber"))
   if (is.data.frame(data)) {
     nc_cols <- c("chromosome", "start", "end", "segVal", "sample")
@@ -80,6 +83,11 @@ get_Aneuploidy_score <- function(data, ploidy_df = NULL, genome_build = "hg19") 
     ) %>%
     tidyr::separate_rows(type, sep = ",") %>%
     data.table::as.data.table()
+
+  if (rm_black_arms) {
+    # Remove short arms of chr13/14/15/21/22
+    df <- df[!(chromosome %in% c("chr13", "chr14", "chr15", "chr21", "chr22") & type %in% "p"), ]
+  }
 
   df <- df[, .(flag = as.integer(round(sum(segVal * fraction) - ploidy[1]))),
     # overage = round(sum(fraction), 3)),

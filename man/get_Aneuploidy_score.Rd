@@ -4,7 +4,12 @@
 \alias{get_Aneuploidy_score}
 \title{Get Aneuploidy Score from Copy Number Profile}
 \usage{
-get_Aneuploidy_score(data, ploidy_df = NULL, genome_build = "hg19")
+get_Aneuploidy_score(
+  data,
+  ploidy_df = NULL,
+  genome_build = "hg19",
+  rm_black_arms = FALSE
+)
 }
 \arguments{
 \item{data}{a CopyNumber object or a \code{data.frame} containing at least
@@ -15,6 +20,9 @@ aross autosome, see \link{get_cn_ploidy}. You can also provide a \code{data.fram
 and 'ploidy' columns.}
 
 \item{genome_build}{genome build version, should be 'hg19', 'hg38', 'mm9' or 'mm10'.}
+
+\item{rm_black_arms}{if \code{TRUE}, remove short arms of chr13/14/15/21/22 from calculation
+as documented in reference #3.}
 }
 \value{
 A \code{data.frame}
@@ -47,5 +55,6 @@ df3
 \itemize{
 \item Cohen-Sharir, Y., McFarland, J. M., Abdusamad, M., Marquis, C., Bernhard, S. V., Kazachkova, M., ... & Ben-David, U. (2021). Aneuploidy renders cancer cells vulnerable to mitotic checkpoint inhibition. Nature, 1-6.
 \item Logic reference: \url{https://github.com/quevedor2/aneuploidy_score/}.
+\item Taylor, Alison M., et al. "Genomic and functional approaches to understanding cancer aneuploidy." Cancer cell 33.4 (2018): 676-689.
 }
 }

@@ -2,7 +2,7 @@
 
 # File R/get_Aneuploidy_score.R: @testexamples
 
-test_that("Function get_Aneuploidy_score() @ L42", {
+test_that("Function get_Aneuploidy_score() @ L45", {
   
   # Load copy number object
   load(system.file("extdata", "toy_copynumber.RData",
