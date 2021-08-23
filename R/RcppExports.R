@@ -9,3 +9,7 @@ cosineMatrix <- function(x, y) {
     .Call(`_sigminer_cosineMatrix`, x, y)
 }
 
+IntersectSize <- function(x_start, x_end, y_start, y_end) {
+    .Call(`_sigminer_IntersectSize`, x_start, x_end, y_start, y_end)
+}
+

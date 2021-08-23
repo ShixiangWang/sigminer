@@ -34,10 +34,25 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// IntersectSize
+NumericVector IntersectSize(NumericVector x_start, NumericVector x_end, NumericVector y_start, NumericVector y_end);
+RcppExport SEXP _sigminer_IntersectSize(SEXP x_startSEXP, SEXP x_endSEXP, SEXP y_startSEXP, SEXP y_endSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x_start(x_startSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type x_end(x_endSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type y_start(y_startSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type y_end(y_endSEXP);
+    rcpp_result_gen = Rcpp::wrap(IntersectSize(x_start, x_end, y_start, y_end));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_sigminer_cosineVector", (DL_FUNC) &_sigminer_cosineVector, 2},
     {"_sigminer_cosineMatrix", (DL_FUNC) &_sigminer_cosineMatrix, 2},
+    {"_sigminer_IntersectSize", (DL_FUNC) &_sigminer_IntersectSize, 4},
     {NULL, NULL, 0}
 };
 

@@ -141,6 +141,7 @@ reference:
     - cosine
     - get_cn_freq_table
     - same_size_clustering
+    - get_intersect_size
   - title: Copy number analysis and visualization
     desc: Functions for analyzing copy number data and visualization.
     contents:

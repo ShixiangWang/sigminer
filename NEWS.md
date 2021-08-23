@@ -1,5 +1,6 @@
 # sigminer 2.0.5
 
+- Added function `get_intersect_size()` for get overlap size between intervals.
 - Added option to `get_Aneuploidy_score()` to remove short arms of chr13/14/15/21/22 from calculation.
 
 # sigminer 2.0.4
