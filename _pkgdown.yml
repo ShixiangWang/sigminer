@@ -14,6 +14,7 @@ reference:
     contents:
     - read_copynumber
     - read_copynumber_seqz
+    - read_copynumber_ascat
     - read_maf
     - read_sv_as_rs
     - read_vcf
