@@ -25,7 +25,7 @@ read_ascat_cn <- function(x) {
   x <- readRDS(x)
 
   if (object.size(x) < 2000) {
-    message(x2, " was failed in ASCAT calling.")
+    warning(x2, " was failed in ASCAT calling.", immediate. = TRUE)
     return(invisible(NULL))
   }
   x <- x[c("segments", "aberrantcellfraction", "ploidy")]
@@ -34,7 +34,7 @@ read_ascat_cn <- function(x) {
   x$data <- x$data %>%
     dplyr::mutate(total_cn = .data$major_cn + .data$minor_cn) %>%
     dplyr::select(c("chromosome", "start", "end", "total_cn", "minor_cn", "sample"))
-  x$source <- x2 # track the source file
+  x$data$source <- basename(x2) # track the source file
   return(x)
 }
 
@@ -46,7 +46,6 @@ read_ascat_cn_list <- function(x_list) {
   y_list$data <- data.table::rbindlist(x_list$data)
   y_list$purity <- purrr::reduce(x_list$purity, c)
   y_list$ploidy <- purrr::reduce(x_list$ploidy, c)
-  y_list$source <- purrr::reduce(x_list$source, c)
   message("done")
   return(y_list)
 }
