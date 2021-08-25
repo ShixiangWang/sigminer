@@ -59,3 +59,4 @@ get_pLOH_score <- function(data, rm_chrs = c("chrX", "chrY"), genome_build = "hg
 }
 
 
+utils::globalVariables("minor_cn")
