@@ -1,5 +1,6 @@
 # sigminer 2.0.5
 
+- Added function `get_pLOH_score()` for representing the genome that displayed LOH.
 - Added function `read_copynumber_ascat()` for reading ASCAT result ASCAT object in `.rds` format.
 - Added function `get_intersect_size()` for getting overlap size between intervals.
 - Added option to `get_Aneuploidy_score()` to remove short arms of chr13/14/15/21/22 from calculation.

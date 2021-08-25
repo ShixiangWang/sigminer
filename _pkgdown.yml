@@ -149,6 +149,7 @@ reference:
     - transform_seg_table
     - get_cn_ploidy
     - get_Aneuploidy_score
+    - get_pLOH_score
     - scoring
     - show_cn_profile
     - show_cn_circos
