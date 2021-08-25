@@ -4,7 +4,7 @@
 #'
 #' @inheritParams read_copynumber
 #' @param data a CopyNumber object or a `data.frame` containing at least
-#' 'chromosome', 'start', 'end', 'segVal', 'sample' these columns.
+#' 'chromosome', 'start', 'end', 'segVal', "minor_cn", 'sample' these columns.
 #' @param rm_chrs chromosomes to be removed in calculation. Default is sex
 #' chromosomes (recommended).
 #' @references

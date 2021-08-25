@@ -8,7 +8,7 @@ get_pLOH_score(data, rm_chrs = c("chrX", "chrY"), genome_build = "hg19")
 }
 \arguments{
 \item{data}{a CopyNumber object or a \code{data.frame} containing at least
-'chromosome', 'start', 'end', 'segVal', 'sample' these columns.}
+'chromosome', 'start', 'end', 'segVal', "minor_cn", 'sample' these columns.}
 
 \item{rm_chrs}{chromosomes to be removed in calculation. Default is sex
 chromosomes (recommended).}
