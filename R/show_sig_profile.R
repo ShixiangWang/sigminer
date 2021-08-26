@@ -44,6 +44,7 @@
 #' @param x_label_hjust font hjust for x label.
 #' @param x_lab x axis lab.
 #' @param y_lab y axis lab.
+#' @param y_limits limits to expand in y axis. e.g., `0.2`, `c(0, 0.3)`.
 #' @param params params `data.frame` of components, obtained from [sig_tally].
 #' @param show_cv default is `FALSE`, if `TRUE`, show coefficient of variation when
 #' `params` is not `NULL`.
@@ -124,6 +125,7 @@ show_sig_profile <- function(Signature,
                              x_label_hjust = 1,
                              x_lab = "Components",
                              y_lab = "auto",
+                             y_limits = NULL,
                              params = NULL, show_cv = FALSE,
                              params_label_size = 3,
                              params_label_angle = 60, y_expand = 1,
@@ -576,6 +578,10 @@ show_sig_profile <- function(Signature,
     }
   }
 
+  if (!is.null(y_limits)) {
+    p <- p + expand_limits(y = y_limits)
+  }
+
   p <- p + facet_grid(class ~ base, scales = "free", space = free_space)
 
   p <- p + scale_y_continuous(
@@ -668,7 +674,7 @@ show_sig_profile <- function(Signature,
   # <<<<<<<<<<<<<<<<< Setting theme
 
   p <- p +
-    guides(fill = FALSE) + .theme_ss
+    guides(fill = "none") + .theme_ss
 
   if (all(mode == "copynumber", !is.null(params))) {
     p <- p + theme(plot.margin = margin(30 * y_expand, 2, 2, 2, unit = "pt")) # Add regions

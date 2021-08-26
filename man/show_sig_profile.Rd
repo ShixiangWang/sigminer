@@ -30,6 +30,7 @@ show_sig_profile(
   x_label_hjust = 1,
   x_lab = "Components",
   y_lab = "auto",
+  y_limits = NULL,
   params = NULL,
   show_cv = FALSE,
   params_label_size = 3,
@@ -109,6 +110,8 @@ data.}
 \item{x_lab}{x axis lab.}
 
 \item{y_lab}{y axis lab.}
+
+\item{y_limits}{limits to expand in y axis. e.g., \code{0.2}, \code{c(0, 0.3)}.}
 
 \item{params}{params \code{data.frame} of components, obtained from \link{sig_tally}.}
 

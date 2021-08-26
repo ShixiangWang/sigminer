@@ -1,5 +1,6 @@
 # sigminer 2.0.5
 
+- Impl `y_limits` option in `show_sig_profile()` (#381).
 - Added function `get_pLOH_score()` for representing the genome that displayed LOH.
 - Added function `read_copynumber_ascat()` for reading ASCAT result ASCAT object in `.rds` format.
 - Added function `get_intersect_size()` for getting overlap size between intervals.
