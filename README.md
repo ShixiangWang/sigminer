@@ -137,12 +137,9 @@ conda install -c bioconda -c conda-forge r-sigminer
 ## Usage
 
 A complete documentation of **sigminer** can be read online at
-<https://shixiangwang.github.io/sigminer-doc/> (For Chinese users, you
-can also read it at <https://shixiangwang.gitee.io/sigminer-doc/>). All
-functions are well organized and documented at
-<https://shixiangwang.github.io/sigminer/reference/index.html> (For
-Chinese users, you can also read it at
-<https://shixiangwang.gitee.io/sigminer/reference/index.html>). For
+<https://shixiangwang.github.io/sigminer-doc/>. All functions are well
+organized and documented at
+<https://shixiangwang.github.io/sigminer/reference/index.html>. For
 usage of a specific function `fun`, run `?fun` in your R console to see
 its documentation.
 
@@ -167,6 +164,21 @@ following papers.
 ------------------------------------------------------------------------
 
 ## Download Stats
+
+    #> 
+    #> 载入程辑包：'dplyr'
+    #> The following object is masked from 'package:Biobase':
+    #> 
+    #>     combine
+    #> The following objects are masked from 'package:BiocGenerics':
+    #> 
+    #>     combine, intersect, setdiff, union
+    #> The following objects are masked from 'package:stats':
+    #> 
+    #>     filter, lag
+    #> The following objects are masked from 'package:base':
+    #> 
+    #>     intersect, setdiff, setequal, union
 
 <img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
 

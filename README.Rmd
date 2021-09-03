@@ -147,7 +147,7 @@ conda install -c bioconda -c conda-forge r-sigminer
 
 ## Usage
 
-A complete documentation of **sigminer** can be read online at <https://shixiangwang.github.io/sigminer-doc/> (For Chinese users, you can also read it at <https://shixiangwang.gitee.io/sigminer-doc/>). All functions are well organized and documented at <https://shixiangwang.github.io/sigminer/reference/index.html> (For Chinese users, you can also read it at <https://shixiangwang.gitee.io/sigminer/reference/index.html>). For usage of a specific function `fun`, run `?fun` in your R console to see its documentation.
+A complete documentation of **sigminer** can be read online at <https://shixiangwang.github.io/sigminer-doc/>. All functions are well organized and documented at <https://shixiangwang.github.io/sigminer/reference/index.html>. For usage of a specific function `fun`, run `?fun` in your R console to see its documentation.
 
 ## Citation
 
@@ -165,16 +165,18 @@ If you use **sigminer** in academic field, please cite one of the following pape
 
 ```{r, echo=FALSE, warning=FALSE}
 library("ggplot2")
-library("dlstats")
+library("cranlogs")
+library("dplyr")
 
-x <- cran_stats(c("sigminer"))
+x <- cran_downloads("sigminer", from = "2019-07-01", to = "2021-09-01")
 
 if (!is.null(x)) {
    #head(x)
-   ggplot(x, aes(end, cumsum(downloads), group=package, color=package)) +
+   p <- ggplot(x, aes(date, cumsum(count), group=package, color=package)) +
        geom_line() + geom_point(aes(shape=package)) + 
     theme_minimal() + theme(legend.position = "none") +
     labs(x = "Time", y = "Cumulative downloads")
+   p
 }
 ```
 
