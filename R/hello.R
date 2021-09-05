@@ -12,7 +12,7 @@ Run citation('sigminer') to see how to cite sigminer in publications.
 
 Project home : https://github.com/ShixiangWang/sigminer
 Bug report   : https://github.com/ShixiangWang/sigminer/issues
-Documentation: https://shixiangwang.github.io/sigminer-doc/
+Documentation: https://shixiangwang.github.io/sigminer-book/
 =========================================================================
                  ")
   message(msg)
