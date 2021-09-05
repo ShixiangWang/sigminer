@@ -79,7 +79,7 @@ test p values are shown for categorical data and fdr values are shown for
 continuous data.
 }
 \examples{
-load(system.file("extdata", "toy_copynumber_signature_by_M.RData",
+load(system.file("extdata", "toy_copynumber_signature_by_W.RData",
   package = "sigminer", mustWork = TRUE
 ))
 

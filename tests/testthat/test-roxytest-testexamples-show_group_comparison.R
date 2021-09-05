@@ -4,7 +4,7 @@
 
 test_that("Function show_group_comparison() @ L72", {
   
-  load(system.file("extdata", "toy_copynumber_signature_by_M.RData",
+  load(system.file("extdata", "toy_copynumber_signature_by_W.RData",
     package = "sigminer", mustWork = TRUE
   ))
   

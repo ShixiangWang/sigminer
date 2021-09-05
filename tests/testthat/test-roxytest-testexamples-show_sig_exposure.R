@@ -13,7 +13,7 @@ test_that("Function show_sig_exposure() @ L45", {
   p1
   
   # Load copy number signature
-  load(system.file("extdata", "toy_copynumber_signature_by_M.RData",
+  load(system.file("extdata", "toy_copynumber_signature_by_W.RData",
     package = "sigminer", mustWork = TRUE
   ))
   # Show signature exposure

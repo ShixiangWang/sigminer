@@ -35,7 +35,7 @@
 #' @import ggplot2
 #' @export
 #' @examples
-#' load(system.file("extdata", "toy_copynumber_signature_by_M.RData",
+#' load(system.file("extdata", "toy_copynumber_signature_by_W.RData",
 #'   package = "sigminer", mustWork = TRUE
 #' ))
 #'
