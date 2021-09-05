@@ -81,17 +81,17 @@ Typically, a reference genome is not required because the input is a matrix (my 
 }
 \examples{
 if (FALSE) {
-  load(system.file("extdata", "toy_copynumber_tally_M.RData",
+  load(system.file("extdata", "toy_copynumber_tally_W.RData",
     package = "sigminer", mustWork = TRUE
   ))
 
   reticulate::conda_list()
 
-  sigprofiler_extract(cn_tally_M$nmf_matrix, "~/test/test_sigminer",
+  sigprofiler_extract(cn_tally_W$nmf_matrix, "~/test/test_sigminer",
     use_conda = TRUE
   )
 
-  sigprofiler_extract(cn_tally_M$nmf_matrix, "~/test/test_sigminer",
+  sigprofiler_extract(cn_tally_W$nmf_matrix, "~/test/test_sigminer",
     use_conda = FALSE, py_path = "/Users/wsx/anaconda3/bin/python"
   )
 }

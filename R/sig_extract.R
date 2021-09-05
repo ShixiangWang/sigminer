@@ -16,11 +16,11 @@
 #' @export
 #' @examples
 #' \donttest{
-#' load(system.file("extdata", "toy_copynumber_tally_M.RData",
+#' load(system.file("extdata", "toy_copynumber_tally_W.RData",
 #'   package = "sigminer", mustWork = TRUE
 #' ))
 #' # Extract copy number signatures
-#' res <- sig_extract(cn_tally_M$nmf_matrix, 2, nrun = 1)
+#' res <- sig_extract(cn_tally_W$nmf_matrix, 2, nrun = 1)
 #' }
 #' @testexamples
 #' expect_s3_class(res, "Signature")

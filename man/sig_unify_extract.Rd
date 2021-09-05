@@ -44,17 +44,17 @@ See "Arguments" part.
 }
 \examples{
 \donttest{
-load(system.file("extdata", "toy_copynumber_tally_M.RData",
+load(system.file("extdata", "toy_copynumber_tally_W.RData",
   package = "sigminer", mustWork = TRUE
 ))
 # Extract signatures
-# It is same as sig_extract(cn_tally_M$nmf_matrix, 2, nrun = 1)
-res <- sig_unify_extract(cn_tally_M$nmf_matrix, 2,
+# It is same as sig_extract(cn_tally_W$nmf_matrix, 2, nrun = 1)
+res <- sig_unify_extract(cn_tally_W$nmf_matrix, 2,
   nrun = 1,
   approach = "repeated_nmf"
 )
 # Auto-extract signatures based on bayesian NMF
-res2 <- sig_unify_extract(cn_tally_M$nmf_matrix,
+res2 <- sig_unify_extract(cn_tally_W$nmf_matrix,
   nrun = 1,
   approach = "bayes_nmf"
 )

@@ -4,10 +4,10 @@
 
 test_that("Function sig_auto_extract() @ L97", {
   
-  load(system.file("extdata", "toy_copynumber_tally_M.RData",
+  load(system.file("extdata", "toy_copynumber_tally_W.RData",
     package = "sigminer", mustWork = TRUE
   ))
-  res <- sig_auto_extract(cn_tally_M$nmf_matrix, result_prefix = "Test_copynumber", nrun = 1)
+  res <- sig_auto_extract(cn_tally_W$nmf_matrix, result_prefix = "Test_copynumber", nrun = 1)
   # At default, all run files are stored in tempdir()
   dir(tempdir(), pattern = "Test_copynumber")
   
@@ -25,10 +25,10 @@ test_that("Function sig_auto_extract() @ L97", {
   x
   
   expect_s3_class(res, "Signature")
-  res <- sig_auto_extract(cn_tally_M$nmf_matrix, result_prefix = "test",
+  res <- sig_auto_extract(cn_tally_W$nmf_matrix, result_prefix = "test",
                           method = "L1KL", nrun = 1)
   expect_s3_class(res, "Signature")
-  res <- sig_auto_extract(cn_tally_M$nmf_matrix, result_prefix = "test",
+  res <- sig_auto_extract(cn_tally_W$nmf_matrix, result_prefix = "test",
                           method = "L2KL", nrun = 1)
   expect_s3_class(res, "Signature")
   expect_s3_class(x, "Signature")
