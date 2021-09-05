@@ -1,4 +1,4 @@
-# sigminer 2.0.6
+# sigminer 2.1.0
 
 - Added `sig_unify_extract()` as an unified signature extractor.
 - Fixed error showing reference signature profile for `CNS_TCGA` database.

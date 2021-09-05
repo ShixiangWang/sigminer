@@ -8,7 +8,7 @@ sig_unify_extract(
   nmf_matrix,
   range = 2:5,
   nrun = 10,
-  approach = c("repeated_nmf", "bayes_nmf", "bootstrap_nmf", "sigprofiler"),
+  approach = c("bayes_nmf", "repeated_nmf", "bootstrap_nmf", "sigprofiler"),
   cores = 1L,
   ...
 )
@@ -36,10 +36,19 @@ please also read the documentation of corresponding extractor.
 load(system.file("extdata", "toy_copynumber_tally_M.RData",
   package = "sigminer", mustWork = TRUE
 ))
-# Extract copy number signatures
+# Extract signatures
 # It is same as sig_extract(cn_tally_M$nmf_matrix, 2, nrun = 1)
-res <- sig_unify_extract(cn_tally_M$nmf_matrix, 2, nrun = 1)
+res <- sig_unify_extract(cn_tally_M$nmf_matrix, 2,
+  nrun = 1,
+  approach = "repeated_nmf"
+)
 }
+
+# Auto-extract signatures based on bayesian NMF
+res2 <- sig_unify_extract(cn_tally_M$nmf_matrix,
+  nrun = 1,
+  approach = "bayes_nmf"
+)
 }
 \seealso{
 \link{sig_extract}, \link{sig_auto_extract}, \link{bp_extract_signatures},

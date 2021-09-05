@@ -2,16 +2,26 @@
 
 # File R/sig_unify_extract.R: @testexamples
 
-test_that("Function sig_unify_extract() @ L30", {
+test_that("Function sig_unify_extract() @ L40", {
   
   
   load(system.file("extdata", "toy_copynumber_tally_M.RData",
     package = "sigminer", mustWork = TRUE
   ))
-  # Extract copy number signatures
+  # Extract signatures
   # It is same as sig_extract(cn_tally_M$nmf_matrix, 2, nrun = 1)
-  res <- sig_unify_extract(cn_tally_M$nmf_matrix, 2, nrun = 1)
+  res <- sig_unify_extract(cn_tally_M$nmf_matrix, 2,
+    nrun = 1,
+    approach = "repeated_nmf"
+  )
   
+  
+  # Auto-extract signatures based on bayesian NMF
+  res2 <- sig_unify_extract(cn_tally_M$nmf_matrix,
+    nrun = 1,
+    approach = "bayes_nmf"
+  )
   expect_s3_class(res, "Signature")
+  expect_s3_class(res2, "Signature")
 })
 

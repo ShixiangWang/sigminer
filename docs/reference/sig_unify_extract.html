@@ -88,7 +88,7 @@ please also read the documentation of corresponding extractor.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.0</span>
       </span>
     </div>
 
@@ -151,7 +151,7 @@ please also read the documentation of corresponding extractor.</p><ul>
   <span class='va'>nmf_matrix</span>,
   range <span class='op'>=</span> <span class='fl'>2</span><span class='op'>:</span><span class='fl'>5</span>,
   nrun <span class='op'>=</span> <span class='fl'>10</span>,
-  approach <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"repeated_nmf"</span>, <span class='st'>"bayes_nmf"</span>, <span class='st'>"bootstrap_nmf"</span>, <span class='st'>"sigprofiler"</span><span class='op'>)</span>,
+  approach <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"bayes_nmf"</span>, <span class='st'>"repeated_nmf"</span>, <span class='st'>"bootstrap_nmf"</span>, <span class='st'>"sigprofiler"</span><span class='op'>)</span>,
   cores <span class='op'>=</span> <span class='fl'>1L</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
@@ -179,10 +179,19 @@ on the <code>approach</code> setting. Check the "Description" part.</p></td>
 <span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"toy_copynumber_tally_M.RData"</span>,
   package <span class='op'>=</span> <span class='st'>"sigminer"</span>, mustWork <span class='op'>=</span> <span class='cn'>TRUE</span>
 <span class='op'>)</span><span class='op'>)</span>
-<span class='co'># Extract copy number signatures</span>
+<span class='co'># Extract signatures</span>
 <span class='co'># It is same as sig_extract(cn_tally_M$nmf_matrix, 2, nrun = 1)</span>
-<span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>sig_unify_extract</span><span class='op'>(</span><span class='va'>cn_tally_M</span><span class='op'>$</span><span class='va'>nmf_matrix</span>, <span class='fl'>2</span>, nrun <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+<span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>sig_unify_extract</span><span class='op'>(</span><span class='va'>cn_tally_M</span><span class='op'>$</span><span class='va'>nmf_matrix</span>, <span class='fl'>2</span>,
+  nrun <span class='op'>=</span> <span class='fl'>1</span>,
+  approach <span class='op'>=</span> <span class='st'>"repeated_nmf"</span>
+<span class='op'>)</span>
 <span class='co'># }</span>
+
+<span class='co'># Auto-extract signatures based on bayesian NMF</span>
+<span class='va'>res2</span> <span class='op'>&lt;-</span> <span class='fu'>sig_unify_extract</span><span class='op'>(</span><span class='va'>cn_tally_M</span><span class='op'>$</span><span class='va'>nmf_matrix</span>,
+  nrun <span class='op'>=</span> <span class='fl'>1</span>,
+  approach <span class='op'>=</span> <span class='st'>"bayes_nmf"</span>
+<span class='op'>)</span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

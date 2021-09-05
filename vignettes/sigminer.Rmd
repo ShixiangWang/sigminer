@@ -92,6 +92,6 @@ if (require(pheatmap)) {
 
 ## More
 
-Please go to <https://shixiangwang.github.io/sigminer/reference/index.html> for well organized functions and documentation.
+Please go to [*reference* list](https://shixiangwang.github.io/sigminer/reference/index.html) for well organized functions and documentation.
 
-Please go to <https://shixiangwang.github.io/sigminer-doc/> for full vignette.
+For more about mutational signature and **sigminer** usage, you can read [*sigminer-book*](https://shixiangwang.github.io/sigminer-book/).
