@@ -3,14 +3,16 @@
 #' This function provides an unified interface to signature extractor
 #' implemented in **sigminer**. If you determine a specific `approach`,
 #' please also read the documentation of corresponding extractor.
+#' See "Arguments" part.
+#'
+#' @inheritParams sigprofiler
+#' @param approach approach name.
 #' - "repeated_nmf" - [sig_extract]
 #' - "bayes_nmf" - [sig_auto_extract]
 #' - "bootstrap_nmf" - [bp_extract_signatures]
 #' - "sigprofiler" - [sigprofiler]
-#'
-#' @inheritParams sigprofiler_extract
 #' @param ... other parameters passing to signature extractor based
-#' on the `approach` setting. Check the "Description" part.
+#' on the `approach` setting.
 #'
 #' @return Result dependent on the `approach` setting.
 #' @export
@@ -25,13 +27,12 @@
 #'   nrun = 1,
 #'   approach = "repeated_nmf"
 #' )
-#' }
-#'
 #' # Auto-extract signatures based on bayesian NMF
 #' res2 <- sig_unify_extract(cn_tally_M$nmf_matrix,
 #'   nrun = 1,
 #'   approach = "bayes_nmf"
 #' )
+#' }
 #' @testexamples
 #' expect_s3_class(res, "Signature")
 #' expect_s3_class(res2, "Signature")

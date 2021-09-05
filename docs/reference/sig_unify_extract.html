@@ -50,12 +50,7 @@
 <meta property="og:description" content="This function provides an unified interface to signature extractor
 implemented in sigminer. If you determine a specific approach,
 please also read the documentation of corresponding extractor.
-&quot;repeated_nmf&quot; - sig_extract
-&quot;bayes_nmf&quot; - sig_auto_extract
-&quot;bootstrap_nmf&quot; - bp_extract_signatures
-&quot;sigprofiler&quot; - sigprofiler
-
-" />
+See &quot;Arguments&quot; part." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -138,13 +133,8 @@ please also read the documentation of corresponding extractor.
     <div class="ref-description">
     <p>This function provides an unified interface to signature extractor
 implemented in <strong>sigminer</strong>. If you determine a specific <code>approach</code>,
-please also read the documentation of corresponding extractor.</p><ul>
-<li><p>"repeated_nmf" - <a href='sig_extract.html'>sig_extract</a></p></li>
-<li><p>"bayes_nmf" - <a href='sig_auto_extract.html'>sig_auto_extract</a></p></li>
-<li><p>"bootstrap_nmf" - <a href='bp.html'>bp_extract_signatures</a></p></li>
-<li><p>"sigprofiler" - <a href='sigprofiler.html'>sigprofiler</a></p></li>
-</ul>
-
+please also read the documentation of corresponding extractor.
+See "Arguments" part.</p>
     </div>
 
     <pre class="usage"><span class='fu'>sig_unify_extract</span><span class='op'>(</span>
@@ -160,9 +150,34 @@ please also read the documentation of corresponding extractor.</p><ul>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>nmf_matrix</th>
+      <td><p>a <code>matrix</code> used for NMF decomposition with rows indicate samples and columns indicate components.</p></td>
+    </tr>
+    <tr>
+      <th>range</th>
+      <td><p>signature number range, i.e. <code>2:5</code>.</p></td>
+    </tr>
+    <tr>
+      <th>nrun</th>
+      <td><p>the number of iteration to be performed to extract each signature number.</p></td>
+    </tr>
+    <tr>
+      <th>approach</th>
+      <td><p>approach name.</p><ul>
+<li><p>"repeated_nmf" - <a href='sig_extract.html'>sig_extract</a></p></li>
+<li><p>"bayes_nmf" - <a href='sig_auto_extract.html'>sig_auto_extract</a></p></li>
+<li><p>"bootstrap_nmf" - <a href='bp.html'>bp_extract_signatures</a></p></li>
+<li><p>"sigprofiler" - <a href='sigprofiler.html'>sigprofiler</a></p></li>
+</ul></td>
+    </tr>
+    <tr>
+      <th>cores</th>
+      <td><p>number of cores used for computation.</p></td>
+    </tr>
+    <tr>
       <th>...</th>
       <td><p>other parameters passing to signature extractor based
-on the <code>approach</code> setting. Check the "Description" part.</p></td>
+on the <code>approach</code> setting.</p></td>
     </tr>
     </table>
 
@@ -185,13 +200,12 @@ on the <code>approach</code> setting. Check the "Description" part.</p></td>
   nrun <span class='op'>=</span> <span class='fl'>1</span>,
   approach <span class='op'>=</span> <span class='st'>"repeated_nmf"</span>
 <span class='op'>)</span>
-<span class='co'># }</span>
-
 <span class='co'># Auto-extract signatures based on bayesian NMF</span>
 <span class='va'>res2</span> <span class='op'>&lt;-</span> <span class='fu'>sig_unify_extract</span><span class='op'>(</span><span class='va'>cn_tally_M</span><span class='op'>$</span><span class='va'>nmf_matrix</span>,
   nrun <span class='op'>=</span> <span class='fl'>1</span>,
   approach <span class='op'>=</span> <span class='st'>"bayes_nmf"</span>
 <span class='op'>)</span>
+<span class='co'># }</span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

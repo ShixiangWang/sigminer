@@ -14,8 +14,24 @@ sig_unify_extract(
 )
 }
 \arguments{
+\item{nmf_matrix}{a \code{matrix} used for NMF decomposition with rows indicate samples and columns indicate components.}
+
+\item{range}{signature number range, i.e. \code{2:5}.}
+
+\item{nrun}{the number of iteration to be performed to extract each signature number.}
+
+\item{approach}{approach name.
+\itemize{
+\item "repeated_nmf" - \link{sig_extract}
+\item "bayes_nmf" - \link{sig_auto_extract}
+\item "bootstrap_nmf" - \link{bp_extract_signatures}
+\item "sigprofiler" - \link{sigprofiler}
+}}
+
+\item{cores}{number of cores used for computation.}
+
 \item{...}{other parameters passing to signature extractor based
-on the \code{approach} setting. Check the "Description" part.}
+on the \code{approach} setting.}
 }
 \value{
 Result dependent on the \code{approach} setting.
@@ -24,12 +40,7 @@ Result dependent on the \code{approach} setting.
 This function provides an unified interface to signature extractor
 implemented in \strong{sigminer}. If you determine a specific \code{approach},
 please also read the documentation of corresponding extractor.
-\itemize{
-\item "repeated_nmf" - \link{sig_extract}
-\item "bayes_nmf" - \link{sig_auto_extract}
-\item "bootstrap_nmf" - \link{bp_extract_signatures}
-\item "sigprofiler" - \link{sigprofiler}
-}
+See "Arguments" part.
 }
 \examples{
 \donttest{
@@ -42,13 +53,12 @@ res <- sig_unify_extract(cn_tally_M$nmf_matrix, 2,
   nrun = 1,
   approach = "repeated_nmf"
 )
-}
-
 # Auto-extract signatures based on bayesian NMF
 res2 <- sig_unify_extract(cn_tally_M$nmf_matrix,
   nrun = 1,
   approach = "bayes_nmf"
 )
+}
 }
 \seealso{
 \link{sig_extract}, \link{sig_auto_extract}, \link{bp_extract_signatures},
