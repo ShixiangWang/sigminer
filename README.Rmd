@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 [![CRAN status](https://www.r-pkg.org/badges/version/sigminer)](https://cran.r-project.org/package=sigminer) [![lifecycle](https://img.shields.io/badge/lifecycle-stable-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html) [![R-CMD-check](https://github.com/ShixiangWang/sigminer/workflows/R-CMD-check/badge.svg)](https://github.com/ShixiangWang/sigminer/actions) [![Coverage status](https://codecov.io/gh/ShixiangWang/sigminer/branch/master/graph/badge.svg)](https://codecov.io/github/ShixiangWang/sigminer?branch=master) [![](https://cranlogs.r-pkg.org/badges/grand-total/sigminer?color=orange)](https://cran.r-project.org/package=sigminer) [![Closed issues](https://img.shields.io/github/issues-closed/ShixiangWang/sigminer.svg)](https://github.com/ShixiangWang/sigminer/issues?q=is%3Aissue+is%3Aclosed) [![Lines Of Code](https://tokei.rs/b1/github/ShixiangWang/sigminer?category=code)](https://github.com/ShixiangWang/sigminer) [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FShixiangWang%2Fsigminer&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com) ![install with bioconda](https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat-square)
 
 
-## Overview
+## :bar_chart: Overview
 
 The cancer genome is shaped by various mutational processes over its lifetime, stemming from exogenous and cell-intrinsic DNA damage, and error-prone DNA replication, leaving behind characteristic mutational spectra, termed **mutational signatures**. This package, **sigminer**, helps users to extract, analyze and visualize signatures from genome alteration records, thus providing new insight into cancer study.
 
@@ -86,7 +86,7 @@ p5
 ```
 
 
-### Features
+### :airplane: Features
 
 -   supports a standard *de novo* pipeline for identification of **5** types of signatures: copy number, SBS, DBS, INDEL and RS (genome rearrangement signature).
 -   supports quantify exposure for one sample based on *known signatures*.
@@ -98,26 +98,8 @@ p5
 -   elegant plots powered by R packages **ggplot2**, **ggpubr**, **cowplot** and **patchwork**.
 -   well tested by R package **testthat** and documented by R package **roxygen2**, **roxytest**, **pkgdown**, and etc. for both reliable and reproducible research.
 
-### Key Interfaces and Their Performances
 
-**Sigminer** provides many approaches to extract mutational signatures. To test their performances, I use 4 mutation catalog datasets (each mutation catalog dataset is composed of 30 samples, 10 COSMIC v2 (SBS) signatures are randomly assigned to each sample with random signature exposure) from reference \#6. The following table shows how many signatures can be recovered and the corresponding average cosine similarity to COSMIC reference signatures for each approach with settings.
-
-| Approach      | Selection Way        | Setting                                               | Caller                        | Recommend | Driver          | Set1       | Set2       | Set3            | Set4       | Success /Mean | Run time          | Note                                                                                                                                                                |
-|:--------------|:---------------------|:------------------------------------------------------|:------------------------------|:----------|:----------------|:-----------|:-----------|:----------------|:-----------|:--------------|:------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Standard NMF  | Manual               | Default. 50 runs (estimation) + 100 runs (extraction) | `sig_estimate`, `sig_extract` | YES ⭐⭐⭐   | R               | 10 (0.884) | 10 (0.944) | 9 or 10 (0.998) | 10 (0.994) | \~90%/0.955   | \~1min (8 cores)  | This is a basic method, suitable for good mutation data with enough mutations.                                                                                      |
-| SigProfiler   | **Manual/Automatic** | Default. 100 runs                                     | `sigprofiler_extract`         | YES ⭐⭐⭐⭐  | Python/Anaconda | 10 (0.961) | 10 (0.999) | 10 (0.990)      | 10 (0.997) | 100%/0.987    | \~1h (8 cores)    | A golden standard like approach in this field, but longer run time, and the requirement for Python environment and extra large packages reduce its popularity here. |
-| Best Practice | **Manual/Automatic** | Use bootstrapped catalog (1000 runs)                  | `bp_extract_signatures`       | YES ⭐⭐⭐⭐⭐ | R               | 10 (0.973) | 10 (0.990) | 10 (0.992)      | 10 (0.971) | 100%/0.981    | \~10min (8 cores) | My R implementation for methods from reference \#5 and \#6. Should be the best option here. (**Pay attention to the suggested solution**)                                                                         |
-| Best Practice | **Manual/Automatic** | Use original catalog (1000 runs)                      | `bp_extract_signatures`       | NO :star: | R               | 10 (0.987) | 9 (0.985)  | 10 (0.997)      | 9 (0.987)  | 50%/0.989     | \~10min (8 cores) | This is created to compare with the approach with bootstrapped catalogs above and the standard NMF way.                                                             |
-| Bayesian NMF  | **Automatic**        | L1KL+optimal (20 runs)                                | `sig_auto_extract`            | YES ⭐⭐⭐   | R               | 10 (0.994) | 9 (0.997)  | 9 (0.998)       | 9 (0.999)  | 25%/0.997     | \~10min (8 cores) | The Bayesian NMF approach auto reduce the signature number to a proper value from a initial signature number, here is 20.                                           |
-| Bayesian NMF  | **Automatic**        | L1KL+stable (20 runs)                                 | `sig_auto_extract`            | YES ⭐⭐⭐⭐  | R               | 10 (0.994) | 9 (0.997)  | 10 (0.988)      | 9 (0.999)  | 50%/0.995     | \~10min (8 cores) | See above.                                                                                                                                                          |
-| Bayesian NMF  | **Automatic**        | L2KL+optimal (20 runs)                                | `sig_auto_extract`            | NO :star: | R               | 12 (0.990) | 13 (0.988) | 12 (0.902)      | 12 (0.994) | 0%/0.969      | \~10min (8 cores) | See above.                                                                                                                                                          |
-| Bayesian NMF  | **Automatic**        | L2KL+stable (20 runs)                                 | `sig_auto_extract`            | NO :star: | R               | 12 (0.990) | 12 (0.988) | 12 (0.902)      | 12 (0.994) | 0%/0.969      | \~10min (8 cores) | See above.                                                                                                                                                          |
-| Bayesian NMF  | **Automatic**        | L1WL2H+optimal (20 runs)                              | `sig_auto_extract`            | YES ⭐⭐⭐   | R               | 9 (0.989)  | 9 (0.999)  | 9 (0.996)       | 9 (1.000)  | 0%/0.996      | \~10min (8 cores) | See above.                                                                                                                                                          |
-| Bayesian NMF  | **Automatic**        | L1WL2H+stable (20 runs)                               | `sig_auto_extract`            | YES ⭐⭐⭐⭐  | R               | 9 (0.989)  | 9 (0.999)  | 9 (0.996)       | 9 (1.000)  | 0%/0.996      | \~10min (8 cores) | See above.                                                                                                                                                          |
-
-> NOTE: although Bayesian NMF approach with L1KL or L1WL2H prior cannot recover all 10 signatures here, but it is close to the true answer from initial signature number 20 in a automatic way, and the result signatures are highly similar to reference signatures. This also reminds us that we could not use this method to find signatures with small contributions in tumors.
-
-## Installation
+## :arrow_double_down: Installation
 
 You can install the stable release of **sigminer** from CRAN with:
 
@@ -145,7 +127,7 @@ You can also install **sigminer** from conda `bioconda` channel with
 conda install -c bioconda -c conda-forge r-sigminer
 ```
 
-## Usage
+## :beginner: Usage
 
 A complete documentation of **sigminer** can be read online at <https://shixiangwang.github.io/sigminer-doc/>. All functions are well organized and documented at <https://shixiangwang.github.io/sigminer/reference/index.html>. For usage of a specific function `fun`, run `?fun` in your R console to see its documentation.
 
@@ -161,7 +143,7 @@ If you use **sigminer** in academic field, please cite one of the following pape
 
 ------------------------------------------------------------------------
 
-## Download Stats
+## :arrow_down: Download Stats
 
 ```{r, echo=FALSE, warning=FALSE}
 library("ggplot2")
@@ -180,7 +162,7 @@ if (!is.null(x)) {
 }
 ```
 
-## References
+## :page_with_curl: References
 
 Please properly cite the following references when you are using any corresponding features. The references are also listed in the function documentation. Very thanks to the works, **sigminer** cannot be created without the giants.
 
@@ -195,7 +177,7 @@ Please properly cite the following references when you are using any correspondi
 9.  Tan, Vincent YF, and Cédric Févotte. "Automatic relevance determination in nonnegative matrix factorization with the/spl beta/-divergence." IEEE Transactions on Pattern Analysis and Machine Intelligence 35.7 (2012): 1592-1605.
 10. Bergstrom EN, Huang MN, Mahto U, Barnes M, Stratton MR, Rozen SG, Alexandrov LB: SigProfilerMatrixGenerator: a tool for visualizing and exploring patterns of small mutational events. BMC Genomics 2019, 20:685 <https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-019-6041-2>
 
-## LICENSE
+## :page_facing_up: LICENSE
 
 The software is made available for non commercial research purposes only under the [MIT](https://github.com/ShixiangWang/sigminer/blob/master/LICENSE.md). However, notwithstanding any provision of the MIT License, the software currently may not be used for commercial purposes without explicit written permission after contacting Shixiang Wang [wangshx\@shanghaitech.edu.cn](mailto:wangshx@shanghaitech.edu.cn) or Xue-Song Liu [liuxs\@shanghaitech.edu.cn](mailto:liuxs@shanghaitech.edu.cn).
 

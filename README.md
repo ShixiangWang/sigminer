@@ -18,7 +18,7 @@ Code](https://tokei.rs/b1/github/ShixiangWang/sigminer?category=code)](https://g
 ![install with
 bioconda](https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat-square)
 
-## Overview
+## :bar\_chart: Overview
 
 The cancer genome is shaped by various mutational processes over its
 lifetime, stemming from exogenous and cell-intrinsic DNA damage, and
@@ -50,7 +50,7 @@ For pipeline tool, please see its co-evolutionary CLI
 
 <img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
 
-### Features
+### :airplane: Features
 
 -   supports a standard *de novo* pipeline for identification of **5**
     types of signatures: copy number, SBS, DBS, INDEL and RS (genome
@@ -74,38 +74,7 @@ For pipeline tool, please see its co-evolutionary CLI
     **roxygen2**, **roxytest**, **pkgdown**, and etc. for both reliable
     and reproducible research.
 
-### Key Interfaces and Their Performances
-
-**Sigminer** provides many approaches to extract mutational signatures.
-To test their performances, I use 4 mutation catalog datasets (each
-mutation catalog dataset is composed of 30 samples, 10 COSMIC v2 (SBS)
-signatures are randomly assigned to each sample with random signature
-exposure) from reference \#6. The following table shows how many
-signatures can be recovered and the corresponding average cosine
-similarity to COSMIC reference signatures for each approach with
-settings.
-
-| Approach      | Selection Way        | Setting                                               | Caller                        | Recommend | Driver          | Set1       | Set2       | Set3            | Set4       | Success /Mean | Run time          | Note                                                                                                                                                                |
-|:--------------|:---------------------|:------------------------------------------------------|:------------------------------|:----------|:----------------|:-----------|:-----------|:----------------|:-----------|:--------------|:------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Standard NMF  | Manual               | Default. 50 runs (estimation) + 100 runs (extraction) | `sig_estimate`, `sig_extract` | YES ⭐⭐⭐   | R               | 10 (0.884) | 10 (0.944) | 9 or 10 (0.998) | 10 (0.994) | \~90%/0.955   | \~1min (8 cores)  | This is a basic method, suitable for good mutation data with enough mutations.                                                                                      |
-| SigProfiler   | **Manual/Automatic** | Default. 100 runs                                     | `sigprofiler_extract`         | YES ⭐⭐⭐⭐  | Python/Anaconda | 10 (0.961) | 10 (0.999) | 10 (0.990)      | 10 (0.997) | 100%/0.987    | \~1h (8 cores)    | A golden standard like approach in this field, but longer run time, and the requirement for Python environment and extra large packages reduce its popularity here. |
-| Best Practice | **Manual/Automatic** | Use bootstrapped catalog (1000 runs)                  | `bp_extract_signatures`       | YES ⭐⭐⭐⭐⭐ | R               | 10 (0.973) | 10 (0.990) | 10 (0.992)      | 10 (0.971) | 100%/0.981    | \~10min (8 cores) | My R implementation for methods from reference \#5 and \#6. Should be the best option here. (**Pay attention to the suggested solution**)                           |
-| Best Practice | **Manual/Automatic** | Use original catalog (1000 runs)                      | `bp_extract_signatures`       | NO :star: | R               | 10 (0.987) | 9 (0.985)  | 10 (0.997)      | 9 (0.987)  | 50%/0.989     | \~10min (8 cores) | This is created to compare with the approach with bootstrapped catalogs above and the standard NMF way.                                                             |
-| Bayesian NMF  | **Automatic**        | L1KL+optimal (20 runs)                                | `sig_auto_extract`            | YES ⭐⭐⭐   | R               | 10 (0.994) | 9 (0.997)  | 9 (0.998)       | 9 (0.999)  | 25%/0.997     | \~10min (8 cores) | The Bayesian NMF approach auto reduce the signature number to a proper value from a initial signature number, here is 20.                                           |
-| Bayesian NMF  | **Automatic**        | L1KL+stable (20 runs)                                 | `sig_auto_extract`            | YES ⭐⭐⭐⭐  | R               | 10 (0.994) | 9 (0.997)  | 10 (0.988)      | 9 (0.999)  | 50%/0.995     | \~10min (8 cores) | See above.                                                                                                                                                          |
-| Bayesian NMF  | **Automatic**        | L2KL+optimal (20 runs)                                | `sig_auto_extract`            | NO :star: | R               | 12 (0.990) | 13 (0.988) | 12 (0.902)      | 12 (0.994) | 0%/0.969      | \~10min (8 cores) | See above.                                                                                                                                                          |
-| Bayesian NMF  | **Automatic**        | L2KL+stable (20 runs)                                 | `sig_auto_extract`            | NO :star: | R               | 12 (0.990) | 12 (0.988) | 12 (0.902)      | 12 (0.994) | 0%/0.969      | \~10min (8 cores) | See above.                                                                                                                                                          |
-| Bayesian NMF  | **Automatic**        | L1WL2H+optimal (20 runs)                              | `sig_auto_extract`            | YES ⭐⭐⭐   | R               | 9 (0.989)  | 9 (0.999)  | 9 (0.996)       | 9 (1.000)  | 0%/0.996      | \~10min (8 cores) | See above.                                                                                                                                                          |
-| Bayesian NMF  | **Automatic**        | L1WL2H+stable (20 runs)                               | `sig_auto_extract`            | YES ⭐⭐⭐⭐  | R               | 9 (0.989)  | 9 (0.999)  | 9 (0.996)       | 9 (1.000)  | 0%/0.996      | \~10min (8 cores) | See above.                                                                                                                                                          |
-
-> NOTE: although Bayesian NMF approach with L1KL or L1WL2H prior cannot
-> recover all 10 signatures here, but it is close to the true answer
-> from initial signature number 20 in a automatic way, and the result
-> signatures are highly similar to reference signatures. This also
-> reminds us that we could not use this method to find signatures with
-> small contributions in tumors.
-
-## Installation
+## :arrow\_double\_down: Installation
 
 You can install the stable release of **sigminer** from CRAN with:
 
@@ -134,7 +103,7 @@ You can also install **sigminer** from conda `bioconda` channel with
 conda install -c bioconda -c conda-forge r-sigminer
 ```
 
-## Usage
+## :beginner: Usage
 
 A complete documentation of **sigminer** can be read online at
 <https://shixiangwang.github.io/sigminer-doc/>. All functions are well
@@ -163,7 +132,7 @@ following papers.
 
 ------------------------------------------------------------------------
 
-## Download Stats
+## :arrow\_down: Download Stats
 
     #> 
     #> 载入程辑包：'dplyr'
@@ -182,7 +151,7 @@ following papers.
 
 <img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
 
-## References
+## :page\_with\_curl: References
 
 Please properly cite the following references when you are using any
 corresponding features. The references are also listed in the function
@@ -220,7 +189,7 @@ without the giants.
     2019, 20:685
     <https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-019-6041-2>
 
-## LICENSE
+## :page\_facing\_up: LICENSE
 
 The software is made available for non commercial research purposes only
 under the
