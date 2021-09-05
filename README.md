@@ -112,7 +112,7 @@ organized and documented at
 usage of a specific function `fun`, run `?fun` in your R console to see
 its documentation.
 
-## Citation
+## :paperclip: Citation
 
 If you use **sigminer** in academic field, please cite one of the
 following papers.
@@ -133,21 +133,6 @@ following papers.
 ------------------------------------------------------------------------
 
 ## :arrow\_down: Download Stats
-
-    #> 
-    #> 载入程辑包：'dplyr'
-    #> The following object is masked from 'package:Biobase':
-    #> 
-    #>     combine
-    #> The following objects are masked from 'package:BiocGenerics':
-    #> 
-    #>     combine, intersect, setdiff, union
-    #> The following objects are masked from 'package:stats':
-    #> 
-    #>     filter, lag
-    #> The following objects are masked from 'package:base':
-    #> 
-    #>     intersect, setdiff, setequal, union
 
 <img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
 
