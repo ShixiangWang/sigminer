@@ -89,6 +89,8 @@ show_cosmic_sig_profile <- function(sig_index = NULL, show_index = TRUE, sig_db 
     mode <- "SBS"
   } else if (startsWith(sig_db, "RS")) {
     mode <- "RS"
+  } else if (startsWith(sig_db, "CNS")) {
+    mode <- "copynumber"
   } else {
     mode <- sig_db
   }
