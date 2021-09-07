@@ -38,6 +38,7 @@
 get_pLOH_score <- function(data, rm_chrs = c("chrX", "chrY"), genome_build = "hg19") {
   stopifnot(is.data.frame(data) | inherits(data, "CopyNumber") | "chrY" %in% rm_chrs)
   if (!is.data.frame(data)) {
+    genome_build <- data@genome_build
     data <- data@data
   }
 
