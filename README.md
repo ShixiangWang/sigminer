@@ -106,7 +106,7 @@ conda install -c bioconda -c conda-forge r-sigminer
 ## :beginner: Usage
 
 A complete documentation of **sigminer** can be read online at
-<https://shixiangwang.github.io/sigminer-doc/>. All functions are well
+<https://shixiangwang.github.io/sigminer-book/>. All functions are well
 organized and documented at
 <https://shixiangwang.github.io/sigminer/reference/index.html>. For
 usage of a specific function `fun`, run `?fun` in your R console to see
