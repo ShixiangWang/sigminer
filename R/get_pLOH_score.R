@@ -56,7 +56,18 @@ get_pLOH_score <- function(data, rm_chrs = c("chrX", "chrY"), genome_build = "hg
   chr_size <- chr_size[!chr_size$chrom %in% rm_chrs, ]
   chr_size <- sum(chr_size$size)
 
-  data[segVal >= 1 & minor_cn == 0, list(pLOH = sum(end - start + 1L) / chr_size), by = "sample"]
+  out <- data[segVal >= 1 & minor_cn == 0, list(pLOH = sum(end - start + 1L) / chr_size), by = "sample"]
+  drop_id <- setdiff(data$sample, out$sample)
+  if (length(drop_id) > 0) {
+    out <- rbind(
+      out,
+      data.table::data.table(
+        sample = drop_id,
+        pLOH = rep(0, length(drop_id))
+      )
+    )
+  }
+  out
 }
 
 

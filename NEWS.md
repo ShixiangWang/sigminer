@@ -1,3 +1,7 @@
+# sigminer 2.1.1
+
+- Fixed the bug the `get_pLOH_score()` return nothing for sample without LOH.
+
 # sigminer 2.1.0
 
 - Added `sig_unify_extract()` as an unified signature extractor.
