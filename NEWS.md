@@ -1,5 +1,6 @@
 # sigminer 2.1.1
 
+- Fixed the error using `sigminer::get_genome_annotation()` before loading it.
 - Fixed the bug the `get_pLOH_score()` return nothing for sample without LOH.
 
 # sigminer 2.1.0

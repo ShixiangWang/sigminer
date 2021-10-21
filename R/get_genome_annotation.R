@@ -47,7 +47,13 @@ get_genome_annotation <- function(data_type = c("chr_size", "centro_loc", "cytob
     transcript = "transcript"
   )
 
-  annot <- get(paste(prefix, genome_build, sep = "."), envir = as.environment("package:sigminer"))
+  annot <- get(paste(prefix, genome_build, sep = "."), envir = tryCatch(
+    as.environment("package:sigminer"),
+    error = function(e) {
+      eval(parse(text = "attachNamespace('sigminer')"))
+      as.environment("package:sigminer")
+    }
+  ))
   res <- annot %>%
     dplyr::filter(.data$chrom %in% chrs) %>%
     dplyr::arrange(factor(.data$chrom, chrs))
