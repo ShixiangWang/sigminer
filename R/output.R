@@ -224,36 +224,38 @@ output_sig <- function(sig, result_dir, mut_type = "SBS", sig_db = mut_type) {
   }
 
   ## Similar analysis and output
-  if (mut_type != "CN") {
-    message("Outputing signature similarity analysis results.")
-    sim <- get_sig_similarity(sig, sig_db = sig_db)
-    data.table::fwrite(sim$similarity %>% data.table::as.data.table(keep.rownames = "sig"),
-      file = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_similarity.csv"))
-    )
-    pheatmap::pheatmap(sim$similarity,
-      cluster_cols = TRUE, cluster_rows = FALSE,
-      filename = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_similarity.pdf")),
-      cellheight = 15, fontsize = 7
-    )
-    data.table::fwrite(sim$best_match %>% data.table::as.data.table(),
-      file = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_COSMIC_best_match.csv"))
-    )
-  }
+  if (!is.null(sig_db)) {
+    if (mut_type != "CN") {
+      message("Outputing signature similarity analysis results.")
+      sim <- get_sig_similarity(sig, sig_db = sig_db)
+      data.table::fwrite(sim$similarity %>% data.table::as.data.table(keep.rownames = "sig"),
+                         file = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_similarity.csv"))
+      )
+      pheatmap::pheatmap(sim$similarity,
+                         cluster_cols = TRUE, cluster_rows = FALSE,
+                         filename = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_similarity.pdf")),
+                         cellheight = 15, fontsize = 7
+      )
+      data.table::fwrite(sim$best_match %>% data.table::as.data.table(),
+                         file = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_COSMIC_best_match.csv"))
+      )
+    }
 
-  if (mut_type == "SBS" & nchar(rownames(sig$Signature)[1]) == 7) {
-    ## Append COSMIC v2 results
-    sim <- get_sig_similarity(sig, sig_db = "legacy")
-    data.table::fwrite(sim$similarity %>% data.table::as.data.table(keep.rownames = "sig"),
-      file = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_legacy_similarity.csv"))
-    )
-    pheatmap::pheatmap(sim$similarity,
-      cluster_cols = TRUE, cluster_rows = FALSE,
-      filename = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_legacy_similarity.pdf")),
-      cellheight = 15, fontsize = 7
-    )
-    data.table::fwrite(sim$best_match %>% data.table::as.data.table(),
-      file = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_legacy_COSMIC_best_match.csv"))
-    )
+    if (mut_type == "SBS" & nchar(rownames(sig$Signature)[1]) == 7) {
+      ## Append COSMIC v2 results
+      sim <- get_sig_similarity(sig, sig_db = "legacy")
+      data.table::fwrite(sim$similarity %>% data.table::as.data.table(keep.rownames = "sig"),
+                         file = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_legacy_similarity.csv"))
+      )
+      pheatmap::pheatmap(sim$similarity,
+                         cluster_cols = TRUE, cluster_rows = FALSE,
+                         filename = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_legacy_similarity.pdf")),
+                         cellheight = 15, fontsize = 7
+      )
+      data.table::fwrite(sim$best_match %>% data.table::as.data.table(),
+                         file = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_legacy_COSMIC_best_match.csv"))
+      )
+    }
   }
 
   if (attr(sig, "call_method") == "BayesianNMF") {
