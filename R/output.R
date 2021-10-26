@@ -256,6 +256,8 @@ output_sig <- function(sig, result_dir, mut_type = "SBS", sig_db = mut_type) {
                          file = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_legacy_COSMIC_best_match.csv"))
       )
     }
+  } else {
+    message("Similarity analysis is skipped.")
   }
 
   if (attr(sig, "call_method") == "BayesianNMF") {
