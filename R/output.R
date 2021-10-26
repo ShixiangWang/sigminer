@@ -77,10 +77,11 @@ output_tally <- function(x, result_dir, mut_type = "SBS") {
 #'
 #' @param sig a `Signature` object.
 #' @inheritParams output_tally
+#' @inheritParams get_sig_similarity
 #'
 #' @return Nothing.
 #' @export
-output_sig <- function(sig, result_dir, mut_type = "SBS") {
+output_sig <- function(sig, result_dir, mut_type = "SBS", sig_db = mut_type) {
   if (!dir.exists(result_dir)) {
     dir.create(result_dir, recursive = TRUE)
   }
@@ -225,7 +226,7 @@ output_sig <- function(sig, result_dir, mut_type = "SBS") {
   ## Similar analysis and output
   if (mut_type != "CN") {
     message("Outputing signature similarity analysis results.")
-    sim <- get_sig_similarity(sig, sig_db = mut_type)
+    sim <- get_sig_similarity(sig, sig_db = sig_db)
     data.table::fwrite(sim$similarity %>% data.table::as.data.table(keep.rownames = "sig"),
       file = file.path(result_dir, paste0(mut_type, "_", attr(sig, "call_method"), "_similarity.csv"))
     )
@@ -239,7 +240,7 @@ output_sig <- function(sig, result_dir, mut_type = "SBS") {
     )
   }
 
-  if (mut_type == "SBS") {
+  if (mut_type == "SBS" & nchar(rownames(sig$Signature)[1]) == 7) {
     ## Append COSMIC v2 results
     sim <- get_sig_similarity(sig, sig_db = "legacy")
     data.table::fwrite(sim$similarity %>% data.table::as.data.table(keep.rownames = "sig"),
@@ -280,10 +281,11 @@ output_sig <- function(sig, result_dir, mut_type = "SBS") {
 #'
 #' @param x result from [sig_fit].
 #' @inheritParams output_tally
+#' @inheritParams get_sig_similarity
 #'
 #' @return Nothing.
 #' @export
-output_fit <- function(x, result_dir, mut_type = "SBS") {
+output_fit <- function(x, result_dir, mut_type = "SBS", sig_db = mut_type) {
   if (!dir.exists(result_dir)) {
     dir.create(result_dir, recursive = TRUE)
   }
@@ -310,7 +312,7 @@ output_fit <- function(x, result_dir, mut_type = "SBS") {
     p3 <- show_sig_fit(rel_expo, palette = NULL, plot_fun = "boxplot") + ggpubr::rotate_x_text()
     p4 <- show_sig_fit(rel_expo, palette = NULL, plot_fun = "violin") + ggpubr::rotate_x_text()
   } else {
-    z <- get_sig_db("SBS")
+    z <- get_sig_db(sig_db)
     sigs <- rownames(z$aetiology)[!grepl("artefact", z$aetiology$aetiology)]
     message("Removed 'Possible sequencing artefact' signatures in plots.")
 
@@ -361,7 +363,7 @@ output_fit <- function(x, result_dir, mut_type = "SBS") {
 #'
 #' @param x result from [sig_fit_bootstrap_batch].
 #' @inheritParams output_tally
-#'
+#' @inheritParams get_sig_similarity
 #' @return Nothing.
 #' @export
 output_bootstrap <- function(x, result_dir, mut_type = "SBS") {
@@ -378,7 +380,7 @@ output_bootstrap <- function(x, result_dir, mut_type = "SBS") {
     p1 <- show_sig_bootstrap_stability(x) + theme(legend.position = "none") + ggpubr::rotate_x_text()
     p2 <- show_sig_bootstrap_exposure(x) + theme(legend.position = "none") + ggpubr::rotate_x_text()
   } else {
-    z <- get_sig_db("SBS")
+    z <- get_sig_db(sig_db)
     sigs <- rownames(z$aetiology)[!grepl("artefact", z$aetiology$aetiology)]
     message("Removed 'Possible sequencing artefact' signatures in plots.")
 
