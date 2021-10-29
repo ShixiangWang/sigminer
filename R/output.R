@@ -370,7 +370,7 @@ output_fit <- function(x, result_dir, mut_type = "SBS", sig_db = mut_type) {
 #' @inheritParams get_sig_similarity
 #' @return Nothing.
 #' @export
-output_bootstrap <- function(x, result_dir, mut_type = "SBS") {
+output_bootstrap <- function(x, result_dir, mut_type = "SBS", sig_db = mut_type) {
   if (!dir.exists(result_dir)) {
     dir.create(result_dir, recursive = TRUE)
   }
