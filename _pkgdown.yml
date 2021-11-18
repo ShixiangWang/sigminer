@@ -38,8 +38,8 @@ reference:
     - sig_tally
     - handle_hyper_mutation
     - sig_estimate
-    - show_sig_number_survey
-    - show_sig_number_survey2
+    #- show_sig_number_survey
+    #- show_sig_number_survey2
     - sig_unify_extract
     - sig_extract
     - sig_auto_extract
@@ -79,8 +79,8 @@ reference:
     contents:
     - show_sig_fit
     - show_sig_bootstrap_exposure
-    - show_sig_bootstrap_error
-    - show_sig_bootstrap_stability
+    #- show_sig_bootstrap_error
+    #- show_sig_bootstrap_stability
   - title: Output analysis results to local machine
     desc: Save results and plots as files. For automatic analysis, please use [sigflow](https://github.com/ShixiangWang/sigminer.workflow).
     contents:
@@ -92,11 +92,11 @@ reference:
     desc: Obtain or modify `Signature` object information.
     contents:
     - sig_names
-    - sig_modify_names
-    - sig_number
-    - sig_attrs
-    - sig_signature
-    - sig_exposure
+    #- sig_modify_names
+    #- sig_number
+    #- sig_attrs
+    #- sig_signature
+    #- sig_exposure
   - title: Signature analysis and corresponding visualization
     desc: Analyze signatures and output the result to visualization.
     contents:
