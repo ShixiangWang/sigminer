@@ -1,3 +1,7 @@
+# sigminer 2.1.2
+
+- Added input `range` check in `sig_estimate()`. (#391)
+
 # sigminer 2.1.1
 
 - Expanded `output_*` function by adding option `sig_db`.

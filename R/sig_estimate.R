@@ -52,6 +52,10 @@ sig_estimate <-
            plot_basename = file.path(tempdir(), "nmf"),
            what = "all",
            verbose = FALSE) {
+    if (nrow(nmf_matrix) < max(range)) {
+      stop("The 'range' should not greater than ", nrow(nmf_matrix), " in your case.")
+    }
+
     eval(parse(text = "suppressMessages(library('NMF'))"))
     if (cores > 1) cores <- min(cores, future::availableCores())
     mat <- t(nmf_matrix)
