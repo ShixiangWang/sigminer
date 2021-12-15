@@ -1,5 +1,6 @@
 # sigminer 2.1.2
 
+- Enhanced the `read_copynumber_seqz()` to include minor copy number. (Thanks to yancey)
 - Added input `range` check in `sig_estimate()`. (#391)
 
 # sigminer 2.1.1

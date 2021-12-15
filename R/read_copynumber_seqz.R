@@ -27,9 +27,9 @@ read_copynumber_seqz <- function(target_dir, return_df = FALSE, ...) {
     message("Processing ", y)
     df <- data.table::fread(x, data.table = FALSE)
     df <- df %>%
-      dplyr::select(c("chromosome", "start.pos", "end.pos", "CNt")) %>%
+      dplyr::select(c("chromosome", "start.pos", "end.pos", "CNt", "B")) %>%
       dplyr::mutate(sample = y)
-    colnames(df) <- c("Chromosome", "Start.bp", "End.bp", "modal_cn", "sample")
+    colnames(df) <- c("Chromosome", "Start.bp", "End.bp", "modal_cn", "minor_cn", "sample")
     df
   })
 

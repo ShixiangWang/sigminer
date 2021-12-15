@@ -34,8 +34,6 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
-    
-
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -48,12 +46,18 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
+<li>
+  <a href="index.html">
+    <span class="fas fa-home fa-lg"></span>
+     
+  </a>
+</li>
 <li>
   <a href="articles/sigminer.html">Get started</a>
 </li>
@@ -66,7 +70,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/ShixiangWang/sigminer/" class="external-link">
+  <a href="https://github.com/ShixiangWang/sigminer/">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -83,15 +87,16 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div class="section level1">
-<div class="page-header"><h1 id="sigminer-mutational-signature-analysis-and-visualization-in-r-">Sigminer: Mutational Signature Analysis and Visualization in R <img src="reference/figures/logo.png" alt="logo" align="right" height="140" width="120"><a class="anchor" aria-label="anchor" href="#sigminer-mutational-signature-analysis-and-visualization-in-r-"></a>
+<div id="sigminer-mutational-signature-analysis-and-visualization-in-r-" class="section level1">
+<div class="page-header"><h1 class="hasAnchor">
+<a href="#sigminer-mutational-signature-analysis-and-visualization-in-r-" class="anchor"></a>Sigminer: Mutational Signature Analysis and Visualization in R <img src="reference/figures/logo.png" alt="logo" align="right" height="140" width="120">
 </h1></div>
 
-<div class="section level2">
-<h2 id="bar_chart-overview">:bar_chart: Overview<a class="anchor" aria-label="anchor" href="#bar_chart-overview"></a>
-</h2>
+<div id="bar_chart-overview" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bar_chart-overview" class="anchor"></a>:bar_chart: Overview</h2>
 <p>The cancer genome is shaped by various mutational processes over its lifetime, stemming from exogenous and cell-intrinsic DNA damage, and error-prone DNA replication, leaving behind characteristic mutational spectra, termed <strong>mutational signatures</strong>. This package, <strong>sigminer</strong>, helps users to extract, analyze and visualize signatures from genome alteration records, thus providing new insight into cancer study.</p>
-<p>For pipeline tool, please see its co-evolutionary CLI <a href="https://github.com/ShixiangWang/sigflow" class="external-link">sigflow</a>.</p>
+<p>For pipeline tool, please see its co-evolutionary CLI <a href="https://github.com/ShixiangWang/sigflow">sigflow</a>.</p>
 <p><strong>SBS signatures</strong>:</p>
 <p><img src="reference/figures/README-unnamed-chunk-1-1.png" width="100%"></p>
 <p><strong>Copy number signatures</strong>:</p>
@@ -102,10 +107,9 @@
 <p><img src="reference/figures/README-unnamed-chunk-4-1.png" width="100%"></p>
 <p><strong>Genome rearrangement signatures</strong>:</p>
 <p><img src="reference/figures/README-unnamed-chunk-5-1.png" width="100%"></p>
-<div class="section level3">
-<h3 id="airplane-features">
-<span class="emoji" data-emoji="airplane">✈️</span> Features<a class="anchor" aria-label="anchor" href="#airplane-features"></a>
-</h3>
+<div id="airplane-features" class="section level3">
+<h3 class="hasAnchor">
+<a href="#airplane-features" class="anchor"></a><span class="emoji" data-emoji="airplane">✈️</span> Features</h3>
 <ul>
 <li>supports a standard <em>de novo</em> pipeline for identification of <strong>5</strong> types of signatures: copy number, SBS, DBS, INDEL and RS (genome rearrangement signature).</li>
 <li>supports quantify exposure for one sample based on <em>known signatures</em>.</li>
@@ -119,18 +123,18 @@
 </ul>
 </div>
 </div>
-<div class="section level2">
-<h2 id="arrow_double_down-installation">:arrow_double_down: Installation<a class="anchor" aria-label="anchor" href="#arrow_double_down-installation"></a>
-</h2>
+<div id="arrow_double_down-installation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#arrow_double_down-installation" class="anchor"></a>:arrow_double_down: Installation</h2>
 <p>You can install the stable release of <strong>sigminer</strong> from CRAN with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span>
-<span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"sigminer"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span>
+<span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="st">"sigminer"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p>You can install the development version of <strong>sigminer</strong> from Github with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"ShixiangWang/sigminer"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"ShixiangWang/sigminer"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co"># For Chinese users, run </span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_git.html" class="external-link">install_git</a></span><span class="op">(</span><span class="st">"https://gitee.com/ShixiangWang/sigminer"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_git.html">install_git</a></span><span class="op">(</span><span class="st">"https://gitee.com/ShixiangWang/sigminer"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p>You can also install <strong>sigminer</strong> from conda <code>bioconda</code> channel with</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Please note version number of the bioconda release</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -139,34 +143,32 @@
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># conda activate sigminer</span></span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> install <span class="at">-c</span> bioconda <span class="at">-c</span> conda-forge r-sigminer</span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="beginner-usage">
-<span class="emoji" data-emoji="beginner">🔰</span> Usage<a class="anchor" aria-label="anchor" href="#beginner-usage"></a>
-</h2>
+<div id="beginner-usage" class="section level2">
+<h2 class="hasAnchor">
+<a href="#beginner-usage" class="anchor"></a><span class="emoji" data-emoji="beginner">🔰</span> Usage</h2>
 <p>A complete documentation of <strong>sigminer</strong> can be read online at <a href="https://shixiangwang.github.io/sigminer-book/" class="uri">https://shixiangwang.github.io/sigminer-book/</a>. All functions are well organized and documented at <a href="https://shixiangwang.github.io/sigminer/reference/index.html" class="uri">https://shixiangwang.github.io/sigminer/reference/index.html</a>. For usage of a specific function <code>fun</code>, run <code>?fun</code> in your R console to see its documentation.</p>
 </div>
-<div class="section level2">
-<h2 id="paperclip-citation">
-<span class="emoji" data-emoji="paperclip">📎</span> Citation<a class="anchor" aria-label="anchor" href="#paperclip-citation"></a>
-</h2>
+<div id="paperclip-citation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#paperclip-citation" class="anchor"></a><span class="emoji" data-emoji="paperclip">📎</span> Citation</h2>
 <p>If you use <strong>sigminer</strong> in academic field, please cite one of the following papers.</p>
 <hr>
 <ul>
-<li><p><strong><em>Wang S, Li H, Song M, Tao Z, Wu T, He Z, et al. (2021) Copy number signature analysis tool and its application in prostate cancer reveals distinct mutational processes and clinical outcomes. PLoS Genet 17(5): e1009557.</em></strong> <a href="https://doi.org/10.1371/journal.pgen.1009557" class="external-link uri">https://doi.org/10.1371/journal.pgen.1009557</a></p></li>
-<li><p><strong><em>Shixiang Wang, Ziyu Tao, Tao Wu, Xue-Song Liu, Sigflow: An Automated And Comprehensive Pipeline For Cancer Genome Mutational Signature Analysis, Bioinformatics, btaa895</em></strong>. <a href="https://doi.org/10.1093/bioinformatics/btaa895" class="external-link uri">https://doi.org/10.1093/bioinformatics/btaa895</a></p></li>
+<li><p><strong><em>Wang S, Li H, Song M, Tao Z, Wu T, He Z, et al. (2021) Copy number signature analysis tool and its application in prostate cancer reveals distinct mutational processes and clinical outcomes. PLoS Genet 17(5): e1009557.</em></strong> <a href="https://doi.org/10.1371/journal.pgen.1009557" class="uri">https://doi.org/10.1371/journal.pgen.1009557</a></p></li>
+<li><p><strong><em>Shixiang Wang, Ziyu Tao, Tao Wu, Xue-Song Liu, Sigflow: An Automated And Comprehensive Pipeline For Cancer Genome Mutational Signature Analysis, Bioinformatics, btaa895</em></strong>. <a href="https://doi.org/10.1093/bioinformatics/btaa895" class="uri">https://doi.org/10.1093/bioinformatics/btaa895</a></p></li>
 </ul>
 <hr>
 </div>
-<div class="section level2">
-<h2 id="arrow_down-download-stats">:arrow_down: Download Stats<a class="anchor" aria-label="anchor" href="#arrow_down-download-stats"></a>
-</h2>
+<div id="arrow_down-download-stats" class="section level2">
+<h2 class="hasAnchor">
+<a href="#arrow_down-download-stats" class="anchor"></a>:arrow_down: Download Stats</h2>
 <p><img src="reference/figures/README-unnamed-chunk-8-1.png" width="100%"></p>
 </div>
-<div class="section level2">
-<h2 id="page_with_curl-references">:page_with_curl: References<a class="anchor" aria-label="anchor" href="#page_with_curl-references"></a>
-</h2>
+<div id="page_with_curl-references" class="section level2">
+<h2 class="hasAnchor">
+<a href="#page_with_curl-references" class="anchor"></a>:page_with_curl: References</h2>
 <p>Please properly cite the following references when you are using any corresponding features. The references are also listed in the function documentation. Very thanks to the works, <strong>sigminer</strong> cannot be created without the giants.</p>
-<ol style="list-style-type: decimal">
+<ol>
 <li>Mayakonda, Anand, et al. “Maftools: efficient and comprehensive analysis of somatic variants in cancer.” Genome research 28.11 (2018): 1747-1756.</li>
 <li>Gaujoux, Renaud, and Cathal Seoighe. “A Flexible R Package for Nonnegative Matrix Factorization.”" BMC Bioinformatics 11, no. 1 (December 2010).</li>
 <li>H. Wickham. ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New York, 2016.</li>
@@ -176,89 +178,86 @@
 <li>Alexandrov, Ludmil B., et al. “The repertoire of mutational signatures in human cancer.” Nature 578.7793 (2020): 94-101.</li>
 <li>Macintyre, Geoff, et al. “Copy number signatures and mutational processes in ovarian carcinoma.” Nature genetics 50.9 (2018): 1262.</li>
 <li>Tan, Vincent YF, and Cédric Févotte. “Automatic relevance determination in nonnegative matrix factorization with the/spl beta/-divergence.” IEEE Transactions on Pattern Analysis and Machine Intelligence 35.7 (2012): 1592-1605.</li>
-<li>Bergstrom EN, Huang MN, Mahto U, Barnes M, Stratton MR, Rozen SG, Alexandrov LB: SigProfilerMatrixGenerator: a tool for visualizing and exploring patterns of small mutational events. BMC Genomics 2019, 20:685 <a href="https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-019-6041-2" class="external-link uri">https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-019-6041-2</a>
+<li>Bergstrom EN, Huang MN, Mahto U, Barnes M, Stratton MR, Rozen SG, Alexandrov LB: SigProfilerMatrixGenerator: a tool for visualizing and exploring patterns of small mutational events. BMC Genomics 2019, 20:685 <a href="https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-019-6041-2" class="uri">https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-019-6041-2</a>
 </li>
 </ol>
 </div>
-<div class="section level2">
-<h2 id="page_facing_up-license">:page_facing_up: LICENSE<a class="anchor" aria-label="anchor" href="#page_facing_up-license"></a>
-</h2>
-<p>The software is made available for non commercial research purposes only under the <a href="https://github.com/ShixiangWang/sigminer/blob/master/LICENSE.md" class="external-link">MIT</a>. However, notwithstanding any provision of the MIT License, the software currently may not be used for commercial purposes without explicit written permission after contacting Shixiang Wang <a href="mailto:wangshx@shanghaitech.edu.cn" class="email">wangshx@shanghaitech.edu.cn</a> or Xue-Song Liu <a href="mailto:liuxs@shanghaitech.edu.cn" class="email">liuxs@shanghaitech.edu.cn</a>.</p>
+<div id="page_facing_up-license" class="section level2">
+<h2 class="hasAnchor">
+<a href="#page_facing_up-license" class="anchor"></a>:page_facing_up: LICENSE</h2>
+<p>The software is made available for non commercial research purposes only under the <a href="https://github.com/ShixiangWang/sigminer/blob/master/LICENSE.md">MIT</a>. However, notwithstanding any provision of the MIT License, the software currently may not be used for commercial purposes without explicit written permission after contacting Shixiang Wang <a href="mailto:wangshx@shanghaitech.edu.cn" class="email">wangshx@shanghaitech.edu.cn</a> or Xue-Song Liu <a href="mailto:liuxs@shanghaitech.edu.cn" class="email">liuxs@shanghaitech.edu.cn</a>.</p>
 <p>MIT © 2019-Present Shixiang Wang, Xue-Song Liu</p>
 <p>MIT © 2018 Anand Mayakonda</p>
 <hr>
-<p><a href="https://github.com/XSLiuLab" class="external-link"><strong>Cancer Biology Group</strong></a> <strong>@ShanghaiTech</strong></p>
+<p><a href="https://github.com/XSLiuLab"><strong>Cancer Biology Group</strong></a> <strong>@ShanghaiTech</strong></p>
 <p><strong>Research group led by Xue-Song Liu in ShanghaiTech University</strong></p>
+<p><img src="https://repobeats.axiom.co/api/embed/7cd2cf8a196dde9d8d1e13c9b23bc2f157d8254e.svg" title="Repobeats analytics image" alt="Alt"></p>
 </div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2 data-toc-skip>Links</h2>
+<h2>Links</h2>
 <ul class="list-unstyled">
-<li><a href="https://cloud.r-project.org/package=sigminer" class="external-link">View on CRAN</a></li>
-<li><a href="https://github.com/ShixiangWang/sigminer/" class="external-link">Browse source code</a></li>
-<li><a href="https://github.com/ShixiangWang/sigminer/issues" class="external-link">Report a bug</a></li>
+<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=sigminer">https://​cloud.r-project.org/​package=sigminer</a>
+</li>
+<li>Browse source code at <br><a href="https://github.com/ShixiangWang/sigminer/">https://​github.com/​ShixiangWang/​sigminer/​</a>
+</li>
+<li>Report a bug at <br><a href="https://github.com/ShixiangWang/sigminer/issues">https://​github.com/​ShixiangWang/​sigminer/​issues</a>
+</li>
 </ul>
 </div>
-
 <div class="license">
-<h2 data-toc-skip>License</h2>
+<h2>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
-<li><small><a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
+<li><small><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
 </ul>
 </div>
-
-
 <div class="citation">
-<h2 data-toc-skip>Citation</h2>
+<h2>Citation</h2>
 <ul class="list-unstyled">
 <li><a href="authors.html">Citing sigminer</a></li>
 </ul>
 </div>
-
 <div class="developers">
-<h2 data-toc-skip>Developers</h2>
+<h2>Developers</h2>
 <ul class="list-unstyled">
 <li>
-<a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang Wang</a> <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0001-9855-7357" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>Ziyu Tao <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-3272-1227" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>Huimin Li <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-1683-9057" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>Tao Wu <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-8999-9628" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<a href="https://orcid.org/0000-0001-9855-7357">Shixiang Wang</a> <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0001-9855-7357" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Ziyu Tao <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-3272-1227" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Huimin Li <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-1683-9057" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Tao Wu <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-8999-9628" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>
-<a href="https://orcid.org/0000-0002-7736-0077" class="external-link">Xue-Song Liu</a> <br><small class="roles"> Author, contributor </small> <a href="https://orcid.org/0000-0002-7736-0077" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li><a href="authors.html">More about authors...</a></li>
+<a href="https://orcid.org/0000-0002-7736-0077">Xue-Song Liu</a> <br><small class="roles"> Author, contributor </small> <a href="https://orcid.org/0000-0002-7736-0077" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li><a href="authors.html">All authors...</a></li>
 </ul>
 </div>
 
-<div class="dev-status">
-<h2 data-toc-skip>Dev status</h2>
+  <div class="dev-status">
+<h2>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://cran.r-project.org/package=sigminer" class="external-link"><img src="https://www.r-pkg.org/badges/version/sigminer" alt="CRAN status"></a></li>
-<li><a href="https://lifecycle.r-lib.org/articles/stages.html" class="external-link"><img src="https://img.shields.io/badge/lifecycle-stable-blue.svg" alt="lifecycle"></a></li>
-<li><a href="https://github.com/ShixiangWang/sigminer/actions" class="external-link"><img src="https://github.com/ShixiangWang/sigminer/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
-<li><a href="https://codecov.io/github/ShixiangWang/sigminer?branch=master" class="external-link"><img src="https://codecov.io/gh/ShixiangWang/sigminer/branch/master/graph/badge.svg" alt="Coverage status"></a></li>
-<li><a href="https://cran.r-project.org/package=sigminer" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/sigminer?color=orange"></a></li>
-<li><a href="https://github.com/ShixiangWang/sigminer/issues?q=is%3Aissue+is%3Aclosed" class="external-link"><img src="https://img.shields.io/github/issues-closed/ShixiangWang/sigminer.svg" alt="Closed issues"></a></li>
-<li><a href="https://github.com/ShixiangWang/sigminer" class="external-link"><img src="https://tokei.rs/b1/github/ShixiangWang/sigminer?category=code" alt="Lines Of Code"></a></li>
-<li><a href="https://hits.seeyoufarm.com" class="external-link"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FShixiangWang%2Fsigminer&amp;count_bg=%2379C83D&amp;title_bg=%23555555&amp;icon=&amp;icon_color=%23E7E7E7&amp;title=hits&amp;edge_flat=false" alt="Hits"></a></li>
+<li><a href="https://cran.r-project.org/package=sigminer"><img src="https://www.r-pkg.org/badges/version/sigminer" alt="CRAN status"></a></li>
+<li><a href="https://lifecycle.r-lib.org/articles/stages.html"><img src="https://img.shields.io/badge/lifecycle-stable-blue.svg" alt="lifecycle"></a></li>
+<li><a href="https://github.com/ShixiangWang/sigminer/actions"><img src="https://github.com/ShixiangWang/sigminer/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://codecov.io/github/ShixiangWang/sigminer?branch=master"><img src="https://codecov.io/gh/ShixiangWang/sigminer/branch/master/graph/badge.svg" alt="Coverage status"></a></li>
+<li><a href="https://cran.r-project.org/package=sigminer"><img src="https://cranlogs.r-pkg.org/badges/grand-total/sigminer?color=orange"></a></li>
+<li><a href="https://github.com/ShixiangWang/sigminer/issues?q=is%3Aissue+is%3Aclosed"><img src="https://img.shields.io/github/issues-closed/ShixiangWang/sigminer.svg" alt="Closed issues"></a></li>
+<li><a href="https://github.com/ShixiangWang/sigminer"><img src="https://tokei.rs/b1/github/ShixiangWang/sigminer?category=code" alt="Lines Of Code"></a></li>
+<li><a href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FShixiangWang%2Fsigminer&amp;count_bg=%2379C83D&amp;title_bg=%23555555&amp;icon=&amp;icon_color=%23E7E7E7&amp;title=hits&amp;edge_flat=false" alt="Hits"></a></li>
 </ul>
 </div>
-
-  </div>
+</div>
 </div>
 
 
       <footer><div class="copyright">
-  <p></p>
-<p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang Wang</a>, Ziyu Tao, Huimin Li, Tao Wu, <a href="https://orcid.org/0000-0002-7736-0077" class="external-link">Xue-Song Liu</a>.</p>
+  <p>Developed by <a href="https://orcid.org/0000-0001-9855-7357">Shixiang Wang</a>, Ziyu Tao, Huimin Li, Tao Wu, <a href="https://orcid.org/0000-0002-7736-0077">Xue-Song Liu</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
@@ -266,8 +265,6 @@
 
   
 
-
-  
 
   </body>
 </html>
