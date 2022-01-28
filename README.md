@@ -17,6 +17,7 @@ Code](https://tokei.rs/b1/github/ShixiangWang/sigminer?category=code)](https://g
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FShixiangWang%2Fsigminer&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
 ![install with
 bioconda](https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat-square)
+[![check in Biotreasury](https://img.shields.io/badge/Biotreasury-collected-brightgreen)](https://biotreasury.rjmart.cn/#/tool?id=10043) 
 
 ## :bar\_chart: Overview
 
