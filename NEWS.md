@@ -1,3 +1,7 @@
+# sigminer 2.1.3
+
+- Fixed error in extracting invalid regions (#396, thanks to @KirsieMin).
+
 # sigminer 2.1.2
 
 - Enhanced the `read_copynumber_seqz()` to include minor copy number. (Thanks to yancey)

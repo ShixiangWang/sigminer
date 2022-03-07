@@ -21,14 +21,14 @@ generate_matrix_SBS <- function(query, ref_genome, genome_build = "hg19", add_tr
   ss <- BSgenome::getSeq(
     x = ref_genome,
     names = extract.tbl$Chromosome,
-    start = extract.tbl$Start - 2,
+    start = pmax(extract.tbl$Start - 2, 1L),
     end = extract.tbl$End + 2,
     as.character = TRUE
   )
 
   send_info("Extracting +/- 20bp around mutated bases for background C>T estimation.")
   updwn <- BSgenome::getSeq(
-    x = ref_genome, names = extract.tbl$Chromosome, start = extract.tbl$upstream,
+    x = ref_genome, names = extract.tbl$Chromosome, start = pmax(extract.tbl$upstream, 1L),
     end = extract.tbl$downstream, as.character = FALSE
   )
   updwn.alphFreq <- data.table::as.data.table(BSgenome::alphabetFrequency(x = updwn))[, c("A", "T", "G", "C")] # Nucleotide frequency
@@ -346,8 +346,8 @@ generate_matrix_DBS <- function(query, ref_genome, genome_build = "hg19", add_tr
     BSgenome::getSeq(
       x = ref_genome,
       names = Chromosome,
-      start = Start_Position - 1,
-      end = Start_Position - 1
+      start = pmax(Start_Position - 1, 1L),
+      end = pmax(Start_Position - 1, 1L)
     )
   )]
   query[, downstream := as.character(
@@ -534,8 +534,8 @@ generate_matrix_INDEL <- function(query, ref_genome, genome_build = "hg19", add_
     BSgenome::getSeq(
       x = ref_genome,
       names = Chromosome,
-      start = Start_Position - 50,
-      end = Start_Position - 1
+      start = pmax(Start_Position - 50, 1L),
+      end = pmax(Start_Position - 1, 1L)
     )
   )]
 
