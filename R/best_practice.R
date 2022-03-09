@@ -870,8 +870,8 @@ bp_show_survey2 <- function(obj,
                             left_color = "black", right_color = "red",
                             left_shape = 16, right_shape = 18,
                             shape_size = 4, highlight = NULL) {
-  stopifnot(class(obj) == "ExtractionResult" | is.data.frame(obj))
-  if (class(obj) == "ExtractionResult") {
+  stopifnot(inherits(obj, "ExtractionResult") | is.data.frame(obj))
+  if (inherits(obj, "ExtractionResult")) {
     obj <- obj$stats
   }
 
