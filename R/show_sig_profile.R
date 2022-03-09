@@ -703,7 +703,8 @@ show_sig_profile <- function(Signature,
 
   if (style != "default" | paint_axis_text) {
     if (!requireNamespace("ggplotify", quietly = TRUE)) {
-      send_stop("Please install 'ggplotify' package firstly.")
+      message("Please install 'ggplotify' package firstly.")
+      return(invisible(NULL))
     }
 
     g <- ggplot_gtable(ggplot_build(p))
