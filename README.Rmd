@@ -155,7 +155,7 @@ library("ggplot2")
 library("cranlogs")
 library("dplyr")
 
-x <- cran_downloads("sigminer", from = "2019-07-01", to = "2021-09-01")
+x <- cran_downloads("sigminer", from = "2019-07-01", to = "2022-03-01")
 
 if (!is.null(x)) {
    #head(x)
