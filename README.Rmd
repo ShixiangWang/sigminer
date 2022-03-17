@@ -54,6 +54,11 @@ p2 <- show_sig_profile(sig,
 p2
 ```
 
+```{r fig.width=12, fig.height=5, echo=FALSE}
+show_sig_profile(get_sig_db("CNS_TCGA")$db[, 1:3], style = "cosmic", 
+                 mode = "copynumber", method = "S", check_sig_names = F)
+```
+
 **DBS signatures**:
 
 ```{r fig.width=12, fig.height=5, echo=FALSE}
@@ -179,7 +184,11 @@ Please properly cite the following references when you are using any correspondi
 
 ## :page_facing_up: LICENSE
 
-The software is made available for non commercial research purposes only under the [MIT](https://github.com/ShixiangWang/sigminer/blob/master/LICENSE.md). However, notwithstanding any provision of the MIT License, the software currently may not be used for commercial purposes without explicit written permission after contacting Shixiang Wang [wangshx\@shanghaitech.edu.cn](mailto:wangshx@shanghaitech.edu.cn) or Xue-Song Liu [liuxs\@shanghaitech.edu.cn](mailto:liuxs@shanghaitech.edu.cn).
+The software is made available for non commercial research purposes only under the [MIT](https://github.com/ShixiangWang/sigminer/blob/master/LICENSE.md). However, notwithstanding any provision of the MIT License, the software currently may not be used for commercial purposes without explicit written permission after contacting patents' authors.
+
+Related patents:
+
+- [CN202011516653.7](https://kms.shanghaitech.edu.cn/handle/2MSLDSTB/127042)
 
 MIT © 2019-Present Shixiang Wang, Xue-Song Liu
 
@@ -187,8 +196,7 @@ MIT © 2018 Anand Mayakonda
 
 ------------------------------------------------------------------------
 
-[**Cancer Biology Group**](https://github.com/XSLiuLab) **\@ShanghaiTech**
+Sigminer v1-v2 are supported by [**Cancer Biology Group**](https://github.com/XSLiuLab) **\@ShanghaiTech**
 
-**Research group led by Xue-Song Liu in ShanghaiTech University**
 
 ![Alt](https://repobeats.axiom.co/api/embed/7cd2cf8a196dde9d8d1e13c9b23bc2f157d8254e.svg "Repobeats analytics image")

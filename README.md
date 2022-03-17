@@ -17,7 +17,8 @@ Code](https://tokei.rs/b1/github/ShixiangWang/sigminer?category=code)](https://g
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FShixiangWang%2Fsigminer&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
 ![install with
 bioconda](https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat-square)
-[![check in Biotreasury](https://img.shields.io/badge/Biotreasury-collected-brightgreen)](https://biotreasury.rjmart.cn/#/tool?id=10043) 
+[![check in
+Biotreasury](https://img.shields.io/badge/Biotreasury-collected-brightgreen)](https://biotreasury.rjmart.cn/#/tool?id=10043)
 
 ## :bar\_chart: Overview
 
@@ -39,17 +40,19 @@ For pipeline tool, please see its co-evolutionary CLI
 
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
 
-**DBS signatures**:
-
 <img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
 
-**INDEL (i.e. ID) signatures**:
+**DBS signatures**:
 
 <img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
 
-**Genome rearrangement signatures**:
+**INDEL (i.e. ID) signatures**:
 
 <img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
+
+**Genome rearrangement signatures**:
+
+<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
 
 ### :airplane: Features
 
@@ -135,7 +138,7 @@ following papers.
 
 ## :arrow\_down: Download Stats
 
-<img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
 
 ## :page\_with\_curl: References
 
@@ -182,9 +185,11 @@ under the
 [MIT](https://github.com/ShixiangWang/sigminer/blob/master/LICENSE.md).
 However, notwithstanding any provision of the MIT License, the software
 currently may not be used for commercial purposes without explicit
-written permission after contacting Shixiang Wang
-<wangshx@shanghaitech.edu.cn> or Xue-Song Liu
-<liuxs@shanghaitech.edu.cn>.
+written permission after contacting patents’ authors.
+
+Related patents:
+
+-   [CN202011516653.7](https://kms.shanghaitech.edu.cn/handle/2MSLDSTB/127042)
 
 MIT © 2019-Present Shixiang Wang, Xue-Song Liu
 
@@ -192,9 +197,7 @@ MIT © 2018 Anand Mayakonda
 
 ------------------------------------------------------------------------
 
-[**Cancer Biology Group**](https://github.com/XSLiuLab)
-**@ShanghaiTech**
-
-**Research group led by Xue-Song Liu in ShanghaiTech University**
+Sigminer v1-v2 are supported by [**Cancer Biology
+Group**](https://github.com/XSLiuLab) **@ShanghaiTech**
 
 ![Alt](https://repobeats.axiom.co/api/embed/7cd2cf8a196dde9d8d1e13c9b23bc2f157d8254e.svg "Repobeats analytics image")
