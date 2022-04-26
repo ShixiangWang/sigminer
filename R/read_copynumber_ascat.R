@@ -39,8 +39,13 @@ read_ascat_cn <- function(x) {
 }
 
 read_ascat_cn_list <- function(x_list) {
+  cores <- parallel::detectCores()
   message("reading file list:")
-  x_list <- purrr::transpose(purrr::compact(lapply(x_list, read_ascat_cn)))
+  if (cores > 1 && .Platform$OS.type != "windows") {
+    x_list <- purrr::transpose(purrr::compact(parallel::mclapply(x_list, read_ascat_cn, mc.cores = cores)))
+  } else {
+    x_list <- purrr::transpose(purrr::compact(lapply(x_list, read_ascat_cn)))
+  }
   y_list <- list()
   message("transforming data")
   y_list$data <- data.table::rbindlist(x_list$data)

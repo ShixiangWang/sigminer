@@ -1,3 +1,7 @@
+# sigminer 2.1.4
+
+- Added option for reading ASCAT objects in parallel.
+
 # sigminer 2.1.3
 
 - Fixed error in extracting invalid regions (#396, thanks to @KirsieMin).
