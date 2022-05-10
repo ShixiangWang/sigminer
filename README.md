@@ -20,7 +20,7 @@ bioconda](https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?s
 [![check in
 Biotreasury](https://img.shields.io/badge/Biotreasury-collected-brightgreen)](https://biotreasury.rjmart.cn/#/tool?id=10043)
 
-## :bar\_chart: Overview
+## :bar_chart: Overview
 
 The cancer genome is shaped by various mutational processes over its
 lifetime, stemming from exogenous and cell-intrinsic DNA damage, and
@@ -78,7 +78,7 @@ For pipeline tool, please see its co-evolutionary CLI
     **roxygen2**, **roxytest**, **pkgdown**, and etc. for both reliable
     and reproducible research.
 
-## :arrow\_double\_down: Installation
+## :arrow_double_down: Installation
 
 You can install the stable release of **sigminer** from CRAN with:
 
@@ -136,11 +136,11 @@ following papers.
 
 ------------------------------------------------------------------------
 
-## :arrow\_down: Download Stats
+## :arrow_down: Download Stats
 
 <img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
 
-## :page\_with\_curl: References
+## :page_with_curl: References
 
 Please properly cite the following references when you are using any
 corresponding features. The references are also listed in the function
@@ -151,7 +151,7 @@ without the giants.
     analysis of somatic variants in cancer.” Genome research 28.11
     (2018): 1747-1756.
 2.  Gaujoux, Renaud, and Cathal Seoighe. “A Flexible R Package for
-    Nonnegative Matrix Factorization.”" BMC Bioinformatics 11, no. 1
+    Nonnegative Matrix Factorization.”” BMC Bioinformatics 11, no. 1
     (December 2010).
 3.  H. Wickham. ggplot2: Elegant Graphics for Data Analysis.
     Springer-Verlag New York, 2016.
@@ -178,7 +178,7 @@ without the giants.
     2019, 20:685
     <https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-019-6041-2>
 
-## :page\_facing\_up: LICENSE
+## :page_facing_up: LICENSE
 
 The software is made available for non commercial research purposes only
 under the

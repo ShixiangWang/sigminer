@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.5</span>
       </span>
     </div>
 
@@ -63,11 +63,10 @@
     <div id="source">
     <h2>Source</h2>
     <p>Generate from <a href="https://hgdownload.soe.ucsc.edu/goldenPath/mm9/database/" class="external-link">https://hgdownload.soe.ucsc.edu/goldenPath/mm9/database/</a>
-with code:</p><div class="sh"><div class="sourceCode"><pre><code>for i in $(seq 1 19) X Y;
-do
-wget https://hgdownload.soe.ucsc.edu/goldenPath/mm9/database/chr${i}_gap.txt.gz
-done
-</code></pre></div><p></p></div>
+with code:</p><div class="sourceCode sh"><pre><code><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="va">$(</span><span class="fu">seq</span> 1 19<span class="va">)</span> X Y<span class="kw">;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://hgdownload.soe.ucsc.edu/goldenPath/mm9/database/chr<span class="va">${i}</span>_gap.txt.gz</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre><p></p></div>
     </div>
 
     <div id="ref-examples">
@@ -83,11 +82,14 @@ done
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang Wang</a>, Ziyu Tao, Huimin Li, Tao Wu, <a href="https://orcid.org/0000-0002-7736-0077" class="external-link">Xue-Song Liu</a>.</p>
+  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang
+Wang</a>, Ziyu Tao, Huimin Li, Tao Wu,
+<a href="https://orcid.org/0000-0002-7736-0077" class="external-link">Xue-Song Liu</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
+2.0.2.</p>
 </div>
 
       </footer></div>
