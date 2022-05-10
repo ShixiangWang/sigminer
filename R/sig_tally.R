@@ -409,6 +409,9 @@ sig_tally.MAF <- function(object, mode = c("SBS", "DBS", "ID", "ALL"),
   )
   # Check NA in Reference_Allele Tumor_Seq_Allele2
   query <- query[!is.na(query$Reference_Allele) & !is.na(query$Tumor_Seq_Allele2)]
+  if (all.equal(query$Reference_Allele, query$Tumor_Seq_Allele2)) {
+    send_stop("Tumor_Seq_Allele2 (mutated allele) should not equal to Reference_Allele!")
+  }
   send_success("Variants from MAF object queried.")
 
   # Remove unwanted contigs
