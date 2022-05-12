@@ -19,6 +19,7 @@ Code](https://tokei.rs/b1/github/ShixiangWang/sigminer?category=code)](https://g
 bioconda](https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat-square)
 [![check in
 Biotreasury](https://img.shields.io/badge/Biotreasury-collected-brightgreen)](https://biotreasury.rjmart.cn/#/tool?id=10043)
+[![Gitter](https://badges.gitter.im/ShixiangWang/community.svg)](https://gitter.im/ShixiangWang/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 ## :bar_chart: Overview
 
