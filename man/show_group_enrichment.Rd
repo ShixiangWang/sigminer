@@ -35,7 +35,8 @@ When show p value with filled color, the text indicates relative change;
 when show relative change with filled color, the text indicates p value.}
 
 \item{fill_by_p_value}{if \code{TRUE}, show log10 based p values with filled color.
-The +/- of p values indicates change direction.}
+The +/- of p values indicates change direction.
+If p vlaues is mapped to fill, then text shows effect size, and vice versa.}
 
 \item{use_fdr}{if \code{TRUE}, show FDR values instead of raw p-values.}
 

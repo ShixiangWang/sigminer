@@ -2,7 +2,7 @@
 
 # File R/group_enrichment.R: @testexamples
 
-test_that("Function group_enrichment() @ L79", {
+test_that("Function group_enrichment() @ L80", {
   
   set.seed(1234)
   df <- dplyr::tibble(

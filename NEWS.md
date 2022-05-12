@@ -1,6 +1,24 @@
 # sigminer 2.1.4
 
 - Added option for reading ASCAT objects in parallel.
+- Enhanced `group_enrichment()` with reference group support.
+
+Example:
+
+```r
+set.seed(1234)
+df <- dplyr::tibble(
+  g1 = rep(LETTERS[1:3], c(50, 40, 10)),
+  g2 = rep(c("AA", "VV", "XX"), c(50, 40, 10)),
+  e1 = sample(c("P", "N"), 100, replace = TRUE),
+  e2 = rnorm(100)
+)
+
+x1 = group_enrichment(df, grp_vars = c("g1", "g2"), 
+                      enrich_vars = c("e1", "e2"), 
+                      ref_group = c("B", "VV"))
+x1
+```
 
 # sigminer 2.1.3
 

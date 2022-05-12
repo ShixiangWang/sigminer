@@ -16,6 +16,7 @@
 #' not be in both `grp_vars` and `enrich_vars`, such cases will be automatically
 #' drop. If `FALSE`, use pairwise combinations, see section "examples" for use cases.
 #' @param co_method test method for continuous variable, default is 't.test'.
+#' @param ref_group reference group set in `grp_vars`.
 #'
 #' @return a `data.table` with following columns:
 #' - `grp_var`: group variable name.
@@ -78,7 +79,8 @@
 #' expect_is(p3, "list")
 group_enrichment <- function(df, grp_vars = NULL, enrich_vars = NULL,
                              cross = TRUE,
-                             co_method = c("t.test", "wilcox.test")) {
+                             co_method = c("t.test", "wilcox.test"),
+                             ref_group = NA) {
   stopifnot(
     is.character(grp_vars), is.character(enrich_vars),
     is.data.frame(df),
@@ -102,18 +104,32 @@ group_enrichment <- function(df, grp_vars = NULL, enrich_vars = NULL,
   comb_df <- comb_df[, sapply(comb_df, function(x) length(unique(x)) != 1),
     drop = FALSE
   ]
-  purrr::map_df(comb_df, ~ enrich_one(.x[1], .x[2], df, co_method))
+  if (!is.null(ref_group) && ncol(comb_df) > length(ref_group)) {
+    ref_group <- rep(ref_group, ncol(comb_df) / length(ref_group))
+  }
+  # purrr::map_df(comb_df, ~ enrich_one(.x[1], .x[2], df, co_method, ref_group))
+  purrr::map2_df(comb_df, ref_group, ~ enrich_one(.x[1], .x[2], df, co_method, .y))
 }
 
-enrich_one <- function(x, y, df, method = "t.test") {
+enrich_one <- function(x, y, df, method = "t.test", ref_group = NULL) {
   # x is group var
   # y is enrich var
+  if (is.null(ref_group) || is.na(ref_group)) {
+    ref_group <- NULL
+  }
 
   # Check the input
   df[[x]] <- as.character(df[[x]])
   grps <- na.omit(unique(df[[x]]))
 
-  message("Handing pair ", x, ":", y)
+  if (!is.null(ref_group) && !ref_group %in% grps) {
+    stop("when 'ref_group' is not NULL, must a member of group variable")
+  }
+
+  message(
+    "Handing pair ", x, ":", y,
+    if (!is.null(ref_group)) paste0("(ref_group - ", ref_group, ")")
+  )
   message("============================")
 
   if (length(grps) < 2) {
@@ -123,59 +139,12 @@ enrich_one <- function(x, y, df, method = "t.test") {
 
   if (is.numeric(df[[y]])) {
     # t.test or wilcox.test
-    cmp <- purrr::map_df(grps, function(z, x, y, df, method = "t.test") {
-      message("Handing pair ", x, ":", y, " - group: ", z)
-      df$.Group <- data.table::fifelse(df[[x]] %in% z, z, ".Other", na = ".Other")
-      df$.Group <- factor(x = df$.Group, levels = c(z, ".Other"))
-      df$.Cval <- df[[y]]
-
-      # Only keep rows with valid values
-      df <- df[, c(".Group", ".Cval")][is.finite(df$.Cval), ]
-
-      .test <- if (method == "t.test") stats::t.test else stats::wilcox.test
-      cmp <- tryCatch(
-        .test(.Cval ~ .Group, data = df),
-        error = function(e) {
-          message("  An error occur when testing, it will be skipped. Info:")
-          message("    ", e$message)
-          list(p.value = NA)
-        }
-      )
-
-      data_range <- range(df$.Cval)
-      grp_sum <- df %>%
-        dplyr::group_by(.data$.Group) %>%
-        dplyr::summarise(
-          n = dplyr::n(),
-          measure = mean(.data$.Cval),
-          .groups = "drop"
-        ) %>%
-        dplyr::mutate(
-          # Scale all measures to range 0-1
-          measure_scaled = (.data$measure - data_range[1]) / diff(data_range)
-        )
-
-      cmp.tbl <- data.table::data.table(
-        grp_var = x,
-        enrich_var = y,
-        grp1 = z,
-        grp2 = "Rest",
-        grp1_size = grp_sum$n[1],
-        grp1_pos_measure = grp_sum$measure[1],
-        grp2_size = grp_sum$n[2],
-        grp2_pos_measure = grp_sum$measure[2],
-        measure_observed = grp_sum$measure_scaled[1] / grp_sum$measure_scaled[2],
-        measure_tested = NA,
-        p_value = cmp$p.value,
-        type = "continuous",
-        method = method
-      )
-      cmp.tbl
-    },
-    x = x,
-    y = y,
-    df = df,
-    method = method
+    cmp <- purrr::map_df(grps, cmp_one,
+      x = x,
+      y = y,
+      df = df,
+      method = method,
+      ref_group = ref_group
     )
   } else {
     # fisher test
@@ -192,58 +161,131 @@ enrich_one <- function(x, y, df, method = "t.test") {
       stop("Unsupported input for non-numeric variable, convert it to P/N or TRUE/FALSE!")
     }
 
-    cmp <- purrr::map_df(grps, function(z, x, y, df) {
-      message("Handing pair ", x, ":", y, " - group: ", z)
-
-      df$.Group <- data.table::fifelse(df[[x]] %in% z, z, ".Other", na = ".Other")
-      df$.Group <- factor(x = df$.Group, levels = c(z, ".Other"))
-      df$Ctype <- factor(x = df$Ctype, levels = c("P", "N"))
-      df.tbl <- with(df, table(.Group, Ctype))
-      df.tbl <- df.tbl[c(z, ".Other"), c("P", "N")]
-
-      cmp <- tryCatch(
-        fisher.test(df.tbl),
-        error = function(e) {
-          message("  An error occur when testing, it will be skipped. Info:")
-          message("    ", e$message)
-          list(
-            p.value = NA,
-            conf.int = c(NA, NA)
-          )
-        }
-      )
-
-      grp_size <- as.numeric(rowSums(df.tbl))
-      grp_frac <- t(apply(df.tbl, 1, function(x) x / sum(x)))
-
-      cmp.tbl <- data.table::data.table(
-        grp_var = x,
-        enrich_var = y,
-        grp1 = z,
-        grp2 = "Rest",
-        grp1_size = grp_size[1],
-        grp1_pos_measure = grp_frac[1, 1],
-        grp2_size = grp_size[2],
-        grp2_pos_measure = grp_frac[2, 1],
-        measure_observed = grp_frac[1, 1] / grp_frac[2, 1],
-        measure_tested = paste0(
-          round(cmp$estimate, 3),
-          " (", paste(round(cmp$conf.int, 3),
-            collapse = ","
-          ), ")"
-        ),
-        p_value = cmp$p.value,
-        type = "binary",
-        method = "fisher.test"
-      )
-      cmp.tbl
-    },
-    x = x,
-    y = y,
-    df = df
+    cmp <- purrr::map_df(grps, tbl_one,
+      x = x,
+      y = y,
+      df = df,
+      ref_group = ref_group
     )
   }
 
   cmp$fdr <- stats::p.adjust(cmp$p_value, method = "fdr")
   return(cmp)
+}
+
+cmp_one <- function(z, x, y, df, method = "t.test", ref_group = NULL) {
+  var_other <- ".Other"
+  if (!is.null(ref_group)) {
+    df <- df %>% dplyr::filter(.data[[x]] %in% c(z, ref_group))
+    var_other <- ref_group
+
+    if (ref_group == z) {
+      return(NULL)
+    }
+  }
+
+  message("Handing pair ", x, ":", y, " - group: ", z)
+  df$.Group <- data.table::fifelse(df[[x]] %in% z, z, var_other, na = var_other)
+  df$.Group <- factor(x = df$.Group, levels = c(z, var_other))
+  df$.Cval <- df[[y]]
+
+  # Only keep rows with valid values
+  df <- df[, c(".Group", ".Cval")][is.finite(df$.Cval), ]
+
+  .test <- if (method == "t.test") stats::t.test else stats::wilcox.test
+  cmp <- tryCatch(
+    .test(.Cval ~ .Group, data = df),
+    error = function(e) {
+      message("  An error occur when testing, it will be skipped. Info:")
+      message("    ", e$message)
+      list(p.value = NA)
+    }
+  )
+
+  data_range <- range(df$.Cval)
+  grp_sum <- df %>%
+    dplyr::group_by(.data$.Group) %>%
+    dplyr::summarise(
+      n = dplyr::n(),
+      measure = mean(.data$.Cval),
+      .groups = "drop"
+    ) %>%
+    dplyr::mutate(
+      # Scale all measures to range 0-1
+      measure_scaled = (.data$measure - data_range[1]) / diff(data_range)
+    )
+
+  cmp.tbl <- data.table::data.table(
+    grp_var = x,
+    enrich_var = y,
+    grp1 = z,
+    grp2 = if (is.null(ref_group)) "Rest" else ref_group,
+    grp1_size = grp_sum$n[1],
+    grp1_pos_measure = grp_sum$measure[1],
+    grp2_size = grp_sum$n[2],
+    grp2_pos_measure = grp_sum$measure[2],
+    measure_observed = grp_sum$measure_scaled[1] / grp_sum$measure_scaled[2],
+    measure_tested = NA,
+    p_value = cmp$p.value,
+    type = "continuous",
+    method = method
+  )
+  cmp.tbl
+}
+
+tbl_one <- function(z, x, y, df, ref_group = NULL) {
+  var_other <- ".Other"
+  if (!is.null(ref_group)) {
+    df <- df %>% dplyr::filter(.data[[x]] %in% c(z, ref_group))
+    var_other <- ref_group
+
+    if (ref_group == z) {
+      return(NULL)
+    }
+  }
+
+  message("Handing pair ", x, ":", y, " - group: ", z)
+
+  df$.Group <- data.table::fifelse(df[[x]] %in% z, z, var_other, na = var_other)
+  df$.Group <- factor(x = df$.Group, levels = c(z, var_other))
+  df$Ctype <- factor(x = df$Ctype, levels = c("P", "N"))
+  df.tbl <- with(df, table(.Group, Ctype))
+  df.tbl <- df.tbl[c(z, var_other), c("P", "N")]
+
+  cmp <- tryCatch(
+    fisher.test(df.tbl),
+    error = function(e) {
+      message("  An error occur when testing, it will be skipped. Info:")
+      message("    ", e$message)
+      list(
+        p.value = NA,
+        conf.int = c(NA, NA)
+      )
+    }
+  )
+
+  grp_size <- as.numeric(rowSums(df.tbl))
+  grp_frac <- t(apply(df.tbl, 1, function(x) x / sum(x)))
+
+  cmp.tbl <- data.table::data.table(
+    grp_var = x,
+    enrich_var = y,
+    grp1 = z,
+    grp2 = if (is.null(ref_group)) "Rest" else ref_group,
+    grp1_size = grp_size[1],
+    grp1_pos_measure = grp_frac[1, 1],
+    grp2_size = grp_size[2],
+    grp2_pos_measure = grp_frac[2, 1],
+    measure_observed = grp_frac[1, 1] / grp_frac[2, 1],
+    measure_tested = paste0(
+      round(cmp$estimate, 3),
+      " (", paste(round(cmp$conf.int, 3),
+        collapse = ","
+      ), ")"
+    ),
+    p_value = cmp$p.value,
+    type = "binary",
+    method = "fisher.test"
+  )
+  cmp.tbl
 }

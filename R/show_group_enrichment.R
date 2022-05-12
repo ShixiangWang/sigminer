@@ -12,6 +12,7 @@
 #' when show relative change with filled color, the text indicates p value.
 #' @param fill_by_p_value if `TRUE`, show log10 based p values with filled color.
 #' The +/- of p values indicates change direction.
+#' If p vlaues is mapped to fill, then text shows effect size, and vice versa.
 #' @param use_fdr if `TRUE`, show FDR values instead of raw p-values.
 #' @param cut_p_value if `TRUE`, cut p values into 5 regions for better visualization.
 #' Only works when `fill_by_p_value = TRUE`.

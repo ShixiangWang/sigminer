@@ -9,7 +9,8 @@ group_enrichment(
   grp_vars = NULL,
   enrich_vars = NULL,
   cross = TRUE,
-  co_method = c("t.test", "wilcox.test")
+  co_method = c("t.test", "wilcox.test"),
+  ref_group = NA
 )
 }
 \arguments{
@@ -30,6 +31,8 @@ not be in both \code{grp_vars} and \code{enrich_vars}, such cases will be automa
 drop. If \code{FALSE}, use pairwise combinations, see section "examples" for use cases.}
 
 \item{co_method}{test method for continuous variable, default is 't.test'.}
+
+\item{ref_group}{reference group set in \code{grp_vars}.}
 }
 \value{
 a \code{data.table} with following columns:
