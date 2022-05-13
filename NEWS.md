@@ -1,6 +1,5 @@
-# sigminer 2.1.4
+# sigminer 2.1.5
 
-- Added option for reading ASCAT objects in parallel.
 - Enhanced `group_enrichment()` with reference group support.
 
 Example:
@@ -19,6 +18,10 @@ x1 = group_enrichment(df, grp_vars = c("g1", "g2"),
                       ref_group = c("B", "VV"))
 x1
 ```
+
+# sigminer 2.1.4
+
+- Added option for reading ASCAT objects in parallel.
 
 # sigminer 2.1.3
 
