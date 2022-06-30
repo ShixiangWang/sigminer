@@ -29,6 +29,16 @@ the suboptimal decomposition solution."><meta property="og:image" content="https
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu"><li>
+      <a href="../articles/cnsignature.html">Analyze Copy Number Signatures with sigminer</a>
+    </li>
+  </ul></li>
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
@@ -84,14 +94,22 @@ the suboptimal decomposition solution.</p>
     <dl><dt>catalog</dt>
 <dd><p>a named numeric vector or a numeric matrix with dimension Nx1.
 N is the number of component, 1 is the sample.</p></dd>
+
+
 <dt>sig</dt>
 <dd><p>a <code>Signature</code> object obtained either from <a href="sig_extract.html">sig_extract</a> or <a href="sig_auto_extract.html">sig_auto_extract</a>,
 or just a raw signature matrix/<code>data.frame</code> with row representing components (motifs) and
 column representing signatures.</p></dd>
+
+
 <dt>n</dt>
 <dd><p>the number of bootstrap replicates.</p></dd>
+
+
 <dt>sig_index</dt>
 <dd><p>a vector for signature index. "ALL" for all signatures.</p></dd>
+
+
 <dt>sig_db</dt>
 <dd><p>default 'legacy', it can be 'legacy' (for <a href="https://cancer.sanger.ac.uk/cosmic/signatures_v2.tt/" class="external-link">COSMIC v2 'SBS'</a>),
 'SBS', 'DBS', 'ID' and 'TSB' (for <a href="https://cancer.sanger.ac.uk/cosmic/signatures/" class="external-link">COSMIV v3.1 signatures</a>)
@@ -111,48 +129,77 @@ when a option with <code>latest_</code> prefix is specified (e.g. "latest_SBS_GR
 And specific database (e.g. 'SBS_mm10') contains less signatures than all COSMIC
 signatures (because some signatures are not detected from Alexandrov, Ludmil B., et al. (2020)).
 For all available options, check the parameter setting.</p></dd>
+
+
 <dt>db_type</dt>
 <dd><p>only used when <code>sig_db</code> is enabled.
 "" for keeping default, "human-exome" for transforming to exome frequency of component,
 and "human-genome" for transforming to whole genome frequency of component.
 Currently only works for 'SBS'.</p></dd>
+
+
 <dt>show_index</dt>
 <dd><p>if <code>TRUE</code>, show valid indices.</p></dd>
+
+
 <dt>method</dt>
 <dd><p>method to solve the minimazation problem.
 'NNLS' for non-negative least square; 'QP' for quadratic programming; 'SA' for simulated annealing.</p></dd>
+
+
 <dt>auto_reduce</dt>
 <dd><p>if <code>TRUE</code>, try reducing the input reference signatures to increase
 the cosine similarity of reconstructed profile to observed profile.</p></dd>
+
+
 <dt>SA_not_bootstrap</dt>
 <dd><p>if <code>TRUE</code>, directly run 'SA' multiple times with original input instead of
 bootstrap samples.</p></dd>
+
+
 <dt>type</dt>
 <dd><p>'absolute' for signature exposure and 'relative' for signature relative exposure.</p></dd>
+
+
 <dt>rel_threshold</dt>
 <dd><p>numeric vector, a signature with relative exposure
 lower than (equal is included, i.e. <code>&lt;=</code>) this value will be set to 0
 (both absolute exposure and relative exposure).
 In this case, sum of signature contribution may not equal to 1.</p></dd>
+
+
 <dt>mode</dt>
 <dd><p>signature type for plotting, now supports 'copynumber', 'SBS',
 'DBS', 'ID' and 'RS' (genome rearrangement signature).</p></dd>
+
+
 <dt>find_suboptimal</dt>
 <dd><p>logical, if <code>TRUE</code>, find suboptimal decomposition with
 slightly higher error than the optimal solution by method 'SA'. This is useful
 to explore hidden dependencies between signatures. More see reference.</p></dd>
+
+
 <dt>suboptimal_ref_error</dt>
 <dd><p>baseline error used for finding suboptimal solution.
 if it is <code>NULL</code>, then use 'SA' method to obtain the optimal error.</p></dd>
+
+
 <dt>suboptimal_factor</dt>
 <dd><p>suboptimal factor to get suboptimal error, default is <code>1.05</code>,
 i.e., suboptimal error is <code>1.05</code> times baseline error.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>control parameters passing to argument <code>control</code> in <code>GenSA</code> function when use method 'SA'.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a <code>list</code></p>
+    
+
+<p>a <code>list</code></p>
+
+
     </div>
     <div id="references">
     <h2>References</h2>
@@ -207,14 +254,11 @@ i.e., suboptimal error is <code>1.05</code> times baseline error.</p></dd>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang
-Wang</a>, Ziyu Tao, Huimin Li, Tao Wu,
-<a href="https://orcid.org/0000-0002-7736-0077" class="external-link">Xue-Song Liu</a>.</p>
+  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang Wang</a>, Ziyu Tao, Huimin Li, Tao Wu, <a href="https://orcid.org/0000-0002-7736-0077" class="external-link">Xue-Song Liu</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

@@ -28,6 +28,16 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu"><li>
+      <a href="../articles/cnsignature.html">Analyze Copy Number Signatures with sigminer</a>
+    </li>
+  </ul></li>
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
@@ -68,8 +78,12 @@
     <h2>Arguments</h2>
     <dl><dt>sig_index</dt>
 <dd><p>a vector for signature index. "ALL" for all signatures.</p></dd>
+
+
 <dt>show_index</dt>
 <dd><p>if <code>TRUE</code>, show valid indices.</p></dd>
+
+
 <dt>sig_db</dt>
 <dd><p>default 'legacy', it can be 'legacy' (for <a href="https://cancer.sanger.ac.uk/cosmic/signatures_v2.tt/" class="external-link">COSMIC v2 'SBS'</a>),
 'SBS', 'DBS', 'ID' and 'TSB' (for <a href="https://cancer.sanger.ac.uk/cosmic/signatures/" class="external-link">COSMIV v3.1 signatures</a>)
@@ -89,12 +103,17 @@ when a option with <code>latest_</code> prefix is specified (e.g. "latest_SBS_GR
 And specific database (e.g. 'SBS_mm10') contains less signatures than all COSMIC
 signatures (because some signatures are not detected from Alexandrov, Ludmil B., et al. (2020)).
 For all available options, check the parameter setting.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>other arguments passing to <a href="show_sig_profile.html">show_sig_profile</a>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a <code>ggplot</code> object</p>
+    
+
+<p>a <code>ggplot</code> object</p>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -120,14 +139,11 @@ For all available options, check the parameter setting.</p></dd>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang
-Wang</a>, Ziyu Tao, Huimin Li, Tao Wu,
-<a href="https://orcid.org/0000-0002-7736-0077" class="external-link">Xue-Song Liu</a>.</p>
+  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang Wang</a>, Ziyu Tao, Huimin Li, Tao Wu, <a href="https://orcid.org/0000-0002-7736-0077" class="external-link">Xue-Song Liu</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

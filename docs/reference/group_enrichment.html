@@ -29,6 +29,16 @@ cases or mean measure in one subgroup and the remaining samples."><meta property
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu"><li>
+      <a href="../articles/cnsignature.html">Analyze Copy Number Signatures with sigminer</a>
+    </li>
+  </ul></li>
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
@@ -63,7 +73,8 @@ cases or mean measure in one subgroup and the remaining samples.</p>
   grp_vars <span class="op">=</span> <span class="cn">NULL</span>,
   enrich_vars <span class="op">=</span> <span class="cn">NULL</span>,
   cross <span class="op">=</span> <span class="cn">TRUE</span>,
-  co_method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"t.test"</span>, <span class="st">"wilcox.test"</span><span class="op">)</span>
+  co_method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"t.test"</span>, <span class="st">"wilcox.test"</span><span class="op">)</span>,
+  ref_group <span class="op">=</span> <span class="cn">NA</span>
 <span class="op">)</span></code></pre></div>
     </div>
 
@@ -71,26 +82,41 @@ cases or mean measure in one subgroup and the remaining samples.</p>
     <h2>Arguments</h2>
     <dl><dt>df</dt>
 <dd><p>a <code>data.frame</code>.</p></dd>
+
+
 <dt>grp_vars</dt>
 <dd><p>character vector specifying group variables to split samples
 into subgroups (at least 2 subgroups, otherwise this variable will be skipped).</p></dd>
+
+
 <dt>enrich_vars</dt>
 <dd><p>character vector specifying measure variables to be compared.
 If variable is not numeric, only binary cases are accepted in the form of
 <code>TRUE/FALSE</code> or <code>P/N</code> (P for positive cases and N for negative cases).
 Of note, <code>NA</code> values set to negative cases.</p></dd>
+
+
 <dt>cross</dt>
 <dd><p>logical, default is <code>TRUE</code>, combine all situations provided by
 <code>grp_vars</code> and <code>enrich_vars</code>. For examples, <code>c('A', 'B')</code> and <code>c('C', 'D')</code>
 will construct 4 combinations(i.e. "AC", "AD", "BC" and "BD"). A variable can
 not be in both <code>grp_vars</code> and <code>enrich_vars</code>, such cases will be automatically
 drop. If <code>FALSE</code>, use pairwise combinations, see section "examples" for use cases.</p></dd>
+
+
 <dt>co_method</dt>
 <dd><p>test method for continuous variable, default is 't.test'.</p></dd>
+
+
+<dt>ref_group</dt>
+<dd><p>reference group set in <code>grp_vars</code>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a <code>data.table</code> with following columns:</p><ul><li><p><code>grp_var</code>: group variable name.</p></li>
+    
+
+<p>a <code>data.table</code> with following columns:</p><ul><li><p><code>grp_var</code>: group variable name.</p></li>
 <li><p><code>enrich_var</code>: enrich variable (variable to be compared) name.</p></li>
 <li><p><code>grp1</code>: the first group name, should be a member in <code>grp_var</code> column.</p></li>
 <li><p><code>grp2</code>: the remaining samples, marked as 'Rest'.</p></li>
@@ -156,14 +182,11 @@ for continuous variable, it stores value from <code><a href="https://rdrr.io/r/s
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang
-Wang</a>, Ziyu Tao, Huimin Li, Tao Wu,
-<a href="https://orcid.org/0000-0002-7736-0077" class="external-link">Xue-Song Liu</a>.</p>
+  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang Wang</a>, Ziyu Tao, Huimin Li, Tao Wu, <a href="https://orcid.org/0000-0002-7736-0077" class="external-link">Xue-Song Liu</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

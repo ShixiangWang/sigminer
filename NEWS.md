@@ -1,5 +1,7 @@
 # sigminer 2.1.5
 
+- Added a vignette to introduce the analysis of copy number signatures.
+- Updated `CNS_TCGA`.
 - Enhanced `group_enrichment()` with reference group support.
 
 Example:

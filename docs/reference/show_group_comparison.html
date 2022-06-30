@@ -33,6 +33,16 @@ continuous data."><meta property="og:image" content="https://shixiangwang.github
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu"><li>
+      <a href="../articles/cnsignature.html">Analyze Copy Number Signatures with sigminer</a>
+    </li>
+  </ul></li>
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
@@ -90,51 +100,84 @@ continuous data.</p>
     <h2>Arguments</h2>
     <dl><dt>group_comparison</dt>
 <dd><p>a <code>list</code> from result of <a href="get_group_comparison.html">get_group_comparison</a> function.</p></dd>
+
+
 <dt>xlab</dt>
 <dd><p>lab name of x axis for all plots. if it is <code>NA</code>, remove title for x axis.</p></dd>
+
+
 <dt>ylab_co</dt>
 <dd><p>lab name of y axis for plots of continuous type data. Of note,
 this argument should be a character vector has same length as <code>group_comparison</code>,
 the location for categorical type data should mark with <code>NA</code>.</p></dd>
+
+
 <dt>legend_title_ca</dt>
 <dd><p>legend title for plots of categorical type data.</p></dd>
+
+
 <dt>legend_position_ca</dt>
 <dd><p>legend position for plots of categorical type data.
 Of note,
 this argument should be a character vector has same length as <code>group_comparison</code>,
 the location for continuous type data should mark with <code>NA</code>.</p></dd>
+
+
 <dt>set_ca_sig_yaxis</dt>
 <dd><p>if <code>TRUE</code>, use y axis to show signature proportion instead of
 variable proportion.</p></dd>
+
+
 <dt>set_ca_custom_xlab</dt>
 <dd><p>only works when <code>set_ca_sig_yaxis</code> is <code>TRUE</code>. If
 <code>TRUE</code>, set x labels using input <code>xlab</code>, otherwise variable names will be used.</p></dd>
+
+
 <dt>show_pvalue</dt>
 <dd><p>if <code>TRUE</code>, show p values.</p></dd>
+
+
 <dt>ca_p_threshold</dt>
 <dd><p>a p threshold for categorical variables, default is 0.01.
 A p value less than 0.01 will be shown as <code>P &lt; 0.01</code>.</p></dd>
+
+
 <dt>method</dt>
 <dd><p>a character string indicating which method to be used for comparing means.
 It can be 't.test', 'wilcox.test' etc..</p></dd>
+
+
 <dt>p.adjust.method</dt>
 <dd><p>correction method, default is 'fdr'. Run <code>p.adjust.methods</code> to
 see all available options.</p></dd>
+
+
 <dt>base_size</dt>
 <dd><p>overall font size.</p></dd>
+
+
 <dt>font_size_x</dt>
 <dd><p>font size for x.</p></dd>
+
+
 <dt>text_angle_x</dt>
 <dd><p>text angle for x.</p></dd>
+
+
 <dt>text_hjust_x</dt>
 <dd><p>adjust x axis text</p></dd>
+
+
 <dt>...</dt>
 <dd><p>other paramters pass to <code><a href="https://rpkgs.datanovia.com/ggpubr/reference/compare_means.html" class="external-link">ggpubr::compare_means()</a></code> or <code><a href="https://rpkgs.datanovia.com/ggpubr/reference/stat_compare_means.html" class="external-link">ggpubr::stat_compare_means()</a></code>
 according to the specified <code>method</code>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a <code>list</code> of <code>ggplot</code> objects.</p>
+    
+
+<p>a <code>list</code> of <code>ggplot</code> objects.</p>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -184,14 +227,11 @@ according to the specified <code>method</code>.</p></dd>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang
-Wang</a>, Ziyu Tao, Huimin Li, Tao Wu,
-<a href="https://orcid.org/0000-0002-7736-0077" class="external-link">Xue-Song Liu</a>.</p>
+  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang Wang</a>, Ziyu Tao, Huimin Li, Tao Wu, <a href="https://orcid.org/0000-0002-7736-0077" class="external-link">Xue-Song Liu</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

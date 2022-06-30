@@ -30,6 +30,16 @@ current supported signatures."><meta property="og:image" content="https://shixia
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu"><li>
+      <a href="../articles/cnsignature.html">Analyze Copy Number Signatures with sigminer</a>
+    </li>
+  </ul></li>
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
@@ -88,50 +98,87 @@ current supported signatures.</p>
 <dd><p>a <code>Signature</code> object obtained either from <a href="sig_extract.html">sig_extract</a> or <a href="sig_auto_extract.html">sig_auto_extract</a>,
 or just a raw signature matrix with row representing components (motifs) and column
 representing signatures (column names must start with 'Sig').</p></dd>
+
+
 <dt>mode</dt>
 <dd><p>one of "SBS" and "DBS".</p></dd>
+
+
 <dt>normalize</dt>
 <dd><p>one of 'row', 'column', 'raw' and "feature", for row normalization (signature),
 column normalization (component), raw data, row normalization by feature, respectively.
 Of note, 'feature' only works when the mode is 'copynumber'.</p></dd>
+
+
 <dt>filters</dt>
 <dd><p>a pattern used to select components to plot.</p></dd>
+
+
 <dt>x_lab</dt>
 <dd><p>x label.</p></dd>
+
+
 <dt>y_lab</dt>
 <dd><p>y label.</p></dd>
+
+
 <dt>legend_name</dt>
 <dd><p>name of figure legend.</p></dd>
+
+
 <dt>palette</dt>
 <dd><p>color for value.</p></dd>
+
+
 <dt>x_label_angle</dt>
 <dd><p>angle for x axis text.</p></dd>
+
+
 <dt>x_label_vjust</dt>
 <dd><p>vjust for x axis text.</p></dd>
+
+
 <dt>x_label_hjust</dt>
 <dd><p>hjust for x axis text.</p></dd>
+
+
 <dt>y_label_angle</dt>
 <dd><p>angle for y axis text.</p></dd>
+
+
 <dt>y_label_vjust</dt>
 <dd><p>vjust for y axis text.</p></dd>
+
+
 <dt>y_label_hjust</dt>
 <dd><p>hjust for y axis text.</p></dd>
+
+
 <dt>flip_xy</dt>
 <dd><p>if <code>TRUE</code>, flip x axis and y axis.</p></dd>
+
+
 <dt>sig_names</dt>
 <dd><p>subset signatures or set name of signatures, can be a character vector.
 Default is <code>NULL</code>, prefix 'Sig' plus number is used.</p></dd>
+
+
 <dt>sig_orders</dt>
 <dd><p>set order of signatures, can be a character vector.
 Default is <code>NULL</code>, the signatures are ordered by alphabetical order.
 If an integer vector set, only specified signatures are plotted.</p></dd>
+
+
 <dt>check_sig_names</dt>
 <dd><p>if <code>TRUE</code>, check signature names when input is
 a matrix, i.e., all signatures (colnames) must start with 'Sig'.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a <code>ggplot</code> object.</p>
+    
+
+<p>a <code>ggplot</code> object.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -163,14 +210,11 @@ a matrix, i.e., all signatures (colnames) must start with 'Sig'.</p></dd>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang
-Wang</a>, Ziyu Tao, Huimin Li, Tao Wu,
-<a href="https://orcid.org/0000-0002-7736-0077" class="external-link">Xue-Song Liu</a>.</p>
+  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang Wang</a>, Ziyu Tao, Huimin Li, Tao Wu, <a href="https://orcid.org/0000-0002-7736-0077" class="external-link">Xue-Song Liu</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

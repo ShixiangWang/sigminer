@@ -30,6 +30,16 @@ related packages."><meta property="og:image" content="https://shixiangwang.githu
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu"><li>
+      <a href="../articles/cnsignature.html">Analyze Copy Number Signatures with sigminer</a>
+    </li>
+  </ul></li>
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
@@ -81,35 +91,62 @@ related packages.</p>
     <dl><dt>data</dt>
 <dd><p>a <a href="CopyNumber-class.html">CopyNumber</a> object or a <code>data.frame</code> containing at least 'chromosome', 'start',
 'end', 'segVal' these columns.</p></dd>
+
+
 <dt>samples</dt>
 <dd><p>default is NULL, can be a chracter vector representing multiple samples. If <code>data</code> argument
 is a <code>data.frame</code>, a column called <code>sample</code> must exist.</p></dd>
+
+
 <dt>show_n</dt>
 <dd><p>number of samples to show, this is used for checking.</p></dd>
+
+
 <dt>show_title</dt>
 <dd><p>if <code>TRUE</code>, show title for multiple samples.</p></dd>
+
+
 <dt>show_labels</dt>
 <dd><p>one of <code>NULL</code>, "s" (for labelling short segments &lt; 1e7)
 or "a" (all segments).</p></dd>
+
+
 <dt>chrs</dt>
 <dd><p>chromosomes start with 'chr'.</p></dd>
+
+
 <dt>position</dt>
 <dd><p>a position range, e.g. <code>"chr1:3218923-116319008"</code>. Only data
 overlaps with this range will be shown.</p></dd>
+
+
 <dt>genome_build</dt>
 <dd><p>genome build version, used when <code>data</code> is a <code>data.frame</code>, should be 'hg19' or 'hg38'.</p></dd>
+
+
 <dt>ylim</dt>
 <dd><p>limites for y axis.</p></dd>
+
+
 <dt>nrow</dt>
 <dd><p>number of rows in the plot grid when multiple samples are selected.</p></dd>
+
+
 <dt>ncol</dt>
 <dd><p>number of columns in the plot grid when multiple samples are selected.</p></dd>
+
+
 <dt>return_plotlist</dt>
 <dd><p>default is <code>FALSE</code>, if <code>TRUE</code>, return a plot list instead of a combined plot.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a <code>ggplot</code> object or a <code>list</code></p>
+    
+
+<p>a <code>ggplot</code> object or a <code>list</code></p>
+
+
     </div>
 
     <div id="ref-examples">
@@ -138,14 +175,11 @@ overlaps with this range will be shown.</p></dd>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang
-Wang</a>, Ziyu Tao, Huimin Li, Tao Wu,
-<a href="https://orcid.org/0000-0002-7736-0077" class="external-link">Xue-Song Liu</a>.</p>
+  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang Wang</a>, Ziyu Tao, Huimin Li, Tao Wu, <a href="https://orcid.org/0000-0002-7736-0077" class="external-link">Xue-Song Liu</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

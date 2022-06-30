@@ -32,6 +32,16 @@ Please raise an issue if you find problem/bugs in this function.'><meta property
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu"><li>
+      <a href="../articles/cnsignature.html">Analyze Copy Number Signatures with sigminer</a>
+    </li>
+  </ul></li>
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
@@ -77,19 +87,30 @@ Their results should be counterpart, but with no data validation for now.
     <dl><dt>data</dt>
 <dd><p>a CopyNumber object or a <code>data.frame</code> containing at least
 'chromosome', 'start', 'end', 'segVal', 'sample' these columns.</p></dd>
+
+
 <dt>ploidy_df</dt>
 <dd><p>default is <code>NULL</code>, compute ploidy by segment-size weighted copy number
 aross autosome, see <a href="get_cn_ploidy.html">get_cn_ploidy</a>. You can also provide a <code>data.frame</code> with 'sample'
 and 'ploidy' columns.</p></dd>
+
+
 <dt>genome_build</dt>
 <dd><p>genome build version, should be 'hg19', 'hg38', 'mm9' or 'mm10'.</p></dd>
+
+
 <dt>rm_black_arms</dt>
 <dd><p>if <code>TRUE</code>, remove short arms of chr13/14/15/21/22 from calculation
 as documented in reference #3.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>data.frame</code></p>
+    
+
+<p>A <code>data.frame</code></p>
+
+
     </div>
     <div id="references">
     <h2>References</h2>
@@ -126,14 +147,11 @@ as documented in reference #3.</p></dd>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang
-Wang</a>, Ziyu Tao, Huimin Li, Tao Wu,
-<a href="https://orcid.org/0000-0002-7736-0077" class="external-link">Xue-Song Liu</a>.</p>
+  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang Wang</a>, Ziyu Tao, Huimin Li, Tao Wu, <a href="https://orcid.org/0000-0002-7736-0077" class="external-link">Xue-Song Liu</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

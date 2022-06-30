@@ -30,6 +30,16 @@ min(||W*H - V||) where W and V are known."><meta property="og:image" content="ht
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu"><li>
+      <a href="../articles/cnsignature.html">Analyze Copy Number Signatures with sigminer</a>
+    </li>
+  </ul></li>
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
@@ -90,12 +100,18 @@ catalogue <code>V</code> with known signatures <code>W</code> by solving the min
 <dd><p>a numeric matrix <code>V</code> with row representing components and
 columns representing samples, typically you can get <code>nmf_matrix</code> from <code><a href="sig_tally.html">sig_tally()</a></code> and
 transpose it by <code><a href="https://rdrr.io/r/base/t.html" class="external-link">t()</a></code>.</p></dd>
+
+
 <dt>sig</dt>
 <dd><p>a <code>Signature</code> object obtained either from <a href="sig_extract.html">sig_extract</a> or <a href="sig_auto_extract.html">sig_auto_extract</a>,
 or just a raw signature matrix/<code>data.frame</code> with row representing components (motifs) and
 column representing signatures.</p></dd>
+
+
 <dt>sig_index</dt>
 <dd><p>a vector for signature index. "ALL" for all signatures.</p></dd>
+
+
 <dt>sig_db</dt>
 <dd><p>default 'legacy', it can be 'legacy' (for <a href="https://cancer.sanger.ac.uk/cosmic/signatures_v2.tt/" class="external-link">COSMIC v2 'SBS'</a>),
 'SBS', 'DBS', 'ID' and 'TSB' (for <a href="https://cancer.sanger.ac.uk/cosmic/signatures/" class="external-link">COSMIV v3.1 signatures</a>)
@@ -115,44 +131,69 @@ when a option with <code>latest_</code> prefix is specified (e.g. "latest_SBS_GR
 And specific database (e.g. 'SBS_mm10') contains less signatures than all COSMIC
 signatures (because some signatures are not detected from Alexandrov, Ludmil B., et al. (2020)).
 For all available options, check the parameter setting.</p></dd>
+
+
 <dt>db_type</dt>
 <dd><p>only used when <code>sig_db</code> is enabled.
 "" for keeping default, "human-exome" for transforming to exome frequency of component,
 and "human-genome" for transforming to whole genome frequency of component.
 Currently only works for 'SBS'.</p></dd>
+
+
 <dt>show_index</dt>
 <dd><p>if <code>TRUE</code>, show valid indices.</p></dd>
+
+
 <dt>method</dt>
 <dd><p>method to solve the minimazation problem.
 'NNLS' for non-negative least square; 'QP' for quadratic programming; 'SA' for simulated annealing.</p></dd>
+
+
 <dt>auto_reduce</dt>
 <dd><p>if <code>TRUE</code>, try reducing the input reference signatures to increase
 the cosine similarity of reconstructed profile to observed profile.</p></dd>
+
+
 <dt>type</dt>
 <dd><p>'absolute' for signature exposure and 'relative' for signature relative exposure.</p></dd>
+
+
 <dt>return_class</dt>
 <dd><p>string, 'matrix' or 'data.table'.</p></dd>
+
+
 <dt>return_error</dt>
 <dd><p>if <code>TRUE</code>, also return sample error (Frobenius norm) and cosine
 similarity between observed sample profile (asa. spectrum) and reconstructed profile. NOTE:
 it is better to obtain the error when the type is 'absolute', because the error is
 affected by relative exposure accuracy.</p></dd>
+
+
 <dt>rel_threshold</dt>
 <dd><p>numeric vector, a signature with relative exposure
 lower than (equal is included, i.e. <code>&lt;=</code>) this value will be set to 0
 (both absolute exposure and relative exposure).
 In this case, sum of signature contribution may not equal to 1.</p></dd>
+
+
 <dt>mode</dt>
 <dd><p>signature type for plotting, now supports 'copynumber', 'SBS',
 'DBS', 'ID' and 'RS' (genome rearrangement signature).</p></dd>
+
+
 <dt>true_catalog</dt>
 <dd><p>used by <a href="sig_fit_bootstrap.html">sig_fit_bootstrap</a>, user never use it.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>control parameters passing to argument <code>control</code> in <code>GenSA</code> function when use method 'SA'.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The exposure result either in <code>matrix</code> or <code>data.table</code> format.
+    
+
+<p>The exposure result either in <code>matrix</code> or <code>data.table</code> format.
 If <code>return_error</code> set <code>TRUE</code>, a <code>list</code> is returned.</p>
     </div>
     <div id="details">
@@ -230,14 +271,11 @@ Nature genetics 48.6 (2016): 600.</p>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang
-Wang</a>, Ziyu Tao, Huimin Li, Tao Wu,
-<a href="https://orcid.org/0000-0002-7736-0077" class="external-link">Xue-Song Liu</a>.</p>
+  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang Wang</a>, Ziyu Tao, Huimin Li, Tao Wu, <a href="https://orcid.org/0000-0002-7736-0077" class="external-link">Xue-Song Liu</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

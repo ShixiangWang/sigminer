@@ -34,6 +34,16 @@ The result of this function can be plotted by show_group_comparison()."><meta pr
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu"><li>
+      <a href="../articles/cnsignature.html">Analyze Copy Number Signatures with sigminer</a>
+    </li>
+  </ul></li>
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
@@ -84,22 +94,35 @@ The result of this function can be plotted by <code><a href="show_group_comparis
 <dd><p>a <code>data.frame</code> containing signature groups and genotypes/phenotypes
 (including categorical and continuous type data) want to analyze. User need to
 construct this <code>data.frame</code> by him/herself.</p></dd>
+
+
 <dt>col_group</dt>
 <dd><p>column name of signature groups.</p></dd>
+
+
 <dt>cols_to_compare</dt>
 <dd><p>column names of genotypes/phenotypes want to summarize based on groups.</p></dd>
+
+
 <dt>type</dt>
 <dd><p>a characater vector with length same as <code>cols_to_compare</code>,
 'ca' for categorical type and 'co' for continuous type.</p></dd>
+
+
 <dt>NAs</dt>
 <dd><p>default is <code>NA</code>, filter <code>NA</code>s for categorical columns.
 Otherwise a value (either length 1 or length same as <code>cols_to_compare</code>) fill <code>NA</code>s.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>if <code>TRUE</code>, print extra information.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a <code>list</code> contains data, summary, p value etc..</p>
+    
+
+<p>a <code>list</code> contains data, summary, p value etc..</p>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -145,14 +168,11 @@ Otherwise a value (either length 1 or length same as <code>cols_to_compare</code
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang
-Wang</a>, Ziyu Tao, Huimin Li, Tao Wu,
-<a href="https://orcid.org/0000-0002-7736-0077" class="external-link">Xue-Song Liu</a>.</p>
+  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang Wang</a>, Ziyu Tao, Huimin Li, Tao Wu, <a href="https://orcid.org/0000-0002-7736-0077" class="external-link">Xue-Song Liu</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

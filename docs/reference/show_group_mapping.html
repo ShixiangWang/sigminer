@@ -29,6 +29,16 @@ it in other similar situations."><meta property="og:image" content="https://shix
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu"><li>
+      <a href="../articles/cnsignature.html">Analyze Copy Number Signatures with sigminer</a>
+    </li>
+  </ul></li>
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
@@ -75,26 +85,45 @@ it in other similar situations.</p>
     <h2>Arguments</h2>
     <dl><dt>data</dt>
 <dd><p>a <code>data.frame</code> containing signature group and other categorical groups.</p></dd>
+
+
 <dt>col_to_flow</dt>
 <dd><p>length-1 character showing the column to flow, typically a signature group.</p></dd>
+
+
 <dt>cols_to_map</dt>
 <dd><p>character vector showing colnames of other groups.</p></dd>
+
+
 <dt>include_sig</dt>
 <dd><p>default if <code>FALSE</code>, if <code>TRUE</code>, showing signature group.</p></dd>
+
+
 <dt>fill_na</dt>
 <dd><p>length-1 string to fill NA, default is <code>FALSE</code>.</p></dd>
+
+
 <dt>title</dt>
 <dd><p>the title.</p></dd>
+
+
 <dt>xlab</dt>
 <dd><p>label for x axis.</p></dd>
+
+
 <dt>ylab</dt>
 <dd><p>label for y axis.</p></dd>
+
+
 <dt>custom_theme</dt>
 <dd><p>theme for plotting, default is <code><a href="https://wilkelab.org/cowplot/reference/theme_minimal_grid.html" class="external-link">cowplot::theme_minimal_hgrid()</a></code>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a <code>ggplot</code> object</p>
+    
+
+<p>a <code>ggplot</code> object</p>
     </div>
 
     <div id="ref-examples">
@@ -122,14 +151,11 @@ it in other similar situations.</p>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang
-Wang</a>, Ziyu Tao, Huimin Li, Tao Wu,
-<a href="https://orcid.org/0000-0002-7736-0077" class="external-link">Xue-Song Liu</a>.</p>
+  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang Wang</a>, Ziyu Tao, Huimin Li, Tao Wu, <a href="https://orcid.org/0000-0002-7736-0077" class="external-link">Xue-Song Liu</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

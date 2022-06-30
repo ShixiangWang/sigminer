@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.5</span>
       </span>
     </div>
 
@@ -51,6 +51,18 @@
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="../articles/cnsignature.html">Analyze Copy Number Signatures with sigminer</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">Changelog</a>
@@ -77,9 +89,10 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>A Quick Start of sigminer Package</h1>
-                        <h4 data-toc-skip class="author">Shixiang Wang ( <a href="mailto:wangshx@shanghaitech.edu.cn" class="email">wangshx@shanghaitech.edu.cn</a> )</h4>
+                        <h4 data-toc-skip class="author">Shixiang Wang (
+<a href="mailto:wangshx@shanghaitech.edu.cn" class="email">wangshx@shanghaitech.edu.cn</a> )</h4>
             
-            <h4 data-toc-skip class="date">2022-03-09</h4>
+            <h4 data-toc-skip class="date">2022-06-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ShixiangWang/sigminer/blob/HEAD/vignettes/sigminer.Rmd" class="external-link"><code>vignettes/sigminer.Rmd</code></a></small>
       <div class="hidden name"><code>sigminer.Rmd</code></div>
@@ -88,10 +101,11 @@
 
     
     
-<p>Assume you have already gotten a catalog matrix (sample-by-component) like below:</p>
+<p>Assume you have already gotten a catalog matrix (sample-by-component)
+like below:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ShixiangWang/sigminer" class="external-link">sigminer</a></span><span class="op">)</span>
-<span class="co">#&gt; sigminer version 2.1.3</span>
+<span class="co">#&gt; sigminer version 2.1.5</span>
 <span class="co">#&gt; - Star me at https://github.com/ShixiangWang/sigminer</span>
 <span class="co">#&gt; - Run hello() to see usage and citation.</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"simulated_catalogs"</span><span class="op">)</span>
@@ -121,7 +135,8 @@
 <p>Show signature profile:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/show_sig_profile.html">show_sig_profile</a></span><span class="op">(</span><span class="va">obj</span>, mode <span class="op">=</span> <span class="st">"SBS"</span>, style <span class="op">=</span> <span class="st">"cosmic"</span><span class="op">)</span></code></pre></div>
-<p><img src="sigminer_files/figure-html/unnamed-chunk-7-1.png" width="960" style="display: block; margin: auto;"> Show signature activity (a.k.a. exposure) profile:</p>
+<p><img src="sigminer_files/figure-html/unnamed-chunk-7-1.png" width="960" style="display: block; margin: auto;">
+Show signature activity (a.k.a. exposure) profile:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/show_sig_exposure.html">show_sig_exposure</a></span><span class="op">(</span><span class="va">obj</span>, rm_space <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><img src="sigminer_files/figure-html/unnamed-chunk-8-1.png" width="768" style="display: block; margin: auto;"></p>
@@ -160,8 +175,10 @@
 <div class="section level2">
 <h2 id="more">More<a class="anchor" aria-label="anchor" href="#more"></a>
 </h2>
-<p>Please go to <a href="https://shixiangwang.github.io/sigminer/reference/index.html"><em>reference</em> list</a> for well organized functions and documentation.</p>
-<p>For more about mutational signature and <strong>sigminer</strong> usage, you can read <a href="https://shixiangwang.github.io/sigminer-book/"><em>sigminer-book</em></a>.</p>
+<p>Please go to <a href="https://shixiangwang.github.io/sigminer/reference/index.html"><em>reference</em>
+list</a> for well organized functions and documentation.</p>
+<p>For more about mutational signature and <strong>sigminer</strong>
+usage, you can read <a href="https://shixiangwang.github.io/sigminer-book/"><em>sigminer-book</em></a>.</p>
 </div>
   </div>
 
@@ -182,7 +199,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer>

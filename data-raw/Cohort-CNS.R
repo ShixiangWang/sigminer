@@ -90,3 +90,9 @@ CNS_TCGA <- list(
 )
 
 saveRDS(CNS_TCGA, file = "inst/extdata/CNS_signatures_TCGA.rds")
+
+CNS_TCGA = readRDS("inst/extdata/CNS_signatures_TCGA.rds")
+CNS_TCGA$aetiology$aetiology = "See https://cancer.sanger.ac.uk/signatures/cn/"
+saveRDS(CNS_TCGA, file = "inst/extdata/CNS_signatures_TCGA.rds")
+
+

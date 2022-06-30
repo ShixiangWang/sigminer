@@ -33,6 +33,16 @@ result scores."><meta property="og:image" content="https://shixiangwang.github.i
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu"><li>
+      <a href="../articles/cnsignature.html">Analyze Copy Number Signatures with sigminer</a>
+    </li>
+  </ul></li>
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
@@ -66,25 +76,32 @@ result scores.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">scoring</span><span class="op">(</span><span class="va">object</span>, TD_size_cutoff <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1000</span>, <span class="fl">100000</span>, <span class="fl">2000000</span><span class="op">)</span>, TD_cn_cutoff <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">scoring</span><span class="op">(</span><span class="va">object</span>, TD_size_cutoff <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1000</span>, <span class="fl">1e+05</span>, <span class="fl">2e+06</span><span class="op">)</span>, TD_cn_cutoff <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>object</dt>
 <dd><p>a object of <a href="CopyNumber-class.html">CopyNumber</a>.</p></dd>
+
+
 <dt>TD_size_cutoff</dt>
 <dd><p>a length-3 numeric vector used to specify the start, midpoint, end
 segment size for determining tandem duplication size range, midpoint is used to split
 TD into short TD and long TD. Default is 1Kb to 100Kb for short TD, 100Kb to 2Mb for long
 TD.</p></dd>
+
+
 <dt>TD_cn_cutoff</dt>
 <dd><p>a number defining the maximum copy number of TD,
 default is <code>Inf</code>, i.e. no cutoff.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a <code>data.table</code> with following scores:</p><ul><li><p>cnaBurden: CNA burden representing the altered genomic fraction as previously reported.</p></li>
+    
+
+<p>a <code>data.table</code> with following scores:</p><ul><li><p>cnaBurden: CNA burden representing the altered genomic fraction as previously reported.</p></li>
 <li><p>cnaLoad: CNA load representing the quantity of copy number alteration.</p></li>
 <li><p>MACN: mean altered copy number (MACN) reflecting the property of altered copy number segments,
 calculated as
@@ -143,14 +160,11 @@ where \(N_{OsCN}\) is the number of oscillating copy number pattern "2-1-2" for 
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang
-Wang</a>, Ziyu Tao, Huimin Li, Tao Wu,
-<a href="https://orcid.org/0000-0002-7736-0077" class="external-link">Xue-Song Liu</a>.</p>
+  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang Wang</a>, Ziyu Tao, Huimin Li, Tao Wu, <a href="https://orcid.org/0000-0002-7736-0077" class="external-link">Xue-Song Liu</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

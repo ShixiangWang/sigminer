@@ -28,6 +28,16 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu"><li>
+      <a href="../articles/cnsignature.html">Analyze Copy Number Signatures with sigminer</a>
+    </li>
+  </ul></li>
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
@@ -120,43 +130,73 @@
     <h2>Arguments</h2>
     <dl><dt>bt_result</dt>
 <dd><p>result object from <a href="sig_fit_bootstrap_batch.html">sig_fit_bootstrap_batch</a>.</p></dd>
+
+
 <dt>sample</dt>
 <dd><p>a sample id.</p></dd>
+
+
 <dt>signatures</dt>
 <dd><p>signatures to show.</p></dd>
+
+
 <dt>methods</dt>
 <dd><p>a subset of <code>c("NNLS", "QP", "SA")</code>.</p></dd>
+
+
 <dt>plot_fun</dt>
 <dd><p>set the plot function.</p></dd>
+
+
 <dt>agg_fun</dt>
 <dd><p>set the aggregation function when <code>sample</code> is <code>NULL</code>.</p></dd>
+
+
 <dt>highlight</dt>
 <dd><p>set the color for optimal solution. Default is "auto", which use the same color as
 bootstrap results, you can set it to color like "red", "gold", etc.</p></dd>
+
+
 <dt>highlight_size</dt>
 <dd><p>size for highlighting triangle, default is <code>4</code>.</p></dd>
+
+
 <dt>palette</dt>
 <dd><p>the color palette to be used for coloring or filling by groups.
 Allowed values include "grey" for grey color palettes; brewer palettes e.g.
 "RdBu", "Blues", ...; or custom color palette e.g. c("blue", "red"); and
 scientific journal palettes from ggsci R package, e.g.: "npg", "aaas",
 "lancet", "jco", "ucscgb", "uchicago", "simpsons" and "rickandmorty".</p></dd>
+
+
 <dt>title</dt>
 <dd><p>plot main title.</p></dd>
+
+
 <dt>xlab</dt>
 <dd><p>character vector specifying x axis labels. Use xlab = FALSE to
 hide xlab.</p></dd>
+
+
 <dt>ylab</dt>
 <dd><p>character vector specifying y axis labels. Use ylab = FALSE to
 hide ylab.</p></dd>
+
+
 <dt>width</dt>
 <dd><p>numeric value between 0 and 1 specifying box width.</p></dd>
+
+
 <dt>dodge_width</dt>
 <dd><p>dodge width.</p></dd>
+
+
 <dt>outlier.shape</dt>
 <dd><p>point shape of outlier. Default is 19. To hide outlier,
 specify <code>outlier.shape = NA</code>. When jitter is added, then outliers will
 be automatically hidden.</p></dd>
+
+
 <dt>add</dt>
 <dd><p>character vector for adding another plot element (e.g.: dot plot or
 error bars). Allowed values are one or the combination of: "none",
@@ -164,22 +204,33 @@ error bars). Allowed values are one or the combination of: "none",
 "mean_ci", "mean_range", "median", "median_iqr", "median_hilow",
 "median_q1q3", "median_mad", "median_range"; see ?desc_statby for more
 details.</p></dd>
+
+
 <dt>add.params</dt>
 <dd><p>parameters (color, shape, size, fill, linetype) for the
 argument 'add'; e.g.: add.params = list(color = "red").</p></dd>
+
+
 <dt>...</dt>
 <dd><p>other parameters passing to <a href="https://rpkgs.datanovia.com/ggpubr/reference/ggboxplot.html" class="external-link">ggpubr::ggboxplot</a> or <a href="https://rpkgs.datanovia.com/ggpubr/reference/ggviolin.html" class="external-link">ggpubr::ggviolin</a>.</p></dd>
+
+
 <dt>legend</dt>
 <dd><p>character specifying legend position. Allowed values are one of
 c("top", "bottom", "left", "right", "none"). To remove the legend use
 legend = "none". Legend position can be also specified using a numeric
 vector c(x, y); see details section.</p></dd>
+
+
 <dt>measure</dt>
 <dd><p>measure to estimate the exposure instability, can be one of 'RMSE', 'CV', 'MAE' and 'AbsDiff'.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a <code>ggplot</code> object</p>
+    
+
+<p>a <code>ggplot</code> object</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -270,14 +321,11 @@ the instability measure supports 3 types:</p><ul><li><p>'RMSE' for Mean Root Squ
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang
-Wang</a>, Ziyu Tao, Huimin Li, Tao Wu,
-<a href="https://orcid.org/0000-0002-7736-0077" class="external-link">Xue-Song Liu</a>.</p>
+  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang Wang</a>, Ziyu Tao, Huimin Li, Tao Wu, <a href="https://orcid.org/0000-0002-7736-0077" class="external-link">Xue-Song Liu</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

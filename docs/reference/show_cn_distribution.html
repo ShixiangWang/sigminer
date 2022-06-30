@@ -30,6 +30,16 @@ read from genome_build slot of object."><meta property="og:image" content="https
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu"><li>
+      <a href="../articles/cnsignature.html">Analyze Copy Number Signatures with sigminer</a>
+    </li>
+  </ul></li>
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
@@ -74,20 +84,33 @@ read from <code>genome_build</code> slot of object.</p>
     <h2>Arguments</h2>
     <dl><dt>data</dt>
 <dd><p>a <a href="CopyNumber-class.html">CopyNumber</a> object.</p></dd>
+
+
 <dt>rm_normal</dt>
 <dd><p>logical. Whether remove normal copy (i.e. "segVal" equals 2), default is <code>TRUE</code>.</p></dd>
+
+
 <dt>mode</dt>
 <dd><p>either "ld" for distribution by CN length or "cd" for distribution by chromosome.</p></dd>
+
+
 <dt>fill</dt>
 <dd><p>when <code>mode</code> is "cd" and <code>fill</code> is <code>TRUE</code>, plot percentage instead of count.</p></dd>
+
+
 <dt>scale_chr</dt>
 <dd><p>logical. If <code>TRUE</code>, normalize count to per Megabase unit.</p></dd>
+
+
 <dt>base_size</dt>
 <dd><p>overall font size.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a <code>ggplot</code> object</p>
+    
+
+<p>a <code>ggplot</code> object</p>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -117,14 +140,11 @@ read from <code>genome_build</code> slot of object.</p>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang
-Wang</a>, Ziyu Tao, Huimin Li, Tao Wu,
-<a href="https://orcid.org/0000-0002-7736-0077" class="external-link">Xue-Song Liu</a>.</p>
+  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang Wang</a>, Ziyu Tao, Huimin Li, Tao Wu, <a href="https://orcid.org/0000-0002-7736-0077" class="external-link">Xue-Song Liu</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

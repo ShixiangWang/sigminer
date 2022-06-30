@@ -28,6 +28,16 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu"><li>
+      <a href="../articles/cnsignature.html">Analyze Copy Number Signatures with sigminer</a>
+    </li>
+  </ul></li>
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
@@ -74,30 +84,49 @@
     <dl><dt>parameters</dt>
 <dd><p>a <code>data.frame</code> contain parameter components, obtain this
 from <a href="sig_tally.html">sig_tally</a> function.</p></dd>
+
+
 <dt>method</dt>
 <dd><p>method for feature classification, can be one of
 "Wang" ("W"), "S" (for method described in Steele et al. 2019).</p></dd>
+
+
 <dt>show_weights</dt>
 <dd><p>default is <code>TRUE</code>, show weights for each component.
 Only used when method is "Macintyre".</p></dd>
+
+
 <dt>log_y</dt>
 <dd><p>logical, if <code>TRUE</code>, show <code>log10</code> based y axis, only
 works for input from "Wang" ("W") method.</p></dd>
+
+
 <dt>return_plotlist</dt>
 <dd><p>if <code>TRUE</code>, return a list of ggplot objects but a combined plot.</p></dd>
+
+
 <dt>base_size</dt>
 <dd><p>overall font size.</p></dd>
+
+
 <dt>nrow</dt>
 <dd><p>(optional) Number of rows in the plot grid.</p></dd>
+
+
 <dt>align</dt>
 <dd><p>(optional) Specifies whether graphs in the grid should be horizontally ("h") or
 vertically ("v") aligned. Options are "none" (default), "hv" (align in both directions), "h", and "v".</p></dd>
+
+
 <dt>...</dt>
 <dd><p>other options pass to <code><a href="https://wilkelab.org/cowplot/reference/plot_grid.html" class="external-link">plot_grid</a></code> function of <strong>cowplot</strong> package.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a <code>ggplot</code> object</p>
+    
+
+<p>a <code>ggplot</code> object</p>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -112,14 +141,11 @@ vertically ("v") aligned. Options are "none" (default), "hv" (align in both dire
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang
-Wang</a>, Ziyu Tao, Huimin Li, Tao Wu,
-<a href="https://orcid.org/0000-0002-7736-0077" class="external-link">Xue-Song Liu</a>.</p>
+  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang Wang</a>, Ziyu Tao, Huimin Li, Tao Wu, <a href="https://orcid.org/0000-0002-7736-0077" class="external-link">Xue-Song Liu</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

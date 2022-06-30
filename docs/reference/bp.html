@@ -56,6 +56,16 @@ Extra: bp_get_rank_score() for obtaining rank score for all signature numbers.
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu"><li>
+      <a href="../articles/cnsignature.html">Analyze Copy Number Signatures with sigminer</a>
+    </li>
+  </ul></li>
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
@@ -200,110 +210,184 @@ These stats are aggregated (averaged) as the stats for a solution
     <h2>Arguments</h2>
     <dl><dt>nmf_matrix</dt>
 <dd><p>a <code>matrix</code> used for NMF decomposition with rows indicate samples and columns indicate components.</p></dd>
+
+
 <dt>range</dt>
 <dd><p>a <code>numeric</code> vector containing the ranks of factorization to try. Note that duplicates are removed
 and values are sorted in increasing order. The results are notably returned in this order.</p></dd>
+
+
 <dt>n_bootstrap</dt>
 <dd><p>number of bootstrapped (resampling) catalogs used.
 When it is <code>0</code>, the original (input) mutation catalog is used for NMF decomposition,
 this is not recommended, just for testing, user should not set it to <code>0</code>.</p></dd>
+
+
 <dt>n_nmf_run</dt>
 <dd><p>number of NMF runs for each bootstrapped or original catalog.
 At default, in total n_bootstrap x n_nmf_run (i.e. 1000) NMF runs are used
 for the task.</p></dd>
+
+
 <dt>RTOL</dt>
 <dd><p>a threshold proposed by Nature Cancer paper to control how to
 filter solutions of NMF. Default is <code>0.1%</code> (from reference #2),
 only NMF solutions with KLD (KL deviance) &lt;= <code>100.1%</code> minimal KLD are kept.</p></dd>
+
+
 <dt>min_contribution</dt>
 <dd><p>a component contribution threshold to filer out small
 contributed components.</p></dd>
+
+
 <dt>cores</dt>
 <dd><p>number of cpu cores to run NMF.</p></dd>
+
+
 <dt>cores_solution</dt>
 <dd><p>cores for processing solutions, default is equal to argument <code>cores</code>.</p></dd>
+
+
 <dt>seed</dt>
 <dd><p>a random seed to make reproducible result.</p></dd>
+
+
 <dt>handle_hyper_mutation</dt>
 <dd><p>default is <code>TRUE</code>, handle hyper-mutant samples.</p></dd>
+
+
 <dt>report_integer_exposure</dt>
 <dd><p>if <code>TRUE</code>, report integer signature
 exposure by bootstrapping technique.</p></dd>
+
+
 <dt>only_core_stats</dt>
 <dd><p>if <code>TRUE</code>, only calculate the core stats for signatures and samples.</p></dd>
+
+
 <dt>cache_dir</dt>
 <dd><p>a directory for keep temp result files.</p></dd>
+
+
 <dt>keep_cache</dt>
 <dd><p>if <code>TRUE</code>, keep cache results.</p></dd>
+
+
 <dt>pynmf</dt>
 <dd><p>if <code>TRUE</code>, use Python NMF driver <a href="http://nimfa.biolab.si/index.html" class="external-link">Nimfa</a>.
 The seed currently is not used by this implementation, so the only way to reproduce
 your result is setting <code>keep_cache = TRUE</code>.</p></dd>
+
+
 <dt>use_conda</dt>
 <dd><p>if <code>TRUE</code>, create an independent conda environment to run NMF.</p></dd>
+
+
 <dt>py_path</dt>
 <dd><p>path to Python executable file, e.g. '/Users/wsx/anaconda3/bin/python'. In my
 test, it is more stable than <code>use_conda=TRUE</code>. You can install the Nimfa package by yourself
 or set <code>use_conda</code> to <code>TRUE</code> to install required Python environment, and then set this option.</p></dd>
+
+
 <dt>sim_threshold</dt>
 <dd><p>a similarity threshold for selecting samples to auto-rerun
 the extraction procedure (i.e. <code>bp_extract_signatures()</code>), default is <code>0.95</code>.</p></dd>
+
+
 <dt>max_iter</dt>
 <dd><p>the maximum iteration size, default is 10, i.e., at most run
 the extraction procedure 10 times.</p></dd>
+
+
 <dt>x</dt>
 <dd><p>result from <code>bp_extract_signatures_iter()</code> or a list of
 <code>Signature</code> objects.</p></dd>
+
+
 <dt>k</dt>
 <dd><p>an integer sequence specifying the cluster number to get silhouette.</p></dd>
+
+
 <dt>include_final_iteration</dt>
 <dd><p>if <code>FALSE</code>, exclude final iteration result
 from clustering for input from <code>bp_extract_signatures_iter()</code>, not applied
 if input is a list of <code>Signature</code> objects.</p></dd>
+
+
 <dt>SigClusters</dt>
 <dd><p>result from <code>bp_cluster_iter_list()</code>.</p></dd>
+
+
 <dt>cluster_label</dt>
 <dd><p>cluster labels for a specified cluster number, obtain it
 from <code>SigClusters$sil_df</code>.</p></dd>
+
+
 <dt>obj</dt>
 <dd><p>a <code>ExtractionResult</code> object from <code>bp_extract_signatures()</code>.</p></dd>
+
+
 <dt>signum</dt>
 <dd><p>a integer vector to extract the corresponding <code>Signature</code> object(s).
 If it is <code>NULL</code> (default), all will be returned.</p></dd>
+
+
 <dt>left_y</dt>
 <dd><p>column name for left y axis.</p></dd>
+
+
 <dt>right_y</dt>
 <dd><p>column name for right y axis.</p></dd>
+
+
 <dt>left_name</dt>
 <dd><p>label name for left y axis.</p></dd>
+
+
 <dt>right_name</dt>
 <dd><p>label name for right y axis.</p></dd>
+
+
 <dt>left_color</dt>
 <dd><p>color for left axis.</p></dd>
+
+
 <dt>right_color</dt>
 <dd><p>color for right axis.</p></dd>
-<dt>left_shape</dt>
+
+
+<dt>left_shape, right_shape, shape_size</dt>
 <dd><p>shape setting.</p></dd>
-<dt>right_shape</dt>
-<dd><p>shape setting.</p></dd>
-<dt>shape_size</dt>
-<dd><p>shape setting.</p></dd>
+
+
 <dt>highlight</dt>
 <dd><p>a <code>integer</code> to highlight a <code>x</code>.</p></dd>
+
+
 <dt>add_score</dt>
 <dd><p>if <code>FALSE</code>, don't show score and label optimal points by
 rank score.</p></dd>
+
+
 <dt>scales</dt>
 <dd><p>one of "free_y" (default) and "free" to control the scales
 of plot facet.</p></dd>
+
+
 <dt>fixed_ratio</dt>
 <dd><p>if <code>TRUE</code> (default), make the x/y axis ratio fixed.</p></dd>
+
+
 <dt>input</dt>
 <dd><p>result from <code>bp_extract_signatures()</code> or a Signature object.</p></dd>
+
+
 <dt>sample_class</dt>
 <dd><p>a named string vector whose names are sample names
 and values are class labels (i.e. cancer subtype). If it is <code>NULL</code> (the default),
 treat all samples as one group.</p></dd>
+
+
 <dt>method</dt>
 <dd><p>one of 'bt' (use bootstrap exposure median, from reference #2,
 <strong>the most recommended way in my personal view</strong>) or stepwise'
@@ -311,20 +395,29 @@ treat all samples as one group.</p></dd>
 with last signature sets, from reference #2, the result tends to assign
 the contribution of removed signatures to the remaining signatures,
 <strong>maybe I misunderstand the paper method? PAY ATTENTION</strong>).</p></dd>
+
+
 <dt>bt_use_prop</dt>
 <dd><p>this parameter is only used for <code>bt</code> method to reset
 low contributing signature activity (relative activity <code>&lt;0.01</code>). If <code>TRUE</code>,
 use empirical P value calculation way (i.e. proportion, used by reference <code>#2</code>),
 otherwise a <code>t.test</code> is applied.</p></dd>
+
+
 <dt>return_class</dt>
 <dd><p>string, 'matrix' or 'data.table'.</p></dd>
+
+
 <dt>use_parallel</dt>
 <dd><p>if <code>TRUE</code>, use parallel computation based on <strong>furrr</strong> package.
 It can also be an integer for specifying cores.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>It depends on the called function.</p>
+    
+
+<p>It depends on the called function.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -482,14 +575,11 @@ indicates if the signature profiles extracted from different NMF runs are simila
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang
-Wang</a>, Ziyu Tao, Huimin Li, Tao Wu,
-<a href="https://orcid.org/0000-0002-7736-0077" class="external-link">Xue-Song Liu</a>.</p>
+  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang Wang</a>, Ziyu Tao, Huimin Li, Tao Wu, <a href="https://orcid.org/0000-0002-7736-0077" class="external-link">Xue-Song Liu</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

@@ -34,6 +34,16 @@ to extract copy number signatures)). See detail part and references for more."><
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu"><li>
+      <a href="../articles/cnsignature.html">Analyze Copy Number Signatures with sigminer</a>
+    </li>
+  </ul></li>
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
@@ -77,8 +87,8 @@ to extract copy number signatures</strong>)). See detail part and references for
   ref_sigs <span class="op">=</span> <span class="cn">NULL</span>,
   K0 <span class="op">=</span> <span class="fl">25</span>,
   nrun <span class="op">=</span> <span class="fl">10</span>,
-  niter <span class="op">=</span> <span class="fl">200000</span>,
-  tol <span class="op">=</span> <span class="fl">0.0000001</span>,
+  niter <span class="op">=</span> <span class="fl">2e+05</span>,
+  tol <span class="op">=</span> <span class="fl">1e-07</span>,
   cores <span class="op">=</span> <span class="fl">1</span>,
   optimize <span class="op">=</span> <span class="cn">FALSE</span>,
   skip <span class="op">=</span> <span class="cn">FALSE</span>,
@@ -90,50 +100,79 @@ to extract copy number signatures</strong>)). See detail part and references for
     <h2>Arguments</h2>
     <dl><dt>nmf_matrix</dt>
 <dd><p>a <code>matrix</code> used for NMF decomposition with rows indicate samples and columns indicate components.</p></dd>
+
+
 <dt>result_prefix</dt>
 <dd><p>prefix for result data files.</p></dd>
+
+
 <dt>destdir</dt>
 <dd><p>path to save data runs, default is <code><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir()</a></code>.</p></dd>
+
+
 <dt>method</dt>
 <dd><p>default is "L1W.L2H", which uses an exponential prior for W and
 a half-normal prior for H (This method is used by PCAWG project, see reference #3).
 You can also use "L1KL" to set expoential priors for both W and H, and "L2KL" to
 set half-normal priors for both W and H. The latter two methods are originally
 implemented by <a href="https://software.broadinstitute.org/cancer/cga/msp" class="external-link">SignatureAnalyzer software</a>.</p></dd>
+
+
 <dt>strategy</dt>
 <dd><p>the selection strategy for returned data. Set 'stable' for getting optimal
 result from the most frequent K. Set 'optimal' for getting optimal result from all Ks.
 Set 'ms' for getting result with maximum mean cosine similarity with provided reference
 signatures. See <code>ref_sigs</code> option for details.
 If you want select other solution, please check <a href="get_bayesian_result.html">get_bayesian_result</a>.</p></dd>
+
+
 <dt>ref_sigs</dt>
 <dd><p>A Signature object or matrix or string for specifying
 reference signatures, only used when <code>strategy = 'ms'</code>.
 See <code>Signature</code> and <code>sig_db</code> options in <a href="get_sig_similarity.html">get_sig_similarity</a> for details.</p></dd>
+
+
 <dt>K0</dt>
 <dd><p>number of initial signatures.</p></dd>
+
+
 <dt>nrun</dt>
 <dd><p>number of independent simulations.</p></dd>
+
+
 <dt>niter</dt>
 <dd><p>the maximum number of iterations.</p></dd>
+
+
 <dt>tol</dt>
 <dd><p>tolerance for convergence.</p></dd>
+
+
 <dt>cores</dt>
 <dd><p>number of cpu cores to run NMF.</p></dd>
+
+
 <dt>optimize</dt>
 <dd><p>if <code>TRUE</code>, then refit the denovo signatures with QP method, see <a href="sig_fit.html">sig_fit</a>.</p></dd>
+
+
 <dt>skip</dt>
 <dd><p>if <code>TRUE</code>, it will skip running a previous stored result. This can be used to
 extend run times, e.g. you try running 10 times firstly and then you want to extend it to
 20 times.</p></dd>
+
+
 <dt>recover</dt>
 <dd><p>if <code>TRUE</code>, try to recover result from previous runs based on input <code>result_prefix</code>,
 <code>destdir</code> and <code>nrun</code>. This is pretty useful for reproducing result. Please use <code>skip</code> if you want
 to recover an unfinished job.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a <code>list</code> with <code>Signature</code> class.</p>
+    
+
+<p>a <code>list</code> with <code>Signature</code> class.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -199,14 +238,11 @@ estimating signature number for <a href="sig_extract.html">sig_extract</a>.</p><
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang
-Wang</a>, Ziyu Tao, Huimin Li, Tao Wu,
-<a href="https://orcid.org/0000-0002-7736-0077" class="external-link">Xue-Song Liu</a>.</p>
+  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang Wang</a>, Ziyu Tao, Huimin Li, Tao Wu, <a href="https://orcid.org/0000-0002-7736-0077" class="external-link">Xue-Song Liu</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

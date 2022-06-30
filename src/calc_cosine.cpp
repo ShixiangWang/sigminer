@@ -3,7 +3,8 @@ using namespace Rcpp;
 
 // [[Rcpp::export]]
 double cosineVector(NumericVector x, NumericVector y) {
-  return sum(x * y) / (sqrt(sum(pow(x, 2))) * sqrt(sum(pow(y, 2))));
+  //return sum(x * y) / (sqrt(sum(pow(x, 2))) * sqrt(sum(pow(y, 2))));
+  return sum(x * y) / (sqrt(sum(x * x)) * sqrt(sum(y * y)));
 }
 
 // [[Rcpp::export]]

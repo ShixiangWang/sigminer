@@ -41,6 +41,16 @@ better help users to explore survey of signature number.'><meta property="og:ima
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu"><li>
+      <a href="../articles/cnsignature.html">Analyze Copy Number Signatures with sigminer</a>
+    </li>
+  </ul></li>
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
@@ -129,28 +139,48 @@ better help users to explore survey of signature number.</p>
     <h2>Arguments</h2>
     <dl><dt>nmf_matrix</dt>
 <dd><p>a <code>matrix</code> used for NMF decomposition with rows indicate samples and columns indicate components.</p></dd>
+
+
 <dt>range</dt>
 <dd><p>a <code>numeric</code> vector containing the ranks of factorization to try. Note that duplicates are removed
 and values are sorted in increasing order. The results are notably returned in this order.</p></dd>
+
+
 <dt>nrun</dt>
 <dd><p>a <code>numeric</code> giving the number of run to perform for each value in <code>range</code>, <code>nrun</code> set to 30~50 is
 enough to achieve robust result.</p></dd>
+
+
 <dt>use_random</dt>
 <dd><p>Should generate random data from input to test measurements. Default is <code>TRUE</code>.</p></dd>
+
+
 <dt>method</dt>
 <dd><p>specification of the NMF algorithm. Use 'brunet' as default.
 Available methods for NMF decompositions are 'brunet', 'lee', 'ls-nmf', 'nsNMF', 'offset'.</p></dd>
+
+
 <dt>seed</dt>
 <dd><p>specification of the starting point or seeding method, which will compute a starting point,
 usually using data from the target matrix in order to provide a good guess.</p></dd>
+
+
 <dt>cores</dt>
 <dd><p>number of cpu cores to run NMF.</p></dd>
+
+
 <dt>keep_nmfObj</dt>
 <dd><p>default is <code>FALSE</code>, if <code>TRUE</code>, keep NMF objects from runs, and the result may be huge.</p></dd>
+
+
 <dt>save_plots</dt>
 <dd><p>if <code>TRUE</code>, save signature number survey plot to local machine.</p></dd>
+
+
 <dt>plot_basename</dt>
 <dd><p>when save plots, set custom basename for file path.</p></dd>
+
+
 <dt>what</dt>
 <dd><p>a character vector whose elements partially match one of the following item,
 which correspond to the measures computed by <code><a href="https://rdrr.io/pkg/NMF/man/assess.html" class="external-link">summary()</a></code> on each – multi-run – NMF result:
@@ -158,33 +188,59 @@ which correspond to the measures computed by <code><a href="https://rdrr.io/pkg/
 (and more specific <code>*.coef</code>, <code>*.basis</code>, <code>*.consensus</code>), 'sparseness'
 (and more specific <code>*.coef</code>, <code>*.basis</code>).
 It specifies which measure must be plotted (what='all' plots all the measures).</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>if <code>TRUE</code>, print extra message.</p></dd>
+
+
 <dt>object</dt>
 <dd><p>a <code>Survey</code> object generated from sig_estimate, or
 a <code>data.frame</code> contains at least rank columns and columns for
 one measure.</p></dd>
+
+
 <dt>x</dt>
 <dd><p>a <code>data.frame</code> or <code>NMF.rank</code> object obtained from <code>sig_estimate()</code>.</p></dd>
+
+
 <dt>left_y</dt>
 <dd><p>column name for left y axis.</p></dd>
+
+
 <dt>right_y</dt>
 <dd><p>column name for right y axis.</p></dd>
+
+
 <dt>left_name</dt>
 <dd><p>label name for left y axis.</p></dd>
+
+
 <dt>right_name</dt>
 <dd><p>label name for right y axis.</p></dd>
+
+
 <dt>left_color</dt>
 <dd><p>color for left axis.</p></dd>
+
+
 <dt>right_color</dt>
 <dd><p>color for right axis.</p></dd>
+
+
 <dt>left_shape, right_shape, shape_size</dt>
 <dd><p>shape setting.</p></dd>
+
+
 <dt>highlight</dt>
 <dd><p>a <code>integer</code> to highlight a <code>x</code>.</p></dd>
+
+
 <dt>y</dt>
 <dd><p>for random simulation,
 a <code>data.frame</code> or <code>NMF.rank</code> object obtained from <code>sig_estimate()</code>.</p></dd>
+
+
 <dt>na.rm</dt>
 <dd><p>single logical that specifies if the rank
   for which the measures are NA values should be removed
@@ -192,16 +248,25 @@ a <code>data.frame</code> or <code>NMF.rank</code> object obtained from <code>si
   useful when plotting results which include NAs due to
   error during the estimation process. See argument
   <code>stop</code> for <code>nmfEstimateRank</code>.</p></dd>
+
+
 <dt>xlab</dt>
 <dd><p>x-axis label</p></dd>
+
+
 <dt>ylab</dt>
 <dd><p>y-axis label</p></dd>
+
+
 <dt>main</dt>
 <dd><p>main title</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <ul><li><p>sig_estimate: a <code>list</code> contains information of NMF run and rank survey.</p></li>
+    
+
+<ul><li><p>sig_estimate: a <code>list</code> contains information of NMF run and rank survey.</p></li>
 </ul><ul><li><p>show_sig_number_survey: a <code>ggplot</code> object</p></li>
 </ul><ul><li><p>show_sig_number_survey2: a <code>ggplot</code> object</p></li>
 </ul></div>
@@ -277,14 +342,11 @@ show_sig_number_survey2 for more visualization method.</p></div>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang
-Wang</a>, Ziyu Tao, Huimin Li, Tao Wu,
-<a href="https://orcid.org/0000-0002-7736-0077" class="external-link">Xue-Song Liu</a>.</p>
+  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang Wang</a>, Ziyu Tao, Huimin Li, Tao Wu, <a href="https://orcid.org/0000-0002-7736-0077" class="external-link">Xue-Song Liu</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

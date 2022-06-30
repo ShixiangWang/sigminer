@@ -1,44 +1,30 @@
 Package: sigminer
-Title: Extract, Analyze and Visualize Mutational Signatures for
-    Genomic Variations
+Title: Extract, Analyze and Visualize Mutational Signatures for Genomic
+    Variations
 Version: 2.1.5
-Authors@R: 
-    c(person(given = "Shixiang",
-             family = "Wang",
-             role = c("aut", "cre"),
-             email = "w_shixiang@163.com",
-             comment = c(ORCID = "0000-0001-9855-7357")),
-      person(given = "Ziyu",
-             family = "Tao",
-             role = "aut",
-             email = "taozy@shanghaitech.edu.cn",
-             comment = c(ORCID = "0000-0003-3272-1227")),
-      person(given = "Huimin",
-             family = "Li",
-             role = "aut",
-             email = "lihm@shanghaitech.edu.cn",
-             comment = c(ORCID = "0000-0003-1683-9057")),
-      person(given = "Tao",
-             family = "Wu",
-             role = "aut",
-             email = "wutao2@shanghaitech.edu.cn",
-             comment = c(ORCID = "0000-0002-8999-9628")),
-      person(given = "Xue-Song",
-             family = "Liu",
-             role = c("aut", "ctb"),
-             comment = c(ORCID = "0000-0002-7736-0077")),
-      person(given = "Anand",
-             family = "Mayakonda",
-             role = "ctb"))
-Description: Genomic alterations including single nucleotide
-    substitution, copy number alteration, etc. are the major force for
-    cancer initialization and development. Due to the specificity of
-    molecular lesions caused by genomic alterations, we can generate
-    characteristic alteration spectra, called 'signature' (Wang, Shixiang,
-    et al. (2021) <DOI:10.1371/journal.pgen.1009557> & Alexandrov, Ludmil
-    B., et al. (2020) <DOI:10.1038/s41586-020-1943-3>).  This package helps
-    users to extract, analyze and visualize signatures from genomic
-    alteration records, thus providing new insight into cancer study.
+Authors@R: c(
+    person("Shixiang", "Wang", , "w_shixiang@163.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0001-9855-7357")),
+    person("Ziyu", "Tao", , "taozy@shanghaitech.edu.cn", role = "aut",
+           comment = c(ORCID = "0000-0003-3272-1227")),
+    person("Huimin", "Li", , "lihm@shanghaitech.edu.cn", role = "aut",
+           comment = c(ORCID = "0000-0003-1683-9057")),
+    person("Tao", "Wu", , "wutao2@shanghaitech.edu.cn", role = "aut",
+           comment = c(ORCID = "0000-0002-8999-9628")),
+    person("Xue-Song", "Liu", role = c("aut", "ctb"),
+           comment = c(ORCID = "0000-0002-7736-0077")),
+    person("Anand", "Mayakonda", role = "ctb")
+  )
+Description: Genomic alterations including single nucleotide substitution,
+    copy number alteration, etc. are the major force for cancer
+    initialization and development. Due to the specificity of molecular
+    lesions caused by genomic alterations, we can generate characteristic
+    alteration spectra, called 'signature' (Wang, Shixiang, et al. (2021)
+    <DOI:10.1371/journal.pgen.1009557> & Alexandrov, Ludmil B., et al.
+    (2020) <DOI:10.1038/s41586-020-1943-3> & Steele Christopher D., et al.
+    (2022) <DOI:10.1038/s41586-022-04738-6>).  This package helps users to
+    extract, analyze and visualize signatures from genomic alteration
+    records, thus providing new insight into cancer study.
 License: MIT + file LICENSE
 URL: https://github.com/ShixiangWang/sigminer
 BugReports: https://github.com/ShixiangWang/sigminer/issues
@@ -69,6 +55,7 @@ Suggests:
     BSgenome.Hsapiens.UCSC.hg19,
     circlize,
     cluster,
+    copynumber,
     covr,
     digest,
     GenomicRanges,
@@ -84,6 +71,7 @@ Suggests:
     markdown,
     matrixStats,
     nnls,
+    parallel,
     patchwork,
     pheatmap,
     quadprog,
@@ -96,9 +84,7 @@ Suggests:
     synchronicity,
     testthat,
     tibble,
-    UCSCXenaTools,
-    copynumber,
-    parallel
+    UCSCXenaTools
 LinkingTo: 
     Rcpp
 VignetteBuilder: 
@@ -106,6 +92,6 @@ VignetteBuilder:
 biocViews:
 Encoding: UTF-8
 LazyData: true
-Roxygen: list(markdown = TRUE, roclets = c("collate",
-    "namespace", "rd", "roxytest::testthat_roclet"))
-RoxygenNote: 7.1.2
+Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "rd",
+    "roxytest::testthat_roclet"))
+RoxygenNote: 7.2.0

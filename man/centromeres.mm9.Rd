@@ -9,7 +9,9 @@ A data.frame
 }
 \source{
 Generate from \url{https://hgdownload.soe.ucsc.edu/goldenPath/mm9/database/}
-with code:\if{html}{\out{<div class="sourceCode sh">}}\preformatted{for i in $(seq 1 19) X Y;
+with code:
+
+\if{html}{\out{<div class="sourceCode sh">}}\preformatted{for i in $(seq 1 19) X Y;
 do
 wget https://hgdownload.soe.ucsc.edu/goldenPath/mm9/database/chr$\{i\}_gap.txt.gz
 done

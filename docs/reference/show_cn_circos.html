@@ -28,6 +28,16 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu"><li>
+      <a href="../articles/cnsignature.html">Analyze Copy Number Signatures with sigminer</a>
+    </li>
+  </ul></li>
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
@@ -73,27 +83,44 @@
     <dl><dt>data</dt>
 <dd><p>a <a href="CopyNumber-class.html">CopyNumber</a> object or a <code>data.frame</code> containing at least 'chromosome', 'start',
 'end', 'segVal' these columns.</p></dd>
+
+
 <dt>samples</dt>
 <dd><p>default is <code>NULL</code>, can be a chracter vector representing multiple samples or
 number of samples to show.
 If data argument is a <code>data.frame</code>, a column called sample must exist.</p></dd>
+
+
 <dt>show_title</dt>
 <dd><p>if <code>TRUE</code> (default), show title with sample ID.</p></dd>
+
+
 <dt>chrs</dt>
 <dd><p>chromosomes start with 'chr'.</p></dd>
+
+
 <dt>genome_build</dt>
 <dd><p>genome build version, used when <code>data</code> is a <code>data.frame</code>, should be 'hg19' or 'hg38'.</p></dd>
+
+
 <dt>col</dt>
 <dd><p>colors for the heatmaps. If it is <code>NULL</code>, set to
 <code>circlize::colorRamp2(c(1, 2, 4), c("blue", "black", "red"))</code>.</p></dd>
+
+
 <dt>side</dt>
 <dd><p>side of the heatmaps.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>other parameters passing to <a href="https://rdrr.io/pkg/circlize/man/circos.genomicHeatmap.html" class="external-link">circlize::circos.genomicHeatmap</a>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a circos plot</p>
+    
+
+<p>a circos plot</p>
     </div>
 
     <div id="ref-examples">
@@ -127,14 +154,11 @@ If data argument is a <code>data.frame</code>, a column called sample must exist
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang
-Wang</a>, Ziyu Tao, Huimin Li, Tao Wu,
-<a href="https://orcid.org/0000-0002-7736-0077" class="external-link">Xue-Song Liu</a>.</p>
+  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang Wang</a>, Ziyu Tao, Huimin Li, Tao Wu, <a href="https://orcid.org/0000-0002-7736-0077" class="external-link">Xue-Song Liu</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

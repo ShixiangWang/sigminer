@@ -9,7 +9,9 @@ transform_seg_table(
   genome_build = c("hg19", "hg38", "mm10", "mm9"),
   ref_type = c("cytoband", "gene"),
   values_fill = NA,
-  values_fn = function(x, ...) {     round(mean(x, ...)) },
+  values_fn = function(x, ...) {
+     round(mean(x, ...))
+ },
   resolution_factor = 1L
 )
 }

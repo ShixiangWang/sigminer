@@ -1,0 +1,129 @@
+---
+title: "Analyze Copy Number Signatures with sigminer"
+author: "Shixiang Wang ( wangsx1@sysucc.org.cn )"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{cnsignature}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+> A more general introduction please read [Extract, Analyze and Visualize Mutational Signatures with Sigminer](https://shixiangwang.github.io/sigminer-book/index.html).
+
+```{r setup}
+library(sigminer)
+```
+
+For this analysis, data with six columns are required.
+
+- Chromosome
+- Start.bp
+- End.bp
+- modal_cn (i.e. total copy number, integer)
+- minor_cn (i.e. copy number for minor allele, integer)
+- sample
+
+## Generate allele-specific copy number profile
+
+```{r}
+load(system.file("extdata", "toy_segTab.RData",
+  package = "sigminer", mustWork = TRUE
+))
+
+set.seed(1234)
+segTabs$minor_cn <- sample(c(0, 1), size = nrow(segTabs), replace = TRUE)
+cn <- read_copynumber(segTabs,
+  seg_cols = c("chromosome", "start", "end", "segVal"),
+  genome_measure = "wg", complement = TRUE, add_loh = TRUE
+)
+```
+
+```{r}
+cn
+cn@data
+```
+
+## Classify the segments with Steele et al method
+
+> If you want to try other type of copy number signatures,
+> change the method argument.
+
+```{r}
+tally_s <- sig_tally(cn, method = "S")
+
+str(tally_s$all_matrices, max.level = 1)
+```
+
+## Find de novo signatures
+
+```{r}
+sig_denovo = sig_auto_extract(tally_s$all_matrices$CN_48)
+head(sig_denovo$Signature)
+```
+
+
+## Refit (19) reference signatures
+
+This directly calculates the contribution of 19 reference signatures.
+
+```{r}
+act_refit = sig_fit(t(tally_s$all_matrices$CN_48), sig_index = "ALL", sig_db = "CNS_TCGA")
+```
+We can use some threshold to keep really contributed signautres.
+
+```{r}
+act_refit2 = act_refit[apply(act_refit, 1, function(x) sum(x) > 0.1),]
+
+rownames(act_refit2)
+```
+
+## Plot signatures
+
+For de novo signatures:
+
+```{r, fig.width=10, fig.height=3}
+show_sig_profile(sig_denovo, mode = "copynumber", method = "S", style = "cosmic")
+```
+
+Show the activity/exposure.
+
+```{r}
+show_sig_exposure(sig_denovo)
+```
+
+
+For reference signatures, you can just select what you want:
+
+```{r, fig.height=8, fig.width=10}
+show_sig_profile(
+  get_sig_db("CNS_TCGA")$db[, rownames(act_refit2)],
+  style = "cosmic", 
+  mode = "copynumber", method = "S", check_sig_names = FALSE)
+```
+
+Similarly for showing activity.
+
+```{r}
+show_sig_exposure(act_refit2)
+```
+
+NOTE that this case shows relatively large difference with different approaches,
+so you need to pick based on your data size/quality and double-check the results.
+In general, for small-size data set, the refitting approach is recommended.
+
+## Signature assignment
+
+To assign the de-novo signatures to reference signatures, we use cosine similarity.
+
+```{r}
+get_sig_similarity(sig_denovo, sig_db = "CNS_TCGA")
+```
+

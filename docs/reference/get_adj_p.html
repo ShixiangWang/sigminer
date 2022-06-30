@@ -30,6 +30,16 @@ this problem."><meta property="og:image" content="https://shixiangwang.github.io
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu"><li>
+      <a href="../articles/cnsignature.html">Analyze Copy Number Signatures with sigminer</a>
+    </li>
+  </ul></li>
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
@@ -80,29 +90,46 @@ this problem.</p>
     <h2>Arguments</h2>
     <dl><dt>data</dt>
 <dd><p>a <code>data.frame</code> containing column for groups and column for comparison.</p></dd>
+
+
 <dt>.col</dt>
 <dd><p>column name for comparison.</p></dd>
+
+
 <dt>.grp</dt>
 <dd><p>column name for groups.</p></dd>
+
+
 <dt>comparisons</dt>
 <dd><p>Default is <code>NULL</code>, use all combination in group column.
 It can be a list of length-2 vectors. The entries in the vector are either
 the names of 2 values on the x-axis or the 2 integers that correspond to the
 index of the groups of interest, to be compared.</p></dd>
+
+
 <dt>method</dt>
 <dd><p>a character string indicating which method to be used for comparing means.
 It can be 't.test', 'wilcox.test' etc..</p></dd>
+
+
 <dt>p.adjust.method</dt>
 <dd><p>correction method, default is 'fdr'. Run <code>p.adjust.methods</code> to
 see all available options.</p></dd>
+
+
 <dt>p.digits</dt>
 <dd><p>how many significant digits are to be used.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>other arguments passed to <code><a href="https://rpkgs.datanovia.com/ggpubr/reference/compare_means.html" class="external-link">ggpubr::compare_means()</a></code></p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a <code>data.frame</code> containing comparison result</p>
+    
+
+<p>a <code>data.frame</code> containing comparison result</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -159,14 +186,11 @@ see all available options.</p></dd>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang
-Wang</a>, Ziyu Tao, Huimin Li, Tao Wu,
-<a href="https://orcid.org/0000-0002-7736-0077" class="external-link">Xue-Song Liu</a>.</p>
+  <p></p><p>Developed by <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang Wang</a>, Ziyu Tao, Huimin Li, Tao Wu, <a href="https://orcid.org/0000-0002-7736-0077" class="external-link">Xue-Song Liu</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>
