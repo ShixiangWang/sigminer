@@ -1,3 +1,7 @@
+# sigminer 2.1.6
+
+- Fixed checking in `sig_tally()`.
+
 # sigminer 2.1.5
 
 - Added a vignette to introduce the analysis of copy number signatures.
