@@ -42,7 +42,11 @@ show_group_enrichment <- function(df_enrich,
                                   cluster_row = FALSE,
                                   ...) {
   if (fill_by_p_value) {
-    df_enrich$p_value_up <- if (use_fdr) abs(log10(df_enrich$fdr)) else abs(log10(df_enrich$p_value))
+    df_enrich$p_value_up <- if (use_fdr) {
+      ifelse(df_enrich$fdr == 0, abs(log10(df_enrich$fdr + .Machine$double.xmin)), abs(log10(df_enrich$fdr))) 
+    } else {
+      ifelse(df_enrich$p_value == 0, abs(log10(df_enrich$p_value + .Machine$double.xmin)), abs(log10(df_enrich$p_value))) 
+    }
     df_enrich$p_value_up <- data.table::fifelse(
       df_enrich$measure_observed >= 1,
       df_enrich$p_value_up,

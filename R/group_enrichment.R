@@ -111,6 +111,38 @@ group_enrichment <- function(df, grp_vars = NULL, enrich_vars = NULL,
   purrr::map2_df(comb_df, ref_group, ~ enrich_one(.x[1], .x[2], df, co_method, .y))
 }
 
+#' Group Enrichment Analysis with Subsets
+#' 
+#' More details see [group_enrichment()].
+#' 
+#' @inheritParams group_enrichment
+#' @param subset_var a column for subsetting.
+#' @export
+#' @seealso [show_group_enrichment]
+group_enrichment2 <- function(df, subset_var, grp_vars, enrich_vars,
+                             co_method = c("t.test", "wilcox.test"),
+                             ref_group = NA) {
+  stopifnot(
+    is.character(grp_vars), is.character(enrich_vars),
+    is.data.frame(df),
+    all(c(subset_var, grp_vars, enrich_vars) %in% colnames(df))
+  )
+
+  if (length(subset_var) != 1) stop("this function only supports length-1 subset variable")
+  if (length(grp_vars) != 1) stop("this function only supports length-1 group variable")
+  if (length(enrich_vars) != 1) stop("this function only supports length-1 enrich variable")
+
+  co_method <- match.arg(co_method)
+  df$.subset = df[[subset_var]]
+  df = dplyr::filter(df, !is.na(.data[[".subset"]]), !is.na(.data[[enrich_vars]]))
+  df_list = dplyr::group_split(df, .data[[".subset"]])
+  rv_list = purrr::map(df_list, function(d) {
+    group_enrichment(d, grp_vars, enrich_vars, FALSE, co_method, ref_group) %>%
+      dplyr::mutate(enrich_var = d[[".subset"]][[1]])
+  })
+  dplyr::bind_rows(rv_list)
+}
+
 enrich_one <- function(x, y, df, method = "t.test", ref_group = NULL) {
   # x is group var
   # y is enrich var
