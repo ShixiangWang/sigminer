@@ -94,7 +94,10 @@ show_cn_circos <- function(data, samples = NULL,
 
   colnames(data)[1] <- "chr"
 
-  if (ncol(data) == 5L) {
+  if (ncol(data) >= 5L) {
+    if (ncol(data) > 5) {
+      data = data[, 1:5]
+    }
     data_bed <- split(data, data$sample)
     data_bed <- lapply(data_bed, function(x) {
       x$sample <- NULL

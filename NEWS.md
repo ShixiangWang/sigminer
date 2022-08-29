@@ -1,3 +1,8 @@
+# sigminer 2.1.7
+
+- Fixed bug in `show_cn_circos()`.
+- Added `group_enrichment2()`.
+
 # sigminer 2.1.6
 
 - Fixed checking in `sig_tally()`.
