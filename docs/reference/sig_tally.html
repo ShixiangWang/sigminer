@@ -22,7 +22,7 @@ components."><meta property="og:image" content="https://shixiangwang.github.io/s
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.7</span>
       </span>
     </div>
 
@@ -76,36 +76,36 @@ components.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">sig_tally</span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for CopyNumber</span>
-<span class="fu">sig_tally</span><span class="op">(</span>
-  <span class="va">object</span>,
-  method <span class="op">=</span> <span class="st">"Wang"</span>,
-  ignore_chrs <span class="op">=</span> <span class="cn">NULL</span>,
-  indices <span class="op">=</span> <span class="cn">NULL</span>,
-  add_loh <span class="op">=</span> <span class="cn">FALSE</span>,
-  feature_setting <span class="op">=</span> <span class="fu">sigminer</span><span class="fu">::</span><span class="va"><a href="CN.features.html">CN.features</a></span>,
-  cores <span class="op">=</span> <span class="fl">1</span>,
-  keep_only_matrix <span class="op">=</span> <span class="cn">FALSE</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="co"># S3 method for RS</span>
-<span class="fu">sig_tally</span><span class="op">(</span><span class="va">object</span>, keep_only_matrix <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for MAF</span>
-<span class="fu">sig_tally</span><span class="op">(</span>
-  <span class="va">object</span>,
-  mode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SBS"</span>, <span class="st">"DBS"</span>, <span class="st">"ID"</span>, <span class="st">"ALL"</span><span class="op">)</span>,
-  ref_genome <span class="op">=</span> <span class="st">"BSgenome.Hsapiens.UCSC.hg19"</span>,
-  genome_build <span class="op">=</span> <span class="cn">NULL</span>,
-  add_trans_bias <span class="op">=</span> <span class="cn">FALSE</span>,
-  ignore_chrs <span class="op">=</span> <span class="cn">NULL</span>,
-  use_syn <span class="op">=</span> <span class="cn">TRUE</span>,
-  keep_only_matrix <span class="op">=</span> <span class="cn">FALSE</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">sig_tally</span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for CopyNumber</span></span>
+<span><span class="fu">sig_tally</span><span class="op">(</span></span>
+<span>  <span class="va">object</span>,</span>
+<span>  method <span class="op">=</span> <span class="st">"Wang"</span>,</span>
+<span>  ignore_chrs <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  indices <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  add_loh <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  feature_setting <span class="op">=</span> <span class="fu">sigminer</span><span class="fu">::</span><span class="va"><a href="CN.features.html">CN.features</a></span>,</span>
+<span>  cores <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  keep_only_matrix <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for RS</span></span>
+<span><span class="fu">sig_tally</span><span class="op">(</span><span class="va">object</span>, keep_only_matrix <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for MAF</span></span>
+<span><span class="fu">sig_tally</span><span class="op">(</span></span>
+<span>  <span class="va">object</span>,</span>
+<span>  mode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SBS"</span>, <span class="st">"DBS"</span>, <span class="st">"ID"</span>, <span class="st">"ALL"</span><span class="op">)</span>,</span>
+<span>  ref_genome <span class="op">=</span> <span class="st">"BSgenome.Hsapiens.UCSC.hg19"</span>,</span>
+<span>  genome_build <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  add_trans_bias <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  ignore_chrs <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  use_syn <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  keep_only_matrix <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -209,9 +209,9 @@ with <a href="read_copynumber.html">read_copynumber</a>).</p></li>
     <div id="methods-by-class-">
     <h2>Methods (by class)</h2>
     
-<ul><li><p><code>CopyNumber</code>: Returns copy number features, components and component-by-sample matrix</p></li>
-<li><p><code>RS</code>: Returns genome rearrangement sample-by-component matrix</p></li>
-<li><p><code>MAF</code>: Returns SBS mutation sample-by-component matrix and APOBEC enrichment</p></li>
+<ul><li><p><code>sig_tally(CopyNumber)</code>: Returns copy number features, components and component-by-sample matrix</p></li>
+<li><p><code>sig_tally(RS)</code>: Returns genome rearrangement sample-by-component matrix</p></li>
+<li><p><code>sig_tally(MAF)</code>: Returns SBS mutation sample-by-component matrix and APOBEC enrichment</p></li>
 </ul></div>
     <div id="references">
     <h2>References</h2>
@@ -235,42 +235,41 @@ distinct evolutionary pathways." Cancer Cell 35.3 (2019): 441-456.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># Load copy number object</span>
-<span class="fu"><a href="https://rdrr.io/pkg/R.oo/man/Non-documented_objects.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"toy_copynumber.RData"</span>,
-  package <span class="op">=</span> <span class="st">"sigminer"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span><span class="op">)</span>
-<span class="co"># \donttest{</span>
-<span class="co"># Use method designed by Wang, Shixiang et al.</span>
-<span class="va">cn_tally_W</span> <span class="op">&lt;-</span> <span class="fu">sig_tally</span><span class="op">(</span><span class="va">cn</span>, method <span class="op">=</span> <span class="st">"W"</span><span class="op">)</span>
-<span class="co"># }</span>
-<span class="co"># Use method designed by Steele et al.</span>
-<span class="co"># See example in read_copynumber</span>
-<span class="co"># \donttest{</span>
-<span class="co"># Prepare SBS signature analysis</span>
-<span class="va">laml.maf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"tcga_laml.maf.gz"</span>, package <span class="op">=</span> <span class="st">"maftools"</span><span class="op">)</span>
-<span class="va">laml</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_maf.html">read_maf</a></span><span class="op">(</span>maf <span class="op">=</span> <span class="va">laml.maf</span><span class="op">)</span>
-<span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st">"BSgenome.Hsapiens.UCSC.hg19"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">mt_tally</span> <span class="op">&lt;-</span> <span class="fu">sig_tally</span><span class="op">(</span>
-    <span class="va">laml</span>,
-    ref_genome <span class="op">=</span> <span class="st">"BSgenome.Hsapiens.UCSC.hg19"</span>,
-    use_syn <span class="op">=</span> <span class="cn">TRUE</span>
-  <span class="op">)</span>
-  <span class="va">mt_tally</span><span class="op">$</span><span class="va">nmf_matrix</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>
-
-  <span class="co">## Use strand bias categories</span>
-  <span class="va">mt_tally</span> <span class="op">&lt;-</span> <span class="fu">sig_tally</span><span class="op">(</span>
-    <span class="va">laml</span>,
-    ref_genome <span class="op">=</span> <span class="st">"BSgenome.Hsapiens.UCSC.hg19"</span>,
-    use_syn <span class="op">=</span> <span class="cn">TRUE</span>, add_trans_bias <span class="op">=</span> <span class="cn">TRUE</span>
-  <span class="op">)</span>
-  <span class="co">## Test it by enrichment analysis</span>
-  <span class="fu"><a href="enrich_component_strand_bias.html">enrich_component_strand_bias</a></span><span class="op">(</span><span class="va">mt_tally</span><span class="op">$</span><span class="va">nmf_matrix</span><span class="op">)</span>
-  <span class="fu"><a href="enrich_component_strand_bias.html">enrich_component_strand_bias</a></span><span class="op">(</span><span class="va">mt_tally</span><span class="op">$</span><span class="va">all_matrices</span><span class="op">$</span><span class="va">SBS_24</span><span class="op">)</span>
-<span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"Please install package 'BSgenome.Hsapiens.UCSC.hg19' firstly!"</span><span class="op">)</span>
-<span class="op">}</span>
-<span class="co"># }</span>
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># Load copy number object</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/R.oo/man/Non-documented_objects.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"toy_copynumber.RData"</span>,</span>
+<span>  package <span class="op">=</span> <span class="st">"sigminer"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># \donttest{</span></span>
+<span><span class="co"># Use method designed by Wang, Shixiang et al.</span></span>
+<span><span class="va">cn_tally_W</span> <span class="op">&lt;-</span> <span class="fu">sig_tally</span><span class="op">(</span><span class="va">cn</span>, method <span class="op">=</span> <span class="st">"W"</span><span class="op">)</span></span>
+<span><span class="co"># }</span></span>
+<span><span class="co"># Use method designed by Steele et al.</span></span>
+<span><span class="co"># See example in read_copynumber</span></span>
+<span><span class="co"># \donttest{</span></span>
+<span><span class="co"># Prepare SBS signature analysis</span></span>
+<span><span class="va">laml.maf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"tcga_laml.maf.gz"</span>, package <span class="op">=</span> <span class="st">"maftools"</span><span class="op">)</span></span>
+<span><span class="va">laml</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_maf.html">read_maf</a></span><span class="op">(</span>maf <span class="op">=</span> <span class="va">laml.maf</span><span class="op">)</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st">"BSgenome.Hsapiens.UCSC.hg19"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">mt_tally</span> <span class="op">&lt;-</span> <span class="fu">sig_tally</span><span class="op">(</span></span>
+<span>    <span class="va">laml</span>,</span>
+<span>    ref_genome <span class="op">=</span> <span class="st">"BSgenome.Hsapiens.UCSC.hg19"</span>,</span>
+<span>    use_syn <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  <span class="op">)</span></span>
+<span>  <span class="va">mt_tally</span><span class="op">$</span><span class="va">nmf_matrix</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
+<span></span>
+<span>  <span class="co">## Use strand bias categories</span></span>
+<span>  <span class="va">mt_tally</span> <span class="op">&lt;-</span> <span class="fu">sig_tally</span><span class="op">(</span></span>
+<span>    <span class="va">laml</span>,</span>
+<span>    ref_genome <span class="op">=</span> <span class="st">"BSgenome.Hsapiens.UCSC.hg19"</span>,</span>
+<span>    use_syn <span class="op">=</span> <span class="cn">TRUE</span>, add_trans_bias <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  <span class="op">)</span></span>
+<span>  <span class="co">## Test it by enrichment analysis</span></span>
+<span>  <span class="fu"><a href="enrich_component_strand_bias.html">enrich_component_strand_bias</a></span><span class="op">(</span><span class="va">mt_tally</span><span class="op">$</span><span class="va">nmf_matrix</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="enrich_component_strand_bias.html">enrich_component_strand_bias</a></span><span class="op">(</span><span class="va">mt_tally</span><span class="op">$</span><span class="va">all_matrices</span><span class="op">$</span><span class="va">SBS_24</span><span class="op">)</span></span>
+<span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"Please install package 'BSgenome.Hsapiens.UCSC.hg19' firstly!"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="co"># }</span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -284,7 +283,7 @@ distinct evolutionary pathways." Cancer Cell 35.3 (2019): 441-456.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.7</span>
       </span>
     </div>
 
@@ -66,17 +66,17 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">sig_names</span><span class="op">(</span><span class="va">sig</span><span class="op">)</span>
-
-<span class="fu">sig_modify_names</span><span class="op">(</span><span class="va">sig</span>, <span class="va">new_names</span><span class="op">)</span>
-
-<span class="fu">sig_number</span><span class="op">(</span><span class="va">sig</span><span class="op">)</span>
-
-<span class="fu">sig_attrs</span><span class="op">(</span><span class="va">sig</span><span class="op">)</span>
-
-<span class="fu">sig_signature</span><span class="op">(</span><span class="va">sig</span>, normalize <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"row"</span>, <span class="st">"column"</span>, <span class="st">"raw"</span>, <span class="st">"feature"</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu">sig_exposure</span><span class="op">(</span><span class="va">sig</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"absolute"</span>, <span class="st">"relative"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">sig_names</span><span class="op">(</span><span class="va">sig</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">sig_modify_names</span><span class="op">(</span><span class="va">sig</span>, <span class="va">new_names</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">sig_number</span><span class="op">(</span><span class="va">sig</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">sig_attrs</span><span class="op">(</span><span class="va">sig</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">sig_signature</span><span class="op">(</span><span class="va">sig</span>, normalize <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"row"</span>, <span class="st">"column"</span>, <span class="st">"raw"</span>, <span class="st">"feature"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">sig_exposure</span><span class="op">(</span><span class="va">sig</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"absolute"</span>, <span class="st">"relative"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -107,29 +107,28 @@ column normalization (component), raw data, row normalization by feature, respec
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co">## Operate signature names</span>
-<span class="fu"><a href="https://rdrr.io/pkg/R.oo/man/Non-documented_objects.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"toy_mutational_signature.RData"</span>,
-  package <span class="op">=</span> <span class="st">"sigminer"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span><span class="op">)</span>
-<span class="fu">sig_names</span><span class="op">(</span><span class="va">sig2</span><span class="op">)</span>
-<span class="va">cc</span> <span class="op">&lt;-</span> <span class="fu">sig_modify_names</span><span class="op">(</span><span class="va">sig2</span>, new_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Sig2"</span>, <span class="st">"Sig1"</span>, <span class="st">"Sig3"</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">sig_names</span><span class="op">(</span><span class="va">cc</span><span class="op">)</span>
-
-<span class="co"># The older names are stored in tags.</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">cc</span>, <span class="st">"tag"</span><span class="op">)</span><span class="op">)</span>
-<span class="co">## Get signature number</span>
-<span class="fu">sig_number</span><span class="op">(</span><span class="va">sig2</span><span class="op">)</span>
-<span class="co">## Get signature attributes</span>
-<span class="fu">sig_number</span><span class="op">(</span><span class="va">sig2</span><span class="op">)</span>
-<span class="co">## Get signature matrix</span>
-<span class="va">z</span> <span class="op">&lt;-</span> <span class="fu">sig_signature</span><span class="op">(</span><span class="va">sig2</span><span class="op">)</span>
-<span class="va">z</span> <span class="op">&lt;-</span> <span class="fu">sig_signature</span><span class="op">(</span><span class="va">sig2</span>, normalize <span class="op">=</span> <span class="st">"raw"</span><span class="op">)</span>
-<span class="co">## Get exposure matrix</span>
-<span class="co">## Of note, this is different from get_sig_exposure()</span>
-<span class="co">## it returns a matrix instead of data table.</span>
-<span class="va">z</span> <span class="op">&lt;-</span> <span class="fu">sig_exposure</span><span class="op">(</span><span class="va">sig2</span><span class="op">)</span> <span class="co"># it is same as sig$Exposure</span>
-<span class="va">z</span> <span class="op">&lt;-</span> <span class="fu">sig_exposure</span><span class="op">(</span><span class="va">sig2</span>, type <span class="op">=</span> <span class="st">"relative"</span><span class="op">)</span> <span class="co"># it is same as sig2$Exposure.norm</span>
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co">## Operate signature names</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/R.oo/man/Non-documented_objects.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"toy_mutational_signature.RData"</span>,</span>
+<span>  package <span class="op">=</span> <span class="st">"sigminer"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">sig_names</span><span class="op">(</span><span class="va">sig2</span><span class="op">)</span></span>
+<span><span class="va">cc</span> <span class="op">&lt;-</span> <span class="fu">sig_modify_names</span><span class="op">(</span><span class="va">sig2</span>, new_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Sig2"</span>, <span class="st">"Sig1"</span>, <span class="st">"Sig3"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">sig_names</span><span class="op">(</span><span class="va">cc</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># The older names are stored in tags.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">cc</span>, <span class="st">"tag"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">## Get signature number</span></span>
+<span><span class="fu">sig_number</span><span class="op">(</span><span class="va">sig2</span><span class="op">)</span></span>
+<span><span class="co">## Get signature attributes</span></span>
+<span><span class="fu">sig_number</span><span class="op">(</span><span class="va">sig2</span><span class="op">)</span></span>
+<span><span class="co">## Get signature matrix</span></span>
+<span><span class="va">z</span> <span class="op">&lt;-</span> <span class="fu">sig_signature</span><span class="op">(</span><span class="va">sig2</span><span class="op">)</span></span>
+<span><span class="va">z</span> <span class="op">&lt;-</span> <span class="fu">sig_signature</span><span class="op">(</span><span class="va">sig2</span>, normalize <span class="op">=</span> <span class="st">"raw"</span><span class="op">)</span></span>
+<span><span class="co">## Get exposure matrix</span></span>
+<span><span class="co">## Of note, this is different from get_sig_exposure()</span></span>
+<span><span class="co">## it returns a matrix instead of data table.</span></span>
+<span><span class="va">z</span> <span class="op">&lt;-</span> <span class="fu">sig_exposure</span><span class="op">(</span><span class="va">sig2</span><span class="op">)</span> <span class="co"># it is same as sig$Exposure</span></span>
+<span><span class="va">z</span> <span class="op">&lt;-</span> <span class="fu">sig_exposure</span><span class="op">(</span><span class="va">sig2</span>, type <span class="op">=</span> <span class="st">"relative"</span><span class="op">)</span> <span class="co"># it is same as sig2$Exposure.norm</span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -143,7 +142,7 @@ column normalization (component), raw data, row normalization by feature, respec
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

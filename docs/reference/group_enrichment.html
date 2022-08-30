@@ -18,7 +18,7 @@ cases or mean measure in one subgroup and the remaining samples."><meta property
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.7</span>
       </span>
     </div>
 
@@ -68,14 +68,14 @@ cases or mean measure in one subgroup and the remaining samples.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">group_enrichment</span><span class="op">(</span>
-  <span class="va">df</span>,
-  grp_vars <span class="op">=</span> <span class="cn">NULL</span>,
-  enrich_vars <span class="op">=</span> <span class="cn">NULL</span>,
-  cross <span class="op">=</span> <span class="cn">TRUE</span>,
-  co_method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"t.test"</span>, <span class="st">"wilcox.test"</span><span class="op">)</span>,
-  ref_group <span class="op">=</span> <span class="cn">NA</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">group_enrichment</span><span class="op">(</span></span>
+<span>  <span class="va">df</span>,</span>
+<span>  grp_vars <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  enrich_vars <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  cross <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  co_method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"t.test"</span>, <span class="st">"wilcox.test"</span><span class="op">)</span>,</span>
+<span>  ref_group <span class="op">=</span> <span class="cn">NA</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -141,38 +141,37 @@ for continuous variable, it stores value from <code><a href="https://rdrr.io/r/s
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span>
-<span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>
-  g1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">99</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,
-  g2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">LETTERS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">40</span>, <span class="fl">8</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>,
-  e1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"P"</span>, <span class="st">"N"</span><span class="op">)</span>, <span class="fl">99</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,
-  e2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">99</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co"># Compare g1:e1, g1:e2, g2:e1 and g2:e2</span>
-<span class="va">x1</span> <span class="op">&lt;-</span> <span class="fu">group_enrichment</span><span class="op">(</span><span class="va">df</span>, grp_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"g1"</span>, <span class="st">"g2"</span><span class="op">)</span>, enrich_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"e1"</span>, <span class="st">"e2"</span><span class="op">)</span><span class="op">)</span>
-<span class="va">x1</span>
-
-<span class="co"># Only compare g1:e1, g2:e2</span>
-<span class="va">x2</span> <span class="op">&lt;-</span> <span class="fu">group_enrichment</span><span class="op">(</span><span class="va">df</span>,
-  grp_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"g1"</span>, <span class="st">"g2"</span><span class="op">)</span>,
-  enrich_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"e1"</span>, <span class="st">"e2"</span><span class="op">)</span>,
-  co_method <span class="op">=</span> <span class="st">"wilcox.test"</span>,
-  cross <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span>
-<span class="va">x2</span>
-
-<span class="co"># Visualization</span>
-<span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu"><a href="show_group_enrichment.html">show_group_enrichment</a></span><span class="op">(</span><span class="va">x1</span>, fill_by_p_value <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="va">p1</span>
-<span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu"><a href="show_group_enrichment.html">show_group_enrichment</a></span><span class="op">(</span><span class="va">x1</span>, fill_by_p_value <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="va">p2</span>
-<span class="va">p3</span> <span class="op">&lt;-</span> <span class="fu"><a href="show_group_enrichment.html">show_group_enrichment</a></span><span class="op">(</span><span class="va">x1</span>, return_list <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="va">p3</span>
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span>
+<span>  g1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">99</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  g2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">LETTERS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">40</span>, <span class="fl">8</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  e1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"P"</span>, <span class="st">"N"</span><span class="op">)</span>, <span class="fl">99</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>  e2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">99</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Compare g1:e1, g1:e2, g2:e1 and g2:e2</span></span>
+<span><span class="va">x1</span> <span class="op">&lt;-</span> <span class="fu">group_enrichment</span><span class="op">(</span><span class="va">df</span>, grp_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"g1"</span>, <span class="st">"g2"</span><span class="op">)</span>, enrich_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"e1"</span>, <span class="st">"e2"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">x1</span></span>
+<span></span>
+<span><span class="co"># Only compare g1:e1, g2:e2</span></span>
+<span><span class="va">x2</span> <span class="op">&lt;-</span> <span class="fu">group_enrichment</span><span class="op">(</span><span class="va">df</span>,</span>
+<span>  grp_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"g1"</span>, <span class="st">"g2"</span><span class="op">)</span>,</span>
+<span>  enrich_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"e1"</span>, <span class="st">"e2"</span><span class="op">)</span>,</span>
+<span>  co_method <span class="op">=</span> <span class="st">"wilcox.test"</span>,</span>
+<span>  cross <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">x2</span></span>
+<span></span>
+<span><span class="co"># Visualization</span></span>
+<span><span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu"><a href="show_group_enrichment.html">show_group_enrichment</a></span><span class="op">(</span><span class="va">x1</span>, fill_by_p_value <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">p1</span></span>
+<span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu"><a href="show_group_enrichment.html">show_group_enrichment</a></span><span class="op">(</span><span class="va">x1</span>, fill_by_p_value <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">p2</span></span>
+<span><span class="va">p3</span> <span class="op">&lt;-</span> <span class="fu"><a href="show_group_enrichment.html">show_group_enrichment</a></span><span class="op">(</span><span class="va">x1</span>, return_list <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">p3</span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -186,7 +185,7 @@ for continuous variable, it stores value from <code><a href="https://rdrr.io/r/s
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

@@ -4,7 +4,7 @@ author: "Shixiang Wang ( wangsx1@sysucc.org.cn )"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{cnsignature}
+  %\VignetteIndexEntry{Analyze Copy Number Signatures with sigminer}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

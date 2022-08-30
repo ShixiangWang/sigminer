@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.7</span>
       </span>
     </div>
 
@@ -66,16 +66,16 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">show_cn_circos</span><span class="op">(</span>
-  <span class="va">data</span>,
-  samples <span class="op">=</span> <span class="cn">NULL</span>,
-  show_title <span class="op">=</span> <span class="cn">TRUE</span>,
-  chrs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"chr"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">22</span><span class="op">)</span>,
-  genome_build <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hg19"</span>, <span class="st">"hg38"</span>, <span class="st">"mm10"</span>, <span class="st">"mm9"</span><span class="op">)</span>,
-  col <span class="op">=</span> <span class="cn">NULL</span>,
-  side <span class="op">=</span> <span class="st">"inside"</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">show_cn_circos</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  samples <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  show_title <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  chrs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"chr"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">22</span><span class="op">)</span>,</span>
+<span>  genome_build <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hg19"</span>, <span class="st">"hg38"</span>, <span class="st">"mm10"</span>, <span class="st">"mm9"</span><span class="op">)</span>,</span>
+<span>  col <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  side <span class="op">=</span> <span class="st">"inside"</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -125,26 +125,25 @@ If data argument is a <code>data.frame</code>, a column called sample must exist
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu"><a href="https://rdrr.io/pkg/R.oo/man/Non-documented_objects.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"toy_copynumber.RData"</span>,
-  package <span class="op">=</span> <span class="st">"sigminer"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span><span class="op">)</span>
-<span class="co"># \donttest{</span>
-<span class="fu">show_cn_circos</span><span class="op">(</span><span class="va">cn</span>, samples <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
-<span class="fu">show_cn_circos</span><span class="op">(</span><span class="va">cn</span>, samples <span class="op">=</span> <span class="st">"TCGA-99-7458-01A-11D-2035-01"</span><span class="op">)</span>
-
-<span class="co">## Remove title</span>
-<span class="fu">show_cn_circos</span><span class="op">(</span><span class="va">cn</span>, samples <span class="op">=</span> <span class="fl">1</span>, show_title <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="co">## Subset chromosomes</span>
-<span class="fu">show_cn_circos</span><span class="op">(</span><span class="va">cn</span>, samples <span class="op">=</span> <span class="fl">1</span>, chrs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr1"</span>, <span class="st">"chr2"</span>, <span class="st">"chr3"</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co">## Arrange plots</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/layout.html" class="external-link">layout</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">show_cn_circos</span><span class="op">(</span><span class="va">cn</span>, samples <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/graphics/layout.html" class="external-link">layout</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="co"># reset layout</span>
-<span class="co"># }</span>
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu"><a href="https://rdrr.io/pkg/R.oo/man/Non-documented_objects.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"toy_copynumber.RData"</span>,</span>
+<span>  package <span class="op">=</span> <span class="st">"sigminer"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># \donttest{</span></span>
+<span><span class="fu">show_cn_circos</span><span class="op">(</span><span class="va">cn</span>, samples <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="fu">show_cn_circos</span><span class="op">(</span><span class="va">cn</span>, samples <span class="op">=</span> <span class="st">"TCGA-99-7458-01A-11D-2035-01"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Remove title</span></span>
+<span><span class="fu">show_cn_circos</span><span class="op">(</span><span class="va">cn</span>, samples <span class="op">=</span> <span class="fl">1</span>, show_title <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Subset chromosomes</span></span>
+<span><span class="fu">show_cn_circos</span><span class="op">(</span><span class="va">cn</span>, samples <span class="op">=</span> <span class="fl">1</span>, chrs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr1"</span>, <span class="st">"chr2"</span>, <span class="st">"chr3"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Arrange plots</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/layout.html" class="external-link">layout</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">show_cn_circos</span><span class="op">(</span><span class="va">cn</span>, samples <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/layout.html" class="external-link">layout</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="co"># reset layout</span></span>
+<span><span class="co"># }</span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -158,7 +157,7 @@ If data argument is a <code>data.frame</code>, a column called sample must exist
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

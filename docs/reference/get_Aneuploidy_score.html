@@ -21,7 +21,7 @@ Please raise an issue if you find problem/bugs in this function.'><meta property
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.7</span>
       </span>
     </div>
 
@@ -74,12 +74,12 @@ Their results should be counterpart, but with no data validation for now.
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">get_Aneuploidy_score</span><span class="op">(</span>
-  <span class="va">data</span>,
-  ploidy_df <span class="op">=</span> <span class="cn">NULL</span>,
-  genome_build <span class="op">=</span> <span class="st">"hg19"</span>,
-  rm_black_arms <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_Aneuploidy_score</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  ploidy_df <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  genome_build <span class="op">=</span> <span class="st">"hg19"</span>,</span>
+<span>  rm_black_arms <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -122,22 +122,21 @@ as documented in reference #3.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># Load copy number object</span>
-<span class="fu"><a href="https://rdrr.io/r/base/load.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"toy_copynumber.RData"</span>,
-  package <span class="op">=</span> <span class="st">"sigminer"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span><span class="op">)</span>
-
-<span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">get_Aneuploidy_score</span><span class="op">(</span><span class="va">cn</span><span class="op">)</span>
-<span class="va">df</span>
-
-<span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu">get_Aneuploidy_score</span><span class="op">(</span><span class="va">cn</span><span class="op">@</span><span class="va">data</span><span class="op">)</span>
-<span class="va">df2</span>
-
-<span class="va">df3</span> <span class="op">&lt;-</span> <span class="fu">get_Aneuploidy_score</span><span class="op">(</span><span class="va">cn</span><span class="op">@</span><span class="va">data</span>,
-  ploidy_df <span class="op">=</span> <span class="fu"><a href="get_cn_ploidy.html">get_cn_ploidy</a></span><span class="op">(</span><span class="va">cn</span><span class="op">@</span><span class="va">data</span><span class="op">)</span>
-<span class="op">)</span>
-<span class="va">df3</span>
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># Load copy number object</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/load.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"toy_copynumber.RData"</span>,</span>
+<span>  package <span class="op">=</span> <span class="st">"sigminer"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">get_Aneuploidy_score</span><span class="op">(</span><span class="va">cn</span><span class="op">)</span></span>
+<span><span class="va">df</span></span>
+<span></span>
+<span><span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu">get_Aneuploidy_score</span><span class="op">(</span><span class="va">cn</span><span class="op">@</span><span class="va">data</span><span class="op">)</span></span>
+<span><span class="va">df2</span></span>
+<span></span>
+<span><span class="va">df3</span> <span class="op">&lt;-</span> <span class="fu">get_Aneuploidy_score</span><span class="op">(</span><span class="va">cn</span><span class="op">@</span><span class="va">data</span>,</span>
+<span>  ploidy_df <span class="op">=</span> <span class="fu"><a href="get_cn_ploidy.html">get_cn_ploidy</a></span><span class="op">(</span><span class="va">cn</span><span class="op">@</span><span class="va">data</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">df3</span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -151,7 +150,7 @@ as documented in reference #3.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

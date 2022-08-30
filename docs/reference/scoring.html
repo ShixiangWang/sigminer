@@ -22,7 +22,7 @@ result scores."><meta property="og:image" content="https://shixiangwang.github.i
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.7</span>
       </span>
     </div>
 
@@ -76,7 +76,7 @@ result scores.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">scoring</span><span class="op">(</span><span class="va">object</span>, TD_size_cutoff <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1000</span>, <span class="fl">1e+05</span>, <span class="fl">2e+06</span><span class="op">)</span>, TD_cn_cutoff <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">scoring</span><span class="op">(</span><span class="va">object</span>, TD_size_cutoff <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1000</span>, <span class="fl">1e+05</span>, <span class="fl">2e+06</span><span class="op">)</span>, TD_cn_cutoff <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -140,17 +140,16 @@ where \(N_{OsCN}\) is the number of oscillating copy number pattern "2-1-2" for 
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># Load copy number object</span>
-<span class="fu"><a href="https://rdrr.io/pkg/R.oo/man/Non-documented_objects.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"toy_copynumber.RData"</span>,
-  package <span class="op">=</span> <span class="st">"sigminer"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span><span class="op">)</span>
-
-<span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">scoring</span><span class="op">(</span><span class="va">cn</span><span class="op">)</span>
-<span class="va">d</span>
-
-<span class="va">d2</span> <span class="op">&lt;-</span> <span class="fu">scoring</span><span class="op">(</span><span class="va">cn</span>, TD_cn_cutoff <span class="op">=</span> <span class="fl">4L</span><span class="op">)</span>
-<span class="va">d2</span>
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># Load copy number object</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/R.oo/man/Non-documented_objects.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"toy_copynumber.RData"</span>,</span>
+<span>  package <span class="op">=</span> <span class="st">"sigminer"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">scoring</span><span class="op">(</span><span class="va">cn</span><span class="op">)</span></span>
+<span><span class="va">d</span></span>
+<span></span>
+<span><span class="va">d2</span> <span class="op">&lt;-</span> <span class="fu">scoring</span><span class="op">(</span><span class="va">cn</span>, TD_cn_cutoff <span class="op">=</span> <span class="fl">4L</span><span class="op">)</span></span>
+<span><span class="va">d2</span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -164,7 +163,7 @@ where \(N_{OsCN}\) is the number of oscillating copy number pattern "2-1-2" for 
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

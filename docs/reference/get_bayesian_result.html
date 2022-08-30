@@ -18,7 +18,7 @@ This function is designed for this purpose."><meta property="og:image" content="
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.7</span>
       </span>
     </div>
 
@@ -68,7 +68,7 @@ This function is designed for this purpose.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">get_bayesian_result</span><span class="op">(</span><span class="va">run_info</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_bayesian_result</span><span class="op">(</span><span class="va">run_info</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -90,16 +90,15 @@ This function is designed for this purpose.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu"><a href="https://rdrr.io/r/base/load.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"toy_copynumber_tally_W.RData"</span>,
-  package <span class="op">=</span> <span class="st">"sigminer"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span><span class="op">)</span>
-
-<span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="sig_auto_extract.html">sig_auto_extract</a></span><span class="op">(</span><span class="va">cn_tally_W</span><span class="op">$</span><span class="va">nmf_matrix</span>, result_prefix <span class="op">=</span> <span class="st">"Test_copynumber"</span>, nrun <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
-
-<span class="co"># All run info are stored in res$Raw$summary_run</span>
-<span class="co"># Obtain result of run 1</span>
-<span class="va">res_run1</span> <span class="op">&lt;-</span> <span class="fu">get_bayesian_result</span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">Raw</span><span class="op">$</span><span class="va">summary_run</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span><span class="op">)</span>
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu"><a href="https://rdrr.io/r/base/load.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"toy_copynumber_tally_W.RData"</span>,</span>
+<span>  package <span class="op">=</span> <span class="st">"sigminer"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="sig_auto_extract.html">sig_auto_extract</a></span><span class="op">(</span><span class="va">cn_tally_W</span><span class="op">$</span><span class="va">nmf_matrix</span>, result_prefix <span class="op">=</span> <span class="st">"Test_copynumber"</span>, nrun <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># All run info are stored in res$Raw$summary_run</span></span>
+<span><span class="co"># Obtain result of run 1</span></span>
+<span><span class="va">res_run1</span> <span class="op">&lt;-</span> <span class="fu">get_bayesian_result</span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">Raw</span><span class="op">$</span><span class="va">summary_run</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span><span class="op">)</span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -113,7 +112,7 @@ This function is designed for this purpose.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>
