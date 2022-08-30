@@ -107,22 +107,23 @@ get_sig_db <- function(sig_db = "legacy") {
           package = "sigminer", mustWork = TRUE
         )
       } else if (startsWith(sig_db, "latest_")) {
-        latest_version <- "v3.2"
+        latest_version <- "v3.3"
         # v3.2_SBS_GRCh37.txt
         sig_db2 <- sub("latest_", "", sig_db)
 
         file_dir <- switch(sig_db,
-          latest_SBS_GRCh37 = "452",
-          latest_DBS_GRCh37 = "446",
-          latest_ID_GRCh37 = "451",
-          latest_SBS_GRCh38 = "453",
-          latest_DBS_GRCh38 = "447",
-          latest_SBS_mm9 = "454",
-          latest_DBS_mm9 = "448",
-          latest_SBS_mm10 = "455",
-          latest_DBS_mm10 = "449",
-          latest_SBS_rn6 = "456",
-          latest_DBS_rn6 = "450",
+          latest_SBS_GRCh37 = "1908",
+          latest_DBS_GRCh37 = "1902",
+          latest_ID_GRCh37 = "1907",
+          latest_SBS_GRCh38 = "1909",
+          latest_DBS_GRCh38 = "1903",
+          latest_SBS_mm9 = "1910",
+          latest_DBS_mm9 = "1904",
+          latest_SBS_mm10 = "1911",
+          latest_DBS_mm10 = "1905",
+          latest_SBS_rn6 = "1912",
+          latest_DBS_rn6 = "1906",
+          latest_CN_GRCh37 = "2044",
           stop("Bad input!")
         )
 

@@ -115,13 +115,13 @@ with \link{read_copynumber}).
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{CopyNumber}: Returns copy number features, components and component-by-sample matrix
+\item \code{sig_tally(CopyNumber)}: Returns copy number features, components and component-by-sample matrix
 
-\item \code{RS}: Returns genome rearrangement sample-by-component matrix
+\item \code{sig_tally(RS)}: Returns genome rearrangement sample-by-component matrix
 
-\item \code{MAF}: Returns SBS mutation sample-by-component matrix and APOBEC enrichment
+\item \code{sig_tally(MAF)}: Returns SBS mutation sample-by-component matrix and APOBEC enrichment
+
 }}
-
 \examples{
 # Load copy number object
 load(system.file("extdata", "toy_copynumber.RData",

@@ -185,11 +185,7 @@ If it is \code{NULL} (default), all will be returned.}
 
 \item{right_color}{color for right axis.}
 
-\item{left_shape}{shape setting.}
-
-\item{right_shape}{shape setting.}
-
-\item{shape_size}{shape setting.}
+\item{left_shape, right_shape, shape_size}{shape setting.}
 
 \item{highlight}{a \code{integer} to highlight a \code{x}.}
 

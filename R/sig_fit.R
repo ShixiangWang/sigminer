@@ -108,7 +108,8 @@ sig_fit <- function(catalogue_matrix,
                       "latest_SBS_GRCh38", "latest_DBS_GRCh38",
                       "latest_SBS_mm9", "latest_DBS_mm9",
                       "latest_SBS_mm10", "latest_DBS_mm10",
-                      "latest_SBS_rn6", "latest_DBS_rn6"
+                      "latest_SBS_rn6", "latest_DBS_rn6",
+                      "latest_CN_GRCh37"
                     ),
                     db_type = c("", "human-exome", "human-genome"),
                     show_index = TRUE,
