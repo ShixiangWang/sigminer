@@ -1,6 +1,6 @@
 # sigminer 2.1.8
 
-- Fixed the bug about plotting CN chromosome distribution (#420). 
+- Fixed the bug about plotting CN chromosome distribution (#420, thanks to @jrcodina96). 
 
 # sigminer 2.1.7
 
