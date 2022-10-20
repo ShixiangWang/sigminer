@@ -88,10 +88,8 @@ show_cn_distribution <- function(data,
     data$location <- factor(sub("[0-9X]*", "", data$location),
       levels = c("p", "pq", "q")
     )
-    # if (sum(!(data$location %in% c("p", "pq", "q"))) > 0){
-    #   message("Discarding segments which located in centromere region...")
-    #   data = subset(data, location %in% c("p", "pq", "q"))
-    # }
+    data$location = droplevels(data$location)
+    loc_level = levels(data$location)
 
     if (scale_chr) {
       chrlen <- get_genome_annotation(
@@ -105,9 +103,22 @@ show_cn_distribution <- function(data,
 
 
       q <- ggplot_build(p)$data[[1]][, c("x", "count", "fill")]
+      q$x <- as.integer(q$x)
 
-      q$x <- factor(q$x, levels = c(1:23), labels = c(1:22, "X"))
-      q$fill <- factor(q$fill, levels = c("#F8766D", "#00BA38", "#619CFF"))
+      cr <- data.frame(
+        chromosome = unique(data$chromosome[order(data$chromosome)])
+      )
+      cr$x <- 1:nrow(cr)
+
+      q <- dplyr::full_join(q, cr, by = "x")
+
+      q$x <- q$chromosome
+      if (length(table(q$fill)) < 3) {
+        q$fill <- factor(q$fill)
+        q$fill <- relevel(q$fill, ref = "#F8766D")
+      } else {
+        q$fill <- factor(q$fill, levels = c("#F8766D", "#00BA38", "#619CFF"))
+      }
 
       chrlen$chrom <- gsub(
         pattern = "chr",
@@ -122,7 +133,7 @@ show_cn_distribution <- function(data,
           geom_bar(stat = "identity") +
           scale_fill_discrete(
             name = "location",
-            labels = c("p", "pq", "q")
+            labels = loc_level
           ) +
           labs(x = "Chromosome", y = "Normalized count (per Mb)")
       } else {
@@ -130,7 +141,7 @@ show_cn_distribution <- function(data,
           geom_bar(stat = "identity", position = "fill") +
           scale_fill_discrete(
             name = "location",
-            labels = c("p", "pq", "q")
+            labels = loc_level
           ) +
           labs(x = "Chromosome", y = "Percentage")
       }

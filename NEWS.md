@@ -1,3 +1,7 @@
+# sigminer 2.1.8
+
+- Fixed the bug about plotting CN chromosome distribution (#420). 
+
 # sigminer 2.1.7
 
 - Updated COSMIC latest version from v3.2 to v3.3.
