@@ -104,19 +104,23 @@ show_cn_distribution <- function(data,
         xlab("Chromosome")
 
 
+      cr <- data.frame(unique(ggplot_build(p)$plot[[1]][, "chromosome"][order(ggplot_build(p)$plot[[1]][, "chromosome"])]))
+      cr$x <- 1:nrow(cr)
       q <- ggplot_build(p)$data[[1]][, c("x", "count", "fill")]
-
-      q$x <- factor(q$x, levels = c(1:23), labels = c(1:22, "X"))
+      q$x <- as.integer(q$x)
+      q <- dplyr::full_join(q, cr, by = "x")
+      q$chromosome <- factor(q$chromosome, levels = c(1:23), labels = c(
+        1:22,
+        "X"
+      ))
       q$fill <- factor(q$fill, levels = c("#F8766D", "#00BA38", "#619CFF"))
-
       chrlen$chrom <- gsub(
         pattern = "chr",
         replacement = "",
         x = chrlen$chrom
       )
-      q <- merge(q, chrlen, by.x = "x", by.y = "chrom")
-      q[["count"]] <- 1000000 * (q[["count"]] / q[["size"]])
-
+      q <- merge(q, chrlen, by.x = "chromosome", by.y = "chrom")
+      q[["count"]] <- 1e6 * (q[["count"]] / q[["size"]])
       if (!fill) {
         ggplot(q, aes(x, y = count, fill = fill)) +
           geom_bar(stat = "identity") +
