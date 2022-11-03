@@ -30,7 +30,7 @@ better help users to explore survey of signature number.'><meta property="og:ima
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.9</span>
       </span>
     </div>
 
@@ -92,47 +92,47 @@ better help users to explore survey of signature number.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">sig_estimate</span><span class="op">(</span></span>
-<span>  <span class="va">nmf_matrix</span>,</span>
-<span>  range <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">5</span>,</span>
-<span>  nrun <span class="op">=</span> <span class="fl">10</span>,</span>
-<span>  use_random <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  method <span class="op">=</span> <span class="st">"brunet"</span>,</span>
-<span>  seed <span class="op">=</span> <span class="fl">123456</span>,</span>
-<span>  cores <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  keep_nmfObj <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  save_plots <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  plot_basename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"nmf"</span><span class="op">)</span>,</span>
-<span>  what <span class="op">=</span> <span class="st">"all"</span>,</span>
-<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">show_sig_number_survey</span><span class="op">(</span></span>
-<span>  <span class="va">object</span>,</span>
-<span>  x <span class="op">=</span> <span class="st">"rank"</span>,</span>
-<span>  left_y <span class="op">=</span> <span class="st">"cophenetic"</span>,</span>
-<span>  right_y <span class="op">=</span> <span class="st">"rss"</span>,</span>
-<span>  left_name <span class="op">=</span> <span class="va">left_y</span>,</span>
-<span>  right_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/chartr.html" class="external-link">toupper</a></span><span class="op">(</span><span class="va">right_y</span><span class="op">)</span>,</span>
-<span>  left_color <span class="op">=</span> <span class="st">"black"</span>,</span>
-<span>  right_color <span class="op">=</span> <span class="st">"red"</span>,</span>
-<span>  left_shape <span class="op">=</span> <span class="fl">16</span>,</span>
-<span>  right_shape <span class="op">=</span> <span class="fl">18</span>,</span>
-<span>  shape_size <span class="op">=</span> <span class="fl">4</span>,</span>
-<span>  highlight <span class="op">=</span> <span class="cn">NULL</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">show_sig_number_survey2</span><span class="op">(</span></span>
-<span>  <span class="va">x</span>,</span>
-<span>  y <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  what <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"all"</span>, <span class="st">"cophenetic"</span>, <span class="st">"rss"</span>, <span class="st">"residuals"</span>, <span class="st">"dispersion"</span>, <span class="st">"evar"</span>, <span class="st">"sparseness"</span>,</span>
-<span>    <span class="st">"sparseness.basis"</span>, <span class="st">"sparseness.coef"</span>, <span class="st">"silhouette"</span>, <span class="st">"silhouette.coef"</span>,</span>
-<span>    <span class="st">"silhouette.basis"</span>, <span class="st">"silhouette.consensus"</span><span class="op">)</span>,</span>
-<span>  na.rm <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  xlab <span class="op">=</span> <span class="st">"Total signatures"</span>,</span>
-<span>  ylab <span class="op">=</span> <span class="st">""</span>,</span>
-<span>  main <span class="op">=</span> <span class="st">"Signature number survey using NMF package"</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">sig_estimate</span><span class="op">(</span>
+  <span class="va">nmf_matrix</span>,
+  range <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">5</span>,
+  nrun <span class="op">=</span> <span class="fl">10</span>,
+  use_random <span class="op">=</span> <span class="cn">FALSE</span>,
+  method <span class="op">=</span> <span class="st">"brunet"</span>,
+  seed <span class="op">=</span> <span class="fl">123456</span>,
+  cores <span class="op">=</span> <span class="fl">1</span>,
+  keep_nmfObj <span class="op">=</span> <span class="cn">FALSE</span>,
+  save_plots <span class="op">=</span> <span class="cn">FALSE</span>,
+  plot_basename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"nmf"</span><span class="op">)</span>,
+  what <span class="op">=</span> <span class="st">"all"</span>,
+  verbose <span class="op">=</span> <span class="cn">FALSE</span>
+<span class="op">)</span>
+
+<span class="fu">show_sig_number_survey</span><span class="op">(</span>
+  <span class="va">object</span>,
+  x <span class="op">=</span> <span class="st">"rank"</span>,
+  left_y <span class="op">=</span> <span class="st">"cophenetic"</span>,
+  right_y <span class="op">=</span> <span class="st">"rss"</span>,
+  left_name <span class="op">=</span> <span class="va">left_y</span>,
+  right_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/chartr.html" class="external-link">toupper</a></span><span class="op">(</span><span class="va">right_y</span><span class="op">)</span>,
+  left_color <span class="op">=</span> <span class="st">"black"</span>,
+  right_color <span class="op">=</span> <span class="st">"red"</span>,
+  left_shape <span class="op">=</span> <span class="fl">16</span>,
+  right_shape <span class="op">=</span> <span class="fl">18</span>,
+  shape_size <span class="op">=</span> <span class="fl">4</span>,
+  highlight <span class="op">=</span> <span class="cn">NULL</span>
+<span class="op">)</span>
+
+<span class="fu">show_sig_number_survey2</span><span class="op">(</span>
+  <span class="va">x</span>,
+  y <span class="op">=</span> <span class="cn">NULL</span>,
+  what <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"all"</span>, <span class="st">"cophenetic"</span>, <span class="st">"rss"</span>, <span class="st">"residuals"</span>, <span class="st">"dispersion"</span>, <span class="st">"evar"</span>, <span class="st">"sparseness"</span>,
+    <span class="st">"sparseness.basis"</span>, <span class="st">"sparseness.coef"</span>, <span class="st">"silhouette"</span>, <span class="st">"silhouette.coef"</span>,
+    <span class="st">"silhouette.basis"</span>, <span class="st">"silhouette.consensus"</span><span class="op">)</span>,
+  na.rm <span class="op">=</span> <span class="cn">FALSE</span>,
+  xlab <span class="op">=</span> <span class="st">"Total signatures"</span>,
+  ylab <span class="op">=</span> <span class="st">""</span>,
+  main <span class="op">=</span> <span class="st">"Signature number survey using NMF package"</span>
+<span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -295,43 +295,44 @@ show_sig_number_survey2 for more visualization method.</p></div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># \donttest{</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/R.oo/man/Non-documented_objects.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"toy_copynumber_tally_W.RData"</span>,</span>
-<span>  package <span class="op">=</span> <span class="st">"sigminer"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://renozao.github.io/NMF/" class="external-link">NMF</a></span><span class="op">)</span></span>
-<span><span class="va">cn_estimate</span> <span class="op">&lt;-</span> <span class="fu">sig_estimate</span><span class="op">(</span><span class="va">cn_tally_W</span><span class="op">$</span><span class="va">nmf_matrix</span>,</span>
-<span>  cores <span class="op">=</span> <span class="fl">1</span>, nrun <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu">show_sig_number_survey2</span><span class="op">(</span><span class="va">cn_estimate</span><span class="op">$</span><span class="va">survey</span><span class="op">)</span></span>
-<span><span class="va">p</span></span>
-<span></span>
-<span><span class="co"># Show two measures</span></span>
-<span><span class="fu">show_sig_number_survey</span><span class="op">(</span><span class="va">cn_estimate</span><span class="op">)</span></span>
-<span><span class="co"># Show one measure</span></span>
-<span><span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu">show_sig_number_survey</span><span class="op">(</span><span class="va">cn_estimate</span>, right_y <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
-<span><span class="va">p1</span></span>
-<span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu"><a href="add_h_arrow.html">add_h_arrow</a></span><span class="op">(</span><span class="va">p</span>, x <span class="op">=</span> <span class="fl">4.1</span>, y <span class="op">=</span> <span class="fl">0.953</span>, label <span class="op">=</span> <span class="st">"selected number"</span><span class="op">)</span></span>
-<span><span class="va">p2</span></span>
-<span></span>
-<span><span class="co"># Show data from a data.frame</span></span>
-<span><span class="va">p3</span> <span class="op">&lt;-</span> <span class="fu">show_sig_number_survey</span><span class="op">(</span><span class="va">cn_estimate</span><span class="op">$</span><span class="va">survey</span><span class="op">)</span></span>
-<span><span class="va">p3</span></span>
-<span><span class="co"># Show other measures</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">cn_estimate</span><span class="op">$</span><span class="va">survey</span><span class="op">)</span></span>
-<span><span class="va">p4</span> <span class="op">&lt;-</span> <span class="fu">show_sig_number_survey</span><span class="op">(</span><span class="va">cn_estimate</span><span class="op">$</span><span class="va">survey</span>,</span>
-<span>  right_y <span class="op">=</span> <span class="st">"dispersion"</span>,</span>
-<span>  right_name <span class="op">=</span> <span class="st">"dispersion"</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">p4</span></span>
-<span><span class="va">p5</span> <span class="op">&lt;-</span> <span class="fu">show_sig_number_survey</span><span class="op">(</span><span class="va">cn_estimate</span><span class="op">$</span><span class="va">survey</span>,</span>
-<span>  right_y <span class="op">=</span> <span class="st">"evar"</span>,</span>
-<span>  right_name <span class="op">=</span> <span class="st">"evar"</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">p5</span></span>
-<span><span class="co"># }</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># \donttest{</span>
+<span class="fu"><a href="https://rdrr.io/pkg/R.oo/man/Non-documented_objects.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"toy_copynumber_tally_W.RData"</span>,
+  package <span class="op">=</span> <span class="st">"sigminer"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span>
+<span class="op">)</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://renozao.github.io/NMF/" class="external-link">NMF</a></span><span class="op">)</span>
+<span class="va">cn_estimate</span> <span class="op">&lt;-</span> <span class="fu">sig_estimate</span><span class="op">(</span><span class="va">cn_tally_W</span><span class="op">$</span><span class="va">nmf_matrix</span>,
+  cores <span class="op">=</span> <span class="fl">1</span>, nrun <span class="op">=</span> <span class="fl">5</span>,
+  verbose <span class="op">=</span> <span class="cn">TRUE</span>
+<span class="op">)</span>
+
+<span class="va">p</span> <span class="op">&lt;-</span> <span class="fu">show_sig_number_survey2</span><span class="op">(</span><span class="va">cn_estimate</span><span class="op">$</span><span class="va">survey</span><span class="op">)</span>
+<span class="va">p</span>
+
+<span class="co"># Show two measures</span>
+<span class="fu">show_sig_number_survey</span><span class="op">(</span><span class="va">cn_estimate</span><span class="op">)</span>
+<span class="co"># Show one measure</span>
+<span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu">show_sig_number_survey</span><span class="op">(</span><span class="va">cn_estimate</span>, right_y <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
+<span class="va">p1</span>
+<span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu"><a href="add_h_arrow.html">add_h_arrow</a></span><span class="op">(</span><span class="va">p</span>, x <span class="op">=</span> <span class="fl">4.1</span>, y <span class="op">=</span> <span class="fl">0.953</span>, label <span class="op">=</span> <span class="st">"selected number"</span><span class="op">)</span>
+<span class="va">p2</span>
+
+<span class="co"># Show data from a data.frame</span>
+<span class="va">p3</span> <span class="op">&lt;-</span> <span class="fu">show_sig_number_survey</span><span class="op">(</span><span class="va">cn_estimate</span><span class="op">$</span><span class="va">survey</span><span class="op">)</span>
+<span class="va">p3</span>
+<span class="co"># Show other measures</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">cn_estimate</span><span class="op">$</span><span class="va">survey</span><span class="op">)</span>
+<span class="va">p4</span> <span class="op">&lt;-</span> <span class="fu">show_sig_number_survey</span><span class="op">(</span><span class="va">cn_estimate</span><span class="op">$</span><span class="va">survey</span>,
+  right_y <span class="op">=</span> <span class="st">"dispersion"</span>,
+  right_name <span class="op">=</span> <span class="st">"dispersion"</span>
+<span class="op">)</span>
+<span class="va">p4</span>
+<span class="va">p5</span> <span class="op">&lt;-</span> <span class="fu">show_sig_number_survey</span><span class="op">(</span><span class="va">cn_estimate</span><span class="op">$</span><span class="va">survey</span>,
+  right_y <span class="op">=</span> <span class="st">"evar"</span>,
+  right_name <span class="op">=</span> <span class="st">"evar"</span>
+<span class="op">)</span>
+<span class="va">p5</span>
+<span class="co"># }</span>
+</code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

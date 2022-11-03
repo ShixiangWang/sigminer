@@ -22,7 +22,7 @@ continuous data."><meta property="og:image" content="https://shixiangwang.github
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.9</span>
       </span>
     </div>
 
@@ -76,24 +76,24 @@ continuous data.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">show_group_comparison</span><span class="op">(</span></span>
-<span>  <span class="va">group_comparison</span>,</span>
-<span>  xlab <span class="op">=</span> <span class="st">"group"</span>,</span>
-<span>  ylab_co <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  legend_title_ca <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  legend_position_ca <span class="op">=</span> <span class="st">"bottom"</span>,</span>
-<span>  set_ca_sig_yaxis <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  set_ca_custom_xlab <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  show_pvalue <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  ca_p_threshold <span class="op">=</span> <span class="fl">0.01</span>,</span>
-<span>  method <span class="op">=</span> <span class="st">"wilcox.test"</span>,</span>
-<span>  p.adjust.method <span class="op">=</span> <span class="st">"fdr"</span>,</span>
-<span>  base_size <span class="op">=</span> <span class="fl">12</span>,</span>
-<span>  font_size_x <span class="op">=</span> <span class="fl">12</span>,</span>
-<span>  text_angle_x <span class="op">=</span> <span class="fl">30</span>,</span>
-<span>  text_hjust_x <span class="op">=</span> <span class="fl">0.2</span>,</span>
-<span>  <span class="va">...</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">show_group_comparison</span><span class="op">(</span>
+  <span class="va">group_comparison</span>,
+  xlab <span class="op">=</span> <span class="st">"group"</span>,
+  ylab_co <span class="op">=</span> <span class="cn">NA</span>,
+  legend_title_ca <span class="op">=</span> <span class="cn">NA</span>,
+  legend_position_ca <span class="op">=</span> <span class="st">"bottom"</span>,
+  set_ca_sig_yaxis <span class="op">=</span> <span class="cn">FALSE</span>,
+  set_ca_custom_xlab <span class="op">=</span> <span class="cn">FALSE</span>,
+  show_pvalue <span class="op">=</span> <span class="cn">TRUE</span>,
+  ca_p_threshold <span class="op">=</span> <span class="fl">0.01</span>,
+  method <span class="op">=</span> <span class="st">"wilcox.test"</span>,
+  p.adjust.method <span class="op">=</span> <span class="st">"fdr"</span>,
+  base_size <span class="op">=</span> <span class="fl">12</span>,
+  font_size_x <span class="op">=</span> <span class="fl">12</span>,
+  text_angle_x <span class="op">=</span> <span class="fl">30</span>,
+  text_hjust_x <span class="op">=</span> <span class="fl">0.2</span>,
+  <span class="va">...</span>
+<span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -186,37 +186,38 @@ according to the specified <code>method</code>.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu"><a href="https://rdrr.io/pkg/R.oo/man/Non-documented_objects.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"toy_copynumber_signature_by_W.RData"</span>,</span>
-<span>  package <span class="op">=</span> <span class="st">"sigminer"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Assign samples to clusters</span></span>
-<span><span class="va">groups</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_groups.html">get_groups</a></span><span class="op">(</span><span class="va">sig</span>, method <span class="op">=</span> <span class="st">"k-means"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">groups</span><span class="op">$</span><span class="va">prob</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
-<span><span class="va">groups</span><span class="op">$</span><span class="va">new_group</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1"</span>, <span class="st">"2"</span>, <span class="st">"3"</span>, <span class="st">"4"</span>, <span class="cn">NA</span><span class="op">)</span>, size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">groups</span><span class="op">)</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Compare groups (filter NAs for categorical coloumns)</span></span>
-<span><span class="va">groups.cmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_group_comparison.html">get_group_comparison</a></span><span class="op">(</span><span class="va">groups</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span>,</span>
-<span>  col_group <span class="op">=</span> <span class="st">"group"</span>,</span>
-<span>  cols_to_compare <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"prob"</span>, <span class="st">"new_group"</span><span class="op">)</span>,</span>
-<span>  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"co"</span>, <span class="st">"ca"</span><span class="op">)</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Compare groups (Set NAs of categorical columns to 'Rest')</span></span>
-<span><span class="va">groups.cmp2</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_group_comparison.html">get_group_comparison</a></span><span class="op">(</span><span class="va">groups</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span>,</span>
-<span>  col_group <span class="op">=</span> <span class="st">"group"</span>,</span>
-<span>  cols_to_compare <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"prob"</span>, <span class="st">"new_group"</span><span class="op">)</span>,</span>
-<span>  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"co"</span>, <span class="st">"ca"</span><span class="op">)</span>, NAs <span class="op">=</span> <span class="st">"Rest"</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">show_group_comparison</span><span class="op">(</span><span class="va">groups.cmp</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">ggcomp</span> <span class="op">&lt;-</span> <span class="fu">show_group_comparison</span><span class="op">(</span><span class="va">groups.cmp2</span><span class="op">)</span></span>
-<span><span class="va">ggcomp</span><span class="op">$</span><span class="va">co_comb</span></span>
-<span><span class="va">ggcomp</span><span class="op">$</span><span class="va">ca_comb</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu"><a href="https://rdrr.io/pkg/R.oo/man/Non-documented_objects.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"toy_copynumber_signature_by_W.RData"</span>,
+  package <span class="op">=</span> <span class="st">"sigminer"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span>
+<span class="op">)</span><span class="op">)</span>
+
+<span class="co"># Assign samples to clusters</span>
+<span class="va">groups</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_groups.html">get_groups</a></span><span class="op">(</span><span class="va">sig</span>, method <span class="op">=</span> <span class="st">"k-means"</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span>
+
+<span class="va">groups</span><span class="op">$</span><span class="va">prob</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>
+<span class="va">groups</span><span class="op">$</span><span class="va">new_group</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1"</span>, <span class="st">"2"</span>, <span class="st">"3"</span>, <span class="st">"4"</span>, <span class="cn">NA</span><span class="op">)</span>, size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">groups</span><span class="op">)</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+
+<span class="co"># Compare groups (filter NAs for categorical coloumns)</span>
+<span class="va">groups.cmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_group_comparison.html">get_group_comparison</a></span><span class="op">(</span><span class="va">groups</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span>,
+  col_group <span class="op">=</span> <span class="st">"group"</span>,
+  cols_to_compare <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"prob"</span>, <span class="st">"new_group"</span><span class="op">)</span>,
+  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"co"</span>, <span class="st">"ca"</span><span class="op">)</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span>
+<span class="op">)</span>
+
+<span class="co"># Compare groups (Set NAs of categorical columns to 'Rest')</span>
+<span class="va">groups.cmp2</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_group_comparison.html">get_group_comparison</a></span><span class="op">(</span><span class="va">groups</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span>,
+  col_group <span class="op">=</span> <span class="st">"group"</span>,
+  cols_to_compare <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"prob"</span>, <span class="st">"new_group"</span><span class="op">)</span>,
+  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"co"</span>, <span class="st">"ca"</span><span class="op">)</span>, NAs <span class="op">=</span> <span class="st">"Rest"</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span>
+<span class="op">)</span>
+
+<span class="fu">show_group_comparison</span><span class="op">(</span><span class="va">groups.cmp</span><span class="op">)</span>
+
+<span class="va">ggcomp</span> <span class="op">&lt;-</span> <span class="fu">show_group_comparison</span><span class="op">(</span><span class="va">groups.cmp2</span><span class="op">)</span>
+<span class="va">ggcomp</span><span class="op">$</span><span class="va">co_comb</span>
+<span class="va">ggcomp</span><span class="op">$</span><span class="va">ca_comb</span>
+</code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

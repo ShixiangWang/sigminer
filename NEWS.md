@@ -1,3 +1,9 @@
+# sigminer 2.1.9
+
+- Added parameter in `sigprofiler_extract()` to help generate input matrix file for calling SigProfiler directly.
+- Added some notions in `sigprofiler_extract()`.
+- Added a function `sigprofiler_reorder()` for utils in generating SigProfiler input matrix file with standard mutation types order.
+
 # sigminer 2.1.8
 
 - Fixed the bug about plotting CN chromosome distribution (#420, thanks to @jrcodina96). 

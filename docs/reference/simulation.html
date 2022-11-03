@@ -23,7 +23,7 @@ simulate_catalogue_matrix() - Simulate a bootstrapped catalog matrix.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.9</span>
       </span>
     </div>
 
@@ -75,11 +75,11 @@ simulate_catalogue_matrix() - Simulate a bootstrapped catalog matrix.
 </ul></div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">simulate_signature</span><span class="op">(</span><span class="va">x</span>, weights <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">simulate_catalogue</span><span class="op">(</span><span class="va">x</span>, <span class="va">n</span>, weights <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">simulate_catalogue_matrix</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">simulate_signature</span><span class="op">(</span><span class="va">x</span>, weights <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
+
+<span class="fu">simulate_catalogue</span><span class="op">(</span><span class="va">x</span>, <span class="va">n</span>, weights <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
+
+<span class="fu">simulate_catalogue_matrix</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -106,37 +106,38 @@ signatures/samples and columns representing components.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># Generate a catalog</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span></span>
-<span><span class="va">catalog</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">96</span>, <span class="fl">1000</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">catalog</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"comp"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">96</span><span class="op">)</span></span>
-<span><span class="co"># Generate a signature</span></span>
-<span><span class="va">sig</span> <span class="op">&lt;-</span> <span class="va">catalog</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">catalog</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Simulate catalogs</span></span>
-<span><span class="va">x1</span> <span class="op">&lt;-</span> <span class="fu">simulate_catalogue</span><span class="op">(</span><span class="va">catalog</span>, <span class="fl">10</span><span class="op">)</span> <span class="co"># 10 mutations</span></span>
-<span><span class="va">x1</span></span>
-<span><span class="va">x2</span> <span class="op">&lt;-</span> <span class="fu">simulate_catalogue</span><span class="op">(</span><span class="va">catalog</span>, <span class="fl">100</span><span class="op">)</span> <span class="co"># 100 mutations</span></span>
-<span><span class="va">x2</span></span>
-<span><span class="va">x3</span> <span class="op">&lt;-</span> <span class="fu">simulate_catalogue</span><span class="op">(</span><span class="va">catalog</span>, <span class="fl">1000</span><span class="op">)</span> <span class="co"># 1000 mutations</span></span>
-<span><span class="va">x3</span></span>
-<span><span class="co"># Similar with a signature</span></span>
-<span><span class="va">x4</span> <span class="op">&lt;-</span> <span class="fu">simulate_catalogue</span><span class="op">(</span><span class="va">sig</span>, <span class="fl">10</span><span class="op">)</span> <span class="co"># 10 mutations</span></span>
-<span><span class="va">x4</span></span>
-<span></span>
-<span><span class="co"># Load SBS signature</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/R.oo/man/Non-documented_objects.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"toy_mutational_signature.RData"</span>,</span>
-<span>  package <span class="op">=</span> <span class="st">"sigminer"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">sig2</span><span class="op">$</span><span class="va">Signature.norm</span><span class="op">)</span></span>
-<span><span class="co"># Generate a signature from multiple signatures/catalogs</span></span>
-<span><span class="va">s1</span> <span class="op">&lt;-</span> <span class="fu">simulate_signature</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span>
-<span><span class="va">s1</span></span>
-<span><span class="va">s2</span> <span class="op">&lt;-</span> <span class="fu">simulate_signature</span><span class="op">(</span><span class="va">s</span>, weights <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span>
-<span><span class="va">s2</span></span>
-<span><span class="co"># Generate a catalog from multiple signatures/catalogs</span></span>
-<span><span class="va">c1</span> <span class="op">&lt;-</span> <span class="fu">simulate_catalogue</span><span class="op">(</span><span class="va">s</span>, <span class="fl">100</span>, weights <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span>
-<span><span class="va">c1</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># Generate a catalog</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span>
+<span class="va">catalog</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">96</span>, <span class="fl">1000</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">catalog</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"comp"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">96</span><span class="op">)</span>
+<span class="co"># Generate a signature</span>
+<span class="va">sig</span> <span class="op">&lt;-</span> <span class="va">catalog</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">catalog</span><span class="op">)</span>
+
+<span class="co"># Simulate catalogs</span>
+<span class="va">x1</span> <span class="op">&lt;-</span> <span class="fu">simulate_catalogue</span><span class="op">(</span><span class="va">catalog</span>, <span class="fl">10</span><span class="op">)</span> <span class="co"># 10 mutations</span>
+<span class="va">x1</span>
+<span class="va">x2</span> <span class="op">&lt;-</span> <span class="fu">simulate_catalogue</span><span class="op">(</span><span class="va">catalog</span>, <span class="fl">100</span><span class="op">)</span> <span class="co"># 100 mutations</span>
+<span class="va">x2</span>
+<span class="va">x3</span> <span class="op">&lt;-</span> <span class="fu">simulate_catalogue</span><span class="op">(</span><span class="va">catalog</span>, <span class="fl">1000</span><span class="op">)</span> <span class="co"># 1000 mutations</span>
+<span class="va">x3</span>
+<span class="co"># Similar with a signature</span>
+<span class="va">x4</span> <span class="op">&lt;-</span> <span class="fu">simulate_catalogue</span><span class="op">(</span><span class="va">sig</span>, <span class="fl">10</span><span class="op">)</span> <span class="co"># 10 mutations</span>
+<span class="va">x4</span>
+
+<span class="co"># Load SBS signature</span>
+<span class="fu"><a href="https://rdrr.io/pkg/R.oo/man/Non-documented_objects.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"toy_mutational_signature.RData"</span>,
+  package <span class="op">=</span> <span class="st">"sigminer"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span>
+<span class="op">)</span><span class="op">)</span>
+<span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">sig2</span><span class="op">$</span><span class="va">Signature.norm</span><span class="op">)</span>
+<span class="co"># Generate a signature from multiple signatures/catalogs</span>
+<span class="va">s1</span> <span class="op">&lt;-</span> <span class="fu">simulate_signature</span><span class="op">(</span><span class="va">s</span><span class="op">)</span>
+<span class="va">s1</span>
+<span class="va">s2</span> <span class="op">&lt;-</span> <span class="fu">simulate_signature</span><span class="op">(</span><span class="va">s</span>, weights <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>
+<span class="va">s2</span>
+<span class="co"># Generate a catalog from multiple signatures/catalogs</span>
+<span class="va">c1</span> <span class="op">&lt;-</span> <span class="fu">simulate_catalogue</span><span class="op">(</span><span class="va">s</span>, <span class="fl">100</span>, weights <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>
+<span class="va">c1</span>
+</code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.9</span>
       </span>
     </div>
 
@@ -66,23 +66,23 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">show_sig_exposure</span><span class="op">(</span></span>
-<span>  <span class="va">Signature</span>,</span>
-<span>  sig_names <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  groups <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  grp_order <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  grp_size <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  cutoff <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"default"</span>, <span class="st">"cosmic"</span><span class="op">)</span>,</span>
-<span>  palette <span class="op">=</span> <span class="fu"><a href="use_color_style.html">use_color_style</a></span><span class="op">(</span><span class="va">style</span><span class="op">)</span>,</span>
-<span>  base_size <span class="op">=</span> <span class="fl">12</span>,</span>
-<span>  font_scale <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  rm_space <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  rm_grid_line <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  rm_panel_border <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  hide_samps <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  legend_position <span class="op">=</span> <span class="st">"top"</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">show_sig_exposure</span><span class="op">(</span>
+  <span class="va">Signature</span>,
+  sig_names <span class="op">=</span> <span class="cn">NULL</span>,
+  groups <span class="op">=</span> <span class="cn">NULL</span>,
+  grp_order <span class="op">=</span> <span class="cn">NULL</span>,
+  grp_size <span class="op">=</span> <span class="cn">NULL</span>,
+  cutoff <span class="op">=</span> <span class="cn">NULL</span>,
+  style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"default"</span>, <span class="st">"cosmic"</span><span class="op">)</span>,
+  palette <span class="op">=</span> <span class="fu"><a href="use_color_style.html">use_color_style</a></span><span class="op">(</span><span class="va">style</span><span class="op">)</span>,
+  base_size <span class="op">=</span> <span class="fl">12</span>,
+  font_scale <span class="op">=</span> <span class="fl">1</span>,
+  rm_space <span class="op">=</span> <span class="cn">FALSE</span>,
+  rm_grid_line <span class="op">=</span> <span class="cn">TRUE</span>,
+  rm_panel_border <span class="op">=</span> <span class="cn">FALSE</span>,
+  hide_samps <span class="op">=</span> <span class="cn">TRUE</span>,
+  legend_position <span class="op">=</span> <span class="st">"top"</span>
+<span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -168,21 +168,22 @@ remove panel border to keep plot tight.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># Load mutational signature</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/R.oo/man/Non-documented_objects.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"toy_mutational_signature.RData"</span>,</span>
-<span>  package <span class="op">=</span> <span class="st">"sigminer"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co"># Show signature exposure</span></span>
-<span><span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu">show_sig_exposure</span><span class="op">(</span><span class="va">sig2</span><span class="op">)</span></span>
-<span><span class="va">p1</span></span>
-<span></span>
-<span><span class="co"># Load copy number signature</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/R.oo/man/Non-documented_objects.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"toy_copynumber_signature_by_W.RData"</span>,</span>
-<span>  package <span class="op">=</span> <span class="st">"sigminer"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co"># Show signature exposure</span></span>
-<span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu">show_sig_exposure</span><span class="op">(</span><span class="va">sig</span><span class="op">)</span></span>
-<span><span class="va">p2</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># Load mutational signature</span>
+<span class="fu"><a href="https://rdrr.io/pkg/R.oo/man/Non-documented_objects.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"toy_mutational_signature.RData"</span>,
+  package <span class="op">=</span> <span class="st">"sigminer"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span>
+<span class="op">)</span><span class="op">)</span>
+<span class="co"># Show signature exposure</span>
+<span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu">show_sig_exposure</span><span class="op">(</span><span class="va">sig2</span><span class="op">)</span>
+<span class="va">p1</span>
+
+<span class="co"># Load copy number signature</span>
+<span class="fu"><a href="https://rdrr.io/pkg/R.oo/man/Non-documented_objects.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"toy_copynumber_signature_by_W.RData"</span>,
+  package <span class="op">=</span> <span class="st">"sigminer"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span>
+<span class="op">)</span><span class="op">)</span>
+<span class="co"># Show signature exposure</span>
+<span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu">show_sig_exposure</span><span class="op">(</span><span class="va">sig</span><span class="op">)</span>
+<span class="va">p2</span>
+</code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

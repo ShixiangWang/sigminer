@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.9</span>
       </span>
     </div>
 
@@ -66,20 +66,20 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">show_cn_freq_circos</span><span class="op">(</span></span>
-<span>  <span class="va">data</span>,</span>
-<span>  groups <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  cutoff <span class="op">=</span> <span class="fl">2L</span>,</span>
-<span>  resolution_factor <span class="op">=</span> <span class="fl">1L</span>,</span>
-<span>  title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AMP"</span>, <span class="st">"DEL"</span><span class="op">)</span>,</span>
-<span>  chrs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"chr"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">22</span><span class="op">)</span>,</span>
-<span>  genome_build <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hg19"</span>, <span class="st">"hg38"</span>, <span class="st">"mm10"</span>, <span class="st">"mm9"</span><span class="op">)</span>,</span>
-<span>  cols <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  plot_ideogram <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  track_height <span class="op">=</span> <span class="fl">0.5</span>,</span>
-<span>  ideogram_height <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  <span class="va">...</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">show_cn_freq_circos</span><span class="op">(</span>
+  <span class="va">data</span>,
+  groups <span class="op">=</span> <span class="cn">NULL</span>,
+  cutoff <span class="op">=</span> <span class="fl">2L</span>,
+  resolution_factor <span class="op">=</span> <span class="fl">1L</span>,
+  title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AMP"</span>, <span class="st">"DEL"</span><span class="op">)</span>,
+  chrs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"chr"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">22</span><span class="op">)</span>,
+  genome_build <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hg19"</span>, <span class="st">"hg38"</span>, <span class="st">"mm10"</span>, <span class="st">"mm9"</span><span class="op">)</span>,
+  cols <span class="op">=</span> <span class="cn">NULL</span>,
+  plot_ideogram <span class="op">=</span> <span class="cn">TRUE</span>,
+  track_height <span class="op">=</span> <span class="fl">0.5</span>,
+  ideogram_height <span class="op">=</span> <span class="fl">1</span>,
+  <span class="va">...</span>
+<span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -146,15 +146,16 @@ When it is <code>2</code>, use compute frequency in each half cytoband.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># \donttest{</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/R.oo/man/Non-documented_objects.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"toy_copynumber.RData"</span>,</span>
-<span>  package <span class="op">=</span> <span class="st">"sigminer"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">show_cn_freq_circos</span><span class="op">(</span><span class="va">cn</span><span class="op">)</span></span>
-<span><span class="va">ss</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">cn</span><span class="op">@</span><span class="va">data</span><span class="op">$</span><span class="va">sample</span><span class="op">)</span></span>
-<span><span class="fu">show_cn_freq_circos</span><span class="op">(</span><span class="va">cn</span>, groups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>a <span class="op">=</span> <span class="va">ss</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>, b <span class="op">=</span> <span class="va">ss</span><span class="op">[</span><span class="fl">6</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span><span class="op">)</span>, cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"green"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co"># }</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># \donttest{</span>
+<span class="fu"><a href="https://rdrr.io/pkg/R.oo/man/Non-documented_objects.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"toy_copynumber.RData"</span>,
+  package <span class="op">=</span> <span class="st">"sigminer"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span>
+<span class="op">)</span><span class="op">)</span>
+
+<span class="fu">show_cn_freq_circos</span><span class="op">(</span><span class="va">cn</span><span class="op">)</span>
+<span class="va">ss</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">cn</span><span class="op">@</span><span class="va">data</span><span class="op">$</span><span class="va">sample</span><span class="op">)</span>
+<span class="fu">show_cn_freq_circos</span><span class="op">(</span><span class="va">cn</span>, groups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>a <span class="op">=</span> <span class="va">ss</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>, b <span class="op">=</span> <span class="va">ss</span><span class="op">[</span><span class="fl">6</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span><span class="op">)</span>, cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"green"</span><span class="op">)</span><span class="op">)</span>
+<span class="co"># }</span>
+</code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

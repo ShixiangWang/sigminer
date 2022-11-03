@@ -4,18 +4,19 @@
 \alias{sigprofiler}
 \alias{sigprofiler_extract}
 \alias{sigprofiler_import}
+\alias{sigprofiler_reorder}
 \title{Extract Signatures with SigProfiler}
 \usage{
 sigprofiler_extract(
   nmf_matrix,
   output,
+  output_matrix_only = FALSE,
   range = 2:5,
   nrun = 10L,
   refit = FALSE,
   refit_plot = FALSE,
   is_exome = FALSE,
-  init_method = c("nndsvd_min", "random", "alexandrov-lab-custom", "nndsvd", "nndsvda",
-    "nndsvdar"),
+  init_method = c("random", "nndsvd_min", "nndsvd", "nndsvda", "nndsvdar"),
   cores = -1L,
   genome_build = c("hg19", "hg38", "mm10", "mm9"),
   use_conda = FALSE,
@@ -28,11 +29,20 @@ sigprofiler_import(
   order_by_expo = FALSE,
   type = c("suggest", "refit", "all")
 )
+
+sigprofiler_reorder(
+  nmf_matrix,
+  type = c("SBS96", "SBS6", "SBS12", "SBS192", "SBS1536", "SBS3072", "DBS78", "DBS312",
+    "DBS1248", "DBS4992")
+)
 }
 \arguments{
 \item{nmf_matrix}{a \code{matrix} used for NMF decomposition with rows indicate samples and columns indicate components.}
 
 \item{output}{output directory.}
+
+\item{output_matrix_only}{if \code{TRUE}, only generate matrix file for SigProfiler
+so user can call SigProfiler with the input by himself.}
 
 \item{range}{signature number range, i.e. \code{2:5}.}
 
@@ -67,17 +77,20 @@ If this package is installed, this option is useless.}
 \item{order_by_expo}{if \code{TRUE}, order the import signatures by their exposures, e.g. the signature
 contributed the most exposure in all samples will be named as \code{Sig1}.}
 
-\item{type}{one of 'suggest' (for suggested solution), 'refit' (for refit solution) or 'all' (for all solutions).}
+\item{type}{mutational signature type.}
 }
 \value{
 For \code{sigprofiler_extract()}, returns nothing. See \code{output} directory.
 
 For \code{sigprofiler_import()}, a \code{list} containing \code{Signature} object.
+
+A NMF matrix for input of \code{sigprofiler_extract()}.
 }
 \description{
 This function provides an interface to software SigProfiler.
 More please see \url{https://github.com/AlexandrovLab/SigProfilerExtractor}.
 Typically, a reference genome is not required because the input is a matrix (my understanding).
+\strong{If you are using refitting result by SigProfiler, please make sure you have input the matrix same order as examples at \url{https://github.com/AlexandrovLab/SigProfilerMatrixGenerator/tree/master/SigProfilerMatrixGenerator/references/matrix/BRCA_example}}. If not, use \code{sigprofiler_reorder()} firstly.
 }
 \examples{
 if (FALSE) {
@@ -95,4 +108,7 @@ if (FALSE) {
     use_conda = FALSE, py_path = "/Users/wsx/anaconda3/bin/python"
   )
 }
+
+data("simulated_catalogs")
+sigprofiler_reorder(t(simulated_catalogs$set1))
 }

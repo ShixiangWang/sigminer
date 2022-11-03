@@ -19,7 +19,7 @@ summary."><meta property="og:image" content="https://shixiangwang.github.io/sigm
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.9</span>
       </span>
     </div>
 
@@ -70,25 +70,25 @@ summary.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">read_copynumber</span><span class="op">(</span></span>
-<span>  <span class="va">input</span>,</span>
-<span>  pattern <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  ignore_case <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  seg_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Chromosome"</span>, <span class="st">"Start.bp"</span>, <span class="st">"End.bp"</span>, <span class="st">"modal_cn"</span><span class="op">)</span>,</span>
-<span>  samp_col <span class="op">=</span> <span class="st">"sample"</span>,</span>
-<span>  add_loh <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  loh_min_len <span class="op">=</span> <span class="fl">10000</span>,</span>
-<span>  loh_min_frac <span class="op">=</span> <span class="fl">0.05</span>,</span>
-<span>  join_adj_seg <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  skip_annotation <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  use_all <span class="op">=</span> <span class="va">add_loh</span>,</span>
-<span>  min_segnum <span class="op">=</span> <span class="fl">0L</span>,</span>
-<span>  max_copynumber <span class="op">=</span> <span class="fl">20L</span>,</span>
-<span>  genome_build <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hg19"</span>, <span class="st">"hg38"</span>, <span class="st">"mm10"</span>, <span class="st">"mm9"</span><span class="op">)</span>,</span>
-<span>  genome_measure <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"called"</span>, <span class="st">"wg"</span><span class="op">)</span>,</span>
-<span>  complement <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  <span class="va">...</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">read_copynumber</span><span class="op">(</span>
+  <span class="va">input</span>,
+  pattern <span class="op">=</span> <span class="cn">NULL</span>,
+  ignore_case <span class="op">=</span> <span class="cn">FALSE</span>,
+  seg_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Chromosome"</span>, <span class="st">"Start.bp"</span>, <span class="st">"End.bp"</span>, <span class="st">"modal_cn"</span><span class="op">)</span>,
+  samp_col <span class="op">=</span> <span class="st">"sample"</span>,
+  add_loh <span class="op">=</span> <span class="cn">FALSE</span>,
+  loh_min_len <span class="op">=</span> <span class="fl">10000</span>,
+  loh_min_frac <span class="op">=</span> <span class="fl">0.05</span>,
+  join_adj_seg <span class="op">=</span> <span class="cn">TRUE</span>,
+  skip_annotation <span class="op">=</span> <span class="cn">FALSE</span>,
+  use_all <span class="op">=</span> <span class="va">add_loh</span>,
+  min_segnum <span class="op">=</span> <span class="fl">0L</span>,
+  max_copynumber <span class="op">=</span> <span class="fl">20L</span>,
+  genome_build <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hg19"</span>, <span class="st">"hg38"</span>, <span class="st">"mm10"</span>, <span class="st">"mm9"</span><span class="op">)</span>,
+  genome_measure <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"called"</span>, <span class="st">"wg"</span><span class="op">)</span>,
+  complement <span class="op">=</span> <span class="cn">FALSE</span>,
+  <span class="va">...</span>
+<span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -196,32 +196,33 @@ with normal copy 2.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># Load toy dataset of absolute copynumber profile</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/load.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"toy_segTab.RData"</span>,</span>
-<span>  package <span class="op">=</span> <span class="st">"sigminer"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">cn</span> <span class="op">&lt;-</span> <span class="fu">read_copynumber</span><span class="op">(</span><span class="va">segTabs</span>,</span>
-<span>  seg_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chromosome"</span>, <span class="st">"start"</span>, <span class="st">"end"</span>, <span class="st">"segVal"</span><span class="op">)</span>,</span>
-<span>  genome_build <span class="op">=</span> <span class="st">"hg19"</span>, complement <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">cn</span></span>
-<span><span class="va">cn_subset</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">cn</span>, <span class="va">sample</span> <span class="op">==</span> <span class="st">"TCGA-DF-A2KN-01A-11D-A17U-01"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Add LOH</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span></span>
-<span><span class="va">segTabs</span><span class="op">$</span><span class="va">minor_cn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">segTabs</span><span class="op">)</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">cn</span> <span class="op">&lt;-</span> <span class="fu">read_copynumber</span><span class="op">(</span><span class="va">segTabs</span>,</span>
-<span>  seg_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chromosome"</span>, <span class="st">"start"</span>, <span class="st">"end"</span>, <span class="st">"segVal"</span><span class="op">)</span>,</span>
-<span>  genome_measure <span class="op">=</span> <span class="st">"wg"</span>, complement <span class="op">=</span> <span class="cn">TRUE</span>, add_loh <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co"># Use tally method "S" (Steele et al.)</span></span>
-<span><span class="va">tally_s</span> <span class="op">&lt;-</span> <span class="fu"><a href="sig_tally.html">sig_tally</a></span><span class="op">(</span><span class="va">cn</span>, method <span class="op">=</span> <span class="st">"S"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">tab_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"metastatic_tumor.segtab.txt"</span>,</span>
-<span>  package <span class="op">=</span> <span class="st">"sigminer"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">cn2</span> <span class="op">&lt;-</span> <span class="fu">read_copynumber</span><span class="op">(</span><span class="va">tab_file</span><span class="op">)</span></span>
-<span><span class="va">cn2</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># Load toy dataset of absolute copynumber profile</span>
+<span class="fu"><a href="https://rdrr.io/r/base/load.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"toy_segTab.RData"</span>,
+  package <span class="op">=</span> <span class="st">"sigminer"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span>
+<span class="op">)</span><span class="op">)</span>
+<span class="va">cn</span> <span class="op">&lt;-</span> <span class="fu">read_copynumber</span><span class="op">(</span><span class="va">segTabs</span>,
+  seg_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chromosome"</span>, <span class="st">"start"</span>, <span class="st">"end"</span>, <span class="st">"segVal"</span><span class="op">)</span>,
+  genome_build <span class="op">=</span> <span class="st">"hg19"</span>, complement <span class="op">=</span> <span class="cn">FALSE</span>
+<span class="op">)</span>
+<span class="va">cn</span>
+<span class="va">cn_subset</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">cn</span>, <span class="va">sample</span> <span class="op">==</span> <span class="st">"TCGA-DF-A2KN-01A-11D-A17U-01"</span><span class="op">)</span>
+
+<span class="co"># Add LOH</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span>
+<span class="va">segTabs</span><span class="op">$</span><span class="va">minor_cn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">segTabs</span><span class="op">)</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="va">cn</span> <span class="op">&lt;-</span> <span class="fu">read_copynumber</span><span class="op">(</span><span class="va">segTabs</span>,
+  seg_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chromosome"</span>, <span class="st">"start"</span>, <span class="st">"end"</span>, <span class="st">"segVal"</span><span class="op">)</span>,
+  genome_measure <span class="op">=</span> <span class="st">"wg"</span>, complement <span class="op">=</span> <span class="cn">TRUE</span>, add_loh <span class="op">=</span> <span class="cn">TRUE</span>
+<span class="op">)</span>
+<span class="co"># Use tally method "S" (Steele et al.)</span>
+<span class="va">tally_s</span> <span class="op">&lt;-</span> <span class="fu"><a href="sig_tally.html">sig_tally</a></span><span class="op">(</span><span class="va">cn</span>, method <span class="op">=</span> <span class="st">"S"</span><span class="op">)</span>
+
+<span class="va">tab_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"metastatic_tumor.segtab.txt"</span>,
+  package <span class="op">=</span> <span class="st">"sigminer"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span>
+<span class="op">)</span>
+<span class="va">cn2</span> <span class="op">&lt;-</span> <span class="fu">read_copynumber</span><span class="op">(</span><span class="va">tab_file</span><span class="op">)</span>
+<span class="va">cn2</span>
+</code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

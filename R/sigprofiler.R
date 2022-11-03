@@ -3,11 +3,14 @@
 #' This function provides an interface to software SigProfiler.
 #' More please see <https://github.com/AlexandrovLab/SigProfilerExtractor>.
 #' Typically, a reference genome is not required because the input is a matrix (my understanding).
+#' **If you are using refitting result by SigProfiler, please make sure you have input the matrix same order as examples at <https://github.com/AlexandrovLab/SigProfilerMatrixGenerator/tree/master/SigProfilerMatrixGenerator/references/matrix/BRCA_example>**. If not, use `sigprofiler_reorder()` firstly.
 #'
 #' @inheritParams sig_extract
 #' @name sigprofiler
 #' @rdname sigprofiler
 #' @param output output directory.
+#' @param output_matrix_only if `TRUE`, only generate matrix file for SigProfiler
+#' so user can call SigProfiler with the input by himself.
 #' @param range signature number range, i.e. `2:5`.
 #' @param nrun the number of iteration to be performed to extract each signature number.
 #' @param refit if `TRUE`, then refit the denovo signatures with nnls. Same
@@ -47,13 +50,14 @@
 #'     use_conda = FALSE, py_path = "/Users/wsx/anaconda3/bin/python"
 #'   )
 #' }
-sigprofiler_extract <- function(nmf_matrix, output, range = 2:5, nrun = 10L,
+sigprofiler_extract <- function(nmf_matrix, output,
+                                output_matrix_only = FALSE,
+                                range = 2:5, nrun = 10L,
                                 refit = FALSE,
                                 refit_plot = FALSE,
                                 is_exome = FALSE,
                                 init_method = c(
-                                  "nndsvd_min", "random",
-                                  "alexandrov-lab-custom",
+                                  "random", "nndsvd_min",
                                   "nndsvd", "nndsvda", "nndsvdar"
                                 ),
                                 cores = -1L,
@@ -100,6 +104,16 @@ sigprofiler_extract <- function(nmf_matrix, output, range = 2:5, nrun = 10L,
   in_df <- nmf_matrix %>%
     as.data.frame() %>%
     tibble::rownames_to_column("Mutation Types")
+
+  if (output_matrix_only) {
+    if (!dir.exists(output)) dir.create(output, recursive = TRUE)
+    data.table::fwrite(data.table::as.data.table(in_df),
+                       file = file.path(output, "sigprofiler_input.txt"),
+                       sep = "\t"
+    )
+    message("SigProfiler input file saved to ", file.path(output, "sigprofiler_input.txt"))
+    return(NULL)
+  }
 
   tmp_dir <- basename(tempfile(pattern = "dir"))
   tmp_dir_full <- file.path(tempdir(), tmp_dir)
@@ -360,4 +374,41 @@ read_sigprofiler_solution <- function(x, order_by_expo = FALSE) {
   attr(res, "call_method") <- "SigProfiler"
 
   res
+}
+
+
+# Reorder matrix orders ---------------------------------------------------
+
+#' Reorder Mutational Types Based on SigProfiler Reference Example File
+#'
+#' @inheritParams sig_extract
+#' @param type mutational signature type.
+#'
+#' @return A NMF matrix for input of `sigprofiler_extract()`.
+#' @export
+#' @rdname sigprofiler
+#'
+#' @examples
+#'
+#' data("simulated_catalogs")
+#' sigprofiler_reorder(t(simulated_catalogs$set1))
+sigprofiler_reorder = function(nmf_matrix,
+                               type = c("SBS96", "SBS6", "SBS12", "SBS192", "SBS1536", "SBS3072",
+                                        "DBS78", "DBS312", "DBS1248", "DBS4992")
+                               ) {
+  type = match.arg(type)
+  message("Downloading reference file...")
+  ref = data.table::fread(sprintf("https://raw.githubusercontent.com/AlexandrovLab/SigProfilerMatrixGenerator/master/SigProfilerMatrixGenerator/references/matrix/BRCA_example/BRCA_example.%s.all", type))
+  ref = tibble::column_to_rownames(ref, "MutationType")
+  ref = t(as.matrix(ref))
+
+  if (identical(colnames(nmf_matrix), colnames(ref))) {
+    message("Order of your mutational types are correct, no need to reorder.")
+  } else {
+    message("Reordering...")
+    nmf_matrix = nmf_matrix[, colnames(ref)]
+    message("Done")
+  }
+
+  return(nmf_matrix)
 }

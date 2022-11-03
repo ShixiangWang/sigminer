@@ -23,7 +23,7 @@ to extract copy number signatures)). See detail part and references for more."><
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.9</span>
       </span>
     </div>
 
@@ -78,22 +78,22 @@ to extract copy number signatures</strong>)). See detail part and references for
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">sig_auto_extract</span><span class="op">(</span></span>
-<span>  nmf_matrix <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  result_prefix <span class="op">=</span> <span class="st">"BayesNMF"</span>,</span>
-<span>  destdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"L1W.L2H"</span>, <span class="st">"L1KL"</span>, <span class="st">"L2KL"</span><span class="op">)</span>,</span>
-<span>  strategy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"stable"</span>, <span class="st">"optimal"</span>, <span class="st">"ms"</span><span class="op">)</span>,</span>
-<span>  ref_sigs <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  K0 <span class="op">=</span> <span class="fl">25</span>,</span>
-<span>  nrun <span class="op">=</span> <span class="fl">10</span>,</span>
-<span>  niter <span class="op">=</span> <span class="fl">2e+05</span>,</span>
-<span>  tol <span class="op">=</span> <span class="fl">1e-07</span>,</span>
-<span>  cores <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  optimize <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  skip <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  recover <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">sig_auto_extract</span><span class="op">(</span>
+  nmf_matrix <span class="op">=</span> <span class="cn">NULL</span>,
+  result_prefix <span class="op">=</span> <span class="st">"BayesNMF"</span>,
+  destdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,
+  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"L1W.L2H"</span>, <span class="st">"L1KL"</span>, <span class="st">"L2KL"</span><span class="op">)</span>,
+  strategy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"stable"</span>, <span class="st">"optimal"</span>, <span class="st">"ms"</span><span class="op">)</span>,
+  ref_sigs <span class="op">=</span> <span class="cn">NULL</span>,
+  K0 <span class="op">=</span> <span class="fl">25</span>,
+  nrun <span class="op">=</span> <span class="fl">10</span>,
+  niter <span class="op">=</span> <span class="fl">200000</span>,
+  tol <span class="op">=</span> <span class="fl">0.0000001</span>,
+  cores <span class="op">=</span> <span class="fl">1</span>,
+  optimize <span class="op">=</span> <span class="cn">FALSE</span>,
+  skip <span class="op">=</span> <span class="cn">FALSE</span>,
+  recover <span class="op">=</span> <span class="cn">FALSE</span>
+<span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -208,26 +208,27 @@ estimating signature number for <a href="sig_extract.html">sig_extract</a>.</p><
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu"><a href="https://rdrr.io/pkg/R.oo/man/Non-documented_objects.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"toy_copynumber_tally_W.RData"</span>,</span>
-<span>  package <span class="op">=</span> <span class="st">"sigminer"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">sig_auto_extract</span><span class="op">(</span><span class="va">cn_tally_W</span><span class="op">$</span><span class="va">nmf_matrix</span>, result_prefix <span class="op">=</span> <span class="st">"Test_copynumber"</span>, nrun <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co"># At default, all run files are stored in tempdir()</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">dir</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, pattern <span class="op">=</span> <span class="st">"Test_copynumber"</span><span class="op">)</span></span>
-<span><span class="co"># \donttest{</span></span>
-<span><span class="va">laml.maf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"tcga_laml.maf.gz"</span>, package <span class="op">=</span> <span class="st">"maftools"</span><span class="op">)</span></span>
-<span><span class="va">laml</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_maf.html">read_maf</a></span><span class="op">(</span>maf <span class="op">=</span> <span class="va">laml.maf</span><span class="op">)</span></span>
-<span><span class="va">mt_tally</span> <span class="op">&lt;-</span> <span class="fu"><a href="sig_tally.html">sig_tally</a></span><span class="op">(</span></span>
-<span>  <span class="va">laml</span>,</span>
-<span>  ref_genome <span class="op">=</span> <span class="st">"BSgenome.Hsapiens.UCSC.hg19"</span>,</span>
-<span>  use_syn <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">sig_auto_extract</span><span class="op">(</span><span class="va">mt_tally</span><span class="op">$</span><span class="va">nmf_matrix</span>,</span>
-<span>  strategy <span class="op">=</span> <span class="st">"ms"</span>, nrun <span class="op">=</span> <span class="fl">3</span>, ref_sigs <span class="op">=</span> <span class="st">"legacy"</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">x</span></span>
-<span><span class="co"># }</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu"><a href="https://rdrr.io/pkg/R.oo/man/Non-documented_objects.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"toy_copynumber_tally_W.RData"</span>,
+  package <span class="op">=</span> <span class="st">"sigminer"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span>
+<span class="op">)</span><span class="op">)</span>
+<span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">sig_auto_extract</span><span class="op">(</span><span class="va">cn_tally_W</span><span class="op">$</span><span class="va">nmf_matrix</span>, result_prefix <span class="op">=</span> <span class="st">"Test_copynumber"</span>, nrun <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
+<span class="co"># At default, all run files are stored in tempdir()</span>
+<span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">dir</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, pattern <span class="op">=</span> <span class="st">"Test_copynumber"</span><span class="op">)</span>
+<span class="co"># \donttest{</span>
+<span class="va">laml.maf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"tcga_laml.maf.gz"</span>, package <span class="op">=</span> <span class="st">"maftools"</span><span class="op">)</span>
+<span class="va">laml</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_maf.html">read_maf</a></span><span class="op">(</span>maf <span class="op">=</span> <span class="va">laml.maf</span><span class="op">)</span>
+<span class="va">mt_tally</span> <span class="op">&lt;-</span> <span class="fu"><a href="sig_tally.html">sig_tally</a></span><span class="op">(</span>
+  <span class="va">laml</span>,
+  ref_genome <span class="op">=</span> <span class="st">"BSgenome.Hsapiens.UCSC.hg19"</span>,
+  use_syn <span class="op">=</span> <span class="cn">TRUE</span>
+<span class="op">)</span>
+
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">sig_auto_extract</span><span class="op">(</span><span class="va">mt_tally</span><span class="op">$</span><span class="va">nmf_matrix</span>,
+  strategy <span class="op">=</span> <span class="st">"ms"</span>, nrun <span class="op">=</span> <span class="fl">3</span>, ref_sigs <span class="op">=</span> <span class="st">"legacy"</span>
+<span class="op">)</span>
+<span class="va">x</span>
+<span class="co"># }</span>
+</code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.9</span>
       </span>
     </div>
 
@@ -66,7 +66,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">read_xena_variants</span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">read_xena_variants</span><span class="op">(</span><span class="va">path</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -84,19 +84,20 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># \donttest{</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"UCSCXenaTools"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/UCSCXenaTools/" class="external-link">UCSCXenaTools</a></span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>use_hiplot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span>  <span class="va">example_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/UCSCXenaTools/man/XenaGenerate.html" class="external-link">XenaGenerate</a></span><span class="op">(</span>subset <span class="op">=</span> <span class="va">XenaDatasets</span> <span class="op">==</span> <span class="st">"mc3/ACC_mc3.txt"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/pkg/UCSCXenaTools/man/XenaQuery.html" class="external-link">XenaQuery</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/pkg/UCSCXenaTools/man/XenaDownload.html" class="external-link">XenaDownload</a></span><span class="op">(</span><span class="op">)</span></span>
-<span>  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">read_xena_variants</span><span class="op">(</span><span class="va">example_file</span><span class="op">$</span><span class="va">destfiles</span><span class="op">)</span></span>
-<span>  <span class="va">x</span><span class="op">@</span><span class="va">data</span></span>
-<span>  <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="sig_tally.html">sig_tally</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span>  <span class="va">y</span></span>
-<span><span class="op">}</span></span>
-<span><span class="co"># }</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># \donttest{</span>
+<span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"UCSCXenaTools"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+  <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/UCSCXenaTools/" class="external-link">UCSCXenaTools</a></span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>use_hiplot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+  <span class="va">example_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/UCSCXenaTools/man/XenaGenerate.html" class="external-link">XenaGenerate</a></span><span class="op">(</span>subset <span class="op">=</span> <span class="va">XenaDatasets</span> <span class="op">==</span> <span class="st">"mc3/ACC_mc3.txt"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://rdrr.io/pkg/UCSCXenaTools/man/XenaQuery.html" class="external-link">XenaQuery</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://rdrr.io/pkg/UCSCXenaTools/man/XenaDownload.html" class="external-link">XenaDownload</a></span><span class="op">(</span><span class="op">)</span>
+  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">read_xena_variants</span><span class="op">(</span><span class="va">example_file</span><span class="op">$</span><span class="va">destfiles</span><span class="op">)</span>
+  <span class="va">x</span><span class="op">@</span><span class="va">data</span>
+  <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="sig_tally.html">sig_tally</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+  <span class="va">y</span>
+<span class="op">}</span>
+<span class="co"># }</span>
+</code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

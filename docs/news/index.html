@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.9</span>
       </span>
     </div>
 
@@ -61,7 +61,17 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="2.1.7" id="sigminer-217">sigminer 2.1.7<a class="anchor" aria-label="anchor" href="#sigminer-217"></a></h2>
+<h2 class="page-header" data-toc-text="2.1.9" id="sigminer-219">sigminer 2.1.9<a class="anchor" aria-label="anchor" href="#sigminer-219"></a></h2>
+<ul><li>Added parameter in <code><a href="../reference/sigprofiler.html">sigprofiler_extract()</a></code> to help generate input matrix file for calling SigProfiler directly.</li>
+<li>Added some notions in <code><a href="../reference/sigprofiler.html">sigprofiler_extract()</a></code>.</li>
+<li>Added a function <code><a href="../reference/sigprofiler.html">sigprofiler_reorder()</a></code> for utils in generating SigProfiler input matrix file with standard mutation types order.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="2.1.8" id="sigminer-218">sigminer 2.1.8<small>2022-10-20</small><a class="anchor" aria-label="anchor" href="#sigminer-218"></a></h2>
+<ul><li>Fixed the bug about plotting CN chromosome distribution (<a href="https://github.com/ShixiangWang/sigminer/issues/420" class="external-link">#420</a>, thanks to <a href="https://github.com/jrcodina96" class="external-link">@jrcodina96</a>).</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="2.1.7" id="sigminer-217">sigminer 2.1.7<small>2022-08-31</small><a class="anchor" aria-label="anchor" href="#sigminer-217"></a></h2>
 <ul><li>Updated COSMIC latest version from v3.2 to v3.3. A new reference for copy number signature now is provided as <code>latest_CN_GRCh37</code> (<a href="https://github.com/ShixiangWang/sigminer/issues/412" class="external-link">#412</a>).</li>
 <li>
 <code><a href="../reference/get_sig_similarity.html">get_sig_similarity()</a></code> now uses “SBS” as default reference.</li>
@@ -79,19 +89,19 @@
 <li>Enhanced <code><a href="../reference/group_enrichment.html">group_enrichment()</a></code> with reference group support.</li>
 </ul><p>Example:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span></span>
-<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span>
-<span>  g1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">LETTERS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">40</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  g2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AA"</span>, <span class="st">"VV"</span>, <span class="st">"XX"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">40</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  e1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"P"</span>, <span class="st">"N"</span><span class="op">)</span>, <span class="fl">100</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span>  e2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">x1</span> <span class="op">=</span> <span class="fu"><a href="../reference/group_enrichment.html">group_enrichment</a></span><span class="op">(</span><span class="va">df</span>, grp_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"g1"</span>, <span class="st">"g2"</span><span class="op">)</span>, </span>
-<span>                      enrich_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"e1"</span>, <span class="st">"e2"</span><span class="op">)</span>, </span>
-<span>                      ref_group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B"</span>, <span class="st">"VV"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">x1</span></span></code></pre></div>
+<code class="sourceCode R">
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span>
+<span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>
+  g1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">LETTERS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">40</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span>,
+  g2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AA"</span>, <span class="st">"VV"</span>, <span class="st">"XX"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">40</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span>,
+  e1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"P"</span>, <span class="st">"N"</span><span class="op">)</span>, <span class="fl">100</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,
+  e2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>
+<span class="op">)</span>
+
+<span class="va">x1</span> <span class="op">=</span> <span class="fu"><a href="../reference/group_enrichment.html">group_enrichment</a></span><span class="op">(</span><span class="va">df</span>, grp_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"g1"</span>, <span class="st">"g2"</span><span class="op">)</span>, 
+                      enrich_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"e1"</span>, <span class="st">"e2"</span><span class="op">)</span>, 
+                      ref_group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B"</span>, <span class="st">"VV"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">x1</span></code></pre></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="2.1.4" id="sigminer-214">sigminer 2.1.4<small>2022-04-26</small><a class="anchor" aria-label="anchor" href="#sigminer-214"></a></h2>
@@ -143,7 +153,7 @@
     <div class="section level2">
 <h2 class="page-header" data-toc-text="2.0.2" id="sigminer-202">sigminer 2.0.2<small>2021-06-17</small><a class="anchor" aria-label="anchor" href="#sigminer-202"></a></h2>
 <ul><li>Fixed <code><a href="../reference/output_sig.html">output_sig()</a></code> error in handling exposure plot with &gt;9 signatures (<a href="https://github.com/ShixiangWang/sigminer/issues/366" class="external-link">#366</a>).</li>
-<li>Added <code>limitsize = FALSE</code> for <code><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave()</a></code> or <code>ggsave2()</code> for handling big figure.</li>
+<li>Added <code>limitsize = FALSE</code> for <code><a href="https://rdrr.io/pkg/ggplot2/man/ggsave.html" class="external-link">ggsave()</a></code> or <code>ggsave2()</code> for handling big figure.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="2.0.1" id="sigminer-201">sigminer 2.0.1<small>2021-05-19</small><a class="anchor" aria-label="anchor" href="#sigminer-201"></a></h2>
@@ -163,15 +173,15 @@
 <h3 id="enhancements-2-0-0">ENHANCEMENTS<a class="anchor" aria-label="anchor" href="#enhancements-2-0-0"></a></h3>
 <ul><li>Added support for latest COSMIC v3.2 as reference signatures. You can obtain them by</li>
 </ul><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"latest_SBS_GRCh37"</span>, <span class="st">"latest_DBS_GRCh37"</span>, <span class="st">"latest_ID_GRCh37"</span>,</span>
-<span>            <span class="st">"latest_SBS_GRCh38"</span>, <span class="st">"latest_DBS_GRCh38"</span>,</span>
-<span>            <span class="st">"latest_SBS_mm9"</span>, <span class="st">"latest_DBS_mm9"</span>,</span>
-<span>            <span class="st">"latest_SBS_mm10"</span>, <span class="st">"latest_DBS_mm10"</span>,</span>
-<span>            <span class="st">"latest_SBS_rn6"</span>, <span class="st">"latest_DBS_rn6"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="va">i</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="../reference/get_sig_db.html">get_sig_db</a></span><span class="op">(</span><span class="va">i</span><span class="op">)</span></span>
-<span><span class="op">}</span></span></code></pre></div>
+<code class="sourceCode R">
+<span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"latest_SBS_GRCh37"</span>, <span class="st">"latest_DBS_GRCh37"</span>, <span class="st">"latest_ID_GRCh37"</span>,
+            <span class="st">"latest_SBS_GRCh38"</span>, <span class="st">"latest_DBS_GRCh38"</span>,
+            <span class="st">"latest_SBS_mm9"</span>, <span class="st">"latest_DBS_mm9"</span>,
+            <span class="st">"latest_SBS_mm10"</span>, <span class="st">"latest_DBS_mm10"</span>,
+            <span class="st">"latest_SBS_rn6"</span>, <span class="st">"latest_DBS_rn6"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="va">i</span><span class="op">)</span>
+  <span class="fu"><a href="../reference/get_sig_db.html">get_sig_db</a></span><span class="op">(</span><span class="va">i</span><span class="op">)</span>
+<span class="op">}</span></code></pre></div>
 <ul><li>Updated <code>keep_only_pass</code> to <code>FALSE</code> at default.</li>
 <li>Added RSS and unexplained variance calculation in <code><a href="../reference/get_sig_rec_similarity.html">get_sig_rec_similarity()</a></code>.</li>
 <li>Added data check and filter in <code><a href="../reference/output_tally.html">output_tally()</a></code> and <code><a href="../reference/show_catalogue.html">show_catalogue()</a></code>.</li>
