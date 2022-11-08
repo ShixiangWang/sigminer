@@ -1,5 +1,6 @@
 # sigminer 2.1.9
 
+- Sorted SBS mutation types by default in `sig_tally()`.
 - Added parameter in `sigprofiler_extract()` to help generate input matrix file for calling SigProfiler directly.
 - Added some notions in `sigprofiler_extract()`.
 - Added a function `sigprofiler_reorder()` for utils in generating SigProfiler input matrix file with standard mutation types order.
