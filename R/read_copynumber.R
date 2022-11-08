@@ -64,11 +64,13 @@
 #' # Use tally method "S" (Steele et al.)
 #' tally_s <- sig_tally(cn, method = "S")
 #'
+#' \donttest{
 #' tab_file <- system.file("extdata", "metastatic_tumor.segtab.txt",
 #'   package = "sigminer", mustWork = TRUE
 #' )
 #' cn2 <- read_copynumber(tab_file)
 #' cn2
+#' }
 #' @testexamples
 #' expect_s4_class(cn, "CopyNumber")
 #' expect_s4_class(cn_subset, "CopyNumber")

@@ -190,7 +190,8 @@ written permission after contacting patents’ authors.
 
 Related patents:
 
--   [CN202011516653.7](https://kms.shanghaitech.edu.cn/handle/2MSLDSTB/127042)
+-   **CN202011516653.7**
+    `https://kms.shanghaitech.edu.cn/handle/2MSLDSTB/127042`
 
 MIT © 2019-Present Shixiang Wang, Xue-Song Liu
 

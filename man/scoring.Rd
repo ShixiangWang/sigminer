@@ -32,7 +32,7 @@ the number of CNV.
 where \eqn{L_{i}} is the length of altered copy number segment \eqn{i}.
 \item Ploidy: ploidy, the formula is same as \code{weightedMACN} but using all copy number segments instead of
 altered copy number segments.
-\item TDP_pnas: tandem duplication phenotype score from \url{https://www.pnas.org/doi/10.1073/pnas.1520010113},
+\item TDP_pnas: tandem duplication phenotype score from \verb{https://www.pnas.org/doi/10.1073/pnas.1520010113},
 the threshold \code{k} in reference is omitted.
 \deqn{TDP = - \frac{\sum_{chr} |TD_{obs}-TD_{exp}|}{TD_{total}}}
 where \eqn{TD_{total}} is the number of TD, \eqn{TD_{obs}} and

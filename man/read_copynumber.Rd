@@ -107,11 +107,13 @@ cn <- read_copynumber(segTabs,
 # Use tally method "S" (Steele et al.)
 tally_s <- sig_tally(cn, method = "S")
 
+\donttest{
 tab_file <- system.file("extdata", "metastatic_tumor.segtab.txt",
   package = "sigminer", mustWork = TRUE
 )
 cn2 <- read_copynumber(tab_file)
 cn2
+}
 }
 \seealso{
 \link{read_maf} for reading mutation data to \link{MAF} object.

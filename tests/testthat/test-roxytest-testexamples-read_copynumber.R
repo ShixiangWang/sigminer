@@ -2,7 +2,7 @@
 
 context("File R/read_copynumber.R: @testexamples")
 
-test_that("Function read_copynumber() @ L78", {
+test_that("Function read_copynumber() @ L80", {
   
   # Load toy dataset of absolute copynumber profile
   load(system.file("extdata", "toy_segTab.RData",
@@ -25,11 +25,13 @@ test_that("Function read_copynumber() @ L78", {
   # Use tally method "S" (Steele et al.)
   tally_s <- sig_tally(cn, method = "S")
   
+  
   tab_file <- system.file("extdata", "metastatic_tumor.segtab.txt",
     package = "sigminer", mustWork = TRUE
   )
   cn2 <- read_copynumber(tab_file)
   cn2
+  
   expect_s4_class(cn, "CopyNumber")
   expect_s4_class(cn_subset, "CopyNumber")
   expect_s4_class(cn2, "CopyNumber")

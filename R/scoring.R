@@ -28,7 +28,7 @@
 #' where \eqn{L_{i}} is the length of altered copy number segment \eqn{i}.
 #' - Ploidy: ploidy, the formula is same as `weightedMACN` but using all copy number segments instead of
 #' altered copy number segments.
-#' - TDP_pnas: tandem duplication phenotype score from <https://www.pnas.org/doi/10.1073/pnas.1520010113>,
+#' - TDP_pnas: tandem duplication phenotype score from `https://www.pnas.org/doi/10.1073/pnas.1520010113`,
 #' the threshold `k` in reference is omitted.
 #' \deqn{TDP = - \frac{\sum_{chr} |TD_{obs}-TD_{exp}|}{TD_{total}}}
 #' where \eqn{TD_{total}} is the number of TD, \eqn{TD_{obs}} and
