@@ -90,6 +90,8 @@ summary.
 load(system.file("extdata", "toy_segTab.RData",
   package = "sigminer", mustWork = TRUE
 ))
+
+\donttest{
 cn <- read_copynumber(segTabs,
   seg_cols = c("chromosome", "start", "end", "segVal"),
   genome_build = "hg19", complement = FALSE
@@ -107,7 +109,6 @@ cn <- read_copynumber(segTabs,
 # Use tally method "S" (Steele et al.)
 tally_s <- sig_tally(cn, method = "S")
 
-\donttest{
 tab_file <- system.file("extdata", "metastatic_tumor.segtab.txt",
   package = "sigminer", mustWork = TRUE
 )

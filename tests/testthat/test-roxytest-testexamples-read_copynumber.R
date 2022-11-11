@@ -2,12 +2,14 @@
 
 context("File R/read_copynumber.R: @testexamples")
 
-test_that("Function read_copynumber() @ L80", {
+test_that("Function read_copynumber() @ L81", {
   
   # Load toy dataset of absolute copynumber profile
   load(system.file("extdata", "toy_segTab.RData",
     package = "sigminer", mustWork = TRUE
   ))
+  
+  
   cn <- read_copynumber(segTabs,
     seg_cols = c("chromosome", "start", "end", "segVal"),
     genome_build = "hg19", complement = FALSE
@@ -24,7 +26,6 @@ test_that("Function read_copynumber() @ L80", {
   )
   # Use tally method "S" (Steele et al.)
   tally_s <- sig_tally(cn, method = "S")
-  
   
   tab_file <- system.file("extdata", "metastatic_tumor.segtab.txt",
     package = "sigminer", mustWork = TRUE
