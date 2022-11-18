@@ -1,3 +1,7 @@
+# sigminer 2.1.10
+
+- Fixed the issue about the latest CN signatures from COSMIC have inconsistent labels with built-in CN signatures (#421).
+
 # sigminer 2.1.9
 
 - Sorted substitution mutation types by default in `sig_tally()`.

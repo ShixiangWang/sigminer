@@ -171,5 +171,10 @@ get_sig_db <- function(sig_db = "legacy") {
   }
   ## Make sure column-sum is 1, i.e. normalized
   sigs_db$db <- apply(sigs_db$db, 2, function(x) x / sum(x))
+
+  ## Make sure CN classes have same labels for Kb
+  if (sig_db == "latest_CN_GRCh37") {
+    rownames(sigs_db$db) = gsub("kb", "Kb", rownames(sigs_db$db))
+  }
   sigs_db
 }
