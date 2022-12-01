@@ -394,6 +394,8 @@ sig_tally.MAF <- function(object, mode = c("SBS", "DBS", "ID", "ALL"),
       genome_build <- "mm10"
     } else if (grepl("mm9$", ref_genome)) {
       genome_build <- "mm9"
+    } else if (grepl("ce11$", ref_genome)) {
+      genome_build <- "ce11"
     } else {
       send_stop("Cannot guess the genome build, please set it by hand!")
     }

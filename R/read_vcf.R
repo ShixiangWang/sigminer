@@ -20,7 +20,8 @@
 #' }
 #' @testexamples
 #' expect_is(maf, "MAF")
-read_vcf <- function(vcfs, samples = NULL, genome_build = c("hg19", "hg38", "mm10", "mm9"),
+read_vcf <- function(vcfs, samples = NULL,
+                     genome_build = c("hg19", "hg38", "mm10", "mm9", "ce11"),
                      keep_only_pass = FALSE, verbose = TRUE) {
   genome_build <- match.arg(genome_build)
   vcfs_name <- vcfs
@@ -75,6 +76,7 @@ read_vcf <- function(vcfs, samples = NULL, genome_build = c("hg19", "hg38", "mm1
 
   vcfs$Variant_Classification <- "Unknown"
   vcfs$Hugo_Symbol <- "Unknown"
+  vcfs$Gene_ID <- "Unknown"
 
   # Annotate gene symbol
   gene_file <- switch(genome_build,
@@ -85,6 +87,10 @@ read_vcf <- function(vcfs, samples = NULL, genome_build = c("hg19", "hg38", "mm1
     mm10 = file.path(
       system.file("extdata", package = "sigminer"),
       "mouse_mm10_gene_info.rds"
+    ),
+    ce11 = file.path(
+      system.file("extdata", package = "sigminer"),
+      "ce11_gene_info.rds"
     ),
     file.path(
       system.file("extdata", package = "sigminer"),
@@ -99,7 +105,7 @@ read_vcf <- function(vcfs, samples = NULL, genome_build = c("hg19", "hg38", "mm1
   gene_dt <- readRDS(gene_file)
 
   if (verbose) message("Annotating mutations to first matched gene based on database ", gene_file, "...")
-  dt <- gene_dt[, c("chrom", "start", "end", "gene_name")]
+  dt <- gene_dt[, c("chrom", "start", "end", "gene_name", "gene_id")]
   data.table::setkey(dt, "chrom", "start", "end")
 
   match_dt <- data.table::foverlaps(vcfs, dt,
@@ -109,6 +115,7 @@ read_vcf <- function(vcfs, samples = NULL, genome_build = c("hg19", "hg38", "mm1
   ## Keep only the first gene index
   match_dt <- match_dt[!duplicated(match_dt$xid)]
   vcfs$Hugo_Symbol[match_dt$xid] <- dt$gene_name[match_dt$yid]
+  vcfs$Gene_ID[match_dt$xid] <- dt$gene_id[match_dt$yid]
 
   if (verbose) message("Transforming into a MAF object...")
   maftools::read.maf(
