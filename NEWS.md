@@ -1,3 +1,7 @@
+# sigminer 2.2.0
+
+- Support ce11 genome in `read_vcf()`.
+
 # sigminer 2.1.10
 
 - Fixed the issue about the latest CN signatures from COSMIC have inconsistent labels with built-in CN signatures (#421).
