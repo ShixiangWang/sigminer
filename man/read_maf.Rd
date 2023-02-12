@@ -2,14 +2,20 @@
 % Please edit documentation in R/read_maf.R
 \name{read_maf}
 \alias{read_maf}
+\alias{read_maf_minimal}
 \title{Read MAF Files}
 \usage{
 read_maf(maf, verbose = TRUE)
+
+read_maf_minimal(dt)
 }
 \arguments{
 \item{maf}{tab delimited MAF file. File can also be gz compressed. Required. Alternatively, you can also provide already read MAF file as a dataframe.}
 
 \item{verbose}{TRUE logical. Default to be talkative and prints summary.}
+
+\item{dt}{A data.frame contains at least the following columns:
+"Tumor_Sample_Barcode", "Chromosome", "Start_Position", "End_Position", "Reference_Allele", "Tumor_Seq_Allele2"}
 }
 \description{
 This function is a wrapper of \link[maftools:read.maf]{maftools::read.maf}.
@@ -18,6 +24,11 @@ You can also use \link[maftools:read.maf]{maftools::read.maf} to read the data.
 All reference alleles and mutation alleles should be recorded in
 positive strand format.
 }
+\section{Functions}{
+\itemize{
+\item \code{read_maf_minimal()}: Read Maf data.frame from a minimal maf-like data
+
+}}
 \examples{
 laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools", mustWork = TRUE)
 if (!require("R.utils")) {
@@ -25,6 +36,14 @@ if (!require("R.utils")) {
 } else {
   laml <- read_maf(maf = laml.maf)
   laml
+
+  laml_mini <- laml@data[, list(
+    Tumor_Sample_Barcode, Chromosome,
+    Start_Position, End_Position,
+    Reference_Allele, Tumor_Seq_Allele2
+  )]
+  laml2 <- read_maf_minimal(laml_mini)
+  laml2
 }
 }
 \seealso{
