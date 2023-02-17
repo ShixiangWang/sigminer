@@ -59,7 +59,7 @@ get_features_wang <- function(CN_data,
   centromeres <- get_genome_annotation(data_type = "centro_loc", genome_build = genome_build)
 
   oplan <- future::plan()
-  future::plan("multiprocess", workers = cores)
+  future::plan(set_future_strategy(), workers = cores)
   on.exit(future::plan(oplan), add = TRUE)
 
   features <- unique(feature_setting$feature)
