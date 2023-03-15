@@ -16,6 +16,8 @@ knitr::opts_chunk$set(
 )
 ```
 
+> Exploring copy number signatures with recently developed approach have been described at [The repertoire of copy number alteration signatures in human cancer](https://xsliulab.github.io/Pan-cancer_CNA_signature/).
+>
 > A more general introduction please read [Extract, Analyze and Visualize Mutational Signatures with Sigminer](https://shixiangwang.github.io/sigminer-book/index.html).
 
 ```{r setup}

@@ -42,7 +42,8 @@ sig_tally(object, ...)
 corresponding class (e.g. \code{CopyNumber}).}
 
 \item{method}{method for feature classification, can be one of
-"Wang" ("W"), "S" (for method described in Steele et al. 2019).}
+"Wang" ("W"), "S" (for method described in Steele et al. 2019),
+"X" (for method described in Tao et al. 2023).}
 
 \item{ignore_chrs}{Chromsomes to ignore from analysis. e.g. chrX and chrY.}
 

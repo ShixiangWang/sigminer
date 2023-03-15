@@ -21,7 +21,8 @@ show_cn_components(
 from \link{sig_tally} function.}
 
 \item{method}{method for feature classification, can be one of
-"Wang" ("W"), "S" (for method described in Steele et al. 2019).}
+"Wang" ("W"), "S" (for method described in Steele et al. 2019),
+"X" (for method described in Tao et al. 2023).}
 
 \item{show_weights}{default is \code{TRUE}, show weights for each component.
 Only used when method is "Macintyre".}

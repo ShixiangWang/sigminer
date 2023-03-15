@@ -122,7 +122,8 @@ sig_tally <- function(object, ...) {
 #' @describeIn sig_tally Returns copy number features, components and component-by-sample matrix
 #' @param indices integer vector indicating segments to keep.
 #' @param method method for feature classification, can be one of
-#' "Wang" ("W"), "S" (for method described in Steele et al. 2019).
+#' "Wang" ("W"), "S" (for method described in Steele et al. 2019),
+#' "X" (for method described in Tao et al. 2023).
 #' @param add_loh flag to add LOH classifications.
 #' @param feature_setting a `data.frame` used for classification.
 #' **Only used when method is "Wang" ("W")**.
@@ -153,7 +154,6 @@ sig_tally.CopyNumber <- function(object,
   method <- match.arg(method, choices = c("Wang", "W", "Tao & Wang", "T", "X", "S"))
 
   if (startsWith(method, "T") | method == "X") {
-    send_warning("Currently, the method 'T' is in experimental stage, please don't use it for now!")
     ## Add segment index for method "T" so the segments can be easily joined or checked
     cn_list <- get_cnlist(object, ignore_chrs = ignore_chrs, add_index = TRUE)
   } else {
