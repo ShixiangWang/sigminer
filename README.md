@@ -57,27 +57,25 @@ For pipeline tool, please see its co-evolutionary CLI
 
 ### :airplane: Features
 
--   supports a standard *de novo* pipeline for identification of **5**
-    types of signatures: copy number, SBS, DBS, INDEL and RS (genome
-    rearrangement signature).
--   supports quantify exposure for one sample based on *known
-    signatures*.
--   supports association and group analysis and visualization for
-    signatures.
--   supports two types of signature exposures: relative exposure
-    (relative contribution of signatures in each sample) and absolute
-    exposure (estimated variation records of signatures in each sample).
--   supports basic summary and visualization for profile of mutation
-    (powered by **maftools**) and copy number.
--   supports parallel computation by R packages **foreach**, **future**
-    and **NMF**.
--   efficient code powered by R packages **data.table** and
-    **tidyverse**.
--   elegant plots powered by R packages **ggplot2**, **ggpubr**,
-    **cowplot** and **patchwork**.
--   well tested by R package **testthat** and documented by R package
-    **roxygen2**, **roxytest**, **pkgdown**, and etc. for both reliable
-    and reproducible research.
+- supports a standard *de novo* pipeline for identification of **5**
+  types of signatures: copy number, SBS, DBS, INDEL and RS (genome
+  rearrangement signature).
+- supports quantify exposure for one sample based on *known signatures*.
+- supports association and group analysis and visualization for
+  signatures.
+- supports two types of signature exposures: relative exposure (relative
+  contribution of signatures in each sample) and absolute exposure
+  (estimated variation records of signatures in each sample).
+- supports basic summary and visualization for profile of mutation
+  (powered by **maftools**) and copy number.
+- supports parallel computation by R packages **foreach**, **future**
+  and **NMF**.
+- efficient code powered by R packages **data.table** and **tidyverse**.
+- elegant plots powered by R packages **ggplot2**, **ggpubr**,
+  **cowplot** and **patchwork**.
+- well tested by R package **testthat** and documented by R package
+  **roxygen2**, **roxytest**, **pkgdown**, and etc. for both reliable
+  and reproducible research.
 
 ## :arrow_double_down: Installation
 
@@ -124,16 +122,19 @@ following papers.
 
 ------------------------------------------------------------------------
 
--   ***Wang S, Li H, Song M, Tao Z, Wu T, He Z, et al. (2021) Copy
-    number signature analysis tool and its application in prostate
-    cancer reveals distinct mutational processes and clinical outcomes.
-    PLoS Genet 17(5): e1009557.***
-    <https://doi.org/10.1371/journal.pgen.1009557>
-
--   ***Shixiang Wang, Ziyu Tao, Tao Wu, Xue-Song Liu, Sigflow: An
-    Automated And Comprehensive Pipeline For Cancer Genome Mutational
-    Signature Analysis, Bioinformatics, btaa895***.
-    <https://doi.org/10.1093/bioinformatics/btaa895>
+- ***Wang S, Li H, Song M, Tao Z, Wu T, He Z, et al. (2021) Copy number
+  signature analysis tool and its application in prostate cancer reveals
+  distinct mutational processes and clinical outcomes. PLoS Genet 17(5):
+  e1009557.*** <https://doi.org/10.1371/journal.pgen.1009557>
+- ***Wang, S., Tao, Z., Wu, T., & Liu, X. S. (2021). Sigflow: an
+  automated and comprehensive pipeline for cancer genome mutational
+  signature analysis. Bioinformatics, 37(11), 1590-1592***.
+  <https://doi.org/10.1093/bioinformatics/btaa895>
+- ***Ziyu Tao, Shixiang Wang, Chenxu Wu, Tao Wu, Xiangyu Zhao, Wei Ning,
+  Guangshuai Wang, Jinyu Wang, Jing Chen, Kaixuan Diao, Fuxiang Chen,
+  Xue-Song Liu, The repertoire of copy number alteration signatures in
+  human cancer, Briefings in Bioinformatics, 2023, bbad053***.
+  <https://doi.org/10.1093/bib/bbad053>
 
 ------------------------------------------------------------------------
 
@@ -190,8 +191,8 @@ written permission after contacting patents’ authors.
 
 Related patents:
 
--   **CN202011516653.7**
-    `https://kms.shanghaitech.edu.cn/handle/2MSLDSTB/127042`
+- **CN202011516653.7**
+  `https://kms.shanghaitech.edu.cn/handle/2MSLDSTB/127042`
 
 MIT © 2019-Present Shixiang Wang, Xue-Song Liu
 

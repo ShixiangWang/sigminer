@@ -144,8 +144,8 @@ If you use **sigminer** in academic field, please cite one of the following pape
 ------------------------------------------------------------------------
 
 -   ***Wang S, Li H, Song M, Tao Z, Wu T, He Z, et al. (2021) Copy number signature analysis tool and its application in prostate cancer reveals distinct mutational processes and clinical outcomes. PLoS Genet 17(5): e1009557.*** <https://doi.org/10.1371/journal.pgen.1009557>
-
--   ***Shixiang Wang, Ziyu Tao, Tao Wu, Xue-Song Liu, Sigflow: An Automated And Comprehensive Pipeline For Cancer Genome Mutational Signature Analysis, Bioinformatics, btaa895***. <https://doi.org/10.1093/bioinformatics/btaa895>
+-   ***Wang, S., Tao, Z., Wu, T., & Liu, X. S. (2021). Sigflow: an automated and comprehensive pipeline for cancer genome mutational signature analysis. Bioinformatics, 37(11), 1590-1592***. <https://doi.org/10.1093/bioinformatics/btaa895>
+-   ***Ziyu Tao, Shixiang Wang, Chenxu Wu, Tao Wu, Xiangyu Zhao, Wei Ning, Guangshuai Wang, Jinyu Wang, Jing Chen, Kaixuan Diao, Fuxiang Chen, Xue-Song Liu, The repertoire of copy number alteration signatures in human cancer, Briefings in Bioinformatics, 2023, bbad053***. <https://doi.org/10.1093/bib/bbad053>
 
 ------------------------------------------------------------------------
 
