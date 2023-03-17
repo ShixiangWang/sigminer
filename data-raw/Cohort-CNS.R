@@ -71,7 +71,7 @@ download.file("https://raw.githubusercontent.com/AlexandrovLab/SigProfilerExtrac
 library(tidyverse)
 
 # Extracting from 9873 primary cancer samples
-# ref: https://www.biorxiv.org/content/10.1101/2021.04.30.441940v1.full
+# ref: https://www.nature.com/articles/s41586-022-04738-6
 # data source: https://github.com/AlexandrovLab/SigProfilerExtractor/tree/master/SigProfilerExtractor/data
 cns <- read_tsv("data-raw/CNV_signatures.txt")
 colnames(cns)[1] <- "class"
@@ -84,7 +84,7 @@ CNS_TCGA <- list(
   db = as.matrix(cns),
   aetiology = data.frame(
     V1 = colnames(cns),
-    V2 = "See https://doi.org/10.1101/2021.04.30.441940"
+    V2 = "See https://www.nature.com/articles/s41586-022-04738-6"
   ) %>% tibble::column_to_rownames("V1") %>% setNames("aetiology"),
   date = "2021/07/23"
 )
@@ -95,4 +95,38 @@ CNS_TCGA = readRDS("inst/extdata/CNS_signatures_TCGA.rds")
 CNS_TCGA$aetiology$aetiology = "See https://cancer.sanger.ac.uk/signatures/cn/"
 saveRDS(CNS_TCGA, file = "inst/extdata/CNS_signatures_TCGA.rds")
 
+# PCAWG CNS ---------------------------------------------------------------
+# Ref: https://doi.org/10.1093/bib/bbad053
+library(readxl)
+pcawgcns <- read_excel("data-raw/PCAWG.CNS.xlsx") %>%
+  tibble::column_to_rownames(var = "class")
+colnames(pcawgcns) <- gsub("CNS", "PCAWG_CNS", colnames(pcawgcns))
+
+CNS_PCAWG <- list(
+  db = as.matrix(pcawgcns),
+  aetiology = data.frame(
+    V1 = colnames(pcawgcns),
+    V2 = "See https://doi.org/10.1093/bib/bbad053"
+  ) %>% tibble::column_to_rownames("V1") %>% setNames("aetiology"),
+  date = "2023/03/17"
+)
+
+saveRDS(CNS_PCAWG, file = "inst/extdata/CNS_signatures_PCAWG176.rds")
+
+# TCGA CNS ---------------------------------------------------------------
+# Ref: https://doi.org/10.1093/bib/bbad053
+tcgacns <- read_excel("data-raw/TCGA.CNS.xlsx") %>%
+  tibble::column_to_rownames(var = "class")
+colnames(tcgacns) <- gsub("Sig", "TCGA_CNS", colnames(tcgacns))
+
+CNS_TCGA <- list(
+  db = as.matrix(tcgacns),
+  aetiology = data.frame(
+    V1 = colnames(tcgacns),
+    V2 = "See https://doi.org/10.1093/bib/bbad053"
+  ) %>% tibble::column_to_rownames("V1") %>% setNames("aetiology"),
+  date = "2023/03/17"
+)
+
+saveRDS(CNS_TCGA, file = "inst/extdata/CNS_signatures_TCGA176.rds")
 

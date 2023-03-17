@@ -11,16 +11,17 @@
 #' - SBS and RS (rearrangement) signatures from Nik lab 2020 Nature Cancer paper.
 #' - RS signatures from BRCA560 and USARC cohorts.
 #' - Copy number signatures from USARC cohort and TCGA.
+#' - Copy number signatures from Liu lab 2023. It supports both PCAWG and TCGA cohort.
 #' @inheritParams get_sig_similarity
 #'
 #' @return a `list`.
 #' @export
 #' @seealso [get_sig_similarity], [sig_fit] and [show_cosmic_sig_profile].
 #' @references
-#' - Steele, Christopher D., et al. "Signatures of copy number alterations in human cancer." bioRxiv (2021).
+#' - Steele, Christopher D., et al. "Signatures of copy number alterations in human cancer." Nature 606.7916 (2022): 984-991.
 #' - Alexandrov, Ludmil B., et al. "The repertoire of mutational signatures in human cancer." Nature 578.7793 (2020): 94-101.
 #' - Steele, Christopher D., et al. "Undifferentiated sarcomas develop through distinct evolutionary pathways." Cancer Cell 35.3 (2019): 441-456.
-#'
+#' - Ziyu Tao, et al. "The repertoire of copy number alteration signatures in human cancer." Briefings in Bioinformatics (2023): bbad053.
 #' @examples
 #' s1 <- get_sig_db()
 #' s2 <- get_sig_db("SBS")
@@ -33,6 +34,8 @@
 #' s9 <- get_sig_db("RS_Nik_lab")
 #' s10 <- get_sig_db("CNS_USARC")
 #' s11 <- get_sig_db("CNS_TCGA")
+#' s12 <- get_sig_db("CNS_TCGA176")
+#' s13 <- get_sig_db("CNS_PCAWG176")
 #' s1
 #' s2
 #' s3
@@ -44,6 +47,8 @@
 #' s9
 #' s10
 #' s11
+#' s12
+#' s13
 #' @testexamples
 #' expect_is(s1, "list")
 #' expect_is(s2, "list")
@@ -56,6 +61,8 @@
 #' expect_is(s9, "list")
 #' expect_is(s10, "list")
 #' expect_is(s11, "list")
+#' expect_is(s12, "list")
+#' expect_is(s13, "list")
 get_sig_db <- function(sig_db = "legacy") {
   db_file <- switch(sig_db,
     legacy = system.file("extdata", "legacy_signatures.RDs",
@@ -87,6 +94,12 @@ get_sig_db <- function(sig_db = "legacy") {
     ),
     CNS_TCGA = system.file("extdata", "CNS_signatures_TCGA.rds",
                             package = "sigminer", mustWork = TRUE
+    ),
+    CNS_TCGA176 = system.file("extdata","CNS_signatures_TCGA176.rds",
+                           package = "sigminer", mustWork = TRUE
+    ),
+    CNS_PCAWG176 = system.file("extdata", "CNS_signatures_PCAWG176.rds",
+                           package = "sigminer", mustWork = TRUE
     ),
     DBS = system.file("extdata", "DBS_signatures.rds",
       package = "sigminer", mustWork = TRUE

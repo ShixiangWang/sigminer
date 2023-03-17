@@ -2,7 +2,7 @@
 
 context("File R/get_sig_db.R: @testexamples")
 
-test_that("Function get_sig_db() @ L59", {
+test_that("Function get_sig_db() @ L66", {
   
   s1 <- get_sig_db()
   s2 <- get_sig_db("SBS")
@@ -15,6 +15,8 @@ test_that("Function get_sig_db() @ L59", {
   s9 <- get_sig_db("RS_Nik_lab")
   s10 <- get_sig_db("CNS_USARC")
   s11 <- get_sig_db("CNS_TCGA")
+  s12 <- get_sig_db("CNS_TCGA176")
+  s13 <- get_sig_db("CNS_PCAWG176")
   s1
   s2
   s3
@@ -26,6 +28,8 @@ test_that("Function get_sig_db() @ L59", {
   s9
   s10
   s11
+  s12
+  s13
   expect_is(s1, "list")
   expect_is(s2, "list")
   expect_is(s3, "list")
@@ -37,5 +41,7 @@ test_that("Function get_sig_db() @ L59", {
   expect_is(s9, "list")
   expect_is(s10, "list")
   expect_is(s11, "list")
+  expect_is(s12, "list")
+  expect_is(s13, "list")
 })
 

@@ -8,12 +8,12 @@ get_sig_similarity(
   Signature,
   Ref = NULL,
   sig_db = c("SBS", "legacy", "DBS", "ID", "TSB", "SBS_Nik_lab", "RS_Nik_lab",
-    "RS_BRCA560", "RS_USARC", "CNS_USARC", "CNS_TCGA", "SBS_hg19", "SBS_hg38", "SBS_mm9",
-    "SBS_mm10", "DBS_hg19", "DBS_hg38", "DBS_mm9", "DBS_mm10", "SBS_Nik_lab_Organ",
-    "RS_Nik_lab_Organ", "latest_SBS_GRCh37", "latest_DBS_GRCh37", "latest_ID_GRCh37",
-    "latest_SBS_GRCh38", "latest_DBS_GRCh38", "latest_SBS_mm9", "latest_DBS_mm9",
-    "latest_SBS_mm10", "latest_DBS_mm10", "latest_SBS_rn6", "latest_DBS_rn6",
-    "latest_CN_GRCh37"),
+    "RS_BRCA560", "RS_USARC", "CNS_USARC", "CNS_TCGA", "CNS_TCGA176", "CNS_PCAWG176",
+    "SBS_hg19", "SBS_hg38", "SBS_mm9", "SBS_mm10", "DBS_hg19", "DBS_hg38", "DBS_mm9",
+    "DBS_mm10", "SBS_Nik_lab_Organ", "RS_Nik_lab_Organ", "latest_SBS_GRCh37",
+    "latest_DBS_GRCh37", "latest_ID_GRCh37", "latest_SBS_GRCh38", "latest_DBS_GRCh38",
+    "latest_SBS_mm9", "latest_DBS_mm9", "latest_SBS_mm10", "latest_DBS_mm10",
+    "latest_SBS_rn6", "latest_DBS_rn6", "latest_CN_GRCh37"),
   db_type = c("", "human-exome", "human-genome"),
   method = "cosine",
   normalize = c("row", "feature"),
@@ -41,7 +41,8 @@ In addition, it can be one of "SBS_Nik_lab_Organ", "RS_Nik_lab_Organ",
 "SBS_Nik_lab", "RS_Nik_lab" to refer reference signatures from
 Degasperi, Andrea, et al. (2020) (reference #2);
 "RS_BRCA560", "RS_USARC" to reference signatures from BRCA560 and USARC cohorts;
-"CNS_USARC" (40 categories), "CNS_TCGA" (48 categories) to reference copy number signatures from USARC cohort and TCGA.
+"CNS_USARC" (40 categories), "CNS_TCGA" (48 categories) to reference copy number signatures from USARC cohort and TCGA;
+"CNS_TCGA176" (176 categories) and "CNS_PCAWG176" (176 categories) to reference copy number signatures from PCAWG and TCGA separately.
 \strong{UPDATE}, the latest version of reference version can be automatically
 downloaded and loaded from \url{https://cancer.sanger.ac.uk/signatures/downloads/}
 when a option with \code{latest_} prefix is specified (e.g. "latest_SBS_GRCh37").
@@ -128,7 +129,7 @@ Steele, Christopher D., et al. "Undifferentiated sarcomas develop through distin
 
 Nik-Zainal, Serena, et al. "Landscape of somatic mutations in 560 breast cancer whole-genome sequences." Nature 534.7605 (2016): 47-54.
 
-Steele, Christopher D., et al. "Signatures of copy number alterations in human cancer." bioRxiv (2021).
+Steele, Christopher D., et al. "Signatures of copy number alterations in human cancer." Nature 606.7916 (2022): 984-991.
 }
 \author{
 Shixiang Wang \href{mailto:w_shixiang@163.com}{w_shixiang@163.com}

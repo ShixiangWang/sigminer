@@ -17,7 +17,8 @@ In addition, it can be one of "SBS_Nik_lab_Organ", "RS_Nik_lab_Organ",
 "SBS_Nik_lab", "RS_Nik_lab" to refer reference signatures from
 Degasperi, Andrea, et al. (2020) (reference #2);
 "RS_BRCA560", "RS_USARC" to reference signatures from BRCA560 and USARC cohorts;
-"CNS_USARC" (40 categories), "CNS_TCGA" (48 categories) to reference copy number signatures from USARC cohort and TCGA.
+"CNS_USARC" (40 categories), "CNS_TCGA" (48 categories) to reference copy number signatures from USARC cohort and TCGA;
+"CNS_TCGA176" (176 categories) and "CNS_PCAWG176" (176 categories) to reference copy number signatures from PCAWG and TCGA separately.
 \strong{UPDATE}, the latest version of reference version can be automatically
 downloaded and loaded from \url{https://cancer.sanger.ac.uk/signatures/downloads/}
 when a option with \code{latest_} prefix is specified (e.g. "latest_SBS_GRCh37").
@@ -42,6 +43,7 @@ mainly obtained from COSMIC database
 \item SBS and RS (rearrangement) signatures from Nik lab 2020 Nature Cancer paper.
 \item RS signatures from BRCA560 and USARC cohorts.
 \item Copy number signatures from USARC cohort and TCGA.
+\item Copy number signatures from Liu lab 2023. It supports both PCAWG and TCGA cohort.
 }
 }
 \examples{
@@ -56,6 +58,8 @@ s8 <- get_sig_db("RS_USARC")
 s9 <- get_sig_db("RS_Nik_lab")
 s10 <- get_sig_db("CNS_USARC")
 s11 <- get_sig_db("CNS_TCGA")
+s12 <- get_sig_db("CNS_TCGA176")
+s13 <- get_sig_db("CNS_PCAWG176")
 s1
 s2
 s3
@@ -67,12 +71,15 @@ s8
 s9
 s10
 s11
+s12
+s13
 }
 \references{
 \itemize{
-\item Steele, Christopher D., et al. "Signatures of copy number alterations in human cancer." bioRxiv (2021).
+\item Steele, Christopher D., et al. "Signatures of copy number alterations in human cancer." Nature 606.7916 (2022): 984-991.
 \item Alexandrov, Ludmil B., et al. "The repertoire of mutational signatures in human cancer." Nature 578.7793 (2020): 94-101.
 \item Steele, Christopher D., et al. "Undifferentiated sarcomas develop through distinct evolutionary pathways." Cancer Cell 35.3 (2019): 441-456.
+\item Ziyu Tao, et al. "The repertoire of copy number alteration signatures in human cancer." Briefings in Bioinformatics (2023): bbad053.
 }
 }
 \seealso{

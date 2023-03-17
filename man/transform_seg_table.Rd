@@ -9,9 +9,7 @@ transform_seg_table(
   genome_build = c("hg19", "hg38", "mm10", "mm9"),
   ref_type = c("cytoband", "gene"),
   values_fill = NA,
-  values_fn = function(x, ...) {
-     round(mean(x, ...))
- },
+  values_fn = function(x, ...) {     round(mean(x, ...)) },
   resolution_factor = 1L
 )
 }
@@ -26,16 +24,15 @@ at least 'chromosome', 'start', 'end', 'segVal', 'sample' these columns.}
 \item{values_fill}{Optionally, a (scalar) value that specifies what each
 \code{value} should be filled in with when missing.
 
-This can be a named list if you want to apply different fill values to
-different value columns.}
+This can be a named list if you want to apply different aggregations
+to different value columns.}
 
-\item{values_fn}{Optionally, a function applied to the value in each cell
+\item{values_fn}{Optionally, a function applied to the \code{value} in each cell
 in the output. You will typically use this when the combination of
-\code{id_cols} and \code{names_from} columns does not uniquely identify an
-observation.
+\code{id_cols} and \code{value} column does not uniquely identify an observation.
 
 This can be a named list if you want to apply different aggregations
-to different \code{values_from} columns.}
+to different value columns.}
 
 \item{resolution_factor}{an integer to control the resolution.
 When it is \code{1} (default), compute frequency in each cytoband.

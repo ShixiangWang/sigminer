@@ -26,7 +26,8 @@ In addition, it can be one of "SBS_Nik_lab_Organ", "RS_Nik_lab_Organ",
 "SBS_Nik_lab", "RS_Nik_lab" to refer reference signatures from
 Degasperi, Andrea, et al. (2020) (reference #2);
 "RS_BRCA560", "RS_USARC" to reference signatures from BRCA560 and USARC cohorts;
-"CNS_USARC" (40 categories), "CNS_TCGA" (48 categories) to reference copy number signatures from USARC cohort and TCGA.
+"CNS_USARC" (40 categories), "CNS_TCGA" (48 categories) to reference copy number signatures from USARC cohort and TCGA;
+"CNS_TCGA176" (176 categories) and "CNS_PCAWG176" (176 categories) to reference copy number signatures from PCAWG and TCGA separately.
 \strong{UPDATE}, the latest version of reference version can be automatically
 downloaded and loaded from \url{https://cancer.sanger.ac.uk/signatures/downloads/}
 when a option with \code{latest_} prefix is specified (e.g. "latest_SBS_GRCh37").

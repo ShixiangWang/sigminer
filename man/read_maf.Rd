@@ -26,9 +26,9 @@ positive strand format.
 }
 \section{Functions}{
 \itemize{
-\item \code{read_maf_minimal()}: Read Maf data.frame from a minimal maf-like data
-
+\item \code{read_maf_minimal}: Read Maf data.frame from a minimal maf-like data
 }}
+
 \examples{
 laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools", mustWork = TRUE)
 if (!require("R.utils")) {

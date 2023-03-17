@@ -82,7 +82,7 @@ Suggests:
     roxygen2,
     scales,
     synchronicity,
-    testthat,
+    testthat (>= 3.0.0),
     tibble,
     UCSCXenaTools
 LinkingTo: 
@@ -95,3 +95,4 @@ LazyData: true
 Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "rd",
     "roxytest::testthat_roclet"))
 RoxygenNote: 7.2.3
+Config/testthat/edition: 3
