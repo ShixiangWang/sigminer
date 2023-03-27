@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.2.0</span>
       </span>
     </div>
 
@@ -66,64 +66,64 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">show_sig_bootstrap_exposure</span><span class="op">(</span>
-  <span class="va">bt_result</span>,
-  sample <span class="op">=</span> <span class="cn">NULL</span>,
-  signatures <span class="op">=</span> <span class="cn">NULL</span>,
-  methods <span class="op">=</span> <span class="st">"QP"</span>,
-  plot_fun <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"boxplot"</span>, <span class="st">"violin"</span><span class="op">)</span>,
-  agg_fun <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mean"</span>, <span class="st">"median"</span>, <span class="st">"min"</span>, <span class="st">"max"</span><span class="op">)</span>,
-  highlight <span class="op">=</span> <span class="st">"auto"</span>,
-  highlight_size <span class="op">=</span> <span class="fl">4</span>,
-  palette <span class="op">=</span> <span class="st">"aaas"</span>,
-  title <span class="op">=</span> <span class="cn">NULL</span>,
-  xlab <span class="op">=</span> <span class="cn">FALSE</span>,
-  ylab <span class="op">=</span> <span class="st">"Signature exposure"</span>,
-  width <span class="op">=</span> <span class="fl">0.3</span>,
-  dodge_width <span class="op">=</span> <span class="fl">0.8</span>,
-  outlier.shape <span class="op">=</span> <span class="cn">NA</span>,
-  add <span class="op">=</span> <span class="st">"jitter"</span>,
-  add.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="fu">show_sig_bootstrap_error</span><span class="op">(</span>
-  <span class="va">bt_result</span>,
-  sample <span class="op">=</span> <span class="cn">NULL</span>,
-  methods <span class="op">=</span> <span class="st">"QP"</span>,
-  plot_fun <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"boxplot"</span>, <span class="st">"violin"</span><span class="op">)</span>,
-  agg_fun <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mean"</span>, <span class="st">"median"</span><span class="op">)</span>,
-  highlight <span class="op">=</span> <span class="st">"auto"</span>,
-  highlight_size <span class="op">=</span> <span class="fl">4</span>,
-  palette <span class="op">=</span> <span class="st">"aaas"</span>,
-  title <span class="op">=</span> <span class="cn">NULL</span>,
-  xlab <span class="op">=</span> <span class="cn">FALSE</span>,
-  ylab <span class="op">=</span> <span class="st">"Reconstruction error (L2 norm)"</span>,
-  width <span class="op">=</span> <span class="fl">0.3</span>,
-  dodge_width <span class="op">=</span> <span class="fl">0.8</span>,
-  outlier.shape <span class="op">=</span> <span class="cn">NA</span>,
-  add <span class="op">=</span> <span class="st">"jitter"</span>,
-  add.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span>,
-  legend <span class="op">=</span> <span class="st">"none"</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="fu">show_sig_bootstrap_stability</span><span class="op">(</span>
-  <span class="va">bt_result</span>,
-  signatures <span class="op">=</span> <span class="cn">NULL</span>,
-  measure <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"RMSE"</span>, <span class="st">"CV"</span>, <span class="st">"MAE"</span>, <span class="st">"AbsDiff"</span><span class="op">)</span>,
-  methods <span class="op">=</span> <span class="st">"QP"</span>,
-  plot_fun <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"boxplot"</span>, <span class="st">"violin"</span><span class="op">)</span>,
-  palette <span class="op">=</span> <span class="st">"aaas"</span>,
-  title <span class="op">=</span> <span class="cn">NULL</span>,
-  xlab <span class="op">=</span> <span class="cn">FALSE</span>,
-  ylab <span class="op">=</span> <span class="st">"Signature instability"</span>,
-  width <span class="op">=</span> <span class="fl">0.3</span>,
-  outlier.shape <span class="op">=</span> <span class="cn">NA</span>,
-  add <span class="op">=</span> <span class="st">"jitter"</span>,
-  add.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">show_sig_bootstrap_exposure</span><span class="op">(</span></span>
+<span>  <span class="va">bt_result</span>,</span>
+<span>  sample <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  signatures <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  methods <span class="op">=</span> <span class="st">"QP"</span>,</span>
+<span>  plot_fun <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"boxplot"</span>, <span class="st">"violin"</span><span class="op">)</span>,</span>
+<span>  agg_fun <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mean"</span>, <span class="st">"median"</span>, <span class="st">"min"</span>, <span class="st">"max"</span><span class="op">)</span>,</span>
+<span>  highlight <span class="op">=</span> <span class="st">"auto"</span>,</span>
+<span>  highlight_size <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  palette <span class="op">=</span> <span class="st">"aaas"</span>,</span>
+<span>  title <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  xlab <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  ylab <span class="op">=</span> <span class="st">"Signature exposure"</span>,</span>
+<span>  width <span class="op">=</span> <span class="fl">0.3</span>,</span>
+<span>  dodge_width <span class="op">=</span> <span class="fl">0.8</span>,</span>
+<span>  outlier.shape <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  add <span class="op">=</span> <span class="st">"jitter"</span>,</span>
+<span>  add.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">show_sig_bootstrap_error</span><span class="op">(</span></span>
+<span>  <span class="va">bt_result</span>,</span>
+<span>  sample <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  methods <span class="op">=</span> <span class="st">"QP"</span>,</span>
+<span>  plot_fun <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"boxplot"</span>, <span class="st">"violin"</span><span class="op">)</span>,</span>
+<span>  agg_fun <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mean"</span>, <span class="st">"median"</span><span class="op">)</span>,</span>
+<span>  highlight <span class="op">=</span> <span class="st">"auto"</span>,</span>
+<span>  highlight_size <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  palette <span class="op">=</span> <span class="st">"aaas"</span>,</span>
+<span>  title <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  xlab <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  ylab <span class="op">=</span> <span class="st">"Reconstruction error (L2 norm)"</span>,</span>
+<span>  width <span class="op">=</span> <span class="fl">0.3</span>,</span>
+<span>  dodge_width <span class="op">=</span> <span class="fl">0.8</span>,</span>
+<span>  outlier.shape <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  add <span class="op">=</span> <span class="st">"jitter"</span>,</span>
+<span>  add.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span>,</span>
+<span>  legend <span class="op">=</span> <span class="st">"none"</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">show_sig_bootstrap_stability</span><span class="op">(</span></span>
+<span>  <span class="va">bt_result</span>,</span>
+<span>  signatures <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  measure <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"RMSE"</span>, <span class="st">"CV"</span>, <span class="st">"MAE"</span>, <span class="st">"AbsDiff"</span><span class="op">)</span>,</span>
+<span>  methods <span class="op">=</span> <span class="st">"QP"</span>,</span>
+<span>  plot_fun <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"boxplot"</span>, <span class="st">"violin"</span><span class="op">)</span>,</span>
+<span>  palette <span class="op">=</span> <span class="st">"aaas"</span>,</span>
+<span>  title <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  xlab <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  ylab <span class="op">=</span> <span class="st">"Signature instability"</span>,</span>
+<span>  width <span class="op">=</span> <span class="fl">0.3</span>,</span>
+<span>  outlier.shape <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  add <span class="op">=</span> <span class="st">"jitter"</span>,</span>
+<span>  add.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -256,62 +256,61 @@ the instability measure supports 3 types:</p><ul><li><p>'RMSE' for Mean Root Squ
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># \donttest{</span>
-<span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st">"BSgenome.Hsapiens.UCSC.hg19"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">laml.maf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"tcga_laml.maf.gz"</span>, package <span class="op">=</span> <span class="st">"maftools"</span><span class="op">)</span>
-  <span class="va">laml</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_maf.html">read_maf</a></span><span class="op">(</span>maf <span class="op">=</span> <span class="va">laml.maf</span><span class="op">)</span>
-  <span class="va">mt_tally</span> <span class="op">&lt;-</span> <span class="fu"><a href="sig_tally.html">sig_tally</a></span><span class="op">(</span>
-    <span class="va">laml</span>,
-    ref_genome <span class="op">=</span> <span class="st">"BSgenome.Hsapiens.UCSC.hg19"</span>,
-    use_syn <span class="op">=</span> <span class="cn">TRUE</span>
-  <span class="op">)</span>
-
-  <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://renozao.github.io/NMF/" class="external-link">NMF</a></span><span class="op">)</span>
-  <span class="va">mt_sig</span> <span class="op">&lt;-</span> <span class="fu"><a href="sig_extract.html">sig_extract</a></span><span class="op">(</span><span class="va">mt_tally</span><span class="op">$</span><span class="va">nmf_matrix</span>,
-    n_sig <span class="op">=</span> <span class="fl">3</span>,
-    nrun <span class="op">=</span> <span class="fl">2</span>,
-    cores <span class="op">=</span> <span class="fl">1</span>
-  <span class="op">)</span>
-
-  <span class="va">mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">mt_tally</span><span class="op">$</span><span class="va">nmf_matrix</span><span class="op">)</span>
-  <span class="va">mat</span> <span class="op">&lt;-</span> <span class="va">mat</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colSums</a></span><span class="op">(</span><span class="va">mat</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">]</span>
-  <span class="va">bt_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="sig_fit_bootstrap_batch.html">sig_fit_bootstrap_batch</a></span><span class="op">(</span><span class="va">mat</span>, sig <span class="op">=</span> <span class="va">mt_sig</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
-  <span class="co">## Parallel computation</span>
-  <span class="co">## bt_result = sig_fit_bootstrap_batch(mat, sig = mt_sig, n = 10, use_parallel = TRUE)</span>
-
-  <span class="co">## At default, mean bootstrap exposure for each sample has been calculated</span>
-  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu">show_sig_bootstrap_exposure</span><span class="op">(</span><span class="va">bt_result</span>, methods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"QP"</span><span class="op">)</span><span class="op">)</span>
-  <span class="co">## Show bootstrap exposure (optimal exposure is shown as triangle)</span>
-  <span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu">show_sig_bootstrap_exposure</span><span class="op">(</span><span class="va">bt_result</span>, methods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"QP"</span><span class="op">)</span>, sample <span class="op">=</span> <span class="st">"TCGA-AB-2802"</span><span class="op">)</span>
-  <span class="va">p1</span>
-  <span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu">show_sig_bootstrap_exposure</span><span class="op">(</span><span class="va">bt_result</span>,
-    methods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"QP"</span><span class="op">)</span>,
-    sample <span class="op">=</span> <span class="st">"TCGA-AB-3012"</span>,
-    signatures <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Sig1"</span>, <span class="st">"Sig2"</span><span class="op">)</span>
-  <span class="op">)</span>
-  <span class="va">p2</span>
-
-  <span class="co">## Show bootstrap error</span>
-  <span class="co">## Similar to exposure above</span>
-  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu">show_sig_bootstrap_error</span><span class="op">(</span><span class="va">bt_result</span>, methods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"QP"</span><span class="op">)</span><span class="op">)</span>
-  <span class="va">p</span>
-  <span class="va">p3</span> <span class="op">&lt;-</span> <span class="fu">show_sig_bootstrap_error</span><span class="op">(</span><span class="va">bt_result</span>, methods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"QP"</span><span class="op">)</span>, sample <span class="op">=</span> <span class="st">"TCGA-AB-2802"</span><span class="op">)</span>
-  <span class="va">p3</span>
-
-  <span class="co">## Show exposure (in)stability</span>
-  <span class="va">p4</span> <span class="op">&lt;-</span> <span class="fu">show_sig_bootstrap_stability</span><span class="op">(</span><span class="va">bt_result</span>, methods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"QP"</span><span class="op">)</span><span class="op">)</span>
-  <span class="va">p4</span>
-  <span class="va">p5</span> <span class="op">&lt;-</span> <span class="fu">show_sig_bootstrap_stability</span><span class="op">(</span><span class="va">bt_result</span>, methods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"QP"</span><span class="op">)</span>, measure <span class="op">=</span> <span class="st">"MAE"</span><span class="op">)</span>
-  <span class="va">p5</span>
-  <span class="va">p6</span> <span class="op">&lt;-</span> <span class="fu">show_sig_bootstrap_stability</span><span class="op">(</span><span class="va">bt_result</span>, methods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"QP"</span><span class="op">)</span>, measure <span class="op">=</span> <span class="st">"AbsDiff"</span><span class="op">)</span>
-  <span class="va">p6</span>
-  <span class="va">p7</span> <span class="op">&lt;-</span> <span class="fu">show_sig_bootstrap_stability</span><span class="op">(</span><span class="va">bt_result</span>, methods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"QP"</span><span class="op">)</span>, measure <span class="op">=</span> <span class="st">"CV"</span><span class="op">)</span>
-  <span class="va">p7</span>
-<span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"Please install package 'BSgenome.Hsapiens.UCSC.hg19' firstly!"</span><span class="op">)</span>
-<span class="op">}</span>
-<span class="co"># }</span>
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># \donttest{</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st">"BSgenome.Hsapiens.UCSC.hg19"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">laml.maf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"tcga_laml.maf.gz"</span>, package <span class="op">=</span> <span class="st">"maftools"</span><span class="op">)</span></span>
+<span>  <span class="va">laml</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_maf.html">read_maf</a></span><span class="op">(</span>maf <span class="op">=</span> <span class="va">laml.maf</span><span class="op">)</span></span>
+<span>  <span class="va">mt_tally</span> <span class="op">&lt;-</span> <span class="fu"><a href="sig_tally.html">sig_tally</a></span><span class="op">(</span></span>
+<span>    <span class="va">laml</span>,</span>
+<span>    ref_genome <span class="op">=</span> <span class="st">"BSgenome.Hsapiens.UCSC.hg19"</span>,</span>
+<span>    use_syn <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://renozao.github.io/NMF/" class="external-link">NMF</a></span><span class="op">)</span></span>
+<span>  <span class="va">mt_sig</span> <span class="op">&lt;-</span> <span class="fu"><a href="sig_extract.html">sig_extract</a></span><span class="op">(</span><span class="va">mt_tally</span><span class="op">$</span><span class="va">nmf_matrix</span>,</span>
+<span>    n_sig <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>    nrun <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>    cores <span class="op">=</span> <span class="fl">1</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span>  <span class="va">mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">mt_tally</span><span class="op">$</span><span class="va">nmf_matrix</span><span class="op">)</span></span>
+<span>  <span class="va">mat</span> <span class="op">&lt;-</span> <span class="va">mat</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colSums</a></span><span class="op">(</span><span class="va">mat</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">]</span></span>
+<span>  <span class="va">bt_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="sig_fit_bootstrap_batch.html">sig_fit_bootstrap_batch</a></span><span class="op">(</span><span class="va">mat</span>, sig <span class="op">=</span> <span class="va">mt_sig</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span>  <span class="co">## Parallel computation</span></span>
+<span>  <span class="co">## bt_result = sig_fit_bootstrap_batch(mat, sig = mt_sig, n = 10, use_parallel = TRUE)</span></span>
+<span></span>
+<span>  <span class="co">## At default, mean bootstrap exposure for each sample has been calculated</span></span>
+<span>  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu">show_sig_bootstrap_exposure</span><span class="op">(</span><span class="va">bt_result</span>, methods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"QP"</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="co">## Show bootstrap exposure (optimal exposure is shown as triangle)</span></span>
+<span>  <span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu">show_sig_bootstrap_exposure</span><span class="op">(</span><span class="va">bt_result</span>, methods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"QP"</span><span class="op">)</span>, sample <span class="op">=</span> <span class="st">"TCGA-AB-2802"</span><span class="op">)</span></span>
+<span>  <span class="va">p1</span></span>
+<span>  <span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu">show_sig_bootstrap_exposure</span><span class="op">(</span><span class="va">bt_result</span>,</span>
+<span>    methods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"QP"</span><span class="op">)</span>,</span>
+<span>    sample <span class="op">=</span> <span class="st">"TCGA-AB-3012"</span>,</span>
+<span>    signatures <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Sig1"</span>, <span class="st">"Sig2"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span>  <span class="va">p2</span></span>
+<span></span>
+<span>  <span class="co">## Show bootstrap error</span></span>
+<span>  <span class="co">## Similar to exposure above</span></span>
+<span>  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu">show_sig_bootstrap_error</span><span class="op">(</span><span class="va">bt_result</span>, methods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"QP"</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="va">p</span></span>
+<span>  <span class="va">p3</span> <span class="op">&lt;-</span> <span class="fu">show_sig_bootstrap_error</span><span class="op">(</span><span class="va">bt_result</span>, methods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"QP"</span><span class="op">)</span>, sample <span class="op">=</span> <span class="st">"TCGA-AB-2802"</span><span class="op">)</span></span>
+<span>  <span class="va">p3</span></span>
+<span></span>
+<span>  <span class="co">## Show exposure (in)stability</span></span>
+<span>  <span class="va">p4</span> <span class="op">&lt;-</span> <span class="fu">show_sig_bootstrap_stability</span><span class="op">(</span><span class="va">bt_result</span>, methods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"QP"</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="va">p4</span></span>
+<span>  <span class="va">p5</span> <span class="op">&lt;-</span> <span class="fu">show_sig_bootstrap_stability</span><span class="op">(</span><span class="va">bt_result</span>, methods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"QP"</span><span class="op">)</span>, measure <span class="op">=</span> <span class="st">"MAE"</span><span class="op">)</span></span>
+<span>  <span class="va">p5</span></span>
+<span>  <span class="va">p6</span> <span class="op">&lt;-</span> <span class="fu">show_sig_bootstrap_stability</span><span class="op">(</span><span class="va">bt_result</span>, methods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"QP"</span><span class="op">)</span>, measure <span class="op">=</span> <span class="st">"AbsDiff"</span><span class="op">)</span></span>
+<span>  <span class="va">p6</span></span>
+<span>  <span class="va">p7</span> <span class="op">&lt;-</span> <span class="fu">show_sig_bootstrap_stability</span><span class="op">(</span><span class="va">bt_result</span>, methods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"QP"</span><span class="op">)</span>, measure <span class="op">=</span> <span class="st">"CV"</span><span class="op">)</span></span>
+<span>  <span class="va">p7</span></span>
+<span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"Please install package 'BSgenome.Hsapiens.UCSC.hg19' firstly!"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="co"># }</span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -325,7 +324,7 @@ the instability measure supports 3 types:</p><ul><li><p>'RMSE' for Mean Root Squ
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

@@ -9,8 +9,7 @@ same_size_clustering(
   diss = FALSE,
   clsize = NULL,
   algo = c("nnit", "hcbottom", "kmvar"),
-  method = c("maxd", "random", "mind", "elki", "ward.D", "average", "complete",
-    "single")
+  method = c("maxd", "random", "mind", "elki", "ward.D", "average", "complete", "single")
 )
 }
 \arguments{

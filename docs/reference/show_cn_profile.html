@@ -19,7 +19,7 @@ related packages."><meta property="og:image" content="https://shixiangwang.githu
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.2.0</span>
       </span>
     </div>
 
@@ -70,20 +70,20 @@ related packages.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">show_cn_profile</span><span class="op">(</span>
-  <span class="va">data</span>,
-  samples <span class="op">=</span> <span class="cn">NULL</span>,
-  show_n <span class="op">=</span> <span class="cn">NULL</span>,
-  show_title <span class="op">=</span> <span class="cn">FALSE</span>,
-  show_labels <span class="op">=</span> <span class="cn">NULL</span>,
-  chrs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"chr"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">22</span><span class="op">)</span>,
-  position <span class="op">=</span> <span class="cn">NULL</span>,
-  genome_build <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hg19"</span>, <span class="st">"hg38"</span>, <span class="st">"mm10"</span>, <span class="st">"mm9"</span><span class="op">)</span>,
-  ylim <span class="op">=</span> <span class="cn">NULL</span>,
-  nrow <span class="op">=</span> <span class="cn">NULL</span>,
-  ncol <span class="op">=</span> <span class="cn">NULL</span>,
-  return_plotlist <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">show_cn_profile</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  samples <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  show_n <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  show_title <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  show_labels <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  chrs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"chr"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">22</span><span class="op">)</span>,</span>
+<span>  position <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  genome_build <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hg19"</span>, <span class="st">"hg38"</span>, <span class="st">"mm10"</span>, <span class="st">"mm9"</span><span class="op">)</span>,</span>
+<span>  ylim <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  nrow <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  ncol <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  return_plotlist <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -151,21 +151,20 @@ overlaps with this range will be shown.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># Load copy number object</span>
-<span class="fu"><a href="https://rdrr.io/pkg/R.oo/man/Non-documented_objects.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"toy_copynumber.RData"</span>,
-  package <span class="op">=</span> <span class="st">"sigminer"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span><span class="op">)</span>
-
-<span class="va">p</span> <span class="op">&lt;-</span> <span class="fu">show_cn_profile</span><span class="op">(</span><span class="va">cn</span>, nrow <span class="op">=</span> <span class="fl">2</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
-<span class="va">p</span>
-<span class="co"># \donttest{</span>
-<span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu">show_cn_profile</span><span class="op">(</span><span class="va">cn</span>,
-  nrow <span class="op">=</span> <span class="fl">2</span>, ncol <span class="op">=</span> <span class="fl">1</span>,
-  position <span class="op">=</span> <span class="st">"chr1:3218923-116319008"</span>
-<span class="op">)</span>
-<span class="va">p2</span>
-<span class="co"># }</span>
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># Load copy number object</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/R.oo/man/Non-documented_objects.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"toy_copynumber.RData"</span>,</span>
+<span>  package <span class="op">=</span> <span class="st">"sigminer"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu">show_cn_profile</span><span class="op">(</span><span class="va">cn</span>, nrow <span class="op">=</span> <span class="fl">2</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">p</span></span>
+<span><span class="co"># \donttest{</span></span>
+<span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu">show_cn_profile</span><span class="op">(</span><span class="va">cn</span>,</span>
+<span>  nrow <span class="op">=</span> <span class="fl">2</span>, ncol <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  position <span class="op">=</span> <span class="st">"chr1:3218923-116319008"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">p2</span></span>
+<span><span class="co"># }</span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -179,7 +178,7 @@ overlaps with this range will be shown.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

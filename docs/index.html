@@ -49,7 +49,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.2.0</span>
       </span>
     </div>
 
@@ -99,7 +99,7 @@
 <div class="section level1">
 <div class="page-header"><h1 id="sigminer-mutational-signature-analysis-and-visualization-in-r-">Sigminer: Mutational Signature Analysis and Visualization in R <img src="reference/figures/logo.png" alt="logo" align="right" height="140" width="120"><a class="anchor" aria-label="anchor" href="#sigminer-mutational-signature-analysis-and-visualization-in-r-"></a>
 </h1></div>
-
+<p><a href="https://cran.r-project.org/package=sigminer" class="external-link"><img src="https://www.r-pkg.org/badges/version/sigminer" alt="CRAN status"></a> <a href="https://lifecycle.r-lib.org/articles/stages.html" class="external-link"><img src="https://img.shields.io/badge/lifecycle-stable-blue.svg" alt="lifecycle"></a> <a href="https://github.com/ShixiangWang/sigminer/actions" class="external-link"><img src="https://github.com/ShixiangWang/sigminer/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a> <a href="https://codecov.io/github/ShixiangWang/sigminer?branch=master" class="external-link"><img src="https://codecov.io/gh/ShixiangWang/sigminer/branch/master/graph/badge.svg" alt="Coverage status"></a> <a href="https://cran.r-project.org/package=sigminer" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/sigminer?color=orange"></a> <a href="https://github.com/ShixiangWang/sigminer/issues?q=is%3Aissue+is%3Aclosed" class="external-link"><img src="https://img.shields.io/github/issues-closed/ShixiangWang/sigminer.svg" alt="Closed issues"></a> <a href="https://github.com/ShixiangWang/sigminer" class="external-link"><img src="https://tokei.rs/b1/github/ShixiangWang/sigminer?category=code" alt="Lines Of Code"></a> <a href="https://hits.seeyoufarm.com" class="external-link"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FShixiangWang%2Fsigminer&amp;count_bg=%2379C83D&amp;title_bg=%23555555&amp;icon=&amp;icon_color=%23E7E7E7&amp;title=hits&amp;edge_flat=false" alt="Hits"></a> <img src="https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat-square" alt="install with bioconda"><a href="https://biotreasury.rjmart.cn/#/tool?id=10043" class="external-link"><img src="https://img.shields.io/badge/Biotreasury-collected-brightgreen" alt="check in Biotreasury"></a> <a href="https://gitter.im/ShixiangWang/community?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge" class="external-link"><img src="https://badges.gitter.im/ShixiangWang/community.svg" alt="Gitter"></a></p>
 <div class="section level2">
 <h2 id="bar_chart-overview">
 <span class="emoji" data-emoji="bar_chart">📊</span> Overview<a class="anchor" aria-label="anchor" href="#bar_chart-overview"></a>
@@ -140,13 +140,13 @@
 </h2>
 <p>You can install the stable release of <strong>sigminer</strong> from CRAN with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span>
-<span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"sigminer"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
+<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"sigminer"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>You can install the development version of <strong>sigminer</strong> from Github with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/remotes/man/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"ShixiangWang/sigminer"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="co"># For Chinese users, run </span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/remotes/man/install_git.html" class="external-link">install_git</a></span><span class="op">(</span><span class="st">"https://gitee.com/ShixiangWang/sigminer"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"ShixiangWang/sigminer"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co"># For Chinese users, run </span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_git.html" class="external-link">install_git</a></span><span class="op">(</span><span class="st">"https://gitee.com/ShixiangWang/sigminer"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>You can also install <strong>sigminer</strong> from conda <code>bioconda</code> channel with</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Please note version number of the bioconda release</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -168,8 +168,15 @@
 <p>If you use <strong>sigminer</strong> in academic field, please cite one of the following papers.</p>
 <hr>
 <ul>
-<li><p><strong><em>Wang S, Li H, Song M, Tao Z, Wu T, He Z, et al. (2021) Copy number signature analysis tool and its application in prostate cancer reveals distinct mutational processes and clinical outcomes. PLoS Genet 17(5): e1009557.</em></strong> <a href="https://doi.org/10.1371/journal.pgen.1009557" class="external-link uri">https://doi.org/10.1371/journal.pgen.1009557</a></p></li>
-<li><p><strong><em>Shixiang Wang, Ziyu Tao, Tao Wu, Xue-Song Liu, Sigflow: An Automated And Comprehensive Pipeline For Cancer Genome Mutational Signature Analysis, Bioinformatics, btaa895</em></strong>. <a href="https://doi.org/10.1093/bioinformatics/btaa895" class="external-link uri">https://doi.org/10.1093/bioinformatics/btaa895</a></p></li>
+<li>
+<strong><em>Wang S, Li H, Song M, Tao Z, Wu T, He Z, et al. (2021) Copy number signature analysis tool and its application in prostate cancer reveals distinct mutational processes and clinical outcomes. PLoS Genet 17(5): e1009557.</em></strong> <a href="https://doi.org/10.1371/journal.pgen.1009557" class="external-link uri">https://doi.org/10.1371/journal.pgen.1009557</a>
+</li>
+<li>
+<strong><em>Wang, S., Tao, Z., Wu, T., &amp; Liu, X. S. (2021). Sigflow: an automated and comprehensive pipeline for cancer genome mutational signature analysis. Bioinformatics, 37(11), 1590-1592</em></strong>. <a href="https://doi.org/10.1093/bioinformatics/btaa895" class="external-link uri">https://doi.org/10.1093/bioinformatics/btaa895</a>
+</li>
+<li>
+<strong><em>Ziyu Tao, Shixiang Wang, Chenxu Wu, Tao Wu, Xiangyu Zhao, Wei Ning, Guangshuai Wang, Jinyu Wang, Jing Chen, Kaixuan Diao, Fuxiang Chen, Xue-Song Liu, The repertoire of copy number alteration signatures in human cancer, Briefings in Bioinformatics, 2023, bbad053</em></strong>. <a href="https://doi.org/10.1093/bib/bbad053" class="external-link uri">https://doi.org/10.1093/bib/bbad053</a>
+</li>
 </ul>
 <hr>
 </div>
@@ -205,7 +212,9 @@
 <p>The software is made available for non commercial research purposes only under the <a href="https://github.com/ShixiangWang/sigminer/blob/master/LICENSE.md" class="external-link">MIT</a>. However, notwithstanding any provision of the MIT License, the software currently may not be used for commercial purposes without explicit written permission after contacting patents’ authors.</p>
 <p>Related patents:</p>
 <ul>
-<li><a href="https://kms.shanghaitech.edu.cn/handle/2MSLDSTB/127042" class="external-link">CN202011516653.7</a></li>
+<li>
+<strong>CN202011516653.7</strong> <code>https://kms.shanghaitech.edu.cn/handle/2MSLDSTB/127042</code>
+</li>
 </ul>
 <p>MIT © 2019-Present Shixiang Wang, Xue-Song Liu</p>
 <p>MIT © 2018 Anand Mayakonda</p>
@@ -258,21 +267,7 @@
 </ul>
 </div>
 
-<div class="dev-status">
-<h2 data-toc-skip>Dev status</h2>
-<ul class="list-unstyled">
-<li><a href="https://cran.r-project.org/package=sigminer" class="external-link"><img src="https://www.r-pkg.org/badges/version/sigminer" alt="CRAN status"></a></li>
-<li><a href="https://lifecycle.r-lib.org/articles/stages.html" class="external-link"><img src="https://img.shields.io/badge/lifecycle-stable-blue.svg" alt="lifecycle"></a></li>
-<li><a href="https://github.com/ShixiangWang/sigminer/actions" class="external-link"><img src="https://github.com/ShixiangWang/sigminer/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
-<li><a href="https://codecov.io/github/ShixiangWang/sigminer?branch=master" class="external-link"><img src="https://codecov.io/gh/ShixiangWang/sigminer/branch/master/graph/badge.svg" alt="Coverage status"></a></li>
-<li><a href="https://cran.r-project.org/package=sigminer" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/sigminer?color=orange"></a></li>
-<li><a href="https://github.com/ShixiangWang/sigminer/issues?q=is%3Aissue+is%3Aclosed" class="external-link"><img src="https://img.shields.io/github/issues-closed/ShixiangWang/sigminer.svg" alt="Closed issues"></a></li>
-<li><a href="https://github.com/ShixiangWang/sigminer" class="external-link"><img src="https://tokei.rs/b1/github/ShixiangWang/sigminer?category=code" alt="Lines Of Code"></a></li>
-<li><a href="https://hits.seeyoufarm.com" class="external-link"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FShixiangWang%2Fsigminer&amp;count_bg=%2379C83D&amp;title_bg=%23555555&amp;icon=&amp;icon_color=%23E7E7E7&amp;title=hits&amp;edge_flat=false" alt="Hits"></a></li>
-<li><a href="https://biotreasury.rjmart.cn/#/tool?id=10043" class="external-link"><img src="https://img.shields.io/badge/Biotreasury-collected-brightgreen" alt="check in Biotreasury"></a></li>
-<li><a href="https://gitter.im/ShixiangWang/community?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge" class="external-link"><img src="https://badges.gitter.im/ShixiangWang/community.svg" alt="Gitter"></a></li>
-</ul>
-</div>
+
 
   </div>
 </div>
@@ -285,7 +280,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

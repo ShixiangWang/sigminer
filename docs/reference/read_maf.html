@@ -21,7 +21,7 @@ positive strand format."><meta property="og:image" content="https://shixiangwang
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.2.0</span>
       </span>
     </div>
 
@@ -74,7 +74,9 @@ positive strand format.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">read_maf</span><span class="op">(</span><span class="va">maf</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">read_maf</span><span class="op">(</span><span class="va">maf</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">read_maf_minimal</span><span class="op">(</span><span class="va">dt</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -86,7 +88,17 @@ positive strand format.</p>
 <dt>verbose</dt>
 <dd><p>TRUE logical. Default to be talkative and prints summary.</p></dd>
 
+
+<dt>dt</dt>
+<dd><p>A data.frame contains at least the following columns:
+"Tumor_Sample_Barcode", "Chromosome", "Start_Position", "End_Position", "Reference_Allele", "Tumor_Seq_Allele2"</p></dd>
+
 </dl></div>
+    <div id="functions">
+    <h2>Functions</h2>
+    
+<ul><li><p><code>read_maf_minimal()</code>: Read Maf data.frame from a minimal maf-like data</p></li>
+</ul></div>
     <div id="see-also">
     <h2>See also</h2>
     <div class="dont-index"><p><a href="read_copynumber.html">read_copynumber</a> for reading copy number data to <a href="CopyNumber-class.html">CopyNumber</a> object.</p></div>
@@ -94,14 +106,21 @@ positive strand format.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="va">laml.maf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"tcga_laml.maf.gz"</span>, package <span class="op">=</span> <span class="st">"maftools"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://github.com/HenrikBengtsson/R.utils" class="external-link">"R.utils"</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"Please install 'R.utils' package firstly"</span><span class="op">)</span>
-<span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
-  <span class="va">laml</span> <span class="op">&lt;-</span> <span class="fu">read_maf</span><span class="op">(</span>maf <span class="op">=</span> <span class="va">laml.maf</span><span class="op">)</span>
-  <span class="va">laml</span>
-<span class="op">}</span>
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="va">laml.maf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"tcga_laml.maf.gz"</span>, package <span class="op">=</span> <span class="st">"maftools"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://henrikbengtsson.github.io/R.utils/" class="external-link">"R.utils"</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"Please install 'R.utils' package firstly"</span><span class="op">)</span></span>
+<span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>  <span class="va">laml</span> <span class="op">&lt;-</span> <span class="fu">read_maf</span><span class="op">(</span>maf <span class="op">=</span> <span class="va">laml.maf</span><span class="op">)</span></span>
+<span>  <span class="va">laml</span></span>
+<span></span>
+<span>  <span class="va">laml_mini</span> <span class="op">&lt;-</span> <span class="va">laml</span><span class="op">@</span><span class="va">data</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>    <span class="va">Tumor_Sample_Barcode</span>, <span class="va">Chromosome</span>,</span>
+<span>    <span class="va">Start_Position</span>, <span class="va">End_Position</span>,</span>
+<span>    <span class="va">Reference_Allele</span>, <span class="va">Tumor_Seq_Allele2</span></span>
+<span>  <span class="op">)</span><span class="op">]</span></span>
+<span>  <span class="va">laml2</span> <span class="op">&lt;-</span> <span class="fu">read_maf_minimal</span><span class="op">(</span><span class="va">laml_mini</span><span class="op">)</span></span>
+<span>  <span class="va">laml2</span></span>
+<span><span class="op">}</span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -115,7 +134,7 @@ positive strand format.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

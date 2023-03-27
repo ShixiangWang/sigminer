@@ -58,7 +58,7 @@ Default is \link{CN.features}. Users can also set custom input with "feature",
 \code{unique(CN.features$feature)}.}
 
 \item{cores}{number of computer cores to run this task.
-You can use \code{\link[future:availableCores]{future::availableCores()}} function to check how
+You can use \code{\link[future:re-exports]{future::availableCores()}} function to check how
 many cores you can use.}
 
 \item{keep_only_matrix}{if \code{TRUE}, keep only matrix for signature extraction.
@@ -116,13 +116,13 @@ with \link{read_copynumber}).
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{CopyNumber}: Returns copy number features, components and component-by-sample matrix
+\item \code{sig_tally(CopyNumber)}: Returns copy number features, components and component-by-sample matrix
 
-\item \code{RS}: Returns genome rearrangement sample-by-component matrix
+\item \code{sig_tally(RS)}: Returns genome rearrangement sample-by-component matrix
 
-\item \code{MAF}: Returns SBS mutation sample-by-component matrix and APOBEC enrichment
+\item \code{sig_tally(MAF)}: Returns SBS mutation sample-by-component matrix and APOBEC enrichment
+
 }}
-
 \examples{
 # Load copy number object
 load(system.file("extdata", "toy_copynumber.RData",

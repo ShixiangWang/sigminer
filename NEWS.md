@@ -1,6 +1,7 @@
 # sigminer 2.2.0
 
-- Support ce11 genome in `read_vcf()`.
+- Supported Ziyu Tao et al approach for copy number segment classification. 
+- Supported ce11 genome in `read_vcf()`.
 - Added `read_maf_minimal()` to support a minimal MAF-like data as input.
 
 # sigminer 2.1.10

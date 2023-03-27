@@ -10,6 +10,7 @@ COSMIC v3 ID (indel) signatures.
 SBS and RS (rearrangement) signatures from Nik lab 2020 Nature Cancer paper.
 RS signatures from BRCA560 and USARC cohorts.
 Copy number signatures from USARC cohort and TCGA.
+Copy number signatures from Liu lab 2023. It supports both PCAWG and TCGA cohort.
 
 "><meta property="og:image" content="https://shixiangwang.github.io/sigminer/logo.png"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -29,7 +30,7 @@ Copy number signatures from USARC cohort and TCGA.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.2.0</span>
       </span>
     </div>
 
@@ -84,10 +85,11 @@ mainly obtained from COSMIC database
 <li><p>SBS and RS (rearrangement) signatures from Nik lab 2020 Nature Cancer paper.</p></li>
 <li><p>RS signatures from BRCA560 and USARC cohorts.</p></li>
 <li><p>Copy number signatures from USARC cohort and TCGA.</p></li>
+<li><p>Copy number signatures from Liu lab 2023. It supports both PCAWG and TCGA cohort.</p></li>
 </ul></div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">get_sig_db</span><span class="op">(</span>sig_db <span class="op">=</span> <span class="st">"legacy"</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_sig_db</span><span class="op">(</span>sig_db <span class="op">=</span> <span class="st">"legacy"</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -103,7 +105,8 @@ In addition, it can be one of "SBS_Nik_lab_Organ", "RS_Nik_lab_Organ",
 "SBS_Nik_lab", "RS_Nik_lab" to refer reference signatures from
 Degasperi, Andrea, et al. (2020) (reference #2);
 "RS_BRCA560", "RS_USARC" to reference signatures from BRCA560 and USARC cohorts;
-"CNS_USARC" (40 categories), "CNS_TCGA" (48 categories) to reference copy number signatures from USARC cohort and TCGA.
+"CNS_USARC" (40 categories), "CNS_TCGA" (48 categories) to reference copy number signatures from USARC cohort and TCGA;
+"CNS_TCGA176" (176 categories) and "CNS_PCAWG176" (176 categories) to reference copy number signatures from PCAWG and TCGA separately.
 <strong>UPDATE</strong>, the latest version of reference version can be automatically
 downloaded and loaded from <a href="https://cancer.sanger.ac.uk/signatures/downloads/" class="external-link">https://cancer.sanger.ac.uk/signatures/downloads/</a>
 when a option with <code>latest_</code> prefix is specified (e.g. "latest_SBS_GRCh37").
@@ -122,9 +125,10 @@ For all available options, check the parameter setting.</p></dd>
     <div id="references">
     <h2>References</h2>
     
-<ul><li><p>Steele, Christopher D., et al. "Signatures of copy number alterations in human cancer." bioRxiv (2021).</p></li>
+<ul><li><p>Steele, Christopher D., et al. "Signatures of copy number alterations in human cancer." Nature 606.7916 (2022): 984-991.</p></li>
 <li><p>Alexandrov, Ludmil B., et al. "The repertoire of mutational signatures in human cancer." Nature 578.7793 (2020): 94-101.</p></li>
 <li><p>Steele, Christopher D., et al. "Undifferentiated sarcomas develop through distinct evolutionary pathways." Cancer Cell 35.3 (2019): 441-456.</p></li>
+<li><p>Ziyu Tao, et al. "The repertoire of copy number alteration signatures in human cancer." Briefings in Bioinformatics (2023): bbad053.</p></li>
 </ul></div>
     <div id="see-also">
     <h2>See also</h2>
@@ -133,29 +137,32 @@ For all available options, check the parameter setting.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="va">s1</span> <span class="op">&lt;-</span> <span class="fu">get_sig_db</span><span class="op">(</span><span class="op">)</span>
-<span class="va">s2</span> <span class="op">&lt;-</span> <span class="fu">get_sig_db</span><span class="op">(</span><span class="st">"SBS"</span><span class="op">)</span>
-<span class="va">s3</span> <span class="op">&lt;-</span> <span class="fu">get_sig_db</span><span class="op">(</span><span class="st">"DBS"</span><span class="op">)</span>
-<span class="va">s4</span> <span class="op">&lt;-</span> <span class="fu">get_sig_db</span><span class="op">(</span><span class="st">"DBS_mm10"</span><span class="op">)</span>
-<span class="va">s5</span> <span class="op">&lt;-</span> <span class="fu">get_sig_db</span><span class="op">(</span><span class="st">"SBS_Nik_lab"</span><span class="op">)</span>
-<span class="va">s6</span> <span class="op">&lt;-</span> <span class="fu">get_sig_db</span><span class="op">(</span><span class="st">"ID"</span><span class="op">)</span>
-<span class="va">s7</span> <span class="op">&lt;-</span> <span class="fu">get_sig_db</span><span class="op">(</span><span class="st">"RS_BRCA560"</span><span class="op">)</span>
-<span class="va">s8</span> <span class="op">&lt;-</span> <span class="fu">get_sig_db</span><span class="op">(</span><span class="st">"RS_USARC"</span><span class="op">)</span>
-<span class="va">s9</span> <span class="op">&lt;-</span> <span class="fu">get_sig_db</span><span class="op">(</span><span class="st">"RS_Nik_lab"</span><span class="op">)</span>
-<span class="va">s10</span> <span class="op">&lt;-</span> <span class="fu">get_sig_db</span><span class="op">(</span><span class="st">"CNS_USARC"</span><span class="op">)</span>
-<span class="va">s11</span> <span class="op">&lt;-</span> <span class="fu">get_sig_db</span><span class="op">(</span><span class="st">"CNS_TCGA"</span><span class="op">)</span>
-<span class="va">s1</span>
-<span class="va">s2</span>
-<span class="va">s3</span>
-<span class="va">s4</span>
-<span class="va">s5</span>
-<span class="va">s6</span>
-<span class="va">s7</span>
-<span class="va">s8</span>
-<span class="va">s9</span>
-<span class="va">s10</span>
-<span class="va">s11</span>
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="va">s1</span> <span class="op">&lt;-</span> <span class="fu">get_sig_db</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">s2</span> <span class="op">&lt;-</span> <span class="fu">get_sig_db</span><span class="op">(</span><span class="st">"SBS"</span><span class="op">)</span></span>
+<span><span class="va">s3</span> <span class="op">&lt;-</span> <span class="fu">get_sig_db</span><span class="op">(</span><span class="st">"DBS"</span><span class="op">)</span></span>
+<span><span class="va">s4</span> <span class="op">&lt;-</span> <span class="fu">get_sig_db</span><span class="op">(</span><span class="st">"DBS_mm10"</span><span class="op">)</span></span>
+<span><span class="va">s5</span> <span class="op">&lt;-</span> <span class="fu">get_sig_db</span><span class="op">(</span><span class="st">"SBS_Nik_lab"</span><span class="op">)</span></span>
+<span><span class="va">s6</span> <span class="op">&lt;-</span> <span class="fu">get_sig_db</span><span class="op">(</span><span class="st">"ID"</span><span class="op">)</span></span>
+<span><span class="va">s7</span> <span class="op">&lt;-</span> <span class="fu">get_sig_db</span><span class="op">(</span><span class="st">"RS_BRCA560"</span><span class="op">)</span></span>
+<span><span class="va">s8</span> <span class="op">&lt;-</span> <span class="fu">get_sig_db</span><span class="op">(</span><span class="st">"RS_USARC"</span><span class="op">)</span></span>
+<span><span class="va">s9</span> <span class="op">&lt;-</span> <span class="fu">get_sig_db</span><span class="op">(</span><span class="st">"RS_Nik_lab"</span><span class="op">)</span></span>
+<span><span class="va">s10</span> <span class="op">&lt;-</span> <span class="fu">get_sig_db</span><span class="op">(</span><span class="st">"CNS_USARC"</span><span class="op">)</span></span>
+<span><span class="va">s11</span> <span class="op">&lt;-</span> <span class="fu">get_sig_db</span><span class="op">(</span><span class="st">"CNS_TCGA"</span><span class="op">)</span></span>
+<span><span class="va">s12</span> <span class="op">&lt;-</span> <span class="fu">get_sig_db</span><span class="op">(</span><span class="st">"CNS_TCGA176"</span><span class="op">)</span></span>
+<span><span class="va">s13</span> <span class="op">&lt;-</span> <span class="fu">get_sig_db</span><span class="op">(</span><span class="st">"CNS_PCAWG176"</span><span class="op">)</span></span>
+<span><span class="va">s1</span></span>
+<span><span class="va">s2</span></span>
+<span><span class="va">s3</span></span>
+<span><span class="va">s4</span></span>
+<span><span class="va">s5</span></span>
+<span><span class="va">s6</span></span>
+<span><span class="va">s7</span></span>
+<span><span class="va">s8</span></span>
+<span><span class="va">s9</span></span>
+<span><span class="va">s10</span></span>
+<span><span class="va">s11</span></span>
+<span><span class="va">s12</span></span>
+<span><span class="va">s13</span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -169,7 +176,7 @@ For all available options, check the parameter setting.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

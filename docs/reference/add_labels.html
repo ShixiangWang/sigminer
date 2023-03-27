@@ -18,7 +18,7 @@ from show_sig_profile."><meta property="og:image" content="https://shixiangwang.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.2.0</span>
       </span>
     </div>
 
@@ -68,19 +68,19 @@ from <a href="show_sig_profile.html">show_sig_profile</a>.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">add_labels</span><span class="op">(</span>
-  <span class="va">p</span>,
-  <span class="va">x</span>,
-  <span class="va">y</span>,
-  y_end <span class="op">=</span> <span class="cn">NULL</span>,
-  n_label <span class="op">=</span> <span class="cn">NULL</span>,
-  labels <span class="op">=</span> <span class="cn">NULL</span>,
-  revert_order <span class="op">=</span> <span class="cn">FALSE</span>,
-  font_size <span class="op">=</span> <span class="fl">5</span>,
-  font_family <span class="op">=</span> <span class="st">"serif"</span>,
-  font_face <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"plain"</span>, <span class="st">"bold"</span>, <span class="st">"italic"</span><span class="op">)</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">add_labels</span><span class="op">(</span></span>
+<span>  <span class="va">p</span>,</span>
+<span>  <span class="va">x</span>,</span>
+<span>  <span class="va">y</span>,</span>
+<span>  y_end <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  n_label <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  labels <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  revert_order <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  font_size <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  font_family <span class="op">=</span> <span class="st">"serif"</span>,</span>
+<span>  font_face <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"plain"</span>, <span class="st">"bold"</span>, <span class="st">"italic"</span><span class="op">)</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -128,7 +128,7 @@ according to <code>y</code> and <code>y_end</code>.</p></dd>
 
 
 <dt>...</dt>
-<dd><p>other parameters passing to <a href="https://rdrr.io/pkg/ggplot2/man/annotate.html" class="external-link">ggplot2::annotate</a>.</p></dd>
+<dd><p>other parameters passing to <a href="https://ggplot2.tidyverse.org/reference/annotate.html" class="external-link">ggplot2::annotate</a>.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -140,35 +140,34 @@ according to <code>y</code> and <code>y_end</code>.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># Load mutational signature</span>
-<span class="fu"><a href="https://rdrr.io/r/base/load.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"toy_mutational_signature.RData"</span>,
-  package <span class="op">=</span> <span class="st">"sigminer"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span><span class="op">)</span>
-<span class="co"># Show signature profile</span>
-<span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="show_sig_profile.html">show_sig_profile</a></span><span class="op">(</span><span class="va">sig2</span>, mode <span class="op">=</span> <span class="st">"SBS"</span><span class="op">)</span>
-
-<span class="co"># Method 1</span>
-<span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu">add_labels</span><span class="op">(</span><span class="va">p</span>,
-  x <span class="op">=</span> <span class="fl">0.75</span>, y <span class="op">=</span> <span class="fl">0.3</span>, y_end <span class="op">=</span> <span class="fl">0.9</span>, n_label <span class="op">=</span> <span class="fl">3</span>,
-  labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"text"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>
-<span class="op">)</span>
-<span class="va">p1</span>
-
-<span class="co"># Method 2</span>
-<span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu">add_labels</span><span class="op">(</span><span class="va">p</span>,
-  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.15</span>, <span class="fl">0.6</span>, <span class="fl">0.75</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.3</span>, <span class="fl">0.6</span>, <span class="fl">0.9</span><span class="op">)</span>,
-  labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"text"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>
-<span class="op">)</span>
-<span class="va">p2</span>
-
-<span class="co"># Method 3</span>
-<span class="va">sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_sig_similarity.html">get_sig_similarity</a></span><span class="op">(</span><span class="va">sig2</span><span class="op">)</span>
-<span class="va">p3</span> <span class="op">&lt;-</span> <span class="fu">add_labels</span><span class="op">(</span><span class="va">p</span>,
-  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.15</span>, <span class="fl">0.6</span>, <span class="fl">0.75</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.25</span>, <span class="fl">0.55</span>, <span class="fl">0.8</span><span class="op">)</span>,
-  labels <span class="op">=</span> <span class="va">sim</span>, font_size <span class="op">=</span> <span class="fl">2</span>
-<span class="op">)</span>
-<span class="va">p3</span>
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># Load mutational signature</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/load.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"toy_mutational_signature.RData"</span>,</span>
+<span>  package <span class="op">=</span> <span class="st">"sigminer"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># Show signature profile</span></span>
+<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="show_sig_profile.html">show_sig_profile</a></span><span class="op">(</span><span class="va">sig2</span>, mode <span class="op">=</span> <span class="st">"SBS"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Method 1</span></span>
+<span><span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu">add_labels</span><span class="op">(</span><span class="va">p</span>,</span>
+<span>  x <span class="op">=</span> <span class="fl">0.75</span>, y <span class="op">=</span> <span class="fl">0.3</span>, y_end <span class="op">=</span> <span class="fl">0.9</span>, n_label <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"text"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">p1</span></span>
+<span></span>
+<span><span class="co"># Method 2</span></span>
+<span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu">add_labels</span><span class="op">(</span><span class="va">p</span>,</span>
+<span>  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.15</span>, <span class="fl">0.6</span>, <span class="fl">0.75</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.3</span>, <span class="fl">0.6</span>, <span class="fl">0.9</span><span class="op">)</span>,</span>
+<span>  labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"text"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">p2</span></span>
+<span></span>
+<span><span class="co"># Method 3</span></span>
+<span><span class="va">sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_sig_similarity.html">get_sig_similarity</a></span><span class="op">(</span><span class="va">sig2</span><span class="op">)</span></span>
+<span><span class="va">p3</span> <span class="op">&lt;-</span> <span class="fu">add_labels</span><span class="op">(</span><span class="va">p</span>,</span>
+<span>  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.15</span>, <span class="fl">0.6</span>, <span class="fl">0.75</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.25</span>, <span class="fl">0.55</span>, <span class="fl">0.8</span><span class="op">)</span>,</span>
+<span>  labels <span class="op">=</span> <span class="va">sim</span>, font_size <span class="op">=</span> <span class="fl">2</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">p3</span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -182,7 +181,7 @@ according to <code>y</code> and <code>y_end</code>.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

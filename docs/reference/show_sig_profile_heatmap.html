@@ -19,7 +19,7 @@ current supported signatures."><meta property="og:image" content="https://shixia
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.2.0</span>
       </span>
     </div>
 
@@ -70,26 +70,26 @@ current supported signatures.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">show_sig_profile_heatmap</span><span class="op">(</span>
-  <span class="va">Signature</span>,
-  mode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SBS"</span>, <span class="st">"DBS"</span><span class="op">)</span>,
-  normalize <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"row"</span>, <span class="st">"column"</span>, <span class="st">"raw"</span><span class="op">)</span>,
-  filters <span class="op">=</span> <span class="cn">NULL</span>,
-  x_lab <span class="op">=</span> <span class="cn">NULL</span>,
-  y_lab <span class="op">=</span> <span class="cn">NULL</span>,
-  legend_name <span class="op">=</span> <span class="st">"auto"</span>,
-  palette <span class="op">=</span> <span class="st">"red"</span>,
-  x_label_angle <span class="op">=</span> <span class="fl">90</span>,
-  x_label_vjust <span class="op">=</span> <span class="fl">1</span>,
-  x_label_hjust <span class="op">=</span> <span class="fl">0.5</span>,
-  y_label_angle <span class="op">=</span> <span class="fl">0</span>,
-  y_label_vjust <span class="op">=</span> <span class="fl">0.5</span>,
-  y_label_hjust <span class="op">=</span> <span class="fl">1</span>,
-  flip_xy <span class="op">=</span> <span class="cn">FALSE</span>,
-  sig_names <span class="op">=</span> <span class="cn">NULL</span>,
-  sig_orders <span class="op">=</span> <span class="cn">NULL</span>,
-  check_sig_names <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">show_sig_profile_heatmap</span><span class="op">(</span></span>
+<span>  <span class="va">Signature</span>,</span>
+<span>  mode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SBS"</span>, <span class="st">"DBS"</span><span class="op">)</span>,</span>
+<span>  normalize <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"row"</span>, <span class="st">"column"</span>, <span class="st">"raw"</span><span class="op">)</span>,</span>
+<span>  filters <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  x_lab <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  y_lab <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  legend_name <span class="op">=</span> <span class="st">"auto"</span>,</span>
+<span>  palette <span class="op">=</span> <span class="st">"red"</span>,</span>
+<span>  x_label_angle <span class="op">=</span> <span class="fl">90</span>,</span>
+<span>  x_label_vjust <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  x_label_hjust <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  y_label_angle <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  y_label_vjust <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  y_label_hjust <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  flip_xy <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  sig_names <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  sig_orders <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  check_sig_names <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -193,14 +193,13 @@ a matrix, i.e., all signatures (colnames) must start with 'Sig'.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># Load SBS signature</span>
-<span class="fu"><a href="https://rdrr.io/pkg/R.oo/man/Non-documented_objects.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"toy_mutational_signature.RData"</span>,
-  package <span class="op">=</span> <span class="st">"sigminer"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span><span class="op">)</span>
-<span class="co"># Show signature profile</span>
-<span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu">show_sig_profile_heatmap</span><span class="op">(</span><span class="va">sig2</span>, mode <span class="op">=</span> <span class="st">"SBS"</span><span class="op">)</span>
-<span class="va">p1</span>
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># Load SBS signature</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/R.oo/man/Non-documented_objects.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"toy_mutational_signature.RData"</span>,</span>
+<span>  package <span class="op">=</span> <span class="st">"sigminer"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># Show signature profile</span></span>
+<span><span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu">show_sig_profile_heatmap</span><span class="op">(</span><span class="va">sig2</span>, mode <span class="op">=</span> <span class="st">"SBS"</span><span class="op">)</span></span>
+<span><span class="va">p1</span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -214,7 +213,7 @@ a matrix, i.e., all signatures (colnames) must start with 'Sig'.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>
