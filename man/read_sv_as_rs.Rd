@@ -31,7 +31,7 @@ rs <- read_sv_as_rs(sv)
 # svclass is optional
 rs2 <- read_sv_as_rs(sv[, setdiff(colnames(sv), "svclass")])
 identical(rs, rs2)
-\donttest{
+\dontrun{
 tally_rs <- sig_tally(rs)
 }
 }

@@ -10,8 +10,6 @@ test_that("Function read_sv_as_rs() @ L29", {
   rs2 <- read_sv_as_rs(sv[, setdiff(colnames(sv), "svclass")])
   identical(rs, rs2)
   
-  tally_rs <- sig_tally(rs)
-  
   expect_is(rs, "RS")
   expect_is(tally_rs, "list")
 })

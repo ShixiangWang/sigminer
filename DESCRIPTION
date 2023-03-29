@@ -55,7 +55,6 @@ Suggests:
     BSgenome.Hsapiens.UCSC.hg19,
     circlize,
     cluster,
-    copynumber,
     covr,
     digest,
     GenomicRanges,
