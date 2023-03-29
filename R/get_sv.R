@@ -211,9 +211,6 @@ getType <- function(sv_profiles) {
 
 # get features list -------------------------------------------------------
 get_features_sv <- function(sv_data) {
-  if (requireNamespace("copynumber")) {
-    stop("'copynumber' package is not available. Please install it.")
-  }
 
   field <- c(
     "clustered",
