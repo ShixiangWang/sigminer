@@ -7,7 +7,7 @@
 status](https://www.r-pkg.org/badges/version/sigminer)](https://cran.r-project.org/package=sigminer)
 [![lifecycle](https://img.shields.io/badge/lifecycle-stable-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 [![R-CMD-check](https://github.com/ShixiangWang/sigminer/workflows/R-CMD-check/badge.svg)](https://github.com/ShixiangWang/sigminer/actions)
-[![codecov](https://codecov.io/gh/ShixiangWang/sigminer/branch/master/graph/badge.svg?token=1AD4v7otnV)](https://codecov.io/gh/ShixiangWang/sigminer)
+[![codecov](https://app.codecov.io/gh/ShixiangWang/sigminer/branch/master/graph/badge.svg?token=1AD4v7otnV)](https://app.codecov.io/gh/ShixiangWang/sigminer)
 [![](https://cranlogs.r-pkg.org/badges/grand-total/sigminer?color=orange)](https://cran.r-project.org/package=sigminer)
 [![Closed
 issues](https://img.shields.io/github/issues-closed/ShixiangWang/sigminer.svg)](https://github.com/ShixiangWang/sigminer/issues?q=is%3Aissue+is%3Aclosed)
