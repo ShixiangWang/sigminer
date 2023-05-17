@@ -247,7 +247,7 @@ generate_matrix_SBS <- function(query, ref_genome, genome_build = "hg19", add_tr
 
   if (add_trans_bias) {
     send_info("Return SBS-192 as major matrix.")
-    SBS_192 <- SBS_384[, grepl("T:|U:", colnames(SBS_384))]
+    SBS_192 <- SBS_384[, grepl("T:|U:", colnames(SBS_384)), drop = FALSE]
     res <- list(
       nmf_matrix = SBS_192,
       all_matrices = list(
@@ -276,10 +276,10 @@ generate_matrix_SBS <- function(query, ref_genome, genome_build = "hg19", add_tr
 
   # Reorder mutation types
   res$all_matrices = lapply(res$all_matrices, function(x) {
-    y = x[, sort(colnames(x))]
+    y = x[, sort(colnames(x)), drop = FALSE]
     y
   })
-  res$nmf_matrix = res$nmf_matrix[, sort(colnames(res$nmf_matrix))]
+  res$nmf_matrix = res$nmf_matrix[, sort(colnames(res$nmf_matrix)), drop = FALSE]
 
   # Return
   res

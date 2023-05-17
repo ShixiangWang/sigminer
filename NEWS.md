@@ -1,3 +1,7 @@
+# sigminer 2.2.1
+
+- Fixed the error in generating SBS matrix when only one sample input (#432).
+
 # sigminer 2.2.0
 
 - Removed package 'copynumber' from suggests filed.
