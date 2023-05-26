@@ -10,6 +10,7 @@ show_sig_exposure(
   groups = NULL,
   grp_order = NULL,
   grp_size = NULL,
+  samps = NULL,
   cutoff = NULL,
   style = c("default", "cosmic"),
   palette = use_color_style(style),
@@ -36,6 +37,8 @@ you can specify them by \code{sig_names} parameter.}
 \item{grp_order}{order of groups, default is \code{NULL}.}
 
 \item{grp_size}{font size of groups.}
+
+\item{samps}{sample vector to filter samples or sort samples, default is \code{NULL}.}
 
 \item{cutoff}{a cutoff value to remove hyper-mutated samples.}
 
