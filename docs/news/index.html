@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.2.2</span>
       </span>
     </div>
 
@@ -61,7 +61,29 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="2.2.0" id="sigminer-220">sigminer 2.2.0<a class="anchor" aria-label="anchor" href="#sigminer-220"></a></h2>
+<h2 class="page-header" data-toc-text="2.2.2" id="sigminer-222">sigminer 2.2.2<a class="anchor" aria-label="anchor" href="#sigminer-222"></a></h2>
+<ul><li>Added <code>samps</code> option to <code><a href="../reference/show_sig_exposure.html">show_sig_exposure()</a></code>.</li>
+</ul><p>Example:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/R.oo/man/Non-documented_objects.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"toy_mutational_signature.RData"</span>,</span>
+<span>                 package <span class="op">=</span> <span class="st">"sigminer"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># Show signature exposure</span></span>
+<span><span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/show_sig_exposure.html">show_sig_exposure</a></span><span class="op">(</span><span class="va">sig2</span>, rm_space <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">p1</span></span>
+<span></span>
+<span><span class="va">expo</span> <span class="op">=</span> <span class="fu"><a href="../reference/sig_operation.html">sig_exposure</a></span><span class="op">(</span><span class="va">sig2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/show_sig_exposure.html">show_sig_exposure</a></span><span class="op">(</span><span class="va">expo</span>,</span>
+<span>                  rm_space <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                  samps <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">expo</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colSums</a></span><span class="op">(</span><span class="va">expo</span><span class="op">)</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="2.2.1" id="sigminer-221">sigminer 2.2.1<a class="anchor" aria-label="anchor" href="#sigminer-221"></a></h2>
+<ul><li>Fixed the error in generating SBS matrix when only one sample input (<a href="https://github.com/ShixiangWang/sigminer/issues/432" class="external-link">#432</a>).</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="2.2.0" id="sigminer-220">sigminer 2.2.0<small>2023-04-06</small><a class="anchor" aria-label="anchor" href="#sigminer-220"></a></h2>
 <ul><li>Removed package ‘copynumber’ from suggests filed.</li>
 <li>Supported Ziyu Tao et al approach for copy number segment classification.</li>
 <li>Supported ce11 genome in <code><a href="../reference/read_vcf.html">read_vcf()</a></code>.</li>
@@ -100,7 +122,7 @@
 <li>Updated <code>CNS_TCGA</code>.</li>
 <li>Enhanced <code><a href="../reference/group_enrichment.html">group_enrichment()</a></code> with reference group support.</li>
 </ul><p>Example:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span>
@@ -165,7 +187,7 @@
     <div class="section level2">
 <h2 class="page-header" data-toc-text="2.0.2" id="sigminer-202">sigminer 2.0.2<small>2021-06-17</small><a class="anchor" aria-label="anchor" href="#sigminer-202"></a></h2>
 <ul><li>Fixed <code><a href="../reference/output_sig.html">output_sig()</a></code> error in handling exposure plot with &gt;9 signatures (<a href="https://github.com/ShixiangWang/sigminer/issues/366" class="external-link">#366</a>).</li>
-<li>Added <code>limitsize = FALSE</code> for <code>ggsave()</code> or <code>ggsave2()</code> for handling big figure.</li>
+<li>Added <code>limitsize = FALSE</code> for <code><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave()</a></code> or <code>ggsave2()</code> for handling big figure.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="2.0.1" id="sigminer-201">sigminer 2.0.1<small>2021-05-19</small><a class="anchor" aria-label="anchor" href="#sigminer-201"></a></h2>
@@ -184,7 +206,7 @@
 <div class="section level3">
 <h3 id="enhancements-2-0-0">ENHANCEMENTS<a class="anchor" aria-label="anchor" href="#enhancements-2-0-0"></a></h3>
 <ul><li>Added support for latest COSMIC v3.2 as reference signatures. You can obtain them by</li>
-</ul><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+</ul><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"latest_SBS_GRCh37"</span>, <span class="st">"latest_DBS_GRCh37"</span>, <span class="st">"latest_ID_GRCh37"</span>,</span>
 <span>            <span class="st">"latest_SBS_GRCh38"</span>, <span class="st">"latest_DBS_GRCh38"</span>,</span>
