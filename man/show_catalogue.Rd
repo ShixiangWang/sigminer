@@ -52,5 +52,5 @@ Show Alteration Catalogue Profile
 \examples{
 data("simulated_catalogs")
 p <- show_catalogue(simulated_catalogs$set1, style = "cosmic")
-p
+if (interactive()) p
 }

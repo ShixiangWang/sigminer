@@ -6,7 +6,7 @@ test_that("Function show_catalogue() @ L23", {
   
   data("simulated_catalogs")
   p <- show_catalogue(simulated_catalogs$set1, style = "cosmic")
-  p
+  if (interactive()) p
   expect_s3_class(p, "ggplot")
 })
 
