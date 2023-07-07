@@ -2,7 +2,8 @@
 
 # File R/get_pLOH_score.R: @testexamples
 
-test_that("Function get_pLOH_score() @ L38", {
+test_that("Function get_pLOH_score() @ L39", {
+  
   
   # Load toy dataset of absolute copynumber profile
   load(system.file("extdata", "toy_segTab.RData",

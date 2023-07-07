@@ -22,6 +22,7 @@ A \code{data.frame}
 pLOH score represents the genome that displayed LOH.
 }
 \examples{
+\donttest{
 # Load toy dataset of absolute copynumber profile
 load(system.file("extdata", "toy_segTab.RData",
   package = "sigminer", mustWork = TRUE
@@ -39,7 +40,7 @@ df
 
 df2 <- get_pLOH_score(cn@data)
 df2
-
+}
 }
 \references{
 Steele, Christopher D., et al. "Signatures of copy number alterations in human cancer." bioRxiv (2021).

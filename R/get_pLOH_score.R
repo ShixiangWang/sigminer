@@ -14,6 +14,7 @@
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' # Load toy dataset of absolute copynumber profile
 #' load(system.file("extdata", "toy_segTab.RData",
 #'   package = "sigminer", mustWork = TRUE
@@ -31,7 +32,7 @@
 #'
 #' df2 <- get_pLOH_score(cn@data)
 #' df2
-#'
+#' }
 #' @testexamples
 #' expect_equal(nrow(df), 10L)
 #' expect_equal(nrow(df2), 10L)
