@@ -10,6 +10,7 @@
 #'
 #' @inheritParams maftools::read.maf
 #' @examples
+#' \donttest{
 #' laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools", mustWork = TRUE)
 #' if (!require("R.utils")) {
 #'   message("Please install 'R.utils' package firstly")
@@ -24,6 +25,7 @@
 #'   )]
 #'   laml2 <- read_maf_minimal(laml_mini)
 #'   laml2
+#' }
 #' }
 #' @testexamples
 #' expect_s4_class(laml, "MAF")

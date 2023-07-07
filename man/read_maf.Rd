@@ -30,6 +30,7 @@ positive strand format.
 
 }}
 \examples{
+\donttest{
 laml.maf <- system.file("extdata", "tcga_laml.maf.gz", package = "maftools", mustWork = TRUE)
 if (!require("R.utils")) {
   message("Please install 'R.utils' package firstly")
@@ -44,6 +45,7 @@ if (!require("R.utils")) {
   )]
   laml2 <- read_maf_minimal(laml_mini)
   laml2
+}
 }
 }
 \seealso{
