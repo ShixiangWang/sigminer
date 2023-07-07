@@ -27,8 +27,10 @@
 #' )
 #' sig_converted
 #'
+#' \donttest{
 #' show_sig_profile(sig2, style = "cosmic")
 #' show_sig_profile(sig_converted, style = "cosmic")
+#' }
 #' @testexamples
 #' expect_is(sig_converted, "matrix")
 #'

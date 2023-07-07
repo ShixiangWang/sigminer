@@ -66,6 +66,7 @@
 #' @export
 #' @seealso [show_sig_profile_loop], [show_sig_profile_heatmap]
 #' @examples
+#' \donttest{
 #' # Load SBS signature
 #' load(system.file("extdata", "toy_mutational_signature.RData",
 #'   package = "sigminer", mustWork = TRUE
@@ -97,6 +98,7 @@
 #' colnames(ss) <- c("Sig1", "Sig2", "Sig3")
 #' p3 <- show_sig_profile(ss, mode = "RS", style = "cosmic")
 #' p3
+#' }
 #' @testexamples
 #' expect_s3_class(p1, "ggplot")
 #' expect_s3_class(p11, "ggplot")

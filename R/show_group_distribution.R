@@ -27,6 +27,7 @@
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' set.seed(1234)
 #' data <- data.frame(
 #'   yval = rnorm(120),
@@ -52,6 +53,7 @@
 #'   g_label = c("A" = "X", "B" = "Y", "C" = "Z")
 #' )
 #' p3
+#' }
 #' @testexamples
 #' expect_is(p, "ggplot")
 #' expect_is(p2, "ggplot")

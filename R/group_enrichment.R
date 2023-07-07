@@ -64,6 +64,7 @@
 #' )
 #' x2
 #'
+#' \donttest{
 #' # Visualization
 #' p1 <- show_group_enrichment(x1, fill_by_p_value = TRUE)
 #' p1
@@ -71,6 +72,7 @@
 #' p2
 #' p3 <- show_group_enrichment(x1, return_list = TRUE)
 #' p3
+#' }
 #' @testexamples
 #' expect_is(x1, "data.frame")
 #' expect_is(x2, "data.frame")
@@ -112,9 +114,9 @@ group_enrichment <- function(df, grp_vars = NULL, enrich_vars = NULL,
 }
 
 #' Group Enrichment Analysis with Subsets
-#' 
+#'
 #' More details see [group_enrichment()].
-#' 
+#'
 #' @inheritParams group_enrichment
 #' @param subset_var a column for subsetting.
 #' @export

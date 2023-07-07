@@ -15,9 +15,11 @@
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' data("simulated_catalogs")
 #' p <- show_catalogue(simulated_catalogs$set1, style = "cosmic")
-#' if (interactive()) p
+#' p
+#' }
 #' @testexamples
 #' expect_s3_class(p, "ggplot")
 show_catalogue <- function(catalogue,

@@ -48,6 +48,7 @@
 #' Kim, Jaegil, et al. "Somatic ERCC2 mutations are associated with a distinct genomic signature in urothelial tumors."
 #'  Nature genetics 48.6 (2016): 600.
 #' @examples
+#' \donttest{
 #' W <- matrix(c(1, 2, 3, 4, 5, 6), ncol = 2)
 #' colnames(W) <- c("sig1", "sig2")
 #' W <- apply(W, 2, function(x) x / sum(x))
@@ -91,6 +92,7 @@
 #' #   show_sig_fit(H_infer)
 #' #   show_sig_fit(H_dt)
 #' # }
+#' }
 #' @testexamples
 #' expect_is(H_infer, "matrix")
 #' expect_is(H_dt, "data.table")

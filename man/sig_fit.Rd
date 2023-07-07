@@ -110,6 +110,7 @@ Of note, when fitting exposures for copy number signatures, only components of
 feature CN is used.
 }
 \examples{
+\donttest{
 W <- matrix(c(1, 2, 3, 4, 5, 6), ncol = 2)
 colnames(W) <- c("sig1", "sig2")
 W <- apply(W, 2, function(x) x / sum(x))
@@ -153,6 +154,7 @@ if (requireNamespace("quadprog", quietly = TRUE)) {
 #   show_sig_fit(H_infer)
 #   show_sig_fit(H_dt)
 # }
+}
 }
 \references{
 Daniel Huebschmann, Zuguang Gu and Matthias Schlesner (2019). YAPSA: Yet Another Package for Signature Analysis. R package version 1.12.0.

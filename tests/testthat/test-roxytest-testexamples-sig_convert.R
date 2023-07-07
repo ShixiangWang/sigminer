@@ -2,7 +2,7 @@
 
 # File R/sig_convert.R: @testexamples
 
-test_that("Function sig_convert() @ L40", {
+test_that("Function sig_convert() @ L42", {
   
   # Load SBS signature
   load(system.file("extdata", "toy_mutational_signature.RData",
@@ -15,8 +15,10 @@ test_that("Function sig_convert() @ L40", {
   )
   sig_converted
   
+  
   show_sig_profile(sig2, style = "cosmic")
   show_sig_profile(sig_converted, style = "cosmic")
+  
   expect_is(sig_converted, "matrix")
   
   sig_converted2 <- sig_convert(sig2, from = "human-exome", to = "human-exome")

@@ -147,6 +147,7 @@ a \code{ggplot} object
 Who don't like to show a barplot for signature profile? This is for it.
 }
 \examples{
+\donttest{
 # Load SBS signature
 load(system.file("extdata", "toy_mutational_signature.RData",
   package = "sigminer", mustWork = TRUE
@@ -178,6 +179,7 @@ ss <- s$db[, 1:3]
 colnames(ss) <- c("Sig1", "Sig2", "Sig3")
 p3 <- show_sig_profile(ss, mode = "RS", style = "cosmic")
 p3
+}
 }
 \seealso{
 \link{show_sig_profile_loop}, \link{show_sig_profile_heatmap}

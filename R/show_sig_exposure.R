@@ -25,6 +25,7 @@
 #' @importFrom grDevices rainbow
 #' @export
 #' @examples
+#' \donttest{
 #' # Load mutational signature
 #' load(system.file("extdata", "toy_mutational_signature.RData",
 #'   package = "sigminer", mustWork = TRUE
@@ -40,6 +41,7 @@
 #' # Show signature exposure
 #' p2 <- show_sig_exposure(sig)
 #' p2
+#' }
 #' @testexamples
 #' expect_s3_class(p1, "ggplot")
 #' expect_s3_class(p2, "ggplot")

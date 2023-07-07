@@ -9,6 +9,7 @@
 #' @export
 #' @author Shixiang Wang <w_shixiang@163.com>
 #' @examples
+#' \donttest{
 #' show_cosmic_sig_profile()
 #' show_cosmic_sig_profile(sig_db = "SBS")
 #' show_cosmic_sig_profile(sig_index = 1:5)
@@ -16,6 +17,7 @@
 #'
 #' gg <- show_cosmic_sig_profile(sig_index = 1:5)
 #' gg$aetiology
+#' }
 #' @testexamples
 #' expect_s3_class(gg, "ggplot")
 show_cosmic_sig_profile <- function(sig_index = NULL, show_index = TRUE, sig_db = "legacy", ...) {

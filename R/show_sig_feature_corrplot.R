@@ -27,7 +27,7 @@
 #' @return a `ggplot2` object
 #' @export
 #' @examples
-#'
+#' \donttest{
 #' # The data is generated from Wang, Shixiang et al.
 #' load(system.file("extdata", "asso_data.RData",
 #'   package = "sigminer", mustWork = TRUE
@@ -38,6 +38,7 @@
 #'             p_val = 0.05,
 #'             breaks_count = c(0L,200L, 400L, 600L, 800L, 1020L))
 #' p
+#' }
 #' @testexamples
 #' expect_s3_class(p, "ggplot")
 #' @seealso [get_tidy_association] and [get_sig_feature_association]

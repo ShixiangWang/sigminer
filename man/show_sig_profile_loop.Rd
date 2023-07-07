@@ -36,7 +36,7 @@ a \code{ggplot} result from \code{cowplot::plot_grid()}.
 Show Signature Profile with Loop Way
 }
 \examples{
-
+\donttest{
 load(system.file("extdata", "toy_mutational_signature.RData",
   package = "sigminer", mustWork = TRUE
 ))
@@ -45,6 +45,7 @@ p1 <- show_sig_profile_loop(sig2, mode = "SBS")
 p1
 p2 <- show_sig_profile_loop(sig2, mode = "SBS", style = "cosmic", sig_names = c("A", "B", "C"))
 p2
+}
 }
 \seealso{
 \link{show_sig_profile}

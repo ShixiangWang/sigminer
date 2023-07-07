@@ -50,7 +50,9 @@ a \code{ggplot} object
 Show Alteration Catalogue Profile
 }
 \examples{
+\donttest{
 data("simulated_catalogs")
 p <- show_catalogue(simulated_catalogs$set1, style = "cosmic")
-if (interactive()) p
+p
+}
 }

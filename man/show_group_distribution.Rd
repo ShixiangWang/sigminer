@@ -66,6 +66,7 @@ a \code{ggplot} object.
 This is a general function, it can be used in any proper analysis.
 }
 \examples{
+\donttest{
 set.seed(1234)
 data <- data.frame(
   yval = rnorm(120),
@@ -91,6 +92,7 @@ p3 <- show_group_distribution(data,
   g_label = c("A" = "X", "B" = "Y", "C" = "Z")
 )
 p3
+}
 }
 \author{
 Shixiang Wang \href{mailto:w_shixiang@163.com}{w_shixiang@163.com}

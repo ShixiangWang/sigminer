@@ -71,6 +71,7 @@ a \code{ggplot} object
 Currently support copy number signatures and mutational signatures.
 }
 \examples{
+\donttest{
 # Load mutational signature
 load(system.file("extdata", "toy_mutational_signature.RData",
   package = "sigminer", mustWork = TRUE
@@ -86,6 +87,7 @@ load(system.file("extdata", "toy_copynumber_signature_by_W.RData",
 # Show signature exposure
 p2 <- show_sig_exposure(sig)
 p2
+}
 }
 \author{
 Shixiang Wang

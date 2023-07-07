@@ -2,7 +2,8 @@
 
 # File R/show_sig_exposure.R: @testexamples
 
-test_that("Function show_sig_exposure() @ L46", {
+test_that("Function show_sig_exposure() @ L48", {
+  
   
   # Load mutational signature
   load(system.file("extdata", "toy_mutational_signature.RData",
@@ -19,6 +20,7 @@ test_that("Function show_sig_exposure() @ L46", {
   # Show signature exposure
   p2 <- show_sig_exposure(sig)
   p2
+  
   expect_s3_class(p1, "ggplot")
   expect_s3_class(p2, "ggplot")
 })

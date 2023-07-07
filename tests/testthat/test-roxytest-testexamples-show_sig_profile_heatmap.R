@@ -2,7 +2,8 @@
 
 # File R/show_sig_profile_heatmap.R: @testexamples
 
-test_that("Function show_sig_profile_heatmap() @ L44", {
+test_that("Function show_sig_profile_heatmap() @ L46", {
+  
   
   # Load SBS signature
   load(system.file("extdata", "toy_mutational_signature.RData",
@@ -11,6 +12,7 @@ test_that("Function show_sig_profile_heatmap() @ L44", {
   # Show signature profile
   p1 <- show_sig_profile_heatmap(sig2, mode = "SBS")
   p1
+  
   expect_s3_class(p1, "ggplot")
 })
 

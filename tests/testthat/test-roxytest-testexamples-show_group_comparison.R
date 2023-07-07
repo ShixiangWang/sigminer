@@ -2,7 +2,8 @@
 
 # File R/show_group_comparison.R: @testexamples
 
-test_that("Function show_group_comparison() @ L72", {
+test_that("Function show_group_comparison() @ L74", {
+  
   
   load(system.file("extdata", "toy_copynumber_signature_by_W.RData",
     package = "sigminer", mustWork = TRUE
@@ -35,6 +36,7 @@ test_that("Function show_group_comparison() @ L72", {
   ggcomp <- show_group_comparison(groups.cmp2)
   ggcomp$co_comb
   ggcomp$ca_comb
+  
   expect_equal(length(groups.cmp) + 1L, length(groups.cmp) + 1)
   expect_s3_class(ggcomp$ca$new_group, "ggplot")
 })

@@ -85,6 +85,7 @@ x2 <- group_enrichment(df,
 )
 x2
 
+\donttest{
 # Visualization
 p1 <- show_group_enrichment(x1, fill_by_p_value = TRUE)
 p1
@@ -92,6 +93,7 @@ p2 <- show_group_enrichment(x1, fill_by_p_value = FALSE)
 p2
 p3 <- show_group_enrichment(x1, return_list = TRUE)
 p3
+}
 }
 \seealso{
 \link{show_group_enrichment}

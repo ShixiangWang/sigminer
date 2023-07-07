@@ -32,6 +32,7 @@
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' # Load SBS signature
 #' load(system.file("extdata", "toy_mutational_signature.RData",
 #'   package = "sigminer", mustWork = TRUE
@@ -39,6 +40,7 @@
 #' # Show signature profile
 #' p1 <- show_sig_profile_heatmap(sig2, mode = "SBS")
 #' p1
+#' }
 #' @testexamples
 #' expect_s3_class(p1, "ggplot")
 show_sig_profile_heatmap <- function(Signature, mode = c("SBS", "DBS"),

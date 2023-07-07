@@ -2,11 +2,13 @@
 
 # File R/show_catalogue.R: @testexamples
 
-test_that("Function show_catalogue() @ L23", {
+test_that("Function show_catalogue() @ L25", {
+  
   
   data("simulated_catalogs")
   p <- show_catalogue(simulated_catalogs$set1, style = "cosmic")
-  if (interactive()) p
+  p
+  
   expect_s3_class(p, "ggplot")
 })
 

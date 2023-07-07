@@ -2,7 +2,8 @@
 
 # File R/show_sig_profile.R: @testexamples
 
-test_that("Function show_sig_profile() @ L105", {
+test_that("Function show_sig_profile() @ L107", {
+  
   
   # Load SBS signature
   load(system.file("extdata", "toy_mutational_signature.RData",
@@ -35,6 +36,7 @@ test_that("Function show_sig_profile() @ L105", {
   colnames(ss) <- c("Sig1", "Sig2", "Sig3")
   p3 <- show_sig_profile(ss, mode = "RS", style = "cosmic")
   p3
+  
   expect_s3_class(p1, "ggplot")
   expect_s3_class(p11, "ggplot")
   expect_s3_class(p2, "ggplot")

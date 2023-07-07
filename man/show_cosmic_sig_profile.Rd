@@ -45,6 +45,7 @@ a \code{ggplot} object
 Plot Reference (Mainly COSMIC) Signature Profile
 }
 \examples{
+\donttest{
 show_cosmic_sig_profile()
 show_cosmic_sig_profile(sig_db = "SBS")
 show_cosmic_sig_profile(sig_index = 1:5)
@@ -52,6 +53,7 @@ show_cosmic_sig_profile(sig_db = "SBS", sig_index = c("10a", "17a"))
 
 gg <- show_cosmic_sig_profile(sig_index = 1:5)
 gg$aetiology
+}
 }
 \author{
 Shixiang Wang \href{mailto:w_shixiang@163.com}{w_shixiang@163.com}

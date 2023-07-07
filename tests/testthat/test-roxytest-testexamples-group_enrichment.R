@@ -2,7 +2,7 @@
 
 # File R/group_enrichment.R: @testexamples
 
-test_that("Function group_enrichment() @ L80", {
+test_that("Function group_enrichment() @ L82", {
   
   set.seed(1234)
   df <- dplyr::tibble(
@@ -28,6 +28,7 @@ test_that("Function group_enrichment() @ L80", {
   )
   x2
   
+  
   # Visualization
   p1 <- show_group_enrichment(x1, fill_by_p_value = TRUE)
   p1
@@ -35,6 +36,7 @@ test_that("Function group_enrichment() @ L80", {
   p2
   p3 <- show_group_enrichment(x1, return_list = TRUE)
   p3
+  
   expect_is(x1, "data.frame")
   expect_is(x2, "data.frame")
   expect_is(p1, "ggplot")

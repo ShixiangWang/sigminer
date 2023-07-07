@@ -2,7 +2,8 @@
 
 # File R/show_cosmic_signature_profile.R: @testexamples
 
-test_that("Function show_cosmic_sig_profile() @ L21", {
+test_that("Function show_cosmic_sig_profile() @ L23", {
+  
   
   show_cosmic_sig_profile()
   show_cosmic_sig_profile(sig_db = "SBS")
@@ -11,6 +12,7 @@ test_that("Function show_cosmic_sig_profile() @ L21", {
   
   gg <- show_cosmic_sig_profile(sig_index = 1:5)
   gg$aetiology
+  
   expect_s3_class(gg, "ggplot")
 })
 

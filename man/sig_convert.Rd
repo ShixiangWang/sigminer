@@ -40,8 +40,10 @@ sig_converted <- sig_convert(sig2,
 )
 sig_converted
 
+\donttest{
 show_sig_profile(sig2, style = "cosmic")
 show_sig_profile(sig_converted, style = "cosmic")
+}
 }
 \references{
 \code{convert_signatures} function from sigfit package.

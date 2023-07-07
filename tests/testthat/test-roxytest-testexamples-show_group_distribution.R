@@ -2,7 +2,8 @@
 
 # File R/show_group_distribution.R: @testexamples
 
-test_that("Function show_group_distribution() @ L59", {
+test_that("Function show_group_distribution() @ L61", {
+  
   
   set.seed(1234)
   data <- data.frame(
@@ -29,6 +30,7 @@ test_that("Function show_group_distribution() @ L59", {
     g_label = c("A" = "X", "B" = "Y", "C" = "Z")
   )
   p3
+  
   expect_is(p, "ggplot")
   expect_is(p2, "ggplot")
   expect_is(p3, "ggplot")

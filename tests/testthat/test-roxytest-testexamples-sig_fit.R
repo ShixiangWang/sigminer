@@ -2,7 +2,8 @@
 
 # File R/sig_fit.R: @testexamples
 
-test_that("Function sig_fit() @ L97", {
+test_that("Function sig_fit() @ L99", {
+  
   
   W <- matrix(c(1, 2, 3, 4, 5, 6), ncol = 2)
   colnames(W) <- c("sig1", "sig2")
@@ -47,6 +48,7 @@ test_that("Function sig_fit() @ L97", {
   #   show_sig_fit(H_infer)
   #   show_sig_fit(H_dt)
   # }
+  
   expect_is(H_infer, "matrix")
   expect_is(H_dt, "data.table")
 })

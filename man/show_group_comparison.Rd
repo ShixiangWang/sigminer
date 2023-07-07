@@ -79,6 +79,7 @@ test p values are shown for categorical data and fdr values are shown for
 continuous data.
 }
 \examples{
+\donttest{
 load(system.file("extdata", "toy_copynumber_signature_by_W.RData",
   package = "sigminer", mustWork = TRUE
 ))
@@ -110,6 +111,7 @@ show_group_comparison(groups.cmp)
 ggcomp <- show_group_comparison(groups.cmp2)
 ggcomp$co_comb
 ggcomp$ca_comb
+}
 }
 \author{
 Shixiang Wang \href{mailto:w_shixiang@163.com}{w_shixiang@163.com}

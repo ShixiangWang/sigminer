@@ -35,6 +35,7 @@
 #' @import ggplot2
 #' @export
 #' @examples
+#' \donttest{
 #' load(system.file("extdata", "toy_copynumber_signature_by_W.RData",
 #'   package = "sigminer", mustWork = TRUE
 #' ))
@@ -66,6 +67,7 @@
 #' ggcomp <- show_group_comparison(groups.cmp2)
 #' ggcomp$co_comb
 #' ggcomp$ca_comb
+#' }
 #' @testexamples
 #' expect_equal(length(groups.cmp) + 1L, length(groups.cmp) + 1)
 #' expect_s3_class(ggcomp$ca$new_group, "ggplot")

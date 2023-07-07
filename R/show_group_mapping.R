@@ -17,6 +17,7 @@
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' data <- dplyr::tibble(
 #'   Group1 = rep(LETTERS[1:5], each = 10),
 #'   Group2 = rep(LETTERS[6:15], each = 5),
@@ -30,6 +31,7 @@
 #'   include_sig = TRUE
 #' )
 #' p2
+#' }
 #' @testexamples
 #' if (!is.null(p1)) {
 #' expect_s3_class(p1, "ggplot")

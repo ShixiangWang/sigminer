@@ -43,6 +43,7 @@ This feature is designed for signature analysis. However, users can also use
 it in other similar situations.
 }
 \examples{
+\donttest{
 data <- dplyr::tibble(
   Group1 = rep(LETTERS[1:5], each = 10),
   Group2 = rep(LETTERS[6:15], each = 5),
@@ -56,4 +57,5 @@ p2 <- show_group_mapping(data,
   include_sig = TRUE
 )
 p2
+}
 }

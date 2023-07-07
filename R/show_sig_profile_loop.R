@@ -9,7 +9,7 @@
 #' @seealso [show_sig_profile]
 #'
 #' @examples
-#'
+#' \donttest{
 #' load(system.file("extdata", "toy_mutational_signature.RData",
 #'   package = "sigminer", mustWork = TRUE
 #' ))
@@ -18,6 +18,7 @@
 #' p1
 #' p2 <- show_sig_profile_loop(sig2, mode = "SBS", style = "cosmic", sig_names = c("A", "B", "C"))
 #' p2
+#' }
 #' @testexamples
 #' expect_s3_class(p1, "ggplot")
 #' expect_s3_class(p2, "ggplot")

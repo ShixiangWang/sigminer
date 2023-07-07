@@ -91,6 +91,7 @@ Support:
 }
 }
 \examples{
+\donttest{
 # Load SBS signature
 load(system.file("extdata", "toy_mutational_signature.RData",
   package = "sigminer", mustWork = TRUE
@@ -98,4 +99,5 @@ load(system.file("extdata", "toy_mutational_signature.RData",
 # Show signature profile
 p1 <- show_sig_profile_heatmap(sig2, mode = "SBS")
 p1
+}
 }

@@ -2,7 +2,8 @@
 
 # File R/show_group_mapping.R: @testexamples
 
-test_that("Function show_group_mapping() @ L40", {
+test_that("Function show_group_mapping() @ L42", {
+  
   
   data <- dplyr::tibble(
     Group1 = rep(LETTERS[1:5], each = 10),
@@ -17,6 +18,7 @@ test_that("Function show_group_mapping() @ L40", {
     include_sig = TRUE
   )
   p2
+  
   if (!is.null(p1)) {
   expect_s3_class(p1, "ggplot")
   }
