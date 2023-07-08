@@ -2,7 +2,8 @@
 
 # File R/transform_seg_table.R: @testexamples
 
-test_that("Function transform_seg_table() @ L23", {
+test_that("Function transform_seg_table() @ L25", {
+  
   
   load(system.file("extdata", "toy_copynumber.RData",
     package = "sigminer", mustWork = TRUE
@@ -13,6 +14,7 @@ test_that("Function transform_seg_table() @ L23", {
   # Compute the mean segVal in each half-cytoband
   x2 <- transform_seg_table(cn, resolution_factor = 2)
   x2
+  
   expect_is(x, "data.table")
   expect_is(x2, "data.table")
 })

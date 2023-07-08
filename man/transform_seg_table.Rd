@@ -48,6 +48,7 @@ a \code{data.table}.
 Transform Copy Number Table
 }
 \examples{
+\donttest{
 load(system.file("extdata", "toy_copynumber.RData",
   package = "sigminer", mustWork = TRUE
 ))
@@ -57,4 +58,5 @@ x
 # Compute the mean segVal in each half-cytoband
 x2 <- transform_seg_table(cn, resolution_factor = 2)
 x2
+}
 }

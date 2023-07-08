@@ -8,6 +8,7 @@
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' load(system.file("extdata", "toy_copynumber.RData",
 #'   package = "sigminer", mustWork = TRUE
 #' ))
@@ -17,6 +18,7 @@
 #' # Compute the mean segVal in each half-cytoband
 #' x2 <- transform_seg_table(cn, resolution_factor = 2)
 #' x2
+#' }
 #' @testexamples
 #' expect_is(x, "data.table")
 #' expect_is(x2, "data.table")
