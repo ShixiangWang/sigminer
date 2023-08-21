@@ -8,7 +8,6 @@
 #' please read its [vignette](https://bioconductor.org/packages/release/bioc/vignettes/maftools/inst/doc/maftools.html).
 #'
 #'
-#' @docType package
 #' @importFrom dplyr progress_estimated
 #' @importFrom future plan
 #' @importFrom furrr future_pmap
@@ -19,8 +18,8 @@
 #' @import NMF
 #' @import ggplot2
 #' @import cli
-#' @name sigminer
-NULL
+#' @keywords internal
+"_PACKAGE"
 
 ## usethis namespace: start
 #' @useDynLib sigminer, .registration = TRUE

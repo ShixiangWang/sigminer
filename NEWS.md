@@ -1,5 +1,6 @@
 # sigminer 2.2.2
 
+- Updated pkg doc following the new CRAN feature (thanks to K from the CRAN team).
 - Added `samps` option to `show_sig_exposure()`.
 
 Example:
