@@ -13,7 +13,9 @@ get_sig_similarity(
     "DBS_mm10", "SBS_Nik_lab_Organ", "RS_Nik_lab_Organ", "latest_SBS_GRCh37",
     "latest_DBS_GRCh37", "latest_ID_GRCh37", "latest_SBS_GRCh38", "latest_DBS_GRCh38",
     "latest_SBS_mm9", "latest_DBS_mm9", "latest_SBS_mm10", "latest_DBS_mm10",
-    "latest_SBS_rn6", "latest_DBS_rn6", "latest_CN_GRCh37"),
+    "latest_SBS_rn6", "latest_DBS_rn6", "latest_CN_GRCh37", 
+    
+    "latest_RNA-SBS_GRCh37", "latest_SV_GRCh38"),
   db_type = c("", "human-exome", "human-genome"),
   method = "cosine",
   normalize = c("row", "feature"),
