@@ -1,3 +1,12 @@
+# sigminer 2.3.0
+
+- Updated COSMIC database to v3.4. SV and RNA-SBS signatures are included.
+
+```r
+get_sig_db("latest_RNA-SBS_GRCh37")
+get_sig_db("latest_SV_GRCh38")
+```
+
 # sigminer 2.2.2
 
 - Updated pkg doc following the new CRAN feature (thanks to K from the CRAN team).

@@ -120,23 +120,25 @@ get_sig_db <- function(sig_db = "legacy") {
           package = "sigminer", mustWork = TRUE
         )
       } else if (startsWith(sig_db, "latest_")) {
-        latest_version <- "v3.3"
+        latest_version <- "v3.4"
         # v3.2_SBS_GRCh37.txt
         sig_db2 <- sub("latest_", "", sig_db)
 
         file_dir <- switch(sig_db,
-          latest_SBS_GRCh37 = "1908",
-          latest_DBS_GRCh37 = "1902",
-          latest_ID_GRCh37 = "1907",
-          latest_SBS_GRCh38 = "1909",
-          latest_DBS_GRCh38 = "1903",
-          latest_SBS_mm9 = "1910",
-          latest_DBS_mm9 = "1904",
-          latest_SBS_mm10 = "1911",
-          latest_DBS_mm10 = "1905",
-          latest_SBS_rn6 = "1912",
-          latest_DBS_rn6 = "1906",
-          latest_CN_GRCh37 = "2044",
+          latest_SBS_GRCh37 = "2123",
+          latest_DBS_GRCh37 = "2116",
+          latest_ID_GRCh37 = "2121",
+          latest_SBS_GRCh38 = "2124",
+          latest_DBS_GRCh38 = "2117",
+          latest_SBS_mm9 = "2125",
+          latest_DBS_mm9 = "2118",
+          latest_SBS_mm10 = "2126",
+          latest_DBS_mm10 = "2119",
+          latest_SBS_rn6 = "2127",
+          latest_DBS_rn6 = "2120",
+          latest_CN_GRCh37 = "2115",
+          `latest_RNA-SBS_GRCh37` = "2122",
+          latest_SV_GRCh38 = "2128",
           stop("Bad input!")
         )
 
@@ -153,7 +155,7 @@ get_sig_db <- function(sig_db = "legacy") {
           message("The data is not available in local, obtain it from COSMIC: https://cancer.sanger.ac.uk/signatures/downloads/")
           data <- tryCatch(
             data.table::fread(data_url, data.table = FALSE) %>%
-              tibble::column_to_rownames("Type") %>%
+              tibble::column_to_rownames(if (sig_db == "latest_RNA-SBS_GRCh37") "V1" else "Type") %>%
               as.matrix(),
             error = function(e) {
               message(e$message)
