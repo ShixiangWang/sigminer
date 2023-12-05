@@ -7,6 +7,8 @@ get_sig_db("latest_RNA-SBS_GRCh37")
 get_sig_db("latest_SV_GRCh38")
 ```
 
+- Fixed a bug in generating matrix for variation categories with strand bias due to problematic counting. (#445)
+
 # sigminer 2.2.2
 
 - Updated pkg doc following the new CRAN feature (thanks to K from the CRAN team).

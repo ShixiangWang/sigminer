@@ -701,7 +701,7 @@ records_to_matrix <- function(dt, samp_col, component_col, add_trans_bias = FALS
     loc_dt$MutIndex <- 1:nrow(loc_dt)
 
     m_dt <- data.table::foverlaps(loc_dt, transcript_dt, type = "any")[
-      , .(MatchCount = .N, strand = paste0(unique(strand), collapse = "/")),
+      , .(MatchCount = length(unique(strand)), strand = paste0(unique(strand), collapse = "/")),
       by = list(MutIndex)
     ]
 

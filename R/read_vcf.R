@@ -21,7 +21,7 @@
 #' @testexamples
 #' expect_is(maf, "MAF")
 read_vcf <- function(vcfs, samples = NULL,
-                     genome_build = c("hg19", "hg38", "mm10", "mm9", "ce11"),
+                     genome_build = c("hg19", "hg38", "T2T", "mm10", "mm9", "ce11"),
                      keep_only_pass = FALSE, verbose = TRUE) {
   genome_build <- match.arg(genome_build)
   vcfs_name <- vcfs
