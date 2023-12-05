@@ -390,6 +390,8 @@ sig_tally.MAF <- function(object, mode = c("SBS", "DBS", "ID", "ALL"),
       genome_build <- "hg19"
     } else if (grepl("hg38", ref_genome)) {
       genome_build <- "hg38"
+    } else if (grepl("T2T", ref_genome)) {
+      genome_build <- "T2T"
     } else if (grepl("mm10$", ref_genome)) {
       genome_build <- "mm10"
     } else if (grepl("mm9$", ref_genome)) {
