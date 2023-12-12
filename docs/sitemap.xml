@@ -4,12 +4,6 @@
     <loc>https://shixiangwang.github.io/sigminer/404.html</loc>
   </url>
   <url>
-    <loc>https://shixiangwang.github.io/sigminer/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://shixiangwang.github.io/sigminer/LICENSE.html</loc>
-  </url>
-  <url>
     <loc>https://shixiangwang.github.io/sigminer/articles/cnsignature.html</loc>
   </url>
   <url>
@@ -25,16 +19,13 @@
     <loc>https://shixiangwang.github.io/sigminer/index.html</loc>
   </url>
   <url>
+    <loc>https://shixiangwang.github.io/sigminer/LICENSE-text.html</loc>
+  </url>
+  <url>
+    <loc>https://shixiangwang.github.io/sigminer/LICENSE.html</loc>
+  </url>
+  <url>
     <loc>https://shixiangwang.github.io/sigminer/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://shixiangwang.github.io/sigminer/reference/CN.features.html</loc>
-  </url>
-  <url>
-    <loc>https://shixiangwang.github.io/sigminer/reference/CopyNumber-class.html</loc>
-  </url>
-  <url>
-    <loc>https://shixiangwang.github.io/sigminer/reference/MAF-class.html</loc>
   </url>
   <url>
     <loc>https://shixiangwang.github.io/sigminer/reference/add_h_arrow.html</loc>
@@ -70,6 +61,12 @@
     <loc>https://shixiangwang.github.io/sigminer/reference/chromsize.mm9.html</loc>
   </url>
   <url>
+    <loc>https://shixiangwang.github.io/sigminer/reference/CN.features.html</loc>
+  </url>
+  <url>
+    <loc>https://shixiangwang.github.io/sigminer/reference/CopyNumber-class.html</loc>
+  </url>
+  <url>
     <loc>https://shixiangwang.github.io/sigminer/reference/cosine.html</loc>
   </url>
   <url>
@@ -88,10 +85,10 @@
     <loc>https://shixiangwang.github.io/sigminer/reference/enrich_component_strand_bias.html</loc>
   </url>
   <url>
-    <loc>https://shixiangwang.github.io/sigminer/reference/get_Aneuploidy_score.html</loc>
+    <loc>https://shixiangwang.github.io/sigminer/reference/get_adj_p.html</loc>
   </url>
   <url>
-    <loc>https://shixiangwang.github.io/sigminer/reference/get_adj_p.html</loc>
+    <loc>https://shixiangwang.github.io/sigminer/reference/get_Aneuploidy_score.html</loc>
   </url>
   <url>
     <loc>https://shixiangwang.github.io/sigminer/reference/get_bayesian_result.html</loc>
@@ -106,10 +103,10 @@
     <loc>https://shixiangwang.github.io/sigminer/reference/get_genome_annotation.html</loc>
   </url>
   <url>
-    <loc>https://shixiangwang.github.io/sigminer/reference/get_group_comparison.html</loc>
+    <loc>https://shixiangwang.github.io/sigminer/reference/get_groups.html</loc>
   </url>
   <url>
-    <loc>https://shixiangwang.github.io/sigminer/reference/get_groups.html</loc>
+    <loc>https://shixiangwang.github.io/sigminer/reference/get_group_comparison.html</loc>
   </url>
   <url>
     <loc>https://shixiangwang.github.io/sigminer/reference/get_intersect_size.html</loc>
@@ -155,6 +152,9 @@
   </url>
   <url>
     <loc>https://shixiangwang.github.io/sigminer/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>https://shixiangwang.github.io/sigminer/reference/MAF-class.html</loc>
   </url>
   <url>
     <loc>https://shixiangwang.github.io/sigminer/reference/output_bootstrap.html</loc>
@@ -235,6 +235,9 @@
     <loc>https://shixiangwang.github.io/sigminer/reference/show_cosmic_sig_profile.html</loc>
   </url>
   <url>
+    <loc>https://shixiangwang.github.io/sigminer/reference/show_groups.html</loc>
+  </url>
+  <url>
     <loc>https://shixiangwang.github.io/sigminer/reference/show_group_comparison.html</loc>
   </url>
   <url>
@@ -245,9 +248,6 @@
   </url>
   <url>
     <loc>https://shixiangwang.github.io/sigminer/reference/show_group_mapping.html</loc>
-  </url>
-  <url>
-    <loc>https://shixiangwang.github.io/sigminer/reference/show_groups.html</loc>
   </url>
   <url>
     <loc>https://shixiangwang.github.io/sigminer/reference/show_sig_bootstrap.html</loc>
@@ -272,6 +272,15 @@
   </url>
   <url>
     <loc>https://shixiangwang.github.io/sigminer/reference/show_sig_profile_loop.html</loc>
+  </url>
+  <url>
+    <loc>https://shixiangwang.github.io/sigminer/reference/sigminer-package.html</loc>
+  </url>
+  <url>
+    <loc>https://shixiangwang.github.io/sigminer/reference/sigminer.html</loc>
+  </url>
+  <url>
+    <loc>https://shixiangwang.github.io/sigminer/reference/sigprofiler.html</loc>
   </url>
   <url>
     <loc>https://shixiangwang.github.io/sigminer/reference/sig_auto_extract.html</loc>
@@ -302,12 +311,6 @@
   </url>
   <url>
     <loc>https://shixiangwang.github.io/sigminer/reference/sig_unify_extract.html</loc>
-  </url>
-  <url>
-    <loc>https://shixiangwang.github.io/sigminer/reference/sigminer.html</loc>
-  </url>
-  <url>
-    <loc>https://shixiangwang.github.io/sigminer/reference/sigprofiler.html</loc>
   </url>
   <url>
     <loc>https://shixiangwang.github.io/sigminer/reference/simulated_catalogs.html</loc>

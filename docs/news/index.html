@@ -61,10 +61,21 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="2.2.2" id="sigminer-222">sigminer 2.2.2<a class="anchor" aria-label="anchor" href="#sigminer-222"></a></h2>
-<ul><li>Added <code>samps</code> option to <code><a href="../reference/show_sig_exposure.html">show_sig_exposure()</a></code>.</li>
+<h2 class="page-header" data-toc-text="2.3.0" id="sigminer-230">sigminer 2.3.0<a class="anchor" aria-label="anchor" href="#sigminer-230"></a></h2>
+<ul><li>Supported human T2T genome and corresponding annotation data.</li>
+<li>Updated COSMIC database to v3.4. SV and RNA-SBS signatures are included.</li>
+</ul><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="../reference/get_sig_db.html">get_sig_db</a></span><span class="op">(</span><span class="st">"latest_RNA-SBS_GRCh37"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/get_sig_db.html">get_sig_db</a></span><span class="op">(</span><span class="st">"latest_SV_GRCh38"</span><span class="op">)</span></span></code></pre></div>
+<ul><li>Fixed a bug in generating matrix for variation categories with strand bias due to problematic counting. (<a href="https://github.com/ShixiangWang/sigminer/issues/445" class="external-link">#445</a>)</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="2.2.2" id="sigminer-222">sigminer 2.2.2<small>2023-08-21</small><a class="anchor" aria-label="anchor" href="#sigminer-222"></a></h2>
+<ul><li>Updated pkg doc following the new CRAN feature (thanks to K from the CRAN team).</li>
+<li>Added <code>samps</code> option to <code><a href="../reference/show_sig_exposure.html">show_sig_exposure()</a></code>.</li>
 </ul><p>Example:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/R.oo/man/Non-documented_objects.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"toy_mutational_signature.RData"</span>,</span>
 <span>                 package <span class="op">=</span> <span class="st">"sigminer"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span></span>
@@ -122,7 +133,7 @@
 <li>Updated <code>CNS_TCGA</code>.</li>
 <li>Enhanced <code><a href="../reference/group_enrichment.html">group_enrichment()</a></code> with reference group support.</li>
 </ul><p>Example:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span>
@@ -206,7 +217,7 @@
 <div class="section level3">
 <h3 id="enhancements-2-0-0">ENHANCEMENTS<a class="anchor" aria-label="anchor" href="#enhancements-2-0-0"></a></h3>
 <ul><li>Added support for latest COSMIC v3.2 as reference signatures. You can obtain them by</li>
-</ul><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+</ul><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"latest_SBS_GRCh37"</span>, <span class="st">"latest_DBS_GRCh37"</span>, <span class="st">"latest_ID_GRCh37"</span>,</span>
 <span>            <span class="st">"latest_SBS_GRCh38"</span>, <span class="st">"latest_DBS_GRCh38"</span>,</span>
@@ -360,7 +371,7 @@
 <li>Added new measure ‘CV’ for <code><a href="../reference/show_sig_bootstrap.html">show_sig_bootstrap()</a></code> (<a href="https://github.com/ShixiangWang/sigminer/issues/298" class="external-link">#298</a>).</li>
 <li>Added <code><a href="../reference/group_enrichment.html">group_enrichment()</a></code> and <code><a href="../reference/show_group_enrichment.html">show_group_enrichment()</a></code> (<a href="https://github.com/ShixiangWang/sigminer/issues/277" class="external-link">#277</a>).</li>
 <li>Optimized signature profile visualization (<a href="https://github.com/ShixiangWang/sigminer/issues/295" class="external-link">#295</a>).</li>
-<li>Updated <code><a href="../reference/sigminer.html">?sigminer</a></code> documentation.</li>
+<li>Updated <code><a href="../reference/sigminer-package.html">?sigminer</a></code> documentation.</li>
 <li>Added <code>ms</code> strategy to select optimal solution by maximizing cosine similarity to reference signatures.</li>
 <li>Added <code><a href="../reference/same_size_clustering.html">same_size_clustering()</a></code> for same size clustering.</li>
 <li>Added <code><a href="../reference/show_cosmic.html">show_cosmic()</a></code> to support reading COSMIC signatures in web browser (<a href="https://github.com/ShixiangWang/sigminer/issues/288" class="external-link">#288</a>).</li>

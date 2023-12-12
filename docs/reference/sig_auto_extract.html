@@ -87,8 +87,8 @@ to extract copy number signatures</strong>)). See detail part and references for
 <span>  ref_sigs <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  K0 <span class="op">=</span> <span class="fl">25</span>,</span>
 <span>  nrun <span class="op">=</span> <span class="fl">10</span>,</span>
-<span>  niter <span class="op">=</span> <span class="fl">2e+05</span>,</span>
-<span>  tol <span class="op">=</span> <span class="fl">1e-07</span>,</span>
+<span>  niter <span class="op">=</span> <span class="fl">200000</span>,</span>
+<span>  tol <span class="op">=</span> <span class="fl">0.0000001</span>,</span>
 <span>  cores <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  optimize <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  skip <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -115,7 +115,7 @@ to extract copy number signatures</strong>)). See detail part and references for
 a half-normal prior for H (This method is used by PCAWG project, see reference #3).
 You can also use "L1KL" to set expoential priors for both W and H, and "L2KL" to
 set half-normal priors for both W and H. The latter two methods are originally
-implemented by <a href="https://software.broadinstitute.org/cancer/cga/msp" class="external-link">SignatureAnalyzer software</a>.</p></dd>
+implemented by SignatureAnalyzer software.</p></dd>
 
 
 <dt>strategy</dt>
@@ -179,7 +179,7 @@ to recover an unfinished job.</p></dd>
     <p>There are three methods available in this function: "L1W.L2H", "L1KL" and "L2KL".
 They use different priors for the bayesian variant of NMF algorithm
 (see <code>method</code> parameter) written by reference #1 and implemented in
-<a href="https://software.broadinstitute.org/cancer/cga/msp" class="external-link">SignatureAnalyzer software</a>
+SignatureAnalyzer software
 (reference #2).</p>
 <p>I copied source code for the three methods from Broad Institute and supplementary
 files of reference #3, and wrote this higher function. It is more friendly for users
@@ -208,13 +208,14 @@ estimating signature number for <a href="sig_extract.html">sig_extract</a>.</p><
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu"><a href="https://rdrr.io/pkg/R.oo/man/Non-documented_objects.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"toy_copynumber_tally_W.RData"</span>,</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># \donttest{</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/R.oo/man/Non-documented_objects.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"toy_copynumber_tally_W.RData"</span>,</span>
 <span>  package <span class="op">=</span> <span class="st">"sigminer"</span>, mustWork <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">sig_auto_extract</span><span class="op">(</span><span class="va">cn_tally_W</span><span class="op">$</span><span class="va">nmf_matrix</span>, result_prefix <span class="op">=</span> <span class="st">"Test_copynumber"</span>, nrun <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co"># At default, all run files are stored in tempdir()</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">dir</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, pattern <span class="op">=</span> <span class="st">"Test_copynumber"</span><span class="op">)</span></span>
-<span><span class="co"># \donttest{</span></span>
+<span></span>
 <span><span class="va">laml.maf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"tcga_laml.maf.gz"</span>, package <span class="op">=</span> <span class="st">"maftools"</span><span class="op">)</span></span>
 <span><span class="va">laml</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_maf.html">read_maf</a></span><span class="op">(</span>maf <span class="op">=</span> <span class="va">laml.maf</span><span class="op">)</span></span>
 <span><span class="va">mt_tally</span> <span class="op">&lt;-</span> <span class="fu"><a href="sig_tally.html">sig_tally</a></span><span class="op">(</span></span>
