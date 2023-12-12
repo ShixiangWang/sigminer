@@ -9,9 +9,6 @@ template:
     primary: "#0054AD"
     border-radius: 0.5rem
     btn-border-radius: 0.25rem
-  # params:
-  #   bootswatch: united
-destination: docs
 
 authors:
   Shixiang Wang:
@@ -126,18 +123,22 @@ reference:
     - CN.features
     - centromeres.hg19
     - centromeres.hg38
+    - centromeres.T2T
     - centromeres.mm10
     - centromeres.mm9
     - chromsize.hg19
     - chromsize.hg38
+    - chromsize.T2T
     - chromsize.mm10
-    - - chromsize.mm9
+    - chromsize.mm9
     - cytobands.hg19
     - cytobands.hg38
+    - cytobands.T2T
     - cytobands.mm10
     - cytobands.mm9
     - transcript.hg19
     - transcript.hg38
+    - transcript.T2T
     - transcript.mm10
     - transcript.mm9
   - title: Helpers

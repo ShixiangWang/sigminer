@@ -19,6 +19,15 @@ NULL
 #' data(centromeres.hg38)
 NULL
 
+#' Location of Centromeres at Genome Build T2T
+#' @docType data
+#' @name centromeres.T2T
+#' @format A data.frame
+#' @source from T2T study
+#' @examples
+#' data(centromeres.T2T)
+NULL
+
 #' Location of Centromeres at Genome Build mm10
 #' @docType data
 #' @name centromeres.mm10
@@ -62,6 +71,15 @@ NULL
 #' data(chromsize.hg38)
 NULL
 
+#' Chromosome Size of Genome Build T2T
+#' @docType data
+#' @name chromsize.T2T
+#' @format A data.frame
+#' @source from T2T study
+#' @examples
+#' data(chromsize.T2T)
+NULL
+
 #' Chromosome Size of Genome Build mm10
 #' @docType data
 #' @name chromsize.mm10
@@ -96,6 +114,15 @@ NULL
 #' data(cytobands.hg38)
 NULL
 
+#' Location of Chromosome Cytobands at Genome Build T2T
+#' @docType data
+#' @name cytobands.T2T
+#' @format A data.frame
+#' @source from T2T study
+#' @examples
+#' data(cytobands.T2T)
+NULL
+
 #' Location of Chromosome Cytobands at Genome Build mm10
 #' @docType data
 #' @name cytobands.mm10
@@ -128,6 +155,15 @@ NULL
 #' @source from GENCODE release v33.
 #' @examples
 #' data(transcript.hg38)
+NULL
+
+#' Merged Transcript Location at Genome Build T2T
+#' @docType data
+#' @name transcript.T2T
+#' @format A `data.table`
+#' @source from T2T study.
+#' @examples
+#' data(transcript.T2T)
 NULL
 
 #' Merged Transcript Location at Genome Build mm10
