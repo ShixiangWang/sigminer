@@ -61,7 +61,7 @@ sigprofiler_extract <- function(nmf_matrix, output,
                                   "nndsvd", "nndsvda", "nndsvdar"
                                 ),
                                 cores = -1L,
-                                genome_build = c("hg19", "hg38", "mm10", "mm9"),
+                                genome_build = c("hg19", "hg38", "T2T", "mm10", "mm9", "ce11"),
                                 use_conda = FALSE,
                                 py_path = NULL,
                                 sigprofiler_version = "1.1.3") {

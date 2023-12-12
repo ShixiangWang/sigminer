@@ -47,7 +47,7 @@ show_cn_profile <- function(data, samples = NULL,
                             show_labels = NULL,
                             chrs = paste0("chr", 1:22),
                             position = NULL,
-                            genome_build = c("hg19", "hg38", "mm10", "mm9"),
+                            genome_build = c("hg19", "hg38", "T2T", "mm10", "mm9", "ce11"),
                             ylim = NULL,
                             nrow = NULL, ncol = NULL,
                             return_plotlist = FALSE) {

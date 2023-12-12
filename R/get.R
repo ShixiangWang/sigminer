@@ -51,7 +51,7 @@ get_cnlist <- function(CopyNumber, ignore_chrs = NULL, add_index = FALSE) {
 
 get_features_wang <- function(CN_data,
                               cores = 1,
-                              genome_build = c("hg19", "hg38", "mm10", "mm9"),
+                              genome_build = c("hg19", "hg38", "T2T", "mm10", "mm9", "ce11"),
                               feature_setting = sigminer::CN.features) {
   genome_build <- match.arg(genome_build)
   # get chromosome lengths and centromere locations
@@ -108,7 +108,7 @@ get_features_wang <- function(CN_data,
 # Get copy number length profile ------------------------------------------
 
 get_LengthFraction <- function(CN_data,
-                               genome_build = c("hg19", "hg38", "mm10", "mm9"),
+                               genome_build = c("hg19", "hg38", "T2T", "mm10", "mm9", "ce11"),
                                seg_cols = c("Chromosome", "Start.bp", "End.bp", "modal_cn"),
                                samp_col = "sample") {
   stopifnot(is.list(CN_data) | is.data.frame(CN_data))
@@ -280,7 +280,7 @@ get_LengthFraction <- function(CN_data,
 
 # Get arm location --------------------------------------------------------
 
-get_ArmLocation <- function(genome_build = c("hg19", "hg38", "mm10", "mm9")) {
+get_ArmLocation <- function(genome_build = c("hg19", "hg38", "T2T", "mm10", "mm9", "ce11")) {
   genome_build <- match.arg(genome_build)
   # get chromosome lengths and centromere locations
   chrlen <- get_genome_annotation(data_type = "chr_size", genome_build = genome_build)
@@ -335,7 +335,7 @@ get_ArmLocation <- function(genome_build = c("hg19", "hg38", "mm10", "mm9")) {
 
 # Get summary of copy number variation per sample ------------------------------------
 
-get_cnsummary_sample <- function(segTab, genome_build = c("hg19", "hg38", "mm10", "mm9"),
+get_cnsummary_sample <- function(segTab, genome_build = c("hg19", "hg38", "T2T", "mm10", "mm9", "ce11"),
                                  genome_measure = c("called", "wg")) {
   genome_build <- match.arg(genome_build)
   genome_measure <- match.arg(genome_measure)

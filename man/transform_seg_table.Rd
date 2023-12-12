@@ -6,7 +6,7 @@
 \usage{
 transform_seg_table(
   data,
-  genome_build = c("hg19", "hg38", "mm10", "mm9"),
+  genome_build = c("hg19", "hg38", "T2T", "mm10", "mm9", "ce11"),
   ref_type = c("cytoband", "gene"),
   values_fill = NA,
   values_fn = function(x, ...) {

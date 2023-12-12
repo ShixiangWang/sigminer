@@ -54,7 +54,7 @@ show_cn_group_profile <- function(data,
                                   fill_area = TRUE,
                                   cols = NULL,
                                   chrs = paste0("chr", c(1:22, "X")),
-                                  genome_build = c("hg19", "hg38", "mm10", "mm9"),
+                                  genome_build = c("hg19", "hg38", "T2T", "mm10", "mm9", "ce11"),
                                   cutoff = 2L,
                                   resolution_factor = 1L,
                                   force_y_limit = TRUE,
@@ -134,26 +134,7 @@ show_cn_group_profile <- function(data,
   ))
 
   if (!is.null(highlight_genes)) {
-    gene_file <- switch(genome_build,
-      mm10 = file.path(
-        system.file("extdata", package = "sigminer"),
-        "mouse_mm10_gene_info.rds"
-      ),
-      mm9 = file.path(
-        system.file("extdata", package = "sigminer"),
-        "mouse_mm9_gene_info.rds"
-      ),
-      file.path(
-        system.file("extdata", package = "sigminer"),
-        paste0("human_", genome_build, "_gene_info.rds")
-      )
-    )
-    ok <- TRUE
-    if (!file.exists(gene_file)) ok <- query_remote_data(basename(gene_file))
-    if (!ok) {
-      return(invisible(NULL))
-    }
-    gene_dt <- readRDS(gene_file)
+    gene_dt <- get_genome_annotation("gene", genome_build = genome_build)
     gene_dt <- gene_dt[gene_dt$gene_name %in% highlight_genes][
       , c("chrom", "start", "end", "gene_name")
     ]
