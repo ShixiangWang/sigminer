@@ -1,5 +1,7 @@
 # sigminer 2.3.0
 
+
+- Supported human T2T genome and corresponding annotation data.
 - Updated COSMIC database to v3.4. SV and RNA-SBS signatures are included.
 
 ```r
