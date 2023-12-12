@@ -81,7 +81,7 @@ read_vcf <- function(vcfs, samples = NULL,
   # Annotate gene symbol
   gene_dt <- get_genome_annotation("gene", genome_build = genome_build)
 
-  if (verbose) message("Annotating mutations to first matched gene based on database ", gene_file, "...")
+  if (verbose) message("Annotating mutations to first matched gene based on database of ", genome_build, "...")
   dt <- gene_dt[, c("chrom", "start", "end", "gene_name", "gene_id")]
   data.table::setkey(dt, "chrom", "start", "end")
 
