@@ -7,4 +7,3 @@ utils::globalVariables(
   )
 )
 
-options(future.rng.onMisuse = "ignore", future.globals.maxSize = Inf)

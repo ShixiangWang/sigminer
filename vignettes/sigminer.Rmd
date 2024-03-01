@@ -89,6 +89,13 @@ if (require(pheatmap)) {
 }
 ```
 
+## QA
+
+If you encounter warnings about `future` package, please set the following options before running code:
+
+```r
+options(future.rng.onMisuse = "ignore", future.globals.maxSize = Inf)
+```
 
 ## More
 
