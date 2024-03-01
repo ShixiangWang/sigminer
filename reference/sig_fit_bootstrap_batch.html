@@ -160,152 +160,154 @@ more than 10 times for more than 100 samples.</p></dd>
 <span class="r-in"><span>  <span class="va">z10</span> <span class="op">&lt;-</span> <span class="fu">sig_fit_bootstrap_batch</span><span class="op">(</span><span class="va">V</span>, sig <span class="op">=</span> <span class="va">W</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="va">z10</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:18:25.10342]: </span><span style="color: #0000BB; font-weight: bold;">Batch Bootstrap Signature Exposure Analysis Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:18:25.105105]: </span><span style="color: #0000BB; font-weight: bold;">Samples to be filtered out: </span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:18:25.106512]: </span><span style="color: #0000BB; font-weight: bold;">Finding optimal exposures (&amp;errors) for different methods.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:18:25.107836]: </span><span style="color: #0000BB; font-weight: bold;">Calling method `QP`.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:18:25.111091]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:18:25.112416]: </span><span style="color: #0000BB; font-weight: bold;">Signature index not detected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-01-03 03:18:25.113747]: </span><span style="color: #00BB00; font-weight: bold;">Signature matrix/data.frame detected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-01-03 03:18:25.115095]: </span><span style="color: #00BB00; font-weight: bold;">Database and index checked.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-01-03 03:18:25.116473]: </span><span style="color: #00BB00; font-weight: bold;">Signature normalized.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:18:25.117781]: </span><span style="color: #0000BB; font-weight: bold;">Checking row number for catalog matrix and signature matrix.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-01-03 03:18:25.119121]: </span><span style="color: #00BB00; font-weight: bold;">Checked.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-01-03 03:18:25.120428]: </span><span style="color: #00BB00; font-weight: bold;">Method 'QP' detected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-01-03 03:18:25.121732]: </span><span style="color: #00BB00; font-weight: bold;">Corresponding function generated.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:18:25.123066]: </span><span style="color: #0000BB; font-weight: bold;">Calling function.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:18:25.124542]: </span><span style="color: #0000BB; font-weight: bold;">Fitting sample: samp1</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:18:25.125992]: </span><span style="color: #0000BB; font-weight: bold;">Fitting sample: samp2</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:18:25.127389]: </span><span style="color: #0000BB; font-weight: bold;">Fitting sample: samp3</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:18:25.128771]: </span><span style="color: #0000BB; font-weight: bold;">Fitting sample: samp4</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-01-03 03:18:25.130175]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:18:25.131498]: </span><span style="color: #0000BB; font-weight: bold;">Generating output signature exposures.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-01-03 03:18:25.143307]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:18:25.144839]: </span><span style="color: #0000BB; font-weight: bold;">Calculating errors (Frobenius Norm).</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-01-03 03:18:25.146337]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:18:25.147726]: </span><span style="color: #0000BB; font-weight: bold;">0.037 secs elapsed.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:18:25.150554]: </span><span style="color: #0000BB; font-weight: bold;">Getting bootstrap exposures (&amp;errors/similarity) for different methods.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:18:25.151922]: </span><span style="color: #0000BB; font-weight: bold;">This step is time consuming, please be patient.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:18:25.153371]: </span><span style="color: #0000BB; font-weight: bold;">Processing sample `samp1`.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:18:26.197827]: </span><span style="color: #0000BB; font-weight: bold;">Processing sample `samp2`.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:18:27.237238]: </span><span style="color: #0000BB; font-weight: bold;">Processing sample `samp3`.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:18:28.259768]: </span><span style="color: #0000BB; font-weight: bold;">Processing sample `samp4`.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-01-03 03:18:29.28154]: </span><span style="color: #00BB00; font-weight: bold;">Gotten.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:18:29.283957]: </span><span style="color: #0000BB; font-weight: bold;">Reporting p values...</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:18:29.285658]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-01-03 03:18:29.287226]: </span><span style="color: #00BB00; font-weight: bold;">Batch mode enabled.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-01-03 03:18:29.289225]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:18:29.290772]: </span><span style="color: #0000BB; font-weight: bold;">0.005 secs elapsed.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:18:29.292255]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-01-03 03:18:29.293639]: </span><span style="color: #00BB00; font-weight: bold;">Batch mode enabled.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-01-03 03:18:29.295381]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:18:29.296772]: </span><span style="color: #0000BB; font-weight: bold;">0.004 secs elapsed.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:18:29.298199]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-01-03 03:18:29.299524]: </span><span style="color: #00BB00; font-weight: bold;">Batch mode enabled.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-01-03 03:18:29.301206]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:18:29.302603]: </span><span style="color: #0000BB; font-weight: bold;">0.004 secs elapsed.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:18:29.303986]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-01-03 03:18:29.305299]: </span><span style="color: #00BB00; font-weight: bold;">Batch mode enabled.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-01-03 03:18:29.306969]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:18:29.308342]: </span><span style="color: #0000BB; font-weight: bold;">0.004 secs elapsed.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-01-03 03:18:29.309699]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:18:29.311039]: </span><span style="color: #0000BB; font-weight: bold;">Cleaning results...</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-01-03 03:18:29.348119]: </span><span style="color: #00BB00; font-weight: bold;">Outputing.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:18:29.350271]: </span><span style="color: #0000BB; font-weight: bold;">Total 4.247 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:40:41.862787]: </span><span style="color: #0000BB; font-weight: bold;">Batch Bootstrap Signature Exposure Analysis Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:40:41.864518]: </span><span style="color: #0000BB; font-weight: bold;">Samples to be filtered out: </span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:40:41.865884]: </span><span style="color: #0000BB; font-weight: bold;">Finding optimal exposures (&amp;errors) for different methods.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:40:41.867249]: </span><span style="color: #0000BB; font-weight: bold;">Calling method `QP`.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:40:41.870561]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:40:41.87191]: </span><span style="color: #0000BB; font-weight: bold;">Signature index not detected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-03-01 02:40:41.873266]: </span><span style="color: #00BB00; font-weight: bold;">Signature matrix/data.frame detected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-03-01 02:40:41.874614]: </span><span style="color: #00BB00; font-weight: bold;">Database and index checked.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-03-01 02:40:41.87601]: </span><span style="color: #00BB00; font-weight: bold;">Signature normalized.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:40:41.877327]: </span><span style="color: #0000BB; font-weight: bold;">Checking row number for catalog matrix and signature matrix.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-03-01 02:40:41.878671]: </span><span style="color: #00BB00; font-weight: bold;">Checked.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-03-01 02:40:41.88001]: </span><span style="color: #00BB00; font-weight: bold;">Method 'QP' detected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-03-01 02:40:41.881539]: </span><span style="color: #00BB00; font-weight: bold;">Corresponding function generated.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:40:41.882875]: </span><span style="color: #0000BB; font-weight: bold;">Calling function.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:40:41.884397]: </span><span style="color: #0000BB; font-weight: bold;">Fitting sample: samp1</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:40:41.885845]: </span><span style="color: #0000BB; font-weight: bold;">Fitting sample: samp2</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:40:41.887266]: </span><span style="color: #0000BB; font-weight: bold;">Fitting sample: samp3</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:40:41.888649]: </span><span style="color: #0000BB; font-weight: bold;">Fitting sample: samp4</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-03-01 02:40:41.890021]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:40:41.891361]: </span><span style="color: #0000BB; font-weight: bold;">Generating output signature exposures.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-03-01 02:40:41.901853]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:40:41.903457]: </span><span style="color: #0000BB; font-weight: bold;">Calculating errors (Frobenius Norm).</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-03-01 02:40:41.904926]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:40:41.906309]: </span><span style="color: #0000BB; font-weight: bold;">0.036 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:40:41.909204]: </span><span style="color: #0000BB; font-weight: bold;">Getting bootstrap exposures (&amp;errors/similarity) for different methods.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:40:41.91072]: </span><span style="color: #0000BB; font-weight: bold;">This step is time consuming, please be patient.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:40:41.91221]: </span><span style="color: #0000BB; font-weight: bold;">Processing sample `samp1`.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:40:42.94118]: </span><span style="color: #0000BB; font-weight: bold;">Processing sample `samp2`.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:40:43.926561]: </span><span style="color: #0000BB; font-weight: bold;">Processing sample `samp3`.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:40:44.910345]: </span><span style="color: #0000BB; font-weight: bold;">Processing sample `samp4`.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-03-01 02:40:45.912716]: </span><span style="color: #00BB00; font-weight: bold;">Gotten.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:40:45.914987]: </span><span style="color: #0000BB; font-weight: bold;">Reporting p values...</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:40:45.916453]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-03-01 02:40:45.917795]: </span><span style="color: #00BB00; font-weight: bold;">Batch mode enabled.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-03-01 02:40:45.919581]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:40:45.920971]: </span><span style="color: #0000BB; font-weight: bold;">0.004 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:40:45.922352]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-03-01 02:40:45.923668]: </span><span style="color: #00BB00; font-weight: bold;">Batch mode enabled.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-03-01 02:40:45.925283]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:40:45.92668]: </span><span style="color: #0000BB; font-weight: bold;">0.004 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:40:45.928045]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-03-01 02:40:45.929399]: </span><span style="color: #00BB00; font-weight: bold;">Batch mode enabled.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-03-01 02:40:45.931077]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:40:45.932434]: </span><span style="color: #0000BB; font-weight: bold;">0.004 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:40:45.933787]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-03-01 02:40:45.93512]: </span><span style="color: #00BB00; font-weight: bold;">Batch mode enabled.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-03-01 02:40:45.936743]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:40:45.938126]: </span><span style="color: #0000BB; font-weight: bold;">0.004 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-03-01 02:40:45.939539]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:40:45.940912]: </span><span style="color: #0000BB; font-weight: bold;">Cleaning results...</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-03-01 02:40:45.975455]: </span><span style="color: #00BB00; font-weight: bold;">Outputing.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:40:45.977462]: </span><span style="color: #0000BB; font-weight: bold;">Total 4.115 secs elapsed.</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $expo</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     method sample  sig  exposure    type</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:     QP  samp1 sig1  2.000000 optimal</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:     QP  samp2 sig1  3.000000 optimal</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:     QP  samp3 sig1  1.000000 optimal</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:     QP  samp4 sig1  1.000000 optimal</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:     QP  samp1 sig2  5.000000 optimal</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:     QP  samp2 sig2  6.000000 optimal</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7:     QP  samp3 sig2  9.000000 optimal</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:     QP  samp4 sig2  2.000000 optimal</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:     QP  samp1 sig1  0.333333   Rep_1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:     QP  samp1 sig2  6.666667   Rep_1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11:     QP  samp1 sig1  0.000000   Rep_2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12:     QP  samp1 sig2  7.000000   Rep_2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13:     QP  samp1 sig1  7.000000   Rep_3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14:     QP  samp1 sig2  0.000000   Rep_3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15:     QP  samp1 sig1  0.000000   Rep_4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16:     QP  samp1 sig2  7.000000   Rep_4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17:     QP  samp1 sig1  0.000000   Rep_5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18:     QP  samp1 sig2  7.000000   Rep_5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19:     QP  samp1 sig1  0.000000   Rep_6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20:     QP  samp1 sig2  7.000000   Rep_6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21:     QP  samp1 sig1  5.333333   Rep_7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22:     QP  samp1 sig2  1.666667   Rep_7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23:     QP  samp1 sig1  0.333333   Rep_8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24:     QP  samp1 sig2  6.666667   Rep_8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25:     QP  samp1 sig1  7.000000   Rep_9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26:     QP  samp1 sig2  0.000000   Rep_9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27:     QP  samp1 sig1  7.000000  Rep_10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28:     QP  samp1 sig2  0.000000  Rep_10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29:     QP  samp2 sig1  0.000000   Rep_1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30:     QP  samp2 sig2  9.000000   Rep_1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31:     QP  samp2 sig1  9.000000   Rep_2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 32:     QP  samp2 sig2  0.000000   Rep_2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 33:     QP  samp2 sig1  9.000000   Rep_3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 34:     QP  samp2 sig2  0.000000   Rep_3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 35:     QP  samp2 sig1  9.000000   Rep_4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 36:     QP  samp2 sig2  0.000000   Rep_4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 37:     QP  samp2 sig1  0.000000   Rep_5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 38:     QP  samp2 sig2  9.000000   Rep_5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 39:     QP  samp2 sig1  0.000000   Rep_6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 40:     QP  samp2 sig2  9.000000   Rep_6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 41:     QP  samp2 sig1  0.000000   Rep_7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 42:     QP  samp2 sig2  9.000000   Rep_7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 43:     QP  samp2 sig1  0.000000   Rep_8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 44:     QP  samp2 sig2  9.000000   Rep_8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 45:     QP  samp2 sig1  0.000000   Rep_9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 46:     QP  samp2 sig2  9.000000   Rep_9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 47:     QP  samp2 sig1  9.000000  Rep_10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 48:     QP  samp2 sig2  0.000000  Rep_10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 49:     QP  samp3 sig1  0.000000   Rep_1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 50:     QP  samp3 sig2 10.000000   Rep_1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 51:     QP  samp3 sig1  0.000000   Rep_2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 52:     QP  samp3 sig2 10.000000   Rep_2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 53:     QP  samp3 sig1  0.000000   Rep_3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 54:     QP  samp3 sig2 10.000000   Rep_3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 55:     QP  samp3 sig1  3.333333   Rep_4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 56:     QP  samp3 sig2  6.666667   Rep_4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 57:     QP  samp3 sig1  8.333333   Rep_5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 58:     QP  samp3 sig2  1.666667   Rep_5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 59:     QP  samp3 sig1  0.000000   Rep_6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 60:     QP  samp3 sig2 10.000000   Rep_6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 61:     QP  samp3 sig1  8.333333   Rep_7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 62:     QP  samp3 sig2  1.666667   Rep_7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 63:     QP  samp3 sig1  0.000000   Rep_8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 64:     QP  samp3 sig2 10.000000   Rep_8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 65:     QP  samp3 sig1  3.333333   Rep_9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 66:     QP  samp3 sig2  6.666667   Rep_9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 67:     QP  samp3 sig1 10.000000  Rep_10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 68:     QP  samp3 sig2  0.000000  Rep_10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 69:     QP  samp4 sig1  3.000000   Rep_1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 70:     QP  samp4 sig2  0.000000   Rep_1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 71:     QP  samp4 sig1  3.000000   Rep_2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 72:     QP  samp4 sig2  0.000000   Rep_2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 73:     QP  samp4 sig1  3.000000   Rep_3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 74:     QP  samp4 sig2  0.000000   Rep_3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 75:     QP  samp4 sig1  3.000000   Rep_4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 76:     QP  samp4 sig2  0.000000   Rep_4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 77:     QP  samp4 sig1  3.000000   Rep_5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 78:     QP  samp4 sig2  0.000000   Rep_5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 79:     QP  samp4 sig1  0.000000   Rep_6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 80:     QP  samp4 sig2  3.000000   Rep_6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 81:     QP  samp4 sig1  0.000000   Rep_7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 82:     QP  samp4 sig2  3.000000   Rep_7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 83:     QP  samp4 sig1  3.000000   Rep_8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 84:     QP  samp4 sig2  0.000000   Rep_8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 85:     QP  samp4 sig1  3.000000   Rep_9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 86:     QP  samp4 sig2  0.000000   Rep_9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 87:     QP  samp4 sig1  0.000000  Rep_10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 88:     QP  samp4 sig2  3.000000  Rep_10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     method sample  sig  exposure    type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     method sample    sig  exposure    type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;char&gt; &lt;char&gt; &lt;fctr&gt;     &lt;num&gt;  &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:     QP  samp1   sig1  2.000000 optimal</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:     QP  samp2   sig1  3.000000 optimal</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:     QP  samp3   sig1  1.000000 optimal</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:     QP  samp4   sig1  1.000000 optimal</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:     QP  samp1   sig2  5.000000 optimal</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:     QP  samp2   sig2  6.000000 optimal</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:     QP  samp3   sig2  9.000000 optimal</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:     QP  samp4   sig2  2.000000 optimal</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:     QP  samp1   sig1  0.333333   Rep_1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:     QP  samp1   sig2  6.666667   Rep_1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:     QP  samp1   sig1  0.000000   Rep_2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:     QP  samp1   sig2  7.000000   Rep_2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13:     QP  samp1   sig1  7.000000   Rep_3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14:     QP  samp1   sig2  0.000000   Rep_3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15:     QP  samp1   sig1  0.000000   Rep_4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16:     QP  samp1   sig2  7.000000   Rep_4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17:     QP  samp1   sig1  0.000000   Rep_5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18:     QP  samp1   sig2  7.000000   Rep_5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19:     QP  samp1   sig1  0.000000   Rep_6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20:     QP  samp1   sig2  7.000000   Rep_6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21:     QP  samp1   sig1  5.333333   Rep_7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22:     QP  samp1   sig2  1.666667   Rep_7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23:     QP  samp1   sig1  0.333333   Rep_8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24:     QP  samp1   sig2  6.666667   Rep_8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25:     QP  samp1   sig1  7.000000   Rep_9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26:     QP  samp1   sig2  0.000000   Rep_9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27:     QP  samp1   sig1  7.000000  Rep_10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28:     QP  samp1   sig2  0.000000  Rep_10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29:     QP  samp2   sig1  0.000000   Rep_1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30:     QP  samp2   sig2  9.000000   Rep_1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31:     QP  samp2   sig1  9.000000   Rep_2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32:     QP  samp2   sig2  0.000000   Rep_2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33:     QP  samp2   sig1  9.000000   Rep_3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34:     QP  samp2   sig2  0.000000   Rep_3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35:     QP  samp2   sig1  9.000000   Rep_4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36:     QP  samp2   sig2  0.000000   Rep_4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37:     QP  samp2   sig1  0.000000   Rep_5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38:     QP  samp2   sig2  9.000000   Rep_5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39:     QP  samp2   sig1  0.000000   Rep_6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40:     QP  samp2   sig2  9.000000   Rep_6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41:     QP  samp2   sig1  0.000000   Rep_7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42:     QP  samp2   sig2  9.000000   Rep_7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43:     QP  samp2   sig1  0.000000   Rep_8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44:     QP  samp2   sig2  9.000000   Rep_8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45:     QP  samp2   sig1  0.000000   Rep_9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 46:     QP  samp2   sig2  9.000000   Rep_9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47:     QP  samp2   sig1  9.000000  Rep_10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48:     QP  samp2   sig2  0.000000  Rep_10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49:     QP  samp3   sig1  0.000000   Rep_1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 50:     QP  samp3   sig2 10.000000   Rep_1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 51:     QP  samp3   sig1  0.000000   Rep_2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 52:     QP  samp3   sig2 10.000000   Rep_2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 53:     QP  samp3   sig1  0.000000   Rep_3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 54:     QP  samp3   sig2 10.000000   Rep_3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 55:     QP  samp3   sig1  3.333333   Rep_4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 56:     QP  samp3   sig2  6.666667   Rep_4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 57:     QP  samp3   sig1  8.333333   Rep_5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 58:     QP  samp3   sig2  1.666667   Rep_5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 59:     QP  samp3   sig1  0.000000   Rep_6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 60:     QP  samp3   sig2 10.000000   Rep_6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 61:     QP  samp3   sig1  8.333333   Rep_7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 62:     QP  samp3   sig2  1.666667   Rep_7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 63:     QP  samp3   sig1  0.000000   Rep_8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 64:     QP  samp3   sig2 10.000000   Rep_8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 65:     QP  samp3   sig1  3.333333   Rep_9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 66:     QP  samp3   sig2  6.666667   Rep_9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 67:     QP  samp3   sig1 10.000000  Rep_10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 68:     QP  samp3   sig2  0.000000  Rep_10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 69:     QP  samp4   sig1  3.000000   Rep_1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 70:     QP  samp4   sig2  0.000000   Rep_1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 71:     QP  samp4   sig1  3.000000   Rep_2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 72:     QP  samp4   sig2  0.000000   Rep_2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 73:     QP  samp4   sig1  3.000000   Rep_3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 74:     QP  samp4   sig2  0.000000   Rep_3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 75:     QP  samp4   sig1  3.000000   Rep_4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 76:     QP  samp4   sig2  0.000000   Rep_4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 77:     QP  samp4   sig1  3.000000   Rep_5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 78:     QP  samp4   sig2  0.000000   Rep_5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 79:     QP  samp4   sig1  0.000000   Rep_6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 80:     QP  samp4   sig2  3.000000   Rep_6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 81:     QP  samp4   sig1  0.000000   Rep_7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 82:     QP  samp4   sig2  3.000000   Rep_7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 83:     QP  samp4   sig1  3.000000   Rep_8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 84:     QP  samp4   sig2  0.000000   Rep_8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 85:     QP  samp4   sig1  3.000000   Rep_9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 86:     QP  samp4   sig2  0.000000   Rep_9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 87:     QP  samp4   sig1  0.000000  Rep_10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 88:     QP  samp4   sig2  3.000000  Rep_10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     method sample    sig  exposure    type</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $error</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     method sample errors    type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;char&gt; &lt;char&gt;  &lt;num&gt;  &lt;char&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1:     QP  samp1  0.000 optimal</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  2:     QP  samp2  0.000 optimal</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  3:     QP  samp3  0.000 optimal</span>
@@ -354,6 +356,7 @@ more than 10 times for more than 100 samples.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $cosine</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     method sample   cosine    type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;char&gt; &lt;char&gt;    &lt;num&gt;  &lt;char&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1:     QP  samp1 1.000000 optimal</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  2:     QP  samp2 1.000000 optimal</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  3:     QP  samp3 1.000000 optimal</span>
@@ -401,15 +404,16 @@ more than 10 times for more than 100 samples.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     method sample   cosine    type</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $p_val</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    sample method threshold  sig      p_value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:  samp1     QP      0.05 sig1 0.0277068123</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:  samp1     QP      0.05 sig2 0.0024736045</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:  samp2     QP      0.05 sig1 0.0303471317</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:  samp2     QP      0.05 sig2 0.0041413035</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5:  samp3     QP      0.05 sig1 0.0279108829</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6:  samp3     QP      0.05 sig2 0.0005029653</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7:  samp4     QP      0.05 sig1 0.0010629845</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8:  samp4     QP      0.05 sig2 0.0680670588</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    sample method threshold    sig      p_value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    &lt;char&gt; &lt;char&gt;    &lt;char&gt; &lt;char&gt;        &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:  samp1     QP      0.05   sig1 0.0277068123</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:  samp1     QP      0.05   sig2 0.0024736045</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:  samp2     QP      0.05   sig1 0.0303471317</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:  samp2     QP      0.05   sig2 0.0041413035</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5:  samp3     QP      0.05   sig1 0.0279108829</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6:  samp3     QP      0.05   sig2 0.0005029653</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7:  samp4     QP      0.05   sig1 0.0010629845</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8:  samp4     QP      0.05   sig2 0.0680670588</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>

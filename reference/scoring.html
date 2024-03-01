@@ -147,18 +147,20 @@ where \(N_{OsCN}\) is the number of oscillating copy number pattern "2-1-2" for 
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">scoring</span><span class="op">(</span><span class="va">cn</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">d</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                           sample cnaBurden cnaLoad MACN weightedMACN Ploidy</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1: TCGA-DF-A2KN-01A-11D-A17U-01     0.000    2.81 2.83         2.98   2.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2: TCGA-B6-A0X5-01A-21D-A107-01     0.087    3.17 2.00         1.94   1.99</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3: TCGA-19-2621-01B-01D-0911-01     0.099    3.17 4.62         1.10   1.91</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4: TCGA-A8-A07S-01A-11D-A036-01     0.112    3.58 1.45         2.17   2.02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5: TCGA-26-6174-01A-21D-1842-01     0.119    3.81 2.08         2.60   2.07</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6: TCGA-06-0644-01A-02D-0310-01     0.165    4.32 1.47         2.10   2.02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: TCGA-CV-7432-01A-11D-2128-01     0.198    4.09 2.69         2.02   2.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8: TCGA-99-7458-01A-11D-2035-01     0.318    4.75 2.27         1.63   1.88</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9: TCGA-A5-A0G2-01A-11D-A042-01     0.393    4.46 1.29         1.62   1.85</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10: TCGA-05-4417-01A-22D-1854-01     0.654    5.25 3.89         3.53   3.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                           sample cnaBurden cnaLoad  MACN weightedMACN Ploidy</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                           &lt;char&gt;     &lt;num&gt;   &lt;num&gt; &lt;num&gt;        &lt;num&gt;  &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1: TCGA-DF-A2KN-01A-11D-A17U-01     0.000    2.81  2.83         2.98   2.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2: TCGA-B6-A0X5-01A-21D-A107-01     0.087    3.17  2.00         1.94   1.99</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3: TCGA-19-2621-01B-01D-0911-01     0.099    3.17  4.62         1.10   1.91</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4: TCGA-A8-A07S-01A-11D-A036-01     0.112    3.58  1.45         2.17   2.02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5: TCGA-26-6174-01A-21D-1842-01     0.119    3.81  2.08         2.60   2.07</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6: TCGA-06-0644-01A-02D-0310-01     0.165    4.32  1.47         2.10   2.02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7: TCGA-CV-7432-01A-11D-2128-01     0.198    4.09  2.69         2.02   2.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8: TCGA-99-7458-01A-11D-2035-01     0.318    4.75  2.27         1.63   1.88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9: TCGA-A5-A0G2-01A-11D-A042-01     0.393    4.46  1.29         1.62   1.85</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10: TCGA-05-4417-01A-22D-1854-01     0.654    5.25  3.89         3.53   3.00</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     TD_count       TDP      sTDP      lTDP TDP_size sTDP_size lTDP_size</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;int&gt;     &lt;num&gt;     &lt;num&gt;     &lt;num&gt;    &lt;num&gt;     &lt;num&gt;     &lt;num&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1:        5 0.5188679 0.4313725 0.4647887 0.790283  0.103883  0.686400</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  2:        3 0.4459459 0.0000000 0.4459459 1.812822  0.000000  1.812822</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  3:        5 0.4954955 0.0000000 0.4954955 4.189389  0.000000  4.189389</span>
@@ -170,6 +172,7 @@ where \(N_{OsCN}\) is the number of oscillating copy number pattern "2-1-2" for 
 <span class="r-out co"><span class="r-pr">#&gt;</span>  9:        1 0.3437500 0.3437500 0.0000000 0.091632  0.091632  0.000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10:        2 0.4313725 0.0000000 0.4313725 0.452862  0.000000  0.452862</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      TDP_pnas Chromoth_state</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;num&gt;          &lt;num&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1: -1.727273              1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  2: -1.909091              0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  3: -1.818182              3</span>
@@ -183,18 +186,20 @@ where \(N_{OsCN}\) is the number of oscillating copy number pattern "2-1-2" for 
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">d2</span> <span class="op">&lt;-</span> <span class="fu">scoring</span><span class="op">(</span><span class="va">cn</span>, TD_cn_cutoff <span class="op">=</span> <span class="fl">4L</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">d2</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                           sample cnaBurden cnaLoad MACN weightedMACN Ploidy</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1: TCGA-DF-A2KN-01A-11D-A17U-01     0.000    2.81 2.83         2.98   2.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2: TCGA-B6-A0X5-01A-21D-A107-01     0.087    3.17 2.00         1.94   1.99</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3: TCGA-19-2621-01B-01D-0911-01     0.099    3.17 4.62         1.10   1.91</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4: TCGA-A8-A07S-01A-11D-A036-01     0.112    3.58 1.45         2.17   2.02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5: TCGA-26-6174-01A-21D-1842-01     0.119    3.81 2.08         2.60   2.07</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6: TCGA-06-0644-01A-02D-0310-01     0.165    4.32 1.47         2.10   2.02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: TCGA-CV-7432-01A-11D-2128-01     0.198    4.09 2.69         2.02   2.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8: TCGA-99-7458-01A-11D-2035-01     0.318    4.75 2.27         1.63   1.88</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9: TCGA-A5-A0G2-01A-11D-A042-01     0.393    4.46 1.29         1.62   1.85</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10: TCGA-05-4417-01A-22D-1854-01     0.654    5.25 3.89         3.53   3.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                           sample cnaBurden cnaLoad  MACN weightedMACN Ploidy</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                           &lt;char&gt;     &lt;num&gt;   &lt;num&gt; &lt;num&gt;        &lt;num&gt;  &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1: TCGA-DF-A2KN-01A-11D-A17U-01     0.000    2.81  2.83         2.98   2.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2: TCGA-B6-A0X5-01A-21D-A107-01     0.087    3.17  2.00         1.94   1.99</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3: TCGA-19-2621-01B-01D-0911-01     0.099    3.17  4.62         1.10   1.91</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4: TCGA-A8-A07S-01A-11D-A036-01     0.112    3.58  1.45         2.17   2.02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5: TCGA-26-6174-01A-21D-1842-01     0.119    3.81  2.08         2.60   2.07</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6: TCGA-06-0644-01A-02D-0310-01     0.165    4.32  1.47         2.10   2.02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7: TCGA-CV-7432-01A-11D-2128-01     0.198    4.09  2.69         2.02   2.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8: TCGA-99-7458-01A-11D-2035-01     0.318    4.75  2.27         1.63   1.88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9: TCGA-A5-A0G2-01A-11D-A042-01     0.393    4.46  1.29         1.62   1.85</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10: TCGA-05-4417-01A-22D-1854-01     0.654    5.25  3.89         3.53   3.00</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     TD_count       TDP      sTDP      lTDP TDP_size sTDP_size lTDP_size</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;int&gt;     &lt;num&gt;     &lt;num&gt;     &lt;num&gt;    &lt;num&gt;     &lt;num&gt;     &lt;num&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1:        5 0.5188679 0.4313725 0.4647887 0.790283  0.103883  0.686400</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  2:        3 0.4459459 0.0000000 0.4459459 1.812822  0.000000  1.812822</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  3:        3 0.4647887 0.0000000 0.4647887 2.272032  0.000000  2.272032</span>
@@ -206,6 +211,7 @@ where \(N_{OsCN}\) is the number of oscillating copy number pattern "2-1-2" for 
 <span class="r-out co"><span class="r-pr">#&gt;</span>  9:        1 0.3437500 0.3437500 0.0000000 0.091632  0.091632  0.000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10:        0 0.0000000 0.0000000 0.0000000 0.000000  0.000000  0.000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      TDP_pnas Chromoth_state</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;num&gt;          &lt;num&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1: -1.727273              1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  2: -1.909091              0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  3: -1.818182              3</span>

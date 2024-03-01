@@ -92,7 +92,7 @@
                         <h4 data-toc-skip class="author">Shixiang Wang (
 <a href="mailto:wangshx@shanghaitech.edu.cn" class="email">wangshx@shanghaitech.edu.cn</a> )</h4>
             
-            <h4 data-toc-skip class="date">2024-01-03</h4>
+            <h4 data-toc-skip class="date">2024-03-01</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ShixiangWang/sigminer/blob/HEAD/vignettes/sigminer.Rmd" class="external-link"><code>vignettes/sigminer.Rmd</code></a></small>
       <div class="hidden name"><code>sigminer.Rmd</code></div>
@@ -172,6 +172,14 @@ Show signature activity (a.k.a. exposure) profile:</p>
 <span>    <span class="fu">pheatmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pheatmap/man/pheatmap.html" class="external-link">pheatmap</a></span><span class="op">(</span><span class="va">sim</span><span class="op">$</span><span class="va">similarity</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <p><img src="sigminer_files/figure-html/unnamed-chunk-10-1.png" width="960" style="display: block; margin: auto;"></p>
+<div class="section level2">
+<h2 id="qa">QA<a class="anchor" aria-label="anchor" href="#qa"></a>
+</h2>
+<p>If you encounter warnings about <code>future</code> package, please
+set the following options before running code:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>future.rng.onMisuse <span class="op">=</span> <span class="st">"ignore"</span>, future.globals.maxSize <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span></span></code></pre></div>
+</div>
 <div class="section level2">
 <h2 id="more">More<a class="anchor" aria-label="anchor" href="#more"></a>
 </h2>

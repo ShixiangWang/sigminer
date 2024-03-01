@@ -115,6 +115,7 @@ default is <code>0.1%</code>.</p></dd>
 <span class="r-in"><span><span class="va">rel_expo</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_sig_exposure.html">get_sig_exposure</a></span><span class="op">(</span><span class="va">sig2</span>, type <span class="op">=</span> <span class="st">"relative"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">rel_expo</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            sample       Sig1      Sig2       Sig3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            &lt;char&gt;      &lt;num&gt;     &lt;num&gt;      &lt;num&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1: TCGA-AB-2802 0.00000000 0.8581541 0.14184589</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   2: TCGA-AB-2803 0.00000000 0.9418556 0.05814437</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   3: TCGA-AB-2804 0.00000000 1.0000000 0.00000000</span>
@@ -129,6 +130,7 @@ default is <code>0.1%</code>.</p></dd>
 <span class="r-in"><span><span class="va">diversity_index</span> <span class="op">&lt;-</span> <span class="fu">get_shannon_diversity_index</span><span class="op">(</span><span class="va">rel_expo</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">diversity_index</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            sample diversity_index</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            &lt;char&gt;           &lt;num&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1: TCGA-AB-2802      0.40830022</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   2: TCGA-AB-2803      0.22183088</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   3: TCGA-AB-2804      0.00000000</span>

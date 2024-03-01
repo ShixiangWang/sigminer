@@ -151,93 +151,97 @@ about implementation please see source code of <code><a href="sig_extract.html">
 <span class="r-out co"><span class="r-pr">#&gt;</span> Runs: |                                                        Runs: |                                                  |   0%Runs: |                                                        Runs: |=====                                             |   9%Runs: |                                                        Runs: |=========                                         |  18%Runs: |                                                        Runs: |==============                                    |  27%Runs: |                                                        Runs: |==================                                |  36%Runs: |                                                        Runs: |=======================                           |  45%Runs: |                                                        Runs: |===========================                       |  55%Runs: |                                                        Runs: |================================                  |  64%Runs: |                                                        Runs: |====================================              |  73%Runs: |                                                        Runs: |=========================================         |  82%Runs: |                                                        Runs: |=============================================     |  91%Runs: |                                                        Runs: |==================================================| 100%</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> System time:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    user  system elapsed </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   4.677   0.004   4.680 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4.492   0.000   4.493 </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Methods 'consensus' and 'samples' are from NMF::predict()</span></span></span>
 <span class="r-in"><span><span class="va">g1</span> <span class="op">&lt;-</span> <span class="fu">get_groups</span><span class="op">(</span><span class="va">sig</span>, method <span class="op">=</span> <span class="st">"consensus"</span>, match_consensus <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:12:29.355621]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-01-03 03:12:29.35724]: </span><span style="color: #00BB00; font-weight: bold;">'Signature' object detected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:12:29.35863]: </span><span style="color: #0000BB; font-weight: bold;">Obtaining clusters from the hierarchical clustering of the consensus matrix...</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:12:29.375844]: </span><span style="color: #0000BB; font-weight: bold;">Finding the dominant signature of each group...</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:34:48.77835]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-03-01 02:34:48.77997]: </span><span style="color: #00BB00; font-weight: bold;">'Signature' object detected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:34:48.781393]: </span><span style="color: #0000BB; font-weight: bold;">Obtaining clusters from the hierarchical clustering of the consensus matrix...</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:34:48.798654]: </span><span style="color: #0000BB; font-weight: bold;">Finding the dominant signature of each group...</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> =&gt; Generating a table of group and dominant signature:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     Sig1 Sig2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1    0    2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   2    8    0</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> =&gt; Assigning a group to a signature with the maxium fraction (stored in 'map_table' attr)...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:12:29.392278]: </span><span style="color: #0000BB; font-weight: bold;">Summarizing...</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:34:48.813844]: </span><span style="color: #0000BB; font-weight: bold;">Summarizing...</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 	group #1: 2 samples with Sig2 enriched.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 	group #2: 8 samples with Sig1 enriched.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> <span style="font-weight: bold;">[2024-01-03 03:12:29.394355]: </span><span style="color: #BBBB00; font-weight: bold;">The 'enrich_sig' column is set to dominant signature in one group, please check and make it consistent with biological meaning (correct it by hand if necessary).</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:12:29.395746]: </span><span style="color: #0000BB; font-weight: bold;">0.04 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> <span style="font-weight: bold;">[2024-03-01 02:34:48.815789]: </span><span style="color: #BBBB00; font-weight: bold;">The 'enrich_sig' column is set to dominant signature in one group, please check and make it consistent with biological meaning (correct it by hand if necessary).</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:34:48.817234]: </span><span style="color: #0000BB; font-weight: bold;">0.039 secs elapsed.</span></span>
 <span class="r-in"><span><span class="va">g1</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                           sample group silhouette_width enrich_sig</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1: TCGA-05-4417-01A-22D-1854-01     1            1.000       Sig2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2: TCGA-99-7458-01A-11D-2035-01     1            0.986       Sig2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3: TCGA-CV-7432-01A-11D-2128-01     2            0.986       Sig1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4: TCGA-DF-A2KN-01A-11D-A17U-01     2            0.986       Sig1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5: TCGA-B6-A0X5-01A-21D-A107-01     2            0.986       Sig1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6: TCGA-A8-A07S-01A-11D-A036-01     2            0.986       Sig1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: TCGA-A5-A0G2-01A-11D-A042-01     2            0.986       Sig1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8: TCGA-26-6174-01A-21D-1842-01     2            0.986       Sig1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9: TCGA-06-0644-01A-02D-0310-01     2            1.000       Sig1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10: TCGA-19-2621-01B-01D-0911-01     2            0.889       Sig1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                           sample  group silhouette_width enrich_sig</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                           &lt;char&gt; &lt;char&gt;            &lt;num&gt;     &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1: TCGA-05-4417-01A-22D-1854-01      1            1.000       Sig2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2: TCGA-99-7458-01A-11D-2035-01      1            0.986       Sig2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3: TCGA-CV-7432-01A-11D-2128-01      2            0.986       Sig1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4: TCGA-DF-A2KN-01A-11D-A17U-01      2            0.986       Sig1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5: TCGA-B6-A0X5-01A-21D-A107-01      2            0.986       Sig1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6: TCGA-A8-A07S-01A-11D-A036-01      2            0.986       Sig1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7: TCGA-A5-A0G2-01A-11D-A042-01      2            0.986       Sig1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8: TCGA-26-6174-01A-21D-1842-01      2            0.986       Sig1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9: TCGA-06-0644-01A-02D-0310-01      2            1.000       Sig1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10: TCGA-19-2621-01B-01D-0911-01      2            0.889       Sig1</span>
 <span class="r-in"><span><span class="va">g2</span> <span class="op">&lt;-</span> <span class="fu">get_groups</span><span class="op">(</span><span class="va">sig</span>, method <span class="op">=</span> <span class="st">"samples"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:12:29.399137]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-01-03 03:12:29.40053]: </span><span style="color: #00BB00; font-weight: bold;">'Signature' object detected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:12:29.401951]: </span><span style="color: #0000BB; font-weight: bold;">Obtaining clusters by the contribution of signature to each sample...</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:12:29.404849]: </span><span style="color: #0000BB; font-weight: bold;">Finding the dominant signature of each group...</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:34:48.821063]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-03-01 02:34:48.822489]: </span><span style="color: #00BB00; font-weight: bold;">'Signature' object detected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:34:48.823889]: </span><span style="color: #0000BB; font-weight: bold;">Obtaining clusters by the contribution of signature to each sample...</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:34:48.826602]: </span><span style="color: #0000BB; font-weight: bold;">Finding the dominant signature of each group...</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> =&gt; Generating a table of group and dominant signature:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     Sig1 Sig2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1    0    2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   2    8    0</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> =&gt; Assigning a group to a signature with the maxium fraction (stored in 'map_table' attr)...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:12:29.42028]: </span><span style="color: #0000BB; font-weight: bold;">Summarizing...</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:34:48.840668]: </span><span style="color: #0000BB; font-weight: bold;">Summarizing...</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 	group #1: 2 samples with Sig2 enriched.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 	group #2: 8 samples with Sig1 enriched.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> <span style="font-weight: bold;">[2024-01-03 03:12:29.422185]: </span><span style="color: #BBBB00; font-weight: bold;">The 'enrich_sig' column is set to dominant signature in one group, please check and make it consistent with biological meaning (correct it by hand if necessary).</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:12:29.423607]: </span><span style="color: #0000BB; font-weight: bold;">0.024 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> <span style="font-weight: bold;">[2024-03-01 02:34:48.842556]: </span><span style="color: #BBBB00; font-weight: bold;">The 'enrich_sig' column is set to dominant signature in one group, please check and make it consistent with biological meaning (correct it by hand if necessary).</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:34:48.843975]: </span><span style="color: #0000BB; font-weight: bold;">0.023 secs elapsed.</span></span>
 <span class="r-in"><span><span class="va">g2</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                           sample group silhouette_width  prob enrich_sig</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1: TCGA-05-4417-01A-22D-1854-01     1                1 1.000       Sig2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2: TCGA-06-0644-01A-02D-0310-01     2                1 0.787       Sig1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3: TCGA-19-2621-01B-01D-0911-01     2                1 1.000       Sig1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4: TCGA-26-6174-01A-21D-1842-01     2                1 1.000       Sig1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5: TCGA-99-7458-01A-11D-2035-01     1                1 0.679       Sig2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6: TCGA-A5-A0G2-01A-11D-A042-01     2                1 0.598       Sig1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: TCGA-A8-A07S-01A-11D-A036-01     2                1 0.975       Sig1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8: TCGA-B6-A0X5-01A-21D-A107-01     2                1 1.000       Sig1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9: TCGA-CV-7432-01A-11D-2128-01     2                1 0.544       Sig1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10: TCGA-DF-A2KN-01A-11D-A17U-01     2                1 1.000       Sig1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                           sample  group silhouette_width  prob enrich_sig</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                           &lt;char&gt; &lt;char&gt;            &lt;num&gt; &lt;num&gt;     &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1: TCGA-05-4417-01A-22D-1854-01      1                1 1.000       Sig2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2: TCGA-06-0644-01A-02D-0310-01      2                1 0.787       Sig1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3: TCGA-19-2621-01B-01D-0911-01      2                1 1.000       Sig1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4: TCGA-26-6174-01A-21D-1842-01      2                1 1.000       Sig1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5: TCGA-99-7458-01A-11D-2035-01      1                1 0.679       Sig2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6: TCGA-A5-A0G2-01A-11D-A042-01      2                1 0.598       Sig1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7: TCGA-A8-A07S-01A-11D-A036-01      2                1 0.975       Sig1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8: TCGA-B6-A0X5-01A-21D-A107-01      2                1 1.000       Sig1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9: TCGA-CV-7432-01A-11D-2128-01      2                1 0.544       Sig1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10: TCGA-DF-A2KN-01A-11D-A17U-01      2                1 1.000       Sig1</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Use k-means clustering</span></span></span>
 <span class="r-in"><span><span class="va">g3</span> <span class="op">&lt;-</span> <span class="fu">get_groups</span><span class="op">(</span><span class="va">sig</span>, method <span class="op">=</span> <span class="st">"k-means"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:12:29.427072]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-01-03 03:12:29.428489]: </span><span style="color: #00BB00; font-weight: bold;">'Signature' object detected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:12:29.432195]: </span><span style="color: #0000BB; font-weight: bold;">Running k-means with 2 clusters...</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:12:29.434439]: </span><span style="color: #0000BB; font-weight: bold;">Generating a table of group and signature contribution (stored in 'map_table' attr):</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:34:48.848032]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-03-01 02:34:48.849576]: </span><span style="color: #00BB00; font-weight: bold;">'Signature' object detected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:34:48.853288]: </span><span style="color: #0000BB; font-weight: bold;">Running k-means with 2 clusters...</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:34:48.855553]: </span><span style="color: #0000BB; font-weight: bold;">Generating a table of group and signature contribution (stored in 'map_table' attr):</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        Sig1      Sig2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.2097559 0.7901116</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.8964984 0.1035016</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:12:29.435867]: </span><span style="color: #0000BB; font-weight: bold;">Assigning a group to a signature with the maximum fraction...</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:12:29.439411]: </span><span style="color: #0000BB; font-weight: bold;">Summarizing...</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:34:48.857003]: </span><span style="color: #0000BB; font-weight: bold;">Assigning a group to a signature with the maximum fraction...</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:34:48.860502]: </span><span style="color: #0000BB; font-weight: bold;">Summarizing...</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 	group #1: 2 samples with Sig2 enriched.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 	group #2: 8 samples with Sig1 enriched.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> <span style="font-weight: bold;">[2024-01-03 03:12:29.441257]: </span><span style="color: #BBBB00; font-weight: bold;">The 'enrich_sig' column is set to dominant signature in one group, please check and make it consistent with biological meaning (correct it by hand if necessary).</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-01-03 03:12:29.442695]: </span><span style="color: #0000BB; font-weight: bold;">0.016 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> <span style="font-weight: bold;">[2024-03-01 02:34:48.862437]: </span><span style="color: #BBBB00; font-weight: bold;">The 'enrich_sig' column is set to dominant signature in one group, please check and make it consistent with biological meaning (correct it by hand if necessary).</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-03-01 02:34:48.863851]: </span><span style="color: #0000BB; font-weight: bold;">0.016 secs elapsed.</span></span>
 <span class="r-in"><span><span class="va">g3</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                           sample group silhouette_width enrich_sig</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1: TCGA-05-4417-01A-22D-1854-01     1            0.532       Sig2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2: TCGA-99-7458-01A-11D-2035-01     1            0.121       Sig2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3: TCGA-06-0644-01A-02D-0310-01     2            0.755       Sig1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4: TCGA-19-2621-01B-01D-0911-01     2            0.850       Sig1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5: TCGA-26-6174-01A-21D-1842-01     2            0.850       Sig1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6: TCGA-A5-A0G2-01A-11D-A042-01     2            0.493       Sig1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: TCGA-A8-A07S-01A-11D-A036-01     2            0.847       Sig1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8: TCGA-B6-A0X5-01A-21D-A107-01     2            0.850       Sig1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9: TCGA-CV-7432-01A-11D-2128-01     2            0.341       Sig1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10: TCGA-DF-A2KN-01A-11D-A17U-01     2            0.850       Sig1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Key: &lt;group&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                           sample  group silhouette_width enrich_sig</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                           &lt;char&gt; &lt;char&gt;            &lt;num&gt;     &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1: TCGA-05-4417-01A-22D-1854-01      1            0.532       Sig2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2: TCGA-99-7458-01A-11D-2035-01      1            0.121       Sig2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3: TCGA-06-0644-01A-02D-0310-01      2            0.755       Sig1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4: TCGA-19-2621-01B-01D-0911-01      2            0.850       Sig1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5: TCGA-26-6174-01A-21D-1842-01      2            0.850       Sig1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6: TCGA-A5-A0G2-01A-11D-A042-01      2            0.493       Sig1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7: TCGA-A8-A07S-01A-11D-A036-01      2            0.847       Sig1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8: TCGA-B6-A0X5-01A-21D-A107-01      2            0.850       Sig1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9: TCGA-CV-7432-01A-11D-2128-01      2            0.341       Sig1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10: TCGA-DF-A2KN-01A-11D-A17U-01      2            0.850       Sig1</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
