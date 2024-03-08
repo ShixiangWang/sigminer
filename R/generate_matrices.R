@@ -416,10 +416,10 @@ generate_matrix_DBS <- function(query, ref_genome, genome_build = "hg19", add_tr
 
   # Reorder mutation types
   res$all_matrices = lapply(res$all_matrices, function(x) {
-    y = x[, sort(colnames(x))]
+    y = x[, sort(colnames(x)), drop = FALSE]
     y
   })
-  res$nmf_matrix = res$nmf_matrix[, sort(colnames(res$nmf_matrix))]
+  res$nmf_matrix = res$nmf_matrix[, sort(colnames(res$nmf_matrix)), drop = FALSE]
 
   res
 }
@@ -676,10 +676,10 @@ generate_matrix_INDEL <- function(query, ref_genome, genome_build = "hg19", add_
   }
   # Reorder mutation types
   res$all_matrices = lapply(res$all_matrices, function(x) {
-    y = x[, sort(colnames(x))]
+    y = x[, sort(colnames(x)), drop = FALSE]
     y
   })
-  res$nmf_matrix = res$nmf_matrix[, sort(colnames(res$nmf_matrix))]
+  res$nmf_matrix = res$nmf_matrix[, sort(colnames(res$nmf_matrix)), drop = FALSE]
 
   res
 }

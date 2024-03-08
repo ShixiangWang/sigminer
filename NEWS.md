@@ -1,3 +1,7 @@
+# sigminer 2.3.1
+
+- - Fixed the error in generating DBS and INDEL matrix when only one sample input (#453).
+
 # sigminer 2.3.0
 
 
