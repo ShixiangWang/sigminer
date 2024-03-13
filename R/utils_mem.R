@@ -26,6 +26,7 @@ show_bytes <- function(x) {
   structure(x, class = "bytes")
 }
 
+#' @export
 print.bytes <- function(x, digits = 3, ...) {
   power <- min(floor(log(abs(x), 1000)), 4)
   if (power < 1) {

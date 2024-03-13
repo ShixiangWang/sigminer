@@ -19,6 +19,8 @@ please read its \href{https://bioconductor.org/packages/release/bioc/vignettes/m
 Useful links:
 \itemize{
   \item \url{https://github.com/ShixiangWang/sigminer}
+  \item \url{https://shixiangwang.github.io/sigminer/}
+  \item \url{https://shixiangwang.github.io/sigminer-book/}
   \item Report bugs at \url{https://github.com/ShixiangWang/sigminer/issues}
 }
 

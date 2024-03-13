@@ -1,6 +1,8 @@
 # sigminer 2.3.1
 
-- - Fixed the error in generating DBS and INDEL matrix when only one sample input (#453).
+- Added `cluster_col` to `show_group_enrichment()`.
+- Fixed the bug that error returned when `cluster_row = TRUE` & `return_list = TRUE` in function `show_group_enrichment()`.
+- Fixed the error in generating DBS and INDEL matrix when only one sample input (#453).
 
 # sigminer 2.3.0
 
