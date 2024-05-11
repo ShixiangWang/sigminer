@@ -52,6 +52,25 @@ a \code{list} of \code{data.table}.
 Read \link{sig_fit_bootstrap} for more option setting.
 }
 \examples{
+# For mutational signatures ----------------
+# SBS is used for illustration, similar
+# operations can be applied to DBS, INDEL, CN, RS, etc.
+
+# Load simulated data
+data("simulated_catalogs")
+data = simulated_catalogs$set1
+data[1:5, 1:5]
+
+# Fitting with COSMIC reference signatures
+\donttest{
+# Generally set n = 100
+rv = sig_fit_bootstrap_batch(data,
+  sig_index = c(1, 5, 9, 2, 13),
+   sig_db = "SBS", n = 10)
+rv
+}
+
+# For general purpose --------------------
 W <- matrix(c(1, 2, 3, 4, 5, 6), ncol = 2)
 colnames(W) <- c("sig1", "sig2")
 W <- apply(W, 2, function(x) x / sum(x))

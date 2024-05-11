@@ -2,8 +2,14 @@
 
 # File R/sig_fit_bootstrap.R: @testexamples
 
-test_that("Function sig_fit_bootstrap() @ L61", {
+test_that("Function sig_fit_bootstrap() @ L67", {
   
+  
+  # This function is designed for processing
+  # one sample, thus is not very useful in practice
+  # please check `sig_fit_bootstrap_batch`
+  
+  # For general purpose -------------------
   W <- matrix(c(1, 2, 3, 4, 5, 6), ncol = 2)
   colnames(W) <- c("sig1", "sig2")
   W <- apply(W, 2, function(x) x / sum(x))

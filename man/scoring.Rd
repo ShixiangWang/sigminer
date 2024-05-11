@@ -4,7 +4,7 @@
 \alias{scoring}
 \title{Score Copy Number Profile}
 \usage{
-scoring(object, TD_size_cutoff = c(1000, 100000, 2000000), TD_cn_cutoff = Inf)
+scoring(object, TD_size_cutoff = c(1000, 1e+05, 2e+06), TD_cn_cutoff = Inf)
 }
 \arguments{
 \item{object}{a object of \link{CopyNumber}.}

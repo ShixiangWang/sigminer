@@ -49,6 +49,52 @@
 #'  Nature genetics 48.6 (2016): 600.
 #' @examples
 #' \donttest{
+#'
+#' # For mutational signatures ----------------
+#' # SBS is used for illustration, similar
+#' # operations can be applied to DBS, INDEL, CN, RS, etc.
+#'
+#' # Load simulated data
+#' data("simulated_catalogs")
+#' data = simulated_catalogs$set1
+#' data[1:5, 1:5]
+#'
+#' # Fitting with all COSMIC v2 reference signatures
+#' sig_fit(data, sig_index = "ALL")
+#' # Check ?sig_fit for sig_db options
+#' # e.g., use the COSMIC SBS v3
+#' sig_fit(data, sig_index = "ALL", sig_db = "SBS")
+#'
+#' # Fitting with specified signatures
+#' # opt 1. use selected reference signatures
+#' sig_fit(data, sig_index = c(1, 5, 9, 2, 13), sig_db = "SBS")
+#' # opt 2. use user specified signatures
+#' ref = get_sig_db()$db
+#' ref[1:5, 1:5]
+#' ref = ref[, 1:10]
+#' # The `sig` used here can be result object from `sig_extract`
+#' # or any reference matrix with similar structure (96-motif)
+#' v1 = sig_fit(data, sig = ref)
+#' v1
+#'
+#' # If possible, auto-reduce the reference signatures
+#' # for better fitting data from a sample
+#' v2 = sig_fit(data, sig = ref, auto_reduce = TRUE)
+#' v2
+#'
+#' all.equal(v1, v2)
+#'
+#' # Some samples reported signatures dropped
+#' # but its original activity values are 0s,
+#' # so the data remain same (0 -> 0)
+#' all.equal(v1[, 2], v2[, 2])
+#'
+#' # For COSMIC_10, 6.67638 -> 0
+#' v1[, 4]; v2[, 4]
+#' all.equal(v1[, 4], v2[, 4])
+#'
+#' # For general purpose -----------------------
+#'
 #' W <- matrix(c(1, 2, 3, 4, 5, 6), ncol = 2)
 #' colnames(W) <- c("sig1", "sig2")
 #' W <- apply(W, 2, function(x) x / sum(x))
