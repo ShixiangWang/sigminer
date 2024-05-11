@@ -1,10 +1,10 @@
 pandoc: 3.1.11
-pkgdown: 2.0.7
+pkgdown: 2.0.9
 pkgdown_sha: ~
 articles:
   cnsignature: cnsignature.html
   sigminer: sigminer.html
-last_built: 2024-03-13T10:44Z
+last_built: 2024-05-11T03:24Z
 urls:
   reference: https://shixiangwang.github.io/sigminer/reference
   article: https://shixiangwang.github.io/sigminer/articles
