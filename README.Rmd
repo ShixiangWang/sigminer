@@ -135,6 +135,16 @@ conda install -c bioconda -c conda-forge r-sigminer
 
 A complete documentation of **sigminer** can be read online at <https://shixiangwang.github.io/sigminer-book/>. All functions are well organized and documented at <https://shixiangwang.github.io/sigminer/reference/index.html>. For usage of a specific function `fun`, run `?fun` in your R console to see its documentation.
 
+## :question: QA
+
+### How to install the `copynumber` package
+
+For some extra features provided by **sigminer**, **copynumber** package is required. Due to the removal of the **copynumber** package from Bioc, I had to remove it from the dependencies in v2.2.0. You can install the package from <https://github.com/shixiangwang/copynumber/>. It is generally recommended as I have added some features, although other forks of this package exist on GitHub.
+
+```r
+remotes::install_github("ShixiangWang/copynumber")
+```
+
 ## :paperclip: Citation
 
 If you use **sigminer** in academic field, please cite one of the following papers.
@@ -157,7 +167,7 @@ library("spiralize")
 library("ComplexHeatmap")
 library("lubridate")
 
-df <- cran_downloads("sigminer", from = "2019-07-01", to = "2023-03-29")
+df <- cran_downloads("sigminer", from = "2019-07-01", to = "2024-06-07")
 
 if (!is.null(df)) {
   day_diff = as.double(df$date[nrow(df)] - df$date[1], "days")
@@ -178,7 +188,8 @@ if (!is.null(df)) {
   spiral_highlight("2020-01-01", "2020-12-31", type = "line", gp = gpar(col = 2))
   spiral_highlight("2021-01-01", "2021-12-31", type = "line", gp = gpar(col = 3))
   spiral_highlight("2022-01-01", "2022-12-31", type = "line", gp = gpar(col = 4))
-  spiral_highlight("2023-01-01", "end",        type = "line", gp = gpar(col = 4))
+  spiral_highlight("2023-01-01", "2023-12-31", type = "line", gp = gpar(col = 5))
+  spiral_highlight("2024-01-01", "end",        type = "line", gp = gpar(col = 6))
   
   s = current_spiral()
   d = seq(15, 360, by = 30) %% 360
@@ -191,7 +202,7 @@ if (!is.null(df)) {
   lgd = packLegend(
     Legend(title = "Difference to\nyearly average", at = c("higher", "lower"),
            legend_gp = gpar(fill = c("#D73027", "#313695"))),
-    Legend(title = "Year", type = "lines", at = 2019:2023,
+    Legend(title = "Year", type = "lines", at = 2019:2024,
            legend_gp = gpar(col = 1:5))
   )
   draw(lgd, x = unit(1, "npc") + unit(10, "mm"), just = "left")

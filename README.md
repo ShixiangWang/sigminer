@@ -110,6 +110,21 @@ organized and documented at
 usage of a specific function `fun`, run `?fun` in your R console to see
 its documentation.
 
+## :question: QA
+
+### How to install the `copynumber` package
+
+For some extra features provided by **sigminer**, **copynumber** package
+is required. Due to the removal of the **copynumber** package from Bioc,
+I had to remove it from the dependencies in v2.2.0. You can install the
+package from <https://github.com/shixiangwang/copynumber/>. It is
+generally recommended as I have added some features, although other
+forks of this package exist on GitHub.
+
+``` r
+remotes::install_github("ShixiangWang/copynumber")
+```
+
 ## :paperclip: Citation
 
 If you use **sigminer** in academic field, please cite one of the
@@ -198,4 +213,9 @@ MIT © 2018 Anand Mayakonda
 Sigminer v1-v2 are supported by [**Cancer Biology
 Group**](https://github.com/XSLiuLab) **@ShanghaiTech**
 
-![Alt](https://repobeats.axiom.co/api/embed/7cd2cf8a196dde9d8d1e13c9b23bc2f157d8254e.svg "Repobeats analytics image")
+<figure>
+<img
+src="https://repobeats.axiom.co/api/embed/7cd2cf8a196dde9d8d1e13c9b23bc2f157d8254e.svg"
+title="Repobeats analytics image" alt="Alt" />
+<figcaption aria-hidden="true">Alt</figcaption>
+</figure>
