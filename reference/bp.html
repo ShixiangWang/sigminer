@@ -31,7 +31,7 @@ Extra: bp_get_rank_score() for obtaining rank score for all signature numbers.
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -45,7 +45,7 @@ Extra: bp_get_rank_score() for obtaining rank score for all signature numbers.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.3.2</span>
       </span>
     </div>
 
@@ -59,7 +59,7 @@ Extra: bp_get_rank_score() for obtaining rank score for all signature numbers.
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
@@ -72,20 +72,20 @@ Extra: bp_get_rank_score() for obtaining rank score for all signature numbers.
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/ShixiangWang/sigminer/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>A Best Practice for Signature Extraction and Exposure (Activity) Attribution</h1>
-    <small class="dont-index">Source: <a href="https://github.com/ShixiangWang/sigminer/blob/HEAD/R/best_practice.R" class="external-link"><code>R/best_practice.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/ShixiangWang/sigminer/blob/master/R/best_practice.R" class="external-link"><code>R/best_practice.R</code></a></small>
     <div class="hidden name"><code>bp.Rd</code></div>
     </div>
 
@@ -208,187 +208,189 @@ These stats are aggregated (averaged) as the stats for a solution
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>nmf_matrix</dt>
+
+
+<dl><dt id="arg-nmf-matrix">nmf_matrix<a class="anchor" aria-label="anchor" href="#arg-nmf-matrix"></a></dt>
 <dd><p>a <code>matrix</code> used for NMF decomposition with rows indicate samples and columns indicate components.</p></dd>
 
 
-<dt>range</dt>
+<dt id="arg-range">range<a class="anchor" aria-label="anchor" href="#arg-range"></a></dt>
 <dd><p>a <code>numeric</code> vector containing the ranks of factorization to try. Note that duplicates are removed
 and values are sorted in increasing order. The results are notably returned in this order.</p></dd>
 
 
-<dt>n_bootstrap</dt>
+<dt id="arg-n-bootstrap">n_bootstrap<a class="anchor" aria-label="anchor" href="#arg-n-bootstrap"></a></dt>
 <dd><p>number of bootstrapped (resampling) catalogs used.
 When it is <code>0</code>, the original (input) mutation catalog is used for NMF decomposition,
 this is not recommended, just for testing, user should not set it to <code>0</code>.</p></dd>
 
 
-<dt>n_nmf_run</dt>
+<dt id="arg-n-nmf-run">n_nmf_run<a class="anchor" aria-label="anchor" href="#arg-n-nmf-run"></a></dt>
 <dd><p>number of NMF runs for each bootstrapped or original catalog.
 At default, in total n_bootstrap x n_nmf_run (i.e. 1000) NMF runs are used
 for the task.</p></dd>
 
 
-<dt>RTOL</dt>
+<dt id="arg-rtol">RTOL<a class="anchor" aria-label="anchor" href="#arg-rtol"></a></dt>
 <dd><p>a threshold proposed by Nature Cancer paper to control how to
 filter solutions of NMF. Default is <code>0.1%</code> (from reference #2),
 only NMF solutions with KLD (KL deviance) &lt;= <code>100.1%</code> minimal KLD are kept.</p></dd>
 
 
-<dt>min_contribution</dt>
+<dt id="arg-min-contribution">min_contribution<a class="anchor" aria-label="anchor" href="#arg-min-contribution"></a></dt>
 <dd><p>a component contribution threshold to filer out small
 contributed components.</p></dd>
 
 
-<dt>cores</dt>
+<dt id="arg-cores">cores<a class="anchor" aria-label="anchor" href="#arg-cores"></a></dt>
 <dd><p>number of cpu cores to run NMF.</p></dd>
 
 
-<dt>cores_solution</dt>
+<dt id="arg-cores-solution">cores_solution<a class="anchor" aria-label="anchor" href="#arg-cores-solution"></a></dt>
 <dd><p>cores for processing solutions, default is equal to argument <code>cores</code>.</p></dd>
 
 
-<dt>seed</dt>
+<dt id="arg-seed">seed<a class="anchor" aria-label="anchor" href="#arg-seed"></a></dt>
 <dd><p>a random seed to make reproducible result.</p></dd>
 
 
-<dt>handle_hyper_mutation</dt>
+<dt id="arg-handle-hyper-mutation">handle_hyper_mutation<a class="anchor" aria-label="anchor" href="#arg-handle-hyper-mutation"></a></dt>
 <dd><p>default is <code>TRUE</code>, handle hyper-mutant samples.</p></dd>
 
 
-<dt>report_integer_exposure</dt>
+<dt id="arg-report-integer-exposure">report_integer_exposure<a class="anchor" aria-label="anchor" href="#arg-report-integer-exposure"></a></dt>
 <dd><p>if <code>TRUE</code>, report integer signature
 exposure by bootstrapping technique.</p></dd>
 
 
-<dt>only_core_stats</dt>
+<dt id="arg-only-core-stats">only_core_stats<a class="anchor" aria-label="anchor" href="#arg-only-core-stats"></a></dt>
 <dd><p>if <code>TRUE</code>, only calculate the core stats for signatures and samples.</p></dd>
 
 
-<dt>cache_dir</dt>
+<dt id="arg-cache-dir">cache_dir<a class="anchor" aria-label="anchor" href="#arg-cache-dir"></a></dt>
 <dd><p>a directory for keep temp result files.</p></dd>
 
 
-<dt>keep_cache</dt>
+<dt id="arg-keep-cache">keep_cache<a class="anchor" aria-label="anchor" href="#arg-keep-cache"></a></dt>
 <dd><p>if <code>TRUE</code>, keep cache results.</p></dd>
 
 
-<dt>pynmf</dt>
+<dt id="arg-pynmf">pynmf<a class="anchor" aria-label="anchor" href="#arg-pynmf"></a></dt>
 <dd><p>if <code>TRUE</code>, use Python NMF driver <a href="http://nimfa.biolab.si/index.html" class="external-link">Nimfa</a>.
 The seed currently is not used by this implementation, so the only way to reproduce
 your result is setting <code>keep_cache = TRUE</code>.</p></dd>
 
 
-<dt>use_conda</dt>
+<dt id="arg-use-conda">use_conda<a class="anchor" aria-label="anchor" href="#arg-use-conda"></a></dt>
 <dd><p>if <code>TRUE</code>, create an independent conda environment to run NMF.</p></dd>
 
 
-<dt>py_path</dt>
+<dt id="arg-py-path">py_path<a class="anchor" aria-label="anchor" href="#arg-py-path"></a></dt>
 <dd><p>path to Python executable file, e.g. '/Users/wsx/anaconda3/bin/python'. In my
 test, it is more stable than <code>use_conda=TRUE</code>. You can install the Nimfa package by yourself
 or set <code>use_conda</code> to <code>TRUE</code> to install required Python environment, and then set this option.</p></dd>
 
 
-<dt>sim_threshold</dt>
+<dt id="arg-sim-threshold">sim_threshold<a class="anchor" aria-label="anchor" href="#arg-sim-threshold"></a></dt>
 <dd><p>a similarity threshold for selecting samples to auto-rerun
 the extraction procedure (i.e. <code>bp_extract_signatures()</code>), default is <code>0.95</code>.</p></dd>
 
 
-<dt>max_iter</dt>
+<dt id="arg-max-iter">max_iter<a class="anchor" aria-label="anchor" href="#arg-max-iter"></a></dt>
 <dd><p>the maximum iteration size, default is 10, i.e., at most run
 the extraction procedure 10 times.</p></dd>
 
 
-<dt>x</dt>
+<dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
 <dd><p>result from <code>bp_extract_signatures_iter()</code> or a list of
 <code>Signature</code> objects.</p></dd>
 
 
-<dt>k</dt>
+<dt id="arg-k">k<a class="anchor" aria-label="anchor" href="#arg-k"></a></dt>
 <dd><p>an integer sequence specifying the cluster number to get silhouette.</p></dd>
 
 
-<dt>include_final_iteration</dt>
+<dt id="arg-include-final-iteration">include_final_iteration<a class="anchor" aria-label="anchor" href="#arg-include-final-iteration"></a></dt>
 <dd><p>if <code>FALSE</code>, exclude final iteration result
 from clustering for input from <code>bp_extract_signatures_iter()</code>, not applied
 if input is a list of <code>Signature</code> objects.</p></dd>
 
 
-<dt>SigClusters</dt>
+<dt id="arg-sigclusters">SigClusters<a class="anchor" aria-label="anchor" href="#arg-sigclusters"></a></dt>
 <dd><p>result from <code>bp_cluster_iter_list()</code>.</p></dd>
 
 
-<dt>cluster_label</dt>
+<dt id="arg-cluster-label">cluster_label<a class="anchor" aria-label="anchor" href="#arg-cluster-label"></a></dt>
 <dd><p>cluster labels for a specified cluster number, obtain it
 from <code>SigClusters$sil_df</code>.</p></dd>
 
 
-<dt>obj</dt>
+<dt id="arg-obj">obj<a class="anchor" aria-label="anchor" href="#arg-obj"></a></dt>
 <dd><p>a <code>ExtractionResult</code> object from <code>bp_extract_signatures()</code>.</p></dd>
 
 
-<dt>signum</dt>
+<dt id="arg-signum">signum<a class="anchor" aria-label="anchor" href="#arg-signum"></a></dt>
 <dd><p>a integer vector to extract the corresponding <code>Signature</code> object(s).
 If it is <code>NULL</code> (default), all will be returned.</p></dd>
 
 
-<dt>left_y</dt>
+<dt id="arg-left-y">left_y<a class="anchor" aria-label="anchor" href="#arg-left-y"></a></dt>
 <dd><p>column name for left y axis.</p></dd>
 
 
-<dt>right_y</dt>
+<dt id="arg-right-y">right_y<a class="anchor" aria-label="anchor" href="#arg-right-y"></a></dt>
 <dd><p>column name for right y axis.</p></dd>
 
 
-<dt>left_name</dt>
+<dt id="arg-left-name">left_name<a class="anchor" aria-label="anchor" href="#arg-left-name"></a></dt>
 <dd><p>label name for left y axis.</p></dd>
 
 
-<dt>right_name</dt>
+<dt id="arg-right-name">right_name<a class="anchor" aria-label="anchor" href="#arg-right-name"></a></dt>
 <dd><p>label name for right y axis.</p></dd>
 
 
-<dt>left_color</dt>
+<dt id="arg-left-color">left_color<a class="anchor" aria-label="anchor" href="#arg-left-color"></a></dt>
 <dd><p>color for left axis.</p></dd>
 
 
-<dt>right_color</dt>
+<dt id="arg-right-color">right_color<a class="anchor" aria-label="anchor" href="#arg-right-color"></a></dt>
 <dd><p>color for right axis.</p></dd>
 
 
-<dt>left_shape, right_shape, shape_size</dt>
+<dt id="arg-left-shape-right-shape-shape-size">left_shape, right_shape, shape_size<a class="anchor" aria-label="anchor" href="#arg-left-shape-right-shape-shape-size"></a></dt>
 <dd><p>shape setting.</p></dd>
 
 
-<dt>highlight</dt>
+<dt id="arg-highlight">highlight<a class="anchor" aria-label="anchor" href="#arg-highlight"></a></dt>
 <dd><p>a <code>integer</code> to highlight a <code>x</code>.</p></dd>
 
 
-<dt>add_score</dt>
+<dt id="arg-add-score">add_score<a class="anchor" aria-label="anchor" href="#arg-add-score"></a></dt>
 <dd><p>if <code>FALSE</code>, don't show score and label optimal points by
 rank score.</p></dd>
 
 
-<dt>scales</dt>
+<dt id="arg-scales">scales<a class="anchor" aria-label="anchor" href="#arg-scales"></a></dt>
 <dd><p>one of "free_y" (default) and "free" to control the scales
 of plot facet.</p></dd>
 
 
-<dt>fixed_ratio</dt>
+<dt id="arg-fixed-ratio">fixed_ratio<a class="anchor" aria-label="anchor" href="#arg-fixed-ratio"></a></dt>
 <dd><p>if <code>TRUE</code> (default), make the x/y axis ratio fixed.</p></dd>
 
 
-<dt>input</dt>
+<dt id="arg-input">input<a class="anchor" aria-label="anchor" href="#arg-input"></a></dt>
 <dd><p>result from <code>bp_extract_signatures()</code> or a Signature object.</p></dd>
 
 
-<dt>sample_class</dt>
+<dt id="arg-sample-class">sample_class<a class="anchor" aria-label="anchor" href="#arg-sample-class"></a></dt>
 <dd><p>a named string vector whose names are sample names
 and values are class labels (i.e. cancer subtype). If it is <code>NULL</code> (the default),
 treat all samples as one group.</p></dd>
 
 
-<dt>method</dt>
+<dt id="arg-method">method<a class="anchor" aria-label="anchor" href="#arg-method"></a></dt>
 <dd><p>one of 'bt' (use bootstrap exposure median, from reference #2,
 <strong>the most recommended way in my personal view</strong>) or stepwise'
 (stepwise reduce and update signatures then do signature fitting
@@ -397,27 +399,25 @@ the contribution of removed signatures to the remaining signatures,
 <strong>maybe I misunderstand the paper method? PAY ATTENTION</strong>).</p></dd>
 
 
-<dt>bt_use_prop</dt>
+<dt id="arg-bt-use-prop">bt_use_prop<a class="anchor" aria-label="anchor" href="#arg-bt-use-prop"></a></dt>
 <dd><p>this parameter is only used for <code>bt</code> method to reset
 low contributing signature activity (relative activity <code>&lt;0.01</code>). If <code>TRUE</code>,
 use empirical P value calculation way (i.e. proportion, used by reference <code>#2</code>),
 otherwise a <code>t.test</code> is applied.</p></dd>
 
 
-<dt>return_class</dt>
+<dt id="arg-return-class">return_class<a class="anchor" aria-label="anchor" href="#arg-return-class"></a></dt>
 <dd><p>string, 'matrix' or 'data.table'.</p></dd>
 
 
-<dt>use_parallel</dt>
+<dt id="arg-use-parallel">use_parallel<a class="anchor" aria-label="anchor" href="#arg-use-parallel"></a></dt>
 <dd><p>if <code>TRUE</code>, use parallel computation based on <strong>furrr</strong> package.
 It can also be an integer for specifying cores.</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>It depends on the called function.</p>
+    <p>It depends on the called function.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -430,7 +430,7 @@ very clear to see and also visualize like other approaches provided by <strong>s
     </div>
     <div id="measure-explanation-in-survey-plot">
     <h2>Measure Explanation in Survey Plot</h2>
-    
+
 
 <p>The survey plot provides a pretty good way to facilitate the signature number
 selection. A <code>score</code> measure is calculated as the weighted mean of selected
@@ -1230,12 +1230,12 @@ indicates if the signature profiles extracted from different NMF runs are simila
 <span class="r-in"><span><span class="co"># try to optimize the result.</span></span></span>
 <span class="r-in"><span><span class="co"># NOTE: the optimization step may not truly optimize the result!</span></span></span>
 <span class="r-in"><span><span class="va">expo</span> <span class="op">&lt;-</span> <span class="fu">bp_attribute_activity</span><span class="op">(</span><span class="va">e1</span>, return_class <span class="op">=</span> <span class="st">"data.table"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Set cache dir: /tmp/Rtmpx4WIwA/sigminer_attribute_activity</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Set cache dir: /tmp/RtmpADM14r/sigminer_attribute_activity</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Handling sample: Sample_2</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:10:58.178866]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:10:58.180839]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:10:58.182295]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:10:58.183725]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:02.094133]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:02.096051]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:02.097476]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:02.098822]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Bootstrapping 100 times.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.1.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.2.</span>
@@ -1339,17 +1339,17 @@ indicates if the signature profiles extracted from different NMF runs are simila
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.100.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Bootstrap done.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:01.580061]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:01.581543]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:01.582884]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:01.584226]: </span><span style="color: #0000BB; font-weight: bold;">3.405 secs elapsed.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_2_expo.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_2_sim.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:05.449819]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:05.451333]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:05.452692]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:05.454095]: </span><span style="color: #0000BB; font-weight: bold;">3.36 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_2_expo.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_2_sim.rds</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Handling sample: Sample_3</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:01.735244]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:01.737379]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:01.738849]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:01.740216]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:05.611184]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:05.613196]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:05.614706]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:05.616109]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Bootstrapping 100 times.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.1.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.2.</span>
@@ -1453,17 +1453,17 @@ indicates if the signature profiles extracted from different NMF runs are simila
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.100.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Bootstrap done.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:04.919326]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:04.920802]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:04.922192]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:04.923539]: </span><span style="color: #0000BB; font-weight: bold;">3.188 secs elapsed.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_3_expo.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_3_sim.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:08.79324]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:08.794703]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:08.796002]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:08.79736]: </span><span style="color: #0000BB; font-weight: bold;">3.186 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_3_expo.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_3_sim.rds</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Handling sample: Sample_4</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:05.075347]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:05.07736]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:05.078857]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:05.080233]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:08.951332]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:08.95309]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:08.954588]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:08.955972]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Bootstrapping 100 times.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.1.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.2.</span>
@@ -1567,17 +1567,17 @@ indicates if the signature profiles extracted from different NMF runs are simila
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.100.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Bootstrap done.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:08.264517]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:08.266025]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:08.267347]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:08.268697]: </span><span style="color: #0000BB; font-weight: bold;">3.193 secs elapsed.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_4_expo.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_4_sim.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:12.225574]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:12.22704]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:12.228377]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:12.229755]: </span><span style="color: #0000BB; font-weight: bold;">3.278 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_4_expo.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_4_sim.rds</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Handling sample: Sample_5</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:08.420601]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:08.422689]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:08.424158]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:08.425541]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:12.383579]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:12.385382]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:12.386871]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:12.3883]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Bootstrapping 100 times.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.1.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.2.</span>
@@ -1681,17 +1681,17 @@ indicates if the signature profiles extracted from different NMF runs are simila
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.100.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Bootstrap done.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:11.527474]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:11.528955]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:11.530328]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:11.531669]: </span><span style="color: #0000BB; font-weight: bold;">3.111 secs elapsed.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_5_expo.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_5_sim.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:15.525238]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:15.526748]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:15.528068]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:15.529441]: </span><span style="color: #0000BB; font-weight: bold;">3.146 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_5_expo.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_5_sim.rds</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Handling sample: Sample_6</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:11.682789]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:11.684793]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:11.686286]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:11.687776]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:15.682783]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:15.684881]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:15.686395]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:15.687801]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Bootstrapping 100 times.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.1.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.2.</span>
@@ -1795,17 +1795,17 @@ indicates if the signature profiles extracted from different NMF runs are simila
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.100.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Bootstrap done.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:14.78258]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:14.784061]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:14.785391]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:14.786785]: </span><span style="color: #0000BB; font-weight: bold;">3.104 secs elapsed.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_6_expo.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_6_sim.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:18.828753]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:18.830274]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:18.831614]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:18.832978]: </span><span style="color: #0000BB; font-weight: bold;">3.15 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_6_expo.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_6_sim.rds</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Handling sample: Sample_7</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:14.935986]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:14.937719]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:14.939214]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:14.940598]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:18.985641]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:18.987449]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:18.988936]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:18.990403]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Bootstrapping 100 times.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.1.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.2.</span>
@@ -1909,17 +1909,17 @@ indicates if the signature profiles extracted from different NMF runs are simila
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.100.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Bootstrap done.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:18.032549]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:18.034091]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:18.035438]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:18.036795]: </span><span style="color: #0000BB; font-weight: bold;">3.101 secs elapsed.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_7_expo.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_7_sim.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:22.270242]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:22.271741]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:22.273065]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:22.274429]: </span><span style="color: #0000BB; font-weight: bold;">3.289 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_7_expo.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_7_sim.rds</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Handling sample: Sample_8</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:18.188063]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:18.189831]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:18.191277]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:18.192641]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:22.423293]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:22.425076]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:22.426619]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:22.428046]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Bootstrapping 100 times.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.1.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.2.</span>
@@ -2023,17 +2023,17 @@ indicates if the signature profiles extracted from different NMF runs are simila
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.100.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Bootstrap done.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:21.29314]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:21.294671]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:21.296002]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:21.297351]: </span><span style="color: #0000BB; font-weight: bold;">3.109 secs elapsed.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_8_expo.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_8_sim.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:25.584566]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:25.586081]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:25.587415]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:25.588778]: </span><span style="color: #0000BB; font-weight: bold;">3.165 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_8_expo.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_8_sim.rds</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Handling sample: Sample_9</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:21.447843]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:21.449607]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:21.451094]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:21.452474]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:25.742712]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:25.744498]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:25.746011]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:25.747409]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Bootstrapping 100 times.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.1.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.2.</span>
@@ -2137,17 +2137,17 @@ indicates if the signature profiles extracted from different NMF runs are simila
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.100.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Bootstrap done.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:24.743524]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:24.745021]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:24.746372]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:24.747726]: </span><span style="color: #0000BB; font-weight: bold;">3.3 secs elapsed.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_9_expo.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_9_sim.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:28.953845]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:28.955323]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:28.956671]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:28.958074]: </span><span style="color: #0000BB; font-weight: bold;">3.215 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_9_expo.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_9_sim.rds</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Handling sample: Sample_10</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:24.897309]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:24.89912]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:24.900605]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:24.902045]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:29.11065]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:29.112443]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:29.113982]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:29.115422]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Bootstrapping 100 times.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.1.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.2.</span>
@@ -2251,17 +2251,17 @@ indicates if the signature profiles extracted from different NMF runs are simila
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.100.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Bootstrap done.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:28.072307]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:28.073817]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:28.075172]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:28.076523]: </span><span style="color: #0000BB; font-weight: bold;">3.179 secs elapsed.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_10_expo.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_10_sim.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:32.328388]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:32.329886]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:32.331222]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:32.332583]: </span><span style="color: #0000BB; font-weight: bold;">3.222 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_10_expo.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_10_sim.rds</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Handling sample: Sample_11</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:28.228278]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:28.230064]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:28.231544]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:28.232947]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:32.485459]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:32.487276]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:32.488806]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:32.4903]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Bootstrapping 100 times.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.1.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.2.</span>
@@ -2365,17 +2365,17 @@ indicates if the signature profiles extracted from different NMF runs are simila
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.100.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Bootstrap done.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:31.356316]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:31.357852]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:31.359199]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:31.360555]: </span><span style="color: #0000BB; font-weight: bold;">3.132 secs elapsed.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_11_expo.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_11_sim.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:35.667874]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:35.669393]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:35.670739]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:35.672103]: </span><span style="color: #0000BB; font-weight: bold;">3.187 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_11_expo.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_11_sim.rds</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Handling sample: Sample_13</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:31.510595]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:31.512356]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:31.51387]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:31.515279]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:35.825502]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:35.827305]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:35.828799]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:35.830251]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Bootstrapping 100 times.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.1.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.2.</span>
@@ -2479,17 +2479,17 @@ indicates if the signature profiles extracted from different NMF runs are simila
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.100.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Bootstrap done.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:34.610148]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:34.611655]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:34.612998]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:34.614389]: </span><span style="color: #0000BB; font-weight: bold;">3.104 secs elapsed.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_13_expo.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_13_sim.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:38.958806]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:38.960295]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:38.961659]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:38.963022]: </span><span style="color: #0000BB; font-weight: bold;">3.138 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_13_expo.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_13_sim.rds</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Handling sample: Sample_14</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:34.764308]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:34.766125]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:34.767613]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:34.769017]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:39.114997]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:39.116826]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:39.118389]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:39.119812]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Bootstrapping 100 times.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.1.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.2.</span>
@@ -2593,17 +2593,17 @@ indicates if the signature profiles extracted from different NMF runs are simila
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.100.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Bootstrap done.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:37.875965]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:37.87747]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:37.878827]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:37.880188]: </span><span style="color: #0000BB; font-weight: bold;">3.116 secs elapsed.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_14_expo.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_14_sim.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:42.246326]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:42.24782]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:42.249192]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:42.250589]: </span><span style="color: #0000BB; font-weight: bold;">3.136 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_14_expo.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_14_sim.rds</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Handling sample: Sample_15</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:38.028541]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:38.030339]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:38.031817]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:38.033218]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:42.406652]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:42.408442]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:42.409972]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:42.411401]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Bootstrapping 100 times.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.1.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.2.</span>
@@ -2707,17 +2707,17 @@ indicates if the signature profiles extracted from different NMF runs are simila
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.100.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Bootstrap done.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:41.184457]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:41.185989]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:41.187346]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:41.188802]: </span><span style="color: #0000BB; font-weight: bold;">3.16 secs elapsed.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_15_expo.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_15_sim.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:45.633027]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:45.634573]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:45.635923]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:45.637316]: </span><span style="color: #0000BB; font-weight: bold;">3.231 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_15_expo.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_15_sim.rds</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Handling sample: Sample_16</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:41.34325]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:41.345036]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:41.346551]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:41.347951]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:45.795764]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:45.797636]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:45.79918]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:45.800596]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Bootstrapping 100 times.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.1.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.2.</span>
@@ -2821,17 +2821,17 @@ indicates if the signature profiles extracted from different NMF runs are simila
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.100.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Bootstrap done.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:44.506213]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:44.507743]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:44.509101]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:44.510519]: </span><span style="color: #0000BB; font-weight: bold;">3.167 secs elapsed.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_16_expo.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_16_sim.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:49.104651]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:49.10617]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:49.107512]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:49.108879]: </span><span style="color: #0000BB; font-weight: bold;">3.313 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_16_expo.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_16_sim.rds</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Handling sample: Sample_18</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:44.662253]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:44.66404]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:44.66552]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:44.666955]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:49.262846]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:49.26466]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:49.266156]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:49.267558]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Bootstrapping 100 times.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.1.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.2.</span>
@@ -2935,17 +2935,17 @@ indicates if the signature profiles extracted from different NMF runs are simila
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.100.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Bootstrap done.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:47.930019]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:47.931535]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:47.93286]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:47.934258]: </span><span style="color: #0000BB; font-weight: bold;">3.272 secs elapsed.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_18_expo.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_18_sim.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:52.44333]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:52.444838]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:52.446218]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:52.447587]: </span><span style="color: #0000BB; font-weight: bold;">3.185 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_18_expo.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_18_sim.rds</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Handling sample: Sample_20</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:48.086217]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:48.088042]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:48.089532]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:48.090978]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:52.603029]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:52.604837]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:52.60639]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:52.607829]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Bootstrapping 100 times.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.1.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.2.</span>
@@ -3049,17 +3049,17 @@ indicates if the signature profiles extracted from different NMF runs are simila
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.100.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Bootstrap done.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:51.203262]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:51.204783]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:51.206176]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:51.20765]: </span><span style="color: #0000BB; font-weight: bold;">3.121 secs elapsed.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_20_expo.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_20_sim.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:55.750282]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:55.751774]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:55.753127]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:55.754528]: </span><span style="color: #0000BB; font-weight: bold;">3.151 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_20_expo.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_20_sim.rds</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Handling sample: Sample_21</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:51.3627]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:51.364513]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:51.366102]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:51.367522]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:55.910704]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:55.912526]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:55.914066]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:55.915576]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Bootstrapping 100 times.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.1.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.2.</span>
@@ -3163,17 +3163,17 @@ indicates if the signature profiles extracted from different NMF runs are simila
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.100.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Bootstrap done.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:54.578827]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:54.580331]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:54.581649]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:54.583068]: </span><span style="color: #0000BB; font-weight: bold;">3.22 secs elapsed.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_21_expo.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_21_sim.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:59.165813]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:59.167321]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:59.168673]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:59.170108]: </span><span style="color: #0000BB; font-weight: bold;">3.259 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_21_expo.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_21_sim.rds</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Handling sample: Sample_23</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:54.738187]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:54.739998]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:54.741507]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:54.742971]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:59.323509]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:59.325694]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:37:59.327213]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:37:59.328642]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Bootstrapping 100 times.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.1.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.2.</span>
@@ -3277,17 +3277,17 @@ indicates if the signature profiles extracted from different NMF runs are simila
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.100.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Bootstrap done.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:57.867338]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:57.868873]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:57.870265]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:57.871672]: </span><span style="color: #0000BB; font-weight: bold;">3.133 secs elapsed.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_23_expo.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_23_sim.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:02.493806]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:02.495323]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:02.496673]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:02.498093]: </span><span style="color: #0000BB; font-weight: bold;">3.175 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_23_expo.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_23_sim.rds</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Handling sample: Sample_25</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:58.025909]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:58.027742]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:11:58.02926]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:11:58.030718]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:02.652782]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:02.65463]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:02.65615]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:02.657622]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Bootstrapping 100 times.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.1.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.2.</span>
@@ -3391,17 +3391,17 @@ indicates if the signature profiles extracted from different NMF runs are simila
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.100.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Bootstrap done.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:01.206982]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:01.208526]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:01.209918]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:01.211333]: </span><span style="color: #0000BB; font-weight: bold;">3.185 secs elapsed.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_25_expo.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_25_sim.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:05.87948]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:05.881034]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:05.882453]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:05.883848]: </span><span style="color: #0000BB; font-weight: bold;">3.231 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_25_expo.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_25_sim.rds</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Handling sample: Sample_26</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:01.363564]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:01.365374]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:01.36691]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:01.368329]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:06.039642]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:06.041602]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:06.043191]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:06.044637]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Bootstrapping 100 times.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.1.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.2.</span>
@@ -3505,17 +3505,17 @@ indicates if the signature profiles extracted from different NMF runs are simila
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.100.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Bootstrap done.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:04.506011]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:04.507572]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:04.508946]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:04.510354]: </span><span style="color: #0000BB; font-weight: bold;">3.147 secs elapsed.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_26_expo.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_26_sim.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:09.226263]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:09.227786]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:09.229151]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:09.230568]: </span><span style="color: #0000BB; font-weight: bold;">3.191 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_26_expo.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_26_sim.rds</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Handling sample: Sample_27</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:04.663975]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:04.665815]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:04.667346]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:04.668766]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:09.38452]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:09.386347]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:09.387841]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:09.389286]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Bootstrapping 100 times.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.1.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.2.</span>
@@ -3619,17 +3619,17 @@ indicates if the signature profiles extracted from different NMF runs are simila
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.100.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Bootstrap done.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:07.854776]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:07.856313]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:07.857698]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:07.859219]: </span><span style="color: #0000BB; font-weight: bold;">3.195 secs elapsed.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_27_expo.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_27_sim.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:12.757006]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:12.758554]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:12.759908]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:12.761307]: </span><span style="color: #0000BB; font-weight: bold;">3.377 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_27_expo.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_27_sim.rds</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Handling sample: Sample_28</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:08.012634]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:08.01447]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:08.015977]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:08.017388]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:12.915554]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:12.917435]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:12.918985]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:12.920444]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Bootstrapping 100 times.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.1.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.2.</span>
@@ -3733,17 +3733,17 @@ indicates if the signature profiles extracted from different NMF runs are simila
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.100.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Bootstrap done.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:11.273215]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:11.27478]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:11.276156]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:11.277551]: </span><span style="color: #0000BB; font-weight: bold;">3.265 secs elapsed.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_28_expo.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_28_sim.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:16.057013]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:16.058567]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:16.059939]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:16.061359]: </span><span style="color: #0000BB; font-weight: bold;">3.146 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_28_expo.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_28_sim.rds</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Handling sample: Sample_29</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:11.428073]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:11.429935]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:11.431473]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:11.432921]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:16.218087]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:16.219818]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:16.221188]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:16.222585]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Bootstrapping 100 times.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.1.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.2.</span>
@@ -3847,17 +3847,17 @@ indicates if the signature profiles extracted from different NMF runs are simila
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.100.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Bootstrap done.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:14.550103]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:14.551645]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:14.553023]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:14.55446]: </span><span style="color: #0000BB; font-weight: bold;">3.126 secs elapsed.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_29_expo.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_29_sim.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:19.353896]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:19.355422]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:19.356789]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:19.358199]: </span><span style="color: #0000BB; font-weight: bold;">3.14 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_29_expo.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_29_sim.rds</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Handling sample: Sample_30</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:14.70628]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:14.708101]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:14.70961]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:14.711083]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:19.517917]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:19.519818]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:19.521333]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:19.522713]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Bootstrapping 100 times.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.1.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.2.</span>
@@ -3961,17 +3961,17 @@ indicates if the signature profiles extracted from different NMF runs are simila
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.100.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Bootstrap done.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:17.812338]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:17.813887]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:17.815269]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:17.816666]: </span><span style="color: #0000BB; font-weight: bold;">3.11 secs elapsed.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_30_expo.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_30_sim.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:22.698183]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:22.699703]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:22.701059]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:22.70246]: </span><span style="color: #0000BB; font-weight: bold;">3.185 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_30_expo.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_30_sim.rds</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Handling sample: Sample_1</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:17.96908]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:17.970936]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:17.972488]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:17.973943]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:22.858709]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:22.860537]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:22.862093]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:22.863616]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Bootstrapping 100 times.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.1.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.2.</span>
@@ -4075,17 +4075,17 @@ indicates if the signature profiles extracted from different NMF runs are simila
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.100.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Bootstrap done.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:21.4511]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:21.452641]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:21.454046]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:21.45545]: </span><span style="color: #0000BB; font-weight: bold;">3.486 secs elapsed.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_1_expo.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_1_sim.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:26.375695]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:26.37725]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:26.378732]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:26.380135]: </span><span style="color: #0000BB; font-weight: bold;">3.521 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_1_expo.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_1_sim.rds</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Handling sample: Sample_12</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:21.607158]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:21.609012]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:21.610576]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:21.612021]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:26.539569]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:26.541453]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:26.543005]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:26.544495]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Bootstrapping 100 times.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.1.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.2.</span>
@@ -4189,17 +4189,17 @@ indicates if the signature profiles extracted from different NMF runs are simila
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.100.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Bootstrap done.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:25.150454]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:25.152001]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:25.153385]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:25.154835]: </span><span style="color: #0000BB; font-weight: bold;">3.548 secs elapsed.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_12_expo.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_12_sim.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:30.105448]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:30.106986]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:30.10836]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:30.109788]: </span><span style="color: #0000BB; font-weight: bold;">3.57 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_12_expo.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_12_sim.rds</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Handling sample: Sample_17</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:25.308555]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:25.310435]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:25.311972]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:25.313404]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:30.266732]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:30.26862]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:30.270199]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:30.271692]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Bootstrapping 100 times.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.1.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.2.</span>
@@ -4303,17 +4303,17 @@ indicates if the signature profiles extracted from different NMF runs are simila
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.100.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Bootstrap done.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:28.61949]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:28.621082]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:28.622656]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:28.639776]: </span><span style="color: #0000BB; font-weight: bold;">3.331 secs elapsed.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_17_expo.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_17_sim.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:33.635939]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:33.637494]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:33.638875]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:33.640272]: </span><span style="color: #0000BB; font-weight: bold;">3.374 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_17_expo.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_17_sim.rds</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Handling sample: Sample_19</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:28.787607]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:28.78936]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:28.79087]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:28.792293]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:33.796468]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:33.798341]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:33.799874]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:33.801368]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Bootstrapping 100 times.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.1.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.2.</span>
@@ -4417,17 +4417,17 @@ indicates if the signature profiles extracted from different NMF runs are simila
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.100.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Bootstrap done.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:32.172667]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:32.174277]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:32.180268]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:32.181657]: </span><span style="color: #0000BB; font-weight: bold;">3.394 secs elapsed.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_19_expo.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_19_sim.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:37.245344]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:37.246896]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:37.248278]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:37.249726]: </span><span style="color: #0000BB; font-weight: bold;">3.453 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_19_expo.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_19_sim.rds</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Handling sample: Sample_22</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:32.336145]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:32.33803]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:32.339558]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:32.341001]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:37.405367]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:37.407255]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:37.408854]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:37.410403]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Bootstrapping 100 times.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.1.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.2.</span>
@@ -4531,17 +4531,17 @@ indicates if the signature profiles extracted from different NMF runs are simila
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.100.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Bootstrap done.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:35.908128]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:35.909702]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:35.911152]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:35.912633]: </span><span style="color: #0000BB; font-weight: bold;">3.576 secs elapsed.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_22_expo.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_22_sim.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:41.019572]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:41.021148]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:41.022574]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:41.023981]: </span><span style="color: #0000BB; font-weight: bold;">3.619 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_22_expo.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_22_sim.rds</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Handling sample: Sample_24</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:36.06689]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:36.068706]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:36.070239]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:36.071677]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:41.177841]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:41.179695]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:41.181249]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:41.182809]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Bootstrapping 100 times.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.1.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.2.</span>
@@ -4645,12 +4645,12 @@ indicates if the signature profiles extracted from different NMF runs are simila
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 100 times, starting no.100.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Bootstrap done.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:39.577656]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:39.579226]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:39.585371]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:39.586803]: </span><span style="color: #0000BB; font-weight: bold;">3.52 secs elapsed.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_24_expo.rds</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/Rtmpx4WIwA/sigminer_attribute_activity/Sample_24_sim.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:44.693877]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:44.69542]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:44.696807]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:44.698233]: </span><span style="color: #0000BB; font-weight: bold;">3.52 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save expo result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_24_expo.rds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Save similarity result to temp file /tmp/RtmpADM14r/sigminer_attribute_activity/Sample_24_sim.rds</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Reading result files...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Clean cache files when exits.</span>
@@ -4724,7 +4724,7 @@ indicates if the signature profiles extracted from different NMF runs are simila
 <span class="r-out co"><span class="r-pr">#&gt;</span>            Sig6      Sig7      Sig8       Sig9     Sig10     Sig11</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span><span class="co"># Iterative extraction:</span></span></span>
 <span class="r-in"><span><span class="co"># This procedure will rerun extraction step</span></span></span>
 <span class="r-in"><span><span class="co"># for those samples with reconstructed catalog similarity</span></span></span>
@@ -4748,7 +4748,7 @@ indicates if the signature profiles extracted from different NMF runs are simila
 <span class="r-in"><span><span class="va">stats</span> <span class="op">&lt;-</span> <span class="fu">bp_get_stats</span><span class="op">(</span><span class="va">e2</span><span class="op">$</span><span class="va">iter1</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># Get the mean reconstructed similarity</span></span></span>
 <span class="r-in"><span><span class="fl">1</span> <span class="op">-</span> <span class="va">stats</span><span class="op">$</span><span class="va">stats_sample</span><span class="op">$</span><span class="va">cosine_distance_mean</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -4763,15 +4763,15 @@ indicates if the signature profiles extracted from different NMF runs are simila
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
 
 
-  
+
+
 
   </body></html>
 

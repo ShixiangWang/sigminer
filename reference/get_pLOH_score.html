@@ -3,7 +3,7 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.3.2</span>
       </span>
     </div>
 
@@ -31,7 +31,7 @@
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
@@ -44,20 +44,20 @@
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/ShixiangWang/sigminer/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Get proportions of pLOH score from Allele Specific Copy Number Profile</h1>
-    <small class="dont-index">Source: <a href="https://github.com/ShixiangWang/sigminer/blob/HEAD/R/get_pLOH_score.R" class="external-link"><code>R/get_pLOH_score.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/ShixiangWang/sigminer/blob/master/R/get_pLOH_score.R" class="external-link"><code>R/get_pLOH_score.R</code></a></small>
     <div class="hidden name"><code>get_pLOH_score.Rd</code></div>
     </div>
 
@@ -71,27 +71,25 @@
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>data</dt>
+
+
+<dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
 <dd><p>a CopyNumber object or a <code>data.frame</code> containing at least
 'chromosome', 'start', 'end', 'segVal', "minor_cn", 'sample' these columns.</p></dd>
 
 
-<dt>rm_chrs</dt>
+<dt id="arg-rm-chrs">rm_chrs<a class="anchor" aria-label="anchor" href="#arg-rm-chrs"></a></dt>
 <dd><p>chromosomes to be removed in calculation. Default is sex
 chromosomes (recommended).</p></dd>
 
 
-<dt>genome_build</dt>
+<dt id="arg-genome-build">genome_build<a class="anchor" aria-label="anchor" href="#arg-genome-build"></a></dt>
 <dd><p>genome build version, should be 'hg19', 'hg38', 'mm9' or 'mm10'.</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>A <code>data.frame</code></p>
-
-
+    <p>A <code>data.frame</code></p>
     </div>
     <div id="references">
     <h2>References</h2>
@@ -112,36 +110,36 @@ chromosomes (recommended).</p></dd>
 <span class="r-in"><span>  seg_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chromosome"</span>, <span class="st">"start"</span>, <span class="st">"end"</span>, <span class="st">"segVal"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  genome_measure <span class="op">=</span> <span class="st">"wg"</span>, complement <span class="op">=</span> <span class="cn">TRUE</span>, add_loh <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:53.00286]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:53.004328]: </span><span style="color: #0000BB; font-weight: bold;">Genome build  : hg19.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:53.005653]: </span><span style="color: #0000BB; font-weight: bold;">Genome measure: wg.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:53.006989]: </span><span style="color: #0000BB; font-weight: bold;">When add_loh is TRUE, use_all is forced to TRUE.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:58.730466]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:58.731971]: </span><span style="color: #0000BB; font-weight: bold;">Genome build  : hg19.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:58.733344]: </span><span style="color: #0000BB; font-weight: bold;">Genome measure: wg.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:58.734675]: </span><span style="color: #0000BB; font-weight: bold;">When add_loh is TRUE, use_all is forced to TRUE.</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB; font-weight: bold;">Please drop columns you don't want to keep before reading.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:53.010896]: </span><span style="color: #00BB00; font-weight: bold;">Chromosome size database for build obtained.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:53.012287]: </span><span style="color: #0000BB; font-weight: bold;">Reading input.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:53.01361]: </span><span style="color: #00BB00; font-weight: bold;">A data frame as input detected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:53.015039]: </span><span style="color: #00BB00; font-weight: bold;">Column names checked.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:53.016443]: </span><span style="color: #00BB00; font-weight: bold;">Column order set.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:53.019333]: </span><span style="color: #00BB00; font-weight: bold;">Chromosomes unified.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:53.032171]: </span><span style="color: #00BB00; font-weight: bold;">Value 2 (normal copy) filled to uncalled chromosomes.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:53.036019]: </span><span style="color: #00BB00; font-weight: bold;">Data imported.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:53.037406]: </span><span style="color: #0000BB; font-weight: bold;">Segments info:</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:53.038753]: </span><span style="color: #0000BB; font-weight: bold;">    Keep - 477</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:53.040096]: </span><span style="color: #0000BB; font-weight: bold;">    Drop - 0</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:53.041882]: </span><span style="color: #00BB00; font-weight: bold;">Segments sorted.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:53.043236]: </span><span style="color: #0000BB; font-weight: bold;">Adding LOH labels...</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:53.045116]: </span><span style="color: #0000BB; font-weight: bold;">Joining adjacent segments with same copy number value. Be patient...</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:53.148818]: </span><span style="color: #00BB00; font-weight: bold;">410 segments left after joining.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:53.150385]: </span><span style="color: #00BB00; font-weight: bold;">Segmental table cleaned.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:53.151716]: </span><span style="color: #0000BB; font-weight: bold;">Annotating.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:53.164373]: </span><span style="color: #00BB00; font-weight: bold;">Annotation done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:53.165729]: </span><span style="color: #0000BB; font-weight: bold;">Summarizing per sample.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:53.17849]: </span><span style="color: #00BB00; font-weight: bold;">Summarized.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:53.179851]: </span><span style="color: #0000BB; font-weight: bold;">Generating CopyNumber object.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:53.181659]: </span><span style="color: #00BB00; font-weight: bold;">Generated.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:53.183033]: </span><span style="color: #0000BB; font-weight: bold;">Validating object.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-06-07 03:12:53.184384]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-06-07 03:12:53.185745]: </span><span style="color: #0000BB; font-weight: bold;">0.183 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:58.738622]: </span><span style="color: #00BB00; font-weight: bold;">Chromosome size database for build obtained.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:58.74]: </span><span style="color: #0000BB; font-weight: bold;">Reading input.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:58.741377]: </span><span style="color: #00BB00; font-weight: bold;">A data frame as input detected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:58.742795]: </span><span style="color: #00BB00; font-weight: bold;">Column names checked.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:58.744209]: </span><span style="color: #00BB00; font-weight: bold;">Column order set.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:58.747016]: </span><span style="color: #00BB00; font-weight: bold;">Chromosomes unified.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:58.759841]: </span><span style="color: #00BB00; font-weight: bold;">Value 2 (normal copy) filled to uncalled chromosomes.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:58.763736]: </span><span style="color: #00BB00; font-weight: bold;">Data imported.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:58.765141]: </span><span style="color: #0000BB; font-weight: bold;">Segments info:</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:58.76652]: </span><span style="color: #0000BB; font-weight: bold;">    Keep - 477</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:58.767843]: </span><span style="color: #0000BB; font-weight: bold;">    Drop - 0</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:58.769601]: </span><span style="color: #00BB00; font-weight: bold;">Segments sorted.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:58.77093]: </span><span style="color: #0000BB; font-weight: bold;">Adding LOH labels...</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:58.772753]: </span><span style="color: #0000BB; font-weight: bold;">Joining adjacent segments with same copy number value. Be patient...</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:58.879536]: </span><span style="color: #00BB00; font-weight: bold;">410 segments left after joining.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:58.881406]: </span><span style="color: #00BB00; font-weight: bold;">Segmental table cleaned.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:58.882754]: </span><span style="color: #0000BB; font-weight: bold;">Annotating.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:58.895575]: </span><span style="color: #00BB00; font-weight: bold;">Annotation done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:58.896964]: </span><span style="color: #0000BB; font-weight: bold;">Summarizing per sample.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:58.909688]: </span><span style="color: #00BB00; font-weight: bold;">Summarized.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:58.911061]: </span><span style="color: #0000BB; font-weight: bold;">Generating CopyNumber object.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:58.912895]: </span><span style="color: #00BB00; font-weight: bold;">Generated.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:58.914299]: </span><span style="color: #0000BB; font-weight: bold;">Validating object.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2024-08-04 14:38:58.915694]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2024-08-04 14:38:58.917053]: </span><span style="color: #0000BB; font-weight: bold;">0.187 secs elapsed.</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">get_pLOH_score</span><span class="op">(</span><span class="va">cn</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">df</span></span></span>
@@ -187,15 +185,15 @@ chromosomes (recommended).</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
 
 
-  
+
+
 
   </body></html>
 

@@ -4,7 +4,7 @@ cases or mean measure in one subgroup and the remaining samples."><meta property
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -18,7 +18,7 @@ cases or mean measure in one subgroup and the remaining samples."><meta property
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.3.2</span>
       </span>
     </div>
 
@@ -32,7 +32,7 @@ cases or mean measure in one subgroup and the remaining samples."><meta property
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
@@ -45,20 +45,20 @@ cases or mean measure in one subgroup and the remaining samples."><meta property
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/ShixiangWang/sigminer/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>General Group Enrichment Analysis</h1>
-    <small class="dont-index">Source: <a href="https://github.com/ShixiangWang/sigminer/blob/HEAD/R/group_enrichment.R" class="external-link"><code>R/group_enrichment.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/ShixiangWang/sigminer/blob/master/R/group_enrichment.R" class="external-link"><code>R/group_enrichment.R</code></a></small>
     <div class="hidden name"><code>group_enrichment.Rd</code></div>
     </div>
 
@@ -80,23 +80,25 @@ cases or mean measure in one subgroup and the remaining samples.</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>df</dt>
+
+
+<dl><dt id="arg-df">df<a class="anchor" aria-label="anchor" href="#arg-df"></a></dt>
 <dd><p>a <code>data.frame</code>.</p></dd>
 
 
-<dt>grp_vars</dt>
+<dt id="arg-grp-vars">grp_vars<a class="anchor" aria-label="anchor" href="#arg-grp-vars"></a></dt>
 <dd><p>character vector specifying group variables to split samples
 into subgroups (at least 2 subgroups, otherwise this variable will be skipped).</p></dd>
 
 
-<dt>enrich_vars</dt>
+<dt id="arg-enrich-vars">enrich_vars<a class="anchor" aria-label="anchor" href="#arg-enrich-vars"></a></dt>
 <dd><p>character vector specifying measure variables to be compared.
 If variable is not numeric, only binary cases are accepted in the form of
 <code>TRUE/FALSE</code> or <code>P/N</code> (P for positive cases and N for negative cases).
 Of note, <code>NA</code> values set to negative cases.</p></dd>
 
 
-<dt>cross</dt>
+<dt id="arg-cross">cross<a class="anchor" aria-label="anchor" href="#arg-cross"></a></dt>
 <dd><p>logical, default is <code>TRUE</code>, combine all situations provided by
 <code>grp_vars</code> and <code>enrich_vars</code>. For examples, <code>c('A', 'B')</code> and <code>c('C', 'D')</code>
 will construct 4 combinations(i.e. "AC", "AD", "BC" and "BD"). A variable can
@@ -104,19 +106,17 @@ not be in both <code>grp_vars</code> and <code>enrich_vars</code>, such cases wi
 drop. If <code>FALSE</code>, use pairwise combinations, see section "examples" for use cases.</p></dd>
 
 
-<dt>co_method</dt>
+<dt id="arg-co-method">co_method<a class="anchor" aria-label="anchor" href="#arg-co-method"></a></dt>
 <dd><p>test method for continuous variable, default is 't.test'.</p></dd>
 
 
-<dt>ref_group</dt>
+<dt id="arg-ref-group">ref_group<a class="anchor" aria-label="anchor" href="#arg-ref-group"></a></dt>
 <dd><p>reference group set in <code>grp_vars</code>.</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>a <code>data.table</code> with following columns:</p><ul><li><p><code>grp_var</code>: group variable name.</p></li>
+    <p>a <code>data.table</code> with following columns:</p><ul><li><p><code>grp_var</code>: group variable name.</p></li>
 <li><p><code>enrich_var</code>: enrich variable (variable to be compared) name.</p></li>
 <li><p><code>grp1</code>: the first group name, should be a member in <code>grp_var</code> column.</p></li>
 <li><p><code>grp2</code>: the remaining samples, marked as 'Rest'.</p></li>
@@ -337,15 +337,15 @@ for continuous variable, it stores value from <code><a href="https://rdrr.io/r/s
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
 
 
-  
+
+
 
   </body></html>
 
