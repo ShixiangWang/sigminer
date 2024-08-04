@@ -1,3 +1,8 @@
+# sigminer 2.3.2
+
+- Fixed a bug that generating a wrong data type when only a sample is handled (#463).
+Thanks to @selkamand.
+
 # sigminer 2.3.1
 
 - Updated `sig_fit()` related documents for better usage (#454).

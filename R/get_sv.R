@@ -290,7 +290,7 @@ get_matrix_sv <- function(CN_components, indices = NULL) {
 
   sv_mat <- as.matrix(sv_mat[, sort(colnames(sv_mat))])
 
-  sv_mat_32 <- sv_mat[, !(grepl("<1Kb", colnames(sv_mat)))]
+  sv_mat_32 <- sv_mat[, !(grepl("<1Kb", colnames(sv_mat))), drop = FALSE]
 
   return(list(
     RS_32 = sv_mat_32,
