@@ -10,9 +10,10 @@ status](https://www.r-pkg.org/badges/version/sigminer)](https://cran.r-project.o
 [![](https://cranlogs.r-pkg.org/badges/grand-total/sigminer?color=orange)](https://cran.r-project.org/package=sigminer)
 [![Closed
 issues](https://img.shields.io/github/issues-closed/ShixiangWang/sigminer.svg)](https://github.com/ShixiangWang/sigminer/issues?q=is%3Aissue+is%3Aclosed)
-[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FShixiangWang%2Fsigminer&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
 ![install with
 bioconda](https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat-square)
+[![Anaconda-Server
+Badge](https://anaconda.org/bioconda/r-sigminer/badges/downloads.svg)](https://anaconda.org/bioconda/r-sigminer)
 [![check in
 Biotreasury](https://img.shields.io/badge/Biotreasury-collected-brightgreen)](https://biotreasury.rjmart.cn/#/tool?id=10043)
 
@@ -127,8 +128,8 @@ remotes::install_github("ShixiangWang/copynumber")
 
 ## :paperclip: Citation
 
-If you use **sigminer** in academic field, please cite one of the
-following papers.
+If you use **sigminer** in academic field, please at least cite one of
+the following papers.
 
 ------------------------------------------------------------------------
 
