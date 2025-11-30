@@ -159,25 +159,25 @@ about implementation please see source code of <code><a href="sig_extract.html">
 <span class="r-out co"><span class="r-pr">#&gt;</span> Runs: |                                                        Runs: |                                                  |   0%Runs: |                                                        Runs: |=====                                             |   9%Runs: |                                                        Runs: |=========                                         |  18%Runs: |                                                        Runs: |==============                                    |  27%Runs: |                                                        Runs: |==================                                |  36%Runs: |                                                        Runs: |=======================                           |  45%Runs: |                                                        Runs: |===========================                       |  55%Runs: |                                                        Runs: |================================                  |  64%Runs: |                                                        Runs: |====================================              |  73%Runs: |                                                        Runs: |=========================================         |  82%Runs: |                                                        Runs: |=============================================     |  91%Runs: |                                                        Runs: |==================================================| 100%</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> System time:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    user  system elapsed </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   5.072   0.003   5.078 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   5.127   0.003   5.130 </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Methods 'consensus' and 'samples' are from NMF::predict()</span></span></span>
 <span class="r-in"><span><span class="va">g1</span> <span class="op">&lt;-</span> <span class="fu">get_groups</span><span class="op">(</span><span class="va">sig</span>, method <span class="op">=</span> <span class="st">"consensus"</span>, match_consensus <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-08-22 03:08:56.331141]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-08-22 03:08:56.333125]: </span><span style="color: #00BB00; font-weight: bold;">'Signature' object detected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-08-22 03:08:56.334951]: </span><span style="color: #0000BB; font-weight: bold;">Obtaining clusters from the hierarchical clustering of the consensus matrix...</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-08-22 03:08:56.354698]: </span><span style="color: #0000BB; font-weight: bold;">Finding the dominant signature of each group...</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:25:00.387236]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-11-30 14:25:00.389062]: </span><span style="color: #00BB00; font-weight: bold;">'Signature' object detected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:25:00.390689]: </span><span style="color: #0000BB; font-weight: bold;">Obtaining clusters from the hierarchical clustering of the consensus matrix...</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:25:00.408479]: </span><span style="color: #0000BB; font-weight: bold;">Finding the dominant signature of each group...</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> =&gt; Generating a table of group and dominant signature:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     Sig1 Sig2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1    0    2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   2    8    0</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> =&gt; Assigning a group to a signature with the maxium fraction (stored in 'map_table' attr)...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-08-22 03:08:56.372671]: </span><span style="color: #0000BB; font-weight: bold;">Summarizing...</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:25:00.424351]: </span><span style="color: #0000BB; font-weight: bold;">Summarizing...</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 	group #1: 2 samples with Sig2 enriched.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 	group #2: 8 samples with Sig1 enriched.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> <span style="font-weight: bold;">[2025-08-22 03:08:56.375302]: </span><span style="color: #BBBB00; font-weight: bold;">The 'enrich_sig' column is set to dominant signature in one group, please check and make it consistent with biological meaning (correct it by hand if necessary).</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-08-22 03:08:56.377005]: </span><span style="color: #0000BB; font-weight: bold;">0.046 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> <span style="font-weight: bold;">[2025-11-30 14:25:00.426647]: </span><span style="color: #BBBB00; font-weight: bold;">The 'enrich_sig' column is set to dominant signature in one group, please check and make it consistent with biological meaning (correct it by hand if necessary).</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:25:00.428262]: </span><span style="color: #0000BB; font-weight: bold;">0.041 secs elapsed.</span></span>
 <span class="r-in"><span><span class="va">g1</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                           sample  group silhouette_width enrich_sig</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                           &lt;char&gt; &lt;char&gt;            &lt;num&gt;     &lt;char&gt;</span>
@@ -192,21 +192,21 @@ about implementation please see source code of <code><a href="sig_extract.html">
 <span class="r-out co"><span class="r-pr">#&gt;</span>  9: TCGA-06-0644-01A-02D-0310-01      2            1.000       Sig1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10: TCGA-19-2621-01B-01D-0911-01      2            0.889       Sig1</span>
 <span class="r-in"><span><span class="va">g2</span> <span class="op">&lt;-</span> <span class="fu">get_groups</span><span class="op">(</span><span class="va">sig</span>, method <span class="op">=</span> <span class="st">"samples"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-08-22 03:08:56.380747]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-08-22 03:08:56.382426]: </span><span style="color: #00BB00; font-weight: bold;">'Signature' object detected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-08-22 03:08:56.384035]: </span><span style="color: #0000BB; font-weight: bold;">Obtaining clusters by the contribution of signature to each sample...</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-08-22 03:08:56.387241]: </span><span style="color: #0000BB; font-weight: bold;">Finding the dominant signature of each group...</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:25:00.431816]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-11-30 14:25:00.433405]: </span><span style="color: #00BB00; font-weight: bold;">'Signature' object detected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:25:00.435066]: </span><span style="color: #0000BB; font-weight: bold;">Obtaining clusters by the contribution of signature to each sample...</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:25:00.437965]: </span><span style="color: #0000BB; font-weight: bold;">Finding the dominant signature of each group...</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> =&gt; Generating a table of group and dominant signature:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     Sig1 Sig2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1    0    2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   2    8    0</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> =&gt; Assigning a group to a signature with the maxium fraction (stored in 'map_table' attr)...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-08-22 03:08:56.403849]: </span><span style="color: #0000BB; font-weight: bold;">Summarizing...</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:25:00.452706]: </span><span style="color: #0000BB; font-weight: bold;">Summarizing...</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 	group #1: 2 samples with Sig2 enriched.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 	group #2: 8 samples with Sig1 enriched.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> <span style="font-weight: bold;">[2025-08-22 03:08:56.406531]: </span><span style="color: #BBBB00; font-weight: bold;">The 'enrich_sig' column is set to dominant signature in one group, please check and make it consistent with biological meaning (correct it by hand if necessary).</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-08-22 03:08:56.408317]: </span><span style="color: #0000BB; font-weight: bold;">0.028 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> <span style="font-weight: bold;">[2025-11-30 14:25:00.454934]: </span><span style="color: #BBBB00; font-weight: bold;">The 'enrich_sig' column is set to dominant signature in one group, please check and make it consistent with biological meaning (correct it by hand if necessary).</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:25:00.456507]: </span><span style="color: #0000BB; font-weight: bold;">0.025 secs elapsed.</span></span>
 <span class="r-in"><span><span class="va">g2</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                           sample  group silhouette_width  prob enrich_sig</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                           &lt;char&gt; &lt;char&gt;            &lt;num&gt; &lt;num&gt;     &lt;char&gt;</span>
@@ -223,19 +223,19 @@ about implementation please see source code of <code><a href="sig_extract.html">
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Use k-means clustering</span></span></span>
 <span class="r-in"><span><span class="va">g3</span> <span class="op">&lt;-</span> <span class="fu">get_groups</span><span class="op">(</span><span class="va">sig</span>, method <span class="op">=</span> <span class="st">"k-means"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-08-22 03:08:56.412485]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-08-22 03:08:56.414272]: </span><span style="color: #00BB00; font-weight: bold;">'Signature' object detected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-08-22 03:08:56.418938]: </span><span style="color: #0000BB; font-weight: bold;">Running k-means with 2 clusters...</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-08-22 03:08:56.421649]: </span><span style="color: #0000BB; font-weight: bold;">Generating a table of group and signature contribution (stored in 'map_table' attr):</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:25:00.460446]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-11-30 14:25:00.462033]: </span><span style="color: #00BB00; font-weight: bold;">'Signature' object detected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:25:00.465888]: </span><span style="color: #0000BB; font-weight: bold;">Running k-means with 2 clusters...</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:25:00.468323]: </span><span style="color: #0000BB; font-weight: bold;">Generating a table of group and signature contribution (stored in 'map_table' attr):</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        Sig1      Sig2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.2097559 0.7901116</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.8964984 0.1035016</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-08-22 03:08:56.423525]: </span><span style="color: #0000BB; font-weight: bold;">Assigning a group to a signature with the maximum fraction...</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-08-22 03:08:56.427805]: </span><span style="color: #0000BB; font-weight: bold;">Summarizing...</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:25:00.469987]: </span><span style="color: #0000BB; font-weight: bold;">Assigning a group to a signature with the maximum fraction...</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:25:00.474064]: </span><span style="color: #0000BB; font-weight: bold;">Summarizing...</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 	group #1: 2 samples with Sig2 enriched.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 	group #2: 8 samples with Sig1 enriched.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> <span style="font-weight: bold;">[2025-08-22 03:08:56.430229]: </span><span style="color: #BBBB00; font-weight: bold;">The 'enrich_sig' column is set to dominant signature in one group, please check and make it consistent with biological meaning (correct it by hand if necessary).</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-08-22 03:08:56.431879]: </span><span style="color: #0000BB; font-weight: bold;">0.019 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> <span style="font-weight: bold;">[2025-11-30 14:25:00.476286]: </span><span style="color: #BBBB00; font-weight: bold;">The 'enrich_sig' column is set to dominant signature in one group, please check and make it consistent with biological meaning (correct it by hand if necessary).</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:25:00.477858]: </span><span style="color: #0000BB; font-weight: bold;">0.017 secs elapsed.</span></span>
 <span class="r-in"><span><span class="va">g3</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Key: &lt;group&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                           sample  group silhouette_width enrich_sig</span>
@@ -265,7 +265,7 @@ about implementation please see source code of <code><a href="sig_extract.html">
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer></div>
