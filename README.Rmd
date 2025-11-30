@@ -121,9 +121,7 @@ BiocManager::install("sigminer", dependencies = TRUE)
 You can install the development version of **sigminer** from Github with:
 
 ```{r, eval=FALSE}
-remotes::install_github("ShixiangWang/sigminer", dependencies = TRUE)
-# For Chinese users, run 
-remotes::install_git("https://gitee.com/ShixiangWang/sigminer", dependencies = TRUE)
+BiocManager::install("ShixiangWang/sigminer", dependencies = TRUE)
 ```
 
 You can also install **sigminer** from conda `bioconda` channel with
@@ -173,7 +171,7 @@ library("spiralize")
 library("ComplexHeatmap")
 library("lubridate")
 
-df <- cran_downloads("sigminer", from = "2019-07-01", to = "2025-08-22")
+df <- cran_downloads("sigminer", from = "2019-07-01", to = "2025-11-30")
 
 if (!is.null(df)) {
   day_diff = as.double(df$date[nrow(df)] - df$date[1], "days")

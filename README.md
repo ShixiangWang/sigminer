@@ -86,9 +86,7 @@ You can install the development version of **sigminer** from Github
 with:
 
 ``` r
-remotes::install_github("ShixiangWang/sigminer", dependencies = TRUE)
-# For Chinese users, run 
-remotes::install_git("https://gitee.com/ShixiangWang/sigminer", dependencies = TRUE)
+BiocManager::install("ShixiangWang/sigminer", dependencies = TRUE)
 ```
 
 You can also install **sigminer** from conda `bioconda` channel with
