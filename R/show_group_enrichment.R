@@ -151,7 +151,7 @@ plot_enrichment_simple <- function(data, x, y, fill_scale,
         purrr::reduce(c) %>%
         unique()
     } else {
-      orders <- get_cluster_order(data2) |>
+      orders <- get_cluster_order(data2) %>%
         unique()
     }
 
@@ -172,7 +172,7 @@ plot_enrichment_simple <- function(data, x, y, fill_scale,
         purrr::reduce(c) %>%
         unique()
     } else {
-      orders <- get_cluster_order(data2, bycol = TRUE) |>
+      orders <- get_cluster_order(data2, bycol = TRUE) %>%
         unique()
     }
 

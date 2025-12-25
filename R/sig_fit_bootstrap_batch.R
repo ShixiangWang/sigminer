@@ -155,7 +155,7 @@ sig_fit_bootstrap_batch <- function(catalogue_matrix,
     oplan <- future::plan()
     future::plan(set_future_strategy(),
       workers = if (is.logical(use_parallel)) {
-        future::availableCores()
+        parallelly::availableCores()
       } else {
         use_parallel
       }

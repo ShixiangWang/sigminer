@@ -216,7 +216,7 @@ bp_extract_signatures <- function(nmf_matrix,
                                   n_bootstrap = 20L,
                                   n_nmf_run = 50,
                                   RTOL = 1e-3, min_contribution = 0,
-                                  cores = min(4L, future::availableCores()),
+                                  cores = parallelly::availableCores(max = 4),
                                   cores_solution = min(cores, length(range)),
                                   seed = 123456L,
                                   handle_hyper_mutation = TRUE,
@@ -624,7 +624,7 @@ bp_extract_signatures_iter <- function(nmf_matrix,
                                        n_bootstrap = 20L,
                                        n_nmf_run = 50,
                                        RTOL = 1e-3, min_contribution = 0,
-                                       cores = min(4L, future::availableCores()),
+                                       cores = parallelly::availableCores(max = 4),
                                        cores_solution = min(cores, length(range)),
                                        seed = 123456L,
                                        handle_hyper_mutation = TRUE,
@@ -1116,7 +1116,7 @@ bp_attribute_activity <- function(input,
     oplan <- future::plan()
     future::plan(set_future_strategy(),
       workers = if (is.logical(use_parallel)) {
-        future::availableCores()
+        parallelly::availableCores()
       } else {
         use_parallel
       }

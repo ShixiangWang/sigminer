@@ -38,7 +38,7 @@ sig_extract <- function(nmf_matrix,
                         py_path = "/Users/wsx/anaconda3/bin/python",
                         seed = 123456, ...) {
   eval(parse(text = "suppressMessages(library('NMF'))"))
-  if (cores > 1) cores <- min(cores, future::availableCores())
+  cores <- parallelly::availableCores(max = cores)
   # transpose matrix
   mat <- t(nmf_matrix)
 
