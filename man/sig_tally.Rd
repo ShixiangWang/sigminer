@@ -58,7 +58,7 @@ Default is \link{CN.features}. Users can also set custom input with "feature",
 \code{unique(CN.features$feature)}.}
 
 \item{cores}{number of computer cores to run this task.
-You can use \code{\link[future:re-exports]{future::availableCores()}} function to check how
+You can use \code{\link[parallelly:availableCores]{parallelly::availableCores()}} function to check how
 many cores you can use.}
 
 \item{keep_only_matrix}{if \code{TRUE}, keep only matrix for signature extraction.

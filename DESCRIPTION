@@ -43,6 +43,7 @@ Imports:
     magrittr,
     methods,
     NMF,
+    parallelly,
     purrr,
     Rcpp,
     rlang (>= 0.1.2),

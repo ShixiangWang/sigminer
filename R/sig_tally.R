@@ -131,7 +131,7 @@ sig_tally <- function(object, ...) {
 #' "min" and "max" columns available. Valid features can be printed by
 #' `unique(CN.features$feature)`.
 #' @param cores number of computer cores to run this task.
-#' You can use [future::availableCores()] function to check how
+#' You can use [parallelly::availableCores()] function to check how
 #' many cores you can use.
 #' @param keep_only_matrix if `TRUE`, keep only matrix for signature extraction.
 #' For a `MAF` object, this will just return the most useful matrix.

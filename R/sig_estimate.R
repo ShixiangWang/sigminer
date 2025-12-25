@@ -57,7 +57,7 @@ sig_estimate <-
     }
 
     eval(parse(text = "suppressMessages(library('NMF'))"))
-    if (cores > 1) cores <- min(cores, future::availableCores())
+    cores <- parallelly::availableCores(max = cores)
     mat <- t(nmf_matrix)
 
     ii <- colSums(mat) < 0.01
