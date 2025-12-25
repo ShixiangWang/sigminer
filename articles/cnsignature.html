@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.3.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.3.2.9000</span>
       </span>
     </div>
 
@@ -90,7 +90,7 @@ sigminer</h1>
                         <h4 data-toc-skip class="author">Shixiang Wang (
 <a href="mailto:wangsx1@sysucc.org.cn" class="email">wangsx1@sysucc.org.cn</a> )</h4>
             
-            <h4 data-toc-skip class="date">2025-11-30</h4>
+            <h4 data-toc-skip class="date">2025-12-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ShixiangWang/sigminer/blob/master/vignettes/cnsignature.Rmd" class="external-link"><code>vignettes/cnsignature.Rmd</code></a></small>
       <div class="hidden name"><code>cnsignature.Rmd</code></div>
@@ -111,7 +111,7 @@ Analyze and Visualize Mutational Signatures with Sigminer</a>.</p>
 <span><span class="co">#&gt; Registered S3 method overwritten by 'sigminer':</span></span>
 <span><span class="co">#&gt;   method      from</span></span>
 <span><span class="co">#&gt;   print.bytes Rcpp</span></span>
-<span><span class="co">#&gt; sigminer version 2.3.2</span></span>
+<span><span class="co">#&gt; sigminer version 2.3.2.9000</span></span>
 <span><span class="co">#&gt; - Star me at https://github.com/ShixiangWang/sigminer</span></span>
 <span><span class="co">#&gt; - Run hello() to see usage and citation.</span></span></code></pre></div>
 <p>For this analysis, data with six columns are required.</p>
@@ -137,36 +137,36 @@ Analyze and Visualize Mutational Signatures with Sigminer</a>.</p>
 <span>  seg_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chromosome"</span>, <span class="st">"start"</span>, <span class="st">"end"</span>, <span class="st">"segVal"</span><span class="op">)</span>,</span>
 <span>  genome_measure <span class="op">=</span> <span class="st">"wg"</span>, complement <span class="op">=</span> <span class="cn">TRUE</span>, add_loh <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:32:07.628728]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:32:07.639861]: </span><span style="color: #0000BB; font-weight: bold;">Genome build  : hg19.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:32:07.641564]: </span><span style="color: #0000BB; font-weight: bold;">Genome measure: wg.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:32:07.643273]: </span><span style="color: #0000BB; font-weight: bold;">When add_loh is TRUE, use_all is forced to TRUE.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-12-25 15:45:53.929438]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-12-25 15:45:53.94133]: </span><span style="color: #0000BB; font-weight: bold;">Genome build  : hg19.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-12-25 15:45:53.943096]: </span><span style="color: #0000BB; font-weight: bold;">Genome measure: wg.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-12-25 15:45:53.944852]: </span><span style="color: #0000BB; font-weight: bold;">When add_loh is TRUE, use_all is forced to TRUE.</span></span></span>
 <span><span class="co"><span style="color: #0000BB; font-weight: bold;">#&gt; Please drop columns you don't want to keep before reading.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-11-30 14:32:07.654636]: </span><span style="color: #00BB00; font-weight: bold;">Chromosome size database for build obtained.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:32:07.656434]: </span><span style="color: #0000BB; font-weight: bold;">Reading input.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-11-30 14:32:07.658159]: </span><span style="color: #00BB00; font-weight: bold;">A data frame as input detected.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-11-30 14:32:07.660169]: </span><span style="color: #00BB00; font-weight: bold;">Column names checked.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-11-30 14:32:07.662274]: </span><span style="color: #00BB00; font-weight: bold;">Column order set.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-11-30 14:32:07.670262]: </span><span style="color: #00BB00; font-weight: bold;">Chromosomes unified.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-11-30 14:32:07.687523]: </span><span style="color: #00BB00; font-weight: bold;">Value 2 (normal copy) filled to uncalled chromosomes.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-11-30 14:32:07.692398]: </span><span style="color: #00BB00; font-weight: bold;">Data imported.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:32:07.694181]: </span><span style="color: #0000BB; font-weight: bold;">Segments info:</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:32:07.695909]: </span><span style="color: #0000BB; font-weight: bold;">    Keep - 477</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:32:07.703314]: </span><span style="color: #0000BB; font-weight: bold;">    Drop - 0</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-11-30 14:32:07.705386]: </span><span style="color: #00BB00; font-weight: bold;">Segments sorted.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:32:07.707027]: </span><span style="color: #0000BB; font-weight: bold;">Adding LOH labels...</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:32:07.709489]: </span><span style="color: #0000BB; font-weight: bold;">Joining adjacent segments with same copy number value. Be patient...</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-11-30 14:32:07.882066]: </span><span style="color: #00BB00; font-weight: bold;">410 segments left after joining.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-11-30 14:32:07.884385]: </span><span style="color: #00BB00; font-weight: bold;">Segmental table cleaned.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:32:07.886539]: </span><span style="color: #0000BB; font-weight: bold;">Annotating.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-11-30 14:32:07.902185]: </span><span style="color: #00BB00; font-weight: bold;">Annotation done.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:32:07.903946]: </span><span style="color: #0000BB; font-weight: bold;">Summarizing per sample.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-11-30 14:32:07.925171]: </span><span style="color: #00BB00; font-weight: bold;">Summarized.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:32:07.926917]: </span><span style="color: #0000BB; font-weight: bold;">Generating CopyNumber object.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-11-30 14:32:07.929168]: </span><span style="color: #00BB00; font-weight: bold;">Generated.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:32:07.93085]: </span><span style="color: #0000BB; font-weight: bold;">Validating object.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-11-30 14:32:07.932585]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:32:07.934539]: </span><span style="color: #0000BB; font-weight: bold;">0.306 secs elapsed.</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-12-25 15:45:53.95758]: </span><span style="color: #00BB00; font-weight: bold;">Chromosome size database for build obtained.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-12-25 15:45:53.959522]: </span><span style="color: #0000BB; font-weight: bold;">Reading input.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-12-25 15:45:53.96136]: </span><span style="color: #00BB00; font-weight: bold;">A data frame as input detected.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-12-25 15:45:53.963575]: </span><span style="color: #00BB00; font-weight: bold;">Column names checked.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-12-25 15:45:53.965894]: </span><span style="color: #00BB00; font-weight: bold;">Column order set.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-12-25 15:45:54.037472]: </span><span style="color: #00BB00; font-weight: bold;">Chromosomes unified.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-12-25 15:45:54.059892]: </span><span style="color: #00BB00; font-weight: bold;">Value 2 (normal copy) filled to uncalled chromosomes.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-12-25 15:45:54.06524]: </span><span style="color: #00BB00; font-weight: bold;">Data imported.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-12-25 15:45:54.066967]: </span><span style="color: #0000BB; font-weight: bold;">Segments info:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-12-25 15:45:54.068671]: </span><span style="color: #0000BB; font-weight: bold;">    Keep - 477</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-12-25 15:45:54.070367]: </span><span style="color: #0000BB; font-weight: bold;">    Drop - 0</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-12-25 15:45:54.072776]: </span><span style="color: #00BB00; font-weight: bold;">Segments sorted.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-12-25 15:45:54.074517]: </span><span style="color: #0000BB; font-weight: bold;">Adding LOH labels...</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-12-25 15:45:54.077403]: </span><span style="color: #0000BB; font-weight: bold;">Joining adjacent segments with same copy number value. Be patient...</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-12-25 15:45:54.433608]: </span><span style="color: #00BB00; font-weight: bold;">410 segments left after joining.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-12-25 15:45:54.436557]: </span><span style="color: #00BB00; font-weight: bold;">Segmental table cleaned.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-12-25 15:45:54.43861]: </span><span style="color: #0000BB; font-weight: bold;">Annotating.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-12-25 15:45:54.4589]: </span><span style="color: #00BB00; font-weight: bold;">Annotation done.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-12-25 15:45:54.461074]: </span><span style="color: #0000BB; font-weight: bold;">Summarizing per sample.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-12-25 15:45:54.486094]: </span><span style="color: #00BB00; font-weight: bold;">Summarized.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-12-25 15:45:54.488435]: </span><span style="color: #0000BB; font-weight: bold;">Generating CopyNumber object.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-12-25 15:45:54.491184]: </span><span style="color: #00BB00; font-weight: bold;">Generated.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-12-25 15:45:54.493261]: </span><span style="color: #0000BB; font-weight: bold;">Validating object.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-12-25 15:45:54.495374]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-12-25 15:45:54.497779]: </span><span style="color: #0000BB; font-weight: bold;">0.568 secs elapsed.</span></span></span></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cn</span></span>
 <span><span class="co">#&gt; An object of class CopyNumber </span></span>
@@ -232,10 +232,10 @@ method argument.</p>
 </blockquote>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tally_s</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sig_tally.html">sig_tally</a></span><span class="op">(</span><span class="va">cn</span>, method <span class="op">=</span> <span class="st">"S"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:32:08.082316]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:32:08.086812]: </span><span style="color: #0000BB; font-weight: bold;">When you use method 'S', please make sure you have set 'join_adj_seg' to FALSE and 'add_loh' to TRUE in 'read_copynumber() in the previous step!</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-11-30 14:32:08.101282]: </span><span style="color: #00BB00; font-weight: bold;">Matrix generated.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:32:08.103231]: </span><span style="color: #0000BB; font-weight: bold;">0.021 secs elapsed.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-12-25 15:45:54.638527]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-12-25 15:45:54.643571]: </span><span style="color: #0000BB; font-weight: bold;">When you use method 'S', please make sure you have set 'join_adj_seg' to FALSE and 'add_loh' to TRUE in 'read_copynumber() in the previous step!</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-12-25 15:45:54.662261]: </span><span style="color: #00BB00; font-weight: bold;">Matrix generated.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-12-25 15:45:54.664521]: </span><span style="color: #0000BB; font-weight: bold;">0.026 secs elapsed.</span></span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">tally_s</span><span class="op">$</span><span class="va">all_matrices</span>, max.level <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; List of 2</span></span>
@@ -266,35 +266,35 @@ method argument.</p>
 signatures.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">act_refit</span> <span class="op">=</span> <span class="fu"><a href="../reference/sig_fit.html">sig_fit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">tally_s</span><span class="op">$</span><span class="va">all_matrices</span><span class="op">$</span><span class="va">CN_48</span><span class="op">)</span>, sig_index <span class="op">=</span> <span class="st">"ALL"</span>, sig_db <span class="op">=</span> <span class="st">"CNS_TCGA"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:32:09.015874]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-11-30 14:32:09.017781]: </span><span style="color: #00BB00; font-weight: bold;">Signature index detected.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:32:09.019398]: </span><span style="color: #0000BB; font-weight: bold;">Checking signature database in package.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:32:09.021903]: </span><span style="color: #0000BB; font-weight: bold;">Checking signature index.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:32:09.023569]: </span><span style="color: #0000BB; font-weight: bold;">Valid index for db 'CNS_TCGA':</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-12-25 15:45:55.493868]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-12-25 15:45:55.495873]: </span><span style="color: #00BB00; font-weight: bold;">Signature index detected.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-12-25 15:45:55.497482]: </span><span style="color: #0000BB; font-weight: bold;">Checking signature database in package.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-12-25 15:45:55.500017]: </span><span style="color: #0000BB; font-weight: bold;">Checking signature index.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-12-25 15:45:55.501643]: </span><span style="color: #0000BB; font-weight: bold;">Valid index for db 'CNS_TCGA':</span></span></span>
 <span><span class="co"><span style="color: #0000BB; font-weight: bold;">#&gt; CN1 CN2 CN3 CN4 CN5 CN6 CN7 CN8 CN9 CN10 CN11 CN12 CN13 CN14 CN15 CN16 CN17 CN18 CN19</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-11-30 14:32:09.025265]: </span><span style="color: #00BB00; font-weight: bold;">Database and index checked.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-11-30 14:32:09.027086]: </span><span style="color: #00BB00; font-weight: bold;">Signature normalized.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:32:09.02867]: </span><span style="color: #0000BB; font-weight: bold;">Checking row number for catalog matrix and signature matrix.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-11-30 14:32:09.030265]: </span><span style="color: #00BB00; font-weight: bold;">Checked.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:32:09.031844]: </span><span style="color: #0000BB; font-weight: bold;">Checking rownames for catalog matrix and signature matrix.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-11-30 14:32:09.03343]: </span><span style="color: #00BB00; font-weight: bold;">Checked.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-11-30 14:32:09.034999]: </span><span style="color: #00BB00; font-weight: bold;">Method 'QP' detected.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-11-30 14:32:09.038659]: </span><span style="color: #00BB00; font-weight: bold;">Corresponding function generated.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:32:09.040371]: </span><span style="color: #0000BB; font-weight: bold;">Calling function.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:32:09.042412]: </span><span style="color: #0000BB; font-weight: bold;">Fitting sample: TCGA-05-4417-01A-22D-1854-01</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:32:09.044338]: </span><span style="color: #0000BB; font-weight: bold;">Fitting sample: TCGA-06-0644-01A-02D-0310-01</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:32:09.046078]: </span><span style="color: #0000BB; font-weight: bold;">Fitting sample: TCGA-19-2621-01B-01D-0911-01</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:32:09.047802]: </span><span style="color: #0000BB; font-weight: bold;">Fitting sample: TCGA-26-6174-01A-21D-1842-01</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:32:09.049505]: </span><span style="color: #0000BB; font-weight: bold;">Fitting sample: TCGA-99-7458-01A-11D-2035-01</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:32:09.051218]: </span><span style="color: #0000BB; font-weight: bold;">Fitting sample: TCGA-A5-A0G2-01A-11D-A042-01</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:32:09.052936]: </span><span style="color: #0000BB; font-weight: bold;">Fitting sample: TCGA-A8-A07S-01A-11D-A036-01</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:32:09.054666]: </span><span style="color: #0000BB; font-weight: bold;">Fitting sample: TCGA-B6-A0X5-01A-21D-A107-01</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:32:09.056413]: </span><span style="color: #0000BB; font-weight: bold;">Fitting sample: TCGA-CV-7432-01A-11D-2128-01</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:32:09.058149]: </span><span style="color: #0000BB; font-weight: bold;">Fitting sample: TCGA-DF-A2KN-01A-11D-A17U-01</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-11-30 14:32:09.05985]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:32:09.061504]: </span><span style="color: #0000BB; font-weight: bold;">Generating output signature exposures.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-11-30 14:32:09.063872]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-11-30 14:32:09.065664]: </span><span style="color: #0000BB; font-weight: bold;">0.05 secs elapsed.</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-12-25 15:45:55.503323]: </span><span style="color: #00BB00; font-weight: bold;">Database and index checked.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-12-25 15:45:55.505085]: </span><span style="color: #00BB00; font-weight: bold;">Signature normalized.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-12-25 15:45:55.506703]: </span><span style="color: #0000BB; font-weight: bold;">Checking row number for catalog matrix and signature matrix.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-12-25 15:45:55.508294]: </span><span style="color: #00BB00; font-weight: bold;">Checked.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-12-25 15:45:55.509896]: </span><span style="color: #0000BB; font-weight: bold;">Checking rownames for catalog matrix and signature matrix.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-12-25 15:45:55.511462]: </span><span style="color: #00BB00; font-weight: bold;">Checked.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-12-25 15:45:55.513036]: </span><span style="color: #00BB00; font-weight: bold;">Method 'QP' detected.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-12-25 15:45:55.516658]: </span><span style="color: #00BB00; font-weight: bold;">Corresponding function generated.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-12-25 15:45:55.518337]: </span><span style="color: #0000BB; font-weight: bold;">Calling function.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-12-25 15:45:55.520335]: </span><span style="color: #0000BB; font-weight: bold;">Fitting sample: TCGA-05-4417-01A-22D-1854-01</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-12-25 15:45:55.522306]: </span><span style="color: #0000BB; font-weight: bold;">Fitting sample: TCGA-06-0644-01A-02D-0310-01</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-12-25 15:45:55.524075]: </span><span style="color: #0000BB; font-weight: bold;">Fitting sample: TCGA-19-2621-01B-01D-0911-01</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-12-25 15:45:55.525856]: </span><span style="color: #0000BB; font-weight: bold;">Fitting sample: TCGA-26-6174-01A-21D-1842-01</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-12-25 15:45:55.52757]: </span><span style="color: #0000BB; font-weight: bold;">Fitting sample: TCGA-99-7458-01A-11D-2035-01</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-12-25 15:45:55.529284]: </span><span style="color: #0000BB; font-weight: bold;">Fitting sample: TCGA-A5-A0G2-01A-11D-A042-01</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-12-25 15:45:55.531002]: </span><span style="color: #0000BB; font-weight: bold;">Fitting sample: TCGA-A8-A07S-01A-11D-A036-01</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-12-25 15:45:55.532727]: </span><span style="color: #0000BB; font-weight: bold;">Fitting sample: TCGA-B6-A0X5-01A-21D-A107-01</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-12-25 15:45:55.534451]: </span><span style="color: #0000BB; font-weight: bold;">Fitting sample: TCGA-CV-7432-01A-11D-2128-01</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-12-25 15:45:55.536206]: </span><span style="color: #0000BB; font-weight: bold;">Fitting sample: TCGA-DF-A2KN-01A-11D-A17U-01</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-12-25 15:45:55.537956]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-12-25 15:45:55.539656]: </span><span style="color: #0000BB; font-weight: bold;">Generating output signature exposures.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2025-12-25 15:45:55.542043]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2025-12-25 15:45:55.543751]: </span><span style="color: #0000BB; font-weight: bold;">0.05 secs elapsed.</span></span></span></code></pre></div>
 <p>We can use some threshold to keep really contributed signautres.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">act_refit2</span> <span class="op">=</span> <span class="va">act_refit</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">act_refit</span>, <span class="fl">1</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0.1</span><span class="op">)</span>,<span class="op">]</span></span>
@@ -323,22 +323,22 @@ signatures.</p>
 <span><span class="co">#&gt; <span style="color: #555555;">This warning is displayed once every 8 hours.</span></span></span>
 <span><span class="co">#&gt; <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
 <span><span class="co">#&gt; <span style="color: #555555;">generated.</span></span></span></code></pre></div>
-<p><img src="cnsignature_files/figure-html/unnamed-chunk-8-1.png" class="r-plt" width="960"></p>
+<p><img src="cnsignature_files/figure-html/unnamed-chunk-8-1.png" class="r-plt" alt="" width="960"></p>
 <p>Show the activity/exposure.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/show_sig_exposure.html">show_sig_exposure</a></span><span class="op">(</span><span class="va">sig_denovo</span><span class="op">)</span></span></code></pre></div>
-<p><img src="cnsignature_files/figure-html/unnamed-chunk-9-1.png" class="r-plt" width="700"></p>
+<p><img src="cnsignature_files/figure-html/unnamed-chunk-9-1.png" class="r-plt" alt="" width="700"></p>
 <p>For reference signatures, you can just select what you want:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/show_sig_profile.html">show_sig_profile</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="../reference/get_sig_db.html">get_sig_db</a></span><span class="op">(</span><span class="st">"CNS_TCGA"</span><span class="op">)</span><span class="op">$</span><span class="va">db</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">act_refit2</span><span class="op">)</span><span class="op">]</span>,</span>
 <span>  style <span class="op">=</span> <span class="st">"cosmic"</span>, </span>
 <span>  mode <span class="op">=</span> <span class="st">"copynumber"</span>, method <span class="op">=</span> <span class="st">"S"</span>, check_sig_names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="cnsignature_files/figure-html/unnamed-chunk-10-1.png" class="r-plt" width="960"></p>
+<p><img src="cnsignature_files/figure-html/unnamed-chunk-10-1.png" class="r-plt" alt="" width="960"></p>
 <p>Similarly for showing activity.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/show_sig_exposure.html">show_sig_exposure</a></span><span class="op">(</span><span class="va">act_refit2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="cnsignature_files/figure-html/unnamed-chunk-11-1.png" class="r-plt" width="700"></p>
+<p><img src="cnsignature_files/figure-html/unnamed-chunk-11-1.png" class="r-plt" alt="" width="700"></p>
 <p>NOTE that this case shows relatively large difference with different
 approaches, so you need to pick based on your data size/quality and
 double-check the results. In general, for small-size data set, the
