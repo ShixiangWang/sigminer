@@ -16,7 +16,7 @@
 #' @param refit **Deprecated**. This parameter is no longer supported in recent versions
 #' of SigProfilerExtractor and will be ignored if provided.
 #' @param refit_plot if `TRUE`, SigProfiler will make
-#' denovo to COSMIC sigantures decompostion plots. However, this may fail due
+#' denovo to COSMIC signatures decomposition plots. However, this may fail due
 #' to some matrix cannot be identified by SigProfiler plot program.
 #' @param is_exome if `TRUE`, the exomes will be extracted.
 #' @param init_method the initialization algorithm for W and H matrix of NMF.
