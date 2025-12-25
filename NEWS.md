@@ -1,3 +1,5 @@
+# sigminer (development version)
+
 # sigminer 2.3.2
 
 - Fixed a bug that generating a wrong data type when only a sample is handled (#463).
