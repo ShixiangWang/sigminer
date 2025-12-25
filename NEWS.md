@@ -1,6 +1,7 @@
 # sigminer (development version)
 
 - Replaced `future::availableCores()` with `parallelly::availableCores()`.
+- Fixed compatibility issue with newer versions of SigProfilerExtractor by removing deprecated `refit_denovo_signatures` parameter from `sigprofiler_extract()`. The `refit` parameter is now deprecated and ignored.
 
 # sigminer 2.3.2
 
