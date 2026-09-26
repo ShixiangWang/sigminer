@@ -6,7 +6,7 @@
 [![CRAN
 status](https://www.r-pkg.org/badges/version/sigminer)](https://cran.r-project.org/package=sigminer)
 [![lifecycle](https://img.shields.io/badge/lifecycle-stable-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html)
-[![R-CMD-check](https://github.com/ShixiangWang/sigminer/workflows/R-CMD-check/badge.svg)](https://github.com/ShixiangWang/sigminer/actions)
+[![R-CMD-check](https://github.com/ShixiangWang/sigminer/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ShixiangWang/sigminer/actions/workflows/R-CMD-check.yaml)
 [![](https://cranlogs.r-pkg.org/badges/grand-total/sigminer?color=orange)](https://cran.r-project.org/package=sigminer)
 [![Closed
 issues](https://img.shields.io/github/issues-closed/ShixiangWang/sigminer.svg)](https://github.com/ShixiangWang/sigminer/issues?q=is%3Aissue+is%3Aclosed)
@@ -31,25 +31,25 @@ For pipeline tool, please see its co-evolutionary CLI
 
 **SBS signatures**:
 
-<img src="man/figures/README-unnamed-chunk-1-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-1-1.png" alt="" width="100%" />
 
 **Copy number signatures**:
 
-<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-2-1.png" alt="" width="100%" />
 
-<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-3-1.png" alt="" width="100%" />
 
 **DBS signatures**:
 
-<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-4-1.png" alt="" width="100%" />
 
 **INDEL (i.e. ID) signatures**:
 
-<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-5-1.png" alt="" width="100%" />
 
 **Genome rearrangement signatures**:
 
-<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-6-1.png" alt="" width="100%" />
 
 ### :airplane: Features
 
@@ -149,7 +149,7 @@ the following papers.
 
 ## :arrow_down: Download Stats
 
-<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-9-1.png" alt="" width="100%" />
 
 ## :page_with_curl: References
 
@@ -187,7 +187,7 @@ without the giants.
     Alexandrov LB: SigProfilerMatrixGenerator: a tool for visualizing
     and exploring patterns of small mutational events. BMC Genomics
     2019, 20:685
-    <https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-019-6041-2>
+    <https://link.springer.com/article/10.1186/s12864-019-6041-2>
 
 ## :page_facing_up: LICENSE
 

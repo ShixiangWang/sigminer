@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 
 [![CRAN status](https://www.r-pkg.org/badges/version/sigminer)](https://cran.r-project.org/package=sigminer) 
 [![lifecycle](https://img.shields.io/badge/lifecycle-stable-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html) 
-[![R-CMD-check](https://github.com/ShixiangWang/sigminer/workflows/R-CMD-check/badge.svg)](https://github.com/ShixiangWang/sigminer/actions)
+[![R-CMD-check](https://github.com/ShixiangWang/sigminer/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ShixiangWang/sigminer/actions/workflows/R-CMD-check.yaml)
 [![](https://cranlogs.r-pkg.org/badges/grand-total/sigminer?color=orange)](https://cran.r-project.org/package=sigminer) [![Closed issues](https://img.shields.io/github/issues-closed/ShixiangWang/sigminer.svg)](https://github.com/ShixiangWang/sigminer/issues?q=is%3Aissue+is%3Aclosed)
 ![install with bioconda](https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat-square)
 [![Anaconda-Server Badge](https://anaconda.org/bioconda/r-sigminer/badges/downloads.svg)](https://anaconda.org/bioconda/r-sigminer)
@@ -227,7 +227,7 @@ Please properly cite the following references when you are using any correspondi
 7.  Alexandrov, Ludmil B., et al. "The repertoire of mutational signatures in human cancer." Nature 578.7793 (2020): 94-101.
 8.  Macintyre, Geoff, et al. "Copy number signatures and mutational processes in ovarian carcinoma." Nature genetics 50.9 (2018): 1262.
 9.  Tan, Vincent YF, and Cédric Févotte. "Automatic relevance determination in nonnegative matrix factorization with the/spl beta/-divergence." IEEE Transactions on Pattern Analysis and Machine Intelligence 35.7 (2012): 1592-1605.
-10. Bergstrom EN, Huang MN, Mahto U, Barnes M, Stratton MR, Rozen SG, Alexandrov LB: SigProfilerMatrixGenerator: a tool for visualizing and exploring patterns of small mutational events. BMC Genomics 2019, 20:685 <https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-019-6041-2>
+10. Bergstrom EN, Huang MN, Mahto U, Barnes M, Stratton MR, Rozen SG, Alexandrov LB: SigProfilerMatrixGenerator: a tool for visualizing and exploring patterns of small mutational events. BMC Genomics 2019, 20:685 <https://link.springer.com/article/10.1186/s12864-019-6041-2>
 
 ## :page_facing_up: LICENSE
 
