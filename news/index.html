@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sigminer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.3.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.3.3</span>
       </span>
     </div>
 
@@ -61,9 +61,13 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="development version" id="sigminer-development-version">sigminer (development version)<a class="anchor" aria-label="anchor" href="#sigminer-development-version"></a></h2>
+<h2 class="page-header" data-toc-text="2.3.3" id="sigminer-233">sigminer 2.3.3<a class="anchor" aria-label="anchor" href="#sigminer-233"></a></h2>
 <ul><li>Replaced <code><a href="https://parallelly.futureverse.org/reference/availableCores.html" class="external-link">future::availableCores()</a></code> with <code><a href="https://parallelly.futureverse.org/reference/availableCores.html" class="external-link">parallelly::availableCores()</a></code>.</li>
 <li>Fixed NULL row names in NMF matrix when using <code><a href="../reference/sig_tally.html">sig_tally()</a></code> with Wang method, particularly for single-sample cases.</li>
+<li>Fixed compatibility issue with newer versions of SigProfilerExtractor by removing deprecated <code>refit_denovo_signatures</code> parameter from <code><a href="../reference/sigprofiler.html">sigprofiler_extract()</a></code>. The <code>refit</code> parameter is now deprecated and ignored.</li>
+<li>
+<code><a href="../reference/sig_estimate.html">sig_estimate()</a></code>, <code><a href="../reference/sig_extract.html">sig_extract()</a></code> and <code><a href="../reference/bp.html">bp_extract_signatures()</a></code> can now use more than 2 cores: register a <code>foreach</code> backend to avoid the 2-core cap of the built-in parallel backend of the <strong>NMF</strong> package (<a href="https://github.com/ShixiangWang/sigminer/issues/479" class="external-link">#479</a>).</li>
+<li>Fixed the “Unknown or uninitialised column” warnings of <code><a href="../reference/read_maf.html">read_maf_minimal()</a></code> when the input is a tibble (<a href="https://github.com/ShixiangWang/sigminer/issues/461" class="external-link">#461</a>).</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="2.3.2" id="sigminer-232">sigminer 2.3.2<a class="anchor" aria-label="anchor" href="#sigminer-232"></a></h2>
