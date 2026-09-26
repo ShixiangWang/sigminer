@@ -3,6 +3,8 @@
 - Replaced `future::availableCores()` with `parallelly::availableCores()`.
 - Fixed NULL row names in NMF matrix when using `sig_tally()` with Wang method, particularly for single-sample cases.
 - Fixed compatibility issue with newer versions of SigProfilerExtractor by removing deprecated `refit_denovo_signatures` parameter from `sigprofiler_extract()`. The `refit` parameter is now deprecated and ignored.
+- `sig_estimate()`, `sig_extract()` and `bp_extract_signatures()` can now use more than 2 cores: register a `foreach` backend to avoid the 2-core cap of the built-in parallel backend of the **NMF** package (#479).
+- Fixed the "Unknown or uninitialised column" warnings of `read_maf_minimal()` when the input is a tibble (#461).
 
 # sigminer 2.3.2
 
