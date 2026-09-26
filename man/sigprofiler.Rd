@@ -48,11 +48,11 @@ so user can call SigProfiler with the input by himself.}
 
 \item{nrun}{the number of iteration to be performed to extract each signature number.}
 
-\item{refit}{if \code{TRUE}, then refit the denovo signatures with nnls. Same
-meaning as \code{optimize} option in \link{sig_extract} or \link{sig_auto_extract}.}
+\item{refit}{\strong{Deprecated}. This parameter is no longer supported in recent versions
+of SigProfilerExtractor and will be ignored if provided.}
 
 \item{refit_plot}{if \code{TRUE}, SigProfiler will make
-denovo to COSMIC sigantures decompostion plots. However, this may fail due
+denovo to COSMIC signatures decomposition plots. However, this may fail due
 to some matrix cannot be identified by SigProfiler plot program.}
 
 \item{is_exome}{if \code{TRUE}, the exomes will be extracted.}

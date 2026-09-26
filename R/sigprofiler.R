@@ -68,6 +68,14 @@ sigprofiler_extract <- function(nmf_matrix, output,
   output <- path.expand(output)
   genome_build <- match.arg(genome_build)
 
+  if (!missing(refit)) {
+    send_warning(
+      "The {.arg refit} argument of {.fn sigprofiler_extract} is deprecated",
+      " and ignored: recent versions of {.pkg SigProfilerExtractor}",
+      " no longer support the {.val refit_denovo_signatures} option."
+    )
+  }
+
   genome_build <- switch(genome_build,
     hg19 = "GRCh37",
     hg38 = "GRCh38",
