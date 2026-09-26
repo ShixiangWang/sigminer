@@ -1,5 +1,5 @@
 # Test for issue: NULL row names in NMF matrix when using sig_tally() with Wang method
-# https://github.com/ShixiangWang/sigminer/issues/XXX
+# https://github.com/ShixiangWang/sigminer/issues/465
 
 test_that("sig_tally with Wang method preserves row names for single sample", {
   # Load test data
@@ -51,6 +51,6 @@ test_that("sig_tally with Wang method preserves row names for multiple samples",
   expect_true(length(rownames(cn_tally_W$nmf_matrix)) > 0)
   
   # Check that row names are unique
-  expect_equal(length(rownames(cn_tally_W$nmf_matrix)), 
+  expect_equal(length(rownames(cn_tally_W$nmf_matrix)),
                length(unique(rownames(cn_tally_W$nmf_matrix))))
 })
