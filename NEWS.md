@@ -1,4 +1,4 @@
-# sigminer (development version)
+# sigminer 2.3.3
 
 - Replaced `future::availableCores()` with `parallelly::availableCores()`.
 - Fixed NULL row names in NMF matrix when using `sig_tally()` with Wang method, particularly for single-sample cases.
