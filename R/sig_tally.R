@@ -197,9 +197,13 @@ sig_tally.CopyNumber <- function(object,
       dplyr::as_tibble() %>%
       tibble::column_to_rownames(var = "component") %>%
       as.matrix()
+    # Store sample names before reordering and transpose
+    sample_names <- colnames(cn_matrix)
     # Order the matrix as feature_setting
     cn_matrix <- cn_matrix[feature_setting$component, ] %>%
       t()
+    # Explicitly set row names to sample names after transpose
+    rownames(cn_matrix) <- sample_names
 
     if (any(is.na(cn_matrix))) {
       send_warning("{.code NA} detected. There may be an issue, please contact the developer!")
