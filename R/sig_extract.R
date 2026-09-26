@@ -55,6 +55,15 @@ sig_extract <- function(nmf_matrix,
     # To avoid error due to NMF
     mat <- check_nmf_matrix(mat)
 
+    # NMF's built-in shared-memory backend caps the requested cores at 2
+    # (see NMF:::setupBackend), so a registered foreach backend is used
+    # to honor the requested core number (#479).
+    use_dopar <- cores > 1L && requireNamespace("doParallel", quietly = TRUE)
+    if (use_dopar) {
+      doParallel::registerDoParallel(cores)
+      on.exit(doParallel::stopImplicitCluster(), add = TRUE)
+    }
+
     nmf.res <- NMF::nmf(
       mat,
       n_sig,
@@ -62,6 +71,7 @@ sig_extract <- function(nmf_matrix,
       nrun = nrun,
       method = method,
       .opt = paste0("vp", cores),
+      .pbackend = if (use_dopar) NULL else NMF::nmf.getOption("pbackend"),
       ...
     )
 

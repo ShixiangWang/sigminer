@@ -61,7 +61,9 @@ read_maf_minimal <- function(dt) {
     "Reference_Allele", "Tumor_Seq_Allele2"
   ) %in% colnames(dt))
 
-  if (is.null(dt$Variant_Type)) {
+  # Check columns with %in% instead of is.null(dt$col), which emits
+  # "Unknown or uninitialised column" warnings when dt is a tibble (#461)
+  if (!"Variant_Type" %in% colnames(dt)) {
     dt$Variant_Type <- dplyr::case_when(
       nchar(dt$Reference_Allele) == 1L & nchar(dt$Tumor_Seq_Allele2) == 1L ~ "SNP",
       nchar(dt$Reference_Allele) < nchar(dt$Tumor_Seq_Allele2) ~ "INS",
@@ -72,11 +74,11 @@ read_maf_minimal <- function(dt) {
     )
   }
 
-  if (is.null(dt$Hugo_Symbol)) {
+  if (!"Hugo_Symbol" %in% colnames(dt)) {
     dt$Hugo_Symbol <- "Unknown"
   }
 
-  if (is.null(dt$Variant_Classification)) {
+  if (!"Variant_Classification" %in% colnames(dt)) {
     dt$Variant_Classification <- "Unknown"
     set_vc <- TRUE
   } else {
