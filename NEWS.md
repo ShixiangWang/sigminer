@@ -445,7 +445,7 @@ Made them more consistent and allowed un-assigned signature contribution (#285).
 - Added "highlight" option.
 - `lsei` package was removed from CRAN, here I reset default method to 'QP' and tried best to keep the LS usage in sigminer ([#189](https://github.com/ShixiangWang/sigminer/issues/189)).
 - Made consistent copy number labels in `show_sig_profile()` and added input checking for this function.
-- Fixed unconsistent bootstrap when use `furrr`, solution is from <https://github.com/DavisVaughan/furrr/issues/107>.
+- Fixed unconsistent bootstrap when use `furrr` (solution from an issue of the furrr package, which is no longer accessible).
 - Properly handled null-count sample in `sig_fit()` for methods `QP` and `SA`.
 - Supported boxplot or violin in `show_sig_fit()` and `show_sig_bootstrap_*` functions.
 - Added job mode for `sig_fit_bootstrap_batch` for more useful in practice.
