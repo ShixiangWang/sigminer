@@ -88,9 +88,9 @@ A NMF matrix for input of \code{sigprofiler_extract()}.
 }
 \description{
 This function provides an interface to software SigProfiler.
-More please see \url{https://github.com/AlexandrovLab/SigProfilerExtractor}.
+More please see \url{https://github.com/SigProfilerSuite/SigProfilerExtractor}.
 Typically, a reference genome is not required because the input is a matrix (my understanding).
-\strong{If you are using refitting result by SigProfiler, please make sure you have input the matrix same order as examples at \url{https://github.com/AlexandrovLab/SigProfilerMatrixGenerator/tree/master/SigProfilerMatrixGenerator/references/matrix/BRCA_example}}. If not, use \code{sigprofiler_reorder()} firstly.
+\strong{If you are using refitting result by SigProfiler, please make sure you have input the matrix same order as examples at \url{https://github.com/SigProfilerSuite/SigProfilerMatrixGenerator/tree/master/SigProfilerMatrixGenerator/references/matrix/BRCA_example}}. If not, use \code{sigprofiler_reorder()} firstly.
 }
 \examples{
 if (FALSE) {

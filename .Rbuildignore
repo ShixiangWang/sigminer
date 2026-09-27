@@ -28,3 +28,4 @@ inst/extdata/COSMIC_v3.2*
 ^CRAN-SUBMISSION$
 cranlogs
 spiralize
+^cran-comments\.md$
