@@ -510,7 +510,7 @@
 <li>
 <code>lsei</code> package was removed from CRAN, here I reset default method to ‘QP’ and tried best to keep the LS usage in sigminer (<a href="https://github.com/ShixiangWang/sigminer/issues/189" class="external-link">#189</a>).</li>
 <li>Made consistent copy number labels in <code><a href="../reference/show_sig_profile.html">show_sig_profile()</a></code> and added input checking for this function.</li>
-<li>Fixed unconsistent bootstrap when use <code>furrr</code>, solution is from <a href="https://github.com/DavisVaughan/furrr/issues/107" class="external-link uri">https://github.com/DavisVaughan/furrr/issues/107</a>.</li>
+<li>Fixed unconsistent bootstrap when use <code>furrr</code> (solution from an issue of the furrr package, which is no longer accessible).</li>
 <li>Properly handled null-count sample in <code><a href="../reference/sig_fit.html">sig_fit()</a></code> for methods <code>QP</code> and <code>SA</code>.</li>
 <li>Supported boxplot or violin in <code><a href="../reference/show_sig_fit.html">show_sig_fit()</a></code> and <code>show_sig_bootstrap_*</code> functions.</li>
 <li>Added job mode for <code>sig_fit_bootstrap_batch</code> for more useful in practice.</li>
