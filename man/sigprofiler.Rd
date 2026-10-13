@@ -42,7 +42,8 @@ sigprofiler_reorder(
 \item{output}{output directory.}
 
 \item{output_matrix_only}{if \code{TRUE}, only generate matrix file for SigProfiler
-so user can call SigProfiler with the input by himself.}
+so user can call SigProfiler with the input by himself. This mode is pure R:
+no Python, reticulate, or conda contact is made.}
 
 \item{range}{signature number range, i.e. \code{2:5}.}
 
@@ -77,7 +78,13 @@ If this package is installed, this option is useless.}
 \item{order_by_expo}{if \code{TRUE}, order the import signatures by their exposures, e.g. the signature
 contributed the most exposure in all samples will be named as \code{Sig1}.}
 
-\item{type}{mutational signature type.}
+\item{type}{mutational signature type. For \code{sigprofiler_import()}, one of
+\code{'suggest'} (the suggested de-novo solution), \code{'refit'} (the
+COSMIC-decomposed view of the suggested solution, read from
+\code{Suggested_Solution/COSMIC_<MT>_Decomposed_Solution}; current
+SigProfilerExtractor versions emit that directory unconditionally, the option
+removed upstream was \code{refit_denovo_signatures} on the extract side), or
+\code{'all'} (for all solutions).}
 }
 \value{
 For \code{sigprofiler_extract()}, returns nothing. See \code{output} directory.
