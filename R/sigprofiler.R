@@ -10,7 +10,8 @@
 #' @rdname sigprofiler
 #' @param output output directory.
 #' @param output_matrix_only if `TRUE`, only generate matrix file for SigProfiler
-#' so user can call SigProfiler with the input by himself.
+#' so user can call SigProfiler with the input by himself. This mode is pure R:
+#' no Python, reticulate, or conda contact is made.
 #' @param range signature number range, i.e. `2:5`.
 #' @param nrun the number of iteration to be performed to extract each signature number.
 #' @param refit **Deprecated**. This parameter is no longer supported in recent versions
@@ -86,17 +87,11 @@ sigprofiler_extract <- function(nmf_matrix, output,
     dir.create(output, recursive = TRUE)
   }
 
-  env_install(use_conda, py_path, pkg = "SigProfilerExtractor", pkg_version = sigprofiler_version)
-
   init_method <- match.arg(init_method)
   cores <- as.integer(cores)
   nrun <- as.integer(nrun)
 
   sig_ranges <- range(range)
-  sys <- reticulate::import("sys")
-  sigpro <- reticulate::import("SigProfilerExtractor.sigpro")
-
-  # print(sys$path)
 
   nmf_matrix <- t(nmf_matrix)
 
@@ -114,7 +109,9 @@ sigprofiler_extract <- function(nmf_matrix, output,
     tibble::rownames_to_column("Mutation Types")
 
   if (output_matrix_only) {
-    if (!dir.exists(output)) dir.create(output, recursive = TRUE)
+    # The matrix-file hand-off is pure R: the python / reticulate / conda
+    # stack must not be contacted in this mode, the user runs SigProfiler
+    # with the written file by himself.
     data.table::fwrite(data.table::as.data.table(in_df),
                        file = file.path(output, "sigprofiler_input.txt"),
                        sep = "\t"
@@ -122,6 +119,11 @@ sigprofiler_extract <- function(nmf_matrix, output,
     message("SigProfiler input file saved to ", file.path(output, "sigprofiler_input.txt"))
     return(NULL)
   }
+
+  env_install(use_conda, py_path, pkg = "SigProfilerExtractor", pkg_version = sigprofiler_version)
+
+  sys <- reticulate::import("sys")
+  sigpro <- reticulate::import("SigProfilerExtractor.sigpro")
 
   tmp_dir <- basename(tempfile(pattern = "dir"))
   tmp_dir_full <- file.path(tempdir(), tmp_dir)
@@ -164,33 +166,17 @@ sigprofiler_extract <- function(nmf_matrix, output,
         py_path <- "python"
       }
 
-      cmd_import <- "from SigProfilerExtractor import sigpro as sig"
-      cmd_call <- paste(
-        quote_opt("matrix"),
-        quote_opt(output),
-        quote_opt(tmp_file),
-        quote_opt(genome_build, opt = "reference_genome"),
-        quote_opt(genome_build, opt = "opportunity_genome"),
-        quote_opt(sig_ranges[1], opt = "minimum_signatures", rm_quote = TRUE),
-        quote_opt(sig_ranges[2], opt = "maximum_signatures", rm_quote = TRUE),
-        quote_opt(nrun, opt = "nmf_replicates", rm_quote = TRUE),
-        quote_opt(ifelse(is_exome, "True", "False"), opt = "exome", rm_quote = TRUE),
-        quote_opt(init_method, opt = "nmf_init"),
-        quote_opt(ifelse(refit_plot, "True", "False"), opt = "make_decomposition_plots", rm_quote = TRUE),
-        quote_opt(cores, opt = "cpu", rm_quote = TRUE),
-        sep = ","
-      )
-
-      cmds <- paste(
-        py_path, "-c",
-        paste0(
-          "\"",
-          cmd_import,
-          ";",
-          "sig.sigProfilerExtractor(",
-          cmd_call,
-          ")\""
-        )
+      cmds <- sigprofiler_fallback_command(
+        py_path = py_path,
+        output = output,
+        tmp_file = tmp_file,
+        genome_build = genome_build,
+        sig_ranges = sig_ranges,
+        nrun = nrun,
+        is_exome = is_exome,
+        init_method = init_method,
+        refit_plot = refit_plot,
+        cores = cores
       )
 
       message("===")
@@ -201,7 +187,116 @@ sigprofiler_extract <- function(nmf_matrix, output,
   )
 }
 
-quote_opt <- function(value, opt = NULL, rm_quote = FALSE) {
+# Fail-closed quoting for the hand-rolled `python -c "..."` recall command.
+#
+# The recall command is nested twice: the system shell (cmd.exe on Windows,
+# sh elsewhere) parses the outer double quotes, then python parses the
+# single-quoted string literals inside. An unescaped backslash in that layout
+# makes python interpret e.g. `\Users` as a truncated \UXXXXXXXX unicode
+# escape and the recall dies with a SyntaxError (issue #470). We therefore
+# escape the one case that can be carried deterministically -- literal
+# backslashes under cmd.exe, doubled so the python layer sees them as such --
+# and reject every remaining ambiguous value with an actionable error instead
+# of emitting a broken command. Backslash-escaped quotes are handled
+# explicitly here rather than by any implicit shell behavior: a value
+# containing a quote character can not round-trip this layout at all.
+
+sigprofiler_is_windows <- function(os) {
+  identical(tolower(os[1L]), "windows")
+}
+
+# Single scalar check shared by the quoting helpers.
+sigprofiler_assert_scalar <- function(value, what) {
+  if (!is.character(value) && !is.numeric(value) && !is.logical(value)) {
+    stop(sprintf("`%s` must be a single character, numeric or logical value", what),
+         call. = FALSE)
+  }
+  if (length(value) != 1L || anyNA(value)) {
+    stop(sprintf("`%s` must be a single non-missing scalar", what),
+         call. = FALSE)
+  }
+  invisible(value)
+}
+
+# Reject characters that the given shell dialect interprets in a bare
+# (un-quoted) command position, or that break the payload quoting outright.
+sigprofiler_assert_command_token <- function(value, what, os) {
+  sigprofiler_assert_scalar(value, what)
+  value <- as.character(value)
+  if (!nzchar(value)) {
+    stop(sprintf("`%s` must be a non-empty command word", what), call. = FALSE)
+  }
+  always <- c(" ", "\t", "'", '"', "\n", "\r")
+  if (sigprofiler_is_windows(os)) {
+    # cmd.exe: redirection/pipe characters split the command line, %VAR% is
+    # expanded and !VAR! expands under delayed expansion.
+    forbidden <- c(always, "|", "&", "<", ">", "^", "%", "!")
+  } else {
+    # sh: globbing, expansion, redirection, and backslash (consumed before
+    # any character in an un-quoted word).
+    forbidden <- c(always, "|", "&", "<", ">", "$", "`", "*", "?", "[", "]", "\\")
+  }
+  chars <- strsplit(value, "")[[1L]]
+  hit <- unique(chars[!is.na(match(chars, forbidden))])
+  if (length(hit) > 0L) {
+    stop(sprintf(
+      paste0("`%s` contains shell-hostile character(s): %s. ",
+             "The SigProfiler recall command cannot carry such a value safely; ",
+             "rename the path without these characters, or use the reticulate ",
+             "code path (it is not affected)."),
+      what, paste0("'", hit, collapse = "', '")),
+      call. = FALSE)
+  }
+  invisible(value)
+}
+
+quote_opt <- function(value, opt = NULL, rm_quote = FALSE, os = .Platform$OS) {
+  sigprofiler_assert_scalar(value, "value")
+
+  if (rm_quote) {
+    # Un-quoted payload position (numbers, python True/False literals): a
+    # plain token, nothing the shell or python must reinterpret.
+    value <- as.character(value)
+    if (!grepl("^[0-9A-Za-z.+-]+$", value)) {
+      stop(sprintf(
+        paste0("`rm_quote` payload value '%s' must be a plain token ",
+               "(digits or a bare literal); quoting it is ambiguous in the ",
+               "recall command layout."),
+        value), call. = FALSE)
+    }
+  } else {
+    value <- as.character(value)
+    always <- c("'", '"', "\n", "\r")
+    if (sigprofiler_is_windows(os)) {
+      # Backslashes become safe by doubling: cmd.exe passes them verbatim
+      # and python decodes each pair to a literal backslash.
+      always <- c(always, "%")
+      value <- gsub("\\", "\\\\", value, fixed = TRUE)
+    } else {
+      # sh folds \\ before $ ` " \ inside double quotes and expands $ and
+      # backtick; a backslash could not survive this layout un-ambiguously.
+      always <- c(always, "$", "`")
+      if (grepl("\\", value, fixed = TRUE)) {
+        stop(sprintf(
+          paste0("`value` '%s' contains backslashes, which cannot be carried ",
+                 "through the POSIX shell layer of the recall command. ",
+                 "This is normally a Windows path: run the recall under the ",
+                 "Windows shell, or use the reticulate code path (it is not ",
+                 "affected)."),
+          value), call. = FALSE)
+      }
+    }
+    chars <- strsplit(value, "")[[1L]]
+    hit <- unique(chars[!is.na(match(chars, always))])
+    if (length(hit) > 0L) {
+      stop(sprintf(
+        paste0("`value` '%s' contains character(s) the recall command cannot ",
+               "carry safely: %s."),
+        value, paste0("'", hit, collapse = "', '")),
+        call. = FALSE)
+    }
+  }
+
   if (is.null(opt)) {
     if (rm_quote) {
       value
@@ -210,17 +305,41 @@ quote_opt <- function(value, opt = NULL, rm_quote = FALSE) {
     }
   } else {
     if (rm_quote) {
-      paste(opt,
-        value,
-        sep = "="
-      )
+      paste(opt, value, sep = "=")
     } else {
-      paste(opt,
-        paste0("'", value, "'"),
-        sep = "="
-      )
+      paste(opt, paste0("'", value, "'"), sep = "=")
     }
   }
+}
+
+# Assemble the `py_path -c "<payload>"` recall command that sigprofiler_extract()
+# prints (and runs) after the reticulate direct call fails. Every user-facing
+# string passes through quote_opt()/the token validator, so a value that could
+# produce the issue #470 SyntaxError class is rejected instead of emitted.
+sigprofiler_fallback_command <- function(py_path, output, tmp_file, genome_build,
+                                         sig_ranges, nrun, is_exome, init_method,
+                                         refit_plot, cores, os = .Platform$OS) {
+  sigprofiler_assert_command_token(py_path, "py_path", os)
+
+  cmd_import <- "from SigProfilerExtractor import sigpro as sig"
+  cmd_call <- paste(
+    quote_opt("matrix", os = os),
+    quote_opt(output, os = os),
+    quote_opt(tmp_file, os = os),
+    quote_opt(genome_build, opt = "reference_genome", os = os),
+    quote_opt(genome_build, opt = "opportunity_genome", os = os),
+    quote_opt(sig_ranges[1L], opt = "minimum_signatures", rm_quote = TRUE, os = os),
+    quote_opt(sig_ranges[2L], opt = "maximum_signatures", rm_quote = TRUE, os = os),
+    quote_opt(nrun, opt = "nmf_replicates", rm_quote = TRUE, os = os),
+    quote_opt(ifelse(is_exome, "True", "False"), opt = "exome", rm_quote = TRUE, os = os),
+    quote_opt(init_method, opt = "nmf_init", os = os),
+    quote_opt(ifelse(refit_plot, "True", "False"), opt = "make_decomposition_plots", rm_quote = TRUE, os = os),
+    quote_opt(cores, opt = "cpu", rm_quote = TRUE, os = os),
+    sep = ","
+  )
+
+  payload <- paste0(cmd_import, ";", "sig.sigProfilerExtractor(", cmd_call, ")")
+  paste(py_path, "-c", paste0("\"", payload, "\""))
 }
 
 
@@ -232,7 +351,12 @@ quote_opt <- function(value, opt = NULL, rm_quote = FALSE) {
 #' @inheritParams sigprofiler
 #' @param order_by_expo if `TRUE`, order the import signatures by their exposures, e.g. the signature
 #' contributed the most exposure in all samples will be named as `Sig1`.
-#' @param type one of 'suggest' (for suggested solution), 'refit' (for refit solution) or 'all' (for all solutions).
+#' @param type one of 'suggest' (the suggested de-novo solution), 'refit' (the
+#' COSMIC-decomposed view of the suggested solution, read from
+#' `Suggested_Solution/COSMIC_<MT>_Decomposed_Solution`; current
+#' SigProfilerExtractor versions emit that directory unconditionally, the option
+#' removed upstream was `refit_denovo_signatures` on the extract side), or
+#' 'all' (for all solutions).
 #'
 #' @return For `sigprofiler_import()`, a `list` containing `Signature` object.
 #' @export
@@ -265,7 +389,7 @@ sigprofiler_import <- function(output,
       message("Reading suggested solution...")
     } else {
       solution_path <- list.files(solution_path, pattern = "Decomposed", full.names = TRUE)
-      message("Reading suggested solution...")
+      message("Reading COSMIC decomposed solution...")
     }
 
     if (length(solution_path) != 1) {

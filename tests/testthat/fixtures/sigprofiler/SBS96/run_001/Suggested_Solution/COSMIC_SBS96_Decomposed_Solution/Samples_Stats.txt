@@ -1,0 +1,4 @@
+sample	Mutation Count	Cancer Type
+Sample1	4	Breast
+Sample2	4	Breast
+Sample3	4	Breast

@@ -1,3 +1,22 @@
+# sigminer (unreleased)
+
+- Fixed the SigProfiler interop recall command (`sigprofiler_extract()` fallback path after the
+  reticulate call fails) to escape Windows backslash paths before embedding them in the Python
+  `-c` payload (issue #470): literal backslashes are doubled for the `cmd.exe` layer, and values
+  that can not travel the shell + python layers safely (embedded quotes, line breaks, `%VAR%`
+  expansion, POSIX backslashes, `$`/backtick expansion, word-splitting whitespace in the Python
+  path) are now rejected with an actionable error instead of emitting a broken command.
+- `sigprofiler_extract(output_matrix_only = TRUE)` no longer requires the Python / reticulate /
+  conda stack: the matrix-file hand-off is pure R.
+- Clarified the `sigprofiler_import(type = "refit")` documentation against the current
+  SigProfilerExtractor output tree: the branch reads
+  `Suggested_Solution/COSMIC_<MT>_Decomposed_Solution`, which current versions emit
+  unconditionally; the upstream option that was removed is `refit_denovo_signatures` on the
+  extract side. The refit import branch stays functional and is now pinned by fixture tests.
+- Added testthat fixture round-trip coverage for the interop bridge and a local-only
+  SigProfilerExtractor version-matrix harness (opt-in via `SIGMINER_SP_MATRIX=1`;
+  deliberately not wired into CI, see `tests/testthat/README-sigprofiler-matrix.md`).
+
 # sigminer 2.3.3
 
 - Replaced `future::availableCores()` with `parallelly::availableCores()`.

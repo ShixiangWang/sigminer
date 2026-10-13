@@ -1,0 +1,3 @@
+Signature Name	Mean Stability	Cosine Similarity
+A	0.95	0.99
+B	0.94	0.98

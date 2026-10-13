@@ -1,0 +1,4 @@
+sample	A	B
+Sample1	1	3
+Sample2	2	2
+Sample3	4	0
