@@ -14,6 +14,7 @@ sig_extract(
   pynmf = FALSE,
   use_conda = TRUE,
   py_path = "/Users/wsx/anaconda3/bin/python",
+  backend = c("R", "rust"),
   seed = 123456,
   ...
 )
@@ -41,6 +42,16 @@ The seed currently is not used by this implementation.}
 \item{py_path}{path to Python executable file, e.g. '/Users/wsx/anaconda3/bin/python'. In my
 test, it is more stable than \code{use_conda=TRUE}. You can install the Nimfa package by yourself
 or set \code{use_conda} to \code{TRUE} to install required Python environment, and then set this option.}
+
+\item{backend}{one of "R" (default) or "rust". "R" keeps the in-package
+\strong{NMF} engine byte-for-byte; "rust" routes the decomposition across an
+isolated process boundary to the certified in-house Apache-2.0 KL-MU
+kernel shipped with the 'msuiter' package (Suggests-gated):
+\verb{msuiter-kernel fit-kl}, protocol 1. The fixed iteration budget comes
+from option \code{sigminer.rust_iters} (default 2000), every run passes
+\code{--seed} explicitly and run i of \code{nrun} uses \code{seed + i - 1}. Partial
+matches are accepted ("rus" means "rust"). Cannot be combined with
+\code{pynmf = TRUE}; the method must be a KL variant ("brunet").}
 
 \item{seed}{specification of the starting point or seeding method, which will compute a starting point,
 usually using data from the target matrix in order to provide a good guess.}

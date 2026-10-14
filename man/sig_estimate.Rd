@@ -18,7 +18,8 @@ sig_estimate(
   save_plots = FALSE,
   plot_basename = file.path(tempdir(), "nmf"),
   what = "all",
-  verbose = FALSE
+  verbose = FALSE,
+  backend = c("R", "rust")
 )
 
 show_sig_number_survey(
@@ -81,6 +82,15 @@ which correspond to the measures computed by \code{summary()} on each – multi-
 It specifies which measure must be plotted (what='all' plots all the measures).}
 
 \item{verbose}{if \code{TRUE}, print extra message.}
+
+\item{backend}{one of "R" (default) or "rust". "R" keeps the in-package
+\strong{NMF} rank-survey engine byte-for-byte; "rust" drives the certified
+in-house KL-MU kernel (Suggests-gated) across the isolated process
+boundary, one fixed-budget best-of-\code{nrun} fit per rank under the seed law
+\code{seed + i - 1} (iteration budget from option \code{sigminer.rust_iters},
+default 2000). The \code{use_random} and \code{save_plots} arms are NMF-engine
+features and fail closed with "rust". Partial matches are accepted
+("rus" means "rust").}
 
 \item{object}{a \code{Survey} object generated from \link{sig_estimate}, or
 a \code{data.frame} contains at least rank columns and columns for

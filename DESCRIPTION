@@ -71,6 +71,7 @@ Suggests:
     lpSolve,
     markdown,
     matrixStats,
+    msuiter (>= 0.1.0),
     nnls,
     parallel,
     patchwork,
