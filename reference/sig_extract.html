@@ -76,6 +76,7 @@
 <span>  pynmf <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  use_conda <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  py_path <span class="op">=</span> <span class="st">"/Users/wsx/anaconda3/bin/python"</span>,</span>
+<span>  backend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"R"</span>, <span class="st">"rust"</span><span class="op">)</span>,</span>
 <span>  seed <span class="op">=</span> <span class="fl">123456</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -124,6 +125,19 @@ The seed currently is not used by this implementation.</p></dd>
 <dd><p>path to Python executable file, e.g. '/Users/wsx/anaconda3/bin/python'. In my
 test, it is more stable than <code>use_conda=TRUE</code>. You can install the Nimfa package by yourself
 or set <code>use_conda</code> to <code>TRUE</code> to install required Python environment, and then set this option.</p></dd>
+
+
+<dt id="arg-backend">backend<a class="anchor" aria-label="anchor" href="#arg-backend"></a></dt>
+<dd><p>one of "R" (default) or "rust". "R" keeps the in-package
+<strong>NMF</strong> engine byte-for-byte; "rust" routes the decomposition across an
+isolated process boundary to the certified in-house Apache-2.0 KL-MU
+kernel shipped with the optional 'msuiter' package (runtime-gated; not on
+CRAN, install from <a href="https://github.com/WangLabCSU/msuiter" class="external-link">https://github.com/WangLabCSU/msuiter</a>):
+<code>msuiter-kernel fit-kl</code>, protocol 1. The fixed iteration budget comes
+from option <code>sigminer.rust_iters</code> (default 2000), every run passes
+<code>--seed</code> explicitly and run i of <code>nrun</code> uses <code>seed + i - 1</code>. Partial
+matches are accepted ("rus" means "rust"). Cannot be combined with
+<code>pynmf = TRUE</code>; the method must be a KL variant ("brunet").</p></dd>
 
 
 <dt id="arg-seed">seed<a class="anchor" aria-label="anchor" href="#arg-seed"></a></dt>
