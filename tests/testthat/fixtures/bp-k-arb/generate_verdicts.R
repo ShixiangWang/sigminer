@@ -32,8 +32,7 @@ K_GRID <- 2:5L                   # evaluated grid per calibration cell
 .cmdline <- commandArgs(trailing = FALSE)
 .file.arg <- grep("^--file=", .cmdline)
 if (!length(.file.arg)) {
-  stop("cannot locate this script via --file=; invoke as "
-    "'Rscript generate_verdicts.R <fixture-dir>'", domain = NA)
+  stop("cannot locate this script via --file=; invoke as 'Rscript generate_verdicts.R <fixture-dir>'", domain = NA)
 }
 .own.dir <- dirname(normalizePath(sub("^--file=", "", .cmdline[[.file.arg[1L]]])))
 source(file.path(.own.dir, "synthetic_cells.R"))
