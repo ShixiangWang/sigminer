@@ -452,6 +452,12 @@ bp_extract_signatures <- function(nmf_matrix,
       # Use R NMF package
       eval(parse(text = "suppressMessages(library('NMF'))"))
 
+      # Resolve the kernel binary and the fit budget once, in the parent:
+      # the fan-out workers re-resolve nothing -- parent-side options are
+      # invisible to them (see the bin injection in .rust_fit_kl).
+      rust_bin <- if (identical(backend, "rust")) .kernel_resolve() else NULL
+      rust_iters <- if (identical(backend, "rust")) .rust_iters() else 0L
+
       call_nmf <- function(i, cores = 1L) {
         if (!file.exists(fl[i])) {
           send_info(sprintf(
@@ -464,13 +470,16 @@ bp_extract_signatures <- function(nmf_matrix,
           if (identical(backend, "rust")) {
             # One fixed-budget best-of-nrun decomposition across the process
             # boundary; bootstrap catalog i carries the seed law seed + i - 1.
+            # bin/iters were resolved parent-side (workers cannot see the
+            # parent's options).
             fit <- .rust_best_of_nrun(
               V = bt_catalog_list[[i]],
               k = as.integer(range[k]),
-              iters = .rust_iters(),
+              iters = rust_iters,
               seed = seed + i - 1L,
               init = "nndsvd",
-              nrun = as.integer(n_nmf_run)
+              nrun = as.integer(n_nmf_run),
+              bin = rust_bin
             )
             r <- list(list(
               W = fit$W,

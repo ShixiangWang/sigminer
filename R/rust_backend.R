@@ -396,9 +396,12 @@
 # One kernel fit-kl run through the whole pipeline: validate -> gate ->
 # resolve -> handshake -> stage -> exec -> parse. Returns list(W, H,
 # objective, meta). Numeric arguments are validated strictly before the
-# process is spawned; every post-spawn deviation is fail-closed.
+# process is spawned; every post-spawn deviation is fail-closed. `bin` may
+# be supplied by callers that resolved the kernel earlier (the parallel bp
+# fan-out runs in worker processes that cannot see the parent's option).
 .rust_fit_kl <- function(V, k, iters, seed = NULL, init = "nndsvd",
-                         replicate = NULL, W0 = NULL, H0 = NULL) {
+                         replicate = NULL, W0 = NULL, H0 = NULL,
+                         bin = NULL) {
   if (!is.character(init) || length(init) != 1L || !init %in% .RUST_KERNEL_INITS) {
     stop("'init' must be one of: ", paste(.RUST_KERNEL_INITS, collapse = ", "),
          ".", domain = NA)
@@ -434,7 +437,11 @@
   }
 
   .require_msuiter()
-  bin <- .kernel_resolve()
+  if (is.null(bin)) {
+    bin <- .kernel_resolve()
+  } else if (!is.character(bin) || length(bin) != 1L || !nzchar(bin)) {
+    stop("'bin' must be a single non-empty path.", domain = NA)
+  }
   .kernel_handshake(bin)
 
   in_dir <- tempfile("sigminer-rust-in-")
@@ -483,7 +490,8 @@
 # The nrun law: run i carries seed + i - 1L. external is deterministic, so
 # more than one run of it is a user error, not a wasted spawn.
 .rust_runs <- function(V, k, iters, seed, nrun = 1L, init = "nndsvd",
-                       replicate = NULL, W0 = NULL, H0 = NULL) {
+                       replicate = NULL, W0 = NULL, H0 = NULL,
+                       bin = NULL) {
   nrun <- .rust_count(nrun, "nrun")
   if (identical(init, "external") && nrun > 1L) {
     stop("init = \"external\" is fully deterministic; nrun > 1 would launch ",
@@ -494,17 +502,17 @@
     run_seed <- if (identical(init, "external")) NULL else seed + i - 1L
     fits[[i]] <- .rust_fit_kl(V = V, k = k, iters = iters, seed = run_seed,
                               init = init, replicate = replicate,
-                              W0 = W0, H0 = H0)
+                              W0 = W0, H0 = H0, bin = bin)
   }
   fits
 }
 
 .rust_best_of_nrun <- function(V, k, iters, seed, init = "nndsvd",
                                nrun = 1L, replicate = NULL,
-                               W0 = NULL, H0 = NULL) {
+                               W0 = NULL, H0 = NULL, bin = NULL) {
   fits <- .rust_runs(V = V, k = k, iters = iters, seed = seed,
                       nrun = nrun, init = init, replicate = replicate,
-                      W0 = W0, H0 = H0)
+                      W0 = W0, H0 = H0, bin = bin)
   objs <- as.numeric(sapply(fits, function(f) f$meta$obj_final))
   if (!all(is.finite(objs))) {
     stop("kernel meta.obj_final is not finite for every run.", domain = NA)
@@ -544,13 +552,13 @@
 
 # Per-rank rust survey used by sig_estimate(): best-of-nrun fit, rss/evar
 # against the input, cophenetic stability, and the kernel's obj_final.
-.survey_rust <- function(mat, ranks, nrun, seed, iters) {
+.survey_rust <- function(mat, ranks, nrun, seed, iters, bin = NULL) {
   rows <- list()
   fits_by_rank <- list()
   for (rk in ranks) {
     k <- .rust_count(rk, "rank")
     fits <- .rust_runs(V = mat, k = k, iters = iters, seed = seed,
-                       nrun = nrun, init = "nndsvd")
+                       nrun = nrun, init = "nndsvd", bin = bin)
     best <- fits[[which.min(as.numeric(sapply(fits,
       function(f) as.numeric(f$meta$obj_final))))]]
     est <- best$W %*% best$H
