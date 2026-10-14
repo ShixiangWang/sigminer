@@ -435,7 +435,7 @@
 #' if (!is.data.frame(res$k_evidence) || !any(res$k_evidence$selected))
 #'   stop("the evidence table must carry exactly one selected row")
 #'
-#' @seealso [.bp_k_arbitrate()] for the arbitration core,
+#' @seealso `.bp_k_arbitrate()` for the private arbitration core,
 #'   [bp_extract_signatures()] for the opt-in route integration.
 #' @export
 bp_select_k <- function(counts, k_grid = 2:5,

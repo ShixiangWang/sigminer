@@ -71,6 +71,6 @@ if (!is.data.frame(res$k_evidence) || !any(res$k_evidence$selected))
 
 }
 \seealso{
-\code{\link[=.bp_k_arbitrate]{.bp_k_arbitrate()}} for the arbitration core,
+\code{.bp_k_arbitrate()} for the private arbitration core,
 \code{\link[=bp_extract_signatures]{bp_extract_signatures()}} for the opt-in route integration.
 }
