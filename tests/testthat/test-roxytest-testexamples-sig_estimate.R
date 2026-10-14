@@ -2,7 +2,7 @@
 
 # File R/sig_estimate.R: @testexamples
 
-test_that("Function show_sig_number_survey() @ L279", {
+test_that("Function show_sig_number_survey() @ L336", {
   
   
   load(system.file("extdata", "toy_copynumber_tally_W.RData",

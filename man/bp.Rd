@@ -31,7 +31,8 @@ bp_extract_signatures(
   keep_cache = FALSE,
   pynmf = FALSE,
   use_conda = TRUE,
-  py_path = "/Users/wsx/anaconda3/bin/python"
+  py_path = "/Users/wsx/anaconda3/bin/python",
+  backend = c("R", "rust")
 )
 
 bp_extract_signatures_iter(
@@ -147,6 +148,16 @@ your result is setting \code{keep_cache = TRUE}.}
 \item{py_path}{path to Python executable file, e.g. '/Users/wsx/anaconda3/bin/python'. In my
 test, it is more stable than \code{use_conda=TRUE}. You can install the Nimfa package by yourself
 or set \code{use_conda} to \code{TRUE} to install required Python environment, and then set this option.}
+
+\item{backend}{one of "R" (default) or "rust". "R" keeps the in-package
+\strong{NMF} bootstrap extraction engine byte-for-byte; "rust" routes every
+bootstrap decomposition across the isolated process boundary to the
+certified in-house Apache-2.0 KL-MU kernel shipped with the 'msuiter'
+package (optional 'msuiter', runtime-gated): \verb{msuiter-kernel fit-kl}, protocol 1, with
+bootstrap catalog i driven by the seed law \code{seed + i - 1}. The fixed
+iteration budget comes from option \code{sigminer.rust_iters} (default 2000).
+Cannot be combined with \code{pynmf = TRUE}. Partial matches are accepted
+("rus" means "rust").}
 
 \item{sim_threshold}{a similarity threshold for selecting samples to auto-rerun
 the extraction procedure (i.e. \code{bp_extract_signatures()}), default is \code{0.95}.}

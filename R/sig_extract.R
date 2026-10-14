@@ -8,6 +8,16 @@
 #' @param optimize if `TRUE`, then refit the denovo signatures with QP method, see [sig_fit].
 #' @param pynmf if `TRUE`, use Python NMF driver [Nimfa](http://nimfa.biolab.si/index.html).
 #' The seed currently is not used by this implementation.
+#' @param backend one of "R" (default) or "rust". "R" keeps the in-package
+#' **NMF** engine byte-for-byte; "rust" routes the decomposition across an
+#' isolated process boundary to the certified in-house Apache-2.0 KL-MU
+#' kernel shipped with the optional 'msuiter' package (runtime-gated; not on
+#' CRAN, install from <https://github.com/WangLabCSU/msuiter>):
+#' `msuiter-kernel fit-kl`, protocol 1. The fixed iteration budget comes
+#' from option `sigminer.rust_iters` (default 2000), every run passes
+#' `--seed` explicitly and run i of `nrun` uses `seed + i - 1`. Partial
+#' matches are accepted ("rus" means "rust"). Cannot be combined with
+#' `pynmf = TRUE`; the method must be a KL variant ("brunet").
 #' @param ... other arguments passed to [NMF::nmf()].
 #' @author Shixiang Wang
 #' @references Gaujoux, Renaud, and Cathal Seoighe. "A flexible R package for nonnegative matrix factorization." BMC bioinformatics 11.1 (2010): 367.
@@ -36,7 +46,24 @@ sig_extract <- function(nmf_matrix,
                         pynmf = FALSE,
                         use_conda = TRUE,
                         py_path = "/Users/wsx/anaconda3/bin/python",
+                        backend = c("R", "rust"),
                         seed = 123456, ...) {
+  backend <- .r_assert_backend(backend)
+  if (identical(backend, "rust")) {
+    if (isTRUE(pynmf)) {
+      stop("'backend = \"rust\"' and 'pynmf = TRUE' are mutually exclusive: ",
+           "the rust backend crosses the process boundary to the certified ",
+           "msuiter kernel; the python driver is a different engine.",
+           domain = NA)
+    }
+    if (!is.character(method) || length(method) != 1L ||
+        !startsWith(method, "bru")) {
+      stop("the rust backend drives the certified KL-MU kernel and expects ",
+           "a KL-family method (\"brunet\"); got: ",
+           paste(as.character(method), collapse = ","), domain = NA)
+    }
+    .require_msuiter()
+  }
   eval(parse(text = "suppressMessages(library('NMF'))"))
   cores <- parallelly::availableCores(max = cores)
   # transpose matrix
@@ -51,7 +78,28 @@ sig_extract <- function(nmf_matrix,
     mat <- mat[, !ii, drop = FALSE]
   }
 
-  if (isFALSE(pynmf)) {
+  if (identical(backend, "rust")) {
+    # Degenerate-catalogue guard identical to the R path.
+    mat <- check_nmf_matrix(mat)
+
+    # Best-of-nrun over the seed law: run i of nrun carries seed + i - 1.
+    fit <- .rust_best_of_nrun(
+      V = mat,
+      k = as.integer(n_sig),
+      iters = .rust_iters(),
+      seed = seed,
+      init = "nndsvd",
+      nrun = as.integer(nrun)
+    )
+    # Signature loading
+    W <- fit$W
+    # Exposure loading
+    H <- fit$H
+    rownames(W) <- rownames(mat)
+    colnames(H) <- colnames(mat)
+    # Signature number
+    K <- ncol(W)
+  } else if (isFALSE(pynmf)) {
     # To avoid error due to NMF
     mat <- check_nmf_matrix(mat)
 
@@ -179,7 +227,7 @@ sig_extract <- function(nmf_matrix,
   attr(res, "nrun") <- nrun
   attr(res, "method") <- method
   attr(res, "seed") <- seed
-  attr(res, "call_method") <- "NMF"
+  attr(res, "call_method") <- if (identical(backend, "rust")) .RUST_CALL_METHOD else "NMF"
 
   invisible(res)
 }

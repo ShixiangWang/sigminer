@@ -2,7 +2,7 @@
 
 # File R/sig_extract.R: @testexamples
 
-test_that("Function sig_extract() @ L30", {
+test_that("Function sig_extract() @ L40", {
   
   
   load(system.file("extdata", "toy_copynumber_tally_W.RData",

@@ -1,5 +1,14 @@
 # sigminer (unreleased)
 
+- `sig_extract()`, `sig_estimate()` and `bp_extract_signatures()` gained a `backend = c("R", "rust")`
+  argument (issue #478, parity plan P1). `"R"` keeps the in-package **NMF** engine byte-for-byte;
+  `"rust"` routes the decomposition across an isolated process boundary to the certified in-house
+  Apache-2.0 KL-MU kernel shipped with the `msuiter` package (optional, runtime-gated; install from
+  https://github.com/WangLabCSU/msuiter — not yet on CRAN):
+  `msuiter-kernel fit-kl`, protocol 1, with a frozen `--version` handshake, fail-closed output
+  parsing, a fixed iteration budget via option `sigminer.rust_iters` (default 2000) and an explicit
+  per-run seed law (`seed + i - 1` for run `i` of `nrun`). The rust path is mutually exclusive with
+  `pynmf = TRUE` and expects a KL-family method (`"brunet"`).
 - Fixed the SigProfiler interop recall command (`sigprofiler_extract()` fallback path after the
   reticulate call fails) to escape Windows backslash paths before embedding them in the Python
   `-c` payload (issue #470): literal backslashes are doubled for the `cmd.exe` layer, and values
