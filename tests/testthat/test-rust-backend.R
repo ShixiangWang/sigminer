@@ -275,6 +275,48 @@ rb_repo_r_path <- function(fname) {
   stop("cannot locate R/", fname, " upward from ", getwd(), domain = NA)
 }
 
+# Package root (the directory holding DESCRIPTION), located by the same
+# upward walk as rb_repo_r_path().
+rb_pkg_root <- function() {
+  d <- normalizePath(getwd())
+  for (i in 1:5) {
+    if (file.exists(file.path(d, "DESCRIPTION"))) return(d)
+    parent <- normalizePath(file.path(d, ".."))
+    if (identical(parent, d)) break
+    d <- parent
+  }
+  stop("cannot locate the package root upward from ", getwd(), domain = NA)
+}
+
+# bp's parallel fan-out serializes call_nmf into separate future workers
+# that re-resolve the sigminer namespace from the library path -- under
+# devtools::load_all they would load the installed CRAN build and miss the
+# P1 internals. Install the lane source once into a private library under
+# tempdir() and let the unit prepend it to .libPaths(): future workers
+# copy the parent's paths verbatim (the same lever future itself uses for
+# covr in its worker bootstrap). Returns the library path, or NULL when the
+# install is unavailable (unit then skips honestly).
+rb_lane_worker_lib <- function() {
+  lib <- file.path(tempdir(), "rb-worker-lib")
+  if (file.exists(file.path(lib, "sigminer", "DESCRIPTION"))) return(lib)
+  rbin <- file.path(R.home(), "bin", "R")
+  out_file <- tempfile("rb-install-out-")
+  err_file <- tempfile("rb-install-err-")
+  res <- system2(c(rbin, "CMD", "INSTALL", "--library", lib,
+                   "--no-byte-compile", "--no-build-vignettes",
+                   rb_pkg_root()),
+                 stdout = out_file, stderr = err_file, wait = TRUE)
+  if (.rust_status(res) != 0L) {
+    warn_out <- character()
+    if (file.exists(err_file)) warn_out <- readLines(err_file, warn = FALSE)
+    warn_out <- utils::tail(warn_out, 5L)
+    warning("worker-side R CMD INSTALL failed: ",
+            paste(warn_out, collapse = " | "), call. = FALSE)
+    return(NULL)
+  }
+  lib
+}
+
 rb_live_kernel_available <- function() {
   bin <- Sys.getenv("MSUITER_TEST_KERNEL_BIN")
   nzchar(bin) && file.exists(bin)
@@ -545,13 +587,11 @@ test_that("the handshake rejects protocol mismatch, garbage, silence and bad exi
     "silent" = rb_kernel_result(0L, stdout = character())
   )
   mock <- NULL
+  on.exit(rb_cleanup_mocks(mock), add = TRUE)
   for (nm in names(cases)) {
-    msg <- tryCatch({
-      mock <<- rb_mock_exec(function(bin, args) cases[[nm]])
-      gate <<- NULL
-      on.exit(rb_cleanup_mocks(mock), add = FALSE)
-      rb_catch_msg(.kernel_handshake("/unused/bin"))
-    }, error = function(e) conditionMessage(e))
+    mock <- rb_mock_exec(function(bin, args) cases[[nm]])
+    msg <- rb_catch_msg(.kernel_handshake("/unused/bin"))
+    rb_cleanup_mocks(mock)
     expect_false(is.na(msg), info = paste0("handshake case [", nm, "] was accepted"))
     # protocol mismatch must quote the offending line
     if (identical(nm, "protocol 2")) {
@@ -595,19 +635,24 @@ test_that("meta mismatches are fail-closed and name the offending key", {
   mock <- NULL
   bin <- NULL
   gate <- NULL
+  # Block-level on.exit is the household guard (see roundtrip suite): it
+  # restores the tokens even when an expectation aborts the loop mid-run.
+  # Installs run at loop-body top level with plain <- -- <<- across the
+  # tryCatch frame does not reliably land in the binding the loop reads
+  # back (doTryCatch promise-frame interaction), which leaked mocks here.
+  on.exit({
+    rb_cleanup_mocks(mock, gate)
+    rb_release_dummy_bin(bin)
+  }, add = TRUE)
   for (spec in specs) {
-    msg <- tryCatch({
-      mock <<- rb_mock_exec(rb_responder(tamper = spec$t))
-      bin <<- rb_use_dummy_bin()
-      gate <<- rb_mock_internal(".require_msuiter", function() invisible(TRUE))
-      on.exit({
-        rb_cleanup_mocks(mock, gate)
-        rb_release_dummy_bin(bin)
-      }, add = FALSE)
-      rb_catch_msg(
-        .rust_fit_kl(V = rb_live_v()[1:4, 1:4], k = 2L, iters = 12L, seed = 1L)
-      )
-    }, error = function(e) conditionMessage(e))
+    mock <- rb_mock_exec(rb_responder(tamper = spec$t))
+    bin <- rb_use_dummy_bin()
+    gate <- rb_mock_internal(".require_msuiter", function() invisible(TRUE))
+    msg <- rb_catch_msg(
+      .rust_fit_kl(V = rb_live_v()[1:4, 1:4], k = 2L, iters = 12L, seed = 1L)
+    )
+    rb_cleanup_mocks(mock, gate)
+    rb_release_dummy_bin(bin)
     expect_false(is.na(msg), info = paste0("meta tampering [", spec$want, "] was accepted"))
     expect_true(grepl(spec$want, msg, fixed = TRUE),
                 info = paste0("error did not name the key [", spec$want, "]: ", msg))
@@ -651,19 +696,24 @@ test_that("missing and short outputs are fail-closed, naming the file", {
   mock <- NULL
   bin <- NULL
   gate <- NULL
+  # Block-level on.exit is the household guard (see roundtrip suite): it
+  # restores the tokens even when an expectation aborts the loop mid-run.
+  # Installs run at loop-body top level with plain <- -- <<- across the
+  # tryCatch frame does not reliably land in the binding the loop reads
+  # back (doTryCatch promise-frame interaction), which leaked mocks here.
+  on.exit({
+    rb_cleanup_mocks(mock, gate)
+    rb_release_dummy_bin(bin)
+  }, add = TRUE)
   for (spec in specs) {
-    msg <- tryCatch({
-      mock <<- rb_mock_exec(rb_responder(tamper = spec$t))
-      bin <<- rb_use_dummy_bin()
-      gate <<- rb_mock_internal(".require_msuiter", function() invisible(TRUE))
-      on.exit({
-        rb_cleanup_mocks(mock, gate)
-        rb_release_dummy_bin(bin)
-      }, add = FALSE)
-      rb_catch_msg(
-        .rust_fit_kl(V = rb_live_v()[1:4, 1:4], k = 2L, iters = 12L, seed = 1L)
-      )
-    }, error = function(e) conditionMessage(e))
+    mock <- rb_mock_exec(rb_responder(tamper = spec$t))
+    bin <- rb_use_dummy_bin()
+    gate <- rb_mock_internal(".require_msuiter", function() invisible(TRUE))
+    msg <- rb_catch_msg(
+      .rust_fit_kl(V = rb_live_v()[1:4, 1:4], k = 2L, iters = 12L, seed = 1L)
+    )
+    rb_cleanup_mocks(mock, gate)
+    rb_release_dummy_bin(bin)
     expect_false(is.na(msg), info = "output tampering was accepted")
     expect_true(grepl("W.csv", msg, fixed = TRUE),
                 info = paste0("error did not name the file: ", msg))
@@ -693,19 +743,24 @@ test_that("negative H entries and broken traces are fail-closed, naming the file
   mock <- NULL
   bin <- NULL
   gate <- NULL
+  # Block-level on.exit is the household guard (see roundtrip suite): it
+  # restores the tokens even when an expectation aborts the loop mid-run.
+  # Installs run at loop-body top level with plain <- -- <<- across the
+  # tryCatch frame does not reliably land in the binding the loop reads
+  # back (doTryCatch promise-frame interaction), which leaked mocks here.
+  on.exit({
+    rb_cleanup_mocks(mock, gate)
+    rb_release_dummy_bin(bin)
+  }, add = TRUE)
   for (spec in specs) {
-    msg <- tryCatch({
-      mock <<- rb_mock_exec(rb_responder(tamper = spec$t))
-      bin <<- rb_use_dummy_bin()
-      gate <<- rb_mock_internal(".require_msuiter", function() invisible(TRUE))
-      on.exit({
-        rb_cleanup_mocks(mock, gate)
-        rb_release_dummy_bin(bin)
-      }, add = FALSE)
-      rb_catch_msg(
-        .rust_fit_kl(V = rb_live_v()[1:4, 1:4], k = 2L, iters = 12L, seed = 1L)
-      )
-    }, error = function(e) conditionMessage(e))
+    mock <- rb_mock_exec(rb_responder(tamper = spec$t))
+    bin <- rb_use_dummy_bin()
+    gate <- rb_mock_internal(".require_msuiter", function() invisible(TRUE))
+    msg <- rb_catch_msg(
+      .rust_fit_kl(V = rb_live_v()[1:4, 1:4], k = 2L, iters = 12L, seed = 1L)
+    )
+    rb_cleanup_mocks(mock, gate)
+    rb_release_dummy_bin(bin)
     expect_false(is.na(msg), info = paste0("tamper was accepted (want ", spec$want, ")"))
     expect_true(grepl(spec$want, msg, fixed = TRUE),
                 info = paste0("error did not name [", spec$want, "]: ", msg))
@@ -992,7 +1047,7 @@ test_that("(j) the live kernel prints the frozen protocol-1 handshake", {
   bin <- Sys.getenv("MSUITER_TEST_KERNEL_BIN")
   res <- .kernel_exec(bin, c("--version"))
   expect_identical(.rust_status(res), 0L)
-  lines <- res$stdout
+  lines <- attr(res, "stdout")
   expect_true(any(grepl("msuiter-kernel", lines)), info = "no handshake line on stdout")
   line <- lines[grepl("msuiter-kernel", lines)][1L]
   expect_equal(line, rb_version_line)
@@ -1093,6 +1148,14 @@ test_that("(m) the rust bp path is thread-invariant: workers = 1 matches workers
   on.exit({
     options(sigminer.rust_kernel = old_opt, sigminer.rust_iters = old_iters)
   }, add = TRUE)
+  # The fan-out workers must resolve the lane namespace, not the installed
+  # CRAN build (see rb_lane_worker_lib).
+  lane_lib <- rb_lane_worker_lib()
+  if (is.null(lane_lib)) {
+    skip("no worker-side lane package install for the future fan-out")
+  }
+  old_libpaths <- .libPaths(c(lane_lib, .libPaths()))
+  on.exit(.libPaths(old_libpaths), add = TRUE)
   gate <- rb_mock_internal(".require_msuiter", function() invisible(TRUE))
   on.exit(rb_cleanup_mocks(gate), add = TRUE)
 
