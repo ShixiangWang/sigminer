@@ -42,6 +42,7 @@ reference:
     - sig_auto_extract
     - sigprofiler
     - bp_attribute_activity
+    - bp_select_k
     #- bp_cluster_iter_list
     #- bp_extract_signatures
     #- bp_extract_signatures_iter

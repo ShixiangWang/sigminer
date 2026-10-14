@@ -106,6 +106,15 @@
 #' iteration budget comes from option `sigminer.rust_iters` (default 2000).
 #' Cannot be combined with `pynmf = TRUE`. Partial matches are accepted
 #' ("rus" means "rust").
+#' @param k_select one of "legacy" (default) or "arbitrate". "legacy" keeps
+#' the extraction and its `suggested` ranking byte-for-byte. "arbitrate"
+#' additionally runs the ported three-layer K survey (parity plan P2: CV
+#' argmin, stability veto, diagnostic Wilcoxon layer; see
+#' [bp_select_k()]) over the same `range` on the observed catalogue and
+#' annotates the result: `k_evidence` carries the per-rank evidence table,
+#' `suggested_legacy` preserves the ranking suggestion and `suggested`
+#' reports the arbitrated rank (degrade semantics: the annotation never
+#' errors the extraction). Partial matches are accepted.
 #' @return It depends on the called function.
 #' @name bp
 #' @author Shixiang Wang <w_shixiang@163.com>
@@ -236,8 +245,10 @@ bp_extract_signatures <- function(nmf_matrix,
                                   pynmf = FALSE,
                                   use_conda = TRUE,
                                   py_path = "/Users/wsx/anaconda3/bin/python",
-                                  backend = c("R", "rust")) {
+                                  backend = c("R", "rust"),
+                                  k_select = c("legacy", "arbitrate")) {
   backend <- .r_assert_backend(backend)
+  k_select <- match.arg(k_select, choices = c("legacy", "arbitrate"))
   if (identical(backend, "rust")) {
     if (isTRUE(pynmf)) {
       stop("'backend = \"rust\"' and 'pynmf = TRUE' are mutually exclusive: ",
@@ -661,6 +672,20 @@ bp_extract_signatures <- function(nmf_matrix,
   } else {
     solutions$rank_score <- NA
     solutions$suggested <- NA_integer_
+  }
+
+  if (identical(k_select, "arbitrate")) {
+    # Opt-in K arbitration annotation (parity plan P2, port of the msuiter
+    # ms_select_k arbitration): the three-layer survey runs over the same
+    # rank grid on the observed catalogue; degrade semantics keep the
+    # extraction safe (the standalone raising surface is bp_select_k()).
+    send_info("Arbitrating the signature number (k_select = \"arbitrate\").")
+    solutions$k_evidence <- .bp_route_arbitrate(raw_catalogue_matrix,
+      grid = range, seed = seed)
+    solutions$suggested_legacy <- solutions$suggested
+    solutions$suggested <- as.integer(
+      solutions$k_evidence$k[solutions$k_evidence$selected][1L])
+    send_success("Arbitrated signature number: ", solutions$suggested, ".")
   }
 
   solutions$catalog_matrix <- raw_catalogue_matrix

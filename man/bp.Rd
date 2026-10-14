@@ -32,7 +32,8 @@ bp_extract_signatures(
   pynmf = FALSE,
   use_conda = TRUE,
   py_path = "/Users/wsx/anaconda3/bin/python",
-  backend = c("R", "rust")
+  backend = c("R", "rust"),
+  k_select = c("legacy", "arbitrate")
 )
 
 bp_extract_signatures_iter(
@@ -158,6 +159,16 @@ bootstrap catalog i driven by the seed law \code{seed + i - 1}. The fixed
 iteration budget comes from option \code{sigminer.rust_iters} (default 2000).
 Cannot be combined with \code{pynmf = TRUE}. Partial matches are accepted
 ("rus" means "rust").}
+
+\item{k_select}{one of "legacy" (default) or "arbitrate". "legacy" keeps
+the extraction and its \code{suggested} ranking byte-for-byte. "arbitrate"
+additionally runs the ported three-layer K survey (parity plan P2: CV
+argmin, stability veto, diagnostic Wilcoxon layer; see
+\code{\link[=bp_select_k]{bp_select_k()}}) over the same \code{range} on the observed catalogue and
+annotates the result: \code{k_evidence} carries the per-rank evidence table,
+\code{suggested_legacy} preserves the ranking suggestion and \code{suggested}
+reports the arbitrated rank (degrade semantics: the annotation never
+errors the extraction). Partial matches are accepted.}
 
 \item{sim_threshold}{a similarity threshold for selecting samples to auto-rerun
 the extraction procedure (i.e. \code{bp_extract_signatures()}), default is \code{0.95}.}
