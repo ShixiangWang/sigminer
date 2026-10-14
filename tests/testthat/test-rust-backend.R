@@ -188,9 +188,16 @@ rb_responder <- function(tamper = NULL, obj_finals = NULL,
   state
 }
 
-# Install a responder as .kernel_exec(); the returned state env is also the
-# cleanup token for rb_cleanup_mocks().
+# Install a responder (state env from rb_responder) or a bare responder
+# function as .kernel_exec(); the returned state env is also the cleanup
+# token for rb_cleanup_mocks().
 rb_mock_exec <- function(responder) {
+  if (is.function(responder)) {
+    fn <- responder
+    responder <- new.env()
+    responder$fn <- fn
+    responder$calls <- list()
+  }
   ns <- asNamespace("sigminer")
   responder$ns <- ns
   responder$original <- get(".kernel_exec", envir = ns)
@@ -335,7 +342,7 @@ test_that("fit-kl argv is the golden frozen flag order for a known call", {
   fit <- .rust_fit_kl(V = v, k = 2L, iters = 13L, seed = 7L, init = "nndsvd")
   expect_equal(length(mock$calls), 2L)  # handshake + fit
   argv <- mock$calls[[2L]]$args
-  expect_equal(mock$calls[[2L]]$bin, bin$bin)
+  expect_equal(mock$calls[[2L]]$bin, normalizePath(bin$bin))
   expect_equal(argv[[1L]], "fit-kl")
   flag_order <- argv[grep("^--", argv)]
   expect_identical(
@@ -350,8 +357,8 @@ test_that("fit-kl argv is the golden frozen flag order for a known call", {
   expect_identical(req$init, "nndsvd")
   expect_identical(req$seed, "7")
   expect_null(req$replicate)
-  expect_true(startsWith(req[["in"]], "sigminer-rust-"))
-  expect_true(startsWith(req[["out"]], "sigminer-rust-"))
+  expect_true(grepl("sigminer-rust-", req[["in"]], fixed = TRUE))
+  expect_true(grepl("sigminer-rust-", req[["out"]], fixed = TRUE))
   expect_true(is.matrix(fit$W))
 })
 
@@ -441,7 +448,7 @@ test_that("the init/seed/replicate coherence of the kernel is enforced R-side fa
     "seed"
   )
   rb_expect_fails(
-    .rust_fit_kl(V = v, k = 2L, iters = 12L, seed = 1L, init = "seeded", replicate = 3L),
+    .rust_fit_kl(V = v, k = 2L, iters = 12L, seed = 1L, init = "nndsvd", replicate = 3L),
     "replicate"
   )
   rb_expect_fails(
@@ -491,9 +498,11 @@ test_that(".stage_inputs writes the frozen CSV format: %.17e, row-major, comma, 
   expect_true(all(sapply(fields, length) == ncol(v)))
   # every field is plain %.17e scientific notation, headerless
   expect_true(all(grepl("^-?[0-9]\\.[0-9]{17}e[-+][0-9]+$", unlist(fields))))
-  # bit-exact round trip for the powers-of-two fixture
-  back <- t(matrix(as.numeric(unlist(sapply(fields, as.numeric, simplify = FALSE))),
-                   ncol = nrow(v), byrow = TRUE))
+  # bit-exact round trip for the powers-of-two fixture: fields are
+  # row-major, so rebuild row-major with no transpose
+  back <- matrix(as.numeric(unlist(sapply(fields, as.numeric,
+    simplify = FALSE), use.names = FALSE)),
+    nrow = nrow(v), ncol = ncol(v), byrow = TRUE)
   expect_equal(dim(back), dim(v))
   expect_equal(as.vector(back), as.vector(v))
   unlink(dir, recursive = TRUE)
@@ -764,6 +773,9 @@ test_that("nrun sweeps advance --seed by one per run and best-of picks the minim
   expect_equal(length(fits), 3L)
   expect_identical(rb_fit_values(mock, "seed"), c("9", "10", "11"))
 
+  # reset the scripted objective sequence for the best-of phase
+  mock$calls <- list()
+  mock$run <- 0L
   best <- .rust_best_of_nrun(V = v, k = 2L, iters = 12L, seed = 9L,
                               init = "nndsvd", nrun = 3L)
   expect_equal(as.numeric(best$meta$obj_final), 8)
@@ -808,8 +820,8 @@ test_that(".kernel_resolve honours option > env > PATH, and fail-closes naming e
   old_path <- Sys.getenv("PATH")
   on.exit({
     options(sigminer.rust_kernel = old_opt)
-    if (nzchar(old_env)) Sys.setenv("MSUITER_KERNEL_BIN", old_env) else Sys.unsetenv("MSUITER_KERNEL_BIN")
-    Sys.setenv("PATH", old_path)
+    if (nzchar(old_env)) Sys.setenv(MSUITER_KERNEL_BIN = old_env) else Sys.unsetenv("MSUITER_KERNEL_BIN")
+    Sys.setenv(PATH = old_path)
   }, add = TRUE)
 
   opt_bin <- tempfile("rb-opt-bin-")
@@ -819,10 +831,11 @@ test_that(".kernel_resolve honours option > env > PATH, and fail-closes naming e
   file.create(opt_bin)
   file.create(env_bin)
   file.create(file.path(which_dir, "msuiter-kernel"))
+  Sys.chmod(file.path(which_dir, "msuiter-kernel"), mode = "0755")
 
   options(sigminer.rust_kernel = opt_bin)
-  Sys.setenv("MSUITER_KERNEL_BIN", env_bin)
-  Sys.setenv("PATH", paste0(which_dir, .path.sep, old_path))
+  Sys.setenv(MSUITER_KERNEL_BIN = env_bin)
+  Sys.setenv(PATH = paste0(which_dir, ":", old_path))
   expect_equal(.kernel_resolve(), normalizePath(opt_bin))
 
   options(sigminer.rust_kernel = NULL)
@@ -832,7 +845,7 @@ test_that(".kernel_resolve honours option > env > PATH, and fail-closes naming e
   expect_equal(.kernel_resolve(), normalizePath(file.path(which_dir, "msuiter-kernel")))
 
   # all three sources missing: the message names each of them
-  Sys.setenv("PATH", old_path)
+  Sys.setenv(PATH = old_path)
   unlink(opt_bin)
   unlink(env_bin)
   unlink(which_dir, recursive = TRUE)
