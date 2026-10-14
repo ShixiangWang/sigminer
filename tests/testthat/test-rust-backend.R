@@ -322,6 +322,17 @@ rb_live_kernel_available <- function() {
   nzchar(bin) && file.exists(bin)
 }
 
+# Snapshot preservation units must replay under the fresh-session RNG
+# configuration the snapshot was captured in: a preceding suite file can
+# load a namespace that re-tunes the RNG kind, and set.seed() alone does
+# not reset kind/normal.kind/sample.kind. Pins the R defaults and hands
+# back the previous law for restoration on exit.
+rb_pin_default_rng <- function() {
+  old <- suppressWarnings(RNGkind())
+  suppressWarnings(RNGkind("Mersenne-Twister", "Inversion", "Rejection"))
+  old
+}
+
 # ---- (i) R-path preservation ---------------------------------------------
 #
 # The baseline snapshot in fixtures/rust-backend/rpath-baseline.rds was
@@ -338,6 +349,12 @@ test_that("backend = \"R\" reproduces the pre-wiring baseline snapshot byte-for-
                 " (NMF-internal draw order may legitimately differ)"))
   }
   m <- rb_nmf_matrix()
+  old_rng <- rb_pin_default_rng()
+  # this R build rejects the vector form of RNGkind(x); pass the three
+  # components positionally (documented deviation, probed live).
+  on.exit(suppressWarnings(
+    RNGkind(old_rng[1L], old_rng[2L], old_rng[3L])
+  ), add = TRUE)
   res <- suppressMessages(suppressWarnings(
     sig_extract(m, 2, nrun = 2, seed = 9L, method = "brunet", cores = 1)
   ))
