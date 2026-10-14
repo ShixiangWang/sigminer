@@ -33,6 +33,14 @@
 #' @param method specification of the NMF algorithm. Use 'brunet' as default.
 #' Available methods for NMF decompositions are 'brunet', 'lee', 'ls-nmf', 'nsNMF', 'offset'.
 #' @param verbose if `TRUE`, print extra message.
+#' @param backend one of "R" (default) or "rust". "R" keeps the in-package
+#' **NMF** rank-survey engine byte-for-byte; "rust" drives the certified
+#' in-house KL-MU kernel (Suggests-gated) across the isolated process
+#' boundary, one fixed-budget best-of-`nrun` fit per rank under the seed law
+#' `seed + i - 1` (iteration budget from option `sigminer.rust_iters`,
+#' default 2000). The `use_random` and `save_plots` arms are NMF-engine
+#' features and fail closed with "rust". Partial matches are accepted
+#' ("rus" means "rust").
 #' @author Shixiang Wang
 #' @references Gaujoux, Renaud, and Cathal Seoighe. "A flexible R package for nonnegative matrix factorization." BMC bioinformatics 11.1 (2010): 367.
 #' @return - sig_estimate: a `list` contains information of NMF run and rank survey.
@@ -51,7 +59,28 @@ sig_estimate <-
            save_plots = FALSE,
            plot_basename = file.path(tempdir(), "nmf"),
            what = "all",
-           verbose = FALSE) {
+           verbose = FALSE,
+           backend = c("R", "rust")) {
+    backend <- .r_assert_backend(backend)
+    if (identical(backend, "rust")) {
+      if (isTRUE(use_random)) {
+        stop("the rust survey drives the certified kernel directly; the ",
+             "use_random randomisation arm is an NMF-engine feature and is ",
+             "not available with backend = \"rust\".", domain = NA)
+      }
+      if (isTRUE(save_plots)) {
+        stop("the rust survey drives the certified kernel directly; the ",
+             "save_plots survey-plot arm is an NMF-engine feature and is ",
+             "not available with backend = \"rust\".", domain = NA)
+      }
+      if (!is.character(method) || length(method) != 1L ||
+          !startsWith(method, "bru")) {
+        stop("the rust backend drives the certified KL-MU kernel and expects ",
+             "a KL-family method (\"brunet\"); got: ",
+             paste(as.character(method), collapse = ","), domain = NA)
+      }
+      .require_msuiter()
+    }
     if (nrow(nmf_matrix) < max(range)) {
       stop("The 'range' should not greater than ", nrow(nmf_matrix), " in your case.")
     }
@@ -71,6 +100,34 @@ sig_estimate <-
 
     # To avoid error due to NMF
     mat <- check_nmf_matrix(mat)
+
+    if (identical(backend, "rust")) {
+      # One fixed-budget best-of-nrun fit per rank across the process
+      # boundary; the Survey payload keeps the R-path slot names.
+      survey_r <- .survey_rust(
+        mat = mat,
+        ranks = unique(sort(as.numeric(range))),
+        nrun = nrun,
+        seed = seed,
+        iters = .rust_iters()
+      )
+      if (keep_nmfObj) {
+        res <- list(
+          nmfEstimate = survey_r$fits,
+          nmfEstimate.random = NULL,
+          survey = survey_r$survey,
+          survey.random = NULL
+        )
+      } else {
+        res <- list(
+          survey = survey_r$survey,
+          survey.random = NULL
+        )
+      }
+      class(res) <- "Survey"
+      attr(res, "call_method") <- .RUST_CALL_METHOD
+      return(res)
+    }
 
     # NMF's built-in shared-memory backend caps the requested cores at 2
     # (see NMF:::setupBackend), so a registered foreach backend is used
