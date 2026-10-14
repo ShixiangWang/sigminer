@@ -97,6 +97,15 @@
 #' @param py_path path to Python executable file, e.g. '/Users/wsx/anaconda3/bin/python'. In my
 #' test, it is more stable than `use_conda=TRUE`. You can install the Nimfa package by yourself
 #' or set `use_conda` to `TRUE` to install required Python environment, and then set this option.
+#' @param backend one of "R" (default) or "rust". "R" keeps the in-package
+#' **NMF** bootstrap extraction engine byte-for-byte; "rust" routes every
+#' bootstrap decomposition across the isolated process boundary to the
+#' certified in-house Apache-2.0 KL-MU kernel shipped with the 'msuiter'
+#' package (Suggests-gated): `msuiter-kernel fit-kl`, protocol 1, with
+#' bootstrap catalog i driven by the seed law `seed + i - 1`. The fixed
+#' iteration budget comes from option `sigminer.rust_iters` (default 2000).
+#' Cannot be combined with `pynmf = TRUE`. Partial matches are accepted
+#' ("rus" means "rust").
 #' @return It depends on the called function.
 #' @name bp
 #' @author Shixiang Wang <w_shixiang@163.com>
@@ -226,7 +235,18 @@ bp_extract_signatures <- function(nmf_matrix,
                                   keep_cache = FALSE,
                                   pynmf = FALSE,
                                   use_conda = TRUE,
-                                  py_path = "/Users/wsx/anaconda3/bin/python") {
+                                  py_path = "/Users/wsx/anaconda3/bin/python",
+                                  backend = c("R", "rust")) {
+  backend <- .r_assert_backend(backend)
+  if (identical(backend, "rust")) {
+    if (isTRUE(pynmf)) {
+      stop("'backend = \"rust\"' and 'pynmf = TRUE' are mutually exclusive: ",
+           "the rust backend crosses the process boundary to the certified ",
+           "msuiter kernel; the python driver is a different engine.",
+           domain = NA)
+    }
+    .require_msuiter()
+  }
   stopifnot(
     is.matrix(nmf_matrix),
     !is.null(rownames(nmf_matrix)), !is.null(colnames(nmf_matrix)),
@@ -340,7 +360,7 @@ bp_extract_signatures <- function(nmf_matrix,
       cache_dir,
       paste0(
         digest::digest(list(catalogue_matrix, seed)),
-        "_NMF_K",
+        if (identical(backend, "rust")) "_RUST_K" else "_NMF_K",
         rep(range, each = length(bt_catalog_list)),
         if (bt_flag) "_bt_catalog_" else "_observed_catalog_",
         seq_len(n_bootstrap),
@@ -441,6 +461,26 @@ bp_extract_signatures <- function(nmf_matrix,
             i
           ))
 
+          if (identical(backend, "rust")) {
+            # One fixed-budget best-of-nrun decomposition across the process
+            # boundary; bootstrap catalog i carries the seed law seed + i - 1.
+            fit <- .rust_best_of_nrun(
+              V = bt_catalog_list[[i]],
+              k = as.integer(range[k]),
+              iters = .rust_iters(),
+              seed = seed + i - 1L,
+              init = "nndsvd",
+              nrun = as.integer(n_nmf_run)
+            )
+            r <- list(list(
+              W = fit$W,
+              H = fit$H,
+              K = ncol(fit$W),
+              KLD = as.numeric(fit$meta$obj_final)
+            ))
+            rownames(r[[1L]]$W) <- rownames(bt_catalog_list[[i]])
+            colnames(r[[1L]]$H) <- colnames(bt_catalog_list[[i]])
+          } else {
           # NMF's built-in shared-memory backend caps the requested cores at 2
           # (see NMF:::setupBackend), so a registered foreach backend is used
           # to honor the requested core number (#479).
@@ -465,6 +505,7 @@ bp_extract_signatures <- function(nmf_matrix,
             r <- r@.Data
           }
           r <- purrr::map(r, extract_nmf)
+          }
 
           # Filter solutions with RTOL threshold
           if (bt_flag) {
