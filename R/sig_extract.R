@@ -11,7 +11,8 @@
 #' @param backend one of "R" (default) or "rust". "R" keeps the in-package
 #' **NMF** engine byte-for-byte; "rust" routes the decomposition across an
 #' isolated process boundary to the certified in-house Apache-2.0 KL-MU
-#' kernel shipped with the 'msuiter' package (Suggests-gated):
+#' kernel shipped with the optional 'msuiter' package (runtime-gated; not on
+#' CRAN, install from <https://github.com/WangLabCSU/msuiter>):
 #' `msuiter-kernel fit-kl`, protocol 1. The fixed iteration budget comes
 #' from option `sigminer.rust_iters` (default 2000), every run passes
 #' `--seed` explicitly and run i of `nrun` uses `seed + i - 1`. Partial

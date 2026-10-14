@@ -153,7 +153,7 @@ or set \code{use_conda} to \code{TRUE} to install required Python environment, a
 \strong{NMF} bootstrap extraction engine byte-for-byte; "rust" routes every
 bootstrap decomposition across the isolated process boundary to the
 certified in-house Apache-2.0 KL-MU kernel shipped with the 'msuiter'
-package (Suggests-gated): \verb{msuiter-kernel fit-kl}, protocol 1, with
+package (optional 'msuiter', runtime-gated): \verb{msuiter-kernel fit-kl}, protocol 1, with
 bootstrap catalog i driven by the seed law \code{seed + i - 1}. The fixed
 iteration budget comes from option \code{sigminer.rust_iters} (default 2000).
 Cannot be combined with \code{pynmf = TRUE}. Partial matches are accepted

@@ -2,7 +2,7 @@
 
 # File R/best_practice.R: @testexamples
 
-test_that("[unknown alias] @ L210", {
+test_that("[unknown alias] @ L219", {
   
   data("simulated_catalogs")
   

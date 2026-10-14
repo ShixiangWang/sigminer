@@ -231,7 +231,7 @@ rb_cleanup_mocks <- function(...) {
 }
 
 # Pin the resolution to a private dummy executable file and neutralise the
-# Suggests gate; both restored on exit.
+# runtime gate on the optional 'msuiter' package; both restored on exit.
 rb_use_dummy_bin <- function() {
   state <- new.env()
   state$bin <- tempfile("rb-kernel-")
@@ -812,7 +812,7 @@ test_that("the exported surface validates backend and rejects pynmf x rust combi
   rb_expect_fails(sig_estimate(m, range = 2, backend = "qux"), ".")
 })
 
-test_that("the \"rust\" backend is Suggests-gated on the msuiter package", {
+test_that("the \"rust\" backend is gated at runtime on the optional msuiter package", {
   if (requireNamespace("msuiter", quietly = TRUE)) {
     expect_no_error(.require_msuiter())
   } else {

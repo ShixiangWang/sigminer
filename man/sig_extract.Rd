@@ -46,7 +46,8 @@ or set \code{use_conda} to \code{TRUE} to install required Python environment, a
 \item{backend}{one of "R" (default) or "rust". "R" keeps the in-package
 \strong{NMF} engine byte-for-byte; "rust" routes the decomposition across an
 isolated process boundary to the certified in-house Apache-2.0 KL-MU
-kernel shipped with the 'msuiter' package (Suggests-gated):
+kernel shipped with the optional 'msuiter' package (runtime-gated; not on
+CRAN, install from \url{https://github.com/WangLabCSU/msuiter}):
 \verb{msuiter-kernel fit-kl}, protocol 1. The fixed iteration budget comes
 from option \code{sigminer.rust_iters} (default 2000), every run passes
 \code{--seed} explicitly and run i of \code{nrun} uses \code{seed + i - 1}. Partial

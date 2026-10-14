@@ -35,7 +35,7 @@
 #' @param verbose if `TRUE`, print extra message.
 #' @param backend one of "R" (default) or "rust". "R" keeps the in-package
 #' **NMF** rank-survey engine byte-for-byte; "rust" drives the certified
-#' in-house KL-MU kernel (Suggests-gated) across the isolated process
+#' in-house KL-MU kernel (optional 'msuiter', runtime-gated) across the isolated process
 #' boundary, one fixed-budget best-of-`nrun` fit per rank under the seed law
 #' `seed + i - 1` (iteration budget from option `sigminer.rust_iters`,
 #' default 2000). The `use_random` and `save_plots` arms are NMF-engine

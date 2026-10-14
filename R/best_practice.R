@@ -101,7 +101,7 @@
 #' **NMF** bootstrap extraction engine byte-for-byte; "rust" routes every
 #' bootstrap decomposition across the isolated process boundary to the
 #' certified in-house Apache-2.0 KL-MU kernel shipped with the 'msuiter'
-#' package (Suggests-gated): `msuiter-kernel fit-kl`, protocol 1, with
+#' package (optional 'msuiter', runtime-gated): `msuiter-kernel fit-kl`, protocol 1, with
 #' bootstrap catalog i driven by the seed law `seed + i - 1`. The fixed
 #' iteration budget comes from option `sigminer.rust_iters` (default 2000).
 #' Cannot be combined with `pynmf = TRUE`. Partial matches are accepted

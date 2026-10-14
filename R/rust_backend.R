@@ -7,7 +7,11 @@
 #  * The engine is reached ONLY as an isolated process through the frozen
 #    protocol-1 CLI contract, through the single contact point
 #    .kernel_exec() (system2 with a character-vector argv, never a shell).
-#  * The boundary is Suggests-gated on 'msuiter', reticulate-idiom.
+#  * The boundary is gated at runtime on the OPTIONAL package 'msuiter'
+#    (requireNamespace, reticulate-idiom), which is not yet on CRAN; the gate
+#    message carries the install guidance. It is deliberately NOT listed in
+#    Suggests: this repo's CI resolves every Suggests entry against the CRAN
+#    mirror at lockfile time, and a GitHub-only package hard-fails it.
 #  * Exit-status extraction is floor-safe: this package targets R >= 3.5 and
 #    the base null-default operator is a 4.4.0 export, so the status
 #    attribute is read directly in .rust_status() below.
@@ -150,12 +154,14 @@
   list(protocol = protocol, engine = engine, kl_eps = kl_eps, raw = line)
 }
 
-# Suggests gate in the reticulate idiom (see best_practice.R); the message
-# names both the package and the backend it guards.
+# Runtime gate for the optional 'msuiter' dependency, in the reticulate idiom
+# (see best_practice.R); the message names the package, the backend it guards,
+# and the installation route (msuiter is not yet on CRAN).
 .require_msuiter <- function() {
   if (!requireNamespace("msuiter", quietly = TRUE)) {
-    stop("Package 'msuiter' is required for the rust backend, please ",
-         "install it firstly!", domain = NA)
+    stop("Package 'msuiter' is required for the rust backend. It is not on ",
+         "CRAN; install it from https://github.com/WangLabCSU/msuiter, e.g. ",
+         "pak::pkg_install(\"WangLabCSU/msuiter\").", domain = NA)
   }
   invisible(TRUE)
 }
