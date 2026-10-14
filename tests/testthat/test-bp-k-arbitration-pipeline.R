@@ -89,17 +89,20 @@ test_that("an unstable CV argmin flips K to the best passing rank", {
 
   real_stability <- get(".bp_ensemble_stability", envir = asNamespace(
     "sigminer"))
-  on.exit(assignInNamespace(".bp_ensemble_stability", real_stability,
-    envir = asNamespace("sigminer")), add = TRUE)
-  assignInNamespace(".bp_ensemble_stability", function(counts, k, replicates,
-      seed) {
+  ns <- asNamespace("sigminer")
+  unlockBinding(".bp_ensemble_stability", ns)
+  on.exit({
+    assign(".bp_ensemble_stability", real_stability, envir = ns)
+    lockBinding(".bp_ensemble_stability", ns)
+  }, add = TRUE)
+  assign(".bp_ensemble_stability", function(counts, k, replicates, seed) {
     if (identical(as.integer(k), 4L)) {
       # the argmin rank is declared unstable, exactly the S2 shape
       list(avg = 0.3, min = 0.05, per_signature = c(0.3, 0.05))
     } else {
       real_stability(counts, k, replicates, seed)
     }
-  }, envir = asNamespace("sigminer"))
+  }, envir = ns)
 
   flipped <- bp_select_k(cl$counts, k_grid = 2:5, seed = 20261015L)
   ev <- flipped$k_evidence
@@ -127,10 +130,10 @@ test_that("the returned evidence table carries the full diagnostic schema", {
   expect_equal(names(ev), want)
   expect_type(ev$veto_reason, "character")
   expect_type(ev$selected, "logical")
-  expect_is.list(ev$fold_test_deviance)
+  expect_true(is.list(ev$fold_test_deviance))
   expect_equal(vapply(ev$fold_test_deviance, length, integer(1L)),
     rep(8L, 4L))
-  expect_is.list(ev$per_signature_stability)
+  expect_true(is.list(ev$per_signature_stability))
 })
 
 # ---- T5: cv = FALSE demotes to the veto-only scan ----------------------------
@@ -142,8 +145,10 @@ test_that("cv = FALSE arbitrates on the stability veto alone", {
   ev <- res$k_evidence
   expect_false(any(ev$is_argmin))              # layer 1 absent -> mark erased
   expect_true(all(is.na(ev$cv_test_deviance))) # CV columns demoted to NA
-  expect_true(all(vapply(ev$fold_test_deviance, function(z)
-    length(z) == 8L && all(is.na(z)))))
+  fold_ok <- vapply(ev$fold_test_deviance, function(z) {
+    length(z) == 8L && all(is.na(z))
+  }, logical(1L))
+  expect_true(all(fold_ok))
   cand <- ev[ev$passes_veto, ]
   expect_true(nrow(cand) > 0L)
   expect_equal(res$k, min(cand$k))             # lowest passing rank wins

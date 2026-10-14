@@ -26,9 +26,17 @@ K_GRID <- 2:5L                   # evaluated grid per calibration cell
 # ---- calibration cells: the committed deterministic builder ----------------
 # synthetic_cells.R next to this script is the single source of truth for
 # the cells (the testthat units source it too, so the tested cells and the
-# recorded reference cells are the same numbers by construction).
-source(file.path(dirname(normalizePath(commandArgs(trailing = FALSE)[[1L]])),
-  "synthetic_cells.R"))
+# recorded reference cells are the same numbers by construction). Under the
+# Rscript wrapper the script path arrives as the "--file=..." element of
+# the full command line.
+.cmdline <- commandArgs(trailing = FALSE)
+.file.arg <- grep("^--file=", .cmdline)
+if (!length(.file.arg)) {
+  stop("cannot locate this script via --file=; invoke as "
+    "'Rscript generate_verdicts.R <fixture-dir>'", domain = NA)
+}
+.own.dir <- dirname(normalizePath(sub("^--file=", "", .cmdline[[.file.arg[1L]]])))
+source(file.path(.own.dir, "synthetic_cells.R"))
 
 # ---- the reference runs ---------------------------------------------------
 
