@@ -12,7 +12,7 @@ sig_fit_bootstrap(
   sig_db = "legacy",
   db_type = c("", "human-exome", "human-genome"),
   show_index = TRUE,
-  method = c("QP", "NNLS", "SA"),
+  method = c("QP", "NNLS", "SA", "likelihood", "lrt"),
   auto_reduce = FALSE,
   SA_not_bootstrap = FALSE,
   type = c("absolute", "relative"),
@@ -64,7 +64,15 @@ Currently only works for 'SBS'.}
 \item{show_index}{if \code{TRUE}, show valid indices.}
 
 \item{method}{method to solve the minimazation problem.
-'NNLS' for non-negative least square; 'QP' for quadratic programming; 'SA' for simulated annealing.}
+'NNLS' for non-negative least square; 'QP' for quadratic programming; 'SA' for simulated annealing.
+'likelihood' runs the clean-room MuSiCal-branch refit: a bidirectional stepwise decision layer
+over the multinomial likelihood, with the acceptance thresholds passed as \code{ll_add} / \code{ll_keep}
+(lane-calibrated defaults 8 / 8; the reference paper treats these thresholds as study-optimized
+parameters, so they are arguments rather than hard-coded constants).
+'lrt' runs the clean-room PASA-branch refit: per-signature likelihood-ratio presence tests plus
+a minimal set that is good enough (stop test) and minimal at the \code{alpha} significance level
+(lane-calibrated default 0.01). Both new methods refit exposures with the same QP simplex
+engine as 'QP' and reject \code{auto_reduce} (their decision layer already selects the reference set).}
 
 \item{auto_reduce}{if \code{TRUE}, try reducing the input reference signatures to increase
 the cosine similarity of reconstructed profile to observed profile.}
