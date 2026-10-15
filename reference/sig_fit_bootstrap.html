@@ -76,7 +76,7 @@ the suboptimal decomposition solution.</p>
 <span>  sig_db <span class="op">=</span> <span class="st">"legacy"</span>,</span>
 <span>  db_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">""</span>, <span class="st">"human-exome"</span>, <span class="st">"human-genome"</span><span class="op">)</span>,</span>
 <span>  show_index <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"QP"</span>, <span class="st">"NNLS"</span>, <span class="st">"SA"</span><span class="op">)</span>,</span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"QP"</span>, <span class="st">"NNLS"</span>, <span class="st">"SA"</span>, <span class="st">"likelihood"</span>, <span class="st">"lrt"</span><span class="op">)</span>,</span>
 <span>  auto_reduce <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  SA_not_bootstrap <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"absolute"</span>, <span class="st">"relative"</span><span class="op">)</span>,</span>
@@ -147,7 +147,15 @@ Currently only works for 'SBS'.</p></dd>
 
 <dt id="arg-method">method<a class="anchor" aria-label="anchor" href="#arg-method"></a></dt>
 <dd><p>method to solve the minimazation problem.
-'NNLS' for non-negative least square; 'QP' for quadratic programming; 'SA' for simulated annealing.</p></dd>
+'NNLS' for non-negative least square; 'QP' for quadratic programming; 'SA' for simulated annealing.
+'likelihood' runs the clean-room MuSiCal-branch refit: a bidirectional stepwise decision layer
+over the multinomial likelihood, with the acceptance thresholds passed as <code>ll_add</code> / <code>ll_keep</code>
+(lane-calibrated defaults 8 / 8; the reference paper treats these thresholds as study-optimized
+parameters, so they are arguments rather than hard-coded constants).
+'lrt' runs the clean-room PASA-branch refit: per-signature likelihood-ratio presence tests plus
+a minimal set that is good enough (stop test) and minimal at the <code>alpha</code> significance level
+(lane-calibrated default 0.01). Both new methods refit exposures with the same QP simplex
+engine as 'QP' and reject <code>auto_reduce</code> (their decision layer already selects the reference set).</p></dd>
 
 
 <dt id="arg-auto-reduce">auto_reduce<a class="anchor" aria-label="anchor" href="#arg-auto-reduce"></a></dt>
@@ -253,10 +261,10 @@ i.e., suboptimal error is <code>1.05</code> times baseline error.</p></dd>
 <span class="r-in"><span>  <span class="co">#     find_suboptimal = TRUE</span></span></span>
 <span class="r-in"><span>  <span class="co">#   )</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2026-10-14 22:55:07.019142]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2026-10-14 22:55:07.020237]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2026-10-14 22:55:07.021073]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2026-10-14 22:55:07.021895]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2026-10-15 07:29:08.846259]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2026-10-15 07:29:08.848184]: </span><span style="color: #0000BB; font-weight: bold;">Checking catalog.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2026-10-15 07:29:08.849833]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2026-10-15 07:29:08.851453]: </span><span style="color: #0000BB; font-weight: bold;">About to start bootstrap.</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Bootstrapping 10 times.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 10 times, starting no.1.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 10 times, starting no.2.</span>
@@ -270,19 +278,19 @@ i.e., suboptimal error is <code>1.05</code> times baseline error.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Total 10 times, starting no.10.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Bootstrap done.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2026-10-14 22:55:07.182313]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2026-10-14 22:55:07.18316]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2026-10-14 22:55:07.183935]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2026-10-14 22:55:07.184727]: </span><span style="color: #0000BB; font-weight: bold;">0.166 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2026-10-15 07:29:09.171658]: </span><span style="color: #00BB00; font-weight: bold;">Signature exposures collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2026-10-15 07:29:09.173311]: </span><span style="color: #00BB00; font-weight: bold;">Errors and similarity collected.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2026-10-15 07:29:09.174919]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2026-10-15 07:29:09.176547]: </span><span style="color: #0000BB; font-weight: bold;">0.33 secs elapsed.</span></span>
 <span class="r-plt img"><img src="sig_fit_bootstrap-1.png" alt="" width="700" height="433"></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2026-10-14 22:55:07.187557]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2026-10-14 22:55:07.188493]: </span><span style="color: #00BB00; font-weight: bold;">Single sample mode enabled.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2026-10-14 22:55:07.189795]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2026-10-14 22:55:07.19069]: </span><span style="color: #0000BB; font-weight: bold;">0.003 secs elapsed.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2026-10-14 22:55:07.191555]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2026-10-14 22:55:07.192379]: </span><span style="color: #00BB00; font-weight: bold;">Batch mode enabled.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2026-10-14 22:55:07.193837]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2026-10-14 22:55:07.194705]: </span><span style="color: #0000BB; font-weight: bold;">0.003 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2026-10-15 07:29:09.18127]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2026-10-15 07:29:09.183019]: </span><span style="color: #00BB00; font-weight: bold;">Single sample mode enabled.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2026-10-15 07:29:09.185576]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2026-10-15 07:29:09.187297]: </span><span style="color: #0000BB; font-weight: bold;">0.006 secs elapsed.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2026-10-15 07:29:09.18901]: </span><span style="color: #0000BB; font-weight: bold;">Started.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2026-10-15 07:29:09.190697]: </span><span style="color: #00BB00; font-weight: bold;">Batch mode enabled.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="font-weight: bold;">[2026-10-15 07:29:09.193824]: </span><span style="color: #00BB00; font-weight: bold;">Done.</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="font-weight: bold;">[2026-10-15 07:29:09.195564]: </span><span style="color: #0000BB; font-weight: bold;">0.007 secs elapsed.</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $samp1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      threshold_0.01 threshold_0.05 threshold_0.1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> sig1    0.013870062     0.02155778   0.037266151</span>
