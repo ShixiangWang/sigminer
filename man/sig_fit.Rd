@@ -19,7 +19,7 @@ sig_fit(
     "latest_RNA-SBS_GRCh37", "latest_SV_GRCh38"),
   db_type = c("", "human-exome", "human-genome"),
   show_index = TRUE,
-  method = c("QP", "NNLS", "SA"),
+  method = c("QP", "NNLS", "SA", "likelihood", "lrt"),
   auto_reduce = FALSE,
   type = c("absolute", "relative"),
   return_class = c("matrix", "data.table"),
@@ -69,7 +69,15 @@ Currently only works for 'SBS'.}
 \item{show_index}{if \code{TRUE}, show valid indices.}
 
 \item{method}{method to solve the minimazation problem.
-'NNLS' for non-negative least square; 'QP' for quadratic programming; 'SA' for simulated annealing.}
+'NNLS' for non-negative least square; 'QP' for quadratic programming; 'SA' for simulated annealing.
+'likelihood' runs the clean-room MuSiCal-branch refit: a bidirectional stepwise decision layer
+over the multinomial likelihood, with the acceptance thresholds passed as \code{ll_add} / \code{ll_keep}
+(lane-calibrated defaults 8 / 8; the reference paper treats these thresholds as study-optimized
+parameters, so they are arguments rather than hard-coded constants).
+'lrt' runs the clean-room PASA-branch refit: per-signature likelihood-ratio presence tests plus
+a minimal set that is good enough (stop test) and minimal at the \code{alpha} significance level
+(lane-calibrated default 0.01). Both new methods refit exposures with the same QP simplex
+engine as 'QP' and reject \code{auto_reduce} (their decision layer already selects the reference set).}
 
 \item{auto_reduce}{if \code{TRUE}, try reducing the input reference signatures to increase
 the cosine similarity of reconstructed profile to observed profile.}
@@ -107,7 +115,14 @@ catalogue \code{V} with known signatures \code{W} by solving the minimization pr
 \details{
 The method 'NNLS' solves the minimization problem with nonnegative least-squares constraints.
 The method 'QP' and 'SA' are modified from SignatureEstimation package.
-See references for details.
+The methods 'likelihood' and 'lrt' are clean-room ports of published decision
+semantics: 'likelihood' follows the MuSiCal bidirectional stepwise algorithm under the
+multinomial likelihood, and 'lrt' follows the PASA likelihood-ratio presence, stop and
+minimality tests. Both refit exposures with the same QP simplex engine as 'QP', reject
+'auto_reduce', and expose their decision thresholds as caller-overridable arguments
+(the MuSiCal paper describes its thresholds as study-optimized parameters; PASA keeps
+alpha as a significance level). No claim of implementation identity with the original
+tools is made; see references for details.
 Of note, when fitting exposures for copy number signatures, only components of
 feature CN is used.
 }
@@ -211,6 +226,14 @@ Huang X, Wojtowicz D, Przytycka TM. Detecting presence of mutational signatures 
 
 Kim, Jaegil, et al. "Somatic ERCC2 mutations are associated with a distinct genomic signature in urothelial tumors."
 Nature genetics 48.6 (2016): 600.
+
+Jin H, Gulhan DC, Geiger B, Ben-Isvy D, Geng D, Ljungström V, Park PJ. Accurate and sensitive mutational signature
+analysis with MuSiCal. Nature Genetics 56:541-552 (2024). doi:10.1038/s41588-024-01659-0
+(decision semantics for method = "likelihood")
+
+Jiang N, Wu Y, Rozen SG. Benchmarking 13 tools for mutational signature attribution, including a new and improved
+algorithm. Briefings in Bioinformatics 26(1):bbaf042 (2025, epub 2024-11). doi:10.1093/bib/bbaf042
+(decision semantics for method = "lrt")
 }
 \seealso{
 \link{sig_extract}, \link{sig_auto_extract}, \link{sig_fit_bootstrap}, \link{sig_fit_bootstrap_batch}

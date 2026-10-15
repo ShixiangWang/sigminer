@@ -4,7 +4,7 @@
 #'
 #' @inheritParams sig_fit
 #' @inheritParams sig_fit_bootstrap
-#' @param methods a subset of `c("NNLS", "QP", "SA")`.
+#' @param methods a subset of `c("NNLS", "QP", "SA", "likelihood", "lrt")`.
 #' @param min_count minimal exposure in a sample, default is 1. Any patient has total exposure less
 #' than this value will be filtered out.
 #' @param p_val_thresholds a vector of relative exposure threshold for calculating p values.
@@ -73,7 +73,7 @@ sig_fit_bootstrap_batch <- function(catalogue_matrix,
   stopifnot(is.matrix(catalogue_matrix))
 
   set.seed(seed, kind = "L'Ecuyer-CMRG")
-  methods <- match.arg(methods, choices = c("NNLS", "QP", "SA"), several.ok = TRUE)
+  methods <- match.arg(methods, choices = c("NNLS", "QP", "SA", "likelihood", "lrt"), several.ok = TRUE)
 
   timer <- Sys.time()
   send_info("Batch Bootstrap Signature Exposure Analysis Started.")

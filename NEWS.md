@@ -25,6 +25,19 @@
 - Added testthat fixture round-trip coverage for the interop bridge and a local-only
   SigProfilerExtractor version-matrix harness (opt-in via `SIGMINER_SP_MATRIX=1`;
   deliberately not wired into CI, see `tests/testthat/README-sigprofiler-matrix.md`).
+- `sig_fit()` gained two opt-in likelihood-based refit methods (parity plan P3):
+  `method = "likelihood"`, a clean-room implementation of the MuSiCal bidirectional stepwise
+  selection under the multinomial likelihood (Jin et al., Nature Genetics 56:541-552, 2024;
+  see `?sig_fit` references), with the acceptance thresholds exposed as the caller-overridable
+  `ll_add` / `ll_keep` arguments — the paper describes them as study-optimized parameters, and
+  the in-lane defaults (8 / 8) are a fixture calibration, not paper constants; and
+  `method = "lrt"`, a clean-room implementation of the PASA likelihood-ratio presence tests with
+  the stop and minimality criteria at the significance level `alpha` (Jiang et al., Briefings in
+  Bioinformatics 26(1):bbaf042, 2025; default `alpha = 0.01`, in-lane calibration). Both methods
+  refit the selected set with the same QP simplex engine that drives `method = "QP"`, reject
+  `auto_reduce` (their decision layer already selects the reference set), and are also available
+  on the bootstrap surfaces `sig_fit_bootstrap()` and `sig_fit_bootstrap_batch()`. The legacy
+  methods and the default remain unchanged.
 
 # sigminer 2.3.3
 
