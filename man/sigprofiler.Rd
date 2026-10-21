@@ -78,13 +78,7 @@ If this package is installed, this option is useless.}
 \item{order_by_expo}{if \code{TRUE}, order the import signatures by their exposures, e.g. the signature
 contributed the most exposure in all samples will be named as \code{Sig1}.}
 
-\item{type}{mutational signature type. For \code{sigprofiler_import()}, one of
-\code{'suggest'} (the suggested de-novo solution), \code{'refit'} (the
-COSMIC-decomposed view of the suggested solution, read from
-\code{Suggested_Solution/COSMIC_<MT>_Decomposed_Solution}; current
-SigProfilerExtractor versions emit that directory unconditionally, the option
-removed upstream was \code{refit_denovo_signatures} on the extract side), or
-\code{'all'} (for all solutions).}
+\item{type}{mutational signature type.}
 }
 \value{
 For \code{sigprofiler_extract()}, returns nothing. See \code{output} directory.

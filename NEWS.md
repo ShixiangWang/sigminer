@@ -1,5 +1,3 @@
-# sigminer (unreleased)
-
 # sigminer 2.4.0
 
 - `sig_extract()`, `sig_estimate()` and `bp_extract_signatures()` gained a `backend = c("R", "rust")`

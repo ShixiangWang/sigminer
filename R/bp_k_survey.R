@@ -424,13 +424,17 @@
 #' # A planted two-signature catalogue (synthetic, deterministic): two
 #' # blocks of channels with anti-phased sample loadings. The arbitration
 #' # reads the planted K = 2 off the CV curve and the stability veto.
+#' # The budget arguments are reduced below the production defaults so the
+#' # example stays within CRAN runtime limits; the seeded verdict is
+#' # unchanged under the full default budget.
 #' m <- matrix(1, 60, 20,
 #'   dimnames = list(paste0("ch", 1:60), paste0("smp", 1:20)))
 #' m[1:6, 1:10] <- 40
 #' m[31:36, 11:20] <- 40
 #' m[31:36, 1:10] <- 8
 #' m[1:6, 11:20] <- 8
-#' res <- bp_select_k(m, k_grid = 2:3, seed = 7L)
+#' res <- bp_select_k(m, k_grid = 2:3, seed = 7L,
+#'   replicates = 2L, k_folds = 4L, n_seeds = 1L)
 #' if (!identical(res$k, 2L)) stop("the survey must arbitrate K = 2")
 #' if (!is.data.frame(res$k_evidence) || !any(res$k_evidence$selected))
 #'   stop("the evidence table must carry exactly one selected row")

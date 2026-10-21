@@ -73,7 +73,7 @@ show_sig_bootstrap_stability(
 
 \item{signatures}{signatures to show.}
 
-\item{methods}{a subset of \code{c("NNLS", "QP", "SA")}.}
+\item{methods}{a subset of \code{c("NNLS", "QP", "SA", "likelihood", "lrt")}.}
 
 \item{plot_fun}{set the plot function.}
 

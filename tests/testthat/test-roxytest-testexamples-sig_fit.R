@@ -2,7 +2,7 @@
 
 # File R/sig_fit.R: @testexamples
 
-test_that("Function sig_fit() @ L145", {
+test_that("Function sig_fit() @ L168", {
   
   
   
